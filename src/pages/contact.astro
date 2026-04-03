@@ -26,12 +26,19 @@ if (Astro.request.method === "POST") {
 		} else {
 			const db = env.DB;
 			const id = Date.now().toString(36) + Math.random().toString(36).slice(2);
+			const revId = id + 'r';
 			const slug = `contact-${id}`;
 			const senderTitle = [firstName, lastName].filter(Boolean).join(" ") || email;
-			await db.prepare(
-				`INSERT INTO ec_form_submissions (id, slug, status, title, form_type, first_name, last_name, email, phone, service, message, read_status)
-				 VALUES (?, ?, 'published', ?, 'contact', ?, ?, ?, ?, ?, ?, 'unread')`
-			).bind(id, slug, senderTitle, firstName, lastName, email, phone, service, message).run();
+			const data = JSON.stringify({ title: senderTitle, form_type: 'contact', first_name: firstName, last_name: lastName, email, phone, service, message, read_status: 'unread' });
+			await db.batch([
+				db.prepare(
+					`INSERT INTO ec_form_submissions (id, slug, status, title, form_type, first_name, last_name, email, phone, service, message, read_status)
+					 VALUES (?, ?, 'published', ?, 'contact', ?, ?, ?, ?, ?, ?, 'unread')`
+				).bind(id, slug, senderTitle, firstName, lastName, email, phone, service, message),
+				db.prepare(
+					`INSERT INTO revisions (id, collection, entry_id, data) VALUES (?, 'form_submissions', ?, ?)`
+				).bind(revId, id, data),
+			]);
 			formStatus = "success";
 			formMessage = "Thanks! We'll get back to you within 1 business day.";
 		}

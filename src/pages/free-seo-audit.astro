@@ -24,11 +24,18 @@ if (Astro.request.method === "POST") {
 		} else {
 			const db = env.DB;
 			const id = Date.now().toString(36) + Math.random().toString(36).slice(2);
+			const revId = id + 'r';
 			const slug = `seo-audit-${id}`;
-			await db.prepare(
-				`INSERT INTO ec_form_submissions (id, slug, status, title, form_type, first_name, email, website, phone, read_status)
-				 VALUES (?, ?, 'published', ?, 'seo-audit', ?, ?, ?, ?, 'unread')`
-			).bind(id, slug, name, name, email, website, phone).run();
+			const data = JSON.stringify({ title: name, form_type: 'seo-audit', first_name: name, email, website, phone, read_status: 'unread' });
+			await db.batch([
+				db.prepare(
+					`INSERT INTO ec_form_submissions (id, slug, status, title, form_type, first_name, email, website, phone, read_status)
+					 VALUES (?, ?, 'published', ?, 'seo-audit', ?, ?, ?, ?, 'unread')`
+				).bind(id, slug, name, name, email, website, phone),
+				db.prepare(
+					`INSERT INTO revisions (id, collection, entry_id, data) VALUES (?, 'form_submissions', ?, ?)`
+				).bind(revId, id, data),
+			]);
 			formStatus = "success";
 			formMessage = "Your audit request is in! We'll reach out within 24 hours with your results.";
 		}
