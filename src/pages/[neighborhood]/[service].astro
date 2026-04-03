@@ -165,7 +165,44 @@ const neighborhoods: Record<string, { name: string; character: string; nearby: s
 	},
 };
 
-// ── Try CMS first, fall back to hardcoded map ─────────────────────────────────
+// ── Neighborhood hero images (Unsplash) ──────────────────────────────────────
+const neighborhoodImages: Record<string, string> = {
+	// Named unique images
+	"lincoln-park":      "photo-1494522855154-9297ac14b55f",
+	"wicker-park":       "photo-1513635269975-59663e0ac1ad",
+	"logan-square":      "photo-1449824913935-59a10b8d2000",
+	"river-north":       "photo-1477959858617-67f85cf4f1df",
+	"the-loop":          "photo-1581373449483-37449f962b6c",
+	"west-loop":         "photo-1494891848038-7bd202a2afeb",
+	"bucktown":          "photo-1513635269975-59663e0ac1ad",
+	"lakeview":          "photo-1494522855154-9297ac14b55f",
+	"old-town":          "photo-1449824913935-59a10b8d2000",
+	"gold-coast":        "photo-1477959858617-67f85cf4f1df",
+	// Chicago skyline fallback for remaining neighborhoods
+	"streeterville":     "photo-1477959858617-67f85cf4f1df",
+	"hyde-park":         "photo-1477959858617-67f85cf4f1df",
+	"pilsen":            "photo-1477959858617-67f85cf4f1df",
+	"bridgeport":        "photo-1477959858617-67f85cf4f1df",
+	"andersonville":     "photo-1477959858617-67f85cf4f1df",
+	"uptown":            "photo-1477959858617-67f85cf4f1df",
+	"edgewater":         "photo-1477959858617-67f85cf4f1df",
+	"rogers-park":       "photo-1477959858617-67f85cf4f1df",
+	"ravenswood":        "photo-1477959858617-67f85cf4f1df",
+	"lincoln-square":    "photo-1477959858617-67f85cf4f1df",
+	"albany-park":       "photo-1477959858617-67f85cf4f1df",
+	"irving-park":       "photo-1477959858617-67f85cf4f1df",
+	"avondale":          "photo-1477959858617-67f85cf4f1df",
+	"humboldt-park":     "photo-1477959858617-67f85cf4f1df",
+	"ukrainian-village": "photo-1477959858617-67f85cf4f1df",
+	"west-town":         "photo-1477959858617-67f85cf4f1df",
+	"south-loop":        "photo-1477959858617-67f85cf4f1df",
+	"bronzeville":       "photo-1477959858617-67f85cf4f1df",
+	"chinatown":         "photo-1477959858617-67f85cf4f1df",
+	"little-italy":      "photo-1477959858617-67f85cf4f1df",
+};
+const heroPhotoId = neighborhoodImages[neighborhood as string] ?? "photo-1477959858617-67f85cf4f1df";
+const heroImageUrl = `https://images.unsplash.com/${heroPhotoId}?w=800&q=80`;
+
 const { entry: areaEntry } = await getEmDashEntry("service_areas", neighborhood as string);
 
 let neighborhoodName: string;
@@ -248,24 +285,37 @@ const whyPoints = [
 		]
 	})} />
 
-	<!-- ── HERO ── -->
+	<!-- ── HERO (split layout: text left / image right) ── -->
 	<section class="nb-hero">
 		<div class="container nb-hero-inner">
-			<nav class="breadcrumb" aria-label="Breadcrumb">
-				<a href="/">Home</a>
-				<span>/</span>
-				<a href={`/${neighborhood}/`}>{neighborhoodName}</a>
-				<span>/</span>
-				<span>{serviceTitle}</span>
-			</nav>
-			<span class="eyebrow">{neighborhoodName}, Chicago</span>
-			<h1>{serviceTitle} in {neighborhoodName}, Chicago</h1>
-			<p class="nb-hero-desc">
-				{neighborhoodName} is {neighborhoodCharacter}. We build {serviceTitle.toLowerCase()} strategies that match that reality and deliver results you can measure.
-			</p>
-			<div class="nb-hero-actions">
-				<a href="/free-seo-audit/" class="btn btn-primary">Get a Free {serviceTitle} Audit →</a>
-				<a href={`/services/${service}/`} class="btn btn-outline-white">About Our {serviceTitle}</a>
+			<!-- Left: text content -->
+			<div class="nb-hero-content">
+				<nav class="breadcrumb" aria-label="Breadcrumb">
+					<a href="/">Home</a>
+					<span>/</span>
+					<a href={`/${neighborhood}/`}>{neighborhoodName}</a>
+					<span>/</span>
+					<span>{serviceTitle}</span>
+				</nav>
+				<span class="eyebrow">{neighborhoodName}, Chicago</span>
+				<h1>{serviceTitle} in {neighborhoodName}, Chicago</h1>
+				<p class="nb-hero-desc">
+					{neighborhoodName} is {neighborhoodCharacter}. We build {serviceTitle.toLowerCase()} strategies that match that reality and deliver results you can measure.
+				</p>
+				<div class="nb-hero-actions">
+					<a href="/free-seo-audit/" class="btn btn-primary">Get a Free {serviceTitle} Audit →</a>
+					<a href={`/services/${service}/`} class="btn btn-outline-white">About Our {serviceTitle}</a>
+				</div>
+			</div>
+			<!-- Right: neighborhood image -->
+			<div class="nb-hero-visual">
+				<img
+					src={heroImageUrl}
+					alt={`${neighborhoodName} neighborhood, Chicago — ${serviceTitle}`}
+					width="800"
+					height="560"
+					loading="eager"
+				/>
 			</div>
 		</div>
 	</section>
@@ -387,14 +437,38 @@ const whyPoints = [
 </Base>
 
 <style>
-/* ── HERO ── */
+/* ── HERO (split grid) ── */
 .nb-hero {
 	background: var(--navy);
 	padding: 64px 0 80px;
+	overflow: hidden;
 }
 
 .nb-hero-inner {
-	max-width: 780px;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 64px;
+	align-items: center;
+}
+
+.nb-hero-content {
+	display: flex;
+	flex-direction: column;
+}
+
+.nb-hero-visual {
+	border-radius: var(--radius-lg);
+	overflow: hidden;
+	min-height: 420px;
+	position: relative;
+}
+
+.nb-hero-visual img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+	min-height: 420px;
 }
 
 .breadcrumb {
@@ -416,7 +490,7 @@ const whyPoints = [
 .breadcrumb span:last-child { color: rgba(255,255,255,0.65); }
 
 .nb-hero h1 {
-	font-size: clamp(2rem, 4.5vw, 3.25rem);
+	font-size: clamp(1.75rem, 3.5vw, 2.875rem);
 	font-weight: 900;
 	color: var(--white);
 	line-height: 1.08;
@@ -429,7 +503,7 @@ const whyPoints = [
 	color: rgba(255,255,255,0.68);
 	line-height: 1.75;
 	margin-bottom: 36px;
-	max-width: 640px;
+	max-width: 520px;
 }
 
 .nb-hero-actions {
@@ -763,6 +837,19 @@ const whyPoints = [
 
 /* ── RESPONSIVE ── */
 @media (max-width: 1024px) {
+	.nb-hero-inner {
+		grid-template-columns: 1fr;
+		gap: 40px;
+	}
+
+	.nb-hero-visual {
+		min-height: 300px;
+	}
+
+	.nb-hero-visual img {
+		min-height: 300px;
+	}
+
 	.nb-content-inner {
 		grid-template-columns: 1fr;
 		gap: 48px;
@@ -779,6 +866,7 @@ const whyPoints = [
 
 @media (max-width: 768px) {
 	.nb-hero { padding: 48px 0 64px; }
+	.nb-hero-visual { display: none; }
 
 	.nb-nearby-grid {
 		grid-template-columns: 1fr 1fr;

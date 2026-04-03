@@ -233,29 +233,58 @@ const pageCtx = createPublicPageContext({
 					<div class="nav-dropdown">
 						<a href="/industries" class="nav-link">Industries <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
 						<div class="dropdown-panel">
-							<a href="/industries" class="dropdown-item">All Industries</a>
-							<a href="/blog/dental-marketing-chicago-guide-2026" class="dropdown-item">Dentists</a>
-							<a href="/blog/chicago-law-firms-more-clients-from-google" class="dropdown-item">Law Firms</a>
-							<a href="/blog/why-chicago-restaurants-need-strong-online-presence" class="dropdown-item">Restaurants</a>
-							<a href="/blog/ecommerce-seo-chicago-compete-with-amazon" class="dropdown-item">E-commerce</a>
-							<a href="/blog/hvac-marketing-chicago-getting-calls" class="dropdown-item">HVAC</a>
-							<a href="/blog/real-estate-marketing-chicago-standing-out" class="dropdown-item">Real Estate</a>
+							<a href="/industries/dentists" class="dropdown-item">Dentists</a>
+							<a href="/industries/law-firms" class="dropdown-item">Law Firms</a>
+							<a href="/industries/restaurants" class="dropdown-item">Restaurants</a>
+							<a href="/industries/ecommerce" class="dropdown-item">E-commerce</a>
+							<a href="/industries/hvac" class="dropdown-item">HVAC & Home Services</a>
+							<a href="/industries/real-estate" class="dropdown-item">Real Estate</a>
+							<a href="/industries/healthcare" class="dropdown-item">Healthcare</a>
+							<a href="/industries/construction" class="dropdown-item">Construction</a>
+							<a href="/industries/fitness" class="dropdown-item">Fitness</a>
+							<a href="/industries/financial-services" class="dropdown-item">Financial Services</a>
+							<a href="/industries" class="dropdown-item dropdown-all">All Industries →</a>
 						</div>
 					</div>
-					<div class="nav-dropdown">
+					<div class="nav-dropdown nav-dropdown-mega">
 						<a href="/neighborhoods" class="nav-link">Areas We Serve <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-						<div class="dropdown-panel dropdown-areas">
-							<a href="/lincoln-park/" class="dropdown-item">Lincoln Park</a>
-							<a href="/wicker-park/" class="dropdown-item">Wicker Park</a>
-							<a href="/logan-square/" class="dropdown-item">Logan Square</a>
-							<a href="/river-north/" class="dropdown-item">River North</a>
-							<a href="/the-loop/" class="dropdown-item">The Loop</a>
-							<a href="/west-loop/" class="dropdown-item">West Loop</a>
-							<a href="/lakeview/" class="dropdown-item">Lakeview</a>
-							<a href="/gold-coast/" class="dropdown-item">Gold Coast</a>
-							<a href="/hyde-park/" class="dropdown-item">Hyde Park</a>
-							<a href="/pilsen/" class="dropdown-item">Pilsen</a>
-							<a href="/neighborhoods" class="dropdown-item dropdown-all">View All 30 Areas →</a>
+						<div class="dropdown-panel mega-panel">
+							<div class="mega-inner">
+								<div class="mega-col">
+									<span class="mega-label">North Side</span>
+									<a href="/lincoln-park/" class="dropdown-item">Lincoln Park</a>
+									<a href="/lakeview/" class="dropdown-item">Lakeview</a>
+									<a href="/wicker-park/" class="dropdown-item">Wicker Park</a>
+									<a href="/bucktown/" class="dropdown-item">Bucktown</a>
+									<a href="/logan-square/" class="dropdown-item">Logan Square</a>
+									<a href="/andersonville/" class="dropdown-item">Andersonville</a>
+									<a href="/uptown/" class="dropdown-item">Uptown</a>
+								</div>
+								<div class="mega-col">
+									<span class="mega-label">Downtown</span>
+									<a href="/the-loop/" class="dropdown-item">The Loop</a>
+									<a href="/river-north/" class="dropdown-item">River North</a>
+									<a href="/west-loop/" class="dropdown-item">West Loop</a>
+									<a href="/gold-coast/" class="dropdown-item">Gold Coast</a>
+									<a href="/streeterville/" class="dropdown-item">Streeterville</a>
+									<a href="/old-town/" class="dropdown-item">Old Town</a>
+									<a href="/south-loop/" class="dropdown-item">South Loop</a>
+								</div>
+								<div class="mega-col">
+									<span class="mega-label">West & South</span>
+									<a href="/pilsen/" class="dropdown-item">Pilsen</a>
+									<a href="/ukrainian-village/" class="dropdown-item">Ukrainian Village</a>
+									<a href="/humboldt-park/" class="dropdown-item">Humboldt Park</a>
+									<a href="/bridgeport/" class="dropdown-item">Bridgeport</a>
+									<a href="/bronzeville/" class="dropdown-item">Bronzeville</a>
+									<a href="/hyde-park/" class="dropdown-item">Hyde Park</a>
+									<a href="/chinatown/" class="dropdown-item">Chinatown</a>
+								</div>
+								<div class="mega-cta">
+									<p class="mega-cta-text">We serve 30+ Chicago neighborhoods with full-service digital marketing.</p>
+									<a href="/neighborhoods" class="btn btn-primary mega-btn">View All Areas →</a>
+								</div>
+							</div>
 						</div>
 					</div>
 					<a href="/results" class="nav-link">Results</a>
@@ -292,13 +321,14 @@ const pageCtx = createPublicPageContext({
 					<details class="mobile-accordion">
 						<summary class="mobile-nav-link">Industries</summary>
 						<div class="mobile-sub">
-							<a href="/industries">All Industries</a>
-							<a href="/blog/dental-marketing-chicago-guide-2026">Dentists</a>
-							<a href="/blog/chicago-law-firms-more-clients-from-google">Law Firms</a>
-							<a href="/blog/why-chicago-restaurants-need-strong-online-presence">Restaurants</a>
-							<a href="/blog/ecommerce-seo-chicago-compete-with-amazon">E-commerce</a>
-							<a href="/blog/hvac-marketing-chicago-getting-calls">HVAC</a>
-							<a href="/blog/real-estate-marketing-chicago-standing-out">Real Estate</a>
+							<a href="/industries/dentists">Dentists</a>
+							<a href="/industries/law-firms">Law Firms</a>
+							<a href="/industries/restaurants">Restaurants</a>
+							<a href="/industries/ecommerce">E-commerce</a>
+							<a href="/industries/hvac">HVAC & Home Services</a>
+							<a href="/industries/real-estate">Real Estate</a>
+							<a href="/industries/healthcare">Healthcare</a>
+							<a href="/industries">All Industries →</a>
 						</div>
 					</details>
 					<details class="mobile-accordion">
@@ -497,11 +527,56 @@ const pageCtx = createPublicPageContext({
 				z-index: 200;
 			}
 
-			.dropdown-areas {
-				min-width: 240px;
+			/* ── MEGA MENU ── */
+			.nav-dropdown-mega { position: static; }
+			.mega-panel {
+				left: 50%;
+				transform: translateX(-50%) translateY(8px);
+				min-width: 680px;
+				padding: 0;
+			}
+			.nav-dropdown-mega:hover .mega-panel {
+				transform: translateX(-50%) translateY(0);
+			}
+			.mega-inner {
 				display: grid;
-				grid-template-columns: 1fr 1fr;
+				grid-template-columns: 1fr 1fr 1fr 200px;
 				gap: 0;
+			}
+			.mega-col {
+				padding: 20px 16px;
+				border-right: 1px solid var(--border);
+			}
+			.mega-col:last-of-type { border-right: none; }
+			.mega-label {
+				display: block;
+				font-size: 0.6875rem;
+				font-weight: 700;
+				text-transform: uppercase;
+				letter-spacing: 0.08em;
+				color: var(--text-light);
+				padding: 0 14px 8px;
+				margin-bottom: 4px;
+			}
+			.mega-cta {
+				padding: 24px 20px;
+				background: var(--off-white);
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				gap: 16px;
+				border-radius: 0 10px 10px 0;
+			}
+			.mega-cta-text {
+				font-size: 0.8125rem;
+				color: var(--text-muted);
+				line-height: 1.5;
+			}
+			.mega-btn {
+				font-size: 0.8125rem;
+				padding: 10px 16px;
+				text-align: center;
+				justify-content: center;
 			}
 
 			.dropdown-item {
@@ -518,7 +593,6 @@ const pageCtx = createPublicPageContext({
 				color: var(--text-dark);
 			}
 			.dropdown-all {
-				grid-column: 1 / -1;
 				color: var(--red);
 				font-weight: 600;
 				border-top: 1px solid var(--border);
