@@ -1,11 +1,12 @@
 ---
+import { getEmDashEntry } from "emdash";
 import Base from "../../layouts/Base.astro";
 
 export const cacheHint = 3600;
 
 const { neighborhood } = Astro.params;
 
-// ── Neighborhood map: slug → { name, character } ──────────────────────────────
+// ── Neighborhood map: slug → { name, character } (fallback if no CMS entry) ──
 const neighborhoods: Record<string, { name: string; character: string; nearby: string[] }> = {
 	"lincoln-park": {
 		name: "Lincoln Park",
@@ -159,15 +160,37 @@ const neighborhoods: Record<string, { name: string; character: string; nearby: s
 	},
 };
 
-const neighborhoodData = neighborhoods[neighborhood as string];
-if (!neighborhoodData) return Astro.redirect("/404");
+// ── Try CMS first, fall back to hardcoded map ─────────────────────────────────
+const { entry: areaEntry } = await getEmDashEntry("service_areas", neighborhood as string);
 
-const { name: neighborhoodName, character: neighborhoodCharacter, nearby: nearbySlugList } = neighborhoodData;
+let neighborhoodName: string;
+let neighborhoodCharacter: string;
+let nearbyNeighborhoods: { slug: string; name: string }[];
 
-const nearbyNeighborhoods = nearbySlugList
-	.filter((n) => neighborhoods[n])
-	.slice(0, 6)
-	.map((n) => ({ slug: n, name: neighborhoods[n].name }));
+if (areaEntry) {
+	const ad = areaEntry.data as Record<string, any>;
+	neighborhoodName = ad.title as string;
+	neighborhoodCharacter = (ad.character as string) || "";
+	let nearbySlugsCms: string[] = [];
+	if (ad.nearby_json) {
+		try { nearbySlugsCms = JSON.parse(ad.nearby_json); } catch { nearbySlugsCms = []; }
+	}
+	nearbyNeighborhoods = nearbySlugsCms
+		.slice(0, 6)
+		.map((slug: string) => ({
+			slug,
+			name: neighborhoods[slug]?.name ?? slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
+		}));
+} else {
+	const neighborhoodData = neighborhoods[neighborhood as string];
+	if (!neighborhoodData) return Astro.redirect("/404");
+	neighborhoodName = neighborhoodData.name;
+	neighborhoodCharacter = neighborhoodData.character;
+	nearbyNeighborhoods = neighborhoodData.nearby
+		.filter((n) => neighborhoods[n])
+		.slice(0, 6)
+		.map((n) => ({ slug: n, name: neighborhoods[n].name }));
+}
 
 const services = [
 	{

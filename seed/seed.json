@@ -207,6 +207,20 @@
 					"type": "portableText"
 				}
 			]
+		},
+		{
+			"slug": "service_areas",
+			"label": "Service Areas",
+			"labelSingular": "Service Area",
+			"supports": ["drafts", "seo"],
+			"fields": [
+				{ "slug": "title", "label": "Neighborhood Name", "type": "string", "required": true },
+				{ "slug": "description", "label": "Description", "type": "text" },
+				{ "slug": "character", "label": "Neighborhood Character", "type": "text" },
+				{ "slug": "nearby_json", "label": "Nearby Neighborhoods (JSON)", "type": "text" },
+				{ "slug": "meta_title", "label": "Meta Title", "type": "string" },
+				{ "slug": "meta_description", "label": "Meta Description", "type": "text" }
+			]
 		}
 	],
 	"taxonomies": [

@@ -24,6 +24,12 @@ const menu = await getMenu("primary");
 const footerServices = await getMenu("footer-services");
 const footerCompany = await getMenu("footer-company");
 
+// Set edge cache headers for performance (skip for form pages)
+const isFormPage = Astro.url.pathname === "/contact" || Astro.url.pathname === "/free-seo-audit";
+if (!isFormPage) {
+	Astro.response.headers.set("Cache-Control", "public, s-maxage=3600, stale-while-revalidate=86400");
+}
+
 const pageCtx = createPublicPageContext({
 	Astro,
 	kind: "custom",
