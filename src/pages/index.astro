@@ -223,6 +223,67 @@ export const cacheHint = 3600;
 		</div>
 	</section>
 
+	<!-- ── CHICAGO MAP ── -->
+	<section class="home-map">
+		<div class="container">
+			<div class="section-header">
+				<span class="eyebrow">Areas We Serve</span>
+				<h2>Marketing Services Across 30+ Chicago Neighborhoods</h2>
+				<p>Click any neighborhood to see our full service offering in your area.</p>
+			</div>
+			<div class="home-map-layout">
+				<div class="home-map-embed">
+					<iframe
+						src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d190255.33799365!2d-87.8!3d41.85!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x880e2c3cd0f4cbed%3A0xafe0a6ad09c0c000!2sChicago%2C%20IL!5e0!3m2!1sen!2sus!4v1"
+						width="100%"
+						height="420"
+						style="border:0; border-radius: 12px;"
+						allowfullscreen=""
+						loading="lazy"
+						referrerpolicy="no-referrer-when-downgrade"
+						title="Chicago neighborhoods we serve"
+					></iframe>
+				</div>
+				<div class="home-map-areas">
+					{[
+						{ slug: "lincoln-park", name: "Lincoln Park" },
+						{ slug: "wicker-park", name: "Wicker Park" },
+						{ slug: "logan-square", name: "Logan Square" },
+						{ slug: "river-north", name: "River North" },
+						{ slug: "the-loop", name: "The Loop" },
+						{ slug: "west-loop", name: "West Loop" },
+						{ slug: "bucktown", name: "Bucktown" },
+						{ slug: "lakeview", name: "Lakeview" },
+						{ slug: "old-town", name: "Old Town" },
+						{ slug: "gold-coast", name: "Gold Coast" },
+						{ slug: "hyde-park", name: "Hyde Park" },
+						{ slug: "pilsen", name: "Pilsen" },
+						{ slug: "bridgeport", name: "Bridgeport" },
+						{ slug: "andersonville", name: "Andersonville" },
+						{ slug: "south-loop", name: "South Loop" },
+						{ slug: "bronzeville", name: "Bronzeville" },
+						{ slug: "uptown", name: "Uptown" },
+						{ slug: "edgewater", name: "Edgewater" },
+						{ slug: "rogers-park", name: "Rogers Park" },
+						{ slug: "ravenswood", name: "Ravenswood" },
+						{ slug: "lincoln-square", name: "Lincoln Square" },
+						{ slug: "ukrainian-village", name: "Ukrainian Village" },
+						{ slug: "humboldt-park", name: "Humboldt Park" },
+						{ slug: "avondale", name: "Avondale" },
+						{ slug: "chinatown", name: "Chinatown" },
+						{ slug: "little-italy", name: "Little Italy" },
+						{ slug: "streeterville", name: "Streeterville" },
+						{ slug: "west-town", name: "West Town" },
+						{ slug: "irving-park", name: "Irving Park" },
+						{ slug: "albany-park", name: "Albany Park" },
+					].map((n) => (
+						<a href={`/${n.slug}/`} class="area-pill">{n.name}</a>
+					))}
+				</div>
+			</div>
+		</div>
+	</section>
+
 	<!-- ── 6. INDUSTRIES — dark navy ── -->
 	<section class="industries">
 		<div class="container">
@@ -715,6 +776,19 @@ export const cacheHint = 3600;
 		margin-top: 8px;
 	}
 
+	/* ── MAP ── */
+	.home-map { padding: 80px 0; background: var(--off-white); }
+	.home-map-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+	.home-map-embed { border-radius: 12px; overflow: hidden; }
+	.home-map-areas { display: flex; flex-wrap: wrap; gap: 8px; align-content: start; }
+	.area-pill {
+		display: inline-block; padding: 8px 16px; background: var(--white);
+		border: 1px solid var(--border); border-radius: 8px;
+		font-size: 0.875rem; font-weight: 500; color: var(--text-dark);
+		text-decoration: none; transition: all 150ms ease;
+	}
+	.area-pill:hover { background: var(--red); color: var(--white); border-color: var(--red); }
+
 	/* ── INDUSTRIES — dark navy ── */
 	.industries {
 		background: var(--navy);
@@ -913,6 +987,7 @@ export const cacheHint = 3600;
 		.result-row-2 .result-stat-box { order: -1; }
 
 		.testimonials-grid { grid-template-columns: 1fr; }
+		.home-map-layout { grid-template-columns: 1fr; }
 
 		.cta-trust { flex-direction: column; align-items: center; gap: 10px; }
 	}
