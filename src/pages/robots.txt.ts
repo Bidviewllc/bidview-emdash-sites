@@ -5,7 +5,7 @@ Allow: /
 Disallow: /_emdash/
 Disallow: /api/
 
-Sitemap: https://thechicagomarketingagency.com/sitemap-index.xml`,
+Sitemap: https://thechicagomarketingagency.com/sitemap.xml`,
 		{ headers: { "Content-Type": "text/plain; charset=utf-8" } }
 	);
 };
