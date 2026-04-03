@@ -1,0 +1,619 @@
+---
+import { getMenu, getSiteSettings } from "emdash";
+import { EmDashHead } from "emdash/ui";
+import { createPublicPageContext } from "emdash/page";
+
+interface Props {
+	title?: string;
+	description?: string;
+	image?: string;
+}
+
+const { title, description, image } = Astro.props;
+const settings = await getSiteSettings();
+const siteTitle = settings?.title || "The Chicago Marketing Agency";
+const fullTitle = title
+	? `${title} — ${siteTitle}`
+	: `${siteTitle} | SEO, Web Design & Digital Marketing in Chicago`;
+const siteDescription =
+	description ||
+	settings?.tagline ||
+	"Chicago's Premier Digital Marketing Agency. We help Chicago businesses generate more leads, rank higher, and convert visitors into loyal customers.";
+
+const menu = await getMenu("primary");
+const footerServices = await getMenu("footer-services");
+const footerCompany = await getMenu("footer-company");
+
+const pageCtx = createPublicPageContext({
+	Astro,
+	kind: "custom",
+	pageType: "website",
+	title: fullTitle,
+	description: siteDescription,
+	canonical: Astro.url.href,
+	image,
+	seo: { ogImage: image },
+	siteName: siteTitle,
+});
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>{fullTitle}</title>
+		<EmDashHead page={pageCtx} />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+			rel="stylesheet"
+		/>
+		<style is:global>
+			*, *::before, *::after {
+				box-sizing: border-box;
+				margin: 0;
+				padding: 0;
+			}
+
+			:root {
+				--red: #dc2626;
+				--red-dark: #b91c1c;
+				--navy: #0f172a;
+				--navy-mid: #1e293b;
+				--navy-light: #334155;
+				--white: #ffffff;
+				--off-white: #f8fafc;
+				--text-dark: #0f172a;
+				--text-muted: #64748b;
+				--text-light: #94a3b8;
+				--border: #e2e8f0;
+				--border-dark: #1e293b;
+				--gold: #f59e0b;
+				--font: 'Inter', system-ui, -apple-system, sans-serif;
+				--max-w: 1200px;
+				--radius: 8px;
+				--radius-lg: 12px;
+				--transition: 200ms ease;
+			}
+
+			html { scroll-behavior: smooth; }
+
+			body {
+				font-family: var(--font);
+				font-size: 1rem;
+				line-height: 1.6;
+				color: var(--text-dark);
+				background: var(--white);
+				-webkit-font-smoothing: antialiased;
+			}
+
+			a { color: inherit; text-decoration: none; }
+			img { max-width: 100%; height: auto; display: block; }
+
+			h1, h2, h3, h4, h5, h6 {
+				font-weight: 800;
+				line-height: 1.15;
+				letter-spacing: -0.025em;
+			}
+
+			.container {
+				max-width: var(--max-w);
+				margin: 0 auto;
+				padding: 0 24px;
+			}
+
+			.btn {
+				display: inline-flex;
+				align-items: center;
+				gap: 8px;
+				padding: 14px 28px;
+				min-height: 44px;
+				font-family: var(--font);
+				font-size: 0.9375rem;
+				font-weight: 600;
+				border-radius: var(--radius);
+				cursor: pointer;
+				transition: all var(--transition);
+				border: 2px solid transparent;
+				white-space: nowrap;
+				text-decoration: none;
+			}
+
+			.btn-primary {
+				background: var(--red);
+				color: var(--white);
+				border-color: var(--red);
+			}
+			.btn-primary:hover {
+				background: var(--red-dark);
+				border-color: var(--red-dark);
+				transform: translateY(-1px);
+			}
+
+			.btn-outline {
+				background: transparent;
+				color: var(--text-dark);
+				border-color: var(--border);
+			}
+			.btn-outline:hover {
+				border-color: var(--text-dark);
+				transform: translateY(-1px);
+			}
+
+			.btn-outline-white {
+				background: transparent;
+				color: var(--white);
+				border-color: rgba(255,255,255,0.35);
+			}
+			.btn-outline-white:hover {
+				border-color: var(--white);
+				transform: translateY(-1px);
+			}
+
+			.eyebrow {
+				display: inline-block;
+				font-size: 0.6875rem;
+				font-weight: 700;
+				letter-spacing: 0.12em;
+				text-transform: uppercase;
+				color: var(--red);
+				margin-bottom: 14px;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- ── HEADER ── -->
+		<header class="site-header">
+			<div class="container header-inner">
+				<a href="/" class="logo" aria-label="The Chicago Marketing Agency">
+					<span class="logo-icon">C</span>
+					<span class="logo-text">
+						<span class="logo-l1">The Chicago</span>
+						<span class="logo-l2">Marketing Agency</span>
+					</span>
+				</a>
+
+				<nav class="primary-nav" aria-label="Primary navigation">
+					{menu?.items.map((item) => (
+						<a href={item.url} class="nav-link">{item.label}</a>
+					))}
+				</nav>
+
+				<a href="/free-seo-audit" class="btn btn-primary header-cta">Book a Strategy Call</a>
+
+				<button class="mobile-btn" id="mobile-toggle" type="button" aria-label="Open menu" aria-expanded="false">
+					<span></span><span></span><span></span>
+				</button>
+			</div>
+		</header>
+
+		<!-- ── MOBILE MENU ── -->
+		<div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+			<div class="mobile-menu-inner">
+				<nav class="mobile-nav">
+					{menu?.items.map((item) => (
+						<a href={item.url} class="mobile-nav-link">{item.label}</a>
+					))}
+				</nav>
+				<a href="/free-seo-audit" class="btn btn-primary mobile-cta">Book a Strategy Call</a>
+			</div>
+		</div>
+		<div class="mobile-overlay" id="mobile-overlay"></div>
+
+		<main>
+			<slot />
+		</main>
+
+		<!-- ── FOOTER ── -->
+		<footer class="site-footer">
+			<div class="container">
+				<div class="footer-grid">
+					<div class="footer-brand">
+						<a href="/" class="logo logo-inv" aria-label="The Chicago Marketing Agency">
+							<span class="logo-icon">C</span>
+							<span class="logo-text">
+								<span class="logo-l1">The Chicago</span>
+								<span class="logo-l2">Marketing Agency</span>
+							</span>
+						</a>
+						<p class="footer-tagline">
+							Data-driven marketing that grows Chicago businesses. More leads, more revenue, less guesswork.
+						</p>
+						<div class="footer-social">
+							<a href="https://facebook.com" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
+								<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+							</a>
+							<a href="https://instagram.com" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+								<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+							</a>
+							<a href="https://linkedin.com" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
+								<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+							</a>
+						</div>
+					</div>
+
+					<div class="footer-col">
+						<h4>Services</h4>
+						{footerServices?.items.map((item) => (
+							<a href={item.url}>{item.label}</a>
+						))}
+					</div>
+
+					<div class="footer-col">
+						<h4>Company</h4>
+						{footerCompany?.items.map((item) => (
+							<a href={item.url}>{item.label}</a>
+						))}
+					</div>
+
+					<div class="footer-col">
+						<h4>Contact</h4>
+						<address>
+							<span>123 N Michigan Ave<br />Chicago, IL 60601</span>
+							<a href="tel:+13125551786">(312) 555-1786</a>
+							<a href="mailto:hello@thechicagomarketingagency.com">
+								hello@thechicago<wbr />marketingagency.com
+							</a>
+						</address>
+					</div>
+				</div>
+
+				<div class="footer-bottom">
+					<p>&copy; {new Date().getFullYear()} The Chicago Marketing Agency. All rights reserved.</p>
+					<div class="footer-legal">
+						<a href="/privacy-policy">Privacy Policy</a>
+						<a href="/terms">Terms of Service</a>
+					</div>
+				</div>
+			</div>
+		</footer>
+
+		<style>
+			/* ── HEADER ── */
+			.site-header {
+				position: sticky;
+				top: 0;
+				z-index: 100;
+				background: var(--white);
+				border-bottom: 1px solid var(--border);
+			}
+
+			.header-inner {
+				display: flex;
+				align-items: center;
+				gap: 40px;
+				height: 72px;
+			}
+
+			.logo {
+				display: flex;
+				align-items: center;
+				gap: 10px;
+				flex-shrink: 0;
+				text-decoration: none;
+			}
+
+			.logo-icon {
+				width: 36px;
+				height: 36px;
+				background: var(--red);
+				color: var(--white);
+				font-size: 1rem;
+				font-weight: 900;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				border-radius: 6px;
+				flex-shrink: 0;
+				font-family: var(--font);
+			}
+
+			.logo-text {
+				display: flex;
+				flex-direction: column;
+				line-height: 1.25;
+			}
+
+			.logo-l1 {
+				font-size: 0.8125rem;
+				font-weight: 700;
+				color: var(--text-dark);
+				letter-spacing: -0.01em;
+			}
+
+			.logo-l2 {
+				font-size: 0.6875rem;
+				font-weight: 500;
+				color: var(--text-muted);
+			}
+
+			.logo-inv .logo-l1,
+			.logo-inv .logo-l2 {
+				color: var(--white);
+			}
+
+			.primary-nav {
+				display: flex;
+				align-items: center;
+				gap: 4px;
+				margin-left: auto;
+			}
+
+			.nav-link {
+				font-size: 0.9375rem;
+				font-weight: 500;
+				color: var(--text-muted);
+				padding: 6px 14px;
+				border-radius: 6px;
+				transition: color var(--transition);
+			}
+
+			.nav-link:hover { color: var(--text-dark); }
+
+			.header-cta { padding: 12px 20px; font-size: 0.875rem; min-height: 44px; }
+
+			.mobile-btn {
+				display: none;
+				flex-direction: column;
+				gap: 5px;
+				background: none;
+				border: none;
+				cursor: pointer;
+				padding: 10px;
+				margin-left: auto;
+				min-width: 44px;
+				min-height: 44px;
+				align-items: center;
+				justify-content: center;
+			}
+
+			.mobile-btn span {
+				display: block;
+				width: 24px;
+				height: 2px;
+				background: var(--text-dark);
+				border-radius: 2px;
+				transition: all var(--transition);
+			}
+
+			/* ── FOOTER ── */
+			.site-footer {
+				background: #060D14;
+				color: var(--white);
+				padding: 0;
+			}
+
+			.footer-grid {
+				display: grid;
+				grid-template-columns: 2fr 1fr 1fr 1fr;
+				gap: 48px;
+				padding: 60px 0 48px;
+				border-bottom: 1px solid rgba(255,255,255,0.07);
+			}
+
+			.footer-tagline {
+				font-size: 0.875rem;
+				color: var(--text-light);
+				line-height: 1.7;
+				margin-top: 16px;
+				max-width: 270px;
+			}
+
+			.footer-social {
+				display: flex;
+				gap: 10px;
+				margin-top: 24px;
+			}
+
+			.footer-social a {
+				width: 44px;
+				height: 44px;
+				border-radius: 50%;
+				border: 1px solid var(--border-dark);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				color: var(--text-light);
+				transition: all var(--transition);
+			}
+
+			.footer-social a:hover {
+				border-color: var(--red);
+				color: var(--red);
+			}
+
+			.footer-col h4 {
+				font-size: 0.75rem;
+				font-weight: 700;
+				color: #ffffff;
+				margin-bottom: 20px;
+				letter-spacing: 0.08em;
+				text-transform: uppercase;
+			}
+
+			.footer-col a,
+			.footer-col address span {
+				display: block;
+				font-size: 0.875rem;
+				color: var(--text-light);
+				padding: 4px 0;
+				transition: color var(--transition);
+				font-style: normal;
+				line-height: 1.6;
+				text-decoration: none;
+			}
+
+			.footer-col a:hover { color: var(--white); }
+
+			.footer-col address {
+				display: flex;
+				flex-direction: column;
+				gap: 8px;
+				font-style: normal;
+			}
+
+			.footer-bottom {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				padding: 20px 0 32px;
+				font-size: 0.8125rem;
+				color: var(--text-light);
+			}
+
+			.footer-legal {
+				display: flex;
+				gap: 24px;
+			}
+
+			.footer-legal a {
+				color: var(--text-light);
+				transition: color var(--transition);
+				font-size: 0.8125rem;
+			}
+
+			.footer-legal a:hover { color: var(--white); }
+
+			/* ── RESPONSIVE ── */
+			@media (max-width: 1024px) {
+				.footer-grid {
+					grid-template-columns: 1fr 1fr;
+				}
+				.footer-brand { grid-column: 1 / -1; }
+			}
+
+			@media (max-width: 768px) {
+				.primary-nav { display: none; }
+				.header-cta { display: none; }
+				.mobile-btn { display: flex; }
+
+				.footer-grid {
+					grid-template-columns: 1fr 1fr;
+					gap: 32px;
+				}
+
+				.footer-bottom {
+					flex-direction: column;
+					gap: 12px;
+					text-align: center;
+				}
+			}
+
+			@media (max-width: 480px) {
+				.footer-grid { grid-template-columns: 1fr; }
+				.mobile-menu-inner { padding: 24px 20px 40px; }
+				.mobile-nav-link { font-size: 1.125rem; padding: 15px 0; }
+			}
+
+			/* ── MOBILE MENU ── */
+			.mobile-menu {
+				position: fixed;
+				top: 72px;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background: var(--white);
+				z-index: 99;
+				transform: translateX(100%);
+				transition: transform 280ms ease;
+				overflow-y: auto;
+			}
+
+			.mobile-menu.is-open {
+				transform: translateX(0);
+			}
+
+			.mobile-menu-inner {
+				padding: 32px 24px 48px;
+				display: flex;
+				flex-direction: column;
+				gap: 32px;
+			}
+
+			.mobile-nav {
+				display: flex;
+				flex-direction: column;
+			}
+
+			.mobile-nav-link {
+				font-size: 1.25rem;
+				font-weight: 700;
+				color: var(--text-dark);
+				padding: 18px 0;
+				border-bottom: 1px solid var(--border);
+				letter-spacing: -0.01em;
+				transition: color var(--transition);
+			}
+
+			.mobile-nav-link:first-child {
+				border-top: 1px solid var(--border);
+			}
+
+			.mobile-nav-link:hover { color: var(--red); }
+
+			.mobile-cta {
+				width: 100%;
+				justify-content: center;
+				font-size: 1rem;
+				padding: 16px;
+			}
+
+			.mobile-overlay {
+				display: none;
+				position: fixed;
+				inset: 0;
+				background: rgba(0,0,0,0.4);
+				z-index: 98;
+			}
+
+			.mobile-overlay.is-open { display: block; }
+
+			/* hamburger → X animation */
+			.mobile-btn.is-open span:nth-child(1) {
+				transform: translateY(7px) rotate(45deg);
+			}
+			.mobile-btn.is-open span:nth-child(2) {
+				opacity: 0;
+				transform: scaleX(0);
+			}
+			.mobile-btn.is-open span:nth-child(3) {
+				transform: translateY(-7px) rotate(-45deg);
+			}
+		</style>
+
+		<script>
+			const toggle = document.getElementById('mobile-toggle');
+			const menu = document.getElementById('mobile-menu');
+			const overlay = document.getElementById('mobile-overlay');
+
+			function openMenu() {
+				menu?.classList.add('is-open');
+				overlay?.classList.add('is-open');
+				toggle?.classList.add('is-open');
+				toggle?.setAttribute('aria-expanded', 'true');
+				document.body.style.overflow = 'hidden';
+			}
+
+			function closeMenu() {
+				menu?.classList.remove('is-open');
+				overlay?.classList.remove('is-open');
+				toggle?.classList.remove('is-open');
+				toggle?.setAttribute('aria-expanded', 'false');
+				document.body.style.overflow = '';
+			}
+
+			toggle?.addEventListener('click', () => {
+				menu?.classList.contains('is-open') ? closeMenu() : openMenu();
+			});
+
+			overlay?.addEventListener('click', closeMenu);
+
+			// Close on nav link click
+			menu?.querySelectorAll('a').forEach(link => {
+				link.addEventListener('click', closeMenu);
+			});
+		</script>
+	</body>
+</html>

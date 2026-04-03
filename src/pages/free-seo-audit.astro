@@ -1,0 +1,353 @@
+---
+import Base from "../layouts/Base.astro";
+
+export const cacheHint = 0;
+
+let formStatus: "idle" | "success" | "error" = "idle";
+let formMessage = "";
+
+if (Astro.request.method === "POST") {
+	try {
+		const formData = await Astro.request.formData();
+		const name = formData.get("name")?.toString() || "";
+		const email = formData.get("email")?.toString() || "";
+		const website = formData.get("website")?.toString() || "";
+		const phone = formData.get("phone")?.toString() || "";
+
+		if (!name || !email || !website) {
+			formStatus = "error";
+			formMessage = "Please fill in all required fields.";
+		} else if (!email.includes("@")) {
+			formStatus = "error";
+			formMessage = "Please enter a valid email address.";
+		} else {
+			console.log("SEO Audit form:", { name, email, website, phone });
+			formStatus = "success";
+			formMessage = "Your audit request is in! We'll reach out within 24 hours with your results.";
+		}
+	} catch {
+		formStatus = "error";
+		formMessage = "Something went wrong. Please try again.";
+	}
+}
+
+const included = [
+	{ icon: "🔍", title: "Technical SEO Audit", desc: "Site speed, Core Web Vitals, crawlability, structured data, and mobile issues." },
+	{ icon: "📍", title: "Local SEO Report", desc: "Google Business Profile health, local citations, map pack ranking potential." },
+	{ icon: "🔑", title: "Keyword Gap Analysis", desc: "Keywords your competitors rank for that you don't — with traffic potential." },
+	{ icon: "🔗", title: "Backlink Profile", desc: "A look at your link authority vs. competitors and what it would take to outrank them." },
+	{ icon: "📊", title: "Competitor Comparison", desc: "Side-by-side look at where you stand vs. 3 top competitors in your market." },
+	{ icon: "📋", title: "Action Plan", desc: "Prioritized list of what to fix first for the biggest impact on your rankings." },
+];
+---
+
+<Base
+	title="Free SEO Audit for Chicago Businesses — The Chicago Marketing Agency"
+	description="Get a free, comprehensive SEO audit for your Chicago business. See exactly where you rank, what's holding you back, and how to fix it."
+>
+	<!-- ── HERO ── -->
+	<section class="audit-hero">
+		<div class="container audit-hero-inner">
+			<div class="audit-hero-text">
+				<span class="eyebrow">100% Free — No Obligation</span>
+				<h1>Get Your Free Chicago SEO Audit</h1>
+				<p>See exactly where your website ranks, what's holding you back, and a prioritized action plan to grow your organic traffic.</p>
+				<div class="audit-trust">
+					<span>✓ No credit card required</span>
+					<span>✓ Results within 24 hours</span>
+					<span>✓ No sales pressure</span>
+				</div>
+			</div>
+
+			<!-- Form -->
+			<div class="audit-form-wrap">
+				{formStatus === "success" ? (
+					<div class="form-success">
+						<div class="success-icon">✓</div>
+						<h3>Audit Request Received!</h3>
+						<p>{formMessage}</p>
+					</div>
+				) : (
+					<form method="POST" class="audit-form">
+						<h3>Request Your Free Audit</h3>
+						<p>Fill out the form and we'll send your full SEO audit within 24 hours.</p>
+
+						{formStatus === "error" && (
+							<div class="form-error">{formMessage}</div>
+						)}
+
+						<div class="form-field">
+							<label for="name">Your Name <span>*</span></label>
+							<input type="text" id="name" name="name" placeholder="John Smith" required autocomplete="name" />
+						</div>
+						<div class="form-field">
+							<label for="email">Business Email <span>*</span></label>
+							<input type="email" id="email" name="email" placeholder="john@yourcompany.com" required autocomplete="email" />
+						</div>
+						<div class="form-field">
+							<label for="website">Website URL <span>*</span></label>
+							<input type="url" id="website" name="website" placeholder="https://yourwebsite.com" required />
+						</div>
+						<div class="form-field">
+							<label for="phone">Phone (optional)</label>
+							<input type="tel" id="phone" name="phone" placeholder="(312) 555-0000" autocomplete="tel" />
+						</div>
+
+						<button type="submit" class="btn btn-primary btn-full">Send Me My Free Audit →</button>
+						<p class="form-fine-print">We'll never share your information. Unsubscribe anytime.</p>
+					</form>
+				)}
+			</div>
+		</div>
+	</section>
+
+	<!-- ── WHAT'S INCLUDED ── -->
+	<section class="audit-includes">
+		<div class="container">
+			<span class="eyebrow" style="display:block; text-align:center;">What You'll Get</span>
+			<h2 class="includes-heading">A Complete Picture of Your SEO Health</h2>
+			<div class="includes-grid">
+				{included.map((item) => (
+					<div class="include-card">
+						<span class="include-icon">{item.icon}</span>
+						<h3>{item.title}</h3>
+						<p>{item.desc}</p>
+					</div>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<!-- ── SOCIAL PROOF ── -->
+	<section class="audit-proof">
+		<div class="container audit-proof-inner">
+			<div class="proof-stats">
+				<div class="proof-stat"><span class="proof-value">500+</span><span class="proof-label">Audits Completed</span></div>
+				<div class="proof-stat"><span class="proof-value">4.9★</span><span class="proof-label">Average Rating</span></div>
+				<div class="proof-stat"><span class="proof-value">24hrs</span><span class="proof-label">Avg Delivery Time</span></div>
+			</div>
+			<blockquote class="proof-quote">
+				<p>"The free audit was more detailed than reports I'd paid $500 for. Within a week of following their recommendations, my traffic was already climbing."</p>
+				<footer><strong>Sarah K.</strong> — Owner, Lakeview Yoga Studio</footer>
+			</blockquote>
+		</div>
+	</section>
+</Base>
+
+<style>
+.audit-hero {
+	background: var(--navy);
+	padding: 72px 0 80px;
+}
+.audit-hero-inner {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 64px;
+	align-items: center;
+}
+.audit-hero-text h1 {
+	font-size: clamp(2rem, 4vw, 2.75rem);
+	color: var(--white);
+	margin-bottom: 16px;
+}
+.audit-hero-text p {
+	font-size: 1.0625rem;
+	color: rgba(255,255,255,0.65);
+	line-height: 1.7;
+	margin-bottom: 24px;
+}
+.audit-trust {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+.audit-trust span {
+	font-size: 0.9375rem;
+	color: rgba(255,255,255,0.7);
+}
+
+.audit-form-wrap {
+	background: var(--white);
+	border-radius: var(--radius-lg);
+	padding: 36px;
+}
+.audit-form h3 {
+	font-size: 1.25rem;
+	color: var(--text-dark);
+	margin-bottom: 6px;
+}
+.audit-form > p {
+	font-size: 0.9375rem;
+	color: var(--text-muted);
+	margin-bottom: 24px;
+}
+.audit-form {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+.form-field {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+.form-field label {
+	font-size: 0.875rem;
+	font-weight: 500;
+	color: var(--text-dark);
+}
+.form-field label span { color: var(--red); }
+.form-field input {
+	font-family: var(--font);
+	font-size: 0.9375rem;
+	color: var(--text-dark);
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	padding: 11px 14px;
+	transition: border-color var(--transition);
+}
+.form-field input:focus {
+	outline: none;
+	border-color: var(--red);
+	box-shadow: 0 0 0 3px rgba(220,38,38,0.1);
+}
+.form-field input::placeholder { color: var(--text-light); }
+.form-error {
+	padding: 12px;
+	background: rgba(220,38,38,0.08);
+	border: 1px solid rgba(220,38,38,0.25);
+	border-radius: var(--radius);
+	color: var(--red);
+	font-size: 0.875rem;
+}
+.btn-full { width: 100%; justify-content: center; }
+.form-fine-print {
+	font-size: 0.8125rem;
+	color: var(--text-light);
+	text-align: center;
+}
+.form-success {
+	text-align: center;
+	padding: 20px 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 14px;
+}
+.success-icon {
+	width: 56px;
+	height: 56px;
+	background: #16a34a;
+	color: var(--white);
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1.5rem;
+}
+.form-success h3 { font-size: 1.25rem; }
+.form-success p { color: var(--text-muted); }
+
+.audit-includes {
+	padding: 72px 0;
+	background: var(--off-white);
+}
+.includes-heading {
+	font-size: clamp(1.75rem, 3vw, 2.25rem);
+	text-align: center;
+	margin-bottom: 48px;
+}
+.includes-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 20px;
+}
+.include-card {
+	background: var(--white);
+	border: 1px solid var(--border);
+	border-radius: var(--radius-lg);
+	padding: 28px;
+}
+.include-icon {
+	font-size: 1.75rem;
+	display: block;
+	margin-bottom: 14px;
+}
+.include-card h3 {
+	font-size: 1rem;
+	font-weight: 700;
+	margin-bottom: 8px;
+}
+.include-card p {
+	font-size: 0.875rem;
+	color: var(--text-muted);
+	line-height: 1.6;
+}
+
+.audit-proof {
+	padding: 64px 0;
+	background: var(--white);
+}
+.audit-proof-inner {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 64px;
+	align-items: center;
+}
+.proof-stats {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+}
+.proof-stat {
+	display: flex;
+	align-items: baseline;
+	gap: 12px;
+}
+.proof-value {
+	font-size: 2.5rem;
+	font-weight: 900;
+	color: var(--text-dark);
+	letter-spacing: -0.04em;
+}
+.proof-label {
+	font-size: 1rem;
+	color: var(--text-muted);
+}
+.proof-quote {
+	background: var(--off-white);
+	border-left: 3px solid var(--red);
+	padding: 28px;
+	border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+	margin: 0;
+}
+.proof-quote p {
+	font-size: 1.0625rem;
+	color: var(--text-dark);
+	line-height: 1.7;
+	font-style: italic;
+	margin-bottom: 16px;
+}
+.proof-quote footer strong {
+	display: block;
+	font-size: 0.9375rem;
+	color: var(--text-dark);
+}
+.proof-quote footer {
+	font-size: 0.875rem;
+	color: var(--text-muted);
+}
+
+@media (max-width: 1024px) {
+	.audit-hero-inner { grid-template-columns: 1fr; }
+	.audit-form-wrap { max-width: 500px; }
+}
+@media (max-width: 768px) {
+	.includes-grid { grid-template-columns: repeat(2, 1fr); }
+	.audit-proof-inner { grid-template-columns: 1fr; }
+}
+@media (max-width: 480px) {
+	.includes-grid { grid-template-columns: 1fr; }
+	.audit-form-wrap { max-width: 100%; padding: 24px 20px; }
+}
+</style>

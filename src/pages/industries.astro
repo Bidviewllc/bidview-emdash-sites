@@ -1,0 +1,148 @@
+---
+import Base from "../layouts/Base.astro";
+
+export const cacheHint = 3600;
+
+const industries = [
+	{ icon: "🦷", name: "Dental Practices", desc: "More patients, higher reviews, dominant local SEO for your dental office.", slug: "dental" },
+	{ icon: "🍽️", name: "Restaurants", desc: "Fill more tables with social media, local SEO, and video marketing.", slug: "restaurants" },
+	{ icon: "⚖️", name: "Law Firms", desc: "Generate high-value cases with targeted SEO and conversion-focused websites.", slug: "law-firms" },
+	{ icon: "🏠", name: "Real Estate", desc: "Build your listing pipeline and agent brand with Chicago's real estate marketing team.", slug: "real-estate" },
+	{ icon: "🏥", name: "Healthcare", desc: "HIPAA-compliant marketing strategies that drive patient volume.", slug: "healthcare" },
+	{ icon: "🔧", name: "Home Services", desc: "HVAC, plumbing, roofing, and electricians — dominate your service area online.", slug: "home-services" },
+	{ icon: "🚗", name: "Auto Dealers", desc: "Drive more test drives and trade-ins with paid ads and local SEO.", slug: "auto-dealers" },
+	{ icon: "💪", name: "Fitness & Wellness", desc: "Fill your gym, studio, or spa with targeted social media and local ads.", slug: "fitness" },
+	{ icon: "🏗️", name: "Construction", desc: "Grow your construction or remodeling business with leads that convert.", slug: "construction" },
+	{ icon: "💼", name: "Financial Services", desc: "Compliant digital marketing for financial advisors, accountants, and insurance agencies.", slug: "financial" },
+	{ icon: "🛒", name: "E-commerce", desc: "Scale your online store with SEO, paid ads, and conversion optimization.", slug: "ecommerce" },
+	{ icon: "💻", name: "Technology & SaaS", desc: "B2B content, SEO, and demand gen for Chicago tech companies.", slug: "technology" },
+];
+---
+
+<Base
+	title="Industries We Serve — The Chicago Marketing Agency"
+	description="We specialize in digital marketing for Chicago businesses across 12+ industries — from dental practices to law firms, restaurants to e-commerce."
+>
+	<!-- ── HERO ── -->
+	<section class="ind-hero">
+		<div class="container">
+			<span class="eyebrow">Industries We Serve</span>
+			<h1>Marketing That Knows Your Industry</h1>
+			<p>We don't believe in one-size-fits-all marketing. We've deep expertise in 12+ Chicago industries — from dental to law, restaurants to tech.</p>
+		</div>
+	</section>
+
+	<!-- ── GRID ── -->
+	<section class="ind-grid-section">
+		<div class="container">
+			<div class="ind-grid">
+				{industries.map((ind) => (
+					<a href={`/industries/${ind.slug}`} class="ind-card">
+						<span class="ind-icon">{ind.icon}</span>
+						<h2>{ind.name}</h2>
+						<p>{ind.desc}</p>
+						<span class="ind-link">Learn more →</span>
+					</a>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<!-- ── CTA ── -->
+	<section class="ind-cta">
+		<div class="container ind-cta-inner">
+			<h2>Don't See Your Industry?</h2>
+			<p>We work with all types of Chicago businesses. Let's talk about your specific situation.</p>
+			<a href="/free-seo-audit" class="btn btn-primary">Get a Free Strategy Call →</a>
+		</div>
+	</section>
+</Base>
+
+<style>
+.ind-hero {
+	background: var(--navy);
+	padding: 80px 0;
+}
+.ind-hero h1 {
+	font-size: clamp(2rem, 4vw, 2.75rem);
+	color: var(--white);
+	margin-bottom: 16px;
+	max-width: 580px;
+}
+.ind-hero p {
+	font-size: 1.0625rem;
+	color: rgba(255,255,255,0.65);
+	max-width: 500px;
+}
+
+.ind-grid-section {
+	padding: 64px 0 80px;
+	background: var(--off-white);
+}
+.ind-grid {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 20px;
+}
+.ind-card {
+	background: var(--white);
+	border: 1px solid var(--border);
+	border-radius: var(--radius-lg);
+	padding: 28px 24px;
+	text-decoration: none;
+	display: flex;
+	flex-direction: column;
+	transition: all var(--transition);
+}
+.ind-card:hover {
+	border-color: var(--red);
+	transform: translateY(-2px);
+	box-shadow: 0 8px 24px rgba(220,38,38,0.08);
+}
+.ind-icon {
+	font-size: 2rem;
+	margin-bottom: 14px;
+	display: block;
+}
+.ind-card h2 {
+	font-size: 1rem;
+	font-weight: 700;
+	color: var(--text-dark);
+	margin-bottom: 8px;
+}
+.ind-card p {
+	font-size: 0.875rem;
+	color: var(--text-muted);
+	line-height: 1.5;
+	flex: 1;
+	margin-bottom: 14px;
+}
+.ind-link {
+	font-size: 0.875rem;
+	font-weight: 600;
+	color: var(--red);
+}
+
+.ind-cta {
+	background: var(--navy);
+	padding: 72px 0;
+}
+.ind-cta-inner {
+	text-align: center;
+	max-width: 480px;
+	margin: 0 auto;
+}
+.ind-cta-inner h2 {
+	font-size: clamp(1.75rem, 3vw, 2.25rem);
+	color: var(--white);
+	margin-bottom: 12px;
+}
+.ind-cta-inner p {
+	color: rgba(255,255,255,0.65);
+	margin-bottom: 28px;
+}
+
+@media (max-width: 1024px) { .ind-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 768px) { .ind-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .ind-grid { grid-template-columns: 1fr; } }
+</style>

@@ -1,0 +1,99 @@
+---
+import Base from "../layouts/Base.astro";
+
+export const cacheHint = 86400;
+---
+
+<Base
+	title="Terms of Service — The Chicago Marketing Agency"
+	description="Terms of Service for The Chicago Marketing Agency."
+>
+	<section class="legal-page">
+		<div class="container legal-inner">
+			<h1>Terms of Service</h1>
+			<p class="legal-updated">Last updated: January 1, 2026</p>
+
+			<div class="legal-body">
+				<h2>1. Agreement to Terms</h2>
+				<p>By accessing or using the website of The Chicago Marketing Agency ("we," "us," or "our"), you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our website or services.</p>
+
+				<h2>2. Services</h2>
+				<p>The Chicago Marketing Agency provides digital marketing services including SEO, web design, paid advertising, content marketing, social media management, video production, and conversion optimization. Specific service terms are outlined in individual client agreements.</p>
+
+				<h2>3. Intellectual Property</h2>
+				<p>All content on this website, including text, graphics, logos, and images, is the property of The Chicago Marketing Agency and is protected by applicable intellectual property laws. You may not reproduce, distribute, or create derivative works without our express written permission.</p>
+
+				<h2>4. User Conduct</h2>
+				<p>You agree not to use our website to:</p>
+				<ul>
+					<li>Submit false or misleading information</li>
+					<li>Engage in any activity that interferes with or disrupts our services</li>
+					<li>Attempt to gain unauthorized access to our systems</li>
+					<li>Violate any applicable laws or regulations</li>
+				</ul>
+
+				<h2>5. Disclaimer of Warranties</h2>
+				<p>Our website is provided "as is" without warranties of any kind, express or implied. We do not warrant that the website will be uninterrupted, error-free, or free of viruses or other harmful components.</p>
+
+				<h2>6. Limitation of Liability</h2>
+				<p>To the maximum extent permitted by law, The Chicago Marketing Agency shall not be liable for any indirect, incidental, special, or consequential damages arising from your use of our website or services.</p>
+
+				<h2>7. Third-Party Links</h2>
+				<p>Our website may contain links to third-party websites. We have no control over the content or practices of these websites and accept no responsibility for them.</p>
+
+				<h2>8. Governing Law</h2>
+				<p>These Terms are governed by the laws of the State of Illinois, without regard to its conflict of law provisions. Any disputes shall be resolved in the courts of Cook County, Illinois.</p>
+
+				<h2>9. Changes to Terms</h2>
+				<p>We reserve the right to modify these Terms at any time. Your continued use of our website after changes are posted constitutes acceptance of the updated Terms.</p>
+
+				<h2>10. Contact Us</h2>
+				<p>If you have questions about these Terms of Service, please contact us at:<br />
+				The Chicago Marketing Agency<br />
+				123 N Michigan Ave, Suite 800<br />
+				Chicago, IL 60601<br />
+				<a href="mailto:hello@thechicagomarketingagency.com">hello@thechicagomarketingagency.com</a></p>
+			</div>
+		</div>
+	</section>
+</Base>
+
+<style>
+.legal-page {
+	padding: 64px 0 80px;
+	background: var(--white);
+}
+.legal-inner {
+	max-width: 760px;
+}
+.legal-inner h1 {
+	font-size: 2.25rem;
+	margin-bottom: 8px;
+}
+.legal-updated {
+	font-size: 0.875rem;
+	color: var(--text-muted);
+	margin-bottom: 40px;
+}
+.legal-body h2 {
+	font-size: 1.25rem;
+	margin-top: 2em;
+	margin-bottom: 0.75em;
+}
+.legal-body p {
+	font-size: 1rem;
+	color: var(--text-muted);
+	line-height: 1.75;
+	margin-bottom: 1em;
+}
+.legal-body ul {
+	margin: 0 0 1em 1.5em;
+}
+.legal-body li {
+	font-size: 1rem;
+	color: var(--text-muted);
+	line-height: 1.7;
+	margin-bottom: 0.4em;
+}
+.legal-body a { color: var(--red); text-decoration: underline; overflow-wrap: break-word; word-break: break-all; }
+</style>

@@ -1,0 +1,440 @@
+---
+import Base from "../layouts/Base.astro";
+
+export const cacheHint = 3600;
+
+const areas = [
+	{
+		label: "North Side",
+		neighborhoods: [
+			"Lincoln Park", "Lakeview", "Wicker Park", "Bucktown", "Logan Square",
+			"Uptown", "Ravenswood", "Andersonville", "Edgewater", "Rogers Park",
+			"Lincoln Square", "Albany Park", "North Center", "Irving Park", "Avondale",
+			"Old Town", "Gold Coast", "Streeterville",
+		],
+	},
+	{
+		label: "Central Chicago",
+		neighborhoods: [
+			"The Loop", "River North", "Streeterville", "West Loop", "Near North Side",
+			"Near West Side", "Near South Side",
+		],
+	},
+	{
+		label: "South Side",
+		neighborhoods: [
+			"Hyde Park", "Bronzeville", "Bridgeport", "Pilsen", "South Loop",
+			"Chinatown", "Beverly", "Mount Greenwood", "Kenwood", "Woodlawn",
+		],
+	},
+	{
+		label: "West Side",
+		neighborhoods: [
+			"West Loop", "Humboldt Park", "Ukrainian Village", "West Town",
+			"Austin", "Garfield Park", "Oak Park",
+		],
+	},
+	{
+		label: "Northwest Side",
+		neighborhoods: [
+			"Jefferson Park", "Portage Park", "Dunning", "Edison Park",
+			"Norwood Park", "Forest Glen",
+		],
+	},
+	{
+		label: "Southwest Side",
+		neighborhoods: [
+			"Archer Heights", "Brighton Park", "Clearing", "Garfield Ridge",
+			"Midway", "Chicago Lawn",
+		],
+	},
+];
+
+function toSlug(name: string) {
+	return name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+}
+---
+
+<Base
+	title="Digital Marketing Services Across Chicago Neighborhoods"
+	description="We serve all 77 Chicago neighborhoods. From Lincoln Park to Hyde Park, Wicker Park to the Loop — local SEO, web design, and marketing services near you."
+>
+	<!-- ── HERO ── -->
+	<section class="nbhd-hero">
+		<div class="container">
+			<nav class="breadcrumb" aria-label="Breadcrumb">
+				<a href="/">Home</a>
+				<span>/</span>
+				<span>Service Areas</span>
+			</nav>
+			<span class="eyebrow">Where We Serve</span>
+			<h1>Digital Marketing Across<br />Every Chicago Neighborhood</h1>
+			<p>From Lincoln Park to Hyde Park, Wicker Park to the Loop — we help businesses across all 77 Chicago neighborhoods grow online.</p>
+		</div>
+	</section>
+
+	<!-- ── SEARCH + GRID ── -->
+	<section class="nbhd-main">
+		<div class="container">
+			<!-- Search -->
+			<div class="nbhd-search-wrap">
+				<h2>Find Your Chicago Neighborhood</h2>
+				<p>Click your area to see local SEO, web design, and marketing services tailored to your neighborhood.</p>
+				<div class="nbhd-search">
+					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+					<input type="text" id="nbhd-filter" placeholder="Search neighborhoods..." aria-label="Search neighborhoods" />
+				</div>
+			</div>
+
+			<!-- Areas -->
+			<div class="nbhd-areas" id="nbhd-areas">
+				{areas.map((area) => (
+					<div class="nbhd-area">
+						<h3 class="area-label">
+							<span class="area-bar"></span>
+							{area.label}
+						</h3>
+						<div class="area-pills">
+							{area.neighborhoods.map((n) => (
+								<a href={`/services/seo/${toSlug(n)}`} class="nbhd-pill" data-name={n.toLowerCase()}>
+									{n}
+								</a>
+							))}
+						</div>
+					</div>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<!-- ── WHY LOCAL ── -->
+	<section class="nbhd-why">
+		<div class="container">
+			<div class="nbhd-why-inner">
+				<div>
+					<span class="eyebrow">Local SEO Experts</span>
+					<h2>We Know Chicago Like the Back of Our Hand</h2>
+					<p>We're not a remote agency guessing at your market. We're a Chicago team — we know which neighborhoods are growing, which are competitive, and what local signals matter for your rankings.</p>
+					<div class="why-list">
+						<div class="why-item">
+							<span>✓</span> Neighborhood-specific keyword research
+						</div>
+						<div class="why-item">
+							<span>✓</span> Local citation building in your area
+						</div>
+						<div class="why-item">
+							<span>✓</span> Google Business Profile optimization
+						</div>
+						<div class="why-item">
+							<span>✓</span> Neighborhood landing pages that rank
+						</div>
+					</div>
+					<a href="/free-seo-audit" class="btn btn-primary">Get a Local SEO Audit →</a>
+				</div>
+				<div class="nbhd-why-stats">
+					<div class="nbhd-stat">
+						<span class="nbhd-stat-value">77</span>
+						<span class="nbhd-stat-label">Neighborhoods Served</span>
+					</div>
+					<div class="nbhd-stat">
+						<span class="nbhd-stat-value">150+</span>
+						<span class="nbhd-stat-label">Chicago Clients</span>
+					</div>
+					<div class="nbhd-stat">
+						<span class="nbhd-stat-value">#1</span>
+						<span class="nbhd-stat-label">Avg Keyword Ranking</span>
+					</div>
+					<div class="nbhd-stat">
+						<span class="nbhd-stat-value">12+</span>
+						<span class="nbhd-stat-label">Years in Chicago</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- ── CTA ── -->
+	<section class="nbhd-cta">
+		<div class="container nbhd-cta-inner">
+			<h2>Don't See Your Neighborhood?</h2>
+			<p>We serve all of Chicagoland. Contact us to discuss your specific area.</p>
+			<div class="nbhd-cta-actions">
+				<a href="/free-seo-audit" class="btn btn-primary">Get a Free SEO Audit →</a>
+				<a href="/contact" class="btn btn-outline-white">Talk to Our Team</a>
+			</div>
+		</div>
+	</section>
+</Base>
+
+<script>
+const input = document.getElementById("nbhd-filter") as HTMLInputElement | null;
+const pills = document.querySelectorAll<HTMLAnchorElement>(".nbhd-pill");
+const areas = document.querySelectorAll<HTMLElement>(".nbhd-area");
+
+input?.addEventListener("input", () => {
+	const q = input.value.toLowerCase().trim();
+	areas.forEach((area) => {
+		let visible = 0;
+		area.querySelectorAll<HTMLAnchorElement>(".nbhd-pill").forEach((pill) => {
+			const matches = !q || pill.dataset.name?.includes(q);
+			pill.style.display = matches ? "" : "none";
+			if (matches) visible++;
+		});
+		(area as HTMLElement).style.display = visible > 0 ? "" : "none";
+	});
+});
+</script>
+
+<style>
+/* ── HERO ── */
+.nbhd-hero {
+	background: var(--navy);
+	padding: 64px 0;
+}
+
+.breadcrumb {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 0.8125rem;
+	color: rgba(255,255,255,0.45);
+	margin-bottom: 20px;
+}
+
+.breadcrumb a { color: rgba(255,255,255,0.45); }
+.breadcrumb a:hover { color: rgba(255,255,255,0.7); }
+.breadcrumb span:last-child { color: rgba(255,255,255,0.65); }
+
+.nbhd-hero h1 {
+	font-size: clamp(2rem, 4vw, 2.75rem);
+	color: var(--white);
+	margin-bottom: 16px;
+}
+
+.nbhd-hero p {
+	font-size: 1.0625rem;
+	color: rgba(255,255,255,0.65);
+	max-width: 520px;
+}
+
+/* ── MAIN ── */
+.nbhd-main {
+	padding: 64px 0 80px;
+	background: var(--white);
+}
+
+.nbhd-search-wrap {
+	text-align: center;
+	max-width: 600px;
+	margin: 0 auto 48px;
+}
+
+.nbhd-search-wrap h2 {
+	font-size: 1.75rem;
+	color: var(--text-dark);
+	margin-bottom: 8px;
+}
+
+.nbhd-search-wrap p {
+	font-size: 0.9375rem;
+	color: var(--text-muted);
+	margin-bottom: 20px;
+}
+
+.nbhd-search {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	max-width: 360px;
+	margin: 0 auto;
+	border: 1px solid var(--border);
+	border-radius: 24px;
+	padding: 10px 18px;
+	background: var(--off-white);
+	color: var(--text-muted);
+}
+
+.nbhd-search input {
+	flex: 1;
+	font-family: var(--font);
+	font-size: 0.9375rem;
+	color: var(--text-dark);
+	background: none;
+	border: none;
+	outline: none;
+}
+
+.nbhd-search input::placeholder { color: var(--text-light); }
+
+/* ── AREAS ── */
+.nbhd-areas {
+	display: flex;
+	flex-direction: column;
+	gap: 32px;
+}
+
+.nbhd-area {}
+
+.area-label {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	font-size: 0.9375rem;
+	font-weight: 700;
+	color: var(--text-dark);
+	margin-bottom: 14px;
+}
+
+.area-bar {
+	width: 4px;
+	height: 18px;
+	background: var(--red);
+	border-radius: 2px;
+	flex-shrink: 0;
+}
+
+.area-pills {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.nbhd-pill {
+	font-size: 0.875rem;
+	font-weight: 500;
+	color: var(--text-dark);
+	background: var(--off-white);
+	border: 1px solid var(--border);
+	border-radius: 24px;
+	padding: 10px 16px;
+	min-height: 40px;
+	text-decoration: none;
+	transition: all var(--transition);
+}
+
+.nbhd-pill:hover {
+	background: var(--red);
+	color: var(--white);
+	border-color: var(--red);
+}
+
+/* ── WHY LOCAL ── */
+.nbhd-why {
+	padding: 80px 0;
+	background: var(--off-white);
+}
+
+.nbhd-why-inner {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 64px;
+	align-items: center;
+}
+
+.nbhd-why-inner h2 {
+	font-size: clamp(1.75rem, 3vw, 2.25rem);
+	color: var(--text-dark);
+	margin-bottom: 16px;
+}
+
+.nbhd-why-inner > div > p {
+	font-size: 1rem;
+	color: var(--text-muted);
+	line-height: 1.7;
+	margin-bottom: 24px;
+}
+
+.why-list {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	margin-bottom: 28px;
+}
+
+.why-item {
+	font-size: 0.9375rem;
+	color: var(--text-dark);
+	display: flex;
+	gap: 10px;
+}
+
+.why-item span {
+	color: var(--red);
+	font-weight: 700;
+}
+
+.nbhd-why-stats {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 2px;
+	background: var(--border);
+	border-radius: var(--radius-lg);
+	overflow: hidden;
+}
+
+.nbhd-stat {
+	background: var(--white);
+	padding: 32px 24px;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	align-items: center;
+}
+
+.nbhd-stat-value {
+	font-size: 2.25rem;
+	font-weight: 900;
+	color: var(--text-dark);
+	letter-spacing: -0.04em;
+	line-height: 1;
+}
+
+.nbhd-stat-label {
+	font-size: 0.8125rem;
+	color: var(--text-muted);
+}
+
+/* ── CTA ── */
+.nbhd-cta {
+	background: var(--navy);
+	padding: 72px 0;
+}
+
+.nbhd-cta-inner {
+	text-align: center;
+	max-width: 540px;
+	margin: 0 auto;
+}
+
+.nbhd-cta-inner h2 {
+	font-size: clamp(1.75rem, 3vw, 2.25rem);
+	color: var(--white);
+	margin-bottom: 12px;
+}
+
+.nbhd-cta-inner p {
+	font-size: 1rem;
+	color: rgba(255,255,255,0.65);
+	margin-bottom: 28px;
+}
+
+.nbhd-cta-actions {
+	display: flex;
+	gap: 12px;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+	.nbhd-why-inner { grid-template-columns: 1fr; gap: 48px; }
+	.nbhd-why-stats { grid-template-columns: 1fr 1fr; }
+	.nbhd-cta-actions { flex-direction: column; align-items: center; }
+}
+
+@media (max-width: 480px) {
+	.nbhd-why-stats { grid-template-columns: 1fr; }
+	.nbhd-search { max-width: 100%; }
+}
+</style>
