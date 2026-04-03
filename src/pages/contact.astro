@@ -25,9 +25,13 @@ if (Astro.request.method === "POST") {
 		} else {
 			const runtime = Astro.locals.runtime;
 			const db = runtime.env.DB;
+			const id = Date.now().toString(36) + Math.random().toString(36).slice(2);
+			const slug = `contact-${id}`;
+			const senderTitle = [firstName, lastName].filter(Boolean).join(" ") || email;
 			await db.prepare(
-				"INSERT INTO form_submissions (form_type, first_name, last_name, email, phone, service, message) VALUES (?, ?, ?, ?, ?, ?, ?)"
-			).bind('contact', firstName, lastName, email, phone, service, message).run();
+				`INSERT INTO ec_form_submissions (id, slug, status, title, form_type, first_name, last_name, email, phone, service, message, read_status)
+				 VALUES (?, ?, 'published', ?, 'contact', ?, ?, ?, ?, ?, ?, 'unread')`
+			).bind(id, slug, senderTitle, firstName, lastName, email, phone, service, message).run();
 			formStatus = "success";
 			formMessage = "Thanks! We'll get back to you within 1 business day.";
 		}

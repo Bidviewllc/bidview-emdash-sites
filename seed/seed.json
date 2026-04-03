@@ -209,6 +209,24 @@
 			]
 		},
 		{
+			"slug": "form_submissions",
+			"label": "Form Submissions",
+			"labelSingular": "Submission",
+			"supports": [],
+			"fields": [
+				{ "slug": "title", "label": "Sender", "type": "string", "required": true },
+				{ "slug": "form_type", "label": "Form Type", "type": "string" },
+				{ "slug": "first_name", "label": "First Name", "type": "string" },
+				{ "slug": "last_name", "label": "Last Name", "type": "string" },
+				{ "slug": "email", "label": "Email", "type": "string" },
+				{ "slug": "phone", "label": "Phone", "type": "string" },
+				{ "slug": "service", "label": "Service / Interest", "type": "string" },
+				{ "slug": "website", "label": "Website", "type": "string" },
+				{ "slug": "message", "label": "Message", "type": "text" },
+				{ "slug": "read_status", "label": "Status", "type": "string" }
+			]
+		},
+		{
 			"slug": "service_areas",
 			"label": "Service Areas",
 			"labelSingular": "Service Area",

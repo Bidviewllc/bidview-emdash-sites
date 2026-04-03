@@ -23,9 +23,12 @@ if (Astro.request.method === "POST") {
 		} else {
 			const runtime = Astro.locals.runtime;
 			const db = runtime.env.DB;
+			const id = Date.now().toString(36) + Math.random().toString(36).slice(2);
+			const slug = `seo-audit-${id}`;
 			await db.prepare(
-				"INSERT INTO form_submissions (form_type, first_name, email, website, phone) VALUES (?, ?, ?, ?, ?)"
-			).bind('seo-audit', name, email, website, phone).run();
+				`INSERT INTO ec_form_submissions (id, slug, status, title, form_type, first_name, email, website, phone, read_status)
+				 VALUES (?, ?, 'published', ?, 'seo-audit', ?, ?, ?, ?, 'unread')`
+			).bind(id, slug, name, name, email, website, phone).run();
 			formStatus = "success";
 			formMessage = "Your audit request is in! We'll reach out within 24 hours with your results.";
 		}
