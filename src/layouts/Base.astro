@@ -1,5 +1,4 @@
 ---
-import { getMenu, getSiteSettings } from "emdash";
 import { EmDashHead } from "emdash/ui";
 import { createPublicPageContext } from "emdash/page";
 
@@ -10,19 +9,15 @@ interface Props {
 }
 
 const { title, description, image } = Astro.props;
-const settings = await getSiteSettings();
-const siteTitle = settings?.title || "The Chicago Marketing Agency";
+
+// Hardcoded — avoids a D1 round-trip on every page
+const siteTitle = "The Chicago Marketing Agency";
 const fullTitle = title
 	? `${title} — ${siteTitle}`
 	: `${siteTitle} | SEO, Web Design & Digital Marketing in Chicago`;
 const siteDescription =
 	description ||
-	settings?.tagline ||
 	"Chicago's Premier Digital Marketing Agency. We help Chicago businesses generate more leads, rank higher, and convert visitors into loyal customers.";
-
-const menu = await getMenu("primary");
-const footerServices = await getMenu("footer-services");
-const footerCompany = await getMenu("footer-company");
 
 // Set edge cache headers for performance (skip for form pages)
 const isFormPage = Astro.url.pathname === "/contact" || Astro.url.pathname === "/free-seo-audit";
