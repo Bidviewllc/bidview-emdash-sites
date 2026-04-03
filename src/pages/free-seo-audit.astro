@@ -29,9 +29,9 @@ if (Astro.request.method === "POST") {
 			const data = JSON.stringify({ title: name, form_type: 'seo-audit', first_name: name, email, website, phone, read_status: 'unread' });
 			await db.batch([
 				db.prepare(
-					`INSERT INTO ec_form_submissions (id, slug, status, title, form_type, first_name, email, website, phone, read_status)
-					 VALUES (?, ?, 'published', ?, 'seo-audit', ?, ?, ?, ?, 'unread')`
-				).bind(id, slug, name, name, email, website, phone),
+					`INSERT INTO ec_form_submissions (id, slug, status, title, form_type, first_name, email, website, phone, read_status, live_revision_id)
+					 VALUES (?, ?, 'published', ?, 'seo-audit', ?, ?, ?, ?, 'unread', ?)`
+				).bind(id, slug, name, name, email, website, phone, revId),
 				db.prepare(
 					`INSERT INTO revisions (id, collection, entry_id, data) VALUES (?, 'form_submissions', ?, ?)`
 				).bind(revId, id, data),
