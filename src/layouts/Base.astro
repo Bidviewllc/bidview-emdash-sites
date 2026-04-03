@@ -36,7 +36,7 @@ const pageCtx = createPublicPageContext({
 	pageType: "website",
 	title: fullTitle,
 	description: siteDescription,
-	canonical: Astro.url.href,
+	canonical: `https://thechicagomarketingagency.com${Astro.url.pathname}`,
 	image,
 	seo: { ogImage: image },
 	siteName: siteTitle,
@@ -55,8 +55,8 @@ const pageCtx = createPublicPageContext({
 				"@context": "https://schema.org",
 				"@type": "Organization",
 				"name": "The Chicago Marketing Agency",
-				"url": "https://thechicagomarketingagency.vince-75c.workers.dev",
-				"logo": "https://thechicagomarketingagency.vince-75c.workers.dev/logo.png",
+				"url": "https://thechicagomarketingagency.com",
+				"logo": "https://thechicagomarketingagency.com/logo.png",
 				"sameAs": [
 					"https://facebook.com",
 					"https://instagram.com",
@@ -67,7 +67,7 @@ const pageCtx = createPublicPageContext({
 				"@context": "https://schema.org",
 				"@type": "MarketingAgency",
 				"name": "The Chicago Marketing Agency",
-				"url": "https://thechicagomarketingagency.vince-75c.workers.dev",
+				"url": "https://thechicagomarketingagency.com",
 				"telephone": "+13125551786",
 				"address": {
 					"@type": "PostalAddress",

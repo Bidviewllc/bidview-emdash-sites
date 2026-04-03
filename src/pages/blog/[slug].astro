@@ -36,7 +36,44 @@ const publishDate = new Date().toLocaleDateString("en-US", {
 });
 ---
 
-<Base title={pageTitle} description={pageDesc}>
+<Base title={pageTitle} description={pageDesc} image={data.featured_image?.src}>
+	<!-- ── BlogPosting schema ── -->
+	<script type="application/ld+json" set:html={JSON.stringify({
+		"@context": "https://schema.org",
+		"@type": "BlogPosting",
+		"headline": data.title,
+		"description": pageDesc,
+		"image": data.featured_image?.src,
+		"datePublished": new Date().toISOString(),
+		"dateModified": new Date().toISOString(),
+		"author": {
+			"@type": "Organization",
+			"name": "The Chicago Marketing Agency",
+			"url": "https://thechicagomarketingagency.com"
+		},
+		"publisher": {
+			"@type": "Organization",
+			"name": "The Chicago Marketing Agency",
+			"logo": {
+				"@type": "ImageObject",
+				"url": "https://thechicagomarketingagency.com/logo.png"
+			}
+		},
+		"mainEntityOfPage": {
+			"@type": "WebPage",
+			"@id": `https://thechicagomarketingagency.com/blog/${slug}/`
+		}
+	})} />
+	<script type="application/ld+json" set:html={JSON.stringify({
+		"@context": "https://schema.org",
+		"@type": "BreadcrumbList",
+		"itemListElement": [
+			{ "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thechicagomarketingagency.com/" },
+			{ "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://thechicagomarketingagency.com/blog/" },
+			{ "@type": "ListItem", "position": 3, "name": data.title, "item": `https://thechicagomarketingagency.com/blog/${slug}/` }
+		]
+	})} />
+
 	<!-- ── ARTICLE HEADER ── -->
 	<section class="post-header">
 		<div class="container">
