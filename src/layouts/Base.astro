@@ -218,9 +218,50 @@ const pageCtx = createPublicPageContext({
 				</a>
 
 				<nav class="primary-nav" aria-label="Primary navigation">
-					{menu?.items.map((item) => (
-						<a href={item.url} class="nav-link">{item.label}</a>
-					))}
+					<div class="nav-dropdown">
+						<a href="/services" class="nav-link">Services <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+						<div class="dropdown-panel">
+							<a href="/services/seo" class="dropdown-item">SEO</a>
+							<a href="/services/web-design" class="dropdown-item">Web Design</a>
+							<a href="/services/paid-advertising" class="dropdown-item">Paid Advertising</a>
+							<a href="/services/content-marketing" class="dropdown-item">Content Marketing</a>
+							<a href="/services/social-media" class="dropdown-item">Social Media</a>
+							<a href="/services/video-production" class="dropdown-item">Video Production</a>
+							<a href="/services/conversion-optimization" class="dropdown-item">Conversion Optimization</a>
+						</div>
+					</div>
+					<div class="nav-dropdown">
+						<a href="/industries" class="nav-link">Industries <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+						<div class="dropdown-panel">
+							<a href="/industries" class="dropdown-item">All Industries</a>
+							<a href="/blog/dental-marketing-chicago-guide-2026" class="dropdown-item">Dentists</a>
+							<a href="/blog/chicago-law-firms-more-clients-from-google" class="dropdown-item">Law Firms</a>
+							<a href="/blog/why-chicago-restaurants-need-strong-online-presence" class="dropdown-item">Restaurants</a>
+							<a href="/blog/ecommerce-seo-chicago-compete-with-amazon" class="dropdown-item">E-commerce</a>
+							<a href="/blog/hvac-marketing-chicago-getting-calls" class="dropdown-item">HVAC</a>
+							<a href="/blog/real-estate-marketing-chicago-standing-out" class="dropdown-item">Real Estate</a>
+						</div>
+					</div>
+					<div class="nav-dropdown">
+						<a href="/neighborhoods" class="nav-link">Areas We Serve <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+						<div class="dropdown-panel dropdown-areas">
+							<a href="/lincoln-park/" class="dropdown-item">Lincoln Park</a>
+							<a href="/wicker-park/" class="dropdown-item">Wicker Park</a>
+							<a href="/logan-square/" class="dropdown-item">Logan Square</a>
+							<a href="/river-north/" class="dropdown-item">River North</a>
+							<a href="/the-loop/" class="dropdown-item">The Loop</a>
+							<a href="/west-loop/" class="dropdown-item">West Loop</a>
+							<a href="/lakeview/" class="dropdown-item">Lakeview</a>
+							<a href="/gold-coast/" class="dropdown-item">Gold Coast</a>
+							<a href="/hyde-park/" class="dropdown-item">Hyde Park</a>
+							<a href="/pilsen/" class="dropdown-item">Pilsen</a>
+							<a href="/neighborhoods" class="dropdown-item dropdown-all">View All 30 Areas →</a>
+						</div>
+					</div>
+					<a href="/results" class="nav-link">Results</a>
+					<a href="/blog" class="nav-link">Blog</a>
+					<a href="/about" class="nav-link">About</a>
+					<a href="/contact" class="nav-link">Contact</a>
 				</nav>
 
 				<a href="/free-seo-audit" class="btn btn-primary header-cta">Book a Strategy Call</a>
@@ -235,9 +276,48 @@ const pageCtx = createPublicPageContext({
 		<div class="mobile-menu" id="mobile-menu" aria-hidden="true">
 			<div class="mobile-menu-inner">
 				<nav class="mobile-nav">
-					{menu?.items.map((item) => (
-						<a href={item.url} class="mobile-nav-link">{item.label}</a>
-					))}
+					<details class="mobile-accordion">
+						<summary class="mobile-nav-link">Services</summary>
+						<div class="mobile-sub">
+							<a href="/services">All Services</a>
+							<a href="/services/seo">SEO</a>
+							<a href="/services/web-design">Web Design</a>
+							<a href="/services/paid-advertising">Paid Advertising</a>
+							<a href="/services/content-marketing">Content Marketing</a>
+							<a href="/services/social-media">Social Media</a>
+							<a href="/services/video-production">Video Production</a>
+							<a href="/services/conversion-optimization">CRO</a>
+						</div>
+					</details>
+					<details class="mobile-accordion">
+						<summary class="mobile-nav-link">Industries</summary>
+						<div class="mobile-sub">
+							<a href="/industries">All Industries</a>
+							<a href="/blog/dental-marketing-chicago-guide-2026">Dentists</a>
+							<a href="/blog/chicago-law-firms-more-clients-from-google">Law Firms</a>
+							<a href="/blog/why-chicago-restaurants-need-strong-online-presence">Restaurants</a>
+							<a href="/blog/ecommerce-seo-chicago-compete-with-amazon">E-commerce</a>
+							<a href="/blog/hvac-marketing-chicago-getting-calls">HVAC</a>
+							<a href="/blog/real-estate-marketing-chicago-standing-out">Real Estate</a>
+						</div>
+					</details>
+					<details class="mobile-accordion">
+						<summary class="mobile-nav-link">Areas We Serve</summary>
+						<div class="mobile-sub">
+							<a href="/lincoln-park/">Lincoln Park</a>
+							<a href="/wicker-park/">Wicker Park</a>
+							<a href="/logan-square/">Logan Square</a>
+							<a href="/river-north/">River North</a>
+							<a href="/the-loop/">The Loop</a>
+							<a href="/west-loop/">West Loop</a>
+							<a href="/lakeview/">Lakeview</a>
+							<a href="/neighborhoods">View All 30 →</a>
+						</div>
+					</details>
+					<a href="/results" class="mobile-nav-link">Results</a>
+					<a href="/blog" class="mobile-nav-link">Blog</a>
+					<a href="/about" class="mobile-nav-link">About</a>
+					<a href="/contact" class="mobile-nav-link">Contact</a>
 				</nav>
 				<a href="/free-seo-audit" class="btn btn-primary mobile-cta">Book a Strategy Call</a>
 			</div>
@@ -393,6 +473,59 @@ const pageCtx = createPublicPageContext({
 			}
 
 			.nav-link:hover { color: var(--text-dark); }
+			.nav-link svg { margin-left: 2px; transition: transform 150ms ease; }
+
+			/* ── DROPDOWNS ── */
+			.nav-dropdown { position: relative; }
+			.nav-dropdown:hover .dropdown-panel { opacity: 1; visibility: visible; transform: translateY(0); }
+			.nav-dropdown:hover .nav-link svg { transform: rotate(180deg); }
+
+			.dropdown-panel {
+				position: absolute;
+				top: 100%;
+				left: 0;
+				min-width: 220px;
+				background: var(--white);
+				border: 1px solid var(--border);
+				border-radius: 10px;
+				box-shadow: 0 12px 32px rgba(0,0,0,0.1);
+				padding: 8px;
+				opacity: 0;
+				visibility: hidden;
+				transform: translateY(8px);
+				transition: all 150ms ease;
+				z-index: 200;
+			}
+
+			.dropdown-areas {
+				min-width: 240px;
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				gap: 0;
+			}
+
+			.dropdown-item {
+				display: block;
+				padding: 10px 14px;
+				font-size: 0.875rem;
+				font-weight: 500;
+				color: var(--text-muted);
+				border-radius: 6px;
+				transition: all 100ms ease;
+			}
+			.dropdown-item:hover {
+				background: var(--off-white);
+				color: var(--text-dark);
+			}
+			.dropdown-all {
+				grid-column: 1 / -1;
+				color: var(--red);
+				font-weight: 600;
+				border-top: 1px solid var(--border);
+				margin-top: 4px;
+				padding-top: 12px;
+				border-radius: 0;
+			}
 
 			.header-cta { padding: 12px 20px; font-size: 0.875rem; min-height: 44px; }
 
@@ -594,6 +727,16 @@ const pageCtx = createPublicPageContext({
 			}
 
 			.mobile-nav-link:hover { color: var(--red); }
+
+			.mobile-accordion { border-bottom: 1px solid var(--border); }
+			.mobile-accordion summary { list-style: none; cursor: pointer; }
+			.mobile-accordion summary::-webkit-details-marker { display: none; }
+			.mobile-accordion summary::after { content: "+"; float: right; font-size: 1.25rem; color: var(--text-muted); transition: transform 150ms ease; }
+			.mobile-accordion[open] summary::after { transform: rotate(45deg); }
+			.mobile-accordion .mobile-nav-link { border-bottom: none; }
+			.mobile-sub { display: flex; flex-direction: column; padding: 0 0 16px 16px; }
+			.mobile-sub a { font-size: 1rem; font-weight: 500; color: var(--text-muted); padding: 10px 0; }
+			.mobile-sub a:hover { color: var(--red); }
 
 			.mobile-cta {
 				width: 100%;
