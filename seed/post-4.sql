@@ -1,0 +1,11 @@
+INSERT INTO ec_posts (id, slug, status, title, excerpt, body, meta_title, meta_description, published_at) VALUES (
+  4,
+  'why-chicago-restaurants-need-strong-online-presence',
+  'published',
+  'Why Chicago Restaurants Need a Strong Online Presence',
+  'Chicago''s restaurant scene is one of the most competitive in the country, and a great dining room isn''t enough anymore if customers can''t find you online.',
+  '[{"_type":"block","_key":"15a8e01d","style":"h2","children":[{"_type":"span","_key":"04d79c04","text":"The Chicago Restaurant Market Is Unforgiving"}]},{"_type":"block","_key":"e8cc43fc","style":"normal","children":[{"_type":"span","_key":"f8fbd69e","text":"Chicago has over 7,000 restaurants. You can have an incredible chef, a beautiful space, and still struggle to fill seats if you''re invisible online."}]},{"_type":"block","_key":"35e341ca","style":"h2","children":[{"_type":"span","_key":"9f43b879","text":"Google Search Is Where the Decision Starts"}]},{"_type":"block","_key":"31b4ca06","style":"normal","children":[{"_type":"span","_key":"6d48d9f4","text":"\"Best Italian restaurant in River North.\" \"Brunch spots near Wicker Park.\" These are real searches happening thousands of times a day in Chicago."}]},{"_type":"block","_key":"57ff3743","style":"h2","children":[{"_type":"span","_key":"060436be","text":"Online Reviews Can Make or Break a Restaurant"}]},{"_type":"block","_key":"21d2623a","style":"normal","children":[{"_type":"span","_key":"2b0fb57f","text":"A Harvard Business School study found that a one-star increase on Yelp translates to a 5 to 9 percent increase in revenue for independent restaurants."}]},{"_type":"block","_key":"0886beba","style":"h2","children":[{"_type":"span","_key":"d4112f7e","text":"Social Media Drives Discovery for Food"}]},{"_type":"block","_key":"f954697b","style":"normal","children":[{"_type":"span","_key":"d90c2f60","text":"Chicago''s food Instagram scene is real and active. Neighborhood food bloggers, local influencers, and regular diners share photos that get thousands of views."}]}]',
+  'Why Chicago Restaurants Need a Strong Online Presence',
+  'Chicago restaurants live and die by their online presence. Learn what actually drives diners to your door in 2026.',
+  datetime('now')
+);
