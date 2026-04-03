@@ -1,5 +1,6 @@
 ---
 import Base from "../layouts/Base.astro";
+import { env } from "cloudflare:workers";
 
 export const cacheHint = 0;
 
@@ -21,8 +22,7 @@ if (Astro.request.method === "POST") {
 			formStatus = "error";
 			formMessage = "Please enter a valid email address.";
 		} else {
-			const runtime = Astro.locals.runtime;
-			const db = runtime.env.DB;
+			const db = env.DB;
 			const id = Date.now().toString(36) + Math.random().toString(36).slice(2);
 			const slug = `seo-audit-${id}`;
 			await db.prepare(

@@ -1,5 +1,6 @@
 ---
 import Base from "../layouts/Base.astro";
+import { env } from "cloudflare:workers";
 
 export const cacheHint = 0;
 
@@ -23,8 +24,7 @@ if (Astro.request.method === "POST") {
 			formStatus = "error";
 			formMessage = "Please enter a valid email address.";
 		} else {
-			const runtime = Astro.locals.runtime;
-			const db = runtime.env.DB;
+			const db = env.DB;
 			const id = Date.now().toString(36) + Math.random().toString(36).slice(2);
 			const slug = `contact-${id}`;
 			const senderTitle = [firstName, lastName].filter(Boolean).join(" ") || email;
@@ -35,10 +35,9 @@ if (Astro.request.method === "POST") {
 			formStatus = "success";
 			formMessage = "Thanks! We'll get back to you within 1 business day.";
 		}
-	} catch (err: unknown) {
+	} catch {
 		formStatus = "error";
-		const msg = err instanceof Error ? err.message : String(err);
-		formMessage = `Error: ${msg}`;
+		formMessage = "Something went wrong. Please try again.";
 	}
 }
 
