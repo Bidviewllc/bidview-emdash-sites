@@ -35,9 +35,10 @@ if (Astro.request.method === "POST") {
 			formStatus = "success";
 			formMessage = "Thanks! We'll get back to you within 1 business day.";
 		}
-	} catch {
+	} catch (err: unknown) {
 		formStatus = "error";
-		formMessage = "Something went wrong. Please try again.";
+		const msg = err instanceof Error ? err.message : String(err);
+		formMessage = `Error: ${msg}`;
 	}
 }
 
