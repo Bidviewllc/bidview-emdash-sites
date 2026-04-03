@@ -7,7 +7,7 @@ export const cacheHint = 3600;
 type PostData = {
 	title: string;
 	excerpt?: string;
-	featured_image?: { src: string; alt: string };
+	featured_image?: string;
 };
 
 type Post = { slug: string; data: PostData };
@@ -69,7 +69,7 @@ const publishDate = () => {
 							<a href={`/blog/${post.slug}`} class="post-card">
 								{pd.featured_image ? (
 									<div class="post-card-image">
-										<img src={pd.featured_image.src} alt={pd.featured_image.alt} width="400" height="220" loading="lazy" />
+										<img src={pd.featured_image} alt={pd.title} width="400" height="220" loading="lazy" />
 									</div>
 								) : (
 									<div class="post-card-image post-card-placeholder">

@@ -14,7 +14,7 @@ const data = entry.data as {
 	title: string;
 	excerpt?: string;
 	body?: unknown;
-	featured_image?: { src: string; alt: string };
+	featured_image?: string;
 	meta_title?: string;
 	meta_description?: string;
 };
@@ -36,7 +36,7 @@ const publishDate = new Date().toLocaleDateString("en-US", {
 });
 ---
 
-<Base title={pageTitle} description={pageDesc} image={data.featured_image?.src}>
+<Base title={pageTitle} description={pageDesc} image={data.featured_image}>
 	<!-- ── BlogPosting schema ── -->
 	<script type="application/ld+json" set:html={JSON.stringify({
 		"@context": "https://schema.org",
@@ -105,8 +105,8 @@ const publishDate = new Date().toLocaleDateString("en-US", {
 		<div class="post-featured-image">
 			<div class="container">
 				<img
-					src={data.featured_image.src}
-					alt={data.featured_image.alt}
+					src={data.featured_image}
+					alt={data.title}
 					width="1200"
 					height="480"
 					loading="eager"
