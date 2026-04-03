@@ -96,7 +96,7 @@ function toSlug(name: string) {
 						</h3>
 						<div class="area-pills">
 							{area.neighborhoods.map((n) => (
-								<a href={`/services/seo/${toSlug(n)}`} class="nbhd-pill" data-name={n.toLowerCase()}>
+								<a href={`/${toSlug(n)}/`} class="nbhd-pill" data-name={n.toLowerCase()}>
 									{n}
 								</a>
 							))}

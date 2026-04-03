@@ -21,7 +21,11 @@ if (Astro.request.method === "POST") {
 			formStatus = "error";
 			formMessage = "Please enter a valid email address.";
 		} else {
-			console.log("SEO Audit form:", { name, email, website, phone });
+			const runtime = Astro.locals.runtime;
+			const db = runtime.env.DB;
+			await db.prepare(
+				"INSERT INTO form_submissions (form_type, first_name, email, website, phone) VALUES (?, ?, ?, ?, ?)"
+			).bind('seo-audit', name, email, website, phone).run();
 			formStatus = "success";
 			formMessage = "Your audit request is in! We'll reach out within 24 hours with your results.";
 		}

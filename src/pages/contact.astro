@@ -23,8 +23,11 @@ if (Astro.request.method === "POST") {
 			formStatus = "error";
 			formMessage = "Please enter a valid email address.";
 		} else {
-			// TODO: Replace with actual email/webhook integration
-			console.log("Contact form submission:", { firstName, lastName, email, phone, service, message });
+			const runtime = Astro.locals.runtime;
+			const db = runtime.env.DB;
+			await db.prepare(
+				"INSERT INTO form_submissions (form_type, first_name, last_name, email, phone, service, message) VALUES (?, ?, ?, ?, ?, ?, ?)"
+			).bind('contact', firstName, lastName, email, phone, service, message).run();
 			formStatus = "success";
 			formMessage = "Thanks! We'll get back to you within 1 business day.";
 		}
