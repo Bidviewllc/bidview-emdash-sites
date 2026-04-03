@@ -44,6 +44,40 @@ const pageCtx = createPublicPageContext({
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>{fullTitle}</title>
 		<EmDashHead page={pageCtx} />
+		<script type="application/ld+json" set:html={JSON.stringify([
+			{
+				"@context": "https://schema.org",
+				"@type": "Organization",
+				"name": "The Chicago Marketing Agency",
+				"url": "https://thechicagomarketingagency.vince-75c.workers.dev",
+				"logo": "https://thechicagomarketingagency.vince-75c.workers.dev/logo.png",
+				"sameAs": [
+					"https://facebook.com",
+					"https://instagram.com",
+					"https://linkedin.com"
+				]
+			},
+			{
+				"@context": "https://schema.org",
+				"@type": "MarketingAgency",
+				"name": "The Chicago Marketing Agency",
+				"url": "https://thechicagomarketingagency.vince-75c.workers.dev",
+				"telephone": "+13125551786",
+				"address": {
+					"@type": "PostalAddress",
+					"streetAddress": "123 N Michigan Ave",
+					"addressLocality": "Chicago",
+					"addressRegion": "IL",
+					"postalCode": "60601",
+					"addressCountry": "US"
+				},
+				"areaServed": {
+					"@type": "City",
+					"name": "Chicago"
+				},
+				"email": "hello@thechicagomarketingagency.com"
+			}
+		])} />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
