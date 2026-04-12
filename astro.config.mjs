@@ -1,7 +1,7 @@
 import cloudflare from "@astrojs/cloudflare";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
-import tailwind from "@astrojs/tailwind";
+// Tailwind handled via postcss.config.mjs (not @astrojs/tailwind — conflicts with emdash admin CSS)
 import { d1, r2, sandbox } from "@emdash-cms/cloudflare";
 import { defineConfig } from "astro/config";
 import emdash from "emdash/astro";
@@ -15,7 +15,6 @@ export default defineConfig({
 		responsiveStyles: true,
 	},
 	integrations: [
-		tailwind({ applyBaseStyles: false }),
 		react(),
 		sitemap({
 			changefreq: "weekly",
