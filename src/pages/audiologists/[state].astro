@@ -94,12 +94,23 @@ function getSpecIcon(name: string): string {
 
 // Top 16 cities for "Browse by City", rest in sitemap
 const topCities = cityCounts.slice(0, 16);
+
+const schemaData = {
+	"@context": "https://schema.org",
+	"@type": "BreadcrumbList",
+	"itemListElement": [
+		{ "@type": "ListItem", "position": 1, "name": "Home", "item": "https://audiologistdirectory.com/" },
+		{ "@type": "ListItem", "position": 2, "name": "Audiologists", "item": "https://audiologistdirectory.com/audiologists" },
+		{ "@type": "ListItem", "position": 3, "name": state_name },
+	],
+};
 ---
 
 <Base
 	title={`Audiologists in ${state_name} | AudiologistDirectory.com`}
 	description={`${practiceCount.toLocaleString()} verified audiology practices across ${cityCount} cities in ${state_name}. Find clinical hearing care, tinnitus specialists, and hearing aid providers.`}
 	canonical={`https://audiologistdirectory.com/audiologists/${state}`}
+	schema={schemaData}
 >
 	<SiteNav active="states" />
 	<!-- Breadcrumb -->
@@ -125,19 +136,19 @@ const topCities = cityCounts.slice(0, 16);
 					<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
 						<div class="space-y-2">
 							<label class="block text-sm font-semibold text-ink px-1">City or Zip Code</label>
-							<input class="w-full h-14 bg-fog border-mist rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent px-4 text-ink" placeholder="e.g. enter a city" type="text" />
+							<input id="state-search-q" class="w-full h-14 bg-fog border-mist rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent px-4 text-ink" placeholder="e.g. enter a city" type="text" />
 						</div>
 						<div class="space-y-2">
 							<label class="block text-sm font-semibold text-ink px-1">Specialization</label>
-							<select class="w-full h-14 bg-fog border-mist rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent px-4 text-ink">
-								<option>Any Specialization</option>
+							<select id="state-search-spec" class="w-full h-14 bg-fog border-mist rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent px-4 text-ink">
+								<option value="">Any Specialization</option>
 								{specializations.slice(0, 6).map((s) => (
-									<option>{s.name}</option>
+									<option value={s.name}>{s.name}</option>
 								))}
 							</select>
 						</div>
 					</div>
-					<button class="w-full h-14 bg-primary text-white font-bold rounded-lg hover:bg-primary-dark transition-all shadow-md">Search {state_name}</button>
+					<button type="button" onclick="var p=new URLSearchParams();var q=document.getElementById('state-search-q').value.trim();var s=document.getElementById('state-search-spec').value;if(q)p.set('q',q);if(s)p.set('specialization',s);window.location.href='/search'+(p.toString()?'?'+p.toString():'');" class="w-full h-14 bg-primary text-white font-bold rounded-lg hover:bg-primary-dark transition-all shadow-md cursor-pointer">Search {state_name}</button>
 				</div>
 			</div>
 			<div class="relative flex justify-center">

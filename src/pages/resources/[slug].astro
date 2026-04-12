@@ -20,12 +20,27 @@ const otherResources = allResources
 	.filter((r) => r.id !== resource.id)
 	.sort((a, b) => (a.data.sort_order ?? 0) - (b.data.sort_order ?? 0))
 	.slice(0, 3);
+
+const schemaData = {
+	"@context": "https://schema.org",
+	"@type": "Article",
+	"headline": data.title,
+	"description": data.blurb,
+	...(data.image_url ? { "image": data.image_url } : {}),
+	"publisher": {
+		"@type": "Organization",
+		"name": "AudiologistDirectory",
+		"url": "https://audiologistdirectory.com",
+	},
+	"datePublished": (resource as any).cacheHint?.lastModified || new Date().toISOString(),
+};
 ---
 
 <Base
 	title={`${data.title} | AudiologistDirectory.com`}
 	description={data.blurb || ""}
 	canonical={`https://audiologistdirectory.com/resources/${slug}`}
+	schema={schemaData}
 >
 	<SiteNav active="resources" />
 
@@ -44,7 +59,7 @@ const otherResources = allResources
 
 	<!-- Featured Image -->
 	{data.image_url && (
-		<div class="max-w-3xl mx-auto px-8 -mt-2">
+		<div class="max-w-3xl mx-auto px-8 mt-10 mb-4">
 			<div class="aspect-[16/9] rounded-xl overflow-hidden shadow-soft border border-mist">
 				<img class="w-full h-full object-cover" src={data.image_url} alt={data.title} />
 			</div>

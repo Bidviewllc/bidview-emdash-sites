@@ -62,9 +62,38 @@ const citySlug = p.city_slug || "";
 const title = `${p.name} | AudiologistDirectory.com`;
 const description = `${p.name} — verified audiology practice in ${cityName}, ${stateCode}. ${specializations.length > 0 ? specializations.slice(0, 3).join(", ") + "." : "Hearing care services."}`;
 const canonical = `https://audiologistdirectory.com/practice/${slug}`;
+
+const schemaData = [
+	{
+		"@context": "https://schema.org",
+		"@type": "LocalBusiness",
+		"name": p.name,
+		"address": {
+			"@type": "PostalAddress",
+			"streetAddress": p.address,
+			"addressLocality": p.city,
+			"addressRegion": p.state_code,
+			"postalCode": p.zip,
+		},
+		...(p.phone ? { "telephone": p.phone } : {}),
+		...(p.website ? { "url": p.website } : {}),
+		...(p.lat ? { "geo": { "@type": "GeoCoordinates", "latitude": p.lat, "longitude": p.lng } } : {}),
+		...(p.rating > 0 ? { "aggregateRating": { "@type": "AggregateRating", "ratingValue": p.rating, "reviewCount": p.reviews_count } } : {}),
+	},
+	{
+		"@context": "https://schema.org",
+		"@type": "BreadcrumbList",
+		"itemListElement": [
+			{ "@type": "ListItem", "position": 1, "name": "Home", "item": "https://audiologistdirectory.com/" },
+			{ "@type": "ListItem", "position": 2, "name": "Audiologists", "item": "https://audiologistdirectory.com/audiologists" },
+			{ "@type": "ListItem", "position": 3, "name": stateName || stateCode, "item": `https://audiologistdirectory.com/audiologists/${stateSlug}` },
+			{ "@type": "ListItem", "position": 4, "name": p.name },
+		],
+	},
+];
 ---
 
-<Base title={title} description={description} canonical={canonical}>
+<Base title={title} description={description} canonical={canonical} schema={schemaData}>
 	<SiteNav />
 	<!-- Breadcrumb -->
 	<div class="bg-white border-b border-neutral-mist">

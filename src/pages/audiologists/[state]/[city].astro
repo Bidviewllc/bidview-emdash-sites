@@ -87,9 +87,20 @@ const vaCount = practices.filter((p: any) => p.accepts_va).length;
 const now = new Date();
 const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 const updatedLabel = `${monthNames[now.getMonth()].slice(0,3)} ${now.getFullYear()}`;
+
+const schemaData = {
+	"@context": "https://schema.org",
+	"@type": "BreadcrumbList",
+	"itemListElement": [
+		{ "@type": "ListItem", "position": 1, "name": "Home", "item": "https://audiologistdirectory.com/" },
+		{ "@type": "ListItem", "position": 2, "name": "Audiologists", "item": "https://audiologistdirectory.com/audiologists" },
+		{ "@type": "ListItem", "position": 3, "name": stateName, "item": `https://audiologistdirectory.com/audiologists/${state}` },
+		{ "@type": "ListItem", "position": 4, "name": cityName },
+	],
+};
 ---
 
-<Base title={title} description={description} canonical={canonical}>
+<Base title={title} description={description} canonical={canonical} schema={schemaData}>
 	<SiteNav active="states" />
 	<!-- Breadcrumbs (full-width band) -->
 	<div class="bg-white border-b border-mist">
@@ -114,13 +125,13 @@ const updatedLabel = `${monthNames[now.getMonth()].slice(0,3)} ${now.getFullYear
 					<div class="bg-white p-2 rounded-lg border border-mist shadow-lg flex flex-col md:flex-row gap-2 max-w-2xl">
 						<div class="flex-1 flex items-center px-4 py-3 border-r border-mist last:border-0">
 							<span class="material-symbols-outlined text-slate mr-3">location_on</span>
-							<input class="w-full border-0 focus:ring-0 text-base placeholder:text-slate/60" placeholder="Neighborhood or Zip" type="text" value={`${cityName}, ${stateCode}`} />
+							<input id="city-search-q" class="w-full border-0 focus:ring-0 text-base placeholder:text-slate/60" placeholder="Neighborhood or Zip" type="text" value={`${cityName}, ${stateCode}`} />
 						</div>
 						<div class="flex-1 flex items-center px-4 py-3 border-r border-mist last:border-0">
 							<span class="material-symbols-outlined text-slate mr-3">stethoscope</span>
-							<input class="w-full border-0 focus:ring-0 text-base placeholder:text-slate/60" placeholder="Specialization" type="text" />
+							<input id="city-search-spec" class="w-full border-0 focus:ring-0 text-base placeholder:text-slate/60" placeholder="Specialization" type="text" />
 						</div>
-						<button class="bg-forest text-white px-8 py-3 rounded-lg font-medium hover:bg-forest-dark transition-colors whitespace-nowrap">
+						<button type="button" onclick="var p=new URLSearchParams();var q=document.getElementById('city-search-q').value.trim();var s=document.getElementById('city-search-spec').value.trim();if(q)p.set('q',q);if(s)p.set('specialization',s);window.location.href='/search'+(p.toString()?'?'+p.toString():'');" class="bg-forest text-white px-8 py-3 rounded-lg font-medium hover:bg-forest-dark transition-colors whitespace-nowrap cursor-pointer">
 							Search {cityName}
 						</button>
 					</div>

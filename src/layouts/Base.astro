@@ -3,12 +3,18 @@ export interface Props {
 	title: string;
 	description?: string;
 	canonical?: string;
+	schema?: object | object[];
+	ogImage?: string;
+	noindex?: boolean;
 }
 
 const {
 	title,
 	description = "Find a trusted audiologist near you. ~4,900 audiology practices nationwide, with reviews, specializations, and hearing aid brands.",
 	canonical,
+	schema,
+	ogImage,
+	noindex,
 } = Astro.props;
 
 export const cacheHint = 3600;
@@ -21,7 +27,20 @@ export const cacheHint = 3600;
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>{title}</title>
 		<meta name="description" content={description} />
+		{noindex && <meta name="robots" content="noindex, follow" />}
 		{canonical && <link rel="canonical" href={canonical} />}
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:type" content="website" />
+		{canonical && <meta property="og:url" content={canonical} />}
+		{ogImage && <meta property="og:image" content={ogImage} />}
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		{ogImage && <meta name="twitter:image" content={ogImage} />}
+		{schema && (
+			<script type="application/ld+json" set:html={JSON.stringify(Array.isArray(schema) ? schema : [schema])} />
+		)}
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
 		<link rel="preconnect" href="https://fonts.googleapis.com" />

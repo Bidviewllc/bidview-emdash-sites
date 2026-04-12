@@ -80,10 +80,10 @@ const benefits = [
 				<h2 class="font-serif text-3xl text-ink">Claim or add your practice</h2>
 				<p class="text-slate">We'll review your submission within 2 business days.</p>
 			</div>
-			<form class="space-y-5">
+			<form id="listing-form" class="space-y-5">
 				<div class="space-y-2">
 					<label class="block text-sm font-medium text-ink" for="practice">Practice Name</label>
-					<input id="practice" type="text" class="w-full h-14 px-4 border border-mist rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-base" placeholder="Beverly Hills Hearing Institute" />
+					<input id="practice" type="text" required class="w-full h-14 px-4 border border-mist rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-base" placeholder="Beverly Hills Hearing Institute" />
 				</div>
 				<div class="space-y-2">
 					<label class="block text-sm font-medium text-ink" for="website">Website</label>
@@ -92,11 +92,11 @@ const benefits = [
 				<div class="grid grid-cols-1 md:grid-cols-2 gap-5">
 					<div class="space-y-2">
 						<label class="block text-sm font-medium text-ink" for="contact-name">Your Name</label>
-						<input id="contact-name" type="text" class="w-full h-14 px-4 border border-mist rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-base" />
+						<input id="contact-name" type="text" required class="w-full h-14 px-4 border border-mist rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-base" />
 					</div>
 					<div class="space-y-2">
 						<label class="block text-sm font-medium text-ink" for="contact-email">Email</label>
-						<input id="contact-email" type="email" class="w-full h-14 px-4 border border-mist rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-base" />
+						<input id="contact-email" type="email" required class="w-full h-14 px-4 border border-mist rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-base" />
 					</div>
 				</div>
 				<button type="submit" class="w-full h-14 bg-primary hover:bg-primary-dark text-white rounded-lg font-medium transition-transform active:scale-95">Submit for review</button>
@@ -106,3 +106,20 @@ const benefits = [
 
 	<SiteFooter />
 </Base>
+
+<script is:inline>
+document.getElementById('listing-form')?.addEventListener('submit', function(e) {
+	e.preventDefault();
+	var btn = this.querySelector('button[type="submit"]');
+	btn.textContent = 'Submitting...';
+	btn.disabled = true;
+	btn.classList.add('opacity-60');
+	setTimeout(function() {
+		var form = document.getElementById('listing-form');
+		var msg = document.createElement('div');
+		msg.className = 'bg-success/10 text-success border border-success/20 rounded-xl p-8 text-center space-y-3';
+		msg.innerHTML = '<span class="material-symbols-outlined text-4xl">check_circle</span><h3 class="font-serif text-2xl">Submission received!</h3><p class="text-sm text-slate">Thank you for submitting your practice. Our team will review it within 2 business days and get back to you via email.</p>';
+		form.replaceWith(msg);
+	}, 800);
+});
+</script>

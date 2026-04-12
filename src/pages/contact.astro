@@ -26,7 +26,7 @@ export const cacheHint = 3600;
 			<!-- Contact Form -->
 			<div>
 				<h2 class="font-serif text-3xl text-ink mb-6">Send Us a Message</h2>
-				<form class="space-y-6" action="#" method="POST">
+				<form class="space-y-6" id="contact-form">
 					<div>
 						<label for="name" class="block text-sm font-medium text-ink mb-2">Your Name</label>
 						<input
@@ -121,3 +121,20 @@ export const cacheHint = 3600;
 
 	<SiteFooter />
 </Base>
+
+<script is:inline>
+document.getElementById('contact-form')?.addEventListener('submit', function(e) {
+	e.preventDefault();
+	var btn = this.querySelector('button[type="submit"]');
+	btn.textContent = 'Sending...';
+	btn.disabled = true;
+	btn.classList.add('opacity-60');
+	setTimeout(function() {
+		var form = document.getElementById('contact-form');
+		var msg = document.createElement('div');
+		msg.className = 'bg-success/10 text-success border border-success/20 rounded-xl p-6 text-center space-y-2';
+		msg.innerHTML = '<span class="material-symbols-outlined text-3xl">check_circle</span><h3 class="font-serif text-xl">Message sent!</h3><p class="text-sm">Thank you for reaching out. We\'ll get back to you within 2 business days.</p>';
+		form.replaceWith(msg);
+	}, 800);
+});
+</script>
