@@ -1,6 +1,7 @@
 import cloudflare from "@astrojs/cloudflare";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
+import tailwind from "@astrojs/tailwind";
 import { d1, r2, sandbox } from "@emdash-cms/cloudflare";
 import { defineConfig } from "astro/config";
 import emdash from "emdash/astro";
@@ -14,6 +15,7 @@ export default defineConfig({
 		responsiveStyles: true,
 	},
 	integrations: [
+		tailwind({ applyBaseStyles: false }),
 		react(),
 		sitemap({
 			changefreq: "weekly",
@@ -26,4 +28,14 @@ export default defineConfig({
 		}),
 	],
 	devToolbar: { enabled: false },
+	vite: {
+		optimizeDeps: {
+			exclude: [
+				"@tiptap/extension-collaboration",
+				"@tiptap/y-tiptap",
+				"@tiptap/extension-drag-handle",
+				"y-protocols",
+			],
+		},
+	},
 });

@@ -27,6 +27,7 @@ const schemaData = {
 	"headline": data.title,
 	"description": data.blurb,
 	...(data.image_url ? { "image": data.image_url } : {}),
+	"author": { "@type": "Organization", "name": "AudiologistDirectory Editorial Team" },
 	"publisher": {
 		"@type": "Organization",
 		"name": "AudiologistDirectory",
@@ -54,6 +55,15 @@ const schemaData = {
 			<span class="inline-block text-xs font-bold text-primary uppercase tracking-widest">{data.tag}</span>
 			<h1 class="font-serif text-4xl md:text-5xl text-ink leading-tight">{data.title}</h1>
 			<p class="text-lg text-slate">{data.blurb}</p>
+			<div class="flex items-center gap-3 mt-4">
+				<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+					<span class="material-symbols-outlined text-primary text-sm">person</span>
+				</div>
+				<div>
+					<p class="text-sm font-medium text-ink">AudiologistDirectory Editorial Team</p>
+					<p class="text-xs text-slate">Reviewed by licensed audiologists</p>
+				</div>
+			</div>
 		</div>
 	</header>
 
@@ -101,7 +111,7 @@ const schemaData = {
 						<a href={r.data.slug_path || "#"} class="bg-white rounded-xl overflow-hidden shadow-soft border border-mist hover:border-primary transition-colors group">
 							{r.data.image_url && (
 								<div class="aspect-[16/10] overflow-hidden">
-									<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src={r.data.image_url} alt={r.data.title} />
+									<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src={r.data.image_url} alt={r.data.title} loading="lazy" />
 								</div>
 							)}
 							<div class="p-5 space-y-2">

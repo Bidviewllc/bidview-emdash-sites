@@ -226,7 +226,7 @@ const schemaData = {
 					{specializations.map((s) => (
 						<div class="bg-white p-8 rounded-xl border border-mist flex flex-col items-center text-center">
 							<span class="material-symbols-outlined text-primary text-4xl mb-4">{getSpecIcon(s.name)}</span>
-							<h3 class="font-bold text-ink mb-2">{s.name}</h3>
+							<h3 class="font-bold text-ink mb-2">{s.name.charAt(0).toUpperCase() + s.name.slice(1)}</h3>
 							<p class="text-sm text-slate">{s.count} {s.count === 1 ? "Practice" : "Practices"}</p>
 						</div>
 					))}

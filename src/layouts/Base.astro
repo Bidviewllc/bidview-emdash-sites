@@ -1,4 +1,6 @@
 ---
+import "../styles/global.css";
+
 export interface Props {
 	title: string;
 	description?: string;
@@ -43,6 +45,7 @@ export const cacheHint = 3600;
 		)}
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
+		<link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap" as="style" />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
@@ -54,88 +57,6 @@ export const cacheHint = 3600;
 			rel="stylesheet"
 		/>
 
-		<script is:inline src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-		<script is:inline define:vars={{}}>
-			tailwind.config = {
-				theme: {
-					extend: {
-						colors: {
-							forest: { DEFAULT: "#2D5F4E", dark: "#1F4437", light: "#EAF1EE" },
-							"forest-light": "#EAF1EE",
-							primary: "#2D5F4E",
-							"primary-dark": "#1F4437",
-							"primary-tint": "#EAF1EE",
-							secondary: "#F4EDE4",
-							sand: "#F4EDE4",
-							accent: "#E8735A",
-							"accent-tint": "#FCEDEA",
-							coral: "#E8735A",
-							success: "#4A9B6E",
-							"success-tint": "#E6F3EB",
-							sage: "#4A9B6E",
-							ink: "#1A2332",
-							slate: "#5A6472",
-							fog: "#F7F9FB",
-							mist: "#E3E8EE",
-							neutral: {
-								ink: "#1A2332",
-								slate: "#5A6472",
-								fog: "#F7F9FB",
-								mist: "#E3E8EE",
-							},
-						},
-						fontFamily: {
-							headline: ["Newsreader", "serif"],
-							serif: ["Newsreader", "serif"],
-							body: ["Inter", "sans-serif"],
-						},
-						borderRadius: {
-							DEFAULT: "0.75rem",
-							lg: "1rem",
-							full: "9999px",
-						},
-						boxShadow: {
-							soft: "0 2px 8px rgba(26, 35, 50, 0.06)",
-							elevated: "0 8px 24px rgba(26, 35, 50, 0.10)",
-						},
-					},
-				},
-			};
-		</script>
-
-		<style is:global>
-			html {
-				font-size: 17px;
-			}
-			body {
-				font-family: "Inter", sans-serif;
-				line-height: 1.6;
-				color: #1a2332;
-				background-color: #f7f9fb;
-			}
-			.font-serif,
-			.font-headline {
-				font-family: "Newsreader", serif;
-			}
-			.material-symbols-outlined {
-				font-variation-settings:
-					"FILL" 0,
-					"wght" 400,
-					"GRAD" 0,
-					"opsz" 24;
-				vertical-align: middle;
-			}
-			.shadow-soft {
-				box-shadow: 0 2px 8px rgba(26, 35, 50, 0.06);
-			}
-			.shadow-elevated {
-				box-shadow: 0 8px 24px rgba(26, 35, 50, 0.1);
-			}
-			:focus-visible {
-				outline: 2px solid #2d5f4e;
-				outline-offset: 2px;
-			}
-		</style>
 	</head>
 	<body class="antialiased">
 		<slot />

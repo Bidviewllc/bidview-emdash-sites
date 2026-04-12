@@ -169,12 +169,12 @@ const schemaData = [
 								</a>
 							)}
 							{p.website && (
-								<a href={p.website} target="_blank" rel="noopener noreferrer" class="w-full h-[52px] border-2 border-primary text-primary hover:bg-primary-tint rounded-lg font-semibold flex items-center justify-center gap-2 transition-all">
+								<a href={p.website} target="_blank" rel="nofollow noopener noreferrer" class="w-full h-[52px] border-2 border-primary text-primary hover:bg-primary-tint rounded-lg font-semibold flex items-center justify-center gap-2 transition-all">
 									<span class="material-symbols-outlined">language</span> Visit Website
 								</a>
 							)}
 							{p.gmaps_url && (
-								<a href={p.gmaps_url} target="_blank" rel="noopener noreferrer" class="w-full h-[52px] border-2 border-neutral-mist text-neutral-ink hover:bg-neutral-fog rounded-lg font-semibold flex items-center justify-center gap-2 transition-all">
+								<a href={p.gmaps_url} target="_blank" rel="nofollow noopener noreferrer" class="w-full h-[52px] border-2 border-neutral-mist text-neutral-ink hover:bg-neutral-fog rounded-lg font-semibold flex items-center justify-center gap-2 transition-all">
 									<span class="material-symbols-outlined">directions</span> Get Directions
 								</a>
 							)}
@@ -370,7 +370,7 @@ const schemaData = [
 						{p.website && (
 							<li class="flex gap-3">
 								<span class="material-symbols-outlined text-primary">language</span>
-								<a class="text-primary underline" href={p.website} target="_blank" rel="noopener noreferrer">{(() => { try { return new URL(p.website).hostname; } catch { return p.website; } })()}</a>
+								<a class="text-primary underline" href={p.website} target="_blank" rel="nofollow noopener noreferrer">{(() => { try { return new URL(p.website).hostname; } catch { return p.website; } })()}</a>
 							</li>
 						)}
 						{p.address && (
