@@ -1,0 +1,108 @@
+---
+import Base from "../layouts/Base.astro";
+import SiteNav from "../components/SiteNav.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import { getEmDashCollection } from "emdash";
+
+export const cacheHint = 3600;
+
+const { entries: allPages } = await getEmDashCollection("pages", { status: "published" });
+const hero = allPages.find((p) => p.data.page_key === "list_practice_hero")?.data;
+
+const benefits = [
+	{ icon: "visibility", title: "Get discovered", body: "Appear in local search results for your city, state, and specialization — reach patients actively seeking hearing care." },
+	{ icon: "verified_user", title: "Verified listing", body: "Your practice gets a verified badge alongside transparent NPI, credentials, and accepting-patients status." },
+	{ icon: "reviews", title: "Own your reputation", body: "Respond to patient reviews and showcase your providers, services, and hearing aid brands you carry." },
+	{ icon: "insights", title: "Free analytics", body: "See how many patients viewed your listing, clicked your phone number, or requested directions this month." },
+];
+---
+
+<Base
+	title="List Your Practice | AudiologistDirectory.com"
+	description={hero?.subheadline || "Claim or add your audiology practice to the directory."}
+	canonical="https://audiologistdirectory.com/list-your-practice"
+>
+	<SiteNav />
+
+	<header class="bg-secondary py-24 px-8">
+		<div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-12 items-center">
+			<div class="space-y-6">
+				{hero?.badge && (
+					<div class="inline-block py-1 px-4 bg-primary/5 text-primary text-sm font-bold tracking-widest uppercase rounded-full">
+						{hero.badge}
+					</div>
+				)}
+				<h1 class="font-serif text-5xl md:text-6xl text-ink leading-tight">{hero?.headline}</h1>
+				<p class="text-lg text-slate max-w-xl">{hero?.subheadline}</p>
+				<div class="flex flex-wrap gap-4 pt-2">
+					<a class="bg-primary hover:bg-primary-dark text-white h-14 px-8 rounded-lg font-medium shadow-soft flex items-center justify-center transition-transform active:scale-95" href={hero?.cta_link || "#claim-form"}>{hero?.cta_text || "Claim your listing"}</a>
+					<a class="bg-white border border-mist text-ink h-14 px-8 rounded-lg font-medium hover:border-primary flex items-center justify-center transition-colors" href="#how-it-works">How it works</a>
+				</div>
+			</div>
+			<div class="hidden lg:block">
+				<div class="bg-white rounded-xl shadow-soft border border-mist p-8 space-y-4">
+					<div class="flex items-center gap-2 text-primary">
+						<span class="material-symbols-outlined">verified</span>
+						<span class="text-xs font-bold uppercase tracking-widest">Verified Listing</span>
+					</div>
+					<h3 class="font-serif text-2xl text-ink">Beverly Hills Hearing Institute</h3>
+					<p class="text-sm text-slate">Beverly Hills, CA · 4.8 ★ (127 reviews)</p>
+					<div class="flex flex-wrap gap-2 pt-2">
+						<span class="text-xs bg-primary/5 text-primary px-3 py-1 rounded-full font-semibold">Tinnitus</span>
+						<span class="text-xs bg-primary/5 text-primary px-3 py-1 rounded-full font-semibold">Cochlear</span>
+						<span class="text-xs bg-mist text-slate px-3 py-1 rounded-full font-semibold">Phonak</span>
+						<span class="text-xs bg-mist text-slate px-3 py-1 rounded-full font-semibold">Oticon</span>
+					</div>
+					<div class="pt-4 text-slate text-xs">Your practice could appear here.</div>
+				</div>
+			</div>
+		</div>
+	</header>
+
+	<section id="how-it-works" class="bg-white py-20 px-8 border-y border-mist">
+		<div class="max-w-7xl mx-auto">
+			<h2 class="font-serif text-4xl text-ink text-center mb-12">Why list with us</h2>
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+				{benefits.map((b) => (
+					<div class="bg-fog p-8 rounded-xl border border-mist space-y-3">
+						<span class="material-symbols-outlined text-3xl text-primary">{b.icon}</span>
+						<h3 class="font-serif text-xl text-ink">{b.title}</h3>
+						<p class="text-sm text-slate">{b.body}</p>
+					</div>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<section id="claim-form" class="bg-fog py-20 px-8">
+		<div class="max-w-2xl mx-auto bg-white border border-mist rounded-xl shadow-soft p-10 space-y-6">
+			<div class="space-y-2">
+				<h2 class="font-serif text-3xl text-ink">Claim or add your practice</h2>
+				<p class="text-slate">We'll review your submission within 2 business days.</p>
+			</div>
+			<form class="space-y-5">
+				<div class="space-y-2">
+					<label class="block text-sm font-medium text-ink" for="practice">Practice Name</label>
+					<input id="practice" type="text" class="w-full h-14 px-4 border border-mist rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-base" placeholder="Beverly Hills Hearing Institute" />
+				</div>
+				<div class="space-y-2">
+					<label class="block text-sm font-medium text-ink" for="website">Website</label>
+					<input id="website" type="url" class="w-full h-14 px-4 border border-mist rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-base" placeholder="https://..." />
+				</div>
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+					<div class="space-y-2">
+						<label class="block text-sm font-medium text-ink" for="contact-name">Your Name</label>
+						<input id="contact-name" type="text" class="w-full h-14 px-4 border border-mist rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-base" />
+					</div>
+					<div class="space-y-2">
+						<label class="block text-sm font-medium text-ink" for="contact-email">Email</label>
+						<input id="contact-email" type="email" class="w-full h-14 px-4 border border-mist rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-base" />
+					</div>
+				</div>
+				<button type="submit" class="w-full h-14 bg-primary hover:bg-primary-dark text-white rounded-lg font-medium transition-transform active:scale-95">Submit for review</button>
+			</form>
+		</div>
+	</section>
+
+	<SiteFooter />
+</Base>

@@ -1,0 +1,50 @@
+---
+import Base from "../../layouts/Base.astro";
+import SiteNav from "../../components/SiteNav.astro";
+import SiteFooter from "../../components/SiteFooter.astro";
+import { getEmDashCollection } from "emdash";
+
+export const cacheHint = 3600;
+
+const { entries: allPages } = await getEmDashCollection("pages", { status: "published" });
+const { entries: allBrands } = await getEmDashCollection("brands", { status: "published" });
+
+const hero = allPages.find((p) => p.data.page_key === "brands_hero")?.data;
+const brands = [...allBrands].sort((a, b) => (a.data.sort_order ?? 0) - (b.data.sort_order ?? 0));
+---
+
+<Base
+	title="Hearing Aid Brands | AudiologistDirectory.com"
+	description={hero?.subheadline || "Find audiology practices by hearing aid brand."}
+	canonical="https://audiologistdirectory.com/brands"
+>
+	<SiteNav active="brands" />
+
+	<header class="bg-secondary py-20 px-8">
+		<div class="max-w-7xl mx-auto text-center space-y-6">
+			{hero?.badge && (
+				<div class="inline-block py-1 px-4 bg-primary/5 text-primary text-sm font-bold tracking-widest uppercase rounded-full">
+					{hero.badge}
+				</div>
+			)}
+			<h1 class="font-serif text-5xl md:text-6xl text-ink leading-tight" set:html={hero?.headline?.replace(/\n/g, "<br />")} />
+			<p class="text-lg text-slate max-w-2xl mx-auto">{hero?.subheadline}</p>
+		</div>
+	</header>
+
+	<main class="max-w-7xl mx-auto px-8 py-16">
+		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+			{brands.map((b) => (
+				<a class="bg-white p-8 rounded-xl border border-mist hover:border-primary hover:shadow-soft transition-all space-y-3 group" href={b.data.slug_path}>
+					<h3 class="font-serif text-2xl text-ink group-hover:text-primary transition-colors">{b.data.name}</h3>
+					<p class="text-sm text-slate">{b.data.tagline}</p>
+					<div class="pt-3 text-primary font-semibold flex items-center gap-2 group-hover:gap-3 transition-all">
+						Find practices <span class="material-symbols-outlined text-sm">chevron_right</span>
+					</div>
+				</a>
+			))}
+		</div>
+	</main>
+
+	<SiteFooter />
+</Base>

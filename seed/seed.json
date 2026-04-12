@@ -1,0 +1,455 @@
+{
+	"$schema": "https://emdashcms.com/seed.schema.json",
+	"version": "1",
+	"meta": {
+		"name": "AudiologistDirectory",
+		"description": "Find an audiologist you can trust. ~4,900 practices nationwide.",
+		"url": "https://audiologistdirectory.com"
+	},
+	"collections": [
+		{
+			"name": "pages",
+			"slug": "pages",
+			"label": "Pages",
+			"fields": [
+				{ "name": "page_key", "slug": "page_key", "type": "string", "label": "Page Key" },
+				{ "name": "badge", "slug": "badge", "type": "string", "label": "Badge Text" },
+				{ "name": "headline", "slug": "headline", "type": "string", "label": "Headline" },
+				{ "name": "subheadline", "slug": "subheadline", "type": "string", "label": "Subheadline" },
+				{ "name": "body", "slug": "body", "type": "text", "label": "Body Text" },
+				{ "name": "cta_text", "slug": "cta_text", "type": "string", "label": "CTA Button Text" },
+				{ "name": "cta_link", "slug": "cta_link", "type": "string", "label": "CTA Link" }
+			]
+		},
+		{
+			"name": "stats",
+			"slug": "stats",
+			"label": "Stats",
+			"fields": [
+				{ "name": "page_key", "slug": "page_key", "type": "string", "label": "Page Key" },
+				{ "name": "number", "slug": "number", "type": "string", "label": "Number" },
+				{ "name": "label", "slug": "label", "type": "string", "label": "Label" },
+				{ "name": "icon", "slug": "icon", "type": "string", "label": "Material Icon Name" },
+				{ "name": "sort_order", "slug": "sort_order", "type": "number", "label": "Sort Order" }
+			]
+		},
+		{
+			"name": "how_it_works",
+			"slug": "how_it_works",
+			"label": "How It Works",
+			"fields": [
+				{ "name": "step_number", "slug": "step_number", "type": "number", "label": "Step Number" },
+				{ "name": "icon", "slug": "icon", "type": "string", "label": "Material Icon Name" },
+				{ "name": "title", "slug": "title", "type": "string", "label": "Title" },
+				{ "name": "description", "slug": "description", "type": "text", "label": "Description" }
+			]
+		},
+		{
+			"name": "specializations",
+			"slug": "specializations",
+			"label": "Specializations",
+			"fields": [
+				{ "name": "icon", "slug": "icon", "type": "string", "label": "Material Icon Name" },
+				{ "name": "title", "slug": "title", "type": "string", "label": "Title" },
+				{ "name": "description", "slug": "description", "type": "text", "label": "Description" },
+				{ "name": "slug_path", "slug": "slug_path", "type": "string", "label": "URL Slug" },
+				{ "name": "sort_order", "slug": "sort_order", "type": "number", "label": "Sort Order" }
+			]
+		},
+		{
+			"name": "brands",
+			"slug": "brands",
+			"label": "Brands",
+			"fields": [
+				{ "name": "name", "slug": "name", "type": "string", "label": "Brand Name" },
+				{ "name": "tagline", "slug": "tagline", "type": "string", "label": "Tagline" },
+				{ "name": "slug_path", "slug": "slug_path", "type": "string", "label": "URL Slug" },
+				{ "name": "sort_order", "slug": "sort_order", "type": "number", "label": "Sort Order" }
+			]
+		},
+		{
+			"name": "resources",
+			"slug": "resources",
+			"label": "Resources",
+			"fields": [
+				{ "name": "tag", "slug": "tag", "type": "string", "label": "Category Tag" },
+				{ "name": "title", "slug": "title", "type": "string", "label": "Title" },
+				{ "name": "blurb", "slug": "blurb", "type": "text", "label": "Short Description" },
+				{ "name": "image_url", "slug": "image_url", "type": "string", "label": "Image URL" },
+				{ "name": "slug_path", "slug": "slug_path", "type": "string", "label": "URL Slug" },
+				{ "name": "body", "slug": "body", "type": "text", "label": "Full Article Body" },
+				{ "name": "sort_order", "slug": "sort_order", "type": "number", "label": "Sort Order" }
+			]
+		},
+		{
+			"name": "faqs",
+			"slug": "faqs",
+			"label": "FAQs",
+			"fields": [
+				{ "name": "question", "slug": "question", "type": "string", "label": "Question" },
+				{ "name": "answer", "slug": "answer", "type": "text", "label": "Answer" },
+				{ "name": "scope", "slug": "scope", "type": "string", "label": "Scope (global/state/city)" },
+				{ "name": "sort_order", "slug": "sort_order", "type": "number", "label": "Sort Order" }
+			]
+		},
+		{
+			"name": "landing_intros",
+			"slug": "landing_intros",
+			"label": "Landing Page Intros",
+			"fields": [
+				{ "name": "page_type", "slug": "page_type", "type": "string", "label": "Page Type" },
+				{ "name": "slug_match", "slug": "slug_match", "type": "string", "label": "Slug Match" },
+				{ "name": "heading", "slug": "heading", "type": "string", "label": "Heading" },
+				{ "name": "intro_prose", "slug": "intro_prose", "type": "text", "label": "Intro Prose" }
+			]
+		},
+		{
+			"name": "practices",
+			"slug": "practices",
+			"label": "Practices",
+			"fields": [
+				{ "name": "hh_id", "slug": "hh_id", "type": "number", "label": "HH ID" },
+				{ "name": "name", "slug": "name", "type": "string", "label": "Practice Name" },
+				{ "name": "practice_slug", "slug": "practice_slug", "type": "string", "label": "URL Slug" },
+				{ "name": "city", "slug": "city", "type": "string", "label": "City" },
+				{ "name": "state_code", "slug": "state_code", "type": "string", "label": "State Code (2-letter)" },
+				{ "name": "state_slug", "slug": "state_slug", "type": "string", "label": "State Slug" },
+				{ "name": "address", "slug": "address", "type": "string", "label": "Full Address" },
+				{ "name": "zip", "slug": "zip", "type": "string", "label": "ZIP Code" },
+				{ "name": "lat", "slug": "lat", "type": "number", "label": "Latitude" },
+				{ "name": "lng", "slug": "lng", "type": "number", "label": "Longitude" },
+				{ "name": "phone", "slug": "phone", "type": "string", "label": "Phone" },
+				{ "name": "website", "slug": "website", "type": "string", "label": "Website URL" },
+				{ "name": "rating", "slug": "rating", "type": "number", "label": "Google Rating (0-5)" },
+				{ "name": "reviews_count", "slug": "reviews_count", "type": "number", "label": "Review Count" },
+				{ "name": "practice_type", "slug": "practice_type", "type": "string", "label": "Practice Type" },
+				{ "name": "specializations_list", "slug": "specializations_list", "type": "string", "label": "Specializations (pipe-delimited)" },
+				{ "name": "hearing_aid_brands_list", "slug": "hearing_aid_brands_list", "type": "string", "label": "Hearing Aid Brands (pipe-delimited)" },
+				{ "name": "insurance_plans_list", "slug": "insurance_plans_list", "type": "string", "label": "Insurance Plans (pipe-delimited)" },
+				{ "name": "services_list", "slug": "services_list", "type": "string", "label": "Services (pipe-delimited)" },
+				{ "name": "accepts_va", "slug": "accepts_va", "type": "string", "label": "Accepts VA" },
+				{ "name": "hours_json", "slug": "hours_json", "type": "text", "label": "Hours (JSON)" },
+				{ "name": "photo_url", "slug": "photo_url", "type": "string", "label": "Photo URL" },
+				{ "name": "gmaps_url", "slug": "gmaps_url", "type": "string", "label": "Google Maps URL" }
+			]
+		}
+	],
+	"taxonomies": [],
+	"menus": [
+		{
+			"name": "primary",
+			"label": "Primary Navigation",
+			"items": [
+				{ "label": "Find an Audiologist", "url": "/search", "type": "custom" },
+				{ "label": "Browse by State", "url": "/audiologists", "type": "custom" },
+				{ "label": "Hearing Aid Brands", "url": "/brands", "type": "custom" },
+				{ "label": "Resources", "url": "/resources", "type": "custom" }
+			]
+		}
+	],
+	"entries": [
+		{
+			"collection": "pages",
+			"id": "homepage-hero",
+			"status": "published",
+			"data": {
+				"page_key": "homepage_hero",
+				"badge": "TRUSTED DIRECTORY · 4,900+ PRACTICES",
+				"headline": "Find an audiologist you can trust.",
+				"subheadline": "Browse verified audiology practices across all 50 states. Compare providers, hearing aid brands, specializations, and insurance — all in one place.",
+				"body": "",
+				"cta_text": "Find Audiologists Near Me",
+				"cta_link": "/search"
+			}
+		},
+		{
+			"collection": "pages",
+			"id": "homepage-trust",
+			"status": "published",
+			"data": {
+				"page_key": "homepage_trust",
+				"badge": "",
+				"headline": "Verified data, not paid placements",
+				"subheadline": "",
+				"body": "Unlike other directories, AudiologistDirectory.com does not accept payments to boost practice rankings. Our listing order is determined solely by location relevance and specialization match. We believe in providing transparent, clinical-first data to help you make the best decision for your hearing health.",
+				"cta_text": "Read our Methodology",
+				"cta_link": "/methodology"
+			}
+		},
+		{
+			"collection": "pages",
+			"id": "homepage-how-heading",
+			"status": "published",
+			"data": {
+				"page_key": "homepage_how_heading",
+				"badge": "",
+				"headline": "How AudiologistDirectory works",
+				"subheadline": "",
+				"body": "",
+				"cta_text": "",
+				"cta_link": ""
+			}
+		},
+		{
+			"collection": "pages",
+			"id": "browse-states-hero",
+			"status": "published",
+			"data": {
+				"page_key": "browse_states_hero",
+				"badge": "50 STATES · 4,943 PRACTICES",
+				"headline": "Browse audiologists by state",
+				"subheadline": "Select your state below to see verified audiology practices, providers, and hearing aid specialists in your area.",
+				"body": "",
+				"cta_text": "",
+				"cta_link": ""
+			}
+		},
+		{
+			"collection": "pages",
+			"id": "brands-hero",
+			"status": "published",
+			"data": {
+				"page_key": "brands_hero",
+				"badge": "HEARING AID BRANDS",
+				"headline": "Find practices that carry your preferred brand",
+				"subheadline": "Compare the top hearing aid manufacturers and find certified dispensing practices near you.",
+				"body": "",
+				"cta_text": "",
+				"cta_link": ""
+			}
+		},
+		{
+			"collection": "pages",
+			"id": "resources-hero",
+			"status": "published",
+			"data": {
+				"page_key": "resources_hero",
+				"badge": "RESOURCES · CLINICAL GUIDES",
+				"headline": "Learn about hearing care",
+				"subheadline": "Plain-English guides on hearing health, hearing aids, tinnitus, and what to expect from an audiology visit.",
+				"body": "",
+				"cta_text": "",
+				"cta_link": ""
+			}
+		},
+		{
+			"collection": "pages",
+			"id": "list-practice-hero",
+			"status": "published",
+			"data": {
+				"page_key": "list_practice_hero",
+				"badge": "FOR PRACTICE OWNERS · FREE LISTING",
+				"headline": "List your audiology practice",
+				"subheadline": "Reach the thousands of adults searching for trusted hearing care every month. Claim or add your practice to our verified directory in under 10 minutes.",
+				"body": "",
+				"cta_text": "Claim your listing",
+				"cta_link": "#claim-form"
+			}
+		},
+		{
+			"collection": "stats",
+			"id": "stat-practices",
+			"status": "published",
+			"data": { "page_key": "homepage", "number": "4,943", "label": "Verified Practices", "icon": "verified_user", "sort_order": 1 }
+		},
+		{
+			"collection": "stats",
+			"id": "stat-states",
+			"status": "published",
+			"data": { "page_key": "homepage", "number": "50", "label": "States Covered", "icon": "map", "sort_order": 2 }
+		},
+		{
+			"collection": "stats",
+			"id": "stat-reviews",
+			"status": "published",
+			"data": { "page_key": "homepage", "number": "12k+", "label": "Patient Reviews", "icon": "reviews", "sort_order": 3 }
+		},
+		{
+			"collection": "stats",
+			"id": "stat-specs",
+			"status": "published",
+			"data": { "page_key": "homepage", "number": "28", "label": "Specializations", "icon": "medical_services", "sort_order": 4 }
+		},
+		{
+			"collection": "how_it_works",
+			"id": "step-search",
+			"status": "published",
+			"data": { "step_number": 1, "icon": "search", "title": "Search", "description": "Enter your zip code or city to see a curated list of audiology practices in your local area." }
+		},
+		{
+			"collection": "how_it_works",
+			"id": "step-filter",
+			"status": "published",
+			"data": { "step_number": 2, "icon": "filter_list", "title": "Filter", "description": "Refine your search by hearing aid brands, insurance providers, and clinical specializations." }
+		},
+		{
+			"collection": "how_it_works",
+			"id": "step-contact",
+			"status": "published",
+			"data": { "step_number": 3, "icon": "chat_bubble", "title": "Contact", "description": "Connect directly with practices via phone or website to schedule your consultation." }
+		},
+		{
+			"collection": "specializations",
+			"id": "spec-tinnitus",
+			"status": "published",
+			"data": { "icon": "hearing", "title": "Tinnitus", "description": "Expert management for ringing in the ears and sound sensitivity.", "slug_path": "/tinnitus-specialists", "sort_order": 1 }
+		},
+		{
+			"collection": "specializations",
+			"id": "spec-pediatric",
+			"status": "published",
+			"data": { "icon": "child_care", "title": "Pediatric", "description": "Specialized hearing services for infants, children, and adolescents.", "slug_path": "/pediatric-specialists", "sort_order": 2 }
+		},
+		{
+			"collection": "specializations",
+			"id": "spec-cochlear",
+			"status": "published",
+			"data": { "icon": "earbuds", "title": "Cochlear", "description": "Evaluation and mapping for advanced implantable hearing technology.", "slug_path": "/cochlear-specialists", "sort_order": 3 }
+		},
+		{
+			"collection": "specializations",
+			"id": "spec-vestibular",
+			"status": "published",
+			"data": { "icon": "balance", "title": "Vestibular", "description": "Diagnosis and treatment for balance disorders and dizziness.", "slug_path": "/vestibular-specialists", "sort_order": 4 }
+		},
+		{
+			"collection": "brands",
+			"id": "brand-oticon",
+			"status": "published",
+			"data": { "name": "Oticon", "tagline": "Danish engineering, BrainHearing technology", "slug_path": "/brands/oticon", "sort_order": 1 }
+		},
+		{
+			"collection": "brands",
+			"id": "brand-phonak",
+			"status": "published",
+			"data": { "name": "Phonak", "tagline": "Swiss-engineered audiology", "slug_path": "/brands/phonak", "sort_order": 2 }
+		},
+		{
+			"collection": "brands",
+			"id": "brand-starkey",
+			"status": "published",
+			"data": { "name": "Starkey", "tagline": "American-made with AI features", "slug_path": "/brands/starkey", "sort_order": 3 }
+		},
+		{
+			"collection": "brands",
+			"id": "brand-resound",
+			"status": "published",
+			"data": { "name": "ReSound", "tagline": "Direct iPhone streaming pioneer", "slug_path": "/brands/resound", "sort_order": 4 }
+		},
+		{
+			"collection": "brands",
+			"id": "brand-widex",
+			"status": "published",
+			"data": { "name": "Widex", "tagline": "Natural sound, zero delay", "slug_path": "/brands/widex", "sort_order": 5 }
+		},
+		{
+			"collection": "brands",
+			"id": "brand-signia",
+			"status": "published",
+			"data": { "name": "Signia", "tagline": "Own Voice Processing", "slug_path": "/brands/signia", "sort_order": 6 }
+		},
+		{
+			"collection": "brands",
+			"id": "brand-unitron",
+			"status": "published",
+			"data": { "name": "Unitron", "tagline": "Personalized hearing solutions", "slug_path": "/brands/unitron", "sort_order": 7 }
+		},
+		{
+			"collection": "brands",
+			"id": "brand-bernafon",
+			"status": "published",
+			"data": { "name": "Bernafon", "tagline": "Swiss precision audiology", "slug_path": "/brands/bernafon", "sort_order": 8 }
+		},
+		{
+			"collection": "resources",
+			"id": "resource-first-appointment",
+			"status": "published",
+			"data": {
+				"tag": "Clinical Guide",
+				"title": "What to expect at your first audiology appointment",
+				"blurb": "A step-by-step guide to hearing evaluations, from history-taking to diagnostic testing.",
+				"image_url": "https://lh3.googleusercontent.com/aida-public/AB6AXuC17XFnmrjB9acxknEoys6zb7b3bRYlKolJbO4HOj0PSP2ZxQfGXUasT_rgFy6lw2EYt_cBKCKmJAMLO6nJZscKIEWUkzH-11Pfbwp_HPfvPeWbAtEkjo8slEqk4i25ag6n7lhCPnvE8mofUt2k91oiy66U5eGXkVAy8KTdTgU9rKjlUd1jVBAhgncdIEmueADJhKjUQALl88Z55LNWf3Vy6Mmci_tV8oyFIwXnVyagMkICJ_EMGEbCFnBLh3f72cP4Z83u7JYzqoc",
+				"slug_path": "/resources/first-appointment",
+				"sort_order": 1
+			}
+		},
+		{
+			"collection": "resources",
+			"id": "resource-rechargeable-vs-battery",
+			"status": "published",
+			"data": {
+				"tag": "Technology",
+				"title": "Comparing rechargeable vs. battery hearing aids",
+				"blurb": "An honest look at the pros and cons of modern power solutions for hearing technology.",
+				"image_url": "https://lh3.googleusercontent.com/aida-public/AB6AXuBM8YVJc4AJn_kHbajb-IwlB8LqNCvx3JRIBm8NbcFggVOToRYU6SyPHwlU8Pe9n-4QNg_Jiiw13clv8Qxc-By0483vksBDDI2LlQ-fFaAnoUXIhS8ci21evtqQ_JWEl71Zb-EB_05lEyytowv0-LqjA7Fa_OZ1IZAouV6FmfcliK17jrPNXNV-KPwLVpYcO6F5SbbbJcbr57t2EYfT60d58RUo9nyuXPlx5NQ83dylFYhBIMdixLVwhEaFBo-MBH37iViSLgAzy7k",
+				"slug_path": "/resources/rechargeable-vs-battery",
+				"sort_order": 2
+			}
+		},
+		{
+			"collection": "resources",
+			"id": "resource-tinnitus-therapy",
+			"status": "published",
+			"data": {
+				"tag": "Tinnitus",
+				"title": "New breakthroughs in tinnitus sound therapy",
+				"blurb": "Recent clinical research on sound masking and cognitive habituation for ringing ears.",
+				"image_url": "https://lh3.googleusercontent.com/aida-public/AB6AXuB7B1vbUX_MT_FPpM0KwIgLuPc5ej4dMe-wv6RokNpQOq5FMdTM3S8-RH9dPQJfvUUJlOEb_1_TjhXXqqgGfFpC7RGfvsmp5cEu82UTBiEIiXplxBf_x1yrFudN-_eQ9FvSUT84CQTHqgLjaJiSuZOSgvxDRsYryNmxp4Eda17eUSOVMifWkS3X0MLuR8fvfkStkIrR2fel1uTRSLwU-DS26mxP3pDhtTJEpVlUmOUP78lwiM5O0rNTwKtcEfVeF5lBbAtUwuLubKg",
+				"slug_path": "/resources/tinnitus-therapy",
+				"sort_order": 3
+			}
+		},
+		{
+			"collection": "faqs",
+			"id": "faq-what-is-audiologist",
+			"status": "published",
+			"data": { "question": "What does an audiologist do?", "answer": "An audiologist is a healthcare professional who specializes in diagnosing and treating hearing and balance disorders. They hold a Doctor of Audiology (Au.D.) degree and are licensed to perform hearing evaluations, fit hearing aids, manage tinnitus, and provide cochlear implant services.", "scope": "global", "sort_order": 1 }
+		},
+		{
+			"collection": "faqs",
+			"id": "faq-cost",
+			"status": "published",
+			"data": { "question": "How much does a hearing test cost?", "answer": "A comprehensive hearing evaluation typically costs between $100 and $250 without insurance. Many insurance plans, including Medicare Part B, cover diagnostic hearing tests when ordered by a physician. Check with your specific provider for coverage details.", "scope": "global", "sort_order": 2 }
+		},
+		{
+			"collection": "faqs",
+			"id": "faq-hearing-aid-brands",
+			"status": "published",
+			"data": { "question": "Which hearing aid brand is best?", "answer": "The best hearing aid brand depends on your specific hearing loss, lifestyle, and budget. Major manufacturers like Oticon, Phonak, Starkey, ReSound, Widex, and Signia each have strengths in different areas. An audiologist can help you compare options based on your audiogram results and daily listening needs.", "scope": "global", "sort_order": 3 }
+		},
+		{
+			"collection": "faqs",
+			"id": "faq-insurance",
+			"status": "published",
+			"data": { "question": "Does insurance cover hearing aids?", "answer": "Coverage varies widely. Some private insurance plans include hearing aid benefits, typically $1,000–$2,500 per ear every 3–5 years. Medicare does not cover hearing aids but does cover diagnostic testing. Medicaid coverage varies by state. Many practices offer financing plans for out-of-pocket costs.", "scope": "global", "sort_order": 4 }
+		},
+		{
+			"collection": "faqs",
+			"id": "faq-tinnitus",
+			"status": "published",
+			"data": { "question": "Can an audiologist help with tinnitus?", "answer": "Yes. Audiologists trained in tinnitus management can provide sound therapy, cognitive behavioral strategies, and hearing aid-based tinnitus masking. Many practices in our directory list tinnitus as a specialization — use the specialization filter to find providers near you.", "scope": "global", "sort_order": 5 }
+		},
+		{
+			"collection": "landing_intros",
+			"id": "intro-california",
+			"status": "published",
+			"data": {
+				"page_type": "state",
+				"slug_match": "california",
+				"heading": "Audiology Care Across the Golden State",
+				"intro_prose": "California leads the nation in audiology access, with nearly 500 verified practices spanning from San Diego to the Bay Area. The state's diverse population drives demand for multilingual providers and culturally sensitive hearing care.\n\nCalifornia audiologists are licensed by the Speech-Language Pathology and Audiology and Hearing Aid Dispensers Board. Most hold Doctor of Audiology (Au.D.) degrees from accredited programs including USC, UCSD, and San José State University.\n\nMedi-Cal provides limited hearing aid coverage for adults, while children under 21 have broader benefits through EPSDT. Many California practices participate in major commercial networks including Kaiser Permanente, Blue Shield, and Anthem."
+			}
+		},
+		{
+			"collection": "landing_intros",
+			"id": "intro-california-la",
+			"status": "published",
+			"data": {
+				"page_type": "city",
+				"slug_match": "california/los-angeles",
+				"heading": "Expert Hearing Care in the City of Angels",
+				"intro_prose": "Navigating the audiology landscape in Los Angeles requires understanding the diverse range of specialized clinics available, from world-renowned research institutes in Westwood to boutique private practices in Beverly Hills. With 87 verified locations, LA residents have access to some of the nation's top diagnostic equipment and hearing aid technology.\n\nProviders in the Los Angeles metropolitan area typically hold Doctor of Audiology (Au.D.) degrees and are licensed by the California Speech-Language Pathology and Audiology and Hearing Aid Dispensers Board. Many leading clinicians maintain dual certifications as both audiologists and hearing aid dispensers, ensuring a holistic approach to auditory rehabilitation.\n\nInsurance coverage in Los Angeles is comprehensive, with a majority of providers participating in major networks including Kaiser Permanente, L.A. Care, and Blue Shield of California. Specialized veterans care is heavily concentrated near the VA West Los Angeles Medical Center, with over a dozen community care partners facilitating local treatment."
+			}
+		}
+	]
+}

@@ -1,0 +1,11 @@
+node_modules
+dist
+.astro
+.wrangler
+.env
+.env.local
+.dev.vars
+emdash-env.d.ts
+*.log
+.DS_Store
+_tmp*.sql

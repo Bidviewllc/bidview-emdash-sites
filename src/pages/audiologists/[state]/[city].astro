@@ -1,0 +1,311 @@
+---
+import Base from "../../../layouts/Base.astro";
+import SiteNav from "../../../components/SiteNav.astro";
+import SiteFooter from "../../../components/SiteFooter.astro";
+import Pagination from "../../../components/Pagination.astro";
+import { getDB } from "../../../lib/db";
+import { getEmDashCollection } from "emdash";
+
+export const cacheHint = 3600;
+
+const { state, city } = Astro.params;
+const db = getDB(Astro.locals);
+
+// ── Pagination ───────────────────────────────────────────────
+const PER_PAGE = 20;
+const page = Math.max(1, parseInt(Astro.url.searchParams.get("page") || "1", 10) || 1);
+const offset = (page - 1) * PER_PAGE;
+
+// ── Core queries ──────────────────────────────────────────────
+const cityInfo = await db.getCityInfo(state!, city!);
+if (!cityInfo) {
+	return new Response(null, { status: 404, statusText: "Not Found" });
+}
+
+const [practices, totalPracticesCount] = await Promise.all([
+	db.getPracticesByCity(state!, city!, PER_PAGE, offset),
+	db.countPracticesByCity(state!, city!),
+]);
+const totalPages = Math.ceil(totalPracticesCount / PER_PAGE);
+
+// ── Intro prose from emdash ───────────────────────────────────
+const { entries: intros } = await getEmDashCollection("landing_intros", { status: "published" });
+const intro = intros.find((e: any) => e.page_type === "city" && e.slug_match === `${state}/${city}`);
+
+// ── Helpers ───────────────────────────────────────────────────
+function splitPipe(val: string | null | undefined): string[] {
+	if (!val) return [];
+	return val.split("|").map((s: string) => s.trim()).filter(Boolean);
+}
+
+function aggregatePipeField(practices: any[], field: string): { name: string; count: number }[] {
+	const counts = new Map<string, number>();
+	for (const p of practices) {
+		const val = p[field];
+		if (!val) continue;
+		for (const item of val.split("|")) {
+			const trimmed = item.trim();
+			if (!trimmed) continue;
+			counts.set(trimmed, (counts.get(trimmed) || 0) + 1);
+		}
+	}
+	return [...counts.entries()]
+		.map(([name, count]) => ({ name, count }))
+		.sort((a, b) => b.count - a.count);
+}
+
+const topSpecializations = aggregatePipeField(practices, "specializations").slice(0, 4);
+const topBrands = aggregatePipeField(practices, "hearing_aid_brands").slice(0, 6);
+const topInsurance = aggregatePipeField(practices, "insurance_plans").slice(0, 4);
+
+// ── Derive neighborhoods from addresses ───────────────────────
+const neighborhoodSet = new Set<string>();
+for (const p of practices) {
+	if (p.address) {
+		// Try to extract a sub-area from the address (before the city name)
+		const parts = p.address.split(",").map((s: string) => s.trim());
+		if (parts.length >= 2) {
+			// Use the city field itself if no neighborhood info
+			neighborhoodSet.add(p.city || cityInfo.city);
+		}
+	}
+}
+
+// ── Dynamic meta ──────────────────────────────────────────────
+const cityName = cityInfo.city;
+const stateCode = cityInfo.state_code;
+const stateName = cityInfo.state_name;
+const practiceCount = cityInfo.count;
+const title = `Audiologists in ${cityName}, ${stateCode} | AudiologistDirectory.com`;
+const description = `${practiceCount} verified audiology practices in ${cityName}, ${stateCode}. Find expert hearing care, compare ratings, and book appointments.`;
+const canonical = `https://audiologistdirectory.com/audiologists/${state}/${city}`;
+
+// Count VA-accepting practices
+const vaCount = practices.filter((p: any) => p.accepts_va).length;
+
+// Format current date
+const now = new Date();
+const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const updatedLabel = `${monthNames[now.getMonth()].slice(0,3)} ${now.getFullYear()}`;
+---
+
+<Base title={title} description={description} canonical={canonical}>
+	<SiteNav active="states" />
+	<!-- Breadcrumbs (full-width band) -->
+	<div class="bg-white border-b border-mist">
+		<nav class="max-w-7xl mx-auto px-8 py-4 flex items-center gap-2 text-sm text-slate">
+			<a class="hover:text-forest transition-colors" href="/">Home</a>
+			<span class="material-symbols-outlined text-sm">chevron_right</span>
+			<a class="hover:text-forest transition-colors" href="/audiologists">Audiologists</a>
+			<span class="material-symbols-outlined text-sm">chevron_right</span>
+			<a class="hover:text-forest transition-colors" href={`/audiologists/${state}`}>{stateName}</a>
+			<span class="material-symbols-outlined text-sm">chevron_right</span>
+			<span class="text-forest font-semibold">{cityName}</span>
+		</nav>
+	</div>
+	<!-- Hero Section (full width) -->
+	<section class="bg-sand overflow-hidden">
+		<div class="max-w-7xl mx-auto">
+			<div class="grid md:grid-cols-5 items-center">
+				<div class="md:col-span-3 p-12 lg:p-16">
+					<span class="uppercase tracking-widest text-xs font-bold text-slate block mb-4">CITY DIRECTORY · UPDATED {updatedLabel.toUpperCase()}</span>
+					<h1 class="text-5xl lg:text-6xl font-medium text-ink leading-tight mb-6">Audiologists in {cityName}, {stateCode}</h1>
+					<p class="text-xl text-slate mb-10 max-w-xl">{practiceCount} verified audiology practice{practiceCount !== 1 ? "s" : ""} providing expert care for hearing loss and balance disorders.</p>
+					<div class="bg-white p-2 rounded-lg border border-mist shadow-lg flex flex-col md:flex-row gap-2 max-w-2xl">
+						<div class="flex-1 flex items-center px-4 py-3 border-r border-mist last:border-0">
+							<span class="material-symbols-outlined text-slate mr-3">location_on</span>
+							<input class="w-full border-0 focus:ring-0 text-base placeholder:text-slate/60" placeholder="Neighborhood or Zip" type="text" value={`${cityName}, ${stateCode}`} />
+						</div>
+						<div class="flex-1 flex items-center px-4 py-3 border-r border-mist last:border-0">
+							<span class="material-symbols-outlined text-slate mr-3">stethoscope</span>
+							<input class="w-full border-0 focus:ring-0 text-base placeholder:text-slate/60" placeholder="Specialization" type="text" />
+						</div>
+						<button class="bg-forest text-white px-8 py-3 rounded-lg font-medium hover:bg-forest-dark transition-colors whitespace-nowrap">
+							Search {cityName}
+						</button>
+					</div>
+				</div>
+				<div class="md:col-span-2 relative h-full min-h-[400px] bg-sand">
+					{practices[0]?.photo_url ? (
+						<img class="absolute inset-0 w-full h-full object-cover" alt={`Audiology practice in ${cityName}`} src={practices[0].photo_url} />
+					) : (
+						<div class="absolute inset-0 flex items-center justify-center">
+							<span class="material-symbols-outlined text-8xl text-forest/20">hearing</span>
+						</div>
+					)}
+				</div>
+			</div>
+		</div>
+	</section>
+	<main class="max-w-7xl mx-auto px-8 py-12">
+		<!-- Trust Strip -->
+		<div class="bg-white border-y border-mist grid grid-cols-2 md:grid-cols-4 py-8 mb-16 rounded-lg">
+			<div class="text-center px-4 border-r border-mist last:border-0">
+				<p class="text-3xl font-serif font-bold text-forest">{practiceCount}</p>
+				<p class="text-sm text-slate uppercase tracking-wide mt-1">Verified Practices</p>
+			</div>
+			<div class="text-center px-4 border-r border-mist last:border-0">
+				<p class="text-3xl font-serif font-bold text-forest">{topSpecializations.length}</p>
+				<p class="text-sm text-slate uppercase tracking-wide mt-1">Specializations</p>
+			</div>
+			<div class="text-center px-4 border-r border-mist last:border-0">
+				<p class="text-3xl font-serif font-bold text-forest">{topBrands.length > 0 ? topBrands.length + "+" : "—"}</p>
+				<p class="text-sm text-slate uppercase tracking-wide mt-1">Hearing Aid Brands</p>
+			</div>
+			<div class="text-center px-4 border-r border-mist last:border-0">
+				<p class="text-3xl font-serif font-bold text-forest">{updatedLabel}</p>
+				<p class="text-sm text-slate uppercase tracking-wide mt-1">Updated Month</p>
+			</div>
+		</div>
+
+		{/* Intro Prose — from emdash if available */}
+		{intro ? (
+			<section class="max-w-4xl mb-24">
+				<h2 class="text-3xl font-medium mb-6">{intro.data?.heading || intro.heading || `Hearing Care in ${cityName}`}</h2>
+				<div class="space-y-6 text-slate text-lg" set:html={intro.data?.body_html || intro.body_html || intro.data?.body || intro.body || ""} />
+			</section>
+		) : (
+			<section class="max-w-4xl mb-24">
+				<h2 class="text-3xl font-medium mb-6">Hearing Care in {cityName}, {stateCode}</h2>
+				<div class="space-y-6 text-slate text-lg">
+					<p>Find {practiceCount} verified audiology practice{practiceCount !== 1 ? "s" : ""} in {cityName}, {stateName}. Our directory helps you compare providers by specialization, insurance acceptance, hearing aid brands, and patient ratings to find the right audiologist for your needs.</p>
+				</div>
+			</section>
+		)}
+
+		{/* Specializations */}
+		{topSpecializations.length > 0 && (
+			<section class="mb-24">
+				<h2 class="text-3xl font-medium mb-8">Specialized Care in {cityName}</h2>
+				<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+					{topSpecializations.map((spec) => (
+						<div class="bg-white p-8 rounded-lg border border-mist shadow-sm">
+							<span class="material-symbols-outlined text-forest mb-4" style="font-variation-settings: 'FILL' 1;">hearing</span>
+							<h3 class="font-bold text-xl mb-2">{spec.name}</h3>
+							<span class="text-xs font-bold text-forest bg-forest-light px-2 py-1 rounded-full uppercase tracking-wider">{spec.count} Provider{spec.count !== 1 ? "s" : ""}</span>
+						</div>
+					))}
+				</div>
+			</section>
+		)}
+
+		<!-- Top Practices -->
+		<section class="mb-24">
+			<h2 class="text-3xl font-medium mb-8">Verified Practices in {cityName}</h2>
+			<div class="grid md:grid-cols-2 gap-8">
+				{practices.map((p: any) => {
+					const specs = splitPipe(p.specializations);
+					const brands = splitPipe(p.hearing_aid_brands);
+					return (
+						<div class="bg-white p-8 rounded-lg border border-mist shadow-sm hover:shadow-md transition-shadow">
+							<div class="flex justify-between items-start mb-4">
+								<div>
+									<h3 class="text-2xl font-medium mb-1">
+										<a class="hover:text-forest transition-colors" href={`/practice/${p.practice_slug}`}>{p.name}</a>
+									</h3>
+									<p class="text-slate flex items-center gap-1">
+										<span class="material-symbols-outlined text-base">location_on</span>
+										{p.address ? `${p.address}` : `${cityName}, ${stateCode}`}
+									</p>
+								</div>
+								<span class="bg-sage text-white text-xs px-3 py-1 rounded-full flex items-center gap-1">
+									<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+									Verified
+								</span>
+							</div>
+							{/* Rating */}
+							{p.rating && (
+								<div class="flex items-center gap-2 mb-4">
+									<div class="flex text-[#FFB800]">
+										{[...Array(5)].map((_, i) => (
+											<span class="material-symbols-outlined text-sm" style={`font-variation-settings: 'FILL' ${i < Math.round(p.rating) ? 1 : 0};`}>star</span>
+										))}
+									</div>
+									<span class="font-bold text-sm">{p.rating}</span>
+									{p.reviews_count > 0 && <span class="text-slate text-sm">({p.reviews_count} review{p.reviews_count !== 1 ? "s" : ""})</span>}
+								</div>
+							)}
+							{/* Tags */}
+							<div class="flex flex-wrap gap-2 mb-6">
+								{specs.slice(0, 2).map((s: string) => (
+									<span class="text-xs bg-forest-light text-forest px-3 py-1 rounded-full font-medium">{s}</span>
+								))}
+								{brands.slice(0, 2).map((b: string) => (
+									<span class="text-xs bg-mist text-ink px-3 py-1 rounded-full font-medium">{b}</span>
+								))}
+							</div>
+							{/* Actions */}
+							<div class="flex gap-4">
+								{p.phone ? (
+									<a href={`tel:${p.phone}`} class="flex-1 bg-forest text-white py-3 rounded-lg font-medium hover:bg-forest-dark transition-colors text-center">Call Clinic</a>
+								) : (
+									<a href={`/practice/${p.practice_slug}`} class="flex-1 bg-forest text-white py-3 rounded-lg font-medium hover:bg-forest-dark transition-colors text-center">View Profile</a>
+								)}
+								{p.website ? (
+									<a href={p.website} target="_blank" rel="noopener noreferrer" class="flex-1 border border-forest text-forest py-3 rounded-lg font-medium hover:bg-forest-light transition-colors text-center">Visit Website</a>
+								) : (
+									<a href={`/practice/${p.practice_slug}`} class="flex-1 border border-forest text-forest py-3 rounded-lg font-medium hover:bg-forest-light transition-colors text-center">View Profile</a>
+								)}
+							</div>
+						</div>
+					);
+				})}
+			</div>
+			{practices.length === 0 && (
+				<p class="text-slate text-lg text-center py-12">No practices found in {cityName} yet. Check back soon as we continue expanding our directory.</p>
+			)}
+			<Pagination currentPage={page} totalPages={totalPages} baseUrl={`/audiologists/${state}/${city}`} />
+		</section>
+
+		{/* Brands Section */}
+		{topBrands.length > 0 && (
+			<section class="mb-24">
+				<h2 class="text-3xl font-medium mb-8">Hearing Aid Brands in {cityName}</h2>
+				<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+					{topBrands.map((brand) => (
+						<div class="bg-white p-6 rounded-lg border border-mist flex flex-col items-center justify-center text-center">
+							<p class="font-bold text-ink mb-1">{brand.name}</p>
+							<p class="text-xs text-slate">{brand.count} Location{brand.count !== 1 ? "s" : ""}</p>
+						</div>
+					))}
+				</div>
+			</section>
+		)}
+
+		{/* Insurance Section */}
+		{topInsurance.length > 0 && (
+			<section class="mb-24">
+				<h2 class="text-3xl font-medium mb-8">Insurance Accepted in {cityName}</h2>
+				<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+					{topInsurance.map((ins) => (
+						<div class="bg-white p-6 rounded-lg border border-mist flex items-center gap-4">
+							<div class="w-12 h-12 bg-sand rounded-full flex items-center justify-center text-forest">
+								<span class="material-symbols-outlined">health_and_safety</span>
+							</div>
+							<div>
+								<p class="font-bold">{ins.name}</p>
+								<p class="text-xs text-slate">{ins.count} Practice{ins.count !== 1 ? "s" : ""}</p>
+							</div>
+						</div>
+					))}
+				</div>
+			</section>
+		)}
+
+		{/* VA section note if any */}
+		{vaCount > 0 && (
+			<section class="mb-24">
+				<div class="bg-white p-6 rounded-lg border border-mist shadow-sm flex items-center gap-4">
+					<div class="w-12 h-12 bg-sand rounded-full flex items-center justify-center text-forest">
+						<span class="material-symbols-outlined">military_tech</span>
+					</div>
+					<div>
+						<p class="font-bold">{vaCount} VA-Affiliated Provider{vaCount !== 1 ? "s" : ""}</p>
+						<p class="text-sm text-slate">Certified for VA Choice and Veterans care in {cityName}.</p>
+					</div>
+				</div>
+			</section>
+		)}
+	</main>
+	<SiteFooter />
+</Base>

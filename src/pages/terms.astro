@@ -1,0 +1,120 @@
+---
+import Base from "../layouts/Base.astro";
+import SiteNav from "../components/SiteNav.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+
+export const cacheHint = 3600;
+---
+
+<Base
+	title="Terms of Service | AudiologistDirectory.com"
+	description="Terms and conditions governing the use of AudiologistDirectory.com."
+	canonical="https://audiologistdirectory.com/terms"
+>
+	<SiteNav />
+
+	<header class="bg-secondary py-20 px-8">
+		<div class="max-w-3xl mx-auto text-center space-y-4">
+			<h1 class="font-serif text-5xl text-ink">Terms of Service</h1>
+			<p class="text-lg text-slate">Last updated: April 2026</p>
+		</div>
+	</header>
+
+	<main class="max-w-3xl mx-auto px-8 py-16">
+
+		<!-- Acceptance of Terms -->
+		<section class="mb-16">
+			<h2 class="font-serif text-3xl text-ink mb-6">Acceptance of Terms</h2>
+			<p class="text-slate leading-relaxed mb-4">
+				By accessing or using AudiologistDirectory.com ("the Site"), you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use the Site. We reserve the right to update these terms at any time, and your continued use of the Site constitutes acceptance of any changes.
+			</p>
+		</section>
+
+		<!-- Use of the Directory -->
+		<section class="mb-16">
+			<h2 class="font-serif text-3xl text-ink mb-6">Use of the Directory</h2>
+			<p class="text-slate leading-relaxed mb-4">
+				AudiologistDirectory.com is a free online directory of audiology practices in the United States. You may use the Site to search for hearing care professionals, view practice information, and read patient reviews. The Site is intended for personal, non-commercial use by individuals seeking hearing care information.
+			</p>
+			<p class="text-slate leading-relaxed mb-4">
+				You agree not to scrape, crawl, or systematically extract data from the Site without our prior written consent. You also agree not to use the Site in any way that could damage, disable, or impair its functionality.
+			</p>
+		</section>
+
+		<!-- Accuracy of Information -->
+		<section class="mb-16">
+			<h2 class="font-serif text-3xl text-ink mb-6">Accuracy of Information</h2>
+			<p class="text-slate leading-relaxed mb-4">
+				The practice information displayed on our Site is sourced from publicly available data, including HealthyHearing.com, Google Maps, and individual practice websites. While we make reasonable efforts to ensure accuracy, we do not guarantee that all information is current, complete, or error-free.
+			</p>
+			<p class="text-slate leading-relaxed mb-4">
+				Practice details such as addresses, phone numbers, business hours, accepted insurance, and services offered may change without notice. We recommend contacting a practice directly to confirm details before scheduling an appointment.
+			</p>
+			<p class="text-slate leading-relaxed mb-4">
+				The Site does not provide medical advice, diagnosis, or treatment. Information on the Site is for informational purposes only and should not be considered a substitute for professional medical consultation.
+			</p>
+		</section>
+
+		<!-- Practice Listings -->
+		<section class="mb-16">
+			<h2 class="font-serif text-3xl text-ink mb-6">Practice Listings</h2>
+			<p class="text-slate leading-relaxed mb-4">
+				Practice owners may request to claim, update, or add their listing by visiting our <a href="/list-your-practice" class="text-primary hover:text-primary-dark underline">List Your Practice</a> page or contacting us directly. We reserve the right to verify the identity of anyone claiming to represent a practice before making changes to a listing.
+			</p>
+			<p class="text-slate leading-relaxed mb-4">
+				We do not accept payment to influence the ranking or placement of practice listings. All practices are displayed based on objective criteria including location relevance and patient ratings.
+			</p>
+		</section>
+
+		<!-- User Accounts -->
+		<section class="mb-16">
+			<h2 class="font-serif text-3xl text-ink mb-6">User Accounts</h2>
+			<p class="text-slate leading-relaxed mb-4">
+				Certain features of the Site may require you to create an account. You are responsible for maintaining the confidentiality of your account credentials and for all activity that occurs under your account. You agree to notify us immediately of any unauthorized use of your account.
+			</p>
+		</section>
+
+		<!-- Intellectual Property -->
+		<section class="mb-16">
+			<h2 class="font-serif text-3xl text-ink mb-6">Intellectual Property</h2>
+			<p class="text-slate leading-relaxed mb-4">
+				The Site's design, layout, text, graphics, and other content created by AudiologistDirectory.com are protected by copyright and other intellectual property laws. You may not reproduce, distribute, or create derivative works from our content without prior written permission.
+			</p>
+			<p class="text-slate leading-relaxed mb-4">
+				Practice names, logos, and trademarks displayed on the Site belong to their respective owners. Their inclusion in our directory does not imply endorsement by or affiliation with AudiologistDirectory.com.
+			</p>
+		</section>
+
+		<!-- Limitation of Liability -->
+		<section class="mb-16">
+			<h2 class="font-serif text-3xl text-ink mb-6">Limitation of Liability</h2>
+			<p class="text-slate leading-relaxed mb-4">
+				AudiologistDirectory.com is provided on an "as is" and "as available" basis. To the fullest extent permitted by law, we disclaim all warranties, express or implied, including warranties of merchantability, fitness for a particular purpose, and non-infringement.
+			</p>
+			<p class="text-slate leading-relaxed mb-4">
+				We shall not be liable for any direct, indirect, incidental, consequential, or punitive damages arising from your use of the Site, including but not limited to damages resulting from reliance on information provided on the Site, inability to access the Site, or interactions with audiology practices found through the Site.
+			</p>
+		</section>
+
+		<!-- Changes to Terms -->
+		<section class="mb-16">
+			<h2 class="font-serif text-3xl text-ink mb-6">Changes to Terms</h2>
+			<p class="text-slate leading-relaxed mb-4">
+				We may revise these Terms of Service at any time by posting updated terms on this page. The "Last updated" date at the top of this page indicates when these terms were most recently revised. We encourage you to review this page periodically to stay informed of any changes.
+			</p>
+		</section>
+
+		<!-- Contact -->
+		<section class="mb-16">
+			<h2 class="font-serif text-3xl text-ink mb-6">Contact</h2>
+			<p class="text-slate leading-relaxed mb-4">
+				If you have questions about these Terms of Service, please contact us at
+				<a href="mailto:hello@audiologistdirectory.com" class="text-primary hover:text-primary-dark underline">hello@audiologistdirectory.com</a>
+				or through our <a href="/contact" class="text-primary hover:text-primary-dark underline">contact page</a>.
+			</p>
+		</section>
+
+	</main>
+
+	<SiteFooter />
+</Base>

@@ -1,0 +1,119 @@
+---
+import Base from "../layouts/Base.astro";
+import SiteNav from "../components/SiteNav.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+
+export const cacheHint = 3600;
+---
+
+<Base
+	title="Privacy Policy | AudiologistDirectory.com"
+	description="How AudiologistDirectory.com collects, uses, and protects your personal information."
+	canonical="https://audiologistdirectory.com/privacy"
+>
+	<SiteNav />
+
+	<header class="bg-secondary py-20 px-8">
+		<div class="max-w-3xl mx-auto text-center space-y-4">
+			<h1 class="font-serif text-5xl text-ink">Privacy Policy</h1>
+			<p class="text-lg text-slate">Last updated: April 2026</p>
+		</div>
+	</header>
+
+	<main class="max-w-3xl mx-auto px-8 py-16">
+
+		<p class="text-slate leading-relaxed mb-8">
+			This Privacy Policy describes how AudiologistDirectory.com ("we," "us," or "our") collects, uses, and shares information when you visit or use our website. We are committed to protecting your privacy and being transparent about how we handle your data.
+		</p>
+
+		<!-- Information We Collect -->
+		<section class="mb-16">
+			<h2 class="font-serif text-3xl text-ink mb-6">Information We Collect</h2>
+			<p class="text-slate leading-relaxed mb-4">
+				<strong class="text-ink">Information you provide:</strong> When you contact us through our contact form, we collect your name, email address, and the content of your message. If you submit a practice listing request, we collect the practice details you provide.
+			</p>
+			<p class="text-slate leading-relaxed mb-4">
+				<strong class="text-ink">Information collected automatically:</strong> When you visit our site, we automatically collect certain technical information, including your IP address, browser type, operating system, referring URL, pages visited, and the date and time of your visit. This information is collected through server logs and analytics tools.
+			</p>
+			<p class="text-slate leading-relaxed mb-4">
+				<strong class="text-ink">Practice data:</strong> The audiology practice information displayed on our site — including names, addresses, phone numbers, ratings, and reviews — is sourced from publicly available data. We do not collect this information from patients or practice visitors.
+			</p>
+		</section>
+
+		<!-- How We Use Information -->
+		<section class="mb-16">
+			<h2 class="font-serif text-3xl text-ink mb-6">How We Use Information</h2>
+			<p class="text-slate leading-relaxed mb-4">We use the information we collect to:</p>
+			<ul class="list-disc list-inside text-slate leading-relaxed mb-4 space-y-2">
+				<li>Operate, maintain, and improve our directory</li>
+				<li>Respond to your inquiries and contact form submissions</li>
+				<li>Process practice listing requests and corrections</li>
+				<li>Analyze site usage to improve the user experience</li>
+				<li>Detect and prevent abuse or unauthorized access</li>
+			</ul>
+			<p class="text-slate leading-relaxed mb-4">
+				We do not sell your personal information to third parties. We do not use your information for targeted advertising.
+			</p>
+		</section>
+
+		<!-- Cookies -->
+		<section class="mb-16">
+			<h2 class="font-serif text-3xl text-ink mb-6">Cookies</h2>
+			<p class="text-slate leading-relaxed mb-4">
+				Our site uses cookies and similar technologies to enable essential functionality, such as remembering your search preferences. We may also use analytics cookies to understand how visitors interact with our site, which helps us improve the experience.
+			</p>
+			<p class="text-slate leading-relaxed mb-4">
+				You can control cookies through your browser settings. Disabling cookies may affect some site functionality, but you will still be able to browse the directory and view practice listings.
+			</p>
+		</section>
+
+		<!-- Third-Party Services -->
+		<section class="mb-16">
+			<h2 class="font-serif text-3xl text-ink mb-6">Third-Party Services</h2>
+			<p class="text-slate leading-relaxed mb-4">
+				We may use third-party services for analytics, hosting, and site performance monitoring. These services may collect technical information about your visit in accordance with their own privacy policies. We select third-party partners that demonstrate a commitment to data protection and security.
+			</p>
+			<p class="text-slate leading-relaxed mb-4">
+				Our site may contain links to external websites, including audiology practice websites and review platforms. We are not responsible for the privacy practices of these third-party sites, and we encourage you to review their privacy policies independently.
+			</p>
+		</section>
+
+		<!-- Data Retention -->
+		<section class="mb-16">
+			<h2 class="font-serif text-3xl text-ink mb-6">Data Retention</h2>
+			<p class="text-slate leading-relaxed mb-4">
+				We retain contact form submissions and correspondence for as long as necessary to respond to your inquiry and maintain our records, typically no longer than two years. Server logs and analytics data are retained for up to 12 months before being aggregated or deleted.
+			</p>
+			<p class="text-slate leading-relaxed mb-4">
+				Practice data displayed in our directory is refreshed quarterly and retained for as long as the practice remains active and listed in our source data.
+			</p>
+		</section>
+
+		<!-- Your Rights -->
+		<section class="mb-16">
+			<h2 class="font-serif text-3xl text-ink mb-6">Your Rights</h2>
+			<p class="text-slate leading-relaxed mb-4">
+				Depending on your location, you may have certain rights regarding your personal information, including the right to access, correct, or delete the data we hold about you. California residents may have additional rights under the California Consumer Privacy Act (CCPA).
+			</p>
+			<p class="text-slate leading-relaxed mb-4">
+				If you are a practice owner and would like to update or remove your listing information, please visit our <a href="/list-your-practice" class="text-primary hover:text-primary-dark underline">List Your Practice</a> page or <a href="/contact" class="text-primary hover:text-primary-dark underline">contact us</a>.
+			</p>
+			<p class="text-slate leading-relaxed mb-4">
+				To exercise any of your data rights, please contact us at <a href="mailto:hello@audiologistdirectory.com" class="text-primary hover:text-primary-dark underline">hello@audiologistdirectory.com</a>. We will respond within 30 days.
+			</p>
+		</section>
+
+		<!-- Contact -->
+		<section class="mb-16">
+			<h2 class="font-serif text-3xl text-ink mb-6">Contact</h2>
+			<p class="text-slate leading-relaxed mb-4">
+				If you have questions about this Privacy Policy or our data practices, please contact us at
+				<a href="mailto:hello@audiologistdirectory.com" class="text-primary hover:text-primary-dark underline">hello@audiologistdirectory.com</a>
+				or through our <a href="/contact" class="text-primary hover:text-primary-dark underline">contact page</a>.
+			</p>
+		</section>
+
+	</main>
+
+	<SiteFooter />
+</Base>

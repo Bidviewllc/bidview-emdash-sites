@@ -1,0 +1,393 @@
+---
+import Base from "../../layouts/Base.astro";
+import SiteNav from "../../components/SiteNav.astro";
+import SiteFooter from "../../components/SiteFooter.astro";
+import { getDB } from "../../lib/db";
+
+export const cacheHint = 3600;
+
+const { slug } = Astro.params;
+const db = getDB(Astro.locals);
+
+// ── Core query ────────────────────────────────────────────────
+const practice = await db.getPracticeBySlug(slug!);
+if (!practice) {
+	return new Response(null, { status: 404, statusText: "Not Found" });
+}
+
+const p: any = practice;
+
+// ── Related queries ───────────────────────────────────────────
+const [providers, reviews] = await Promise.all([
+	db.getProvidersByHhId(p.hh_id),
+	db.getReviewsByHhId(p.hh_id, 5),
+]);
+
+// ── Helpers ───────────────────────────────────────────────────
+function splitPipe(val: string | null | undefined): string[] {
+	if (!val) return [];
+	return val.split("|").map((s: string) => s.trim()).filter(Boolean);
+}
+
+function parseHours(json: string | null | undefined): { day: string; hours: string }[] {
+	if (!json) return [];
+	try {
+		const parsed = JSON.parse(json);
+		return Array.isArray(parsed) ? parsed : [];
+	} catch {
+		return [];
+	}
+}
+
+function getInitials(name: string): string {
+	return name.split(/\s+/).map((w: string) => w[0]).filter(Boolean).slice(0, 2).join("").toUpperCase();
+}
+
+function renderStars(rating: number): number[] {
+	return [...Array(5)].map((_, i) => i < Math.round(rating) ? 1 : 0);
+}
+
+const specializations = splitPipe(p.specializations);
+const brands = splitPipe(p.hearing_aid_brands);
+const insurance = splitPipe(p.insurance_plans);
+const services = splitPipe(p.services);
+const hours = parseHours(p.hours_json);
+
+const cityName = p.city || "Unknown City";
+const stateCode = p.state_code || "";
+const stateName = p.state_name || "";
+const stateSlug = p.state_slug || "";
+const citySlug = p.city_slug || "";
+
+const title = `${p.name} | AudiologistDirectory.com`;
+const description = `${p.name} — verified audiology practice in ${cityName}, ${stateCode}. ${specializations.length > 0 ? specializations.slice(0, 3).join(", ") + "." : "Hearing care services."}`;
+const canonical = `https://audiologistdirectory.com/practice/${slug}`;
+---
+
+<Base title={title} description={description} canonical={canonical}>
+	<SiteNav />
+	<!-- Breadcrumb -->
+	<div class="bg-white border-b border-neutral-mist">
+		<div class="max-w-7xl mx-auto px-8 py-4">
+			<nav class="flex items-center gap-2 text-[14px] text-neutral-slate">
+				<a class="hover:text-primary transition-colors" href="/">Home</a>
+				<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+				<a class="hover:text-primary transition-colors" href="/audiologists">Audiologists</a>
+				<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+				<a class="hover:text-primary transition-colors" href={`/audiologists/${stateSlug}`}>{stateName}</a>
+				<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+				<a class="hover:text-primary transition-colors" href={`/audiologists/${stateSlug}/${citySlug}`}>{cityName}</a>
+				<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+				<span class="text-neutral-ink font-medium">{p.name}</span>
+			</nav>
+		</div>
+	</div>
+	<!-- Hero Section -->
+	<section class="bg-secondary pt-12 pb-16">
+		<div class="max-w-7xl mx-auto px-8">
+			<div class="flex flex-col lg:flex-row gap-12">
+				<!-- Hero Left -->
+				<div class="lg:w-[70%]">
+					<span class="inline-block px-3 py-1 bg-white text-primary text-sm font-bold tracking-widest uppercase rounded mb-4">{p.practice_type || "AUDIOLOGY PRACTICE"}</span>
+					<h1 class="text-5xl md:text-6xl font-headline font-medium text-neutral-ink mb-6">{p.name}</h1>
+					<div class="flex flex-wrap items-center gap-6 mb-8">
+						{p.address && (
+							<div class="flex items-center gap-2 text-neutral-slate">
+								<span class="material-symbols-outlined text-primary">location_pin</span>
+								<span>{p.address}{p.zip ? `, ${p.zip}` : ""}</span>
+							</div>
+						)}
+						{p.rating && (
+							<div class="flex items-center gap-2">
+								<div class="flex text-[#FFB800]">
+									{renderStars(p.rating).map((filled: number) => (
+										<span class="material-symbols-outlined" style={`font-variation-settings: 'FILL' ${filled};`}>star</span>
+									))}
+								</div>
+								<span class="font-bold text-neutral-ink">{p.rating}</span>
+								{p.reviews_count > 0 && (
+									<span class="text-neutral-slate underline cursor-pointer">({p.reviews_count} review{p.reviews_count !== 1 ? "s" : ""})</span>
+								)}
+							</div>
+						)}
+					</div>
+					<div class="flex flex-wrap gap-3">
+						<span class="flex items-center gap-1.5 px-4 py-2 bg-success-tint text-success rounded-full text-sm font-semibold border border-success/20">
+							<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">verified</span> Verified
+						</span>
+						{p.accepts_va && (
+							<span class="flex items-center gap-1.5 px-4 py-2 bg-accent-tint text-accent rounded-full text-sm font-semibold border border-accent/20">
+								<span class="material-symbols-outlined text-[18px]">military_tech</span> VA Accepted
+							</span>
+						)}
+					</div>
+				</div>
+				<!-- Hero Right (Sticky Contact Card) -->
+				<div class="lg:w-[30%]">
+					<div class="sticky top-28 bg-white p-8 rounded-xl border border-neutral-mist shadow-lg">
+						{hours.length > 0 && (
+							<div class="mb-6">
+								<p class="text-neutral-slate text-sm">{hours[0]?.day}: {hours[0]?.hours}</p>
+							</div>
+						)}
+						{p.phone && (
+							<div class="text-3xl font-bold text-neutral-ink mb-6">{p.phone}</div>
+						)}
+						<div class="space-y-3">
+							{p.phone && (
+								<a href={`tel:${p.phone}`} class="w-full h-[52px] bg-primary hover:bg-primary-dark text-white rounded-lg font-semibold flex items-center justify-center gap-2 transition-all">
+									<span class="material-symbols-outlined">call</span> Call Now
+								</a>
+							)}
+							{p.website && (
+								<a href={p.website} target="_blank" rel="noopener noreferrer" class="w-full h-[52px] border-2 border-primary text-primary hover:bg-primary-tint rounded-lg font-semibold flex items-center justify-center gap-2 transition-all">
+									<span class="material-symbols-outlined">language</span> Visit Website
+								</a>
+							)}
+							{p.gmaps_url && (
+								<a href={p.gmaps_url} target="_blank" rel="noopener noreferrer" class="w-full h-[52px] border-2 border-neutral-mist text-neutral-ink hover:bg-neutral-fog rounded-lg font-semibold flex items-center justify-center gap-2 transition-all">
+									<span class="material-symbols-outlined">directions</span> Get Directions
+								</a>
+							)}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Quick Info Strip -->
+	{(insurance.length > 0 || p.practice_type) && (
+		<div class="bg-white border-y border-neutral-mist">
+			<div class="max-w-7xl mx-auto px-8 py-8">
+				<div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+					{p.practice_type && (
+						<div class="flex flex-col items-center gap-2 px-4">
+							<span class="material-symbols-outlined text-primary text-3xl">local_hospital</span>
+							<span class="font-semibold">{p.practice_type}</span>
+						</div>
+					)}
+					{specializations.length > 0 && (
+						<div class="flex flex-col items-center gap-2 px-4">
+							<span class="material-symbols-outlined text-primary text-3xl">stethoscope</span>
+							<span class="font-semibold">{specializations.length} Specialization{specializations.length !== 1 ? "s" : ""}</span>
+						</div>
+					)}
+					{brands.length > 0 && (
+						<div class="flex flex-col items-center gap-2 px-4">
+							<span class="material-symbols-outlined text-primary text-3xl">hearing</span>
+							<span class="font-semibold">{brands.length} Brand{brands.length !== 1 ? "s" : ""} Carried</span>
+						</div>
+					)}
+					{insurance.length > 0 && (
+						<div class="flex flex-col items-center gap-2 px-4">
+							<span class="material-symbols-outlined text-primary text-3xl">health_and_safety</span>
+							<span class="font-semibold">{insurance.length} Insurance Plan{insurance.length !== 1 ? "s" : ""}</span>
+						</div>
+					)}
+				</div>
+			</div>
+		</div>
+	)}
+
+	<!-- Main Content Body -->
+	<main class="max-w-7xl mx-auto px-8 py-12">
+		<div class="flex flex-col lg:flex-row gap-12">
+			<!-- Left Column Content -->
+			<div class="lg:w-2/3 space-y-12">
+
+				{/* Providers */}
+				{providers.length > 0 && (
+					<div>
+						<h2 class="text-3xl font-headline font-semibold mb-6">Our Specialists</h2>
+						<div class="grid md:grid-cols-2 gap-6">
+							{providers.map((prov) => (
+								<div class="bg-white p-6 rounded-xl border border-neutral-mist flex gap-5 items-start">
+									<div class="w-16 h-16 rounded-full bg-secondary flex items-center justify-center text-primary font-bold text-xl">{getInitials(prov.name)}</div>
+									<div>
+										<h3 class="font-headline text-xl font-semibold">{prov.name}</h3>
+										{prov.credential && (
+											<div class="flex gap-2 mt-1 mb-2">
+												<span class="px-2 py-0.5 bg-primary-tint text-primary text-[12px] font-bold rounded uppercase">{prov.credential}</span>
+											</div>
+										)}
+										{prov.title && <p class="text-sm text-neutral-slate">{prov.title}</p>}
+									</div>
+								</div>
+							))}
+						</div>
+					</div>
+				)}
+
+				{/* Services Section */}
+				{services.length > 0 && (
+					<div class="bg-white p-8 rounded-xl border border-neutral-mist">
+						<h2 class="text-3xl font-headline font-semibold mb-6">Services & Procedures</h2>
+						<div class="grid md:grid-cols-2 gap-x-12 gap-y-4">
+							{services.map((s: string) => (
+								<div class="flex items-center gap-3"><span class="material-symbols-outlined text-success">check_circle</span> {s}</div>
+							))}
+						</div>
+					</div>
+				)}
+
+				{/* Specializations */}
+				{specializations.length > 0 && (
+					<div class="bg-white p-8 rounded-xl border border-neutral-mist">
+						<h2 class="text-3xl font-headline font-semibold mb-6">Specializations</h2>
+						<div class="flex flex-wrap gap-3">
+							{specializations.map((s: string) => (
+								<span class="bg-primary/5 text-primary text-sm px-4 py-2 rounded-full border border-primary/10 font-medium">{s}</span>
+							))}
+						</div>
+					</div>
+				)}
+
+				{/* Brands */}
+				{brands.length > 0 && (
+					<div>
+						<h2 class="text-3xl font-headline font-semibold mb-6">Hearing Aid Brands Carried</h2>
+						<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+							{brands.map((b: string) => (
+								<div class="bg-white h-24 rounded-lg border border-neutral-mist flex items-center justify-center p-4">
+									<span class="font-bold text-neutral-slate tracking-widest text-lg">{b.toUpperCase()}</span>
+								</div>
+							))}
+						</div>
+					</div>
+				)}
+
+				{/* Insurance */}
+				{insurance.length > 0 && (
+					<div class="bg-white p-8 rounded-xl border border-neutral-mist">
+						<h2 class="text-3xl font-headline font-semibold mb-6">Insurance Accepted</h2>
+						<div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+							{insurance.map((ins: string) => (
+								<div class="bg-neutral-fog px-4 py-3 rounded-lg text-sm font-medium border border-neutral-mist">{ins}</div>
+							))}
+						</div>
+						<p class="mt-6 text-sm text-neutral-slate">Out-of-network benefits may apply. Contact the practice for insurance verification before your first visit.</p>
+					</div>
+				)}
+
+				{/* Photo */}
+				{p.photo_url && (
+					<div class="rounded-xl overflow-hidden border border-neutral-mist h-[400px] relative">
+						<img class="w-full h-full object-cover" alt={`${p.name} office`} src={p.photo_url} />
+						<div class="absolute inset-0 bg-neutral-ink/10 pointer-events-none flex items-end p-6">
+							<div class="bg-white px-6 py-4 rounded-xl shadow-xl flex items-center gap-3">
+								<span class="material-symbols-outlined text-primary text-4xl">location_on</span>
+								<div>
+									<div class="font-bold">{p.name}</div>
+									{p.address && <div class="text-sm text-neutral-slate">{p.address}</div>}
+								</div>
+							</div>
+						</div>
+					</div>
+				)}
+
+				{/* Reviews */}
+				{reviews.length > 0 && (
+					<div>
+						<h2 class="text-3xl font-headline font-semibold mb-6">Patient Reviews</h2>
+						<div class="space-y-6">
+							{reviews.map((r) => (
+								<div class="bg-white p-8 rounded-xl border border-neutral-mist">
+									<div class="flex items-center gap-2 mb-4 text-[#FFB800]">
+										{renderStars(r.stars).map((filled: number) => (
+											<span class="material-symbols-outlined" style={`font-variation-settings: 'FILL' ${filled};`}>star</span>
+										))}
+									</div>
+									{r.text && <blockquote class="text-neutral-ink italic mb-6">"{r.text}"</blockquote>}
+									{r.published_at && (
+										<div class="flex items-center justify-between">
+											<span class="text-sm text-neutral-slate">{new Date(r.published_at).toLocaleDateString("en-US", { year: "numeric", month: "short" })}</span>
+										</div>
+									)}
+								</div>
+							))}
+						</div>
+					</div>
+				)}
+			</div>
+
+			<!-- Right Column Sidebar -->
+			<aside class="lg:w-1/3 space-y-8">
+				{/* Hours Card */}
+				{hours.length > 0 && (
+					<div class="bg-white p-6 rounded-xl border border-neutral-mist">
+						<h4 class="font-bold mb-4">Business Hours</h4>
+						<ul class="space-y-3 text-[15px]">
+							{hours.map((h: { day: string; hours: string }) => (
+								<li class="flex justify-between">
+									<span class="font-medium">{h.day}</span>
+									<span class="text-neutral-slate">{h.hours}</span>
+								</li>
+							))}
+						</ul>
+					</div>
+				)}
+
+				{/* Contact Details */}
+				<div class="bg-white p-6 rounded-xl border border-neutral-mist">
+					<h4 class="font-bold mb-4">Location Details</h4>
+					<ul class="space-y-4 text-[15px]">
+						{p.phone && (
+							<li class="flex gap-3">
+								<span class="material-symbols-outlined text-primary">call</span>
+								<a href={`tel:${p.phone}`} class="text-primary underline">{p.phone}</a>
+							</li>
+						)}
+						{p.website && (
+							<li class="flex gap-3">
+								<span class="material-symbols-outlined text-primary">language</span>
+								<a class="text-primary underline" href={p.website} target="_blank" rel="noopener noreferrer">{(() => { try { return new URL(p.website).hostname; } catch { return p.website; } })()}</a>
+							</li>
+						)}
+						{p.address && (
+							<li class="flex gap-3">
+								<span class="material-symbols-outlined text-primary">location_on</span>
+								<span>{p.address}{p.zip ? `, ${p.zip}` : ""}</span>
+							</li>
+						)}
+					</ul>
+				</div>
+
+				{/* Quick Facts */}
+				<div class="bg-primary text-white p-8 rounded-xl shadow-lg">
+					<h4 class="text-xl font-headline font-semibold mb-6">Practice Quick Facts</h4>
+					<div class="space-y-6">
+						{p.accepts_va && (
+							<div class="flex items-start gap-4">
+								<span class="material-symbols-outlined">military_tech</span>
+								<div>
+									<div class="font-bold">VA Accepted</div>
+									<div class="text-sm opacity-80 text-primary-tint">Serves veterans through VA programs</div>
+								</div>
+							</div>
+						)}
+						{specializations.length > 0 && (
+							<div class="flex items-start gap-4">
+								<span class="material-symbols-outlined">stethoscope</span>
+								<div>
+									<div class="font-bold">{specializations.length} Specialization{specializations.length !== 1 ? "s" : ""}</div>
+									<div class="text-sm opacity-80 text-primary-tint">{specializations.slice(0, 3).join(", ")}</div>
+								</div>
+							</div>
+						)}
+						{brands.length > 0 && (
+							<div class="flex items-start gap-4">
+								<span class="material-symbols-outlined">hearing</span>
+								<div>
+									<div class="font-bold">{brands.length} Hearing Aid Brand{brands.length !== 1 ? "s" : ""}</div>
+									<div class="text-sm opacity-80 text-primary-tint">{brands.slice(0, 3).join(", ")}</div>
+								</div>
+							</div>
+						)}
+					</div>
+				</div>
+			</aside>
+		</div>
+	</main>
+	<SiteFooter />
+</Base>

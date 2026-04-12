@@ -1,0 +1,26 @@
+---
+export interface Props {
+	active?: "find" | "states" | "brands" | "resources" | null;
+}
+const { active = null } = Astro.props;
+---
+
+<nav class="bg-white/80 text-[#124737] top-0 sticky border-b border-mist z-50 backdrop-blur-md">
+	<div class="flex justify-between items-center w-full px-8 py-4 max-w-7xl mx-auto">
+		<div class="flex items-center gap-8">
+			<a class="text-xl font-medium font-serif text-[#124737] flex items-center gap-2" href="/">
+				<span class="material-symbols-outlined">graphic_eq</span>
+				AudiologistDirectory
+			</a>
+			<div class="hidden md:flex gap-6">
+				<a class={`font-medium transition-colors duration-200 ${active === "find" ? "text-[#124737] font-bold border-b-2 border-[#124737] pb-1" : "text-slate hover:text-[#124737]"}`} href="/search">Find an Audiologist</a>
+				<a class={`font-medium transition-colors duration-200 ${active === "states" ? "text-[#124737] font-bold border-b-2 border-[#124737] pb-1" : "text-slate hover:text-[#124737]"}`} href="/audiologists">Browse by State</a>
+				<a class={`font-medium transition-colors duration-200 ${active === "brands" ? "text-[#124737] font-bold border-b-2 border-[#124737] pb-1" : "text-slate hover:text-[#124737]"}`} href="/brands">Hearing Aid Brands</a>
+				<a class={`font-medium transition-colors duration-200 ${active === "resources" ? "text-[#124737] font-bold border-b-2 border-[#124737] pb-1" : "text-slate hover:text-[#124737]"}`} href="/resources">Resources</a>
+			</div>
+		</div>
+		<div class="flex items-center gap-4">
+			<a class="bg-primary hover:bg-primary-dark text-white px-6 py-3 rounded-lg font-medium transition-transform active:scale-95" href="/list-your-practice">List Your Practice</a>
+		</div>
+	</div>
+</nav>

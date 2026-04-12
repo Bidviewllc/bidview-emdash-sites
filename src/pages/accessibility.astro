@@ -1,0 +1,95 @@
+---
+import Base from "../layouts/Base.astro";
+import SiteNav from "../components/SiteNav.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+
+export const cacheHint = 3600;
+---
+
+<Base
+	title="Accessibility Statement | AudiologistDirectory.com"
+	description="Our commitment to making AudiologistDirectory.com accessible to all users, including adults 55 and older."
+	canonical="https://audiologistdirectory.com/accessibility"
+>
+	<SiteNav />
+
+	<header class="bg-secondary py-20 px-8">
+		<div class="max-w-3xl mx-auto text-center space-y-4">
+			<h1 class="font-serif text-5xl text-ink">Accessibility Statement</h1>
+			<p class="text-lg text-slate">Designed for everyone, with special attention to older adults.</p>
+		</div>
+	</header>
+
+	<main class="max-w-3xl mx-auto px-8 py-16">
+
+		<!-- Our Commitment -->
+		<section class="mb-16">
+			<h2 class="font-serif text-3xl text-ink mb-6">Our Commitment</h2>
+			<p class="text-slate leading-relaxed mb-4">
+				AudiologistDirectory.com is committed to providing a website that is accessible to the widest possible audience. Because hearing loss disproportionately affects adults aged 55 and older, we have designed every element of our site with this audience in mind — from font sizes and color contrast to navigation patterns and interactive elements.
+			</p>
+			<p class="text-slate leading-relaxed mb-4">
+				We target conformance with the Web Content Accessibility Guidelines (WCAG) 2.1 at Level AA, with many elements meeting the stricter Level AAA criteria. Accessibility is not an afterthought for us — it is a core design requirement built into every page from the start.
+			</p>
+		</section>
+
+		<!-- Design Choices -->
+		<section class="mb-16">
+			<h2 class="font-serif text-3xl text-ink mb-6">Design Choices for Readability</h2>
+			<p class="text-slate leading-relaxed mb-4">
+				We have made deliberate design decisions to ensure our site is easy to read and navigate for adults of all ages and abilities:
+			</p>
+			<ul class="list-disc list-inside text-slate leading-relaxed mb-4 space-y-3">
+				<li><strong class="text-ink">Larger base font size:</strong> Our body text uses a 17-pixel base, larger than the typical 16-pixel web standard, to improve readability without requiring users to zoom.</li>
+				<li><strong class="text-ink">High contrast text:</strong> All text meets WCAG AA contrast requirements at minimum. Body text uses dark ink tones on light backgrounds, and we avoid light gray text that can be difficult to read.</li>
+				<li><strong class="text-ink">Large touch and click targets:</strong> All interactive elements — buttons, links, form inputs — are at least 48 pixels tall, exceeding the minimum recommended target size for touch screens.</li>
+				<li><strong class="text-ink">Visible focus indicators:</strong> When navigating with a keyboard, every focusable element displays a clear 2-pixel outline in our primary color, making it easy to see where you are on the page.</li>
+				<li><strong class="text-ink">Always-visible labels:</strong> Form fields use fixed labels above each input rather than floating or placeholder-only labels, which can be confusing when a field is active or filled in.</li>
+				<li><strong class="text-ink">Generous spacing:</strong> We use ample white space between sections, paragraphs, and interactive elements to reduce visual clutter and make content easier to scan.</li>
+				<li><strong class="text-ink">Plain language:</strong> We write in clear, everyday English. You will not find clinical jargon or overly technical language on our site. When medical terms are necessary, we provide plain-language explanations.</li>
+			</ul>
+		</section>
+
+		<!-- Known Limitations -->
+		<section class="mb-16">
+			<h2 class="font-serif text-3xl text-ink mb-6">Known Limitations</h2>
+			<p class="text-slate leading-relaxed mb-4">
+				While we strive for full accessibility, some limitations may exist:
+			</p>
+			<ul class="list-disc list-inside text-slate leading-relaxed mb-4 space-y-3">
+				<li>Some third-party content, such as embedded maps or external review platforms, may not fully conform to WCAG guidelines. We provide text alternatives where possible.</li>
+				<li>Practice photos sourced from Google Maps may lack descriptive alt text. We are working to improve alt text coverage across all images.</li>
+				<li>Older browsers or assistive technology versions may not fully support all modern accessibility features used on the site.</li>
+			</ul>
+			<p class="text-slate leading-relaxed mb-4">
+				We are continuously working to identify and resolve accessibility barriers. If you encounter an issue, we want to know about it.
+			</p>
+		</section>
+
+		<!-- Feedback -->
+		<section class="mb-16">
+			<h2 class="font-serif text-3xl text-ink mb-6">Feedback</h2>
+			<p class="text-slate leading-relaxed mb-4">
+				We welcome your feedback on the accessibility of AudiologistDirectory.com. If you experience any difficulty using our site, or if you have suggestions for how we can improve, please let us know through our <a href="/contact" class="text-primary hover:text-primary-dark underline">contact page</a> or by emailing
+				<a href="mailto:hello@audiologistdirectory.com" class="text-primary hover:text-primary-dark underline">hello@audiologistdirectory.com</a>.
+			</p>
+			<p class="text-slate leading-relaxed mb-4">
+				When reporting an accessibility issue, it is helpful to include the page URL, a description of the problem, the browser and assistive technology you are using, and any screenshots if possible. We will respond within 5 business days and work to resolve the issue promptly.
+			</p>
+		</section>
+
+		<!-- Standards -->
+		<section class="mb-16">
+			<h2 class="font-serif text-3xl text-ink mb-6">Standards</h2>
+			<p class="text-slate leading-relaxed mb-4">
+				This site is designed to conform with <a href="https://www.w3.org/TR/WCAG21/" class="text-primary hover:text-primary-dark underline" target="_blank" rel="noopener noreferrer">WCAG 2.1 Level AA</a>, the international standard for web accessibility published by the World Wide Web Consortium (W3C). These guidelines define how to make web content more accessible to people with disabilities, including visual, auditory, motor, and cognitive impairments.
+			</p>
+			<p class="text-slate leading-relaxed mb-4">
+				This accessibility statement was last reviewed in April 2026.
+			</p>
+		</section>
+
+	</main>
+
+	<SiteFooter />
+</Base>

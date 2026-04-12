@@ -1,0 +1,56 @@
+---
+import Base from "../../layouts/Base.astro";
+import SiteNav from "../../components/SiteNav.astro";
+import SiteFooter from "../../components/SiteFooter.astro";
+import { getEmDashCollection } from "emdash";
+
+export const cacheHint = 3600;
+
+const { entries: allPages } = await getEmDashCollection("pages", { status: "published" });
+const { entries: allResources } = await getEmDashCollection("resources", { status: "published" });
+
+const hero = allPages.find((p) => p.data.page_key === "resources_hero")?.data;
+const resources = [...allResources].sort((a, b) => (a.data.sort_order ?? 0) - (b.data.sort_order ?? 0));
+---
+
+<Base
+	title="Resources — Hearing Care Guides | AudiologistDirectory.com"
+	description={hero?.subheadline || "Educational articles on hearing health."}
+	canonical="https://audiologistdirectory.com/resources"
+>
+	<SiteNav active="resources" />
+
+	<header class="bg-secondary py-20 px-8">
+		<div class="max-w-7xl mx-auto text-center space-y-6">
+			{hero?.badge && (
+				<div class="inline-block py-1 px-4 bg-primary/5 text-primary text-sm font-bold tracking-widest uppercase rounded-full">
+					{hero.badge}
+				</div>
+			)}
+			<h1 class="font-serif text-5xl md:text-6xl text-ink leading-tight">{hero?.headline}</h1>
+			<p class="text-lg text-slate max-w-2xl mx-auto">{hero?.subheadline}</p>
+		</div>
+	</header>
+
+	<main class="max-w-7xl mx-auto px-8 py-16">
+		<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+			{resources.map((r) => (
+				<a href={r.data.slug_path || "#"} class="bg-white rounded-xl overflow-hidden shadow-soft flex flex-col group">
+					<div class="aspect-[16/10] bg-primary/10 relative overflow-hidden">
+						<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt={r.data.title} src={r.data.image_url} />
+					</div>
+					<div class="p-8 space-y-4">
+						<span class="text-xs font-bold text-primary uppercase tracking-widest">{r.data.tag}</span>
+						<h3 class="font-serif text-2xl text-ink group-hover:text-primary transition-colors leading-tight">{r.data.title}</h3>
+						<p class="text-sm text-slate">{r.data.blurb}</p>
+						<div class="pt-2 text-primary font-semibold flex items-center gap-2 group-hover:gap-3 transition-all">
+							Read article <span class="material-symbols-outlined text-sm">chevron_right</span>
+						</div>
+					</div>
+				</a>
+			))}
+		</div>
+	</main>
+
+	<SiteFooter />
+</Base>

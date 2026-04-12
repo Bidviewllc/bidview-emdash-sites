@@ -1,0 +1,123 @@
+---
+import Base from "../layouts/Base.astro";
+import SiteNav from "../components/SiteNav.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+
+export const cacheHint = 3600;
+---
+
+<Base
+	title="Contact Us | AudiologistDirectory.com"
+	description="Get in touch with AudiologistDirectory.com — report an issue, list your practice, or ask a question."
+	canonical="https://audiologistdirectory.com/contact"
+>
+	<SiteNav />
+
+	<header class="bg-secondary py-20 px-8">
+		<div class="max-w-3xl mx-auto text-center space-y-4">
+			<h1 class="font-serif text-5xl text-ink">Contact Us</h1>
+			<p class="text-lg text-slate">Have a question or need to report an issue? We are here to help.</p>
+		</div>
+	</header>
+
+	<main class="max-w-4xl mx-auto px-8 py-16">
+		<div class="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-12">
+
+			<!-- Contact Form -->
+			<div>
+				<h2 class="font-serif text-3xl text-ink mb-6">Send Us a Message</h2>
+				<form class="space-y-6" action="#" method="POST">
+					<div>
+						<label for="name" class="block text-sm font-medium text-ink mb-2">Your Name</label>
+						<input
+							type="text"
+							id="name"
+							name="name"
+							required
+							class="w-full h-[52px] px-4 rounded-[10px] border border-mist bg-white text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
+							placeholder="Jane Smith"
+						/>
+					</div>
+
+					<div>
+						<label for="email" class="block text-sm font-medium text-ink mb-2">Email Address</label>
+						<input
+							type="email"
+							id="email"
+							name="email"
+							required
+							class="w-full h-[52px] px-4 rounded-[10px] border border-mist bg-white text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
+							placeholder="jane@example.com"
+						/>
+					</div>
+
+					<div>
+						<label for="subject" class="block text-sm font-medium text-ink mb-2">Subject</label>
+						<select
+							id="subject"
+							name="subject"
+							required
+							class="w-full h-[52px] px-4 rounded-[10px] border border-mist bg-white text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
+						>
+							<option value="" disabled selected>Choose a subject</option>
+							<option value="general">General Inquiry</option>
+							<option value="issue">Report an Issue</option>
+							<option value="list">List My Practice</option>
+							<option value="partnership">Partnership</option>
+							<option value="other">Other</option>
+						</select>
+					</div>
+
+					<div>
+						<label for="message" class="block text-sm font-medium text-ink mb-2">Message</label>
+						<textarea
+							id="message"
+							name="message"
+							rows="6"
+							required
+							class="w-full px-4 py-3 rounded-[10px] border border-mist bg-white text-ink focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors resize-y"
+							placeholder="Tell us how we can help..."
+						></textarea>
+					</div>
+
+					<button
+						type="submit"
+						class="bg-primary hover:bg-primary-dark text-white h-[52px] px-8 rounded-[10px] font-medium shadow-soft transition-colors active:scale-95"
+					>
+						Send Message
+					</button>
+				</form>
+			</div>
+
+			<!-- Info Card -->
+			<div class="lg:mt-14">
+				<div class="bg-white rounded-xl shadow-soft border border-mist p-8 space-y-6">
+					<div>
+						<h3 class="font-serif text-xl text-ink mb-2">Email Us Directly</h3>
+						<a href="mailto:hello@audiologistdirectory.com" class="text-primary hover:text-primary-dark underline">
+							hello@audiologistdirectory.com
+						</a>
+					</div>
+
+					<div class="border-t border-mist pt-6">
+						<h3 class="font-serif text-xl text-ink mb-2">Response Time</h3>
+						<p class="text-slate leading-relaxed">
+							We typically respond within 2 business days. For urgent listing corrections, please mention "urgent" in your subject line.
+						</p>
+					</div>
+
+					<div class="border-t border-mist pt-6">
+						<h3 class="font-serif text-xl text-ink mb-2">Practice Owners</h3>
+						<p class="text-slate leading-relaxed">
+							If you want to claim, update, or add your audiology practice to our directory, visit our
+							<a href="/list-your-practice" class="text-primary hover:text-primary-dark underline">List Your Practice</a> page for the fastest way to get started.
+						</p>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</main>
+
+	<SiteFooter />
+</Base>
