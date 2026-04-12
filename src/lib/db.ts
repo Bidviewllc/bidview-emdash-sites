@@ -175,6 +175,96 @@ export class DbHelper {
 		return results;
 	}
 
+	async searchFull(opts: {
+		q?: string;
+		specialization?: string;
+		brand?: string;
+		lat?: number;
+		lng?: number;
+		radius?: number; // miles
+		sort?: string;
+		limit?: number;
+		offset?: number;
+	}) {
+		const conditions = ["is_active = 1"];
+		const binds: any[] = [];
+
+		if (opts.q) {
+			const like = `%${opts.q}%`;
+			conditions.push("(name LIKE ? OR city LIKE ? OR state_name LIKE ? OR zip LIKE ? OR address LIKE ?)");
+			binds.push(like, like, like, like, like);
+		}
+		if (opts.specialization) {
+			conditions.push("specializations LIKE ?");
+			binds.push(`%${opts.specialization}%`);
+		}
+		if (opts.brand) {
+			conditions.push("hearing_aid_brands LIKE ?");
+			binds.push(`%${opts.brand}%`);
+		}
+
+		// Distance filter using Haversine approximation
+		let distanceExpr = "0";
+		if (opts.lat != null && opts.lng != null) {
+			conditions.push("lat IS NOT NULL AND lng IS NOT NULL");
+			const lat = opts.lat;
+			const lng = opts.lng;
+			// Haversine in miles
+			distanceExpr = `(3959 * acos(min(1.0, cos(${lat} * 0.0174533) * cos(lat * 0.0174533) * cos((lng - ${lng}) * 0.0174533) + sin(${lat} * 0.0174533) * sin(lat * 0.0174533))))`;
+			if (opts.radius) {
+				conditions.push(`${distanceExpr} <= ?`);
+				binds.push(opts.radius);
+			}
+		}
+
+		const limit = opts.limit || 20;
+		const offset = opts.offset || 0;
+
+		let orderBy = "rating DESC, reviews_count DESC";
+		if (opts.sort === "distance" && opts.lat != null) {
+			orderBy = `${distanceExpr} ASC`;
+		} else if (opts.sort === "rating") {
+			orderBy = "rating DESC, reviews_count DESC";
+		} else if (opts.sort === "reviews") {
+			orderBy = "reviews_count DESC, rating DESC";
+		}
+
+		binds.push(limit, offset);
+
+		const sql = `SELECT *, ${distanceExpr} as distance FROM practices_search WHERE ${conditions.join(" AND ")} ORDER BY ${orderBy} LIMIT ? OFFSET ?`;
+		const { results } = await this.db.prepare(sql).bind(...binds).all();
+		return results;
+	}
+
+	async countFull(opts: { q?: string; specialization?: string; brand?: string; lat?: number; lng?: number; radius?: number }) {
+		const conditions = ["is_active = 1"];
+		const binds: any[] = [];
+
+		if (opts.q) {
+			const like = `%${opts.q}%`;
+			conditions.push("(name LIKE ? OR city LIKE ? OR state_name LIKE ? OR zip LIKE ? OR address LIKE ?)");
+			binds.push(like, like, like, like, like);
+		}
+		if (opts.specialization) {
+			conditions.push("specializations LIKE ?");
+			binds.push(`%${opts.specialization}%`);
+		}
+		if (opts.brand) {
+			conditions.push("hearing_aid_brands LIKE ?");
+			binds.push(`%${opts.brand}%`);
+		}
+		if (opts.lat != null && opts.lng != null && opts.radius) {
+			conditions.push("lat IS NOT NULL AND lng IS NOT NULL");
+			const distanceExpr = `(3959 * acos(min(1.0, cos(${opts.lat} * 0.0174533) * cos(lat * 0.0174533) * cos((lng - ${opts.lng}) * 0.0174533) + sin(${opts.lat} * 0.0174533) * sin(lat * 0.0174533))))`;
+			conditions.push(`${distanceExpr} <= ?`);
+			binds.push(opts.radius);
+		}
+
+		const sql = `SELECT COUNT(*) as count FROM practices_search WHERE ${conditions.join(" AND ")}`;
+		const row = await this.db.prepare(sql).bind(...binds).first<{ count: number }>();
+		return row?.count || 0;
+	}
+
 	// ── Providers ────────────────────────────────────────────────
 
 	async getProvidersByHhId(hhId: number) {

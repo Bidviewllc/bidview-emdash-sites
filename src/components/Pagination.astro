@@ -5,12 +5,20 @@ export interface Props {
 	baseUrl: string;
 	/** Extra query params to preserve (e.g., { q: "dallas", specialization: "Tinnitus" }) */
 	params?: Record<string, string>;
+	/** Multi-value query params to preserve (e.g., { specialization: ["tinnitus","cochlear"] }) */
+	multiParams?: Record<string, string[]>;
 }
 
-const { currentPage, totalPages, baseUrl, params = {} } = Astro.props;
+const { currentPage, totalPages, baseUrl, params = {}, multiParams = {} } = Astro.props;
 
 function buildUrl(page: number) {
 	const sp = new URLSearchParams(params);
+	// Append multi-value params
+	for (const [key, values] of Object.entries(multiParams)) {
+		for (const v of values) {
+			sp.append(key, v);
+		}
+	}
 	if (page > 1) sp.set("page", String(page));
 	const qs = sp.toString();
 	return baseUrl + (qs ? "?" + qs : "");
