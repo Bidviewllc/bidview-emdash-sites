@@ -37,5 +37,36 @@
 	"placement": {
 		"mode": "smart"
 	},
-	"workers_dev": true
+	"workers_dev": true,
+
+	"env": {
+		"staging": {
+			"name": "audiologist-directory-staging",
+			"d1_databases": [
+				{
+					"binding": "DB",
+					"database_name": "audiologist-directory-staging-db",
+					"database_id": "44d17c4f-282b-4544-a79c-02dd93126ee9"
+				}
+			],
+			"r2_buckets": [
+				{
+					"binding": "MEDIA",
+					"bucket_name": "audiologist-directory-staging-media"
+				}
+			],
+			"kv_namespaces": [
+				{
+					"binding": "SESSION",
+					"id": "028dfa4da881449cb1fcfb8ae46b6e2e"
+				}
+			],
+			"worker_loaders": [
+				{
+					"binding": "LOADER"
+				}
+			],
+			"workers_dev": true
+		}
+	}
 }
