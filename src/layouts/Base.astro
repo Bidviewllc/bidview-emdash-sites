@@ -46,6 +46,7 @@ const pageCtx = createPublicPageContext({
 		<title>{fullTitle}</title>
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="shortcut icon" href="/favicon.svg" />
+		<meta name="google-site-verification" content="1DAZPbeel5XbSWRBo9elLonYUPgX4Isq8d0SC3pmOWA" />
 		<EmDashHead page={pageCtx} />
 		<script type="application/ld+json" set:html={JSON.stringify([
 			{
@@ -65,15 +66,6 @@ const pageCtx = createPublicPageContext({
 				"@type": "MarketingAgency",
 				"name": "The Chicago Marketing Agency",
 				"url": "https://thechicagomarketingagency.com",
-				"telephone": "+13125551786",
-				"address": {
-					"@type": "PostalAddress",
-					"streetAddress": "123 N Michigan Ave",
-					"addressLocality": "Chicago",
-					"addressRegion": "IL",
-					"postalCode": "60601",
-					"addressCountry": "US"
-				},
 				"areaServed": {
 					"@type": "City",
 					"name": "Chicago"
@@ -83,12 +75,21 @@ const pageCtx = createPublicPageContext({
 		])} />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link rel="preconnect" href="https://images.unsplash.com" />
-		<link rel="dns-prefetch" href="https://images.unsplash.com" />
+		<!-- Font Awesome 6 Free -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+		<!-- Load Google Fonts non-render-blocking -->
 		<link
+			rel="preload"
 			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
-			rel="stylesheet"
+			as="style"
+			onload="this.onload=null;this.rel='stylesheet'"
 		/>
+		<noscript>
+			<link
+				href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+				rel="stylesheet"
+			/>
+		</noscript>
 		<style is:global>
 			*, *::before, *::after {
 				box-sizing: border-box;
@@ -216,7 +217,7 @@ const pageCtx = createPublicPageContext({
 
 				<nav class="primary-nav" aria-label="Primary navigation">
 					<div class="nav-dropdown">
-						<a href="/services" class="nav-link">Services <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+						<a href="/services" class="nav-link">Services <i class="fa-solid fa-chevron-down nav-chevron" aria-hidden="true"></i></a>
 						<div class="dropdown-panel">
 							<a href="/services/seo" class="dropdown-item">SEO</a>
 							<a href="/services/web-design" class="dropdown-item">Web Design</a>
@@ -228,7 +229,7 @@ const pageCtx = createPublicPageContext({
 						</div>
 					</div>
 					<div class="nav-dropdown">
-						<a href="/industries" class="nav-link">Industries <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+						<a href="/industries" class="nav-link">Industries <i class="fa-solid fa-chevron-down nav-chevron" aria-hidden="true"></i></a>
 						<div class="dropdown-panel">
 							<a href="/industries/dentists" class="dropdown-item">Dentists</a>
 							<a href="/industries/law-firms" class="dropdown-item">Law Firms</a>
@@ -244,7 +245,7 @@ const pageCtx = createPublicPageContext({
 						</div>
 					</div>
 					<div class="nav-dropdown nav-dropdown-mega">
-						<a href="/neighborhoods" class="nav-link">Areas We Serve <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+						<a href="/neighborhoods" class="nav-link">Areas We Serve <i class="fa-solid fa-chevron-down nav-chevron" aria-hidden="true"></i></a>
 						<div class="dropdown-panel mega-panel">
 							<div class="mega-inner">
 								<div class="mega-col">
@@ -372,36 +373,41 @@ const pageCtx = createPublicPageContext({
 						</p>
 						<div class="footer-social">
 							<a href="https://facebook.com" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
-								<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+								<i class="fa-brands fa-facebook-f" aria-hidden="true"></i>
 							</a>
 							<a href="https://instagram.com" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
-								<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+								<i class="fa-brands fa-instagram" aria-hidden="true"></i>
 							</a>
 							<a href="https://linkedin.com" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
-								<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+								<i class="fa-brands fa-linkedin-in" aria-hidden="true"></i>
 							</a>
 						</div>
 					</div>
 
 					<div class="footer-col">
 						<h4>Services</h4>
-						{footerServices?.items.map((item) => (
-							<a href={item.url}>{item.label}</a>
-						))}
+						<a href="/services/seo/">SEO Services</a>
+						<a href="/services/web-design/">Web Design</a>
+						<a href="/services/paid-advertising/">Paid Advertising</a>
+						<a href="/services/content-marketing/">Content Marketing</a>
+						<a href="/services/video-production/">Video Production</a>
+						<a href="/services/social-media/">Social Media</a>
+						<a href="/services/conversion-optimization/">Conversion Optimization</a>
 					</div>
 
 					<div class="footer-col">
 						<h4>Company</h4>
-						{footerCompany?.items.map((item) => (
-							<a href={item.url}>{item.label}</a>
-						))}
+						<a href="/about/">About Us</a>
+						<a href="/results/">Results</a>
+						<a href="/industries/">Industries</a>
+						<a href="/blog/">Blog</a>
+						<a href="/free-seo-audit/">Free SEO Audit</a>
+						<a href="/contact/">Contact</a>
 					</div>
 
 					<div class="footer-col">
 						<h4>Contact</h4>
 						<address>
-							<span>123 N Michigan Ave<br />Chicago, IL 60601</span>
-							<a href="tel:+13125551786">(312) 555-1786</a>
 							<a href="mailto:hello@thechicagomarketingagency.com">
 								hello@thechicago<wbr />marketingagency.com
 							</a>
@@ -500,12 +506,12 @@ const pageCtx = createPublicPageContext({
 			}
 
 			.nav-link:hover { color: var(--text-dark); }
-			.nav-link svg { margin-left: 2px; transition: transform 150ms ease; }
+			.nav-chevron { font-size: 0.6rem; margin-left: 4px; transition: transform 150ms ease; }
 
 			/* ── DROPDOWNS ── */
 			.nav-dropdown { position: relative; }
 			.nav-dropdown:hover .dropdown-panel { opacity: 1; visibility: visible; transform: translateY(0); }
-			.nav-dropdown:hover .nav-link svg { transform: rotate(180deg); }
+			.nav-dropdown:hover .nav-chevron { transform: rotate(180deg); }
 
 			.dropdown-panel {
 				position: absolute;

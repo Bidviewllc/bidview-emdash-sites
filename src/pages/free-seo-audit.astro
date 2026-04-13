@@ -1,6 +1,21 @@
 ---
 import Base from "../layouts/Base.astro";
 import { env } from "cloudflare:workers";
+// @ts-ignore
+import { EmailMessage } from "cloudflare:email";
+
+async function sendNotification(subject: string, body: string) {
+	const raw = [
+		`From: Chicago Marketing Agency <hello@thechicagomarketingagency.com>`,
+		`To: vince@bidviewmarketing.com`,
+		`Subject: ${subject}`,
+		`MIME-Version: 1.0`,
+		`Content-Type: text/plain; charset=UTF-8`,
+		``,
+		body,
+	].join("\r\n");
+	await (env as any).EMAIL.send(new EmailMessage("hello@thechicagomarketingagency.com", "vince@bidviewmarketing.com", raw));
+}
 
 export const cacheHint = 0;
 
@@ -29,13 +44,24 @@ if (Astro.request.method === "POST") {
 			const data = JSON.stringify({ title: name, form_type: 'seo-audit', first_name: name, email, website, phone, read_status: 'unread' });
 			await db.batch([
 				db.prepare(
+					`INSERT INTO revisions (id, collection, entry_id, data) VALUES (?, 'form_submissions', ?, ?)`
+				).bind(revId, id, data),
+				db.prepare(
 					`INSERT INTO ec_form_submissions (id, slug, status, title, form_type, first_name, email, website, phone, read_status, live_revision_id)
 					 VALUES (?, ?, 'published', ?, 'seo-audit', ?, ?, ?, ?, 'unread', ?)`
 				).bind(id, slug, name, name, email, website, phone, revId),
-				db.prepare(
-					`INSERT INTO revisions (id, collection, entry_id, data) VALUES (?, 'form_submissions', ?, ?)`
-				).bind(revId, id, data),
 			]);
+			await sendNotification(
+				`New SEO Audit Request: ${name}`,
+				[
+					`Name: ${name}`,
+					`Email: ${email}`,
+					`Website: ${website}`,
+					`Phone: ${phone || "—"}`,
+					``,
+					`View in admin: https://thechicagomarketingagency.com/_emdash`,
+				].join("\n")
+			).catch(() => {}); // don't block the user if email fails
 			formStatus = "success";
 			formMessage = "Your audit request is in! We'll reach out within 24 hours with your results.";
 		}

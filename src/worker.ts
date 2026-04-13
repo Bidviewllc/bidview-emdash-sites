@@ -1,6 +1,8 @@
 import handler from "@astrojs/cloudflare/entrypoints/server";
 export { PluginBridge } from "@emdash-cms/cloudflare/sandbox";
 
+// Bump this version string on each deploy to bust the Workers Cache
+const CACHE_VERSION = "v7";
 const SKIP_CACHE_PATHS = ["/_emdash", "/contact", "/free-seo-audit", "/api"];
 
 const worker = {
@@ -16,7 +18,9 @@ const worker = {
 
 		if (!skipCache) {
 			const cache = caches.default;
-			const cached = await cache.match(request);
+			// Versioned cache key so stale responses are auto-busted on deploy
+			const cacheKey = new Request(request.url + (request.url.includes("?") ? "&" : "?") + "__cv=" + CACHE_VERSION, request);
+			const cached = await cache.match(cacheKey);
 			if (cached) return cached;
 
 			const response = await (handler as any).fetch(request, env, ctx);
@@ -25,7 +29,7 @@ const worker = {
 			if (response.status === 200 && response.headers.get("content-type")?.includes("text/html")) {
 				const toCache = new Response(response.clone().body, response);
 				toCache.headers.set("Cache-Control", "public, s-maxage=3600, stale-while-revalidate=86400");
-				ctx.waitUntil(cache.put(request, toCache));
+				ctx.waitUntil(cache.put(cacheKey, toCache));
 			}
 
 			return response;
@@ -36,7 +40,7 @@ const worker = {
 
 	async scheduled(event: ScheduledEvent, env: any, ctx: ExecutionContext) {
 		// Keep worker warm every 5 minutes
-		ctx.waitUntil(fetch("https://thechicagomarketingagency.vince-75c.workers.dev/"));
+		ctx.waitUntil(fetch("https://thechicagomarketingagency.cameron-239.workers.dev/"));
 	},
 };
 

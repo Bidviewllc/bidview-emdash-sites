@@ -1,6 +1,21 @@
 ---
 import Base from "../layouts/Base.astro";
 import { env } from "cloudflare:workers";
+// @ts-ignore
+import { EmailMessage } from "cloudflare:email";
+
+async function sendNotification(subject: string, body: string) {
+	const raw = [
+		`From: Chicago Marketing Agency <hello@thechicagomarketingagency.com>`,
+		`To: vince@bidviewmarketing.com`,
+		`Subject: ${subject}`,
+		`MIME-Version: 1.0`,
+		`Content-Type: text/plain; charset=UTF-8`,
+		``,
+		body,
+	].join("\r\n");
+	await (env as any).EMAIL.send(new EmailMessage("hello@thechicagomarketingagency.com", "vince@bidviewmarketing.com", raw));
+}
 
 export const cacheHint = 0;
 
@@ -32,13 +47,27 @@ if (Astro.request.method === "POST") {
 			const data = JSON.stringify({ title: senderTitle, form_type: 'contact', first_name: firstName, last_name: lastName, email, phone, service, message, read_status: 'unread' });
 			await db.batch([
 				db.prepare(
+					`INSERT INTO revisions (id, collection, entry_id, data) VALUES (?, 'form_submissions', ?, ?)`
+				).bind(revId, id, data),
+				db.prepare(
 					`INSERT INTO ec_form_submissions (id, slug, status, title, form_type, first_name, last_name, email, phone, service, message, read_status, live_revision_id)
 					 VALUES (?, ?, 'published', ?, 'contact', ?, ?, ?, ?, ?, ?, 'unread', ?)`
 				).bind(id, slug, senderTitle, firstName, lastName, email, phone, service, message, revId),
-				db.prepare(
-					`INSERT INTO revisions (id, collection, entry_id, data) VALUES (?, 'form_submissions', ?, ?)`
-				).bind(revId, id, data),
 			]);
+			await sendNotification(
+				`New Contact Form: ${senderTitle}`,
+				[
+					`Name: ${senderTitle}`,
+					`Email: ${email}`,
+					`Phone: ${phone || "—"}`,
+					`Service: ${service || "—"}`,
+					``,
+					`Message:`,
+					message,
+					``,
+					`View in admin: https://thechicagomarketingagency.com/_emdash`,
+				].join("\n")
+			).catch(() => {}); // don't block the user if email fails
 			formStatus = "success";
 			formMessage = "Thanks! We'll get back to you within 1 business day.";
 		}
@@ -151,21 +180,6 @@ const services = [
 					/>
 				</div>
 				<div class="office-details">
-					<div class="office-item">
-						<span class="office-icon">
-							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-						</span>
-						<div>
-							<span>123 N Michigan Ave, Suite 800</span>
-							<span>Chicago, IL 60601</span>
-						</div>
-					</div>
-					<div class="office-item">
-						<span class="office-icon">
-							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-						</span>
-						<a href="tel:+13125551786">(312) 555-1786</a>
-					</div>
 					<div class="office-item">
 						<span class="office-icon">
 							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>

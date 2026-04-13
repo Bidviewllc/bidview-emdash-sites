@@ -14,7 +14,7 @@ const data = entry.data as {
 	title: string;
 	excerpt?: string;
 	body?: unknown;
-	featured_image?: string;
+	featured_image?: { src: string; alt: string };
 	meta_title?: string;
 	meta_description?: string;
 };
@@ -36,7 +36,7 @@ const publishDate = new Date().toLocaleDateString("en-US", {
 });
 ---
 
-<Base title={pageTitle} description={pageDesc} image={data.featured_image}>
+<Base title={pageTitle} description={pageDesc} image={data.featured_image?.src}>
 	<!-- ── BlogPosting schema ── -->
 	<script type="application/ld+json" set:html={JSON.stringify({
 		"@context": "https://schema.org",
@@ -105,8 +105,8 @@ const publishDate = new Date().toLocaleDateString("en-US", {
 		<div class="post-featured-image">
 			<div class="container">
 				<img
-					src={data.featured_image}
-					alt={data.title}
+					src={data.featured_image?.src}
+					alt={data.featured_image?.alt || data.title}
 					width="1200"
 					height="480"
 					loading="eager"
@@ -130,10 +130,10 @@ const publishDate = new Date().toLocaleDateString("en-US", {
 			<aside class="post-sidebar">
 				<!-- Author box -->
 				<div class="sidebar-author">
-					<div class="author-avatar">E</div>
+					<div class="author-avatar">TCA</div>
 					<div class="author-info">
-						<span class="author-name">Erika Johnson</span>
-						<span class="author-title">Founder, The Chicago Marketing Agency</span>
+						<span class="author-name">The Chicago Marketing Agency</span>
+						<span class="author-title">Chicago Digital Marketing Experts</span>
 					</div>
 				</div>
 

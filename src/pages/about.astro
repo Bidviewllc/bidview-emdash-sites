@@ -5,7 +5,7 @@ export const cacheHint = 3600;
 
 const team = [
 	{
-		name: "Erika Johnson",
+		name: "Agency Founder",
 		title: "Founder & CEO",
 		bio: "11+ years growing Chicago businesses online. Former Google Ads top partner.",
 		image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80",
@@ -132,27 +132,6 @@ const values = [
 		</div>
 	</section>
 
-	<!-- ── TEAM ── -->
-	<section class="about-team">
-		<div class="container">
-			<p class="eyebrow" style="text-align: center;">Meet the Team</p>
-			<h2 class="team-heading">The People Behind Your Growth</h2>
-			<div class="team-grid">
-				{team.map((member) => (
-					<div class="team-card">
-						<div class="team-photo">
-							<img src={member.image} alt={member.name} width="280" height="280" loading="lazy" />
-						</div>
-						<div class="team-info">
-							<h3>{member.name}</h3>
-							<span class="team-title">{member.title}</span>
-							<p>{member.bio}</p>
-						</div>
-					</div>
-				))}
-			</div>
-		</div>
-	</section>
 
 	<!-- ── STATS ── -->
 	<section class="about-stats">
