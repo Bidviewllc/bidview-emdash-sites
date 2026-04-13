@@ -28,6 +28,25 @@ const heroImage = d.hero_image || "https://images.unsplash.com/photo-1551288049-
 const pageTitle = d.meta_title || `${d.title} in Chicago`;
 const pageDesc = d.meta_description || d.excerpt || "";
 const ctaHeading = d.cta_heading || `Ready to Grow with ${d.title}?`;
+
+// Neighborhood hub links — establishes hub-and-spoke structure for local SEO
+const neighborhoodLinks = [
+	{ name: "River North", slug: "river-north" },
+	{ name: "West Loop", slug: "west-loop" },
+	{ name: "West Town", slug: "west-town" },
+	{ name: "Wicker Park", slug: "wicker-park" },
+	{ name: "Logan Square", slug: "logan-square" },
+	{ name: "Lakeview", slug: "lakeview" },
+	{ name: "Lincoln Park", slug: "lincoln-park" },
+	{ name: "Bridgeport", slug: "bridgeport" },
+	{ name: "Bronzeville", slug: "bronzeville" },
+	{ name: "Rogers Park", slug: "rogers-park" },
+	{ name: "Andersonville", slug: "andersonville" },
+	{ name: "Bucktown", slug: "bucktown" },
+	{ name: "Ravenswood", slug: "ravenswood" },
+	{ name: "Hyde Park", slug: "hyde-park" },
+	{ name: "Pilsen", slug: "pilsen" },
+];
 const ctaSubtext = d.cta_subtext || "Let's talk about your goals and build a strategy that delivers results.";
 
 // ── Per-service config (features, case study, stats) ─────────────────────────
@@ -221,6 +240,22 @@ const icons = {
 			</div>
 		</section>
 	)}
+
+	<!-- ── NEIGHBORHOOD HUB LINKS ── -->
+	<section class="svc-neighborhoods">
+		<div class="container">
+			<p class="eyebrow" style="color: var(--red); display: block; text-align: center;">Chicago Neighborhoods We Serve</p>
+			<h2 class="svc-neighborhoods-heading">{d.title} Across Chicago</h2>
+			<p class="svc-neighborhoods-sub">We deliver {d.title.toLowerCase()} strategies built around your specific Chicago neighborhood — its competition, its customers, and its growth potential.</p>
+			<div class="svc-neighborhoods-grid">
+				{neighborhoodLinks.map(n => (
+					<a href={`/${n.slug}/${slug}/`} class="svc-neighborhood-link">
+						{n.name}
+					</a>
+				))}
+			</div>
+		</div>
+	</section>
 
 	<!-- ── INLINE CTA STRIP ── -->
 	<section class="svc-cta-strip">
@@ -586,6 +621,48 @@ details[open] .svc-faq-q::after {
 	font-size: 0.9375rem;
 	color: var(--text-muted);
 	line-height: 1.7;
+}
+
+/* ── NEIGHBORHOOD HUB ── */
+.svc-neighborhoods {
+	padding: 72px 0;
+	background: var(--off-white);
+}
+.svc-neighborhoods-heading {
+	font-size: clamp(22px, 3vw, 30px);
+	font-weight: 700;
+	color: var(--navy);
+	text-align: center;
+	margin: 8px 0 12px;
+}
+.svc-neighborhoods-sub {
+	text-align: center;
+	color: var(--text-muted);
+	max-width: 560px;
+	margin: 0 auto 36px;
+	line-height: 1.6;
+}
+.svc-neighborhoods-grid {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	justify-content: center;
+}
+.svc-neighborhood-link {
+	display: inline-block;
+	padding: 8px 18px;
+	border: 1.5px solid var(--border);
+	border-radius: 100px;
+	font-size: 14px;
+	font-weight: 500;
+	color: var(--navy);
+	text-decoration: none;
+	transition: border-color var(--transition), color var(--transition), background var(--transition);
+}
+.svc-neighborhood-link:hover {
+	border-color: var(--red);
+	color: var(--red);
+	background: #fff5f5;
 }
 
 /* ── CTA STRIP ── */
