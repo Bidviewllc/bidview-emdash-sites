@@ -5,6 +5,7 @@ import SiteFooter from "../../../components/SiteFooter.astro";
 import Pagination from "../../../components/Pagination.astro";
 import { getDB } from "../../../lib/db";
 import { getEmDashCollection } from "emdash";
+import { getCityHeroImage } from "../../../lib/state-images";
 
 export const cacheHint = 3600;
 
@@ -137,13 +138,8 @@ const schemaData = {
 					</div>
 				</div>
 				<div class="md:col-span-2 relative h-full min-h-[400px] bg-sand">
-					{practices[0]?.photo_url ? (
-						<img class="absolute inset-0 w-full h-full object-cover" alt={`Audiology practice in ${cityName}`} src={practices[0].photo_url} />
-					) : (
-						<div class="absolute inset-0 flex items-center justify-center">
-							<span class="material-symbols-outlined text-8xl text-forest/20">hearing</span>
-						</div>
-					)}
+					<img class="absolute inset-0 w-full h-full object-cover" alt={`${cityName}, ${stateCode}`} src={getCityHeroImage(city, state, 1200, 800)} loading="eager" />
+					<div class="absolute inset-0 bg-gradient-to-tr from-ink/30 via-transparent to-transparent"></div>
 				</div>
 			</div>
 		</div>

@@ -5,6 +5,7 @@ import SiteFooter from "../../components/SiteFooter.astro";
 import Pagination from "../../components/Pagination.astro";
 import { getDB } from "../../lib/db";
 import { getEmDashCollection } from "emdash";
+import { getStateHeroImage } from "../../lib/state-images";
 
 export const cacheHint = 3600;
 
@@ -95,6 +96,9 @@ function getSpecIcon(name: string): string {
 // Top 16 cities for "Browse by City", rest in sitemap
 const topCities = cityCounts.slice(0, 16);
 
+// State hero image
+const heroImage = getStateHeroImage(state, 800, 1000);
+
 const schemaData = {
 	"@context": "https://schema.org",
 	"@type": "BreadcrumbList",
@@ -152,10 +156,12 @@ const schemaData = {
 				</div>
 			</div>
 			<div class="relative flex justify-center">
-				<div class="w-full max-w-md aspect-[4/5] bg-primary/5 rounded-3xl flex items-center justify-center p-8">
-					<div class="text-center">
-						<span class="material-symbols-outlined text-primary/30 text-[120px]">map</span>
-						<p class="text-primary/40 font-headline text-2xl mt-4">{state_code}</p>
+				<div class="w-full max-w-md aspect-[4/5] rounded-3xl overflow-hidden shadow-elevated relative">
+					<img src={heroImage} alt={`${state_name} cityscape`} class="w-full h-full object-cover" loading="eager" />
+					<div class="absolute inset-0 bg-gradient-to-t from-ink/40 via-transparent to-transparent"></div>
+					<div class="absolute bottom-6 left-6 right-6">
+						<p class="text-white font-headline text-3xl drop-shadow-lg">{state_name}</p>
+						<p class="text-white/90 text-sm font-medium drop-shadow">{practiceCount.toLocaleString()} verified practices</p>
 					</div>
 				</div>
 			</div>
