@@ -42,7 +42,7 @@ const resources = [...allResources].sort((a, b) => (a.data.sort_order ?? 0) - (b
 	<SiteNav active="find" />
 
 	<!-- Hero Section -->
-	<section class="bg-secondary pt-24 pb-32 px-8">
+	<section class="bg-secondary pt-16 pb-20 md:pt-24 md:pb-32 px-4 md:px-8">
 		<div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-16 items-center">
 			<div class="space-y-8">
 				{hero?.badge && (
@@ -50,7 +50,7 @@ const resources = [...allResources].sort((a, b) => (a.data.sort_order ?? 0) - (b
 						{hero.badge}
 					</div>
 				)}
-				<h1 class="font-serif text-5xl md:text-6xl text-ink leading-tight" set:html={hero?.headline?.replace(/\n/g, "<br />")} />
+				<h1 class="font-serif text-4xl sm:text-5xl md:text-6xl text-ink leading-tight" set:html={hero?.headline?.replace(/\n/g, "<br />")} />
 				<p class="text-lg md:text-xl text-slate max-w-xl">{hero?.subheadline}</p>
 				<div id="hero-search" class="bg-white p-6 rounded-xl shadow-elevated grid grid-cols-1 md:grid-cols-[1fr_1fr_auto] gap-4 items-end">
 					<div class="space-y-2">
@@ -96,7 +96,7 @@ const resources = [...allResources].sort((a, b) => (a.data.sort_order ?? 0) - (b
 
 	<!-- Trust Strip -->
 	<section class="bg-white py-12 border-y border-mist">
-		<div class="max-w-7xl mx-auto px-8 grid grid-cols-2 lg:grid-cols-4 gap-8">
+		<div class="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-2 lg:grid-cols-4 gap-8">
 			{stats.map((s) => (
 				<div class="flex items-center gap-4">
 					<span class="material-symbols-outlined text-primary">{s.data.icon}</span>
@@ -110,7 +110,7 @@ const resources = [...allResources].sort((a, b) => (a.data.sort_order ?? 0) - (b
 	</section>
 
 	<!-- Browse by State -->
-	<section class="bg-fog py-24 px-8">
+	<section class="bg-fog py-16 md:py-24 px-4 md:px-8">
 		<div class="max-w-7xl mx-auto">
 			<div class="flex justify-between items-end mb-12">
 				<h2 class="font-serif text-4xl text-ink">Browse audiologists by state</h2>
@@ -130,7 +130,7 @@ const resources = [...allResources].sort((a, b) => (a.data.sort_order ?? 0) - (b
 	</section>
 
 	<!-- How It Works -->
-	<section class="bg-secondary py-24 px-8">
+	<section class="bg-secondary py-16 md:py-24 px-4 md:px-8">
 		<div class="max-w-7xl mx-auto">
 			<h2 class="font-serif text-4xl text-ink mb-16 text-center">{howHeading?.headline || "How AudiologistDirectory works"}</h2>
 			<div class="grid grid-cols-1 md:grid-cols-3 gap-12">
@@ -147,7 +147,7 @@ const resources = [...allResources].sort((a, b) => (a.data.sort_order ?? 0) - (b
 	</section>
 
 	<!-- Featured Specializations -->
-	<section class="bg-fog py-24 px-8">
+	<section class="bg-fog py-16 md:py-24 px-4 md:px-8">
 		<div class="max-w-7xl mx-auto">
 			<h2 class="font-serif text-4xl text-ink mb-12">Specialized audiology care</h2>
 			<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -166,7 +166,7 @@ const resources = [...allResources].sort((a, b) => (a.data.sort_order ?? 0) - (b
 	</section>
 
 	<!-- Browse by Brand -->
-	<section class="bg-secondary py-24 px-8">
+	<section class="bg-secondary py-16 md:py-24 px-4 md:px-8">
 		<div class="max-w-7xl mx-auto">
 			<h2 class="font-serif text-4xl text-ink mb-12 text-center">Find practices that carry your preferred brand</h2>
 			<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
@@ -180,7 +180,7 @@ const resources = [...allResources].sort((a, b) => (a.data.sort_order ?? 0) - (b
 	</section>
 
 	<!-- Editorial Trust Callout -->
-	<section class="bg-fog py-24 px-8 text-center">
+	<section class="bg-fog py-16 md:py-24 px-4 md:px-8 text-center">
 		<div class="max-w-3xl mx-auto space-y-6">
 			<span class="material-symbols-outlined text-6xl text-primary">verified</span>
 			<h2 class="font-serif text-4xl text-ink">{trust?.headline}</h2>
@@ -194,7 +194,7 @@ const resources = [...allResources].sort((a, b) => (a.data.sort_order ?? 0) - (b
 	</section>
 
 	<!-- Resources -->
-	<section class="bg-secondary py-24 px-8">
+	<section class="bg-secondary py-16 md:py-24 px-4 md:px-8">
 		<div class="max-w-7xl mx-auto">
 			<div class="flex justify-between items-end mb-12">
 				<h2 class="font-serif text-4xl text-ink">Learn about hearing care</h2>

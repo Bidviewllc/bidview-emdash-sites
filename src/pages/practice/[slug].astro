@@ -97,8 +97,8 @@ const schemaData = [
 	<SiteNav />
 	<!-- Breadcrumb -->
 	<div class="bg-white border-b border-neutral-mist">
-		<div class="max-w-7xl mx-auto px-8 py-4">
-			<nav class="flex items-center gap-2 text-[14px] text-neutral-slate">
+		<div class="max-w-7xl mx-auto px-4 md:px-8 py-4">
+			<nav class="flex flex-wrap items-center gap-x-2 gap-y-1 text-[14px] text-neutral-slate">
 				<a class="hover:text-primary transition-colors" href="/">Home</a>
 				<span class="material-symbols-outlined text-[16px]">chevron_right</span>
 				<a class="hover:text-primary transition-colors" href="/audiologists">Audiologists</a>
@@ -107,13 +107,13 @@ const schemaData = [
 				<span class="material-symbols-outlined text-[16px]">chevron_right</span>
 				<a class="hover:text-primary transition-colors" href={`/audiologists/${stateSlug}/${citySlug}`}>{cityName}</a>
 				<span class="material-symbols-outlined text-[16px]">chevron_right</span>
-				<span class="text-neutral-ink font-medium">{p.name}</span>
+				<span class="text-neutral-ink font-medium truncate max-w-full">{p.name}</span>
 			</nav>
 		</div>
 	</div>
 	<!-- Hero Section -->
 	<section class="bg-secondary pt-12 pb-16">
-		<div class="max-w-7xl mx-auto px-8">
+		<div class="max-w-7xl mx-auto px-4 md:px-8">
 			<div class="flex flex-col lg:flex-row gap-12">
 				<!-- Hero Left -->
 				<div class="lg:w-[70%]">
@@ -188,7 +188,7 @@ const schemaData = [
 	<!-- Quick Info Strip -->
 	{(insurance.length > 0 || p.practice_type) && (
 		<div class="bg-white border-y border-neutral-mist">
-			<div class="max-w-7xl mx-auto px-8 py-8">
+			<div class="max-w-7xl mx-auto px-4 md:px-8 py-8">
 				<div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
 					{p.practice_type && (
 						<div class="flex flex-col items-center gap-2 px-4">
@@ -220,7 +220,7 @@ const schemaData = [
 	)}
 
 	<!-- Main Content Body -->
-	<main class="max-w-7xl mx-auto px-8 py-12">
+	<main class="max-w-7xl mx-auto px-4 md:px-8 py-12">
 		<div class="flex flex-col lg:flex-row gap-12">
 			<!-- Left Column Content -->
 			<div class="lg:w-2/3 space-y-12">

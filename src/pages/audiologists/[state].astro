@@ -118,7 +118,7 @@ const schemaData = {
 >
 	<SiteNav active="states" />
 	<!-- Breadcrumb -->
-	<div class="bg-fog px-8 py-4">
+	<div class="bg-fog px-4 md:px-8 py-4">
 		<nav class="max-w-7xl mx-auto text-sm font-medium text-slate">
 			<ol class="flex items-center gap-2">
 				<li><a class="hover:text-primary transition-colors" href="/">Home</a></li>
@@ -131,7 +131,7 @@ const schemaData = {
 	</div>
 	<!-- Hero Section -->
 	<section class="bg-secondary py-20 overflow-hidden">
-		<div class="max-w-7xl mx-auto px-8 grid md:grid-cols-2 gap-16 items-center">
+		<div class="max-w-7xl mx-auto px-4 md:px-8 grid md:grid-cols-2 gap-16 items-center">
 			<div class="relative z-10">
 				<span class="inline-block tracking-widest text-[13px] font-bold text-primary uppercase mb-4">STATE DIRECTORY &middot; UPDATED APRIL 2026</span>
 				<h1 class="font-headline text-5xl md:text-6xl text-ink leading-tight mb-6">Audiologists in {state_name}</h1>
@@ -169,7 +169,7 @@ const schemaData = {
 	</section>
 	<!-- Trust Strip -->
 	<div class="bg-white py-12 border-y border-mist">
-		<div class="max-w-7xl mx-auto px-8">
+		<div class="max-w-7xl mx-auto px-4 md:px-8">
 			<div class="grid grid-cols-2 md:grid-cols-4 gap-8">
 				<div class="text-center md:border-r border-mist last:border-0">
 					<div class="font-headline text-3xl font-semibold text-primary">{practiceCount.toLocaleString()}</div>
@@ -193,7 +193,7 @@ const schemaData = {
 	<!-- Intro Prose -->
 	{intro && (
 		<section class="bg-fog py-24">
-			<div class="max-w-3xl mx-auto px-8 text-center">
+			<div class="max-w-3xl mx-auto px-4 md:px-8 text-center">
 				<h2 class="font-headline text-4xl text-ink mb-8">{intro.heading || `Finding the right audiologist in ${state_name}`}</h2>
 				<div class="space-y-6 text-lg text-slate leading-relaxed text-left">
 					{(intro.intro_prose || "").split("\n\n").map((para: string) => (
@@ -205,7 +205,7 @@ const schemaData = {
 	)}
 	<!-- Browse by City -->
 	<section class="bg-secondary py-20">
-		<div class="max-w-7xl mx-auto px-8">
+		<div class="max-w-7xl mx-auto px-4 md:px-8">
 			<div class="flex justify-between items-end mb-12">
 				<div>
 					<h2 class="font-headline text-3xl text-ink mb-2">Browse by City</h2>
@@ -226,7 +226,7 @@ const schemaData = {
 	<!-- Specializations -->
 	{specializations.length > 0 && (
 		<section class="bg-fog py-20">
-			<div class="max-w-7xl mx-auto px-8">
+			<div class="max-w-7xl mx-auto px-4 md:px-8">
 				<h2 class="font-headline text-3xl text-ink mb-12">Search by Specialized Care</h2>
 				<div class="grid grid-cols-2 md:grid-cols-4 gap-6">
 					{specializations.map((s) => (
@@ -242,7 +242,7 @@ const schemaData = {
 	)}
 	<!-- Top Practices -->
 	<section class="bg-white py-24">
-		<div class="max-w-7xl mx-auto px-8">
+		<div class="max-w-7xl mx-auto px-4 md:px-8">
 			<h2 class="font-headline text-3xl text-ink mb-12">Featured Practices in {state_name}</h2>
 			<div class="grid md:grid-cols-2 gap-8">
 				{topPractices.map((p: any) => {
@@ -293,7 +293,7 @@ const schemaData = {
 	<!-- Brands -->
 	{brands.length > 0 && (
 		<section class="bg-secondary py-20">
-			<div class="max-w-7xl mx-auto px-8">
+			<div class="max-w-7xl mx-auto px-4 md:px-8">
 				<h2 class="font-headline text-3xl text-ink text-center mb-12">Hearing Aid Brands Available</h2>
 				<div class="grid grid-cols-2 md:grid-cols-6 gap-6">
 					{brands.map((b) => (
@@ -309,7 +309,7 @@ const schemaData = {
 	<!-- Insurance -->
 	{insurancePlans.length > 0 && (
 		<section class="bg-fog py-20">
-			<div class="max-w-7xl mx-auto px-8">
+			<div class="max-w-7xl mx-auto px-4 md:px-8">
 				<h2 class="font-headline text-3xl text-ink mb-12">Insurance Providers Accepted</h2>
 				<div class="grid grid-cols-2 md:grid-cols-4 gap-6">
 					{insurancePlans.map((ins) => (
@@ -324,7 +324,7 @@ const schemaData = {
 	)}
 	<!-- FAQ -->
 	<section class="bg-secondary py-24">
-		<div class="max-w-3xl mx-auto px-8">
+		<div class="max-w-3xl mx-auto px-4 md:px-8">
 			<h2 class="font-headline text-4xl text-ink text-center mb-12">{state_name} Audiology FAQ</h2>
 			<div class="space-y-4">
 				<div class="bg-white rounded-xl border border-mist overflow-hidden">
@@ -362,7 +362,7 @@ const schemaData = {
 	</section>
 	<!-- City Sitemap -->
 	<section class="bg-fog py-20">
-		<div class="max-w-7xl mx-auto px-8">
+		<div class="max-w-7xl mx-auto px-4 md:px-8">
 			<h2 class="font-headline text-2xl text-ink mb-10">Audiology Clinics by {state_name} City</h2>
 			<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-y-3 gap-x-8">
 				{cityCounts.sort((a, b) => a.city.localeCompare(b.city)).map((c) => (
