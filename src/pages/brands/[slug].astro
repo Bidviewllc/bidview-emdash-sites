@@ -54,12 +54,12 @@ const description = `Find ${count} audiology practices that carry ${brandName} h
 <Base title={title} description={description} canonical={`https://audiologistdirectory.com/brands/${slug}`}>
 	<SiteNav active="brands" />
 
-	<header class="bg-secondary py-20 px-8">
+	<header class="bg-secondary py-12 md:py-20 px-4 md:px-8">
 		<div class="max-w-7xl mx-auto text-center space-y-6">
 			<div class="inline-block py-1 px-4 bg-primary/5 text-primary text-sm font-bold tracking-widest uppercase rounded-full">
 				{count} PRACTICES · {brandName.toUpperCase()}
 			</div>
-			<h1 class="font-serif text-5xl md:text-6xl text-ink leading-tight">
+			<h1 class="font-serif text-3xl md:text-5xl lg:text-6xl text-ink leading-tight">
 				Audiologists who carry {brandName}
 			</h1>
 			<p class="text-lg text-slate max-w-2xl mx-auto">
@@ -68,7 +68,7 @@ const description = `Find ${count} audiology practices that carry ${brandName} h
 		</div>
 	</header>
 
-	<main class="max-w-7xl mx-auto px-8 py-16">
+	<main class="max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-16">
 		<div class="flex justify-between items-center mb-8">
 			<h2 class="font-serif text-2xl text-ink">{count} practices found</h2>
 			<a href="/brands" class="text-primary font-semibold flex items-center gap-2 hover:gap-3 transition-all">

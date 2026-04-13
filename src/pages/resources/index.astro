@@ -20,19 +20,19 @@ const resources = [...allResources].sort((a, b) => (a.data.sort_order ?? 0) - (b
 >
 	<SiteNav active="resources" />
 
-	<header class="bg-secondary py-20 px-8">
+	<header class="bg-secondary py-12 md:py-20 px-4 md:px-8">
 		<div class="max-w-7xl mx-auto text-center space-y-6">
 			{hero?.badge && (
 				<div class="inline-block py-1 px-4 bg-primary/5 text-primary text-sm font-bold tracking-widest uppercase rounded-full">
 					{hero.badge}
 				</div>
 			)}
-			<h1 class="font-serif text-5xl md:text-6xl text-ink leading-tight">{hero?.headline}</h1>
+			<h1 class="font-serif text-4xl md:text-5xl lg:text-6xl text-ink leading-tight">{hero?.headline}</h1>
 			<p class="text-lg text-slate max-w-2xl mx-auto">{hero?.subheadline}</p>
 		</div>
 	</header>
 
-	<main class="max-w-7xl mx-auto px-8 py-16">
+	<main class="max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-16">
 		<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 			{resources.map((r) => (
 				<a href={r.data.slug_path || "#"} class="bg-white rounded-xl overflow-hidden shadow-soft flex flex-col group">
