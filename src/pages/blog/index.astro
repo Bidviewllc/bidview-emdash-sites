@@ -8,11 +8,15 @@ type PostData = {
 	title: string;
 	excerpt?: string;
 	featured_image?: { src: string; alt: string };
+	publishedAt?: Date | string | null;
 };
 
 type Post = { slug: string; data: PostData };
 
-const { entries: rawPosts } = await getEmDashCollection("posts");
+// Let D1 handle sorting — orderBy published_at desc
+const { entries: rawPosts } = await getEmDashCollection("posts", {
+	orderBy: { published_at: "desc" },
+});
 const allPosts = rawPosts as unknown as Post[];
 
 const categories = [
@@ -24,10 +28,15 @@ const categories = [
 	{ label: "Industry Guides", value: "industry" },
 ];
 
-const publishDate = () => {
-	const date = new Date();
-	date.setDate(date.getDate() - Math.floor(Math.random() * 60));
-	return date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+const formatDate = (val?: Date | string | null): string => {
+	if (!val) return "";
+	try {
+		const d = val instanceof Date ? val : new Date(String(val));
+		if (isNaN(d.getTime())) return "";
+		return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+	} catch {
+		return "";
+	}
 };
 ---
 
@@ -81,7 +90,7 @@ const publishDate = () => {
 									<h2>{pd.title}</h2>
 									{pd.excerpt && <p>{pd.excerpt}</p>}
 									<div class="post-card-meta">
-										<span>{publishDate()}</span>
+										<span>{formatDate(pd.publishedAt)}</span>
 										<span class="post-card-meta-sep">·</span>
 										<span>8 min read</span>
 									</div>

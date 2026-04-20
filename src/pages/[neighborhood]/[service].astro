@@ -7,7 +7,7 @@ export const cacheHint = 3600;
 const { neighborhood, service } = Astro.params;
 
 const { entry } = await getEmDashEntry("services", service as string);
-if (!entry) return Astro.redirect("/404");
+if (!entry) return Astro.rewrite("/404");
 
 const d = entry.data as Record<string, any>;
 
@@ -225,7 +225,7 @@ if (areaEntry) {
 		}));
 } else {
 	const neighborhoodData = neighborhoods[neighborhood as string];
-	if (!neighborhoodData) return Astro.redirect("/404");
+	if (!neighborhoodData) return Astro.rewrite("/404");
 	neighborhoodName = neighborhoodData.name;
 	neighborhoodCharacter = neighborhoodData.character;
 	nearbyNeighborhoods = neighborhoodData.nearby

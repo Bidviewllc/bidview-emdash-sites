@@ -17,23 +17,27 @@ const data = entry.data as {
 	featured_image?: { src: string; alt: string };
 	meta_title?: string;
 	meta_description?: string;
+	publishedAt?: Date | string | null;
 };
 
-// Fetch related posts (latest 3 excluding current)
+// Fetch related posts (latest 3 excluding current, sorted latest first)
 type RelatedPost = { slug: string; data: { title: string; excerpt?: string; featured_image?: { src: string; alt: string } } };
-const { entries: rawPosts } = await getEmDashCollection("posts");
+const { entries: rawPosts } = await getEmDashCollection("posts", { orderBy: { published_at: "desc" } });
 const allPostsTyped = rawPosts as unknown as RelatedPost[];
 const related = allPostsTyped.filter((p) => p.slug !== slug).slice(0, 3);
 
 const pageTitle = data.meta_title || data.title;
 const pageDesc = data.meta_description || data.excerpt || "";
 
-// Format a fake "publish date" from the entry id (ulid-based) or default
-const publishDate = new Date().toLocaleDateString("en-US", {
-	year: "numeric",
-	month: "long",
-	day: "numeric",
-});
+const publishDate = (() => {
+	const val = data.publishedAt;
+	if (!val) return "";
+	try {
+		const d = val instanceof Date ? val : new Date(String(val));
+		if (isNaN(d.getTime())) return "";
+		return d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+	} catch { return ""; }
+})();
 ---
 
 <Base title={pageTitle} description={pageDesc} image={data.featured_image?.src}>
@@ -44,8 +48,8 @@ const publishDate = new Date().toLocaleDateString("en-US", {
 		"headline": data.title,
 		"description": pageDesc,
 		"image": data.featured_image?.src,
-		"datePublished": new Date().toISOString(),
-		"dateModified": new Date().toISOString(),
+		"datePublished": data.publishedAt ? (data.publishedAt instanceof Date ? data.publishedAt.toISOString() : String(data.publishedAt)) : new Date().toISOString(),
+		"dateModified": data.publishedAt ? (data.publishedAt instanceof Date ? data.publishedAt.toISOString() : String(data.publishedAt)) : new Date().toISOString(),
 		"author": {
 			"@type": "Organization",
 			"name": "The Chicago Marketing Agency",

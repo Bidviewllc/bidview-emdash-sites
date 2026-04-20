@@ -221,7 +221,7 @@ if (areaEntry) {
 		}));
 } else {
 	const neighborhoodData = neighborhoods[neighborhood as string];
-	if (!neighborhoodData) return Astro.redirect("/404");
+	if (!neighborhoodData) return Astro.rewrite("/404");
 	neighborhoodName = neighborhoodData.name;
 	neighborhoodCharacter = neighborhoodData.character;
 	nearbyNeighborhoods = neighborhoodData.nearby
