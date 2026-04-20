@@ -30,7 +30,7 @@ const neighborhoods: Record<string, { name: string; character: string; nearby: s
 	},
 	"river-north": {
 		name: "River North",
-		character: "Chicago's densest restaurant and gallery district, where standing out online is not optional — it's the difference between packed tables and empty seats",
+		character: "home to the Merchandise Mart's corporate tenants, 60+ art galleries along Superior and Ontario, and one of Chicago's densest restaurant corridors — a neighborhood where B2B companies, creative agencies, and hospitality businesses all compete for the same high-intent online audience",
 		nearby: ["the-loop", "west-loop", "gold-coast", "streeterville", "old-town", "lincoln-park"],
 	},
 	"the-loop": {
@@ -243,7 +243,7 @@ const parseJson = (val: any) => {
 const caseStudyStats = parseJson(d.case_study_stats_json);
 
 const serviceTitle = d.title as string;
-const pageTitle = `${serviceTitle} in ${neighborhoodName}, Chicago | The Chicago Marketing Agency`;
+const pageTitle = `${serviceTitle} in ${neighborhoodName}, Chicago`;
 const pageDesc = `Expert ${serviceTitle.toLowerCase()} for ${neighborhoodName} businesses. The Chicago Marketing Agency helps local businesses in ${neighborhoodName} grow leads, rank higher, and convert more customers.`;
 
 const baseUrl = "https://thechicagomarketingagency.com";
