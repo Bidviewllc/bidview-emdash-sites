@@ -33,6 +33,5 @@ export default defineConfig({
 			sandboxRunner: sandbox(),
 		}),
 	],
-	trailingSlash: "always",
 	devToolbar: { enabled: false },
 });
