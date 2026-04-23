@@ -204,7 +204,7 @@ const resources = [...allResources].sort((a, b) => (a.data.sort_order ?? 0) - (b
 				{resources.map((r) => (
 					<article class="bg-white rounded-xl overflow-hidden shadow-soft flex flex-col group">
 						<div class="aspect-[16/10] bg-primary/10 relative overflow-hidden">
-							<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt={r.data.title} src={r.data.image_url} loading="lazy" />
+							<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt={r.data.title} src={r.data.image_url} loading="lazy" decoding="async" />
 						</div>
 						<div class="p-8 space-y-4">
 							<span class="text-xs font-bold text-primary uppercase tracking-widest">{r.data.tag}</span>
