@@ -29,14 +29,21 @@ export const cacheHint = 3600;
 				</div>
 			</div>
 			<div class="hero-visual">
-				<img
-					src="/hero.png"
-					alt="Chicago skyline with data-driven marketing growth visualization"
-					width="560"
-					height="420"
-					loading="eager"
-					fetchpriority="high"
-				/>
+				<picture>
+					<source
+						type="image/webp"
+						srcset="/hero-mobile.webp 704w, /hero.webp 1408w"
+						sizes="(max-width: 768px) 100vw, 560px"
+					/>
+					<img
+						src="/hero.png"
+						alt="Chicago skyline with data-driven marketing growth visualization"
+						width="560"
+						height="420"
+						loading="eager"
+						fetchpriority="high"
+					/>
+				</picture>
 			</div>
 		</div>
 	</section>
