@@ -1,0 +1,643 @@
+---
+import Base from "../layouts/Base.astro";
+import SiteNav from "../components/SiteNav.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import Pagination from "../components/Pagination.astro";
+import { getDB } from "../lib/db";
+
+export const cacheHint = 3600;
+
+// ── Read all URL params ─────────────────────────────────────
+const q = Astro.url.searchParams.get("q") || "";
+const specializations = Astro.url.searchParams.getAll("specialization");
+const brands = Astro.url.searchParams.getAll("brand");
+const radius = parseInt(Astro.url.searchParams.get("radius") || "0") || 0;
+const userLat = parseFloat(Astro.url.searchParams.get("lat") || "0") || 0;
+const userLng = parseFloat(Astro.url.searchParams.get("lng") || "0") || 0;
+const sort = Astro.url.searchParams.get("sort") || "rating";
+const page = Math.max(1, parseInt(Astro.url.searchParams.get("page") || "1", 10) || 1);
+const view = Astro.url.searchParams.get("view") || "list";
+
+const hasSearch = !!(q || specializations.length || brands.length);
+const hasLocation = !!(userLat && userLng);
+
+// ── Build SQL query manually for multi-filter support ───────
+const db = getDB();
+const conditions: string[] = ["is_active = 1"];
+const binds: any[] = [];
+
+if (q) {
+	const like = `%${q}%`;
+	conditions.push("(name LIKE ? OR city LIKE ? OR state_name LIKE ? OR zip LIKE ? OR address LIKE ? OR hearing_aid_brands LIKE ? OR specializations LIKE ? OR insurance_plans LIKE ?)");
+	binds.push(like, like, like, like, like, like, like, like);
+}
+for (const spec of specializations) {
+	conditions.push("specializations LIKE ?");
+	binds.push(`%${spec}%`);
+}
+for (const br of brands) {
+	conditions.push("hearing_aid_brands LIKE ?");
+	binds.push(`%${br}%`);
+}
+
+// Distance filter (Haversine)
+let distanceExpr = "0";
+if (hasLocation) {
+	conditions.push("lat IS NOT NULL AND lng IS NOT NULL");
+	distanceExpr = `(3959 * acos(min(1.0, cos(${userLat} * 0.0174533) * cos(lat * 0.0174533) * cos((lng - ${userLng}) * 0.0174533) + sin(${userLat} * 0.0174533) * sin(lat * 0.0174533))))`;
+	if (radius) {
+		conditions.push(`${distanceExpr} <= ?`);
+		binds.push(radius);
+	}
+}
+
+const PER_PAGE = 20;
+const offset = (page - 1) * PER_PAGE;
+const whereClause = conditions.join(" AND ");
+
+// Count
+const countSQL = `SELECT COUNT(*) as count FROM practices_search WHERE ${whereClause}`;
+const totalResults = (await db.db.prepare(countSQL).bind(...binds).first<{ count: number }>())?.count || 0;
+const totalPages = Math.ceil(totalResults / PER_PAGE);
+
+// Order
+let orderBy = "rating DESC, reviews_count DESC";
+if (sort === "distance" && hasLocation) {
+	orderBy = `${distanceExpr} ASC`;
+} else if (sort === "reviews") {
+	orderBy = "reviews_count DESC, rating DESC";
+}
+
+// Results
+const resultsSQL = `SELECT *, ${distanceExpr} as distance FROM practices_search WHERE ${whereClause} ORDER BY ${orderBy} LIMIT ? OFFSET ?`;
+const { results } = await db.db.prepare(resultsSQL).bind(...binds, PER_PAGE, offset).all();
+
+// Fetch providers for each practice
+const providerMap = new Map<number, { id: number; hh_id: number; name: string; credential: string; title: string }[]>();
+await Promise.all(
+	(results as any[]).map(async (p: any) => {
+		if (p.hh_id) {
+			const providers = await db.getProvidersByHhId(p.hh_id);
+			if (providers.length > 0) providerMap.set(p.hh_id, providers);
+		}
+	})
+);
+
+// ── Helpers ─────────────────────────────────────────────────
+function splitPipe(val: string | null | undefined): string[] {
+	if (!val) return [];
+	return String(val).split("|").map((s: string) => s.trim()).filter(Boolean);
+}
+
+function getInitials(name: string): string {
+	return name.split(/\s+/).filter(w => !["Dr.", "Dr", "Au.D.", "PhD", "CCC-A"].includes(w)).map(w => w[0]).filter(Boolean).slice(0, 2).join("").toUpperCase();
+}
+
+function toggleViewUrl(newView: string) {
+	const u = new URL(Astro.url);
+	u.searchParams.set("view", newView);
+	return u.pathname + u.search;
+}
+
+const showStart = offset + 1;
+const showEnd = Math.min(offset + PER_PAGE, totalResults);
+
+const searchLabel = [q, ...specializations, ...brands].filter(Boolean).join(" + ");
+const title = hasSearch
+	? `Search results for "${searchLabel}" | AudiologistDirectory.com`
+	: "Find an Audiologist | AudiologistDirectory.com";
+const description = hasSearch
+	? `${totalResults} audiology practice${totalResults !== 1 ? "s" : ""} matching "${searchLabel}".`
+	: "Search verified audiology practices by location, specialization, hearing aid brand, or insurance.";
+
+// Build pagination params (single-value)
+const paginationParams: Record<string, string> = {};
+if (q) paginationParams.q = q;
+if (sort && sort !== "rating") paginationParams.sort = sort;
+if (view !== "list") paginationParams.view = view;
+if (radius) paginationParams.radius = String(radius);
+if (userLat) paginationParams.lat = String(userLat);
+if (userLng) paginationParams.lng = String(userLng);
+
+// Multi-value pagination params
+const paginationMultiParams: Record<string, string[]> = {};
+if (specializations.length) paginationMultiParams.specialization = specializations;
+if (brands.length) paginationMultiParams.brand = brands;
+
+// Specialization options for checkboxes
+const specOptions = [
+	{ value: "hearing aid", label: "Hearing Aids" },
+	{ value: "tinnitus", label: "Tinnitus Therapy" },
+	{ value: "cochlear", label: "Cochlear Implants" },
+	{ value: "pediatric", label: "Pediatrics" },
+	{ value: "vestibular", label: "Vestibular" },
+	{ value: "balance", label: "Balance Disorders" },
+];
+
+// Brand options for checkboxes
+const brandOptions = [
+	{ value: "Phonak", label: "Phonak" },
+	{ value: "Oticon", label: "Oticon" },
+	{ value: "ReSound", label: "ReSound" },
+	{ value: "Starkey", label: "Starkey" },
+	{ value: "Widex", label: "Widex" },
+	{ value: "Signia", label: "Signia" },
+];
+
+// Map practices for the map view
+const mapPractices = (results as any[]).map((p: any) => ({
+	name: p.name,
+	lat: p.lat,
+	lng: p.lng,
+	slug: p.practice_slug,
+	rating: p.rating,
+	city: p.city,
+	state_code: p.state_code,
+}));
+const googleMapsApiKey = "AIzaSyDavNclCQqv5BE1UdJqhQfCqaTdaiSWKns";
+---
+
+<Base title={title} description={description} canonical="https://audiologistdirectory.com/search" noindex={true}>
+	<SiteNav active="find" />
+
+	<!-- Search Header -->
+	<section class="bg-[#f8f9f8] py-8 border-b border-mist">
+		<div class="max-w-7xl mx-auto px-4 md:px-8">
+			<form action="/search" method="get" class="bg-white p-4 rounded-xl shadow-sm border border-mist flex flex-col md:flex-row gap-4 items-center">
+				<div class="flex-1 w-full relative">
+					<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate">location_pin</span>
+					<input
+						class="w-full h-[56px] pl-12 pr-4 border border-mist rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none text-ink"
+						type="text"
+						name="q"
+						placeholder="City, state, zip, or brand..."
+						value={q}
+					/>
+				</div>
+				<button type="submit" class="w-full md:w-auto px-8 h-[56px] bg-primary text-white rounded-lg font-semibold hover:bg-primary-dark transition-colors">
+					Search
+				</button>
+				<button
+					type="button"
+					id="near-me-btn"
+					class="w-full md:w-auto px-6 h-[56px] border border-primary text-primary rounded-lg font-semibold hover:bg-primary/5 transition-colors flex items-center justify-center gap-2"
+				>
+					<span class="material-symbols-outlined text-sm">my_location</span> Near me
+				</button>
+			</form>
+		</div>
+	</section>
+
+	<!-- Results Header -->
+	<header class="bg-[#f1f3f1] py-6 border-b border-mist">
+		<div class="max-w-7xl mx-auto px-4 md:px-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+			<div>
+				{hasSearch ? (
+					<h1 class="font-headline text-2xl md:text-4xl font-medium text-ink">{totalResults} audiology practice{totalResults !== 1 ? "s" : ""} for "{searchLabel}"</h1>
+				) : (
+					<h1 class="font-headline text-2xl md:text-4xl font-medium text-ink">{totalResults} audiology practices</h1>
+				)}
+				<p class="text-slate mt-1 italic">Updated April 2026</p>
+			</div>
+			<div class="flex flex-wrap items-center gap-3">
+				<div class="flex items-center gap-2">
+					<span class="text-slate text-sm font-medium">Sort:</span>
+					<select id="sort-select" class="bg-transparent border-none focus:ring-0 text-ink font-medium cursor-pointer">
+						<option value="rating" selected={sort === "rating"}>Rating</option>
+						<option value="distance" selected={sort === "distance"}>Distance</option>
+						<option value="reviews" selected={sort === "reviews"}>Most Reviews</option>
+					</select>
+				</div>
+				<div class="bg-white border border-mist rounded-full p-1 flex items-center">
+					<a
+						href={toggleViewUrl("list")}
+						class:list={["px-4 py-1.5 rounded-full text-sm font-medium flex items-center gap-2 transition-colors", view === "list" ? "bg-primary text-white" : "text-slate hover:bg-fog"]}
+					>
+						<span class="material-symbols-outlined text-sm">list</span> List
+					</a>
+					<a
+						href={toggleViewUrl("map")}
+						class:list={["px-4 py-1.5 rounded-full text-sm font-medium flex items-center gap-2 transition-colors", view === "map" ? "bg-primary text-white" : "text-slate hover:bg-fog"]}
+					>
+						<span class="material-symbols-outlined text-sm">map</span> Map
+					</a>
+				</div>
+			</div>
+		</div>
+	</header>
+
+	<!-- Main Content -->
+	<main class="bg-[#f1f3f1] py-12">
+		<div class="max-w-7xl mx-auto px-4 md:px-8 flex flex-col lg:flex-row gap-8">
+
+			<!-- Sidebar Filters -->
+			<aside class="w-full lg:w-80 shrink-0 space-y-6">
+				<form id="filter-form" method="get" action="/search">
+					<!-- Preserve the text search query -->
+					<input type="hidden" name="q" value={q} />
+					<!-- Preserve view mode -->
+					<input type="hidden" name="view" value={view} />
+					<!-- Preserve sort -->
+					<input type="hidden" name="sort" value={sort} />
+					<!-- Preserve location if set -->
+					{userLat ? <input type="hidden" name="lat" value={String(userLat)} /> : null}
+					{userLng ? <input type="hidden" name="lng" value={String(userLng)} /> : null}
+
+					<div class="flex items-center justify-between mb-6">
+						<h3 class="font-headline text-2xl">Refine results</h3>
+						<a href="/search" class="text-primary text-sm font-medium hover:underline">Clear all</a>
+					</div>
+
+					<!-- Distance Filter -->
+					<div class="bg-white border border-mist rounded-xl p-6 shadow-sm mb-6">
+						<h4 class="font-medium mb-4">Distance</h4>
+						{!hasLocation && (
+							<p class="text-sm text-slate mb-3 italic">Use the "Near me" button above to enable distance filtering.</p>
+						)}
+						<div class="space-y-3">
+							<label class="flex items-center gap-3 cursor-pointer">
+								<input
+									class="w-5 h-5 text-primary focus:ring-primary border-mist"
+									name="radius"
+									type="radio"
+									value="5"
+									checked={radius === 5}
+									disabled={!hasLocation}
+								/>
+								<span class:list={["text-[16px]", !hasLocation && "text-slate/50"]}>Within 5 miles</span>
+							</label>
+							<label class="flex items-center gap-3 cursor-pointer">
+								<input
+									class="w-5 h-5 text-primary focus:ring-primary border-mist"
+									name="radius"
+									type="radio"
+									value="10"
+									checked={radius === 10}
+									disabled={!hasLocation}
+								/>
+								<span class:list={["text-[16px]", !hasLocation && "text-slate/50"]}>Within 10 miles</span>
+							</label>
+							<label class="flex items-center gap-3 cursor-pointer">
+								<input
+									class="w-5 h-5 text-primary focus:ring-primary border-mist"
+									name="radius"
+									type="radio"
+									value="25"
+									checked={radius === 25}
+									disabled={!hasLocation}
+								/>
+								<span class:list={["text-[16px]", !hasLocation && "text-slate/50"]}>Within 25 miles</span>
+							</label>
+							{hasLocation && radius > 0 && (
+								<label class="flex items-center gap-3 cursor-pointer">
+									<input
+										class="w-5 h-5 text-primary focus:ring-primary border-mist"
+										name="radius"
+										type="radio"
+										value="0"
+										checked={radius === 0}
+									/>
+									<span class="text-[16px]">Any distance</span>
+								</label>
+							)}
+						</div>
+					</div>
+
+					<!-- Specializations -->
+					<div class="bg-white border border-mist rounded-xl p-6 shadow-sm mb-6">
+						<h4 class="font-medium mb-4">Specializations</h4>
+						<div class="space-y-3">
+							{specOptions.map((opt) => (
+								<label class="flex items-center gap-3 cursor-pointer">
+									<input
+										class="w-5 h-5 rounded text-primary focus:ring-primary border-mist"
+										type="checkbox"
+										name="specialization"
+										value={opt.value}
+										checked={specializations.includes(opt.value)}
+									/>
+									<span class="text-[16px]">{opt.label}</span>
+								</label>
+							))}
+						</div>
+					</div>
+
+					<!-- Device Brands -->
+					<div class="bg-white border border-mist rounded-xl p-6 shadow-sm mb-6">
+						<h4 class="font-medium mb-4">Device Brands</h4>
+						<div class="space-y-3">
+							{brandOptions.map((opt) => (
+								<label class="flex items-center gap-3 cursor-pointer">
+									<input
+										class="w-5 h-5 rounded text-primary focus:ring-primary border-mist"
+										type="checkbox"
+										name="brand"
+										value={opt.value}
+										checked={brands.includes(opt.value)}
+									/>
+									<span class="text-[16px]">{opt.label}</span>
+								</label>
+							))}
+						</div>
+					</div>
+				</form>
+			</aside>
+
+			<!-- Results Area -->
+			<section class="flex-1 space-y-6">
+				{results.length === 0 && (
+					<div class="text-center py-16">
+						<span class="material-symbols-outlined text-6xl text-slate/30 mb-4">search_off</span>
+						<h2 class="text-2xl font-medium text-ink mb-2">No practices found</h2>
+						<p class="text-slate text-lg">Try searching for a different city, state, specialization, or hearing aid brand.</p>
+					</div>
+				)}
+
+				{view === "map" ? (
+					<!-- Map View -->
+					<div>
+						<div id="map" style="height: 500px; width: 100%; border-radius: 12px; border: 1px solid #E3E8EE;"></div>
+						{results.length > 0 && (
+							<div class="mt-6 space-y-2">
+								<p class="text-slate text-sm mb-4">Showing {results.length} practices. Click a listing to zoom in on the map.</p>
+								{(results as any[]).map((p: any, idx: number) => (
+									<button
+										type="button"
+										data-lat={p.lat}
+										data-lng={p.lng}
+										data-idx={idx}
+										onclick={`window.zoomToMarker && window.zoomToMarker(${idx})`}
+										class="w-full text-left bg-white rounded-lg border border-mist hover:border-primary hover:shadow-soft transition-all p-4 flex items-center justify-between gap-4 cursor-pointer map-listing"
+									>
+										<div class="flex-1 min-w-0">
+											<div class="flex items-center gap-2">
+												<span class="text-primary font-bold text-sm shrink-0">{idx + 1}</span>
+												<h3 class="font-headline text-lg text-ink truncate">{p.name}</h3>
+											</div>
+											<div class="flex items-center gap-3 text-sm text-slate mt-1">
+												{p.rating > 0 && (
+													<span class="flex items-center gap-1">
+														<span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+														<strong class="text-ink">{Number(p.rating).toFixed(1)}</strong>
+														{p.reviews_count > 0 && <span>({p.reviews_count})</span>}
+													</span>
+												)}
+												{p.city && (
+													<span class="flex items-center gap-1">
+														<span class="material-symbols-outlined text-sm">location_on</span>
+														{p.city}, {p.state_code}
+													</span>
+												)}
+											</div>
+										</div>
+										<div class="flex items-center gap-2 shrink-0">
+											{p.phone && (
+												<a href={`tel:${p.phone}`} onclick="event.stopPropagation();" class="bg-primary text-white px-3 py-1.5 rounded-lg text-sm font-medium flex items-center gap-1 hover:bg-primary-dark">
+													<span class="material-symbols-outlined text-sm">call</span> Call
+												</a>
+											)}
+											<a href={`/practice/${p.practice_slug}`} onclick="event.stopPropagation();" class="border border-mist text-ink px-3 py-1.5 rounded-lg text-sm font-medium hover:border-primary">
+												Profile
+											</a>
+										</div>
+									</button>
+								))}
+							</div>
+						)}
+					</div>
+				) : (
+					<!-- List View -->
+					<div class="space-y-6">
+						{(results as any[]).map((p: any) => {
+							const specs = splitPipe(p.specializations);
+							const pBrands = splitPipe(p.hearing_aid_brands);
+							const providers = providerMap.get(p.hh_id) || [];
+							return (
+								<article class="bg-white rounded-xl border border-mist p-6 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
+									<div class="flex flex-col md:flex-row gap-6">
+										<div class="flex-1">
+											<div class="flex items-start justify-between mb-2">
+												<h2 class="font-headline text-3xl text-ink">
+													<a class="hover:text-primary transition-colors" href={`/practice/${p.practice_slug}`}>{p.name}</a>
+												</h2>
+												<span class="bg-success/10 text-success text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider flex items-center gap-1 shrink-0 ml-2">
+													<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">verified</span> Verified
+												</span>
+											</div>
+
+											<div class="flex flex-wrap items-center gap-x-3 gap-y-2 text-slate mb-4">
+												{p.rating && (
+													<span class="flex items-center gap-1">
+														{[...Array(5)].map((_, i) => (
+															<span class="material-symbols-outlined text-primary text-lg" style={`font-variation-settings: 'FILL' ${i < Math.round(p.rating) ? 1 : 0};`}>star</span>
+														))}
+														<strong class="text-ink ml-1">{Number(p.rating).toFixed(1)}</strong>
+														{p.reviews_count > 0 && <span>({p.reviews_count} review{p.reviews_count !== 1 ? "s" : ""})</span>}
+													</span>
+												)}
+												{p.city && (
+													<>
+														<span>&bull;</span>
+														<span class="flex items-center gap-1">
+															<span class="material-symbols-outlined text-lg">near_me</span>
+															{p.city}, {p.state_code}
+														</span>
+													</>
+												)}
+												{hasLocation && p.distance != null && p.distance > 0 && (
+													<>
+														<span>&bull;</span>
+														<span class="text-sm">{Number(p.distance).toFixed(1)} mi</span>
+													</>
+												)}
+											</div>
+
+											{p.address && <p class="text-slate mb-4 line-clamp-2">{p.address}</p>}
+
+											{(specs.length > 0 || pBrands.length > 0) && (
+												<div class="flex flex-wrap gap-2 mb-6">
+													{specs.slice(0, 3).map((s: string) => (
+														<span class="bg-primary/5 text-primary text-sm px-3 py-1 rounded-full border border-primary/10">{s}</span>
+													))}
+													{pBrands.slice(0, 3).map((b: string) => (
+														<span class="bg-mist/30 text-slate text-sm px-3 py-1 rounded-full">{b}</span>
+													))}
+												</div>
+											)}
+
+											{providers.length > 0 && (
+												<div class="flex items-center gap-4 border-t border-mist pt-6">
+													<div class="flex -space-x-3">
+														{providers.slice(0, 3).map((prov) => (
+															<div class="w-10 h-10 rounded-full bg-secondary border-2 border-white flex items-center justify-center text-primary font-bold text-xs uppercase">{getInitials(prov.name)}</div>
+														))}
+													</div>
+													<span class="text-sm text-slate font-medium">
+														{providers[0].name}{providers[0].credential ? `, ${providers[0].credential}` : ""}
+														{providers.length > 1 && ` + ${providers.length - 1} more`}
+													</span>
+												</div>
+											)}
+										</div>
+
+										<div class="md:w-64 flex flex-col gap-3 justify-center md:border-l md:border-mist md:pl-6 pt-4 md:pt-0 border-t md:border-t-0 border-mist">
+											{p.phone ? (
+												<a href={`tel:${p.phone}`} class="w-full bg-primary text-white h-[52px] rounded-lg font-semibold hover:bg-primary-dark transition-colors flex items-center justify-center gap-2">
+													<span class="material-symbols-outlined">call</span> Call Now
+												</a>
+											) : (
+												<a href={`/practice/${p.practice_slug}`} class="w-full bg-primary text-white h-[52px] rounded-lg font-semibold hover:bg-primary-dark transition-colors flex items-center justify-center gap-2">
+													<span class="material-symbols-outlined">visibility</span> View Details
+												</a>
+											)}
+											<a class="w-full border border-primary text-primary h-[52px] rounded-lg font-semibold hover:bg-primary/5 transition-colors flex items-center justify-center" href={`/practice/${p.practice_slug}`}>
+												View Profile
+											</a>
+										</div>
+									</div>
+								</article>
+							);
+						})}
+					</div>
+				)}
+
+				{/* Pagination area */}
+				{totalResults > 0 && (
+					<div class="pt-8 flex flex-col md:flex-row items-center justify-between gap-6 border-t border-mist mt-8">
+						<p class="text-slate text-sm">Showing <span class="text-ink font-semibold">{showStart}-{showEnd}</span> of <span class="text-ink font-semibold">{totalResults}</span> practices</p>
+					</div>
+				)}
+				{totalPages > 1 && (
+					<Pagination
+						currentPage={page}
+						totalPages={totalPages}
+						baseUrl="/search"
+						params={paginationParams}
+						multiParams={paginationMultiParams}
+					/>
+				)}
+			</section>
+		</div>
+	</main>
+
+	<!-- CTA Section -->
+	<section class="bg-[#f8f9f8] py-16 border-t border-mist text-center">
+		<div class="max-w-3xl mx-auto px-8">
+			<h2 class="font-headline text-3xl mb-4">Don't see your audiologist?</h2>
+			<p class="text-slate text-lg mb-8">We are constantly updating our directory. If your favorite clinic is missing, help your neighbors find great care by suggesting a practice.</p>
+			<button class="bg-primary text-white px-8 h-[56px] rounded-lg font-semibold hover:bg-primary-dark transition-colors">
+				Suggest a practice
+			</button>
+		</div>
+	</section>
+
+	<SiteFooter />
+</Base>
+
+<!-- Auto-submit filters on change -->
+<script is:inline>
+document.querySelectorAll('#filter-form input[type="checkbox"], #filter-form input[type="radio"]').forEach(function(el) {
+	el.addEventListener('change', function() {
+		document.getElementById('filter-form').submit();
+	});
+});
+
+// Sort dropdown
+document.getElementById('sort-select').addEventListener('change', function() {
+	var u = new URL(window.location);
+	u.searchParams.set('sort', this.value);
+	window.location = u;
+});
+
+// Near me button
+document.getElementById('near-me-btn').addEventListener('click', function() {
+	if (!navigator.geolocation) {
+		alert('Geolocation is not supported by your browser.');
+		return;
+	}
+	this.textContent = 'Locating...';
+	this.disabled = true;
+	navigator.geolocation.getCurrentPosition(function(pos) {
+		var u = new URL(window.location);
+		u.searchParams.set('lat', pos.coords.latitude.toFixed(6));
+		u.searchParams.set('lng', pos.coords.longitude.toFixed(6));
+		if (!u.searchParams.get('radius')) u.searchParams.set('radius', '25');
+		u.searchParams.set('sort', 'distance');
+		u.searchParams.delete('page'); // Reset to page 1 when location changes
+		window.location = u;
+	}, function(err) {
+		alert('Could not get your location. Please allow location access and try again.');
+		document.getElementById('near-me-btn').textContent = 'Near me';
+		document.getElementById('near-me-btn').disabled = false;
+	});
+});
+</script>
+
+<!-- Google Maps script (only loads when map view is active) -->
+{view === "map" && results.length > 0 && (
+	<script is:inline define:vars={{ mapPractices, apiKey: googleMapsApiKey }}>
+		var script = document.createElement('script');
+		script.src = 'https://maps.googleapis.com/maps/api/js?key=' + apiKey + '&callback=initMap';
+		script.async = true;
+		var markers = [];
+		var infoWindows = [];
+		var gMap = null;
+		window.initMap = function() {
+			gMap = new google.maps.Map(document.getElementById('map'), {
+				zoom: 5,
+				center: { lat: 39.8283, lng: -98.5795 },
+				styles: [{ featureType: "poi", stylers: [{ visibility: "off" }] }],
+			});
+			var bounds = new google.maps.LatLngBounds();
+			var hasMarkers = false;
+			mapPractices.forEach(function(p, idx) {
+				if (!p.lat || !p.lng) return;
+				var marker = new google.maps.Marker({
+					position: { lat: p.lat, lng: p.lng },
+					map: gMap,
+					title: p.name,
+					label: { text: String(idx + 1), color: '#fff', fontSize: '11px', fontWeight: 'bold' },
+					icon: {
+						path: google.maps.SymbolPath.CIRCLE,
+						scale: 14,
+						fillColor: '#2D5F4E',
+						fillOpacity: 1,
+						strokeColor: '#1F4437',
+						strokeWeight: 2,
+					},
+				});
+				bounds.extend(marker.getPosition());
+				hasMarkers = true;
+				var infoWindow = new google.maps.InfoWindow({
+					content: '<div style="font-family:Inter,sans-serif;padding:4px;min-width:200px"><strong style="font-size:15px">' + p.name + '</strong><br><span style="color:#5A6472">' + (p.city || '') + ', ' + (p.state_code || '') + '</span><br>' + (p.rating ? '<span style="color:#2D5F4E;font-weight:600">' + p.rating + '/5</span> ★<br>' : '') + '<a href="/practice/' + p.slug + '" style="color:#2D5F4E;font-weight:600;text-decoration:underline">View Profile →</a></div>'
+				});
+				marker.addListener('click', function() {
+					infoWindows.forEach(function(iw) { iw.close(); });
+					infoWindow.open(gMap, marker);
+					// Highlight corresponding listing
+					document.querySelectorAll('.map-listing').forEach(function(el) { el.style.borderColor = '#E3E8EE'; el.style.background = '#fff'; });
+					var listing = document.querySelector('.map-listing[data-idx="' + idx + '"]');
+					if (listing) { listing.style.borderColor = '#2D5F4E'; listing.style.background = '#f0faf5'; listing.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+				});
+				markers.push(marker);
+				infoWindows.push(infoWindow);
+			});
+			if (hasMarkers) gMap.fitBounds(bounds);
+		};
+		window.zoomToMarker = function(idx) {
+			if (!gMap || !markers[idx]) return;
+			var marker = markers[idx];
+			gMap.panTo(marker.getPosition());
+			gMap.setZoom(14);
+			infoWindows.forEach(function(iw) { iw.close(); });
+			if (infoWindows[idx]) infoWindows[idx].open(gMap, marker);
+			// Highlight listing
+			document.querySelectorAll('.map-listing').forEach(function(el) { el.style.borderColor = '#E3E8EE'; el.style.background = '#fff'; });
+			var listing = document.querySelector('.map-listing[data-idx="' + idx + '"]');
+			if (listing) { listing.style.borderColor = '#2D5F4E'; listing.style.background = '#f0faf5'; }
+			// Scroll map into view
+			document.getElementById('map').scrollIntoView({ behavior: 'smooth', block: 'start' });
+		};
+		document.head.appendChild(script);
+	</script>
+)}

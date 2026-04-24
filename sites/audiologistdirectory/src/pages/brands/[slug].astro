@@ -1,0 +1,144 @@
+---
+import Base from "../../layouts/Base.astro";
+import SiteNav from "../../components/SiteNav.astro";
+import SiteFooter from "../../components/SiteFooter.astro";
+import { getDB } from "../../lib/db";
+
+export const cacheHint = 3600;
+
+const { slug } = Astro.params;
+const db = getDB();
+
+// Map slug to brand display name
+const brandNames: Record<string, string> = {
+	oticon: "Oticon",
+	phonak: "Phonak",
+	starkey: "Starkey",
+	resound: "ReSound",
+	widex: "Widex",
+	signia: "Signia",
+	unitron: "Unitron",
+	bernafon: "Bernafon",
+};
+
+const brandName = brandNames[slug as string] || (slug as string);
+if (!brandName) return new Response(null, { status: 404, statusText: "Not Found" });
+
+// Query practices that carry this brand
+const like = `%${brandName}%`;
+const { results: practices } = await db.db
+	.prepare(
+		`SELECT * FROM practices_search WHERE hearing_aid_brands LIKE ? AND is_active = 1 ORDER BY rating DESC, reviews_count DESC LIMIT 40`,
+	)
+	.bind(like)
+	.all();
+
+const totalCount = await db.db
+	.prepare(`SELECT COUNT(*) as c FROM practices_search WHERE hearing_aid_brands LIKE ? AND is_active = 1`)
+	.bind(like)
+	.first<{ c: number }>();
+
+const count = totalCount?.c || 0;
+
+if (count === 0) return new Response(null, { status: 404, statusText: "Not Found" });
+
+function splitPipe(val: string | null | undefined): string[] {
+	if (!val) return [];
+	return String(val).split("|").map((s: string) => s.trim()).filter(Boolean);
+}
+
+const title = `${brandName} Hearing Aid Providers | AudiologistDirectory.com`;
+const description = `Find ${count} audiology practices that carry ${brandName} hearing aids. Compare providers, ratings, and specializations.`;
+---
+
+<Base title={title} description={description} canonical={`https://audiologistdirectory.com/brands/${slug}`}>
+	<SiteNav active="brands" />
+
+	<header class="bg-secondary py-12 md:py-20 px-4 md:px-8">
+		<div class="max-w-7xl mx-auto text-center space-y-6">
+			<div class="inline-block py-1 px-4 bg-primary/5 text-primary text-sm font-bold tracking-widest uppercase rounded-full">
+				{count} PRACTICES · {brandName.toUpperCase()}
+			</div>
+			<h1 class="font-serif text-3xl md:text-5xl lg:text-6xl text-ink leading-tight break-words">
+				Audiologists who carry {brandName}
+			</h1>
+			<p class="text-lg text-slate max-w-2xl mx-auto">
+				Browse {count} verified audiology practices that dispense {brandName} hearing aids across the United States.
+			</p>
+		</div>
+	</header>
+
+	<main class="max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-16">
+		<div class="flex justify-between items-center mb-8">
+			<h2 class="font-serif text-2xl text-ink">{count} practices found</h2>
+			<a href="/brands" class="text-primary font-semibold flex items-center gap-2 hover:gap-3 transition-all">
+				<span class="material-symbols-outlined text-sm">arrow_back</span>
+				All Brands
+			</a>
+		</div>
+
+		<div class="space-y-4">
+			{practices.map((p: any) => (
+				<article class="bg-white rounded-xl border border-mist hover:border-primary transition-colors shadow-soft p-6">
+					<div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+						<div class="flex-1 space-y-2">
+							<div class="flex items-start justify-between">
+								<div>
+									<h3 class="font-serif text-xl text-ink hover:text-primary transition-colors">
+										<a href={`/practice/${p.practice_slug}`}>{p.name}</a>
+									</h3>
+									{p.rating > 0 && (
+										<div class="flex items-center gap-2 mt-1">
+											<div class="flex items-center gap-1">
+												{[1,2,3,4,5].map((star) => (
+													<span class={`text-sm ${star <= Math.round(p.rating) ? "text-amber-400" : "text-mist"}`}>★</span>
+												))}
+											</div>
+											<span class="text-sm font-semibold text-ink">{p.rating}</span>
+											{p.reviews_count > 0 && (
+												<span class="text-sm text-slate">({p.reviews_count} reviews)</span>
+											)}
+										</div>
+									)}
+								</div>
+								<span class="inline-flex items-center gap-1 px-3 py-1 bg-primary/5 text-primary text-xs font-bold rounded-full uppercase">
+									<span class="material-symbols-outlined text-xs">verified</span>
+									Verified
+								</span>
+							</div>
+							{p.address && (
+								<p class="text-sm text-slate flex items-center gap-1">
+									<span class="material-symbols-outlined text-sm">location_on</span>
+									{p.city}, {p.state_code}
+								</p>
+							)}
+							<div class="flex flex-wrap gap-2 pt-2">
+								{splitPipe(p.hearing_aid_brands).slice(0, 5).map((brand: string) => (
+									<span class={`text-xs px-2 py-1 rounded-full font-medium ${brand.toLowerCase() === brandName.toLowerCase() ? "bg-primary/10 text-primary border border-primary/20" : "bg-fog text-slate"}`}>
+										{brand}
+									</span>
+								))}
+								{splitPipe(p.specializations).slice(0, 3).map((spec: string) => (
+									<span class="text-xs px-2 py-1 rounded-full bg-fog text-slate font-medium">{spec}</span>
+								))}
+							</div>
+						</div>
+						<div class="flex flex-col gap-2 md:items-end shrink-0">
+							{p.phone && (
+								<a href={`tel:${p.phone}`} class="inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white px-5 py-2.5 rounded-lg font-medium transition-colors text-sm">
+									<span class="material-symbols-outlined text-sm">call</span>
+									Call Now
+								</a>
+							)}
+							<a href={`/practice/${p.practice_slug}`} class="inline-flex items-center gap-2 border border-mist hover:border-primary text-ink px-5 py-2.5 rounded-lg font-medium transition-colors text-sm">
+								View Profile
+							</a>
+						</div>
+					</div>
+				</article>
+			))}
+		</div>
+	</main>
+
+	<SiteFooter />
+</Base>

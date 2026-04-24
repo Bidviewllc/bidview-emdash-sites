@@ -1,0 +1,47 @@
+---
+import Base from "../../layouts/Base.astro";
+import SiteNav from "../../components/SiteNav.astro";
+import SiteFooter from "../../components/SiteFooter.astro";
+import { getEmDashCollection } from "emdash";
+import { getDB } from "../../lib/db";
+
+export const cacheHint = 3600;
+
+const { entries: allPages } = await getEmDashCollection("pages");
+const hero = allPages.find((p) => p.data.page_key === "browse_states_hero")?.data;
+
+const db = getDB(Astro.locals);
+const states = await db.getStateCounts();
+const totalPractices = states.reduce((sum, s) => sum + s.count, 0);
+---
+
+<Base
+	title="Browse Audiologists by State | AudiologistDirectory.com"
+	description={hero?.subheadline || "Find audiology practices in all 50 states."}
+	canonical="https://audiologistdirectory.com/audiologists"
+>
+	<SiteNav active="states" />
+
+	<header class="bg-secondary py-12 md:py-20 px-4 md:px-8">
+		<div class="max-w-7xl mx-auto text-center space-y-6">
+			<div class="inline-block py-1 px-4 bg-primary/5 text-primary text-sm font-bold tracking-widest uppercase rounded-full">
+				{states.length} STATES · {totalPractices.toLocaleString()} PRACTICES
+			</div>
+			<h1 class="font-serif text-4xl md:text-5xl lg:text-6xl text-ink leading-tight">{hero?.headline || "Browse audiologists by state"}</h1>
+			<p class="text-lg text-slate max-w-2xl mx-auto">{hero?.subheadline}</p>
+		</div>
+	</header>
+
+	<main class="max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-16">
+		<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+			{states.map((s) => (
+				<a class="bg-white p-5 rounded-lg border border-mist hover:border-primary hover:shadow-soft transition-all group flex justify-between items-center" href={`/audiologists/${s.state_slug}`}>
+					<span class="font-medium text-ink">{s.state_name}</span>
+					<span class="text-xs font-bold text-slate bg-fog px-2 py-1 rounded-full group-hover:bg-primary/5 group-hover:text-primary">{s.count}</span>
+				</a>
+			))}
+		</div>
+	</main>
+
+	<SiteFooter />
+</Base>

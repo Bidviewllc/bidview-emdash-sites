@@ -1,0 +1,78 @@
+---
+import Base from "../layouts/Base.astro";
+import SiteNav from "../components/SiteNav.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+
+export const cacheHint = 3600;
+---
+
+<Base
+	title="About AudiologistDirectory.com"
+	description="Learn about our mission to connect patients with trusted hearing care professionals across the United States."
+	canonical="https://audiologistdirectory.com/about"
+>
+	<SiteNav />
+
+	<header class="bg-secondary py-12 md:py-20 px-4 md:px-8">
+		<div class="max-w-3xl mx-auto text-center space-y-4">
+			<h1 class="font-serif text-3xl md:text-5xl text-ink break-words">About AudiologistDirectory.com</h1>
+			<p class="text-lg text-slate">Helping Americans find the right hearing care, one practice at a time.</p>
+		</div>
+	</header>
+
+	<main class="max-w-3xl mx-auto px-4 md:px-8 py-12 md:py-16">
+
+		<!-- Our Mission -->
+		<section class="mb-16">
+			<h2 class="font-serif text-3xl text-ink mb-6">Our Mission</h2>
+			<p class="text-slate leading-relaxed mb-4">
+				Hearing loss affects nearly 48 million Americans, yet finding a qualified audiologist remains surprisingly difficult. Most people rely on word of mouth, outdated insurance provider lists, or generic search results that prioritize advertising spend over quality of care. We built AudiologistDirectory.com to change that.
+			</p>
+			<p class="text-slate leading-relaxed mb-4">
+				Our goal is simple: make it easy for anyone to find a trusted audiologist near them. Whether you need a routine hearing evaluation, help choosing hearing aids, tinnitus management, or pediatric audiology services, our directory helps you compare practices based on real data — location, specializations, patient reviews, accepted insurance, and the hearing aid brands each practice carries.
+			</p>
+			<p class="text-slate leading-relaxed mb-4">
+				We believe that better access to hearing care starts with better information. When patients can see which practices are nearby, what services they offer, and what other patients have experienced, they make more confident decisions. That confidence leads to earlier intervention, better outcomes, and improved quality of life for millions of Americans living with hearing loss.
+			</p>
+		</section>
+
+		<!-- Our Data -->
+		<section class="mb-16">
+			<h2 class="font-serif text-3xl text-ink mb-6">Our Data</h2>
+			<p class="text-slate leading-relaxed mb-4">
+				AudiologistDirectory.com includes more than 4,900 audiology practices across all 50 states. Each listing is sourced from publicly available data, starting with verified practice information from HealthyHearing.com — one of the most established audiology resources in the country.
+			</p>
+			<p class="text-slate leading-relaxed mb-4">
+				We then enrich every listing with data from Google Maps, including current addresses, phone numbers, business hours, patient ratings, and recent reviews. This multi-source approach means our listings are more complete and more current than what you would find from any single data source alone.
+			</p>
+			<p class="text-slate leading-relaxed mb-4">
+				Where available, we also include details about each practice's providers, specializations (such as tinnitus treatment, cochlear implants, or pediatric audiology), accepted insurance plans, and the hearing aid brands they fit. If a piece of information is not available for a particular practice, we simply leave it out rather than guessing — accuracy matters more than completeness.
+			</p>
+		</section>
+
+		<!-- Our Team -->
+		<section class="mb-16">
+			<h2 class="font-serif text-3xl text-ink mb-6">Our Team</h2>
+			<p class="text-slate leading-relaxed mb-4">
+				AudiologistDirectory.com was built by a small team passionate about hearing health accessibility. We come from backgrounds in healthcare technology, data engineering, and user experience design. While none of us are audiologists ourselves, we have spent considerable time understanding what patients need when searching for hearing care — and what information actually helps them make a decision.
+			</p>
+			<p class="text-slate leading-relaxed mb-4">
+				We work closely with public data sources, industry professionals, and real patients to ensure our directory serves the people who rely on it. If you have feedback or suggestions, we genuinely want to hear from you — reach out through our <a href="/contact" class="text-primary hover:text-primary-dark underline">contact page</a>.
+			</p>
+		</section>
+
+		<!-- Editorial Independence -->
+		<section class="mb-16">
+			<h2 class="font-serif text-3xl text-ink mb-6">Editorial Independence</h2>
+			<p class="text-slate leading-relaxed mb-4">
+				We do not accept paid placements, sponsored rankings, or advertising that influences how practices appear in our directory. Every listing is treated equally based on objective data: location relevance, patient ratings, and the completeness of their profile.
+			</p>
+			<p class="text-slate leading-relaxed mb-4">
+				This matters because trust is the foundation of a useful directory. When you search for an audiologist on our site, the results you see are based on publicly available data and geographic relevance — not on who paid the most to appear first. We believe this approach serves patients better and ultimately creates a more valuable resource for everyone, including the practices themselves.
+			</p>
+		</section>
+
+	</main>
+
+	<SiteFooter />
+</Base>

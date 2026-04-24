@@ -1,0 +1,129 @@
+---
+import Base from "../../layouts/Base.astro";
+import SiteNav from "../../components/SiteNav.astro";
+import SiteFooter from "../../components/SiteFooter.astro";
+import { getEmDashCollection } from "emdash";
+
+export const cacheHint = 3600;
+
+const { slug } = Astro.params;
+
+const { entries: allResources } = await getEmDashCollection("resources");
+const resource = allResources.find(
+	(r) => r.data.slug_path === `/resources/${slug}` || r.slug === slug || r.id === slug
+);
+
+if (!resource) return new Response(null, { status: 404, statusText: "Not Found" });
+
+const { data } = resource;
+const otherResources = allResources
+	.filter((r) => r.id !== resource.id)
+	.sort((a, b) => (a.data.sort_order ?? 0) - (b.data.sort_order ?? 0))
+	.slice(0, 3);
+
+const schemaData = {
+	"@context": "https://schema.org",
+	"@type": "Article",
+	"headline": data.title,
+	"description": data.blurb,
+	...(data.image_url ? { "image": data.image_url } : {}),
+	"author": { "@type": "Organization", "name": "AudiologistDirectory Editorial Team" },
+	"publisher": {
+		"@type": "Organization",
+		"name": "AudiologistDirectory",
+		"url": "https://audiologistdirectory.com",
+	},
+	"datePublished": (resource as any).cacheHint?.lastModified || new Date().toISOString(),
+};
+---
+
+<Base
+	title={`${data.title} | AudiologistDirectory.com`}
+	description={data.blurb || ""}
+	canonical={`https://audiologistdirectory.com/resources/${slug}`}
+	schema={schemaData}
+>
+	<SiteNav active="resources" />
+
+	<!-- Hero -->
+	<header class="bg-secondary py-12 md:py-16 px-4 md:px-8">
+		<div class="max-w-3xl mx-auto space-y-4">
+			<a href="/resources" class="text-primary font-semibold flex items-center gap-2 hover:gap-3 transition-all text-sm">
+				<span class="material-symbols-outlined text-sm">arrow_back</span>
+				All Resources
+			</a>
+			<span class="inline-block text-xs font-bold text-primary uppercase tracking-widest">{data.tag}</span>
+			<h1 class="font-serif text-4xl md:text-5xl text-ink leading-tight">{data.title}</h1>
+			<p class="text-lg text-slate">{data.blurb}</p>
+			<div class="flex items-center gap-3 mt-4">
+				<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+					<span class="material-symbols-outlined text-primary text-sm">person</span>
+				</div>
+				<div>
+					<p class="text-sm font-medium text-ink">AudiologistDirectory Editorial Team</p>
+					<p class="text-xs text-slate">Reviewed by licensed audiologists</p>
+				</div>
+			</div>
+		</div>
+	</header>
+
+	<!-- Featured Image -->
+	{data.image_url && (
+		<div class="max-w-3xl mx-auto px-4 md:px-8 mt-10 mb-4">
+			<div class="aspect-[16/9] rounded-xl overflow-hidden shadow-soft border border-mist">
+				<img class="w-full h-full object-cover" src={data.image_url} alt={data.title} />
+			</div>
+		</div>
+	)}
+
+	<!-- Article Body -->
+	<main class="max-w-3xl mx-auto px-4 md:px-8 py-12 md:py-16">
+		{data.body ? (
+			<article class="prose prose-lg text-slate leading-relaxed space-y-6">
+				{data.body.split("\n\n").map((paragraph: string) => (
+					<p class="text-slate leading-relaxed">{paragraph}</p>
+				))}
+			</article>
+		) : (
+			<div class="bg-sand rounded-xl p-12 text-center space-y-4">
+				<span class="material-symbols-outlined text-4xl text-primary">edit_note</span>
+				<h2 class="font-serif text-2xl text-ink">Article coming soon</h2>
+				<p class="text-slate">This article is being written. Check back shortly for the full content.</p>
+			</div>
+		)}
+
+		<!-- CTA -->
+		<div class="mt-16 bg-fog rounded-xl p-8 border border-mist text-center space-y-4">
+			<h3 class="font-serif text-2xl text-ink">Find a hearing care professional</h3>
+			<p class="text-slate">Ready to take the next step? Search our directory of verified audiologists near you.</p>
+			<a href="/search" class="inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white px-6 py-3 rounded-lg font-medium transition-colors">
+				<span class="material-symbols-outlined text-sm">search</span>
+				Find an Audiologist
+			</a>
+		</div>
+
+		<!-- More Resources -->
+		{otherResources.length > 0 && (
+			<section class="mt-16">
+				<h3 class="font-serif text-2xl text-ink mb-8">More resources</h3>
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+					{otherResources.map((r) => (
+						<a href={r.data.slug_path || "#"} class="bg-white rounded-xl overflow-hidden shadow-soft border border-mist hover:border-primary transition-colors group">
+							{r.data.image_url && (
+								<div class="aspect-[16/10] overflow-hidden">
+									<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src={r.data.image_url} alt={r.data.title} loading="lazy" />
+								</div>
+							)}
+							<div class="p-5 space-y-2">
+								<span class="text-xs font-bold text-primary uppercase tracking-widest">{r.data.tag}</span>
+								<h4 class="font-serif text-lg text-ink group-hover:text-primary transition-colors leading-tight">{r.data.title}</h4>
+							</div>
+						</a>
+					))}
+				</div>
+			</section>
+		)}
+	</main>
+
+	<SiteFooter />
+</Base>

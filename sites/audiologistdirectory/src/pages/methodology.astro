@@ -1,0 +1,86 @@
+---
+import Base from "../layouts/Base.astro";
+import SiteNav from "../components/SiteNav.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+
+export const cacheHint = 3600;
+---
+
+<Base
+	title="Our Methodology | AudiologistDirectory.com"
+	description="How we source, verify, rank, and maintain practice data for more than 4,900 audiology practices nationwide."
+	canonical="https://audiologistdirectory.com/methodology"
+>
+	<SiteNav />
+
+	<header class="bg-secondary py-12 md:py-20 px-4 md:px-8">
+		<div class="max-w-3xl mx-auto text-center space-y-4">
+			<h1 class="font-serif text-3xl md:text-5xl text-ink">Our Methodology</h1>
+			<p class="text-lg text-slate">How we build and maintain a directory you can trust.</p>
+		</div>
+	</header>
+
+	<main class="max-w-3xl mx-auto px-4 md:px-8 py-12 md:py-16">
+
+		<!-- How We Source Data -->
+		<section class="mb-16">
+			<h2 class="font-serif text-3xl text-ink mb-6">How We Source Data</h2>
+			<p class="text-slate leading-relaxed mb-4">
+				Our practice data begins with HealthyHearing.com, one of the most comprehensive and long-standing audiology resources in the United States. From this foundation, we extract core practice details including names, locations, providers, specializations, hearing aid brands carried, and accepted insurance plans.
+			</p>
+			<p class="text-slate leading-relaxed mb-4">
+				We then enrich every listing with data from Google Maps. This second data source provides current addresses, phone numbers, geographic coordinates, business hours, patient star ratings, review counts, and recent patient reviews. By combining these two sources, we create listings that are significantly more complete than either source alone.
+			</p>
+			<p class="text-slate leading-relaxed mb-4">
+				Where a practice maintains its own website, we also review publicly available pages to capture additional details about services, providers, and specializations that may not appear in aggregated directories.
+			</p>
+		</section>
+
+		<!-- How We Rank -->
+		<section class="mb-16">
+			<h2 class="font-serif text-3xl text-ink mb-6">How We Rank Practices</h2>
+			<p class="text-slate leading-relaxed mb-4">
+				When you search for an audiologist on our site, results are ordered by two primary factors: geographic relevance and patient ratings. Practices closer to your search location appear higher in results, with ties broken by average star rating and number of reviews.
+			</p>
+			<p class="text-slate leading-relaxed mb-4">
+				We do not accept payment to influence rankings. There are no sponsored positions, featured listings, or paid boosts. Every practice is ranked using the same objective criteria, ensuring that patients see the most relevant results for their location and needs.
+			</p>
+		</section>
+
+		<!-- Data Quality -->
+		<section class="mb-16">
+			<h2 class="font-serif text-3xl text-ink mb-6">Data Quality</h2>
+			<p class="text-slate leading-relaxed mb-4">
+				When we match practices between data sources, we assign a confidence score based on how closely the names and addresses align. Matches with high confidence are included automatically. Matches with lower confidence — roughly 7% of our listings — are flagged for manual review to ensure we have not incorrectly merged two different practices.
+			</p>
+			<p class="text-slate leading-relaxed mb-4">
+				We also filter out practices that Google Maps identifies as permanently closed, and we omit data fields that are not available rather than displaying inaccurate or assumed information. If a practice's phone number, hours, or rating is not confirmed by our sources, we leave that field blank.
+			</p>
+		</section>
+
+		<!-- How We Verify -->
+		<section class="mb-16">
+			<h2 class="font-serif text-3xl text-ink mb-6">How We Verify Information</h2>
+			<p class="text-slate leading-relaxed mb-4">
+				Verification is built into our data pipeline through cross-referencing. When a practice appears in both HealthyHearing and Google Maps with consistent name, address, and phone information, we have higher confidence in the listing's accuracy. Discrepancies between sources are flagged and reviewed.
+			</p>
+			<p class="text-slate leading-relaxed mb-4">
+				We also rely on user reports. If you notice incorrect information on any listing — a wrong phone number, an outdated address, or a practice that has closed — please let us know through our <a href="/contact" class="text-primary hover:text-primary-dark underline">contact page</a>. Patient and provider feedback is one of the most valuable tools we have for keeping the directory accurate.
+			</p>
+		</section>
+
+		<!-- Update Frequency -->
+		<section class="mb-16">
+			<h2 class="font-serif text-3xl text-ink mb-6">Update Frequency</h2>
+			<p class="text-slate leading-relaxed mb-4">
+				We refresh our complete dataset on a quarterly basis. During each update cycle, we re-run our enrichment pipeline against Google Maps to capture changes in business hours, phone numbers, ratings, reviews, and closure status. New practices that have appeared in our source data are added, and practices confirmed as permanently closed are removed.
+			</p>
+			<p class="text-slate leading-relaxed mb-4">
+				Between scheduled refreshes, we process corrections and updates reported by users and practice owners on a rolling basis. If you need to update your practice's information, visit our <a href="/list-your-practice" class="text-primary hover:text-primary-dark underline">List Your Practice</a> page or <a href="/contact" class="text-primary hover:text-primary-dark underline">contact us</a> directly.
+			</p>
+		</section>
+
+	</main>
+
+	<SiteFooter />
+</Base>

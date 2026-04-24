@@ -1,0 +1,178 @@
+---
+export interface Props {
+	active?: "find" | "states" | "brands" | "resources" | null;
+}
+const { active = null } = Astro.props;
+---
+
+<nav aria-label="Primary" class="bg-white/80 text-[#124737] top-0 sticky border-b border-mist z-40 backdrop-blur-md">
+	<div class="flex justify-between items-center gap-3 w-full px-4 md:px-6 lg:px-8 py-4 max-w-7xl mx-auto">
+		<div class="flex items-center gap-8 min-w-0">
+			<a class="text-base lg:text-xl font-medium font-serif text-[#124737] flex items-center gap-2 min-w-0" href="/">
+				<span class="material-symbols-outlined shrink-0 text-[20px] lg:text-[24px]">graphic_eq</span>
+				<span class="truncate">AudiologistDirectory</span>
+			</a>
+			<div class="hidden lg:flex gap-6">
+				<a class={`font-medium transition-colors duration-200 ${active === "find" ? "text-[#124737] font-bold border-b-2 border-[#124737] pb-1" : "text-slate hover:text-[#124737]"}`} href="/search">Find an Audiologist</a>
+				<a class={`font-medium transition-colors duration-200 ${active === "states" ? "text-[#124737] font-bold border-b-2 border-[#124737] pb-1" : "text-slate hover:text-[#124737]"}`} href="/audiologists">Browse by State</a>
+				<a class={`font-medium transition-colors duration-200 ${active === "brands" ? "text-[#124737] font-bold border-b-2 border-[#124737] pb-1" : "text-slate hover:text-[#124737]"}`} href="/brands">Hearing Aid Brands</a>
+				<a class={`font-medium transition-colors duration-200 ${active === "resources" ? "text-[#124737] font-bold border-b-2 border-[#124737] pb-1" : "text-slate hover:text-[#124737]"}`} href="/resources">Resources</a>
+			</div>
+		</div>
+		<div class="flex items-center gap-2 lg:gap-4 shrink-0">
+			<a class="hidden sm:inline-flex bg-primary hover:bg-primary-dark text-white px-3 py-2 text-sm lg:px-6 lg:py-3 lg:text-base rounded-lg font-medium transition-transform active:scale-95 whitespace-nowrap" href="/list-your-practice">List<span class="hidden md:inline"> Your</span> Practice</a>
+			<button
+				type="button"
+				id="mobile-menu-toggle"
+				aria-label="Open menu"
+				aria-expanded="false"
+				aria-haspopup="dialog"
+				aria-controls="mobile-menu-panel"
+				class="lg:hidden inline-flex items-center justify-center w-11 h-11 rounded-lg border border-mist text-[#124737] hover:bg-fog active:scale-95 transition-transform"
+			>
+				<span class="material-symbols-outlined text-[28px]">menu</span>
+			</button>
+		</div>
+	</div>
+</nav>
+
+<!-- Mobile menu panel — placed OUTSIDE <nav> because nav has backdrop-blur which creates a containing block for fixed children -->
+<div
+	id="mobile-menu-panel"
+	class="lg:hidden fixed inset-0 z-[60] hidden"
+	role="dialog"
+	aria-modal="true"
+	aria-label="Navigation menu"
+>
+	<div id="mobile-menu-backdrop" class="absolute inset-0 bg-ink/40"></div>
+	<div class="absolute top-0 right-0 h-full w-[85%] max-w-sm bg-white shadow-2xl flex flex-col">
+		<div class="flex items-center justify-between px-6 py-5 border-b border-mist">
+			<span class="text-lg font-medium font-serif text-[#124737] flex items-center gap-2">
+				<span class="material-symbols-outlined">graphic_eq</span>
+				Menu
+			</span>
+			<button
+				type="button"
+				id="mobile-menu-close"
+				aria-label="Close menu"
+				class="inline-flex items-center justify-center w-11 h-11 rounded-lg border border-mist text-slate hover:bg-fog active:scale-95 transition-transform"
+			>
+				<span class="material-symbols-outlined text-[24px]">close</span>
+			</button>
+		</div>
+		<nav aria-label="Mobile primary" class="flex-1 overflow-y-auto px-2 py-4">
+			<ul class="flex flex-col gap-1">
+				<li>
+					<a class={`block px-4 py-4 rounded-lg text-base font-medium ${active === "find" ? "bg-primary/5 text-primary" : "text-ink hover:bg-fog"}`} href="/search">Find an Audiologist</a>
+				</li>
+				<li>
+					<a class={`block px-4 py-4 rounded-lg text-base font-medium ${active === "states" ? "bg-primary/5 text-primary" : "text-ink hover:bg-fog"}`} href="/audiologists">Browse by State</a>
+				</li>
+				<li>
+					<a class={`block px-4 py-4 rounded-lg text-base font-medium ${active === "brands" ? "bg-primary/5 text-primary" : "text-ink hover:bg-fog"}`} href="/brands">Hearing Aid Brands</a>
+				</li>
+				<li>
+					<a class={`block px-4 py-4 rounded-lg text-base font-medium ${active === "resources" ? "bg-primary/5 text-primary" : "text-ink hover:bg-fog"}`} href="/resources">Resources</a>
+				</li>
+			</ul>
+		</nav>
+		<div class="px-4 py-4 border-t border-mist">
+			<a href="/list-your-practice" class="block w-full text-center bg-primary hover:bg-primary-dark text-white px-4 py-3 rounded-lg font-semibold transition-colors">
+				List Your Practice
+			</a>
+		</div>
+	</div>
+</div>
+
+<script is:inline>
+	(function () {
+		var toggle = document.getElementById('mobile-menu-toggle');
+		var panel = document.getElementById('mobile-menu-panel');
+		var closeBtn = document.getElementById('mobile-menu-close');
+		var backdrop = document.getElementById('mobile-menu-backdrop');
+		if (!toggle || !panel) return;
+
+		var FOCUSABLE = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
+		var lastFocusedBeforeOpen = null;
+		var lgQuery = window.matchMedia('(min-width: 1024px)');
+
+		function isOpen() {
+			return !panel.classList.contains('hidden');
+		}
+
+		function getFocusable() {
+			return Array.prototype.slice.call(panel.querySelectorAll(FOCUSABLE));
+		}
+
+		function open() {
+			lastFocusedBeforeOpen = document.activeElement;
+			panel.classList.remove('hidden');
+			toggle.setAttribute('aria-expanded', 'true');
+			toggle.setAttribute('aria-label', 'Close menu');
+			document.body.style.overflow = 'hidden';
+			// Focus the close button when the menu opens
+			if (closeBtn) closeBtn.focus();
+		}
+
+		function close() {
+			panel.classList.add('hidden');
+			toggle.setAttribute('aria-expanded', 'false');
+			toggle.setAttribute('aria-label', 'Open menu');
+			document.body.style.overflow = '';
+			// Restore focus to the trigger
+			if (lastFocusedBeforeOpen && typeof lastFocusedBeforeOpen.focus === 'function') {
+				lastFocusedBeforeOpen.focus();
+			} else {
+				toggle.focus();
+			}
+		}
+
+		function trapFocus(e) {
+			if (!isOpen()) return;
+			if (e.key !== 'Tab') return;
+			var focusables = getFocusable();
+			if (focusables.length === 0) {
+				e.preventDefault();
+				return;
+			}
+			var first = focusables[0];
+			var last = focusables[focusables.length - 1];
+			var active = document.activeElement;
+			if (e.shiftKey) {
+				if (active === first || !panel.contains(active)) {
+					e.preventDefault();
+					last.focus();
+				}
+			} else {
+				if (active === last) {
+					e.preventDefault();
+					first.focus();
+				}
+			}
+		}
+
+		toggle.addEventListener('click', open);
+		if (closeBtn) closeBtn.addEventListener('click', close);
+		if (backdrop) backdrop.addEventListener('click', close);
+		document.addEventListener('keydown', function (e) {
+			if (!isOpen()) return;
+			if (e.key === 'Escape') {
+				close();
+				return;
+			}
+			trapFocus(e);
+		});
+
+		// If the viewport crosses the lg breakpoint while the menu is open,
+		// the panel is hidden by `lg:hidden` CSS but the body scroll lock would
+		// stay applied. Reset state so the page becomes scrollable again.
+		function handleBreakpointChange(e) {
+			if (e.matches && isOpen()) close();
+		}
+		if (typeof lgQuery.addEventListener === 'function') {
+			lgQuery.addEventListener('change', handleBreakpointChange);
+		} else if (typeof lgQuery.addListener === 'function') {
+			lgQuery.addListener(handleBreakpointChange);
+		}
+	})();
+</script>

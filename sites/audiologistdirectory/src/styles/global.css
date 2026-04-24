@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  font-size: 17px;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  line-height: 1.6;
+  color: #1a2332;
+  background-color: #f7f9fb;
+}
+
+.font-serif,
+.font-headline {
+  font-family: 'Newsreader', serif;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  vertical-align: middle;
+}
+
+:focus-visible {
+  outline: 2px solid #2d5f4e;
+  outline-offset: 2px;
+}

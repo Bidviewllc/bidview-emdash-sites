@@ -1,0 +1,221 @@
+---
+import Base from "../layouts/Base.astro";
+import SiteNav from "../components/SiteNav.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import { getEmDashCollection } from "emdash";
+import { getDB } from "../lib/db";
+
+export const cacheHint = 3600;
+
+// Query emdash collections
+const { entries: allPages } = await getEmDashCollection("pages", { status: "published" });
+const { entries: allStats } = await getEmDashCollection("stats", { status: "published" });
+const { entries: howSteps } = await getEmDashCollection("how_it_works", { status: "published" });
+const { entries: specs } = await getEmDashCollection("specializations", { status: "published" });
+const { entries: allBrands } = await getEmDashCollection("brands", { status: "published" });
+const { entries: allResources } = await getEmDashCollection("resources", { status: "published" });
+
+// Query D1 for real state counts
+const db = getDB();
+const topStates = (await db.getStateCounts()).slice(0, 10);
+
+// Resolve page blocks
+const hero = allPages.find((p) => p.data.page_key === "homepage_hero")?.data;
+const trust = allPages.find((p) => p.data.page_key === "homepage_trust")?.data;
+const howHeading = allPages.find((p) => p.data.page_key === "homepage_how_heading")?.data;
+
+// Sort collections
+const stats = allStats
+	.filter((s) => s.data.page_key === "homepage")
+	.sort((a, b) => (a.data.sort_order ?? 0) - (b.data.sort_order ?? 0));
+const steps = [...howSteps].sort((a, b) => (a.data.step_number ?? 0) - (b.data.step_number ?? 0));
+const specializations = [...specs].sort((a, b) => (a.data.sort_order ?? 0) - (b.data.sort_order ?? 0));
+const brands = [...allBrands].sort((a, b) => (a.data.sort_order ?? 0) - (b.data.sort_order ?? 0));
+const resources = [...allResources].sort((a, b) => (a.data.sort_order ?? 0) - (b.data.sort_order ?? 0));
+---
+
+<Base
+	title="AudiologistDirectory — Find an audiologist you can trust"
+	description={hero?.subheadline || "Find a trusted audiologist near you."}
+	canonical="https://audiologistdirectory.com/"
+>
+	<SiteNav active="find" />
+
+	<!-- Hero Section -->
+	<section class="bg-secondary pt-16 pb-20 md:pt-24 md:pb-32 px-4 md:px-8">
+		<div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-16 items-center">
+			<div class="space-y-8">
+				{hero?.badge && (
+					<div class="inline-block py-1 px-4 bg-primary/5 text-primary text-sm font-bold tracking-widest uppercase rounded-full">
+						{hero.badge}
+					</div>
+				)}
+				<h1 class="font-serif text-4xl sm:text-5xl md:text-6xl text-ink leading-tight" set:html={hero?.headline?.replace(/\n/g, "<br />")} />
+				<p class="text-lg md:text-xl text-slate max-w-xl">{hero?.subheadline}</p>
+				<div id="hero-search" class="bg-white p-6 rounded-xl shadow-elevated grid grid-cols-1 md:grid-cols-[1fr_1fr_auto] gap-4 items-end">
+					<div class="space-y-2">
+						<label class="block text-sm font-medium text-ink" for="hero-q">Location</label>
+						<div class="relative">
+							<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate">map</span>
+							<input id="hero-q" class="w-full h-14 pl-12 pr-4 border-mist rounded-lg focus:ring-2 focus:ring-primary focus:border-primary" placeholder="City, State, or Zip" type="text" />
+						</div>
+					</div>
+					<div class="space-y-2">
+						<label class="block text-sm font-medium text-ink" for="hero-spec">Specialization</label>
+						<select id="hero-spec" class="w-full h-14 border-mist rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+							<option value="">All Specializations</option>
+							{specializations.map((s) => (
+								<option value={s.data.title}>{s.data.title}</option>
+							))}
+						</select>
+					</div>
+					<button type="button" onclick="var p=new URLSearchParams();var q=document.getElementById('hero-q').value.trim();var s=document.getElementById('hero-spec').value;if(q)p.set('q',q);if(s)p.set('specialization',s);window.location.href='/search'+(p.toString()?'?'+p.toString():'');" class="bg-primary hover:bg-primary-dark text-white h-14 px-8 rounded-lg font-medium shadow-soft transition-transform active:scale-95 flex items-center justify-center gap-2 cursor-pointer">
+						{hero?.cta_text || "Find Audiologists Near Me"}
+					</button>
+				</div>
+			</div>
+			<div class="hidden lg:block relative">
+				<div class="w-full aspect-square rounded-full bg-gradient-to-br from-primary/10 to-transparent flex items-center justify-center p-12 overflow-hidden border border-primary/5">
+					<img class="w-full h-full object-contain opacity-80 mix-blend-multiply" alt="Abstract editorial line art showing overlapping organic emerald green sound waves" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCdKtSUcClRhXoOUbuWAWPPQRyHaz7BJ8DT7QNzsO6c4bLeyJ2vY8DZHhISrWZ7JCx2gGCOklHOWhZmYJTaXQV5d-1HfJ_nF_yZxhP0vTMrMzcvXuT2mzM5fj7M0sQ9TjddAGkegcGDCGATks0eSyXFFE87PZ5DQGRkTc1LUgQjEyP-yH11ejWVfH9Gc78amSg_Dv02Vm076xZXJPu4usCcZcyqBoGCxipdnWJ6Sv99JX3KetqC3wNw_hmVZ6mFhNno7S2nQwmUIuY" />
+				</div>
+				<div class="absolute -bottom-8 -left-8 bg-white p-6 rounded-xl shadow-soft border border-mist max-w-[240px]">
+					<p class="text-sm font-medium text-slate italic leading-relaxed">
+						"The most comprehensive directory for mature adults seeking professional hearing care."
+					</p>
+					<p class="mt-2 text-xs font-bold text-primary">— Audiology Today</p>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<script is:inline>
+	document.getElementById('hero-q')?.addEventListener('keydown', function(e) {
+		if (e.key === 'Enter') document.querySelector('[onclick]')?.click();
+	});
+	</script>
+
+	<!-- Trust Strip -->
+	<section class="bg-white py-12 border-y border-mist">
+		<div class="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-2 lg:grid-cols-4 gap-8">
+			{stats.map((s) => (
+				<div class="flex items-center gap-4">
+					<span class="material-symbols-outlined text-primary">{s.data.icon}</span>
+					<div>
+						<div class="font-serif text-2xl font-semibold text-ink">{s.data.number}</div>
+						<div class="text-sm text-slate">{s.data.label}</div>
+					</div>
+				</div>
+			))}
+		</div>
+	</section>
+
+	<!-- Browse by State -->
+	<section class="bg-fog py-16 md:py-24 px-4 md:px-8">
+		<div class="max-w-7xl mx-auto">
+			<div class="flex justify-between items-end mb-12">
+				<h2 class="font-serif text-4xl text-ink">Browse audiologists by state</h2>
+				<a class="text-primary font-semibold flex items-center gap-2 hover:gap-3 transition-all" href="/audiologists">
+					View all 50 states <span class="material-symbols-outlined">arrow_forward</span>
+				</a>
+			</div>
+			<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+				{topStates.map((s) => (
+					<a class="bg-white p-4 rounded-lg border border-mist hover:border-primary hover:shadow-soft transition-all group flex justify-between items-center" href={`/audiologists/${s.state_slug}`}>
+						<span class="font-medium text-ink">{s.state_name}</span>
+						<span class="text-xs font-bold text-slate bg-fog px-2 py-1 rounded-full group-hover:bg-primary/5 group-hover:text-primary">{s.count}</span>
+					</a>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<!-- How It Works -->
+	<section class="bg-secondary py-16 md:py-24 px-4 md:px-8">
+		<div class="max-w-7xl mx-auto">
+			<h2 class="font-serif text-4xl text-ink mb-16 text-center">{howHeading?.headline || "How AudiologistDirectory works"}</h2>
+			<div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+				{steps.map((s) => (
+					<div class="bg-white p-8 rounded-xl shadow-soft text-center space-y-4">
+						<div class="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-6">{s.data.step_number}</div>
+						<span class="material-symbols-outlined text-4xl text-primary">{s.data.icon}</span>
+						<h3 class="font-serif text-2xl text-ink">{s.data.title}</h3>
+						<p class="text-slate">{s.data.description}</p>
+					</div>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<!-- Featured Specializations -->
+	<section class="bg-fog py-16 md:py-24 px-4 md:px-8">
+		<div class="max-w-7xl mx-auto">
+			<h2 class="font-serif text-4xl text-ink mb-12">Specialized audiology care</h2>
+			<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+				{specializations.map((s) => (
+					<a class="bg-white p-8 rounded-xl border border-mist hover:border-primary hover:shadow-soft transition-all space-y-4 group" href={`/search?specialization=${encodeURIComponent(s.data.title)}`}>
+						<span class="material-symbols-outlined text-4xl text-primary">{s.data.icon}</span>
+						<h3 class="font-serif text-2xl text-ink">{s.data.title}</h3>
+						<p class="text-sm text-slate">{s.data.description}</p>
+						<div class="pt-4 text-primary font-semibold flex items-center gap-2 group-hover:gap-3 transition-all">
+							Find specialists <span class="material-symbols-outlined text-sm">chevron_right</span>
+						</div>
+					</a>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<!-- Browse by Brand -->
+	<section class="bg-secondary py-16 md:py-24 px-4 md:px-8">
+		<div class="max-w-7xl mx-auto">
+			<h2 class="font-serif text-4xl text-ink mb-12 text-center">Find practices that carry your preferred brand</h2>
+			<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+				{brands.slice(0, 6).map((b) => (
+					<a class="bg-white h-24 flex items-center justify-center rounded-xl border border-mist hover:border-primary transition-colors px-6 shadow-soft group" href={b.data.slug_path}>
+						<span class="text-slate font-bold text-xl group-hover:text-primary transition-colors">{b.data.name}</span>
+					</a>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<!-- Editorial Trust Callout -->
+	<section class="bg-fog py-16 md:py-24 px-4 md:px-8 text-center">
+		<div class="max-w-3xl mx-auto space-y-6">
+			<span class="material-symbols-outlined text-6xl text-primary">verified</span>
+			<h2 class="font-serif text-4xl text-ink">{trust?.headline}</h2>
+			<p class="text-lg text-slate leading-relaxed">{trust?.body}</p>
+			{trust?.cta_text && (
+				<div class="pt-6">
+					<a class="text-primary font-bold underline decoration-2 underline-offset-8 hover:text-primary-dark" href={trust.cta_link}>{trust.cta_text}</a>
+				</div>
+			)}
+		</div>
+	</section>
+
+	<!-- Resources -->
+	<section class="bg-secondary py-16 md:py-24 px-4 md:px-8">
+		<div class="max-w-7xl mx-auto">
+			<div class="flex justify-between items-end mb-12">
+				<h2 class="font-serif text-4xl text-ink">Learn about hearing care</h2>
+				<a class="text-primary font-semibold hover:underline" href="/resources">All Resources</a>
+			</div>
+			<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+				{resources.map((r) => (
+					<article class="bg-white rounded-xl overflow-hidden shadow-soft flex flex-col group">
+						<div class="aspect-[16/10] bg-primary/10 relative overflow-hidden">
+							<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt={r.data.title} src={r.data.image_url} loading="lazy" decoding="async" />
+						</div>
+						<div class="p-8 space-y-4">
+							<span class="text-xs font-bold text-primary uppercase tracking-widest">{r.data.tag}</span>
+							<h3 class="font-serif text-2xl text-ink group-hover:text-primary transition-colors leading-tight">{r.data.title}</h3>
+							<p class="text-sm text-slate">{r.data.blurb}</p>
+						</div>
+					</article>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<SiteFooter />
+</Base>

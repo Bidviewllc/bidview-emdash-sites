@@ -1,0 +1,48 @@
+{
+	"name": "audiologist-directory",
+	"version": "0.0.1",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "astro dev",
+		"build": "astro build",
+		"preview": "astro preview",
+		"deploy": "astro build && wrangler deploy",
+		"deploy:staging": "astro build && node scripts/deploy-staging.mjs",
+		"deploy:production": "astro build && wrangler deploy",
+		"typecheck": "astro check",
+		"types": "emdash types",
+		"db:schema": "wrangler d1 execute audiologist-directory-db --local --file=./seed/schema.sql",
+		"db:schema:remote": "wrangler d1 execute audiologist-directory-db --remote --file=./seed/schema.sql",
+		"db:import": "node scripts/import-practices.mjs",
+		"db:import:remote": "node scripts/import-practices.mjs --remote"
+	},
+	"dependencies": {
+		"@astrojs/cloudflare": "^13.1.6",
+		"@astrojs/react": "^5.0.0",
+		"@astrojs/sitemap": "3.7.2",
+		"@astrojs/tailwind": "^6.0.2",
+		"@emdash-cms/cloudflare": "^0.1.0",
+		"@tailwindcss/container-queries": "^0.1.1",
+		"@tailwindcss/forms": "^0.5.11",
+		"@tiptap/extension-collaboration": "^3.22.3",
+		"@tiptap/y-tiptap": "^3.0.3",
+		"astro": "^6.1.2",
+		"emdash": "^0.1.0",
+		"react": "^19.2.4",
+		"react-dom": "^19.2.4",
+		"tailwindcss": "^3.4.19",
+		"y-protocols": "^1.0.7",
+		"yjs": "^13.6.30"
+	},
+	"devDependencies": {
+		"@astrojs/check": "^0.9.7",
+		"@cloudflare/workers-types": "^4.20260401.1",
+		"csv-parse": "^5.5.6",
+		"wrangler": "^4.79.0"
+	},
+	"emdash": {
+		"label": "AudiologistDirectory",
+		"seed": "seed/seed.json"
+	}
+}
