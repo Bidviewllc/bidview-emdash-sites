@@ -1,0 +1,198 @@
+---
+import headerHtml from '../components/sections/Header.html?raw';
+import pageWrapperOpenHtml from '../components/sections/PageWrapperOpen.html?raw';
+import heroHtml from '../components/sections/Hero.html?raw';
+import mobileCtaHtml from '../components/sections/MobileCta.html?raw';
+import proofBarTaglineHtml from '../components/sections/ProofBarTagline.html?raw';
+import aboutHtml from '../components/sections/About.html?raw';
+import Testimonials from '../components/sections/Testimonials.astro';
+import Services from '../components/sections/Services.astro';
+import supportHtml from '../components/sections/Support.html?raw';
+import Faq from '../components/sections/Faq.astro';
+import ctaFooterHtml from '../components/sections/CtaFooter.html?raw';
+import combinedCss from '../../public/v3-css/combined.css?raw';
+
+export const cacheHint = 3600;
+---
+
+<!doctype html>
+<html lang="en-US">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Lakeside Lactation — Compassionate Feeding Care</title>
+
+		<!-- Preload hero background image (LCP element) -->
+		<link rel="preload" as="image" type="image/webp" href="/v3-assets/bb900981cae335e76847c0ddbe2a0f4bc1d8a3ce-scaled-1.webp" fetchpriority="high" />
+
+		<!-- All CSS inlined to eliminate render-blocking requests -->
+		<style set:html={combinedCss}></style>
+
+		<!-- Google Fonts (non-blocking with swap) -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" media="print" onload="this.media='all'" />
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Literata:400,400italic,500&display=swap" media="print" onload="this.media='all'" />
+
+		<!-- Favicon -->
+		<link rel="icon" type="image/png" href="/v3-assets/Company-Logo-V-2-150x150.png" sizes="32x32" />
+		<link rel="icon" type="image/png" href="/v3-assets/Company-Logo-V-2.png" sizes="192x192" />
+		<link rel="apple-touch-icon" href="/v3-assets/Company-Logo-V-2.png" />
+
+		<!-- SEO -->
+		<meta name="description" content="Helping you build confidence and reach the breastfeeding goals that matter to you." />
+		<meta name="robots" content="index, follow, max-snippet:-1, max-video-preview:-1, max-image-preview:large" />
+		<link rel="canonical" href="https://lakeside-lactation.com/" />
+
+		<!-- Open Graph -->
+		<meta property="og:locale" content="en_US" />
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content="Lakeside Lactation — Compassionate Feeding Care" />
+		<meta property="og:description" content="Helping you build confidence and reach the breastfeeding goals that matter to you." />
+		<meta property="og:url" content="https://lakeside-lactation.com/" />
+		<meta property="og:site_name" content="Lakeside Lactation" />
+		<meta property="og:image" content="https://lakeside-lactation.com/v3-assets/bb900981cae335e76847c0ddbe2a0f4bc1d8a3ce-scaled-1.webp" />
+		<meta property="og:image:width" content="1920" />
+		<meta property="og:image:height" content="1080" />
+		<meta property="og:image:alt" content="Lakeside Lactation — Compassionate feeding care starts here" />
+		<meta property="og:image:type" content="image/webp" />
+
+		<!-- Twitter Card -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content="Lakeside Lactation — Compassionate Feeding Care" />
+		<meta name="twitter:description" content="Helping you build confidence and reach the breastfeeding goals that matter to you." />
+		<meta name="twitter:image" content="https://lakeside-lactation.com/v3-assets/bb900981cae335e76847c0ddbe2a0f4bc1d8a3ce-scaled-1.webp" />
+
+		<!-- Google Tag Manager -->
+		<script is:inline>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TWJJQRHW');</script>
+
+		<!-- Google tag (gtag.js) / GA4 -->
+		<script is:inline async src="https://www.googletagmanager.com/gtag/js?id=GT-5MRPRLX3"></script>
+		<script is:inline>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','GT-5MRPRLX3');</script>
+
+		<!-- Schema / JSON-LD -->
+		<script is:inline type="application/ld+json">
+		{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://lakeside-lactation.com/#organization","name":"Lakeside Lactation","url":"https://lakeside-lactation.com","logo":{"@type":"ImageObject","url":"https://lakeside-lactation.com/v3-assets/Company-Logo-V-2.png","width":388,"height":284}},{"@type":"WebSite","@id":"https://lakeside-lactation.com/#website","url":"https://lakeside-lactation.com","name":"Lakeside Lactation","publisher":{"@id":"https://lakeside-lactation.com/#organization"},"inLanguage":"en-US"},{"@type":"WebPage","@id":"https://lakeside-lactation.com/#webpage","url":"https://lakeside-lactation.com/","name":"Lakeside Lactation — Compassionate Feeding Care","description":"Helping you build confidence and reach the breastfeeding goals that matter to you.","isPartOf":{"@id":"https://lakeside-lactation.com/#website"},"about":{"@id":"https://lakeside-lactation.com/#organization"},"inLanguage":"en-US"},{"@type":"LocalBusiness","@id":"https://lakeside-lactation.com/#localbusiness","name":"Lakeside Lactation","description":"Registered nurse and International Board Certified Lactation Consultant with over 20 years of experience supporting families in a Level IV NICU.","url":"https://lakeside-lactation.com","telephone":"+1-708-317-9070","email":"lauren@lakeside-lactation.com","address":{"@type":"PostalAddress","addressLocality":"Libertyville","addressRegion":"IL","postalCode":"60048","addressCountry":"US"},"areaServed":[{"@type":"City","name":"Libertyville"},{"@type":"AdministrativeArea","name":"Lake County"},{"@type":"AdministrativeArea","name":"Chicago North Shore"}],"priceRange":"$175–$300","image":"https://lakeside-lactation.com/v3-assets/Company-Logo-V-2.png","logo":"https://lakeside-lactation.com/v3-assets/Company-Logo-V-2.png"}]}
+		</script>
+	</head>
+	<body class="home wp-singular page-template page-template-em-base_header_footer page page-id-1122 em-base-default em-base-template-full-width kit-1098 em-base-page pg-1122">
+		<!-- Google Tag Manager (noscript) -->
+		<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TWJJQRHW" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+		<Fragment set:html={headerHtml} />
+		<Fragment set:html={pageWrapperOpenHtml} />
+		<Fragment set:html={heroHtml} />
+		<Fragment set:html={mobileCtaHtml} />
+		<Fragment set:html={proofBarTaglineHtml} />
+		<Fragment set:html={aboutHtml} />
+		<Testimonials />
+		<Services />
+		<Fragment set:html={supportHtml} />
+		<Faq />
+		<Fragment set:html={ctaFooterHtml} />
+
+		<!-- Booking Modal -->
+		<div id="booking-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:9999; background:rgba(0,0,0,0.6);">
+			<div style="position:relative; max-width:600px; margin:5vh auto; background:#fff; border-radius:12px; overflow:hidden; max-height:90vh;">
+				<button id="booking-modal-close" style="position:absolute; top:12px; right:16px; background:none; border:none; font-size:28px; cursor:pointer; color:#333; z-index:1;">&times;</button>
+				<div style="padding:24px 24px 0; text-align:center;">
+					<h2 style="font-family:'Roboto', sans-serif; font-size:28px; font-weight:400; color:#183439; margin:0 0 8px;">Book Appointment</h2>
+				</div>
+				<div style="padding:0 16px 16px;">
+					<iframe name="easyXDM_default9974_provider" id="easyXDM_default9974_provider" src="https://intakeq.com/bookingwidget/68e276c0fd05fafdb1083952?xdm_e=https%3A%2F%2Fwordpress-1468774-6123459.cloudwaysapps.com&amp;xdm_c=default9974&amp;xdm_p=1" frameborder="0" style="width:100%; height:70vh; border:none;" title="Booking Widget"></iframe>
+				</div>
+			</div>
+		</div>
+
+
+		<script is:inline>
+		document.addEventListener('DOMContentLoaded', function () {
+			/* ── Sticky Header ── */
+			var header = document.querySelector('.el-4f8a8aed');
+			if (header) {
+				var placeholder = document.createElement('div');
+				placeholder.style.display = 'none';
+				header.parentNode.insertBefore(placeholder, header);
+
+				var headerHeight = header.offsetHeight;
+				var triggerOffset = header.offsetTop + headerHeight;
+
+				function onScroll() {
+					if (window.scrollY >= triggerOffset) {
+						if (!header.classList.contains('sticky--active')) {
+							header.classList.add('sticky--active');
+							header.style.position = 'fixed';
+							header.style.top = '0';
+							header.style.left = '0';
+							header.style.width = '100%';
+							header.style.zIndex = '99';
+							header.style.marginTop = '0';
+							header.style.boxShadow = '0px 4px 15px rgba(0,0,0,0.1)';
+							placeholder.style.display = 'block';
+							placeholder.style.height = headerHeight + 'px';
+						}
+					} else {
+						if (header.classList.contains('sticky--active')) {
+							header.classList.remove('sticky--active');
+							header.style.position = '';
+							header.style.top = '';
+							header.style.left = '';
+							header.style.width = '';
+							header.style.zIndex = '';
+							header.style.marginTop = '';
+							header.style.boxShadow = '';
+							placeholder.style.display = 'none';
+						}
+					}
+				}
+				window.addEventListener('scroll', onScroll, { passive: true });
+			}
+
+			/* ── Mobile Nav Toggle ── */
+			var toggles = document.querySelectorAll('.menu-toggle');
+			toggles.forEach(function (toggle) {
+				toggle.addEventListener('click', function () {
+					var expanded = toggle.getAttribute('aria-expanded') === 'true';
+					toggle.setAttribute('aria-expanded', !expanded);
+					var nav = toggle.closest('.widget-nav-menu');
+					if (nav) nav.classList.toggle('nav-menu--toggle-open');
+				});
+			});
+
+			/* ── Booking Modal ── */
+			var modal = document.getElementById('booking-modal');
+			var closeBtn = document.getElementById('booking-modal-close');
+			if (modal && closeBtn) {
+				// Open modal on any Book Appointment link click
+				document.querySelectorAll('a[href*="popup%3Aopen"], a[href*="popup:open"]').forEach(function (link) {
+					link.addEventListener('click', function (e) {
+						e.preventDefault();
+						modal.style.display = 'block';
+						document.body.style.overflow = 'hidden';
+					});
+				});
+				// Close modal
+				closeBtn.addEventListener('click', function () {
+					modal.style.display = 'none';
+					document.body.style.overflow = '';
+				});
+				// Close on backdrop click
+				modal.addEventListener('click', function (e) {
+					if (e.target === modal) {
+						modal.style.display = 'none';
+						document.body.style.overflow = '';
+					}
+				});
+				// Close on Escape key
+				document.addEventListener('keydown', function (e) {
+					if (e.key === 'Escape' && modal.style.display === 'block') {
+						modal.style.display = 'none';
+						document.body.style.overflow = '';
+					}
+				});
+			}
+
+		});
+		</script>
+	</body>
+</html>

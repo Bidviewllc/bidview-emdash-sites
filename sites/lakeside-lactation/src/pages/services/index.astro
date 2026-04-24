@@ -1,0 +1,467 @@
+---
+import Base from "../../layouts/Base.astro";
+
+export const cacheHint = 3600;
+
+// Feather-style SVG paths for service icons
+const svgPaths: Record<string, string> = {
+	search: `<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>`,
+	"pen-tool": `<path d="m12 19 7-7 3 3-7 7-3-3z"/><path d="m18 13-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><circle cx="11" cy="11" r="2"/>`,
+	video: `<polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>`,
+	"bar-chart-2": `<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>`,
+	"file-text": `<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>`,
+	"trending-up": `<polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/>`,
+	zap: `<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>`,
+};
+
+const services = [
+	{
+		slug: "seo",
+		icon: "search",
+		title: "SEO Services",
+		desc: "Dominate Google search results and drive qualified organic traffic. We build sustainable rankings that compound over time.",
+		tags: ["On-Page SEO", "Local SEO", "Technical SEO", "Link Building"],
+	},
+	{
+		slug: "web-design",
+		icon: "pen-tool",
+		title: "Web Design",
+		desc: "Custom websites built for speed, conversions, and brand impact. From landing pages to full e-commerce experiences.",
+		tags: ["Custom Design", "WordPress", "E-commerce", "Landing Pages"],
+	},
+	{
+		slug: "video-production",
+		icon: "video",
+		title: "Video Production",
+		desc: "Professional video content that tells your brand story and converts. Brand films, ads, testimonials, and social content.",
+		tags: ["Brand Films", "Video Ads", "Testimonials", "Social Content"],
+	},
+	{
+		slug: "paid-advertising",
+		icon: "bar-chart-2",
+		title: "Paid Advertising",
+		desc: "Data-driven ad campaigns that maximize every dollar. Google Ads, Facebook, Instagram, LinkedIn, and more.",
+		tags: ["Google Ads", "Facebook Ads", "Retargeting", "Shopping Ads"],
+	},
+	{
+		slug: "content-marketing",
+		icon: "file-text",
+		title: "Content Marketing",
+		desc: "Strategic content that attracts, engages, and converts your ideal audience. Blogs, email, copy, and content strategy.",
+		tags: ["Blog Content", "Email Marketing", "Copywriting", "Strategy"],
+	},
+	{
+		slug: "social-media",
+		icon: "trending-up",
+		title: "Social Media Management",
+		desc: "Full-service social management that builds your brand and drives real business results across every platform.",
+		tags: ["Instagram", "Facebook", "LinkedIn", "TikTok"],
+	},
+	{
+		slug: "conversion-optimization",
+		icon: "zap",
+		title: "Conversion Optimization",
+		desc: "Turn more of your existing traffic into customers. CRO audits, A/B testing, and funnel optimization.",
+		tags: ["CRO Audit", "A/B Testing", "Landing Pages", "Funnel Analysis"],
+	},
+];
+---
+
+<Base
+	title="Digital Marketing Services in Chicago"
+	description="Full-service digital marketing: SEO, web design, video production, paid advertising, content marketing, social media, and CRO. Serving Chicago businesses."
+>
+	<!-- ── HERO ── -->
+	<section class="svcs-hero">
+		<div class="container svcs-hero-inner">
+			<div class="svcs-hero-text">
+				<span class="eyebrow">Our Services</span>
+				<h1>Digital Marketing That Grows Chicago Businesses</h1>
+				<p>We offer a complete suite of digital marketing services — from SEO and paid ads to web design and video production. Every service is built around one goal: more leads, more revenue, less guesswork.</p>
+				<div class="svcs-hero-actions">
+					<a href="/free-seo-audit" class="btn btn-primary">Get a Free Strategy Call →</a>
+					<a href="/results" class="btn btn-outline-white">View Our Results</a>
+				</div>
+			</div>
+			<div class="svcs-hero-img">
+				<img
+					src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=900&q=80"
+					alt="Chicago marketing team collaborating"
+					width="540"
+					height="400"
+					loading="eager"
+				/>
+			</div>
+		</div>
+	</section>
+
+	<!-- ── SERVICES GRID ── -->
+	<section class="svcs-list">
+		<div class="container">
+			<div class="svcs-grid">
+				{services.map((svc, i) => (
+					<a href={`/services/${svc.slug}`} class="svc-card">
+						<div class="svc-card-header">
+							<div class="svc-card-icon">
+								<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" set:html={svgPaths[svc.icon]} />
+							</div>
+							<span class="svc-card-num">0{i + 1}</span>
+						</div>
+						<h2>{svc.title}</h2>
+						<p>{svc.desc}</p>
+						<div class="svc-card-tags">
+							{svc.tags.map((tag) => (
+								<span class="svc-tag">{tag}</span>
+							))}
+						</div>
+						<span class="svc-card-cta">Learn more →</span>
+					</a>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<!-- ── WHY US ── -->
+	<section class="svcs-why">
+		<div class="container">
+			<div class="svcs-why-inner">
+				<div class="svcs-why-text">
+					<span class="eyebrow">Why Choose Us</span>
+					<h2>One Agency. Every Channel. Real Results.</h2>
+					<p>Most agencies are siloed — they do SEO, or ads, or content. We connect them all into a unified growth strategy that compounds over time. When your SEO, content, and paid ads work together, the results are exponential.</p>
+					<div class="svcs-why-points">
+						<div class="why-point">
+							<span class="why-check">✓</span>
+							<span>Chicago-based team that knows the local market</span>
+						</div>
+						<div class="why-point">
+							<span class="why-check">✓</span>
+							<span>Full-funnel strategy — not just individual tactics</span>
+						</div>
+						<div class="why-point">
+							<span class="why-check">✓</span>
+							<span>Transparent reporting on every dollar and metric</span>
+						</div>
+						<div class="why-point">
+							<span class="why-check">✓</span>
+							<span>Dedicated account manager, not a rotating team</span>
+						</div>
+					</div>
+					<a href="/about" class="btn btn-outline">Meet the Team</a>
+				</div>
+				<div class="svcs-why-stats">
+					<div class="why-stat">
+						<span class="why-stat-value">150+</span>
+						<span class="why-stat-label">Chicago clients served</span>
+					</div>
+					<div class="why-stat">
+						<span class="why-stat-value">$12M+</span>
+						<span class="why-stat-label">Revenue generated</span>
+					</div>
+					<div class="why-stat">
+						<span class="why-stat-value">94%</span>
+						<span class="why-stat-label">Client retention rate</span>
+					</div>
+					<div class="why-stat">
+						<span class="why-stat-value">7+</span>
+						<span class="why-stat-label">Years in Chicago</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- ── CTA ── -->
+	<section class="svcs-cta">
+		<div class="container svcs-cta-inner">
+			<h2>Not Sure Where to Start?</h2>
+			<p>We'll audit your current digital presence and show you exactly where the biggest growth opportunities are — no obligation, no hard sell.</p>
+			<div class="svcs-cta-actions">
+				<a href="/free-seo-audit" class="btn btn-primary">Get Your Free SEO Audit →</a>
+				<a href="/contact" class="btn btn-outline-white">Talk to Our Team</a>
+			</div>
+		</div>
+	</section>
+</Base>
+
+<style>
+/* ── HERO ── */
+.svcs-hero {
+	background: var(--navy);
+	padding: 56px 0 64px;
+}
+
+.svcs-hero-inner {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 64px;
+	align-items: center;
+}
+
+.svcs-hero-text h1 {
+	font-size: clamp(2rem, 4vw, 2.75rem);
+	color: var(--white);
+	margin-bottom: 20px;
+	line-height: 1.1;
+	letter-spacing: -0.03em;
+}
+
+.svcs-hero-text p {
+	font-size: 1.0625rem;
+	color: rgba(255,255,255,0.7);
+	line-height: 1.7;
+	margin-bottom: 32px;
+	max-width: 500px;
+}
+
+.svcs-hero-actions {
+	display: flex;
+	gap: 12px;
+	flex-wrap: wrap;
+}
+
+.svcs-hero-img {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+}
+
+.svcs-hero-img img {
+	width: 100%;
+	max-width: 540px;
+	height: 420px;
+	object-fit: cover;
+	border-radius: var(--radius-lg);
+}
+
+/* ── SERVICES GRID ── */
+.svcs-list {
+	padding: 80px 0;
+	background: var(--off-white);
+}
+
+.svcs-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 24px;
+}
+
+.svc-card {
+	display: flex;
+	flex-direction: column;
+	background: var(--white);
+	border: 1px solid var(--border);
+	border-radius: var(--radius-lg);
+	padding: 32px;
+	text-decoration: none;
+	transition: all var(--transition);
+}
+
+.svc-card:hover {
+	border-color: var(--red);
+	box-shadow: 0 8px 32px rgba(220, 38, 38, 0.1);
+	transform: translateY(-2px);
+}
+
+.svc-card-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	margin-bottom: 20px;
+}
+
+.svc-card-icon {
+	width: 48px;
+	height: 48px;
+	background: var(--navy);
+	border-radius: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+}
+
+.svc-card:hover .svc-card-icon {
+	background: var(--red);
+}
+
+.svc-card-num {
+	font-size: 0.75rem;
+	font-weight: 700;
+	color: var(--text-light);
+	letter-spacing: 0.05em;
+}
+
+.svc-card h2 {
+	font-size: 1.125rem;
+	font-weight: 700;
+	color: var(--text-dark);
+	margin-bottom: 10px;
+	letter-spacing: -0.02em;
+}
+
+.svc-card p {
+	font-size: 0.9375rem;
+	color: var(--text-muted);
+	line-height: 1.6;
+	flex: 1;
+	margin-bottom: 20px;
+}
+
+.svc-card-tags {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+	margin-bottom: 20px;
+}
+
+.svc-tag {
+	font-size: 0.75rem;
+	font-weight: 500;
+	color: var(--text-muted);
+	background: var(--off-white);
+	border: 1px solid var(--border);
+	border-radius: 20px;
+	padding: 3px 10px;
+}
+
+.svc-card-cta {
+	font-size: 0.875rem;
+	font-weight: 600;
+	color: var(--red);
+	transition: color var(--transition);
+}
+
+.svc-card:hover .svc-card-cta { color: var(--red-dark); }
+
+/* ── WHY US ── */
+.svcs-why {
+	padding: 80px 0;
+	background: var(--white);
+}
+
+.svcs-why-inner {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 80px;
+	align-items: center;
+}
+
+.svcs-why-text h2 {
+	font-size: clamp(1.75rem, 3vw, 2.25rem);
+	color: var(--text-dark);
+	margin-bottom: 16px;
+}
+
+.svcs-why-text > p {
+	font-size: 1rem;
+	color: var(--text-muted);
+	line-height: 1.7;
+	margin-bottom: 32px;
+}
+
+.svcs-why-points {
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+	margin-bottom: 32px;
+}
+
+.why-point {
+	display: flex;
+	align-items: flex-start;
+	gap: 12px;
+	font-size: 0.9375rem;
+	color: var(--text-dark);
+}
+
+.why-check {
+	color: var(--red);
+	font-weight: 700;
+	flex-shrink: 0;
+	margin-top: 1px;
+}
+
+.svcs-why-stats {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 2px;
+	background: var(--border);
+	border-radius: var(--radius-lg);
+	overflow: hidden;
+}
+
+.why-stat {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	background: var(--white);
+	padding: 40px 24px;
+	text-align: center;
+	gap: 8px;
+}
+
+.why-stat-value {
+	font-size: 2.5rem;
+	font-weight: 900;
+	color: var(--text-dark);
+	letter-spacing: -0.04em;
+	line-height: 1;
+}
+
+.why-stat-label {
+	font-size: 0.8125rem;
+	color: var(--text-muted);
+}
+
+/* ── CTA ── */
+.svcs-cta {
+	background: var(--navy);
+	padding: 80px 0;
+}
+
+.svcs-cta-inner {
+	text-align: center;
+	max-width: 580px;
+	margin: 0 auto;
+}
+
+.svcs-cta-inner h2 {
+	font-size: clamp(1.75rem, 3vw, 2.25rem);
+	color: var(--white);
+	margin-bottom: 16px;
+}
+
+.svcs-cta-inner p {
+	font-size: 1rem;
+	color: rgba(255,255,255,0.65);
+	margin-bottom: 32px;
+	line-height: 1.7;
+}
+
+.svcs-cta-actions {
+	display: flex;
+	gap: 12px;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1024px) {
+	.svcs-hero-inner { grid-template-columns: 1fr; }
+	.svcs-hero-img { display: none; }
+	.svcs-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+	.svcs-grid { grid-template-columns: 1fr; }
+	.svcs-why-inner { grid-template-columns: 1fr; gap: 48px; }
+	.svcs-cta-actions { flex-direction: column; align-items: center; }
+}
+
+@media (max-width: 480px) {
+	.svcs-why-stats { grid-template-columns: 1fr; }
+	.why-stat { padding: 24px 16px; }
+}
+</style>

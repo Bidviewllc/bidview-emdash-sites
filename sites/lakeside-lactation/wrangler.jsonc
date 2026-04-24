@@ -1,0 +1,58 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "lakeside-lactation",
+	"account_id": "239e9d015c7a3a39cdc2e9400312f553",
+	"main": "./src/worker.ts",
+	"compatibility_date": "2026-03-29",
+	"compatibility_flags": [
+		"nodejs_compat"
+	],
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "lakeside-lactation-db",
+			"database_id": "c26964c5-8804-4f65-8595-a99ab845d844",
+		},
+	],
+	"r2_buckets": [
+		{
+			"binding": "MEDIA",
+			"bucket_name": "lakeside-lactation-media",
+		},
+	],
+	"kv_namespaces": [
+		{
+			"binding": "SESSION",
+			"id": "028dfa4da881449cb1fcfb8ae46b6e2e",
+		},
+	],
+	"observability": {
+		"enabled": true,
+	},
+	"placement": {
+		"mode": "smart",
+	},
+	"worker_loaders": [
+		{
+			"binding": "LOADER",
+		},
+	],
+	"triggers": {
+		"crons": ["*/5 * * * *"],
+	},
+	"workers_dev": true,
+	"routes": [
+		{
+			"pattern": "lakeside-lactation.com/*",
+			"zone_name": "lakeside-lactation.com",
+		},
+		{
+			"pattern": "www.lakeside-lactation.com/*",
+			"zone_name": "lakeside-lactation.com",
+		},
+	],
+	"custom_domains": [
+		"lakeside-lactation.com",
+		"www.lakeside-lactation.com",
+	],
+}

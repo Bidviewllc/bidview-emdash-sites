@@ -1,0 +1,37 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Astro
+.astro/
+
+# Cloudflare
+.wrangler/
+.cloudflare-builds
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Local DB
+*.db
+*.db-shm
+*.db-wal
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*

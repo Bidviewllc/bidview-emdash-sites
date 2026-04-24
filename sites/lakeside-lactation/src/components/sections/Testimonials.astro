@@ -1,0 +1,71 @@
+---
+import { getEmDashCollection } from 'emdash';
+import rawHtml from './Testimonials.html?raw';
+
+const { entries: testimonials } = await getEmDashCollection('testimonials', { status: 'published' });
+
+const starSvg = `<svg aria-hidden="true" class="e-font-icon-svg e-eicon-star" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg"><path d="M450 75L338 312 88 350C46 354 25 417 58 450L238 633 196 896C188 942 238 975 275 954L500 837 725 954C767 975 813 942 804 896L763 633 942 450C975 417 954 358 913 350L663 312 550 75C529 33 471 33 450 75Z"></path></svg>`;
+
+const fiveStars = Array(5).fill(0).map(() =>
+	`<div class="e-icon"><div class="e-icon-wrapper e-icon-marked">${starSvg}</div><div class="e-icon-wrapper e-icon-unmarked">${starSvg}</div></div>`
+).join('');
+
+const slidesHtml = testimonials.map((t: any) => `
+<div class="em-base page-701 swiper-slide e-loop-item" role="group" aria-roledescription="slide">
+	<div class="el el-aa44239 e-flex e-con-boxed e-con e-parent">
+		<div class="e-con-inner">
+			<div class="el el-33eb824 widget widget-theme-post-content">
+				<p>&#8220;${t.data.quote}&#8221;</p>
+			</div>
+			<div class="el el-71a1b65 widget widget-theme-post-title pg-title widget-heading">
+				<span class="heading-title size-default">${t.data.name}</span>
+			</div>
+			<div class="el el-0da125d widget widget-rating">
+				<div class="e-rating" itemtype="https://schema.org/Rating" itemscope itemprop="reviewRating">
+					<meta itemprop="worstRating" content="0">
+					<meta itemprop="bestRating" content="5">
+					<div class="e-rating-wrapper" itemprop="ratingValue" content="5" role="img" aria-label="Rated 5 out of 5">
+						${fiveStars}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>`).join('');
+
+// Inject dynamic slides into the static HTML
+const START_MARKER = '<div class="swiper-wrapper" aria-live="off">';
+const END_MARKER = '<div class="swiper-button swiper-button-prev"';
+
+const startIdx = rawHtml.indexOf(START_MARKER) + START_MARKER.length;
+const endIdx = rawHtml.indexOf(END_MARKER);
+
+// Find the outer-container closing tags (swiper-wrapper + swiper-grid).
+// The between content includes the static slide (net 0) plus extra closes for outer containers.
+// We scan for the first point where depth goes negative — that's where outer-container closes begin.
+const between = rawHtml.slice(startIdx, endIdx);
+let _depth = 0;
+let _outerCloseStart = between.length;
+for (let _i = 0; _i < between.length; _i++) {
+	if (between.slice(_i, _i + 4) === '<div') { _depth++; }
+	else if (between.slice(_i, _i + 6) === '</div>') {
+		_depth--;
+		if (_depth < 0) { _outerCloseStart = _i; break; }
+	}
+}
+const closingTags = between.slice(_outerCloseStart);
+
+// Extract the loop-701 style block from the static HTML and re-inject it
+// (it was inside the swiper-wrapper so it gets dropped by the slide replacement)
+const loopStyleMatch = rawHtml.match(/<style[^>]*id="loop-701"[\s\S]*?<\/style>/);
+const loopStyles = loopStyleMatch ? loopStyleMatch[0] : '';
+
+const injectedHtml =
+	rawHtml.slice(0, startIdx) +
+	loopStyles +
+	slidesHtml +
+	closingTags +
+	rawHtml.slice(endIdx);
+---
+
+<Fragment set:html={injectedHtml} />

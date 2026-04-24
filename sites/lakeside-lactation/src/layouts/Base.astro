@@ -1,0 +1,273 @@
+---
+import { EmDashHead } from "emdash/ui";
+import { createPublicPageContext } from "emdash/page";
+
+interface Props {
+	title?: string;
+	description?: string;
+	image?: string;
+}
+
+const { title, description, image } = Astro.props;
+
+const siteTitle = "Lakeside Lactation";
+const fullTitle = title ? `${title} | ${siteTitle}` : `${siteTitle} | Compassionate Lactation Support`;
+const siteDescription = description || "Helping you build confidence and reach the breastfeeding goals that matter to you. Serving the Chicago North Shore and Lake County.";
+
+const pageCtx = createPublicPageContext({
+	Astro,
+	kind: "custom",
+	pageType: "website",
+	title: fullTitle,
+	description: siteDescription,
+	canonical: `https://lakeside-lactation.com${Astro.url.pathname}`,
+	image,
+	seo: { ogImage: image },
+	siteName: siteTitle,
+});
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>{fullTitle}</title>
+		<link rel="icon" type="image/png" href="/images/Company-Logo-V-2.png" />
+		<EmDashHead page={pageCtx} />
+		<link rel="preload" href="/fonts/AktivGrotesk-Regular.ttf" as="font" type="font/truetype" crossorigin />
+		<link rel="preload" href="/fonts/AvegasRoyale-Regular.ttf" as="font" type="font/truetype" crossorigin />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:ital,wght@0,400;1,400&family=Roboto:wght@300;400;500;600;700&display=swap" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" />
+		<style is:global>
+			@font-face {
+				font-family: 'Aktiv Grotesk';
+				src: url('/fonts/AktivGrotesk-Light.ttf') format('truetype');
+				font-weight: 300; font-style: normal; font-display: swap;
+			}
+			@font-face {
+				font-family: 'Aktiv Grotesk';
+				src: url('/fonts/AktivGrotesk-Regular.ttf') format('truetype');
+				font-weight: 400; font-style: normal; font-display: swap;
+			}
+			@font-face {
+				font-family: 'Aktiv Grotesk';
+				src: url('/fonts/AktivGrotesk-Medium.ttf') format('truetype');
+				font-weight: 500; font-style: normal; font-display: swap;
+			}
+			@font-face {
+				font-family: 'Aktiv Grotesk';
+				src: url('/fonts/AktivGrotesk-Bold.ttf') format('truetype');
+				font-weight: 700; font-style: normal; font-display: swap;
+			}
+			@font-face {
+				font-family: 'Avegas Royale';
+				src: url('/fonts/AvegasRoyale-Regular.ttf') format('truetype');
+				font-weight: 400; font-style: normal; font-display: swap;
+			}
+			*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+			:root {
+				--cream: #FFF9F5;
+				--cream-light: #FCFBFA;
+				--sand: #EEE6E0;
+				--teal: #183439;
+				--gold: #C6872C;
+				--gold-light: #F4BE89;
+				--text: #2F2C2B;
+				--text-muted: #71625A;
+				--text-light: #A89E97;
+				--white: #FFFFFF;
+				--font-body: 'Aktiv Grotesk', sans-serif;
+				--font-display: 'Avegas Royale', serif;
+				--transition: 0.2s ease;
+			}
+			html { scroll-behavior: smooth; }
+			body {
+				font-family: var(--font-body);
+				background: var(--cream);
+				color: var(--text);
+				line-height: 1.6;
+				-webkit-font-smoothing: antialiased;
+			}
+			img { display: block; max-width: 100%; }
+			a { color: inherit; text-decoration: none; }
+			.container { max-width: 1440px; margin: 0 auto; padding: 0 48px; }
+			.site-header {
+				position: sticky; top: 0; z-index: 100;
+				background: var(--white);
+				border-bottom: 1px solid rgba(0,0,0,0.06);
+			}
+			.header-inner {
+				max-width: 1440px; margin: 0 auto; padding: 24px 0;
+				display: grid;
+				grid-template-columns: 1fr auto 1fr;
+				align-items: center;
+				gap: 24px;
+			}
+			.header-nav { display: flex; align-items: center; }
+			.logo { justify-self: center; }
+			.logo img { height: 100px; width: auto; }
+			.header-right { justify-self: end; display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+			.header-right-top { display: flex; align-items: center; gap: 20px; }
+			.header-serving {
+				font-size: 0.75rem; color: var(--teal);
+				text-align: right; white-space: nowrap;
+			}
+			.primary-nav { display: flex; align-items: center; gap: 8px; list-style: none; }
+			.primary-nav a {
+				font-size: 1.125rem; font-weight: 400; color: var(--text);
+				padding: 6px 14px; border-radius: 4px; transition: color var(--transition);
+			}
+			.primary-nav a:hover { color: var(--gold); }
+			.header-phone {
+				display: flex; align-items: center; gap: 8px;
+				font-size: 1.125rem; font-weight: 600; color: var(--gold);
+				white-space: nowrap;
+			}
+			.btn-book {
+				background: var(--teal); color: var(--white);
+				font-family: var(--font-body); font-size: 1rem; font-weight: 400;
+				padding: 20px 40px; border-radius: 15px;
+				display: inline-flex; align-items: center; gap: 8px;
+				transition: background var(--transition); white-space: nowrap;
+				border: none; cursor: pointer; text-decoration: none;
+			}
+			.btn-book:hover { background: #0f2428; color: var(--white); }
+			.mobile-toggle { display: none; background: none; border: none; cursor: pointer; color: var(--text); }
+			.site-footer { background: var(--white); }
+			.footer-top { padding: 60px 0 40px; }
+			.footer-grid {
+				display: grid; grid-template-columns: 1.2fr 1fr auto;
+				gap: 60px; align-items: start;
+			}
+			.footer-logo { margin-bottom: 16px; }
+			.footer-logo img { height: 48px; width: auto; }
+			.footer-tagline { font-size: 0.875rem; color: var(--text-muted); line-height: 1.6; max-width: 260px; }
+			.footer-contact { display: flex; flex-direction: column; gap: 12px; }
+			.footer-contact-item {
+				display: flex; align-items: flex-start; gap: 10px;
+				font-size: 0.875rem; color: var(--text);
+			}
+			.footer-contact-item svg { color: var(--gold); flex-shrink: 0; margin-top: 2px; }
+			.footer-contact-item a:hover { color: var(--gold); }
+			.footer-actions { display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+			.footer-questions { font-size: 0.8125rem; color: var(--text-muted); }
+			.footer-questions a { color: var(--teal); text-decoration: underline; }
+			.footer-bottom { border-top: 1px solid var(--sand); padding: 20px 0; }
+			.footer-bottom-inner {
+				display: flex; align-items: center; justify-content: space-between; gap: 20px;
+			}
+			.footer-copy { font-size: 0.8125rem; color: var(--text-muted); }
+			.footer-links { display: flex; gap: 24px; }
+			.footer-links a { font-size: 0.8125rem; color: var(--text-muted); transition: color var(--transition); }
+			.footer-links a:hover { color: var(--teal); }
+			.footer-social { display: flex; gap: 16px; }
+			.footer-social a { color: var(--text-muted); font-size: 1rem; transition: color var(--transition); }
+			.footer-social a:hover { color: var(--teal); }
+			@media (max-width: 960px) {
+				.primary-nav { display: none; }
+				.mobile-toggle { display: flex; }
+				.header-inner { grid-template-columns: auto 1fr auto; }
+				.header-nav { order: 1; }
+				.logo { order: 2; justify-self: center; }
+				.header-right { order: 3; }
+				.header-serving { display: none; }
+				.footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+			}
+			@media (max-width: 640px) {
+				.container { padding: 0 20px; }
+				.header-inner { padding: 12px 0; }
+				.footer-grid { grid-template-columns: 1fr; gap: 32px; }
+				.footer-bottom-inner { flex-direction: column; text-align: center; }
+				.footer-links { flex-wrap: wrap; justify-content: center; }
+			}
+		</style>
+	</head>
+	<body>
+		<header class="site-header">
+			<div class="header-inner">
+				<div class="header-nav">
+					<nav aria-label="Primary navigation">
+						<ul class="primary-nav">
+							<li><a href="/#about">About</a></li>
+							<li><a href="/#testimonials">Testimonials</a></li>
+							<li><a href="/#services">Services</a></li>
+							<li><a href="/#faq">FAQ</a></li>
+							<li><a href="/#contact">Contact</a></li>
+						</ul>
+					</nav>
+					<button class="mobile-toggle" aria-label="Open menu">
+						<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+					</button>
+				</div>
+				<a href="/" class="logo" aria-label="Lakeside Lactation">
+					<img src="/images/Company-Logo-V-2.png" alt="Lakeside Lactation" height="100" />
+				</a>
+				<div class="header-right">
+					<div class="header-right-top">
+						<a href="tel:+17083179070" class="header-phone">
+							<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.71 3.35 2 2 0 0 1 3.68 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.69a16 16 0 0 0 6.29 6.29l1.01-1.01a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+							(708) 317-9070
+						</a>
+						<a href="https://app.thelactationnetwork.com/providers/lauren-libutti" target="_blank" rel="noopener noreferrer" class="btn-book">
+							<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+							Book Appointment
+						</a>
+					</div>
+					<p class="header-serving">Serving the Chicago North Shore and Lake County</p>
+				</div>
+			</div>
+		</header>
+
+		<main><slot /></main>
+
+		<footer class="site-footer">
+			<div class="container">
+				<div class="footer-top">
+					<div class="footer-grid">
+						<div>
+							<div class="footer-logo">
+								<img src="/images/Lakeside-Logo-H-1.png" alt="Lakeside Lactation" height="48" />
+							</div>
+							<p class="footer-tagline">Compassionate, evidence-based support for your breastfeeding journey. Serving the Chicago North Shore and Lake County.</p>
+						</div>
+						<div class="footer-contact">
+							<div class="footer-contact-item">
+								<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+								Libertyville, IL, 60048
+							</div>
+							<div class="footer-contact-item">
+								<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.71 3.35 2 2 0 0 1 3.68 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.69a16 16 0 0 0 6.29 6.29l1.01-1.01a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+								<a href="tel:+17083179070">(708) 317-9070</a>
+							</div>
+							<div class="footer-contact-item">
+								<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+								<a href="mailto:lauren@lakeside-lactation.com">lauren@lakeside-lactation.com</a>
+							</div>
+						</div>
+						<div class="footer-actions">
+							<a href="https://app.thelactationnetwork.com/providers/lauren-libutti" target="_blank" rel="noopener noreferrer" class="btn-book">Book Appointment</a>
+							<p class="footer-questions">Questions? <a href="/#contact">Contact us!</a></p>
+						</div>
+					</div>
+				</div>
+				<div class="footer-bottom">
+					<div class="footer-bottom-inner">
+						<p class="footer-copy">© 2026 Lakeside Lactation LLC. All rights reserved.</p>
+						<div class="footer-links">
+							<a href="/privacy-policy/">Privacy Policy</a>
+							<a href="/terms-of-service/">Terms of Service</a>
+						</div>
+						<div class="footer-social">
+							<a href="https://facebook.com" aria-label="Facebook" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-facebook-f"></i></a>
+							<a href="https://instagram.com" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram"></i></a>
+							<a href="https://linkedin.com" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-linkedin-in"></i></a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</footer>
+	</body>
+</html>

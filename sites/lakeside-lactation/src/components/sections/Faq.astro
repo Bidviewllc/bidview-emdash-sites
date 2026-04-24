@@ -1,0 +1,62 @@
+---
+import { getEmDashCollection } from 'emdash';
+
+const { entries: faqs } = await getEmDashCollection('faqs', { status: 'published' });
+
+// Element IDs for each FAQ position (from source HTML, mapped to combined.css rules)
+// Q heading: Literata 22px white | A text: Aktiv Grotesk 18px white | Divider: white 1px
+const faqPositionIds = [
+	{ question: '7a7e2865', answer: '5a9b9ebd', divider: '2a78ca71' },
+	{ question: '70c4cc3',  answer: '5daa8086', divider: '5cacc494' },
+	{ question: '2ab14555', answer: '1cb555a0', divider: '6b868b33' },
+	{ question: '7bb7b2e9', answer: '23f56754', divider: null },
+];
+---
+
+<div class="el el-2630074c e-con-full e-flex e-con e-parent" data-id="2630074c" data-element_type="container" id="faq" data-settings="{&quot;background_background&quot;:&quot;classic&quot;,&quot;shape_divider_top&quot;:&quot;waves&quot;}">
+			<div class="shape shape-top" aria-hidden="true" data-negative="false">
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" preserveAspectRatio="none">
+<path class="shape-fill" d="M421.9,6.5c22.6-2.5,51.5,0.4,75.5,5.3c23.6,4.9,70.9,23.5,100.5,35.7c75.8,32.2,133.7,44.5,192.6,49.7
+c23.6,2.1,48.7,3.5,103.4-2.5c54.7-6,106.2-25.6,106.2-25.6V0H0v30.3c0,0,72,32.6,158.4,30.5c39.2-0.7,92.8-6.7,134-22.4
+c21.2-8.1,52.2-18.2,79.7-24.2C399.3,7.9,411.6,7.5,421.9,6.5z"/>
+</svg>	</div>
+	<div class="el el-2b61bef0 e-con-full e-flex e-con e-child" data-id="2b61bef0" data-element_type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+			<div class="el el-218d0f61 widget widget-heading" data-id="218d0f61" data-element_type="widget" data-widget_type="heading.default">
+				<h2 class="heading-title size-default">FAQ</h2>			</div>
+			<div class="el el-51c567cf widget widget-heading" data-id="51c567cf" data-element_type="widget" data-widget_type="heading.default">
+				<h2 class="heading-title size-default">Frequently
+<span class="literata-word">Asked</span>
+Questions</h2>			</div>
+			<div class="el el-bf90c5b widget widget-heading" data-id="bf90c5b" data-element_type="widget" data-widget_type="heading.default">
+				<div class="heading-title size-default">Here are answers to a few common questions about lactation support and what working together looks like. <br><i>Still have questions?</i></div>			</div>
+			<div class="el el-d88889f widget widget-button" data-id="d88889f" data-element_type="widget" data-widget_type="button.default">
+									<a class="btn btn-link size-sm" href="#em-base-action%3Aaction%3Dpopup%3Aopen%26settings%3DeyJpZCI6IjEwODQiLCJ0b2dnbGUiOmZhbHNlfQ%3D%3D">
+					<span class="btn-content-wrapper">
+					<span class="btn-icon">
+			<i aria-hidden="true" class="fal fa-long-arrow-right"></i>		</span>
+								<span class="btn-text">Contact Lauren</span>
+				</span>
+				</a>
+							</div>
+			</div>
+	<div class="el el-79d25a2d e-con-full e-flex e-con e-child" data-id="79d25a2d" data-element_type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+		{faqs.map((faq: any, i: number) => {
+			const ids = faqPositionIds[i] || faqPositionIds[faqPositionIds.length - 1];
+			return (
+				<>
+					<div class={`el el-${ids.question} widget widget-heading`} data-id={ids.question} data-element_type="widget" data-widget_type="heading.default">
+						<h3 class="heading-title size-default">{faq.data.question}</h3>
+					</div>
+					<div class={`el el-${ids.answer} widget widget-text-editor`} data-id={ids.answer} data-element_type="widget" data-widget_type="text-editor.default">
+						<p set:html={faq.data.answer} />
+					</div>
+					{i < faqs.length - 1 && ids.divider && (
+						<div class={`el el-${ids.divider} widget-divider--view-line widget widget-divider`} data-id={ids.divider} data-element_type="widget" data-widget_type="divider.default">
+							<div class="divider"><span class="divider-separator"></span></div>
+						</div>
+					)}
+				</>
+			);
+		})}
+	</div>
+</div>

@@ -1,0 +1,183 @@
+{
+	"$schema": "https://emdashcms.com/seed.schema.json",
+	"version": "1",
+	"meta": {
+		"name": "Lakeside Lactation",
+		"description": "Compassionate feeding care starts here",
+		"url": "https://lakeside-lactation.com"
+	},
+	"collections": [
+		{
+			"name": "testimonials",
+			"slug": "testimonials",
+			"label": "Testimonials",
+			"fields": [
+				{ "name": "name", "slug": "name", "type": "string", "label": "Client Name" },
+				{ "name": "quote", "slug": "quote", "type": "text", "label": "Quote" },
+				{ "name": "role", "slug": "role", "type": "string", "label": "Role" }
+			]
+		},
+		{
+			"name": "faqs",
+			"slug": "faqs",
+			"label": "FAQs",
+			"fields": [
+				{ "name": "question", "slug": "question", "type": "string", "label": "Question" },
+				{ "name": "answer", "slug": "answer", "type": "text", "label": "Answer" }
+			]
+		},
+		{
+			"name": "services",
+			"slug": "services",
+			"label": "Services",
+			"fields": [
+				{ "name": "title", "slug": "title", "type": "string", "label": "Service Title" },
+				{ "name": "description", "slug": "description", "type": "text", "label": "Description" },
+				{ "name": "duration", "slug": "duration", "type": "string", "label": "Duration" },
+				{ "name": "format", "slug": "format", "type": "string", "label": "Format" },
+				{ "name": "price", "slug": "price", "type": "string", "label": "Price" },
+				{ "name": "sort_order", "slug": "sort_order", "type": "number", "label": "Sort Order" }
+			]
+		},
+		{
+			"name": "form_submissions",
+			"slug": "form_submissions",
+			"label": "Form Submissions",
+			"fields": [
+				{ "name": "title", "slug": "title", "type": "string", "label": "Title" },
+				{ "name": "name", "slug": "name", "type": "string", "label": "Name" },
+				{ "name": "email", "slug": "email", "type": "string", "label": "Email" },
+				{ "name": "phone", "slug": "phone", "type": "string", "label": "Phone" },
+				{ "name": "message", "slug": "message", "type": "text", "label": "Message" },
+				{ "name": "read_status", "slug": "read_status", "type": "string", "label": "Status" }
+			]
+		}
+	],
+	"taxonomies": [],
+	"menus": [
+		{
+			"name": "primary",
+			"label": "Primary Navigation",
+			"items": [
+				{ "label": "About", "url": "#about", "type": "custom" },
+				{ "label": "Testimonials", "url": "#testimonials", "type": "custom" },
+				{ "label": "Services", "url": "#services", "type": "custom" },
+				{ "label": "FAQ", "url": "#faq", "type": "custom" },
+				{ "label": "Contact", "url": "#contact", "type": "custom" }
+			]
+		}
+	],
+	"entries": [
+		{
+			"collection": "testimonials",
+			"id": "testimonial-kaitlin-b",
+			"status": "published",
+			"data": {
+				"name": "Kaitlin B.",
+				"quote": "Lauren was such an incredible support during my breastfeeding journey with my third son. She helped me navigate a possible tongue tie, improve comfort, and confidently take next steps. She is thoughtful, thorough, and truly caring—and even brought activities to keep my older kids busy during our visits. I highly recommend her. Thanks to Lauren, I'm still breastfeeding my 6-month-old and hoping to make it a full year!",
+				"role": "Mom of three"
+			}
+		},
+		{
+			"collection": "faqs",
+			"id": "faq-1",
+			"status": "published",
+			"data": {
+				"question": "What does a lactation consultant do?",
+				"answer": "A lactation consultant provides expert support for breastfeeding families, offering education, troubleshooting, and personalized care plans for parents and babies. They help with latch, pain, milk supply, and advise on pumping and supplementation. An IBCLC stands for International Board Certified Lactation Consultant, and is the gold standard in lactation education and care."
+			}
+		},
+		{
+			"collection": "faqs",
+			"id": "faq-2",
+			"status": "published",
+			"data": {
+				"question": "Does insurance cover lactation consultations?",
+				"answer": "Yes! Option 1: Check coverage prior to a consult by creating an account on TLN to submit insurance information. If approved, you can schedule an appointment via the TLN website. Option 2: I will provide you with a superbill, which you can submit to your insurance company after the visit for potential reimbursement. Please note that coverage is not guaranteed."
+			}
+		},
+		{
+			"collection": "faqs",
+			"id": "faq-3",
+			"status": "published",
+			"data": {
+				"question": "Can I pay out of pocket?",
+				"answer": "Yes! I have many easy ways of taking payment."
+			}
+		},
+		{
+			"collection": "faqs",
+			"id": "faq-4",
+			"status": "published",
+			"data": {
+				"question": "Travel Fee / Cancellation fee",
+				"answer": "Home visits further than a 20 mile drive will incur an additional travel fee of $50. There is also a 24-hour cancellation fee of $50."
+			}
+		},
+		{
+			"collection": "services",
+			"id": "service-prenatal",
+			"status": "published",
+			"data": {
+				"title": "Prenatal Lactation Consult",
+				"description": "A personalized session to prepare you for feeding before your baby arrives. We review your history, answer questions, and create a plan that builds confidence for your early breastfeeding journey.",
+				"duration": "60 minutes",
+				"format": "Virtual or In-Person",
+				"price": "$175",
+				"sort_order": 1
+			}
+		},
+		{
+			"collection": "services",
+			"id": "service-in-home",
+			"status": "published",
+			"data": {
+				"title": "In-Home Lactation Consult",
+				"description": "Hands-on support in the comfort of your home. Assessment includes latch, positioning, feeding effectiveness, and a customized plan to help you reach your feeding goals.",
+				"duration": "60–90 minutes",
+				"format": "In-Person",
+				"price": "$300",
+				"sort_order": 2
+			}
+		},
+		{
+			"collection": "services",
+			"id": "service-follow-up",
+			"status": "published",
+			"data": {
+				"title": "Follow Up",
+				"description": "A targeted visit to evaluate progress, adjust your care plan, and troubleshoot new or ongoing feeding concerns. Support designed to keep you moving forward with confidence.",
+				"duration": "45–60 minutes",
+				"format": "In-Person",
+				"price": "$200",
+				"sort_order": 3
+			}
+		},
+		{
+			"collection": "services",
+			"id": "service-back-to-work",
+			"status": "published",
+			"data": {
+				"title": "Back To Work",
+				"description": "Guidance to help you pump efficiently, maintain milk supply, and build a practical feeding and pumping schedule that fits your work life. Ideal for parents returning to work.",
+				"duration": "45–60 minutes",
+				"format": "Virtual or In-Person",
+				"price": "$175",
+				"sort_order": 4
+			}
+		},
+		{
+			"collection": "services",
+			"id": "service-after-loss",
+			"status": "published",
+			"data": {
+				"title": "Lactation After Loss",
+				"description": "Compassionate support for families navigating lactation after pregnancy or infant loss. We discuss options, provide emotional care, and create a plan that aligns with your healing and personal needs.",
+				"duration": "Contact for details",
+				"format": "Virtual or In-Person",
+				"price": "No charge",
+				"sort_order": 5
+			}
+		}
+	]
+}
