@@ -1,0 +1,1013 @@
+---
+import Base from "../layouts/Base.astro";
+
+export const cacheHint = 3600;
+---
+
+<Base
+	title="Chicago's Premier Digital Marketing Agency"
+	description="We help Chicago businesses generate more leads, rank higher, and convert visitors into loyal customers — with measurable results you can see every month."
+>
+	<!-- ── 1. HERO ── -->
+	<section class="hero">
+		<div class="container hero-inner">
+			<div class="hero-content">
+				<span class="eyebrow">Chicago's Premier Digital Marketing Agency</span>
+				<h1>Grow Your Chicago Business With Data-Driven Marketing</h1>
+				<p class="hero-sub">
+					We help Chicago businesses generate more leads, rank higher, and
+					convert visitors into loyal customers — with measurable results you
+					can see every month.
+				</p>
+				<div class="hero-actions">
+					<a href="/free-seo-audit" class="btn btn-primary">Get a Free Strategy Call</a>
+					<a href="/results" class="btn btn-outline">See Our Work</a>
+				</div>
+				<div class="hero-trust">
+					<span class="stars">★★★★★</span>
+					<span>Rated 4.5/5 by 200+ Chicago businesses</span>
+				</div>
+			</div>
+			<div class="hero-visual">
+				<picture>
+					<source
+						type="image/webp"
+						srcset="/hero-mobile.webp 704w, /hero.webp 1408w"
+						sizes="(max-width: 768px) 100vw, 560px"
+					/>
+					<img
+						src="/hero.png"
+						alt="Chicago skyline with data-driven marketing growth visualization"
+						width="560"
+						height="420"
+						loading="eager"
+						fetchpriority="high"
+					/>
+				</picture>
+			</div>
+		</div>
+	</section>
+
+	<!-- ── 2. STATS BAR ── -->
+	<section class="stats-bar" style="background:#F0F2F5;padding:0;min-height:120px;">
+		<div class="container stats-inner">
+			<div class="stat">
+				<strong>500+</strong>
+				<span>Projects Completed</span>
+			</div>
+			<div class="stat-divider"></div>
+			<div class="stat">
+				<strong>12+</strong>
+				<span>Years In Chicago</span>
+			</div>
+			<div class="stat-divider"></div>
+			<div class="stat">
+				<strong class="stat-red">4.9★</strong>
+				<span>Average Client Rating</span>
+			</div>
+			<div class="stat-divider"></div>
+			<div class="stat">
+				<strong>Chicago</strong>
+				<span>Locally Rooted &amp; Proud</span>
+			</div>
+		</div>
+	</section>
+
+	<!-- ── 3. SERVICES ── -->
+	<section class="services">
+		<div class="container">
+			<div class="section-header">
+				<span class="eyebrow">What We Do</span>
+				<h2>Full-Stack Marketing Services</h2>
+				<p>Everything your Chicago business needs to grow — under one roof.</p>
+			</div>
+			<div class="services-grid">
+				<div class="service-card">
+					<div class="service-icon">
+						<i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+					</div>
+					<h3>SEO</h3>
+					<p>Dominate Chicago search results with technical SEO, local optimization, and content that ranks.</p>
+					<a href="/services/seo" class="service-link">Learn More <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+				</div>
+				<div class="service-card">
+					<div class="service-icon">
+						<i class="fa-solid fa-desktop" aria-hidden="true"></i>
+					</div>
+					<h3>Web Design</h3>
+					<p>High-converting websites built for speed, UX, and brand impact that turns visitors into leads.</p>
+					<a href="/services/web-design" class="service-link">Learn More <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+				</div>
+				<div class="service-card">
+					<div class="service-icon">
+						<i class="fa-solid fa-clapperboard" aria-hidden="true"></i>
+					</div>
+					<h3>Video Production</h3>
+					<p>Compelling brand films, ads, and social videos that stop the scroll and tell your story.</p>
+					<a href="/services/video-production" class="service-link">Learn More <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+				</div>
+				<div class="service-card">
+					<div class="service-icon">
+						<i class="fa-solid fa-bullseye" aria-hidden="true"></i>
+					</div>
+					<h3>Paid Advertising</h3>
+					<p>Google, Meta & programmatic ads engineered for maximum ROI and scalable revenue growth.</p>
+					<a href="/services/paid-advertising" class="service-link">Learn More <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+				</div>
+				<div class="service-card">
+					<div class="service-icon">
+						<i class="fa-solid fa-pen-nib" aria-hidden="true"></i>
+					</div>
+					<h3>Content Marketing</h3>
+					<p>Strategic content that attracts, educates, and converts your ideal Chicago customers.</p>
+					<a href="/services/content-marketing" class="service-link">Learn More <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+				</div>
+				<div class="service-card">
+					<div class="service-icon">
+						<i class="fa-solid fa-arrow-trend-up" aria-hidden="true"></i>
+					</div>
+					<h3>Conversion Optimization</h3>
+					<p>Data-driven A/B testing and UX refinement to turn more of your traffic into revenue.</p>
+					<a href="/services/conversion-optimization" class="service-link">Learn More <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+				</div>
+				<div class="service-card">
+					<div class="service-icon">
+						<i class="fa-solid fa-hashtag" aria-hidden="true"></i>
+					</div>
+					<h3>Social Media Management</h3>
+					<p>Build a loyal community and drive engagement across Instagram, LinkedIn, Facebook & more.</p>
+					<a href="/services/social-media" class="service-link">Learn More <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- ── 4. PROCESS — off-white bg ── -->
+	<section class="process">
+		<div class="container">
+			<div class="section-header">
+				<span class="eyebrow">Our Process</span>
+				<h2>How We Grow Your Business</h2>
+			</div>
+			<div class="process-steps">
+				<div class="process-step">
+					<div class="step-icon-wrap step-red">
+						<i class="fa-solid fa-binoculars" aria-hidden="true"></i>
+					</div>
+					<span class="step-num">01</span>
+					<h3>Discovery</h3>
+					<p>Deep dive into your business, competitors, and Chicago market landscape.</p>
+				</div>
+				<span class="step-arrow">›</span>
+				<div class="process-step">
+					<div class="step-icon-wrap step-navy">
+						<i class="fa-solid fa-map" aria-hidden="true"></i>
+					</div>
+					<span class="step-num">02</span>
+					<h3>Strategy</h3>
+					<p>Custom growth roadmap built around your goals, budget, and target audience.</p>
+				</div>
+				<span class="step-arrow">›</span>
+				<div class="process-step">
+					<div class="step-icon-wrap step-red">
+						<i class="fa-solid fa-rocket" aria-hidden="true"></i>
+					</div>
+					<span class="step-num">03</span>
+					<h3>Execution</h3>
+					<p>We launch and manage campaigns with precision, speed, and constant optimization.</p>
+				</div>
+				<span class="step-arrow">›</span>
+				<div class="process-step">
+					<div class="step-icon-wrap step-navy">
+						<i class="fa-solid fa-chart-line" aria-hidden="true"></i>
+					</div>
+					<span class="step-num">04</span>
+					<h3>Results</h3>
+					<p>Track real growth metrics — leads, rankings, revenue. Transparent monthly reporting.</p>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- ── 5. RESULTS — two split-cards ── -->
+	<section class="results-section">
+		<div class="container">
+			<div class="section-header">
+				<span class="eyebrow">Client Results</span>
+				<h2>Real Growth. Real Chicago Businesses.</h2>
+			</div>
+
+			<!-- Row 1: dark navy stat LEFT + text RIGHT, full border card -->
+			<div class="result-row">
+				<div class="result-stat-box result-stat-dark">
+					<div class="big-stat">+285%</div>
+					<div class="big-stat-label">Revenue Growth</div>
+					<div class="big-stat-client">Chicago Dental Practice</div>
+				</div>
+				<div class="result-text-box">
+					<span class="result-tag">SEO + Paid Ads</span>
+					<h3>From 12 to 200+ monthly leads in just 8 months</h3>
+					<p>This multi-location dental group was struggling to compete online. We rebuilt their local SEO presence, launched precision Google Ads campaigns, and created content that dominated Chicago dental searches.</p>
+				</div>
+			</div>
+
+			<!-- Row 2: plain text LEFT + red stat box RIGHT (no border wrapper) -->
+			<div class="result-row-2">
+				<div class="result-text-box-plain">
+					<span class="result-tag">Web Design + CRO</span>
+					<h3>3x more conversions after full website redesign</h3>
+					<p>A Chicago law firm was getting traffic but no calls. Our conversion-focused redesign with clearer CTAs, trust signals, and mobile optimization tripled their lead intake within 90 days.</p>
+				</div>
+				<div class="result-stat-box result-stat-red">
+					<div class="big-stat">3x</div>
+					<div class="big-stat-label">More Conversions</div>
+					<div class="big-stat-client">Chicago Law Firm</div>
+				</div>
+			</div>
+
+			<div class="results-cta">
+				<a href="/results" class="btn btn-outline">View All Case Studies →</a>
+			</div>
+		</div>
+	</section>
+
+	<!-- ── CHICAGO MAP ── -->
+	<section class="home-map">
+		<div class="container">
+			<div class="section-header">
+				<span class="eyebrow">Areas We Serve</span>
+				<h2>Marketing Services Across 30+ Chicago Neighborhoods</h2>
+				<p>Click any neighborhood to see our full service offering in your area.</p>
+			</div>
+			<div class="home-map-layout">
+				<div class="home-map-embed">
+					<iframe
+						src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d190255.33799365!2d-87.8!3d41.85!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x880e2c3cd0f4cbed%3A0xafe0a6ad09c0c000!2sChicago%2C%20IL!5e0!3m2!1sen!2sus!4v1"
+						width="100%"
+						height="420"
+						style="border:0; border-radius: 12px;"
+						allowfullscreen=""
+						loading="lazy"
+						referrerpolicy="no-referrer-when-downgrade"
+						title="Chicago neighborhoods we serve"
+					></iframe>
+				</div>
+				<div class="home-map-areas">
+					{[
+						{ slug: "lincoln-park", name: "Lincoln Park" },
+						{ slug: "wicker-park", name: "Wicker Park" },
+						{ slug: "logan-square", name: "Logan Square" },
+						{ slug: "river-north", name: "River North" },
+						{ slug: "the-loop", name: "The Loop" },
+						{ slug: "west-loop", name: "West Loop" },
+						{ slug: "bucktown", name: "Bucktown" },
+						{ slug: "lakeview", name: "Lakeview" },
+						{ slug: "old-town", name: "Old Town" },
+						{ slug: "gold-coast", name: "Gold Coast" },
+						{ slug: "hyde-park", name: "Hyde Park" },
+						{ slug: "pilsen", name: "Pilsen" },
+						{ slug: "bridgeport", name: "Bridgeport" },
+						{ slug: "andersonville", name: "Andersonville" },
+						{ slug: "south-loop", name: "South Loop" },
+						{ slug: "bronzeville", name: "Bronzeville" },
+						{ slug: "uptown", name: "Uptown" },
+						{ slug: "edgewater", name: "Edgewater" },
+						{ slug: "rogers-park", name: "Rogers Park" },
+						{ slug: "ravenswood", name: "Ravenswood" },
+						{ slug: "lincoln-square", name: "Lincoln Square" },
+						{ slug: "ukrainian-village", name: "Ukrainian Village" },
+						{ slug: "humboldt-park", name: "Humboldt Park" },
+						{ slug: "avondale", name: "Avondale" },
+						{ slug: "chinatown", name: "Chinatown" },
+						{ slug: "little-italy", name: "Little Italy" },
+						{ slug: "streeterville", name: "Streeterville" },
+						{ slug: "west-town", name: "West Town" },
+						{ slug: "irving-park", name: "Irving Park" },
+						{ slug: "albany-park", name: "Albany Park" },
+					].map((n) => (
+						<a href={`/${n.slug}/`} class="area-pill">{n.name}</a>
+					))}
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- ── 6. INDUSTRIES — dark navy ── -->
+	<section class="industries">
+		<div class="container">
+			<div class="section-header section-header-inv">
+				<span class="eyebrow">Industries We Serve</span>
+				<h2>We Know Your Industry</h2>
+				<p>Deep expertise across Chicago's most competitive sectors.</p>
+			</div>
+			<div class="industry-tags">
+				<a href="/industries" class="ind-tag">Healthcare &amp; Dental</a>
+				<a href="/industries" class="ind-tag ind-active">Legal &amp; Law Firms</a>
+				<a href="/industries" class="ind-tag">Real Estate</a>
+				<a href="/industries" class="ind-tag">Restaurants &amp; Food</a>
+				<a href="/industries" class="ind-tag">Home Services</a>
+				<a href="/industries" class="ind-tag">Financial Services</a>
+				<a href="/industries" class="ind-tag">E-Commerce</a>
+				<a href="/industries" class="ind-tag ind-active">Tech &amp; SaaS</a>
+				<a href="/industries" class="ind-tag">Hospitality &amp; Hotels</a>
+				<a href="/industries" class="ind-tag">Non-Profits</a>
+			</div>
+		</div>
+	</section>
+
+	<!-- ── 7. TESTIMONIALS — white, red left-border cards ── -->
+	<section class="testimonials">
+		<div class="container">
+			<div class="section-header">
+				<span class="eyebrow">Testimonials</span>
+				<h2>Chicago Businesses Love Working With Us</h2>
+			</div>
+			<div class="testimonials-grid">
+				<div class="testi-card">
+					<div class="testi-stars">★★★★★</div>
+					<blockquote>"The Chicago Marketing Agency completely transformed our online presence. Within 8 months, we went from page 4 to ranking #1 for our most competitive keywords. The ROI has been incredible."</blockquote>
+					<div class="testi-author">
+						<div class="testi-avatar">M</div>
+						<div>
+							<strong>Dr. Maria Gonzalez</strong>
+							<span>Owner, Lincoln Park Family Dentist</span>
+						</div>
+					</div>
+				</div>
+				<div class="testi-card">
+					<div class="testi-stars">★★★★★</div>
+					<blockquote>"We hired CMA for paid ads and content strategy. Our cost-per-lead dropped 60% in 90 days. They're data-obsessed, communicative, and genuinely care about our growth. Best marketing investment we've made."</blockquote>
+					<div class="testi-author">
+						<div class="testi-avatar">J</div>
+						<div>
+							<strong>James Whitfield</strong>
+							<span>CEO, Whitfield Legal Group</span>
+						</div>
+					</div>
+				</div>
+				<div class="testi-card">
+					<div class="testi-stars">★★★★★</div>
+					<blockquote>"Our new website is stunning AND it converts. Social media engagement is up 400%. CMA doesn't just deliver work — they deliver results. Chicago's best marketing agency, period."</blockquote>
+					<div class="testi-author">
+						<div class="testi-avatar">P</div>
+						<div>
+							<strong>Priya Sharma</strong>
+							<span>Marketing Director, Nexus Group</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- ── 8. CTA BAND — dark navy ── -->
+	<section class="cta-band">
+		<div class="container cta-inner">
+			<span class="eyebrow">Ready to Grow?</span>
+			<h2>Ready to Dominate Your Chicago Market?</h2>
+			<p>
+				Schedule a free 30-minute strategy call. No pressure, no fluff —
+				just a clear plan for growing your business.
+			</p>
+			<div class="cta-actions">
+				<a href="/free-seo-audit" class="btn btn-primary">Book a Free Strategy Call</a>
+				<a href="/results" class="btn btn-outline-white">View Our Work</a>
+			</div>
+			<ul class="cta-trust">
+				<li>
+					<i class="fa-solid fa-check" aria-hidden="true"></i>
+					No long-term contracts
+				</li>
+				<li>
+					<i class="fa-solid fa-check" aria-hidden="true"></i>
+					Results in 90 days or less
+				</li>
+				<li>
+					<i class="fa-solid fa-check" aria-hidden="true"></i>
+					Chicago-based team
+				</li>
+			</ul>
+		</div>
+	</section>
+</Base>
+
+<style>
+	/* ── HERO ── */
+	.hero {
+		background: var(--white);
+		padding: 80px 0 72px;
+	}
+
+	.hero-inner {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 64px;
+		align-items: stretch;
+	}
+
+	.hero-content {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+	}
+
+	.hero h1 {
+		font-size: clamp(2.25rem, 4vw, 3.75rem);
+		font-weight: 900;
+		color: var(--text-dark);
+		margin-bottom: 20px;
+		line-height: 1.08;
+	}
+
+	.hero-sub {
+		font-size: 1.0625rem;
+		color: var(--text-muted);
+		line-height: 1.75;
+		margin-bottom: 32px;
+		max-width: 460px;
+	}
+
+	.hero-actions {
+		display: flex;
+		gap: 12px;
+		flex-wrap: wrap;
+		margin-bottom: 24px;
+	}
+
+	.hero-trust {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		font-size: 0.875rem;
+		color: var(--text-muted);
+	}
+
+	.stars { color: var(--gold); letter-spacing: 1px; }
+
+	.hero-visual {
+		background: var(--navy);
+		border-radius: var(--radius-lg);
+		overflow: hidden;
+		min-height: 480px;
+	}
+
+	.hero-visual img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+	}
+
+	/* ── STATS BAR ── */
+	.stats-bar {
+		background: #F0F2F5;
+		min-height: 120px;
+		padding: 0;
+	}
+
+	.stats-inner {
+		display: flex;
+		align-items: center;
+		justify-content: space-around;
+		height: 120px;
+		padding: 0 60px;
+		max-width: var(--max-w);
+		margin: 0 auto;
+	}
+
+	.stat {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 4px;
+		text-align: center;
+	}
+
+	.stat strong {
+		font-size: 1.875rem;
+		font-weight: 900;
+		color: #0f172a;
+		line-height: 1;
+	}
+
+	.stat-red { color: #dc2626 !important; }
+
+	.stat span {
+		font-size: 0.8125rem;
+		color: #64748b;
+		font-weight: 500;
+	}
+
+	.stat-divider {
+		width: 1px;
+		height: 44px;
+		background: #d1d5db;
+	}
+
+	/* ── SERVICES ── */
+	.services {
+		background: var(--white);
+		padding: 96px 0;
+	}
+
+	.section-header {
+		text-align: center;
+		margin-bottom: 52px;
+	}
+
+	.section-header h2 {
+		font-size: clamp(1.875rem, 3vw, 2.625rem);
+		color: var(--text-dark);
+		margin-bottom: 12px;
+	}
+
+	.section-header p {
+		font-size: 1rem;
+		color: var(--text-muted);
+		max-width: 480px;
+		margin: 0 auto;
+	}
+
+	/* 4 cols top row, 3 bottom — 7 cards in a 4-col grid */
+	.services-grid {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		border: 1px solid var(--border);
+		border-radius: var(--radius-lg);
+		overflow: hidden;
+	}
+
+	.service-card {
+		background: var(--white);
+		padding: 32px 24px;
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		border-right: 1px solid var(--border);
+		border-bottom: 1px solid var(--border);
+		transition: background var(--transition);
+	}
+
+	.service-card:hover { background: var(--off-white); }
+
+	/* remove right border on 4th column */
+	.service-card:nth-child(4n) { border-right: none; }
+	/* remove bottom border on last row (cards 5-7) */
+	.service-card:nth-child(n+5) { border-bottom: none; }
+
+	.service-icon {
+		width: 40px;
+		height: 40px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: var(--text-dark);
+		opacity: 0.7;
+		margin-bottom: 4px;
+	}
+	.service-icon i { font-size: 1.25rem; }
+
+	.service-card h3 {
+		font-size: 1rem;
+		font-weight: 700;
+		color: var(--text-dark);
+	}
+
+	.service-card p {
+		font-size: 0.875rem;
+		color: var(--text-muted);
+		line-height: 1.65;
+		flex: 1;
+	}
+
+	.service-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 5px;
+		font-size: 0.8125rem;
+		font-weight: 600;
+		color: var(--red);
+		transition: gap var(--transition);
+		margin-top: 6px;
+	}
+
+	.service-link:hover { gap: 9px; }
+
+	/* ── PROCESS — off-white bg ── */
+	.process {
+		background: var(--off-white);
+		padding: 96px 0;
+	}
+
+	.process-steps {
+		display: flex;
+		align-items: flex-start;
+		justify-content: center;
+		gap: 0;
+	}
+
+	.process-step {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		padding: 0 32px;
+		flex: 1;
+		max-width: 240px;
+	}
+
+	.step-arrow {
+		font-size: 2rem;
+		color: var(--text-light);
+		line-height: 1;
+		padding-top: 20px;
+		flex-shrink: 0;
+	}
+
+	.step-icon-wrap {
+		width: 64px;
+		height: 64px;
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: var(--white);
+		margin-bottom: 16px;
+		flex-shrink: 0;
+	}
+
+	.step-red { background: var(--red); }
+	.step-navy { background: var(--navy); }
+	.step-icon-wrap i { font-size: 1.375rem; }
+
+	.step-num {
+		font-size: 0.6875rem;
+		font-weight: 700;
+		color: var(--red);
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		margin-bottom: 6px;
+		display: block;
+	}
+
+	.process-step h3 {
+		font-size: 1rem;
+		font-weight: 700;
+		color: var(--text-dark);
+		margin-bottom: 8px;
+	}
+
+	.process-step p {
+		font-size: 0.875rem;
+		color: var(--text-muted);
+		line-height: 1.65;
+	}
+
+	/* ── RESULTS — two split-row cards ── */
+	.results-section {
+		background: var(--white);
+		padding: 96px 0;
+	}
+
+	.result-row {
+		display: grid;
+		grid-template-columns: 280px 1fr;
+		border: 1px solid var(--border);
+		border-radius: var(--radius-lg);
+		overflow: hidden;
+		margin-bottom: 24px;
+	}
+
+	/* Row 2: no border wrapper, text plain left + red box right */
+	.result-row-2 {
+		display: grid;
+		grid-template-columns: 1fr 280px;
+		align-items: center;
+		gap: 40px;
+		margin-bottom: 24px;
+	}
+
+	.result-text-box-plain {
+		display: flex;
+		flex-direction: column;
+		gap: 14px;
+	}
+
+	.result-text-box-plain h3 {
+		font-size: 1.375rem;
+		font-weight: 800;
+		color: var(--text-dark);
+		line-height: 1.3;
+	}
+
+	.result-text-box-plain p {
+		font-size: 0.9rem;
+		color: var(--text-muted);
+		line-height: 1.75;
+	}
+
+	.result-stat-box {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		padding: 40px 36px;
+		gap: 8px;
+	}
+
+	.result-stat-dark {
+		background: var(--navy);
+	}
+
+	.result-stat-red {
+		background: var(--red);
+	}
+
+	.big-stat {
+		font-size: 3.25rem;
+		font-weight: 900;
+		line-height: 1;
+		color: var(--red);
+	}
+
+	.result-stat-red .big-stat {
+		color: var(--white);
+	}
+
+	.big-stat-label {
+		font-size: 0.8125rem;
+		font-weight: 600;
+		color: rgba(255,255,255,0.6);
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+	}
+
+	.big-stat-client {
+		font-size: 0.8125rem;
+		color: rgba(255,255,255,0.4);
+		margin-top: 4px;
+	}
+
+	.result-text-box {
+		padding: 40px;
+		display: flex;
+		flex-direction: column;
+		gap: 14px;
+		justify-content: center;
+	}
+
+	.result-tag {
+		display: inline-block;
+		padding: 4px 12px;
+		background: #fef2f2;
+		color: var(--red);
+		font-size: 0.6875rem;
+		font-weight: 700;
+		border-radius: 99px;
+		width: fit-content;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+	}
+
+	.result-text-box h3 {
+		font-size: 1.25rem;
+		font-weight: 800;
+		color: var(--text-dark);
+		line-height: 1.3;
+	}
+
+	.result-text-box p {
+		font-size: 0.9rem;
+		color: var(--text-muted);
+		line-height: 1.75;
+	}
+
+	.results-cta {
+		text-align: center;
+		margin-top: 8px;
+	}
+
+	/* ── MAP ── */
+	.home-map { padding: 80px 0; background: var(--off-white); }
+	.home-map-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+	.home-map-embed { border-radius: 12px; overflow: hidden; }
+	.home-map-areas { display: flex; flex-wrap: wrap; gap: 8px; align-content: start; }
+	.area-pill {
+		display: inline-block; padding: 8px 16px; background: var(--white);
+		border: 1px solid var(--border); border-radius: 8px;
+		font-size: 0.875rem; font-weight: 500; color: var(--text-dark);
+		text-decoration: none; transition: all 150ms ease;
+	}
+	.area-pill:hover { background: var(--red); color: var(--white); border-color: var(--red); }
+
+	/* ── INDUSTRIES — dark navy ── */
+	.industries {
+		background: var(--navy);
+		padding: 96px 0;
+	}
+
+	.section-header-inv h2 { color: var(--white); }
+	.section-header-inv p { color: var(--text-light); }
+
+	.industry-tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 10px;
+		justify-content: center;
+	}
+
+	.ind-tag {
+		padding: 10px 20px;
+		background: transparent;
+		border: 1px solid var(--border-dark);
+		border-radius: 99px;
+		font-size: 0.875rem;
+		font-weight: 500;
+		color: var(--text-light);
+		transition: all var(--transition);
+		text-decoration: none;
+	}
+
+	.ind-tag:hover,
+	.ind-tag.ind-active {
+		background: var(--red);
+		border-color: var(--red);
+		color: var(--white);
+	}
+
+	/* ── TESTIMONIALS — white, red left-border ── */
+	.testimonials {
+		background: var(--white);
+		padding: 96px 0;
+	}
+
+	.testimonials-grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 24px;
+	}
+
+	.testi-card {
+		border: 1px solid var(--border);
+		border-left: 3px solid var(--red);
+		border-radius: var(--radius);
+		padding: 32px;
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+		transition: box-shadow var(--transition);
+	}
+
+	.testi-card:hover {
+		box-shadow: 0 6px 24px rgba(0,0,0,0.07);
+	}
+
+	.testi-stars {
+		color: var(--gold);
+		font-size: 1rem;
+		letter-spacing: 2px;
+	}
+
+	.testi-card blockquote {
+		font-size: 0.9375rem;
+		color: var(--text-dark);
+		line-height: 1.75;
+		font-style: normal;
+		flex: 1;
+	}
+
+	.testi-author {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+	}
+
+	.testi-avatar {
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+		background: var(--red);
+		color: var(--white);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-weight: 700;
+		font-size: 0.875rem;
+		flex-shrink: 0;
+	}
+
+	.testi-author strong {
+		display: block;
+		font-size: 0.875rem;
+		font-weight: 700;
+		color: var(--text-dark);
+	}
+
+	.testi-author span {
+		font-size: 0.8125rem;
+		color: var(--text-muted);
+	}
+
+	/* ── CTA BAND — dark navy ── */
+	.cta-band {
+		background: var(--navy);
+		padding: 96px 0;
+	}
+
+	.cta-inner {
+		text-align: center;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 20px;
+		max-width: 620px;
+		margin: 0 auto;
+	}
+
+	.cta-band h2 {
+		font-size: clamp(1.875rem, 3.5vw, 2.875rem);
+		color: var(--white);
+		line-height: 1.15;
+	}
+
+	.cta-band p {
+		font-size: 1rem;
+		color: var(--text-light);
+		line-height: 1.75;
+		max-width: 460px;
+	}
+
+	.cta-actions {
+		display: flex;
+		gap: 12px;
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+
+	.cta-trust {
+		list-style: none;
+		display: flex;
+		gap: 28px;
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+
+	.cta-trust li {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		font-size: 0.875rem;
+		color: var(--text-light);
+	}
+
+	.cta-trust svg { color: var(--red); flex-shrink: 0; }
+
+	/* ── RESPONSIVE ── */
+	@media (max-width: 1024px) {
+		.services-grid { grid-template-columns: repeat(3, 1fr); }
+		.service-card:nth-child(4n) { border-right: 1px solid var(--border); }
+		.service-card:nth-child(3n) { border-right: none; }
+		.service-card:nth-child(n+5) { border-bottom: 1px solid var(--border); }
+		.service-card:nth-child(n+7) { border-bottom: none; }
+
+		.result-row { grid-template-columns: 220px 1fr; }
+		.result-row-2 { grid-template-columns: 1fr 220px; }
+	}
+
+	@media (max-width: 768px) {
+		.hero { padding: 48px 0 56px; }
+		.hero-inner { grid-template-columns: 1fr; gap: 32px; }
+		.hero-visual { order: -1; min-height: 0; max-height: 260px; }
+		.hero-visual img { height: 260px; }
+
+		.stats-inner { flex-wrap: wrap; justify-content: center; gap: 20px; height: auto; padding: 24px 16px; }
+		.stat-divider { display: none; }
+
+		.services-grid { grid-template-columns: repeat(2, 1fr); }
+		.service-card:nth-child(n) { border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+		.service-card:nth-child(2n) { border-right: none; }
+		.service-card:last-child,
+		.service-card:nth-last-child(2):nth-child(odd) { border-bottom: none; }
+
+		.process-steps { flex-wrap: wrap; gap: 32px; }
+		.step-arrow { display: none; }
+		.process-step { max-width: 100%; padding: 0; }
+
+		.result-row { grid-template-columns: 1fr; }
+		.result-row-2 { grid-template-columns: 1fr; }
+		.result-row-2 .result-stat-box { order: -1; }
+
+		.testimonials-grid { grid-template-columns: 1fr; }
+		.home-map-layout { grid-template-columns: 1fr; }
+
+		.cta-trust { flex-direction: column; align-items: center; gap: 10px; }
+	}
+
+	@media (max-width: 480px) {
+		.services-grid { grid-template-columns: 1fr; }
+		.service-card:nth-child(n) { border-right: none; border-bottom: 1px solid var(--border); }
+		.service-card:last-child { border-bottom: none; }
+		.hero-actions { flex-direction: column; }
+		.hero-visual img { height: 200px; }
+		.stats-inner { padding: 0 16px; height: auto; }
+	}
+</style>

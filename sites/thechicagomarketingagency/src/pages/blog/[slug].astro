@@ -1,0 +1,572 @@
+---
+import { getEmDashEntry, getEmDashCollection } from "emdash";
+import { PortableText, emdashComponents } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+
+export const cacheHint = 3600;
+
+const { slug } = Astro.params;
+
+const { entry } = await getEmDashEntry("posts", slug as string);
+if (!entry) return Astro.redirect("/404");
+
+const data = entry.data as {
+	title: string;
+	excerpt?: string;
+	body?: unknown;
+	featured_image?: { src: string; alt: string };
+	meta_title?: string;
+	meta_description?: string;
+	publishedAt?: Date | string | null;
+};
+
+// Fetch related posts (latest 3 excluding current, sorted latest first)
+type RelatedPost = { slug: string; data: { title: string; excerpt?: string; featured_image?: { src: string; alt: string } } };
+const { entries: rawPosts } = await getEmDashCollection("posts", { orderBy: { published_at: "desc" } });
+const allPostsTyped = rawPosts as unknown as RelatedPost[];
+const related = allPostsTyped.filter((p) => p.slug !== slug).slice(0, 3);
+
+const pageTitle = data.meta_title || data.title;
+const pageDesc = data.meta_description || data.excerpt || "";
+
+const publishDate = (() => {
+	const val = data.publishedAt;
+	if (!val) return "";
+	try {
+		const d = val instanceof Date ? val : new Date(String(val));
+		if (isNaN(d.getTime())) return "";
+		return d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+	} catch { return ""; }
+})();
+---
+
+<Base title={pageTitle} description={pageDesc} image={data.featured_image?.src}>
+	<!-- ── BlogPosting schema ── -->
+	<script type="application/ld+json" set:html={JSON.stringify({
+		"@context": "https://schema.org",
+		"@type": "BlogPosting",
+		"headline": data.title,
+		"description": pageDesc,
+		"image": data.featured_image?.src,
+		"datePublished": data.publishedAt ? (data.publishedAt instanceof Date ? data.publishedAt.toISOString() : String(data.publishedAt)) : new Date().toISOString(),
+		"dateModified": data.publishedAt ? (data.publishedAt instanceof Date ? data.publishedAt.toISOString() : String(data.publishedAt)) : new Date().toISOString(),
+		"author": {
+			"@type": "Organization",
+			"name": "The Chicago Marketing Agency",
+			"url": "https://thechicagomarketingagency.com"
+		},
+		"publisher": {
+			"@type": "Organization",
+			"name": "The Chicago Marketing Agency",
+			"logo": {
+				"@type": "ImageObject",
+				"url": "https://thechicagomarketingagency.com/logo.png"
+			}
+		},
+		"mainEntityOfPage": {
+			"@type": "WebPage",
+			"@id": `https://thechicagomarketingagency.com/blog/${slug}/`
+		}
+	})} />
+	<script type="application/ld+json" set:html={JSON.stringify({
+		"@context": "https://schema.org",
+		"@type": "BreadcrumbList",
+		"itemListElement": [
+			{ "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thechicagomarketingagency.com/" },
+			{ "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://thechicagomarketingagency.com/blog/" },
+			{ "@type": "ListItem", "position": 3, "name": data.title, "item": `https://thechicagomarketingagency.com/blog/${slug}/` }
+		]
+	})} />
+
+	<!-- ── ARTICLE HEADER ── -->
+	<section class="post-header">
+		<div class="container">
+			<nav class="breadcrumb" aria-label="Breadcrumb">
+				<a href="/">Home</a>
+				<span>/</span>
+				<a href="/blog">Blog</a>
+				<span>/</span>
+				<span>{data.title}</span>
+			</nav>
+			<h1 class="post-title">{data.title}</h1>
+			{data.excerpt && <p class="post-excerpt">{data.excerpt}</p>}
+			<div class="post-meta">
+				<span class="post-meta-item">
+					<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+					{publishDate}
+				</span>
+				<span class="post-meta-sep">·</span>
+				<span class="post-meta-item">
+					<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+					8 min read
+				</span>
+			</div>
+		</div>
+	</section>
+
+	<!-- ── FEATURED IMAGE ── -->
+	{data.featured_image && (
+		<div class="post-featured-image">
+			<div class="container">
+				<img
+					src={data.featured_image?.src}
+					alt={data.featured_image?.alt || data.title}
+					width="1200"
+					height="480"
+					loading="eager"
+				/>
+			</div>
+		</div>
+	)}
+
+	<!-- ── ARTICLE BODY + SIDEBAR ── -->
+	<section class="post-content-section">
+		<div class="container post-layout">
+			<!-- Main content -->
+			<article class="post-body">
+				{data.body
+					? <PortableText value={data.body} components={emdashComponents} />
+					: <p class="post-empty">Content coming soon.</p>
+				}
+			</article>
+
+			<!-- Sidebar -->
+			<aside class="post-sidebar">
+				<!-- Author box -->
+				<div class="sidebar-author">
+					<div class="author-avatar">TCA</div>
+					<div class="author-info">
+						<span class="author-name">The Chicago Marketing Agency</span>
+						<span class="author-title">Chicago Digital Marketing Experts</span>
+					</div>
+				</div>
+
+				<!-- CTA box -->
+				<div class="sidebar-cta">
+					<p class="sidebar-cta-eyebrow">Free Offer</p>
+					<h3>Get Your Free SEO Audit</h3>
+					<p>See exactly where your website ranks and what's holding you back. No cost, no commitment.</p>
+					<a href="/free-seo-audit" class="btn btn-primary btn-full">Claim My Free Audit →</a>
+				</div>
+
+				<!-- Table of contents placeholder -->
+				<div class="sidebar-toc">
+					<h4>In This Article</h4>
+					<ul>
+						<li><a href="#intro">Introduction</a></li>
+						<li><a href="#local-seo">What Is Local SEO?</a></li>
+						<li><a href="#gmb">Optimize Your Google Business Profile</a></li>
+						<li><a href="#on-page">On-Page SEO for Local Businesses</a></li>
+						<li><a href="#backlinks">Build Local Authority With Backlinks</a></li>
+						<li><a href="#results">What Results Should You Expect?</a></li>
+					</ul>
+				</div>
+			</aside>
+		</div>
+	</section>
+
+	<!-- ── RELATED ARTICLES ── -->
+	{related.length > 0 && (
+		<section class="related-posts">
+			<div class="container">
+				<h2 class="related-heading">Related Articles</h2>
+				<div class="related-grid">
+					{related.map((post) => {
+						const pd = post.data;
+						return (
+							<a href={`/blog/${post.slug}`} class="related-card">
+								{pd.featured_image ? (
+									<img src={pd.featured_image.src} alt={pd.featured_image.alt} width="400" height="220" loading="lazy" />
+								) : (
+									<div class="related-card-placeholder"></div>
+								)}
+								<div class="related-card-body">
+									<h3>{pd.title}</h3>
+									{pd.excerpt && <p>{pd.excerpt}</p>}
+									<span class="related-link">Read More →</span>
+								</div>
+							</a>
+						);
+					})}
+				</div>
+			</div>
+		</section>
+	)}
+
+	<!-- ── BOTTOM CTA ── -->
+	<section class="post-cta">
+		<div class="container post-cta-inner">
+			<h2>Ready to Dominate Chicago Search Results?</h2>
+			<p>Join 150+ Chicago businesses that trust us to grow their organic traffic and dominate local search.</p>
+			<a href="/free-seo-audit" class="btn btn-primary">Get My Free SEO Audit →</a>
+		</div>
+	</section>
+</Base>
+
+<style>
+/* ── HEADER ── */
+.post-header {
+	padding: 48px 0 32px;
+	background: var(--white);
+	border-bottom: 1px solid var(--border);
+}
+
+.breadcrumb {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 0.8125rem;
+	color: var(--text-muted);
+	margin-bottom: 20px;
+	flex-wrap: wrap;
+}
+
+.breadcrumb a {
+	color: var(--text-muted);
+	transition: color var(--transition);
+}
+
+.breadcrumb a:hover { color: var(--red); }
+.breadcrumb span:last-child { color: var(--text-dark); }
+
+.post-title {
+	font-size: clamp(1.75rem, 4vw, 2.75rem);
+	color: var(--text-dark);
+	line-height: 1.15;
+	letter-spacing: -0.03em;
+	max-width: 800px;
+	margin-bottom: 16px;
+}
+
+.post-excerpt {
+	font-size: 1.125rem;
+	color: var(--text-muted);
+	line-height: 1.6;
+	max-width: 700px;
+	margin-bottom: 20px;
+}
+
+.post-meta {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 0.875rem;
+	color: var(--text-muted);
+	flex-wrap: wrap;
+}
+
+.post-meta-item {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+}
+
+.post-meta-sep { opacity: 0.4; }
+
+/* ── FEATURED IMAGE ── */
+.post-featured-image {
+	background: var(--off-white);
+	padding: 32px 0;
+}
+
+.post-featured-image img {
+	width: 100%;
+	height: 480px;
+	object-fit: cover;
+	border-radius: var(--radius-lg);
+}
+
+/* ── ARTICLE LAYOUT ── */
+.post-content-section {
+	padding: 48px 0 64px;
+	background: var(--white);
+}
+
+.post-layout {
+	display: grid;
+	grid-template-columns: 1fr 320px;
+	gap: 64px;
+	align-items: start;
+}
+
+/* ── ARTICLE BODY ── */
+.post-body {
+	font-size: 1.0625rem;
+	line-height: 1.8;
+	color: var(--text-dark);
+}
+
+.post-body :global(h2) {
+	font-size: 1.5rem;
+	font-weight: 800;
+	color: var(--text-dark);
+	margin: 2em 0 0.75em;
+	letter-spacing: -0.02em;
+}
+
+.post-body :global(h3) {
+	font-size: 1.25rem;
+	font-weight: 700;
+	color: var(--text-dark);
+	margin: 1.5em 0 0.5em;
+}
+
+.post-body :global(p) {
+	margin-bottom: 1.25em;
+}
+
+.post-body :global(ul), .post-body :global(ol) {
+	margin: 0 0 1.25em 1.5em;
+}
+
+.post-body :global(li) {
+	margin-bottom: 0.5em;
+}
+
+.post-body :global(a) {
+	color: var(--red);
+	text-decoration: underline;
+}
+
+.post-body :global(blockquote) {
+	border-left: 3px solid var(--red);
+	padding: 16px 24px;
+	margin: 1.5em 0;
+	background: var(--off-white);
+	border-radius: 0 var(--radius) var(--radius) 0;
+	font-style: italic;
+	color: var(--text-muted);
+}
+
+.post-body :global(strong) { font-weight: 700; }
+
+.post-empty {
+	color: var(--text-muted);
+	font-style: italic;
+}
+
+/* ── SIDEBAR ── */
+.post-sidebar {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+	position: sticky;
+	top: 96px;
+}
+
+.sidebar-author {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	padding: 20px;
+	border: 1px solid var(--border);
+	border-radius: var(--radius-lg);
+	background: var(--white);
+}
+
+.author-avatar {
+	width: 48px;
+	height: 48px;
+	background: var(--navy);
+	color: var(--white);
+	font-size: 1.25rem;
+	font-weight: 900;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	flex-shrink: 0;
+}
+
+.author-name {
+	display: block;
+	font-size: 0.9375rem;
+	font-weight: 700;
+	color: var(--text-dark);
+}
+
+.author-title {
+	display: block;
+	font-size: 0.8125rem;
+	color: var(--text-muted);
+	margin-top: 2px;
+}
+
+.sidebar-cta {
+	background: var(--navy);
+	border-radius: var(--radius-lg);
+	padding: 28px 24px;
+	color: var(--white);
+}
+
+.sidebar-cta-eyebrow {
+	font-size: 0.6875rem;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--red);
+	margin-bottom: 10px;
+}
+
+.sidebar-cta h3 {
+	font-size: 1.125rem;
+	font-weight: 800;
+	margin-bottom: 10px;
+	line-height: 1.2;
+}
+
+.sidebar-cta p {
+	font-size: 0.875rem;
+	color: rgba(255,255,255,0.7);
+	line-height: 1.6;
+	margin-bottom: 20px;
+}
+
+.btn-full { width: 100%; justify-content: center; }
+
+.sidebar-toc {
+	border: 1px solid var(--border);
+	border-radius: var(--radius-lg);
+	padding: 24px;
+}
+
+.sidebar-toc h4 {
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--text-dark);
+	margin-bottom: 14px;
+}
+
+.sidebar-toc ul {
+	list-style: none;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.sidebar-toc a {
+	font-size: 0.875rem;
+	color: var(--text-muted);
+	transition: color var(--transition);
+}
+
+.sidebar-toc a:hover { color: var(--red); }
+
+/* ── RELATED POSTS ── */
+.related-posts {
+	padding: 64px 0;
+	background: var(--off-white);
+	border-top: 1px solid var(--border);
+}
+
+.related-heading {
+	font-size: 1.5rem;
+	color: var(--text-dark);
+	margin-bottom: 32px;
+}
+
+.related-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 24px;
+}
+
+.related-card {
+	background: var(--white);
+	border: 1px solid var(--border);
+	border-radius: var(--radius-lg);
+	overflow: hidden;
+	text-decoration: none;
+	transition: all var(--transition);
+	display: flex;
+	flex-direction: column;
+}
+
+.related-card:hover {
+	border-color: var(--red);
+	transform: translateY(-2px);
+	box-shadow: 0 8px 24px rgba(220,38,38,0.08);
+}
+
+.related-card img,
+.related-card-placeholder {
+	width: 100%;
+	height: 200px;
+	object-fit: cover;
+	background: var(--off-white);
+}
+
+.related-card-body {
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+}
+
+.related-card h3 {
+	font-size: 1rem;
+	font-weight: 700;
+	color: var(--text-dark);
+	margin-bottom: 8px;
+	line-height: 1.3;
+}
+
+.related-card p {
+	font-size: 0.875rem;
+	color: var(--text-muted);
+	line-height: 1.5;
+	flex: 1;
+	margin-bottom: 12px;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+.related-link {
+	font-size: 0.875rem;
+	font-weight: 600;
+	color: var(--red);
+}
+
+/* ── BOTTOM CTA ── */
+.post-cta {
+	background: var(--navy);
+	padding: 80px 0;
+}
+
+.post-cta-inner {
+	text-align: center;
+	max-width: 580px;
+	margin: 0 auto;
+}
+
+.post-cta-inner h2 {
+	font-size: clamp(1.75rem, 3vw, 2.25rem);
+	color: var(--white);
+	margin-bottom: 16px;
+}
+
+.post-cta-inner p {
+	font-size: 1rem;
+	color: rgba(255,255,255,0.65);
+	margin-bottom: 32px;
+	line-height: 1.7;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1024px) {
+	.post-layout {
+		grid-template-columns: 1fr;
+		gap: 48px;
+	}
+	.post-sidebar { position: static; }
+	.related-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+	.related-grid { grid-template-columns: 1fr; }
+}
+</style>

@@ -1,0 +1,458 @@
+---
+import Base from "../layouts/Base.astro";
+
+export const cacheHint = 3600;
+
+const team = [
+	{
+		name: "Agency Founder",
+		title: "Founder & CEO",
+		bio: "11+ years growing Chicago businesses online. Former Google Ads top partner.",
+		image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80",
+	},
+	{
+		name: "Marcus Webb",
+		title: "Head of SEO",
+		bio: "Led SEO strategy for 150+ Chicago businesses. Specialist in local & technical SEO.",
+		image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&q=80",
+	},
+	{
+		name: "Sofia Reyes",
+		title: "Creative Director",
+		bio: "Award-winning designer. Built brand identities for 80+ Chicago companies.",
+		image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80",
+	},
+	{
+		name: "Devon Park",
+		title: "Head of Paid Media",
+		bio: "Managed $4M+ in ad spend. Meta & Google certified with 4.2x average client ROAS.",
+		image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80",
+	},
+	{
+		name: "Priya Nair",
+		title: "Content Strategist",
+		bio: "Former journalist turned content marketer. Specializes in B2B and healthcare content.",
+		image: "https://images.unsplash.com/photo-1598550874175-4d0ef436c909?w=400&q=80",
+	},
+	{
+		name: "Jordan Cole",
+		title: "Web Developer",
+		bio: "Full-stack developer with 8 years building fast, conversion-focused websites.",
+		image: "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?w=400&q=80",
+	},
+	{
+		name: "Lisa Chen",
+		title: "Social Media Manager",
+		bio: "Grew 30+ brand accounts from zero. Specializes in Instagram and TikTok strategy.",
+		image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&q=80",
+	},
+	{
+		name: "Ryan Torres",
+		title: "Video Producer",
+		bio: "5 years producing brand films and ad creative. Former Vimeo Staff Pick recipient.",
+		image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80",
+	},
+];
+
+const values = [
+	{
+		icon: "📊",
+		iconBg: "#fef2f2",
+		title: "Data First",
+		desc: "Every decision is backed by data, not gut feelings. We track, test, and optimize everything.",
+	},
+	{
+		icon: "🏙️",
+		iconBg: "#0f172a",
+		iconColor: "#ffffff",
+		title: "Chicago Proud",
+		desc: "We're not a remote agency pretending to know your market. We live, eat, and breathe Chicago.",
+	},
+	{
+		icon: "🎯",
+		iconBg: "#fef2f2",
+		title: "Results Obsessed",
+		desc: "Vanity metrics don't pay bills. We focus on leads, revenue, and ROI — nothing else.",
+	},
+];
+---
+
+<Base
+	title="About Us — The Chicago Marketing Agency"
+	description="Chicago's most trusted digital marketing agency. Meet the team behind your growth."
+>
+	<!-- ── HERO ── -->
+	<section class="about-hero">
+		<div class="about-hero-bg"></div>
+		<div class="container about-hero-inner">
+			<span class="about-eyebrow">Built in Chicago.</span>
+			<h1>Chicago's Most Trusted<br />Digital Marketing Agency</h1>
+			<p>Built in Chicago. Obsessed with growth. Powered by data.</p>
+		</div>
+	</section>
+
+	<!-- ── STORY ── -->
+	<section class="about-story">
+		<div class="container about-story-inner">
+			<div class="about-story-text">
+				<span class="eyebrow">Who We Are</span>
+				<h2>We Started as a Small Chicago Agency. We Grew With Our Clients.</h2>
+				<p>Founded in 2012 on the corner of Chicago's River North neighborhood, The Chicago Marketing Agency started with one mission: help local businesses compete — and win — online.</p>
+				<p>Today, we're a full-service digital marketing team of 20+ strategists, designers, developers, and creatives. Our clients span dentists in Lincoln Park to law firms in the Loop — and we treat every single one like our only client.</p>
+				<a href="/free-seo-audit" class="btn btn-primary">Work With Us →</a>
+			</div>
+			<div class="about-story-image">
+				<img
+					src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=640&q=80"
+					alt="Chicago Tribune building"
+					width="560"
+					height="460"
+					loading="eager"
+				/>
+			</div>
+		</div>
+	</section>
+
+	<!-- ── VALUES ── -->
+	<section class="about-values">
+		<div class="container">
+			<p class="eyebrow" style="text-align: center;">Our Values</p>
+			<h2 class="values-heading">What Drives Everything We Do</h2>
+			<div class="values-grid">
+				{values.map((v) => (
+					<div class="value-card">
+						<div class="value-icon" style={`background: ${v.iconBg}; color: ${v.iconColor ?? "inherit"};`}>
+							{v.icon}
+						</div>
+						<h3>{v.title}</h3>
+						<p>{v.desc}</p>
+					</div>
+				))}
+			</div>
+		</div>
+	</section>
+
+
+	<!-- ── STATS ── -->
+	<section class="about-stats">
+		<div class="container about-stats-inner">
+			<div class="about-stat">
+				<span class="about-stat-value">12+</span>
+				<span class="about-stat-label">Years in Business</span>
+			</div>
+			<div class="about-stat">
+				<span class="about-stat-value">150+</span>
+				<span class="about-stat-label">Chicago Clients Served</span>
+			</div>
+			<div class="about-stat">
+				<span class="about-stat-value">$12M+</span>
+				<span class="about-stat-label">Revenue Generated</span>
+			</div>
+			<div class="about-stat">
+				<span class="about-stat-value">94%</span>
+				<span class="about-stat-label">Client Retention Rate</span>
+			</div>
+		</div>
+	</section>
+
+	<!-- ── CTA ── -->
+	<section class="about-cta">
+		<div class="container about-cta-inner">
+			<h2>Ready to Start Growing?</h2>
+			<p>Let's talk about your business goals and build a strategy that delivers real results.</p>
+			<a href="/free-seo-audit" class="btn btn-primary">Get a Free Strategy Call →</a>
+		</div>
+	</section>
+</Base>
+
+<style>
+/* ── HERO ── */
+.about-hero {
+	position: relative;
+	min-height: 440px;
+	display: flex;
+	align-items: center;
+	overflow: hidden;
+}
+
+.about-hero-bg {
+	position: absolute;
+	inset: 0;
+	background-image: url('https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1600&q=80');
+	background-size: cover;
+	background-position: center;
+	filter: brightness(0.35);
+}
+
+.about-hero-inner {
+	position: relative;
+	z-index: 1;
+	padding: 80px 0;
+}
+
+.about-eyebrow {
+	display: inline-block;
+	font-size: 0.6875rem;
+	font-weight: 700;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--red);
+	margin-bottom: 16px;
+}
+
+.about-hero h1 {
+	font-size: clamp(2rem, 5vw, 3.25rem);
+	color: var(--white);
+	line-height: 1.1;
+	margin-bottom: 16px;
+}
+
+.about-hero p {
+	font-size: 1.125rem;
+	color: rgba(255,255,255,0.7);
+}
+
+/* ── STORY ── */
+.about-story {
+	padding: 80px 0;
+	background: var(--white);
+}
+
+.about-story-inner {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 64px;
+	align-items: center;
+}
+
+.about-story-text h2 {
+	font-size: clamp(1.75rem, 3vw, 2.25rem);
+	color: var(--text-dark);
+	margin-bottom: 20px;
+}
+
+.about-story-text p {
+	font-size: 1rem;
+	color: var(--text-muted);
+	line-height: 1.7;
+	margin-bottom: 16px;
+}
+
+.about-story-text .btn {
+	margin-top: 8px;
+}
+
+.about-story-image img {
+	width: 100%;
+	height: 460px;
+	object-fit: cover;
+	border-radius: var(--radius-lg);
+}
+
+/* ── VALUES ── */
+.about-values {
+	padding: 80px 0;
+	background: var(--off-white);
+}
+
+.values-heading {
+	font-size: clamp(1.75rem, 3vw, 2.25rem);
+	text-align: center;
+	color: var(--text-dark);
+	margin-bottom: 48px;
+}
+
+.values-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 24px;
+}
+
+.value-card {
+	background: var(--white);
+	border: 1px solid var(--border);
+	border-radius: var(--radius-lg);
+	padding: 32px;
+}
+
+.value-icon {
+	font-size: 1.5rem;
+	width: 52px;
+	height: 52px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: var(--radius);
+	margin-bottom: 16px;
+}
+
+.value-card h3 {
+	font-size: 1.0625rem;
+	font-weight: 700;
+	color: var(--text-dark);
+	margin-bottom: 10px;
+}
+
+.value-card p {
+	font-size: 0.9375rem;
+	color: var(--text-muted);
+	line-height: 1.6;
+}
+
+/* ── TEAM ── */
+.about-team {
+	padding: 80px 0;
+	background: var(--white);
+}
+
+.team-heading {
+	font-size: clamp(1.75rem, 3vw, 2.25rem);
+	text-align: center;
+	color: var(--text-dark);
+	margin-bottom: 48px;
+}
+
+.team-grid {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 24px;
+}
+
+.team-card {
+	display: flex;
+	flex-direction: column;
+}
+
+.team-photo {
+	width: 100%;
+	aspect-ratio: 1;
+	overflow: hidden;
+	border-radius: var(--radius-lg);
+	margin-bottom: 16px;
+}
+
+.team-photo img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform 400ms ease;
+}
+
+.team-card:hover .team-photo img {
+	transform: scale(1.04);
+}
+
+.team-info h3 {
+	font-size: 1rem;
+	font-weight: 700;
+	color: var(--text-dark);
+	margin-bottom: 4px;
+}
+
+.team-title {
+	display: block;
+	font-size: 0.8125rem;
+	font-weight: 600;
+	color: var(--red);
+	margin-bottom: 8px;
+}
+
+.team-info p {
+	font-size: 0.875rem;
+	color: var(--text-muted);
+	line-height: 1.5;
+}
+
+/* ── STATS ── */
+.about-stats {
+	background: var(--navy);
+	padding: 64px 0;
+}
+
+.about-stats-inner {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 2px;
+}
+
+.about-stat {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	gap: 8px;
+	padding: 0 24px;
+	border-right: 1px solid rgba(255,255,255,0.1);
+}
+
+.about-stat:last-child { border-right: none; }
+
+.about-stat-value {
+	font-size: 2.5rem;
+	font-weight: 900;
+	color: var(--white);
+	letter-spacing: -0.04em;
+	line-height: 1;
+}
+
+.about-stat-label {
+	font-size: 0.875rem;
+	color: rgba(255,255,255,0.55);
+}
+
+/* ── CTA ── */
+.about-cta {
+	background: var(--red);
+	padding: 80px 0;
+}
+
+.about-cta-inner {
+	text-align: center;
+	max-width: 540px;
+	margin: 0 auto;
+}
+
+.about-cta-inner h2 {
+	font-size: clamp(1.75rem, 3vw, 2.25rem);
+	color: var(--white);
+	margin-bottom: 12px;
+}
+
+.about-cta-inner p {
+	font-size: 1rem;
+	color: rgba(255,255,255,0.8);
+	margin-bottom: 28px;
+}
+
+.about-cta .btn-primary {
+	background: var(--white);
+	color: var(--red);
+	border-color: var(--white);
+}
+
+.about-cta .btn-primary:hover {
+	background: var(--off-white);
+	border-color: var(--off-white);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1024px) {
+	.team-grid { grid-template-columns: repeat(2, 1fr); }
+	.about-stats-inner { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+	.about-stat { border-right: none; }
+}
+
+@media (max-width: 768px) {
+	.about-hero { min-height: 300px; }
+	.about-story-inner { grid-template-columns: 1fr; gap: 40px; }
+	.about-story-image img { height: 300px; }
+	.values-grid { grid-template-columns: 1fr; }
+	.team-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 480px) {
+	.team-grid { grid-template-columns: 1fr; }
+	.about-story-image img { height: 220px; }
+	.value-card { padding: 20px; }
+}
+</style>

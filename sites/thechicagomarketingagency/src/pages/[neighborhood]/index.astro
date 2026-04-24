@@ -1,0 +1,1244 @@
+---
+import { getEmDashEntry } from "emdash";
+import Base from "../../layouts/Base.astro";
+
+export const cacheHint = 3600;
+
+const { neighborhood } = Astro.params;
+
+// ── Neighborhood map: slug → { name, character } (fallback if no CMS entry) ──
+const neighborhoods: Record<string, { name: string; character: string; nearby: string[] }> = {
+	"lincoln-park": {
+		name: "Lincoln Park",
+		character: "one of Chicago's most affluent and competitive neighborhoods, where local boutiques, restaurants, and service businesses compete fiercely for an educated, high-income clientele",
+		nearby: ["old-town", "lakeview", "bucktown", "wicker-park", "gold-coast", "uptown"],
+	},
+	"wicker-park": {
+		name: "Wicker Park",
+		character: "a creative, trend-setting neighborhood where independent businesses thrive on authenticity and where digital-savvy customers do their research before spending a dollar",
+		nearby: ["bucktown", "ukrainian-village", "west-town", "logan-square", "avondale", "humboldt-park"],
+	},
+	"logan-square": {
+		name: "Logan Square",
+		character: "a rapidly evolving neighborhood where a mix of long-standing local businesses and new concepts compete for a diverse, digitally connected community",
+		nearby: ["wicker-park", "bucktown", "avondale", "albany-park", "humboldt-park", "irving-park"],
+	},
+	"river-north": {
+		name: "River North",
+		character: "home to the Merchandise Mart's corporate tenants, 60+ art galleries along Superior and Ontario, and one of Chicago's densest restaurant corridors — a neighborhood where B2B companies, creative agencies, and hospitality businesses all compete for the same high-intent online audience",
+		nearby: ["the-loop", "west-loop", "gold-coast", "streeterville", "old-town", "lincoln-park"],
+	},
+	"the-loop": {
+		name: "The Loop",
+		character: "the commercial and financial heart of Chicago, where B2B companies and consumer brands alike need enterprise-level digital presence to compete for downtown foot traffic and corporate accounts",
+		nearby: ["river-north", "west-loop", "south-loop", "streeterville", "gold-coast", "pilsen"],
+	},
+	"west-loop": {
+		name: "West Loop",
+		character: "Chicago's hottest growth corridor — a neighborhood that transformed from meatpacking to Michelin stars, and where businesses need marketing that matches that ambition",
+		nearby: ["the-loop", "river-north", "pilsen", "little-italy", "ukrainian-village", "humboldt-park"],
+	},
+	"bucktown": {
+		name: "Bucktown",
+		character: "a neighborhood that blends creative culture with rising household incomes, where businesses need to speak to both the long-time locals and the newer, higher-spending residents",
+		nearby: ["wicker-park", "logan-square", "lincoln-park", "ukrainian-village", "west-town", "avondale"],
+	},
+	"lakeview": {
+		name: "Lakeview",
+		character: "one of Chicago's most densely populated neighborhoods, with Wrigleyville at its core and thousands of residents who rely on Google and social media to discover local businesses",
+		nearby: ["lincoln-park", "uptown", "andersonville", "ravenswood", "irving-park", "old-town"],
+	},
+	"old-town": {
+		name: "Old Town",
+		character: "a historic, walkable neighborhood where independent businesses thrive alongside major entertainment venues and where word-of-mouth starts online",
+		nearby: ["lincoln-park", "river-north", "gold-coast", "lakeview", "wicker-park", "bucktown"],
+	},
+	"gold-coast": {
+		name: "Gold Coast",
+		character: "Chicago's premier luxury neighborhood, where high-net-worth residents expect premium experiences — and where your marketing needs to reflect that standard from the first impression",
+		nearby: ["river-north", "old-town", "lincoln-park", "streeterville", "the-loop", "lakeview"],
+	},
+	"streeterville": {
+		name: "Streeterville",
+		character: "a neighborhood anchored by Northwestern hospital, Navy Pier, and Michigan Avenue — a high-traffic zone where healthcare providers, hospitality businesses, and retailers all compete for visitor attention",
+		nearby: ["river-north", "gold-coast", "the-loop", "lincoln-park", "south-loop", "old-town"],
+	},
+	"hyde-park": {
+		name: "Hyde Park",
+		character: "an intellectually driven neighborhood on the South Side anchored by the University of Chicago, where businesses serve a highly educated, research-oriented community that reads reviews carefully",
+		nearby: ["bronzeville", "south-loop", "bridgeport", "pilsen", "chinatown", "little-italy"],
+	},
+	"pilsen": {
+		name: "Pilsen",
+		character: "a vibrant arts and culture district with deep Mexican heritage, where authentic storytelling and community connection are essential to any effective marketing strategy",
+		nearby: ["little-italy", "west-loop", "bridgeport", "chinatown", "south-loop", "the-loop"],
+	},
+	"bridgeport": {
+		name: "Bridgeport",
+		character: "a close-knit South Side neighborhood with deep roots and a growing number of new businesses that need digital visibility to reach both loyal locals and new residents",
+		nearby: ["pilsen", "chinatown", "south-loop", "hyde-park", "bronzeville", "little-italy"],
+	},
+	"andersonville": {
+		name: "Andersonville",
+		character: "a neighborhood known for its fierce support of independent businesses and its community-first ethos — where buyers actively seek out locally owned shops and where authentic marketing wins",
+		nearby: ["edgewater", "uptown", "ravenswood", "rogers-park", "lakeview", "lincoln-square"],
+	},
+	"uptown": {
+		name: "Uptown",
+		character: "a diverse, rapidly changing neighborhood where a new wave of businesses is establishing itself alongside long-standing institutions — and where digital presence is driving that transformation",
+		nearby: ["andersonville", "edgewater", "lakeview", "ravenswood", "lincoln-square", "rogers-park"],
+	},
+	"edgewater": {
+		name: "Edgewater",
+		character: "a lakefront neighborhood that balances a relaxed residential feel with a growing dining and retail scene, attracting customers who plan their local outings based on online research",
+		nearby: ["andersonville", "uptown", "rogers-park", "ravenswood", "lakeview", "lincoln-square"],
+	},
+	"rogers-park": {
+		name: "Rogers Park",
+		character: "Chicago's most diverse neighborhood, where multilingual communities, artists, and activists intersect — and where culturally aware, community-driven marketing cuts through the noise",
+		nearby: ["edgewater", "andersonville", "uptown", "albany-park", "ravenswood", "lincoln-square"],
+	},
+	"ravenswood": {
+		name: "Ravenswood",
+		character: "a neighborhood of makers, manufacturers, and small business owners who are discovering the power of digital marketing to expand beyond their immediate community",
+		nearby: ["lincoln-square", "andersonville", "albany-park", "irving-park", "lakeview", "uptown"],
+	},
+	"lincoln-square": {
+		name: "Lincoln Square",
+		character: "a neighborhood with a strong European heritage and a thriving small business community where authenticity and local identity are marketing assets, not afterthoughts",
+		nearby: ["ravenswood", "andersonville", "albany-park", "irving-park", "avondale", "lakeview"],
+	},
+	"albany-park": {
+		name: "Albany Park",
+		character: "one of Chicago's most culturally diverse neighborhoods, where a kaleidoscope of immigrant-owned businesses serves a community that spans dozens of languages and backgrounds",
+		nearby: ["ravenswood", "lincoln-square", "irving-park", "avondale", "logan-square", "andersonville"],
+	},
+	"irving-park": {
+		name: "Irving Park",
+		character: "a neighborhood in transition — established bungalow-belt roots meeting a new generation of businesses that need digital marketing to attract younger, mobile-first customers",
+		nearby: ["albany-park", "avondale", "logan-square", "ravenswood", "lincoln-square", "lakeview"],
+	},
+	"avondale": {
+		name: "Avondale",
+		character: "a working-class neighborhood that has quietly become one of Chicago's most interesting food and creative scenes, where businesses benefit enormously from digital exposure to a city-wide audience",
+		nearby: ["logan-square", "irving-park", "albany-park", "bucktown", "wicker-park", "humboldt-park"],
+	},
+	"humboldt-park": {
+		name: "Humboldt Park",
+		character: "a neighborhood with Puerto Rican cultural roots and a passionate local community, where businesses that invest in authentic, community-centered marketing build lasting loyalty",
+		nearby: ["ukrainian-village", "west-town", "logan-square", "avondale", "wicker-park", "albany-park"],
+	},
+	"ukrainian-village": {
+		name: "Ukrainian Village",
+		character: "a tight-knit residential neighborhood with an increasingly vibrant commercial strip, where thoughtful digital marketing helps businesses punch well above their size",
+		nearby: ["west-town", "wicker-park", "bucktown", "humboldt-park", "west-loop", "logan-square"],
+	},
+	"west-town": {
+		name: "West Town",
+		character: "a broad neighborhood that captures several of Chicago's most creative and entrepreneurial corridors, where businesses compete for customers who value quality and discovery",
+		nearby: ["ukrainian-village", "wicker-park", "bucktown", "humboldt-park", "river-north", "west-loop"],
+	},
+	"south-loop": {
+		name: "South Loop",
+		character: "a rapidly growing neighborhood south of the Loop, where thousands of new residents and a wave of new businesses are both arriving at the same time — and where establishing early digital visibility pays dividends for years",
+		nearby: ["the-loop", "pilsen", "bronzeville", "chinatown", "bridgeport", "west-loop"],
+	},
+	"bronzeville": {
+		name: "Bronzeville",
+		character: "a historically significant South Side neighborhood undergoing genuine revitalization, where businesses that tell their story well attract customers from across the city",
+		nearby: ["south-loop", "hyde-park", "bridgeport", "pilsen", "chinatown", "the-loop"],
+	},
+	"chinatown": {
+		name: "Chinatown",
+		character: "a vibrant, destination neighborhood where restaurants, shops, and service businesses draw visitors from across the Chicago metro — and where multilingual, culturally attuned marketing opens doors",
+		nearby: ["bridgeport", "pilsen", "south-loop", "bronzeville", "little-italy", "the-loop"],
+	},
+	"little-italy": {
+		name: "Little Italy",
+		character: "a historic neighborhood defined by its culinary heritage and university adjacency, where businesses benefit from connecting with both loyal long-time community members and the constant influx of UIC students and medical professionals",
+		nearby: ["pilsen", "west-loop", "chinatown", "bridgeport", "south-loop", "the-loop"],
+	},
+};
+
+// ── Neighborhood hero images (Unsplash) ──────────────────────────────────────
+const neighborhoodImages: Record<string, string> = {
+	// Named unique images
+	"lincoln-park":      "photo-1494522855154-9297ac14b55f",
+	"wicker-park":       "photo-1513635269975-59663e0ac1ad",
+	"logan-square":      "photo-1449824913935-59a10b8d2000",
+	"river-north":       "photo-1477959858617-67f85cf4f1df",
+	"the-loop":          "photo-1581373449483-37449f962b6c",
+	"west-loop":         "photo-1494891848038-7bd202a2afeb",
+	"bucktown":          "photo-1513635269975-59663e0ac1ad",
+	"lakeview":          "photo-1494522855154-9297ac14b55f",
+	"old-town":          "photo-1449824913935-59a10b8d2000",
+	"gold-coast":        "photo-1477959858617-67f85cf4f1df",
+	// Chicago skyline fallback for remaining neighborhoods
+	"streeterville":     "photo-1477959858617-67f85cf4f1df",
+	"hyde-park":         "photo-1477959858617-67f85cf4f1df",
+	"pilsen":            "photo-1477959858617-67f85cf4f1df",
+	"bridgeport":        "photo-1477959858617-67f85cf4f1df",
+	"andersonville":     "photo-1477959858617-67f85cf4f1df",
+	"uptown":            "photo-1477959858617-67f85cf4f1df",
+	"edgewater":         "photo-1477959858617-67f85cf4f1df",
+	"rogers-park":       "photo-1477959858617-67f85cf4f1df",
+	"ravenswood":        "photo-1477959858617-67f85cf4f1df",
+	"lincoln-square":    "photo-1477959858617-67f85cf4f1df",
+	"albany-park":       "photo-1477959858617-67f85cf4f1df",
+	"irving-park":       "photo-1477959858617-67f85cf4f1df",
+	"avondale":          "photo-1477959858617-67f85cf4f1df",
+	"humboldt-park":     "photo-1477959858617-67f85cf4f1df",
+	"ukrainian-village": "photo-1477959858617-67f85cf4f1df",
+	"west-town":         "photo-1477959858617-67f85cf4f1df",
+	"south-loop":        "photo-1477959858617-67f85cf4f1df",
+	"bronzeville":       "photo-1477959858617-67f85cf4f1df",
+	"chinatown":         "photo-1477959858617-67f85cf4f1df",
+	"little-italy":      "photo-1477959858617-67f85cf4f1df",
+};
+const heroPhotoId = neighborhoodImages[neighborhood as string] ?? "photo-1477959858617-67f85cf4f1df";
+const heroImageUrl = `https://images.unsplash.com/${heroPhotoId}?w=800&q=80`;
+
+// ── Try CMS first, fall back to hardcoded map ─────────────────────────────────
+const { entry: areaEntry } = await getEmDashEntry("service_areas", neighborhood as string);
+
+let neighborhoodName: string;
+let neighborhoodCharacter: string;
+let nearbyNeighborhoods: { slug: string; name: string }[];
+
+if (areaEntry) {
+	const ad = areaEntry.data as Record<string, any>;
+	neighborhoodName = ad.title as string;
+	neighborhoodCharacter = (ad.character as string) || "";
+	let nearbySlugsCms: string[] = [];
+	if (ad.nearby_json) {
+		try { nearbySlugsCms = JSON.parse(ad.nearby_json); } catch { nearbySlugsCms = []; }
+	}
+	nearbyNeighborhoods = nearbySlugsCms
+		.slice(0, 6)
+		.map((slug: string) => ({
+			slug,
+			name: neighborhoods[slug]?.name ?? slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
+		}));
+} else {
+	const neighborhoodData = neighborhoods[neighborhood as string];
+	if (!neighborhoodData) return Astro.rewrite("/404");
+	neighborhoodName = neighborhoodData.name;
+	neighborhoodCharacter = neighborhoodData.character;
+	nearbyNeighborhoods = neighborhoodData.nearby
+		.filter((n) => neighborhoods[n])
+		.slice(0, 6)
+		.map((n) => ({ slug: n, name: neighborhoods[n].name }));
+}
+
+const services = [
+	{
+		slug: "seo",
+		title: "SEO",
+		description: "Rank higher in local search and get found by customers actively looking for what you offer in " + neighborhoodName + ".",
+		icon: "📈",
+	},
+	{
+		slug: "web-design",
+		title: "Web Design",
+		description: "Convert more visitors with a site built for your " + neighborhoodName + " audience — fast, beautiful, and optimized.",
+		icon: "🎨",
+	},
+	{
+		slug: "video-production",
+		title: "Video Production",
+		description: "Tell your " + neighborhoodName + " story through compelling video that drives engagement and trust.",
+		icon: "🎬",
+	},
+	{
+		slug: "paid-advertising",
+		title: "Paid Advertising",
+		description: "Reach " + neighborhoodName + " customers instantly with precision-targeted Google and social ads.",
+		icon: "📣",
+	},
+	{
+		slug: "content-marketing",
+		title: "Content Marketing",
+		description: "Build authority and attract organic traffic with content crafted for " + neighborhoodName + " businesses.",
+		icon: "✍️",
+	},
+	{
+		slug: "social-media",
+		title: "Social Media Management",
+		description: "Grow your " + neighborhoodName + " community and turn followers into loyal customers.",
+		icon: "📱",
+	},
+	{
+		slug: "conversion-optimization",
+		title: "Conversion Optimization",
+		description: "Turn more of your " + neighborhoodName + " website visitors into leads, calls, and sales.",
+		icon: "⚡",
+	},
+];
+
+// ── Top 3 featured services for "Popular Services" section ────────────────────
+const featuredServices = [
+	{
+		slug: "seo",
+		title: "Local SEO",
+		description: `Get your ${neighborhoodName} business ranking at the top of Google for the searches that matter. We build comprehensive local SEO strategies — Google Business Profile optimization, citation building, on-page SEO, and neighborhood-specific content — that deliver consistent organic growth.`,
+	},
+	{
+		slug: "paid-advertising",
+		title: "Paid Advertising",
+		description: `Launch precision-targeted Google and Meta ad campaigns that put your ${neighborhoodName} business in front of ready-to-buy customers. From keyword strategy to creative to conversion tracking, we manage everything and optimize for real revenue, not just clicks.`,
+	},
+	{
+		slug: "web-design",
+		title: "Web Design & CRO",
+		description: `Your website is your 24/7 salesperson. We build fast, modern, conversion-optimized sites tailored to the ${neighborhoodName} market — designed to turn visitors into leads and calls from the moment they land.`,
+	},
+];
+
+// ── Unique business reasons derived from character ────────────────────────────
+const uniquePoints = [
+	`${neighborhoodName} customers are research-driven — they compare options online before making any purchase decision. Businesses with strong digital presence win the sale before any in-person interaction.`,
+	`Competition in ${neighborhoodName} is intensifying. Established businesses and new entrants are both investing in SEO and paid media. Without a strategy, you're handing customers to competitors.`,
+	`The ${neighborhoodName} market rewards local authenticity. Marketing that reflects the neighborhood's culture and values resonates far more than generic campaigns built for a national audience.`,
+	`Mobile search dominates locally. The majority of ${neighborhoodName} residents find businesses on their phones — often within hours of making a purchase. Being visible and optimized for mobile is non-negotiable.`,
+];
+
+const whyPoints = [
+	`We understand ${neighborhoodName}'s competitive landscape — who your real competitors are, what's working, and where the gaps are.`,
+	`Our strategies are tailored to the ${neighborhoodName} customer profile, not recycled from a template built for another market.`,
+	`You get measurable results with clear reporting — no jargon, no vanity metrics.`,
+	`We're a Chicago team. We know the city's neighborhoods, culture, and business environment better than any remote agency.`,
+];
+
+// ── Related blog posts (static fallback — 3 relevant posts) ──────────────────
+const relatedPosts = [
+	{
+		href: "/blog/local-seo-chicago-businesses/",
+		title: "The Complete Local SEO Guide for Chicago Small Businesses",
+		excerpt: "How to dominate local search, optimize your Google Business Profile, and build citations that drive real foot traffic.",
+	},
+	{
+		href: "/blog/google-ads-chicago/",
+		title: "How Chicago Businesses Can Get More From Google Ads",
+		excerpt: "A practical breakdown of campaign structure, bidding strategies, and neighborhood-level targeting that reduces wasted spend.",
+	},
+	{
+		href: "/blog/website-conversion-optimization/",
+		title: "Why Your Chicago Business Website Isn't Converting (And How to Fix It)",
+		excerpt: "The most common conversion killers on local business websites — and the specific fixes that produce measurable results.",
+	},
+];
+
+const pageTitle = `Digital Marketing Services in ${neighborhoodName}, Chicago`;
+const pageDesc = `Full-service digital marketing for ${neighborhoodName} businesses. SEO, web design, paid advertising, social media, and more — tailored to your neighborhood.`;
+
+const baseUrl = "https://thechicagomarketingagency.com";
+---
+
+<Base title={pageTitle} description={pageDesc}>
+	<!-- ── JSON-LD: LocalBusiness ── -->
+	<script type="application/ld+json" set:html={JSON.stringify({
+		"@context": "https://schema.org",
+		"@type": "MarketingAgency",
+		"name": "The Chicago Marketing Agency",
+		"url": baseUrl,
+		"description": pageDesc,
+		"areaServed": {
+			"@type": "Place",
+			"name": `${neighborhoodName}, Chicago, IL`
+		},
+		"address": {
+			"@type": "PostalAddress",
+			"addressLocality": "Chicago",
+			"addressRegion": "IL",
+			"addressCountry": "US"
+		}
+	})} />
+	<script type="application/ld+json" set:html={JSON.stringify({
+		"@context": "https://schema.org",
+		"@type": "BreadcrumbList",
+		"itemListElement": [
+			{ "@type": "ListItem", "position": 1, "name": "Home", "item": `${baseUrl}/` },
+			{ "@type": "ListItem", "position": 2, "name": neighborhoodName, "item": `${baseUrl}/${neighborhood}/` }
+		]
+	})} />
+
+	<!-- ── HERO (split layout: text left / image right) ── -->
+	<section class="sa-hero">
+		<div class="container sa-hero-inner">
+			<!-- Left: text content -->
+			<div class="sa-hero-content">
+				<nav class="breadcrumb" aria-label="Breadcrumb">
+					<a href="/">Home</a>
+					<span>/</span>
+					<span>{neighborhoodName}</span>
+				</nav>
+				<span class="eyebrow">{neighborhoodName}, Chicago</span>
+				<h1>Digital Marketing Services in {neighborhoodName}, Chicago</h1>
+				<p class="sa-hero-desc">
+					{neighborhoodName} is {neighborhoodCharacter}. We build data-driven marketing strategies that match that reality and deliver measurable results for local businesses.
+				</p>
+				<div class="sa-hero-actions">
+					<a href="/free-seo-audit/" class="btn btn-primary">Get a Free Marketing Audit →</a>
+					<a href="/contact/" class="btn btn-outline-white">Talk to Our Team</a>
+				</div>
+			</div>
+			<!-- Right: neighborhood image -->
+			<div class="sa-hero-visual">
+				<img
+					src={heroImageUrl}
+					alt={`${neighborhoodName} neighborhood, Chicago`}
+					width="800"
+					height="560"
+					loading="eager"
+				/>
+			</div>
+		</div>
+	</section>
+
+	<!-- ── SERVICES GRID ── -->
+	<section class="sa-services">
+		<div class="container">
+			<p class="eyebrow" style="color: var(--red); display: block; margin-bottom: 8px; text-align: center;">What We Offer</p>
+			<h2 class="sa-services-heading">Marketing Services for {neighborhoodName} Businesses</h2>
+			<p class="sa-services-sub">Every service is tailored to the unique dynamics of the {neighborhoodName} market.</p>
+			<div class="sa-grid">
+				{services.map((svc) => (
+					<a href={`/${neighborhood}/${svc.slug}/`} class="sa-card">
+						<span class="sa-card-icon" aria-hidden="true">{svc.icon}</span>
+						<h3 class="sa-card-title">{svc.title}</h3>
+						<p class="sa-card-desc">{svc.description}</p>
+						<span class="sa-card-link">Learn more →</span>
+					</a>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<!-- ── ABOUT THE NEIGHBORHOOD ── -->
+	<section class="sa-about">
+		<div class="container sa-about-inner">
+			<div class="sa-about-text">
+				<span class="eyebrow" style="color: var(--red); display: block; margin-bottom: 12px;">About the Area</span>
+				<h2>About {neighborhoodName}</h2>
+				<p>
+					{neighborhoodName} is {neighborhoodCharacter}. For businesses operating in this market, the difference between growth and stagnation often comes down to digital visibility — who shows up first in search, who runs the most effective ads, and whose website actually converts visitors into customers.
+				</p>
+				<p>
+					We've worked with businesses across all of Chicago's neighborhoods and understand that {neighborhoodName} has its own dynamics. The customer profile is distinct. The competitive density varies by category. The way residents and visitors discover businesses in {neighborhoodName} is shaped by the neighborhood's culture, demographic makeup, and the digital habits of the people who live and spend money there.
+				</p>
+				<p>
+					That's why we don't apply a one-size-fits-all approach. Every strategy we build for a {neighborhoodName} business starts with a thorough audit of the local competitive landscape, an analysis of existing digital presence, and a clear picture of where the biggest opportunities are — before we ever recommend a single tactic.
+				</p>
+				<p>
+					Chicago is a city of neighborhoods, and the best marketing reflects that. Whether you're a restaurant, a law firm, a retail shop, or a service business, we build strategies that are specifically calibrated for {neighborhoodName} — not copied from a playbook built for a different market.
+				</p>
+			</div>
+		</div>
+	</section>
+
+	<!-- ── WHAT MAKES THIS NEIGHBORHOOD UNIQUE ── -->
+	<section class="sa-unique">
+		<div class="container">
+			<span class="eyebrow" style="color: var(--red); display: block; margin-bottom: 12px;">Market Dynamics</span>
+			<h2 class="sa-unique-heading">What Makes {neighborhoodName} Unique for Business</h2>
+			<p class="sa-unique-sub">Understanding the market is the foundation of every effective campaign we build for {neighborhoodName} businesses.</p>
+			<div class="sa-unique-grid">
+				{uniquePoints.map((point, i) => (
+					<div class="sa-unique-card">
+						<span class="sa-unique-num" aria-hidden="true">0{i + 1}</span>
+						<p class="sa-unique-text">{point}</p>
+					</div>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<!-- ── POPULAR SERVICES ── -->
+	<section class="sa-featured-svcs">
+		<div class="container">
+			<span class="eyebrow" style="color: var(--red); display: block; margin-bottom: 12px; text-align: center;">Most In-Demand</span>
+			<h2 class="sa-featured-heading">Popular Services in {neighborhoodName}</h2>
+			<p class="sa-featured-sub">The services {neighborhoodName} businesses rely on most to grow leads, traffic, and revenue.</p>
+			<div class="sa-featured-grid">
+				{featuredServices.map((svc) => (
+					<div class="sa-featured-card">
+						<h3 class="sa-featured-title">{svc.title}</h3>
+						<p class="sa-featured-desc">{svc.description}</p>
+						<a href={`/${neighborhood}/${svc.slug}/`} class="sa-featured-link">Learn more about {svc.title} in {neighborhoodName} →</a>
+					</div>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<!-- ── WHY CHOOSE US ── -->
+	<section class="sa-why">
+		<div class="container sa-why-inner">
+			<div class="sa-why-text">
+				<span class="eyebrow">Why Choose Us</span>
+				<h2>Why {neighborhoodName} Businesses Choose The Chicago Marketing Agency</h2>
+				<ul class="sa-why-list">
+					{whyPoints.map((point) => (
+						<li class="sa-why-item">
+							<span class="sa-why-check" aria-hidden="true">✓</span>
+							<span>{point}</span>
+						</li>
+					))}
+				</ul>
+				<a href="/about/" class="btn btn-primary" style="margin-top: 16px;">About Our Agency →</a>
+			</div>
+			<div class="sa-why-stats">
+				<div class="sa-stat">
+					<span class="sa-stat-value">30+</span>
+					<span class="sa-stat-label">Chicago Neighborhoods Served</span>
+				</div>
+				<div class="sa-stat">
+					<span class="sa-stat-value">7</span>
+					<span class="sa-stat-label">Full-Service Offerings</span>
+				</div>
+				<div class="sa-stat">
+					<span class="sa-stat-value">150+</span>
+					<span class="sa-stat-label">Chicago Clients</span>
+				</div>
+				<div class="sa-stat">
+					<span class="sa-stat-value">12+</span>
+					<span class="sa-stat-label">Years in Chicago</span>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- ── MAP EMBED ── -->
+	<section class="sa-map">
+		<div class="container">
+			<span class="eyebrow" style="color: var(--red); display: block; margin-bottom: 12px; text-align: center;">Our Service Area</span>
+			<h2 class="sa-map-heading">We Serve Businesses Across {neighborhoodName}</h2>
+			<p class="sa-map-sub">We work with businesses throughout {neighborhoodName} and the surrounding Chicago area — on-site visits available.</p>
+			<div class="sa-map-embed">
+				<iframe
+					src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d95151.37902963!2d-87.8!3d41.85!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2s${encodeURIComponent(neighborhoodName + " Chicago IL")}!5e0!3m2!1sen!2sus!4v1`}
+					width="100%"
+					height="420"
+					style="border:0; border-radius: var(--radius-lg);"
+					allowfullscreen=""
+					loading="lazy"
+					referrerpolicy="no-referrer-when-downgrade"
+					title={`Map of ${neighborhoodName}, Chicago`}
+				></iframe>
+			</div>
+		</div>
+	</section>
+
+	<!-- ── BLOG POSTS ── -->
+	<section class="sa-blog">
+		<div class="container">
+			<span class="eyebrow" style="color: var(--red); display: block; margin-bottom: 12px;">Marketing Resources</span>
+			<h2 class="sa-blog-heading">Marketing Tips for {neighborhoodName} Businesses</h2>
+			<p class="sa-blog-sub">Practical guides to help {neighborhoodName} business owners grow their digital presence.</p>
+			<div class="sa-blog-grid">
+				{relatedPosts.map((post) => (
+					<a href={post.href} class="sa-blog-card">
+						<h3 class="sa-blog-title">{post.title}</h3>
+						<p class="sa-blog-excerpt">{post.excerpt}</p>
+						<span class="sa-blog-link">Read the guide →</span>
+					</a>
+				))}
+			</div>
+			<div style="text-align: center; margin-top: 40px;">
+				<a href="/blog/" class="btn btn-outline">View All Marketing Resources →</a>
+			</div>
+		</div>
+	</section>
+
+	<!-- ── CTA ── -->
+	<section class="sa-cta">
+		<div class="container sa-cta-inner">
+			<h2>Ready to Grow Your {neighborhoodName} Business?</h2>
+			<p>
+				Let's talk about your goals. We'll audit your current marketing, show you exactly where the opportunities are in {neighborhoodName}, and build a strategy with no commitment required.
+			</p>
+			<div class="sa-cta-actions">
+				<a href="/free-seo-audit/" class="btn btn-primary">Start with a Free Audit →</a>
+				<a href="/results/" class="btn btn-outline-white">See Our Results</a>
+			</div>
+		</div>
+	</section>
+
+	<!-- ── NEARBY NEIGHBORHOODS ── -->
+	{nearbyNeighborhoods.length > 0 && (
+		<section class="sa-nearby">
+			<div class="container">
+				<p class="eyebrow" style="color: var(--red); display: block; margin-bottom: 8px;">Other Areas We Serve</p>
+				<h2 class="sa-nearby-heading">Neighboring Areas We Also Serve</h2>
+				<div class="sa-nearby-grid">
+					{nearbyNeighborhoods.map((n) => (
+						<a href={`/${n.slug}/`} class="sa-nearby-card">
+							<span class="sa-nearby-name">{n.name}</span>
+							<span class="sa-nearby-label">Digital Marketing</span>
+							<span class="sa-nearby-arrow" aria-hidden="true">→</span>
+						</a>
+					))}
+				</div>
+				<p class="sa-nearby-all">
+					Serving all 77 Chicago neighborhoods. <a href="/neighborhoods/">View all service areas →</a>
+				</p>
+			</div>
+		</section>
+	)}
+</Base>
+
+<style>
+/* ── HERO (split grid) ── */
+.sa-hero {
+	background: var(--navy);
+	padding: 64px 0 80px;
+	overflow: hidden;
+}
+
+.sa-hero-inner {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 64px;
+	align-items: center;
+}
+
+.sa-hero-content {
+	display: flex;
+	flex-direction: column;
+}
+
+.sa-hero-visual {
+	border-radius: var(--radius-lg);
+	overflow: hidden;
+	min-height: 460px;
+	position: relative;
+}
+
+.sa-hero-visual img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+	min-height: 460px;
+}
+
+.breadcrumb {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 0.8125rem;
+	color: rgba(255,255,255,0.45);
+	margin-bottom: 28px;
+	flex-wrap: wrap;
+}
+
+.breadcrumb a {
+	color: rgba(255,255,255,0.45);
+	transition: color var(--transition);
+}
+
+.breadcrumb a:hover { color: rgba(255,255,255,0.75); }
+.breadcrumb span:last-child { color: rgba(255,255,255,0.65); }
+
+.sa-hero h1 {
+	font-size: clamp(1.875rem, 3.5vw, 2.875rem);
+	font-weight: 900;
+	color: var(--white);
+	line-height: 1.08;
+	letter-spacing: -0.035em;
+	margin-bottom: 24px;
+}
+
+.sa-hero-desc {
+	font-size: 1.0625rem;
+	color: rgba(255,255,255,0.68);
+	line-height: 1.75;
+	margin-bottom: 36px;
+	max-width: 520px;
+}
+
+.sa-hero-actions {
+	display: flex;
+	gap: 12px;
+	flex-wrap: wrap;
+}
+
+/* ── SERVICES GRID ── */
+.sa-services {
+	padding: 80px 0;
+	background: var(--white);
+}
+
+.sa-services-heading {
+	font-size: clamp(1.5rem, 3vw, 2rem);
+	color: var(--text-dark);
+	text-align: center;
+	margin-bottom: 12px;
+	letter-spacing: -0.025em;
+}
+
+.sa-services-sub {
+	font-size: 1rem;
+	color: var(--text-muted);
+	text-align: center;
+	margin-bottom: 48px;
+}
+
+.sa-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 20px;
+}
+
+.sa-card {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	padding: 28px 24px;
+	background: var(--off-white);
+	border: 1px solid var(--border);
+	border-radius: var(--radius-lg);
+	transition: all var(--transition);
+	text-decoration: none;
+}
+
+.sa-card:hover {
+	border-color: var(--red);
+	background: var(--white);
+	transform: translateY(-2px);
+	box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+}
+
+.sa-card-icon {
+	font-size: 1.75rem;
+	line-height: 1;
+}
+
+.sa-card-title {
+	font-size: 1.0625rem;
+	font-weight: 700;
+	color: var(--text-dark);
+	line-height: 1.2;
+}
+
+.sa-card-desc {
+	font-size: 0.875rem;
+	color: var(--text-muted);
+	line-height: 1.65;
+	flex: 1;
+}
+
+.sa-card-link {
+	font-size: 0.8125rem;
+	font-weight: 600;
+	color: var(--red);
+	transition: color var(--transition);
+}
+
+.sa-card:hover .sa-card-link { color: var(--red-dark); }
+
+/* ── ABOUT THE NEIGHBORHOOD ── */
+.sa-about {
+	padding: 80px 0;
+	background: var(--off-white);
+}
+
+.sa-about-inner {
+	max-width: 820px;
+}
+
+.sa-about-text h2 {
+	font-size: clamp(1.5rem, 3vw, 2.125rem);
+	color: var(--text-dark);
+	margin-bottom: 28px;
+	letter-spacing: -0.025em;
+	line-height: 1.15;
+}
+
+.sa-about-text p {
+	font-size: 1rem;
+	color: var(--text-muted);
+	line-height: 1.8;
+	margin-bottom: 20px;
+}
+
+.sa-about-text p:last-child { margin-bottom: 0; }
+
+/* ── UNIQUE FOR BUSINESS ── */
+.sa-unique {
+	padding: 80px 0;
+	background: var(--white);
+}
+
+.sa-unique-heading {
+	font-size: clamp(1.5rem, 3vw, 2rem);
+	color: var(--text-dark);
+	margin-bottom: 12px;
+	letter-spacing: -0.025em;
+}
+
+.sa-unique-sub {
+	font-size: 1rem;
+	color: var(--text-muted);
+	margin-bottom: 48px;
+	max-width: 640px;
+}
+
+.sa-unique-grid {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 24px;
+}
+
+.sa-unique-card {
+	padding: 32px 28px;
+	background: var(--off-white);
+	border: 1px solid var(--border);
+	border-radius: var(--radius-lg);
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.sa-unique-num {
+	font-size: 2rem;
+	font-weight: 900;
+	color: var(--red);
+	opacity: 0.25;
+	line-height: 1;
+	letter-spacing: -0.04em;
+}
+
+.sa-unique-text {
+	font-size: 0.9375rem;
+	color: var(--text-muted);
+	line-height: 1.75;
+}
+
+/* ── POPULAR SERVICES ── */
+.sa-featured-svcs {
+	padding: 80px 0;
+	background: var(--navy);
+}
+
+.sa-featured-heading {
+	font-size: clamp(1.5rem, 3vw, 2rem);
+	color: var(--white);
+	text-align: center;
+	margin-bottom: 12px;
+	letter-spacing: -0.025em;
+}
+
+.sa-featured-sub {
+	font-size: 1rem;
+	color: rgba(255,255,255,0.55);
+	text-align: center;
+	margin-bottom: 48px;
+	max-width: 580px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.sa-featured-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 20px;
+}
+
+.sa-featured-card {
+	background: rgba(255,255,255,0.05);
+	border: 1px solid rgba(255,255,255,0.1);
+	border-radius: var(--radius-lg);
+	padding: 32px 28px;
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	transition: background var(--transition), border-color var(--transition);
+}
+
+.sa-featured-card:hover {
+	background: rgba(255,255,255,0.09);
+	border-color: rgba(255,255,255,0.2);
+}
+
+.sa-featured-title {
+	font-size: 1.125rem;
+	font-weight: 800;
+	color: var(--white);
+	line-height: 1.2;
+	letter-spacing: -0.02em;
+}
+
+.sa-featured-desc {
+	font-size: 0.9rem;
+	color: rgba(255,255,255,0.6);
+	line-height: 1.75;
+	flex: 1;
+}
+
+.sa-featured-link {
+	font-size: 0.8125rem;
+	font-weight: 600;
+	color: var(--red);
+	text-decoration: none;
+	transition: color var(--transition);
+}
+
+.sa-featured-link:hover { color: #ef4444; }
+
+/* ── WHY CHOOSE US ── */
+.sa-why {
+	padding: 80px 0;
+	background: var(--off-white);
+}
+
+.sa-why-inner {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 64px;
+	align-items: center;
+}
+
+.sa-why-text .eyebrow {
+	color: var(--red);
+	display: block;
+	margin-bottom: 12px;
+}
+
+.sa-why-text h2 {
+	font-size: clamp(1.5rem, 3vw, 2rem);
+	color: var(--text-dark);
+	margin-bottom: 28px;
+	line-height: 1.2;
+	letter-spacing: -0.025em;
+}
+
+.sa-why-list {
+	list-style: none;
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.sa-why-item {
+	display: flex;
+	gap: 14px;
+	align-items: flex-start;
+	font-size: 0.9375rem;
+	color: var(--text-muted);
+	line-height: 1.65;
+}
+
+.sa-why-check {
+	color: var(--red);
+	font-weight: 700;
+	font-size: 1rem;
+	flex-shrink: 0;
+	margin-top: 1px;
+}
+
+.sa-why-stats {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 2px;
+	background: var(--border);
+	border-radius: var(--radius-lg);
+	overflow: hidden;
+}
+
+.sa-stat {
+	background: var(--white);
+	padding: 32px 24px;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	align-items: center;
+}
+
+.sa-stat-value {
+	font-size: 2.25rem;
+	font-weight: 900;
+	color: var(--text-dark);
+	letter-spacing: -0.04em;
+	line-height: 1;
+}
+
+.sa-stat-label {
+	font-size: 0.8125rem;
+	color: var(--text-muted);
+	text-align: center;
+}
+
+/* ── MAP ── */
+.sa-map {
+	padding: 80px 0;
+	background: var(--white);
+}
+
+.sa-map-heading {
+	font-size: clamp(1.5rem, 3vw, 2rem);
+	color: var(--text-dark);
+	text-align: center;
+	margin-bottom: 12px;
+	letter-spacing: -0.025em;
+}
+
+.sa-map-sub {
+	font-size: 1rem;
+	color: var(--text-muted);
+	text-align: center;
+	margin-bottom: 40px;
+}
+
+.sa-map-embed {
+	border-radius: var(--radius-lg);
+	overflow: hidden;
+	border: 1px solid var(--border);
+	background: var(--off-white);
+	min-height: 420px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.sa-map-embed iframe {
+	width: 100%;
+	height: 420px;
+	display: block;
+	border: 0;
+}
+
+/* ── BLOG POSTS ── */
+.sa-blog {
+	padding: 80px 0;
+	background: var(--off-white);
+}
+
+.sa-blog-heading {
+	font-size: clamp(1.5rem, 3vw, 2rem);
+	color: var(--text-dark);
+	margin-bottom: 12px;
+	letter-spacing: -0.025em;
+}
+
+.sa-blog-sub {
+	font-size: 1rem;
+	color: var(--text-muted);
+	margin-bottom: 40px;
+	max-width: 580px;
+}
+
+.sa-blog-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 20px;
+}
+
+.sa-blog-card {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	padding: 28px 24px;
+	background: var(--white);
+	border: 1px solid var(--border);
+	border-radius: var(--radius-lg);
+	text-decoration: none;
+	transition: all var(--transition);
+}
+
+.sa-blog-card:hover {
+	border-color: var(--red);
+	transform: translateY(-2px);
+	box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+}
+
+.sa-blog-title {
+	font-size: 1rem;
+	font-weight: 700;
+	color: var(--text-dark);
+	line-height: 1.35;
+}
+
+.sa-blog-excerpt {
+	font-size: 0.875rem;
+	color: var(--text-muted);
+	line-height: 1.65;
+	flex: 1;
+}
+
+.sa-blog-link {
+	font-size: 0.8125rem;
+	font-weight: 600;
+	color: var(--red);
+}
+
+/* ── CTA ── */
+.sa-cta {
+	background: var(--navy);
+	padding: 80px 0;
+}
+
+.sa-cta-inner {
+	max-width: 640px;
+	margin: 0 auto;
+	text-align: center;
+}
+
+.sa-cta-inner h2 {
+	font-size: clamp(1.75rem, 3vw, 2.5rem);
+	color: var(--white);
+	margin-bottom: 16px;
+	letter-spacing: -0.03em;
+}
+
+.sa-cta-inner p {
+	font-size: 1rem;
+	color: rgba(255,255,255,0.6);
+	line-height: 1.75;
+	margin-bottom: 32px;
+}
+
+.sa-cta-actions {
+	display: flex;
+	gap: 12px;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+/* ── NEARBY ── */
+.sa-nearby {
+	padding: 80px 0;
+	background: var(--off-white);
+}
+
+.sa-nearby-heading {
+	font-size: clamp(1.375rem, 2.5vw, 1.75rem);
+	color: var(--text-dark);
+	margin-bottom: 32px;
+	letter-spacing: -0.02em;
+}
+
+.sa-nearby-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 16px;
+	margin-bottom: 28px;
+}
+
+.sa-nearby-card {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	padding: 20px 24px;
+	background: var(--white);
+	border: 1px solid var(--border);
+	border-radius: var(--radius-lg);
+	transition: all var(--transition);
+	position: relative;
+	text-decoration: none;
+}
+
+.sa-nearby-card:hover {
+	border-color: var(--red);
+	transform: translateY(-2px);
+	box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+}
+
+.sa-nearby-name {
+	font-size: 0.9375rem;
+	font-weight: 700;
+	color: var(--text-dark);
+	line-height: 1.2;
+}
+
+.sa-nearby-label {
+	font-size: 0.75rem;
+	color: var(--text-light);
+}
+
+.sa-nearby-arrow {
+	position: absolute;
+	top: 50%;
+	right: 20px;
+	transform: translateY(-50%);
+	font-size: 1rem;
+	color: var(--red);
+	opacity: 0;
+	transition: opacity var(--transition);
+}
+
+.sa-nearby-card:hover .sa-nearby-arrow { opacity: 1; }
+
+.sa-nearby-all {
+	font-size: 0.9375rem;
+	color: var(--text-muted);
+}
+
+.sa-nearby-all a {
+	color: var(--red);
+	text-decoration: underline;
+	text-underline-offset: 3px;
+	transition: color var(--transition);
+}
+
+.sa-nearby-all a:hover { color: var(--red-dark); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1024px) {
+	.sa-hero-inner {
+		grid-template-columns: 1fr;
+		gap: 40px;
+	}
+
+	.sa-hero-visual {
+		min-height: 320px;
+	}
+
+	.sa-hero-visual img {
+		min-height: 320px;
+	}
+
+	.sa-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	.sa-why-inner {
+		grid-template-columns: 1fr;
+		gap: 48px;
+	}
+
+	.sa-nearby-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	.sa-featured-grid {
+		grid-template-columns: 1fr;
+		gap: 16px;
+	}
+
+	.sa-unique-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.sa-blog-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+@media (max-width: 768px) {
+	.sa-hero { padding: 48px 0 64px; }
+	.sa-hero-visual { display: none; }
+	.sa-cta-actions { flex-direction: column; align-items: center; }
+	.sa-nearby-grid { grid-template-columns: 1fr 1fr; }
+	.sa-blog-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 480px) {
+	.sa-grid { grid-template-columns: 1fr; }
+	.sa-nearby-grid { grid-template-columns: 1fr; }
+	.sa-why-stats { grid-template-columns: 1fr 1fr; }
+	.sa-hero-actions { flex-direction: column; }
+	.sa-featured-grid { grid-template-columns: 1fr; }
+}
+</style>

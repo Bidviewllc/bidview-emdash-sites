@@ -1,0 +1,355 @@
+---
+import Base from "../layouts/Base.astro";
+
+export const cacheHint = 3600;
+
+const caseStudies = [
+	{
+		client: "Chicago HVAC Company",
+		industry: "Home Services",
+		service: "SEO",
+		headline: "From Page 5 to #1 — in 4 Months",
+		excerpt: "Technical SEO overhaul, local citation cleanup, and content targeting 'Chicago HVAC' keywords. Tripled monthly leads without touching the ad budget.",
+		stats: [{ value: "+312%", label: "Organic Traffic" }, { value: "#1", label: "for 7 Keywords" }, { value: "3x", label: "Monthly Leads" }],
+	},
+	{
+		client: "Lincoln Park Law Firm",
+		industry: "Legal",
+		service: "Web Design + SEO",
+		headline: "New Site Drives 240% More Leads in 60 Days",
+		excerpt: "A complete website redesign focused on conversion and speed, paired with a local SEO campaign targeting personal injury keywords across the North Side.",
+		stats: [{ value: "+240%", label: "Lead Increase" }, { value: "0.8s", label: "Load Time" }, { value: "98", label: "PageSpeed Score" }],
+	},
+	{
+		client: "Wicker Park Restaurant Group",
+		industry: "Restaurant",
+		service: "Social Media + Video",
+		headline: "40K Instagram Followers in 8 Months",
+		excerpt: "Built their brand from zero on Instagram with a consistent content strategy, professional photography, and reels that went viral in the Chicago food scene.",
+		stats: [{ value: "40K", label: "Followers" }, { value: "6.2%", label: "Engagement Rate" }, { value: "+280%", label: "Walk-in Traffic" }],
+	},
+	{
+		client: "South Loop Dental Practice",
+		industry: "Healthcare / Dental",
+		service: "Google Ads + SEO",
+		headline: "8x ROAS on Google Ads + #1 Local Rankings",
+		excerpt: "Rebuilt their Google Ads account from scratch, cutting wasted spend by 42% and targeting high-intent 'dentist near me' searches in the South Loop area.",
+		stats: [{ value: "8x", label: "ROAS" }, { value: "-42%", label: "Cost Per Lead" }, { value: "#1", label: "Local Map Pack" }],
+	},
+	{
+		client: "B2B SaaS — Loop Tech",
+		industry: "Technology",
+		service: "Content Marketing + SEO",
+		headline: "Content Strategy Drives 5x Organic Traffic in 6 Months",
+		excerpt: "Built their blog from scratch with authoritative content targeting competitor keywords. Six months later, content is their #1 lead source — surpassing paid ads.",
+		stats: [{ value: "5x", label: "Organic Traffic" }, { value: "47", label: "Keywords Page 1" }, { value: "+160%", label: "Inbound Leads" }],
+	},
+	{
+		client: "Andersonville E-commerce",
+		industry: "E-commerce",
+		service: "Paid Advertising + CRO",
+		headline: "$420K Additional Revenue From CRO Alone",
+		excerpt: "CRO audit uncovered 12 friction points in their checkout funnel. Combined with Shopping Ads optimization, conversion rate doubled in 6 weeks.",
+		stats: [{ value: "2x", label: "Conversion Rate" }, { value: "-38%", label: "Cost Per Lead" }, { value: "+$420K", label: "Annual Revenue" }],
+	},
+];
+---
+
+<Base
+	title="Client Results & Case Studies — The Chicago Marketing Agency"
+	description="Real results from real Chicago businesses. See how we've driven growth with SEO, web design, paid ads, and more."
+>
+	<!-- ── HERO ── -->
+	<section class="results-hero">
+		<div class="container">
+			<span class="eyebrow">Our Results</span>
+			<h1>Real Results for Real Chicago Businesses</h1>
+			<p>We don't sell promises. We deliver results. Here's what we've built for businesses like yours.</p>
+		</div>
+	</section>
+
+	<!-- ── STATS BAR ── -->
+	<div class="results-stats-bar">
+		<div class="container results-stats-inner">
+			<div class="results-stat">
+				<span class="rs-value">150+</span>
+				<span class="rs-label">Chicago Clients Served</span>
+			</div>
+			<div class="results-stat">
+				<span class="rs-value">$12M+</span>
+				<span class="rs-label">Revenue Generated</span>
+			</div>
+			<div class="results-stat">
+				<span class="rs-value">94%</span>
+				<span class="rs-label">Client Retention</span>
+			</div>
+			<div class="results-stat">
+				<span class="rs-value">4.8★</span>
+				<span class="rs-label">Average Google Rating</span>
+			</div>
+		</div>
+	</div>
+
+	<!-- ── CASE STUDIES ── -->
+	<section class="case-studies">
+		<div class="container">
+			<div class="cs-grid">
+				{caseStudies.map((cs) => (
+					<article class="cs-card">
+						<div class="cs-card-top">
+							<div class="cs-meta">
+								<span class="cs-industry">{cs.industry}</span>
+								<span class="cs-service">{cs.service}</span>
+							</div>
+							<p class="cs-client">{cs.client}</p>
+							<h2>{cs.headline}</h2>
+							<p class="cs-excerpt">{cs.excerpt}</p>
+						</div>
+						<div class="cs-stats">
+							{cs.stats.map((s) => (
+								<div class="cs-stat">
+									<span class="cs-stat-value">{s.value}</span>
+									<span class="cs-stat-label">{s.label}</span>
+								</div>
+							))}
+						</div>
+					</article>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<!-- ── TESTIMONIALS ── -->
+	<section class="results-testimonials">
+		<div class="container">
+			<span class="eyebrow" style="display:block; text-align:center;">What Our Clients Say</span>
+			<h2 class="testimonials-heading">150+ Chicago Businesses Trust Us</h2>
+			<div class="testimonials-grid">
+				<blockquote class="testimonial">
+					<p>"The Chicago Marketing Agency tripled our organic leads in under 6 months. They know the Chicago market better than anyone."</p>
+					<footer>
+						<strong>Michael R.</strong>
+						<span>Owner, Chicago HVAC Solutions</span>
+					</footer>
+				</blockquote>
+				<blockquote class="testimonial">
+					<p>"Our new website is faster, looks incredible, and converts at 3x our old site. Best investment we've made in years."</p>
+					<footer>
+						<strong>Jennifer K.</strong>
+						<span>Partner, Lincoln Park Law Group</span>
+					</footer>
+				</blockquote>
+				<blockquote class="testimonial">
+					<p>"They built our Instagram from zero to 40K real followers who actually come in to eat. The ROI is unbelievable."</p>
+					<footer>
+						<strong>Carlos M.</strong>
+						<span>Owner, Wicker Park Restaurant Group</span>
+					</footer>
+				</blockquote>
+			</div>
+		</div>
+	</section>
+
+	<!-- ── CTA ── -->
+	<section class="results-cta">
+		<div class="container results-cta-inner">
+			<h2>Ready to Be Our Next Success Story?</h2>
+			<p>Get a free audit and see exactly how we'd grow your specific business.</p>
+			<a href="/free-seo-audit" class="btn btn-primary">Get Your Free Audit →</a>
+		</div>
+	</section>
+</Base>
+
+<style>
+.results-hero {
+	background: var(--navy);
+	padding: 80px 0;
+}
+.results-hero h1 {
+	font-size: clamp(2rem, 4vw, 2.75rem);
+	color: var(--white);
+	margin-bottom: 16px;
+	max-width: 620px;
+}
+.results-hero p {
+	font-size: 1.0625rem;
+	color: rgba(255,255,255,0.65);
+	max-width: 480px;
+}
+
+.results-stats-bar {
+	background: #F0F2F5;
+	border-bottom: 1px solid var(--border);
+}
+.results-stats-inner {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	height: 100px;
+}
+.results-stat {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	border-right: 1px solid var(--border);
+	gap: 4px;
+}
+.results-stat:last-child { border-right: none; }
+.rs-value {
+	font-size: 1.75rem;
+	font-weight: 900;
+	color: var(--text-dark);
+	letter-spacing: -0.03em;
+}
+.rs-label {
+	font-size: 0.8125rem;
+	color: var(--text-muted);
+}
+
+.case-studies {
+	padding: 64px 0 80px;
+	background: var(--white);
+}
+.cs-grid {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 24px;
+}
+.cs-card {
+	border: 1px solid var(--border);
+	border-radius: var(--radius-lg);
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+}
+.cs-card-top {
+	padding: 28px 28px 0;
+	flex: 1;
+}
+.cs-meta {
+	display: flex;
+	gap: 8px;
+	margin-bottom: 12px;
+}
+.cs-industry, .cs-service {
+	font-size: 0.75rem;
+	font-weight: 600;
+	padding: 3px 10px;
+	border-radius: 20px;
+}
+.cs-industry {
+	background: var(--off-white);
+	color: var(--text-muted);
+	border: 1px solid var(--border);
+}
+.cs-service {
+	background: rgba(220,38,38,0.08);
+	color: var(--red);
+	border: 1px solid rgba(220,38,38,0.2);
+}
+.cs-client {
+	font-size: 0.8125rem;
+	font-weight: 600;
+	color: var(--text-muted);
+	margin-bottom: 6px;
+}
+.cs-card h2 {
+	font-size: 1.125rem;
+	color: var(--text-dark);
+	margin-bottom: 10px;
+}
+.cs-excerpt {
+	font-size: 0.9375rem;
+	color: var(--text-muted);
+	line-height: 1.6;
+	margin-bottom: 24px;
+}
+.cs-stats {
+	display: flex;
+	background: var(--navy);
+	padding: 20px 28px;
+	gap: 32px;
+}
+.cs-stat {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+.cs-stat-value {
+	font-size: 1.5rem;
+	font-weight: 900;
+	color: var(--red);
+	letter-spacing: -0.03em;
+}
+.cs-stat-label {
+	font-size: 0.75rem;
+	color: rgba(255,255,255,0.5);
+}
+
+.results-testimonials {
+	padding: 72px 0;
+	background: var(--off-white);
+}
+.testimonials-heading {
+	font-size: clamp(1.75rem, 3vw, 2.25rem);
+	text-align: center;
+	margin-bottom: 48px;
+}
+.testimonials-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 24px;
+}
+.testimonial {
+	background: var(--white);
+	border: 1px solid var(--border);
+	border-left: 3px solid var(--red);
+	border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+	padding: 28px;
+	margin: 0;
+}
+.testimonial p {
+	font-size: 1rem;
+	color: var(--text-dark);
+	line-height: 1.7;
+	margin-bottom: 20px;
+	font-style: italic;
+}
+.testimonial footer strong {
+	display: block;
+	font-size: 0.9375rem;
+	color: var(--text-dark);
+	margin-bottom: 2px;
+}
+.testimonial footer span {
+	font-size: 0.8125rem;
+	color: var(--text-muted);
+}
+
+.results-cta {
+	background: var(--navy);
+	padding: 80px 0;
+}
+.results-cta-inner {
+	text-align: center;
+	max-width: 540px;
+	margin: 0 auto;
+}
+.results-cta-inner h2 {
+	font-size: clamp(1.75rem, 3vw, 2.25rem);
+	color: var(--white);
+	margin-bottom: 12px;
+}
+.results-cta-inner p {
+	color: rgba(255,255,255,0.65);
+	margin-bottom: 28px;
+}
+
+@media (max-width: 768px) {
+	.results-stats-inner { grid-template-columns: repeat(2, 1fr); height: auto; padding: 24px 0; }
+	.results-stat { padding: 16px 0; }
+	.cs-grid { grid-template-columns: 1fr; }
+	.testimonials-grid { grid-template-columns: 1fr; }
+	.map-layout { grid-template-columns: 1fr; }
+}
+</style>

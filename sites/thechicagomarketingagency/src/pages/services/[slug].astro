@@ -1,0 +1,738 @@
+---
+import { getEmDashEntry } from "emdash";
+import Base from "../../layouts/Base.astro";
+
+export const cacheHint = 3600;
+
+const { slug } = Astro.params;
+
+const { entry } = await getEmDashEntry("services", slug as string);
+if (!entry) return Astro.redirect("/404");
+
+const d = entry.data as Record<string, any>;
+
+// Parse JSON fields from CMS (may be string or already parsed)
+const parseJson = (val: any) => {
+	if (!val) return [];
+	if (Array.isArray(val)) return val;
+	try { return JSON.parse(val); } catch { return []; }
+};
+const features = parseJson(d.features_json);
+const processSteps = parseJson(d.process_json);
+const faqs = parseJson(d.faqs_json);
+const caseStudyStats = parseJson(d.case_study_stats_json);
+
+const heroHeading = d.hero_heading || d.title;
+const heroSubtext = d.intro || d.excerpt || "";
+const heroImage = d.hero_image || "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80";
+const pageTitle = d.meta_title || `${d.title} in Chicago`;
+const pageDesc = d.meta_description || d.excerpt || "";
+const ctaHeading = d.cta_heading || `Ready to Grow with ${d.title}?`;
+
+// Neighborhood hub links — establishes hub-and-spoke structure for local SEO
+const neighborhoodLinks = [
+	{ name: "River North", slug: "river-north" },
+	{ name: "West Loop", slug: "west-loop" },
+	{ name: "West Town", slug: "west-town" },
+	{ name: "Wicker Park", slug: "wicker-park" },
+	{ name: "Logan Square", slug: "logan-square" },
+	{ name: "Lakeview", slug: "lakeview" },
+	{ name: "Lincoln Park", slug: "lincoln-park" },
+	{ name: "Bridgeport", slug: "bridgeport" },
+	{ name: "Bronzeville", slug: "bronzeville" },
+	{ name: "Rogers Park", slug: "rogers-park" },
+	{ name: "Andersonville", slug: "andersonville" },
+	{ name: "Bucktown", slug: "bucktown" },
+	{ name: "Ravenswood", slug: "ravenswood" },
+	{ name: "Hyde Park", slug: "hyde-park" },
+	{ name: "Pilsen", slug: "pilsen" },
+];
+const ctaSubtext = d.cta_subtext || "Let's talk about your goals and build a strategy that delivers results.";
+
+// ── Per-service config (features, case study, stats) ─────────────────────────
+// SVG paths for Feather-style icons (24×24 viewport, stroke, no fill)
+const icons = {
+	settings: `<path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>`,
+	"map-pin": `<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>`,
+	"file-text": `<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>`,
+	link: `<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>`,
+	"pen-tool": `<path d="m12 19 7-7 3 3-7 7-3-3z"/><path d="m18 13-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><circle cx="11" cy="11" r="2"/>`,
+	smartphone: `<rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/>`,
+	zap: `<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>`,
+	search: `<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>`,
+	video: `<polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>`,
+	"play-circle": `<circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/>`,
+	mic: `<path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/>`,
+	film: `<rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="17" x2="22" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/>`,
+	"bar-chart": `<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>`,
+	mail: `<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>`,
+	edit: `<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>`,
+	calendar: `<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>`,
+	camera: `<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>`,
+	"message-circle": `<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>`,
+	"trending-up": `<polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/>`,
+	"bar-chart-2": `<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>`,
+	shuffle: `<polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/>`,
+	layers: `<polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/>`,
+	filter: `<polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>`,
+};
+
+---
+<Base title={pageTitle} description={pageDesc}>
+	<script type="application/ld+json" set:html={JSON.stringify({
+		"@context": "https://schema.org",
+		"@type": "Service",
+		"name": d.title,
+		"description": d.intro || d.excerpt || "",
+		"image": d.hero_image || "",
+		"provider": {
+			"@type": "MarketingAgency",
+			"name": "The Chicago Marketing Agency",
+			"url": "https://thechicagomarketingagency.com"
+		},
+		"areaServed": {
+			"@type": "City",
+			"name": "Chicago"
+		},
+		"url": `https://thechicagomarketingagency.com/services/${slug}`
+	})} />
+	{faqs.length > 0 && (
+		<script type="application/ld+json" set:html={JSON.stringify({
+			"@context": "https://schema.org",
+			"@type": "FAQPage",
+			"mainEntity": faqs.map((faq: any) => ({
+				"@type": "Question",
+				"name": faq.q,
+				"acceptedAnswer": {
+					"@type": "Answer",
+					"text": faq.a
+				}
+			}))
+		})} />
+	)}
+	<script type="application/ld+json" set:html={JSON.stringify({
+		"@context": "https://schema.org",
+		"@type": "BreadcrumbList",
+		"itemListElement": [
+			{
+				"@type": "ListItem",
+				"position": 1,
+				"name": "Home",
+				"item": "https://thechicagomarketingagency.com/"
+			},
+			{
+				"@type": "ListItem",
+				"position": 2,
+				"name": "Services",
+				"item": "https://thechicagomarketingagency.com/services/"
+			},
+			{
+				"@type": "ListItem",
+				"position": 3,
+				"name": d.title,
+				"item": `https://thechicagomarketingagency.com/services/${slug}`
+			}
+		]
+	})} />
+	<!-- ── HERO ── -->
+	<section class="svc-hero">
+		<div class="container svc-hero-inner">
+			<div class="svc-hero-text">
+				<nav class="breadcrumb" aria-label="Breadcrumb">
+					<a href="/">Home</a>
+					<span>/</span>
+					<a href="/services">Services</a>
+					<span>/</span>
+					<span>{d.title}</span>
+				</nav>
+				<span class="eyebrow">{d.title}</span>
+				<h1>{heroHeading}</h1>
+				{heroSubtext && <p class="svc-hero-desc">{heroSubtext}</p>}
+				<div class="svc-hero-actions">
+					<a href="/free-seo-audit" class="btn btn-primary">Get a Free SEO Audit →</a>
+					<a href="/results" class="btn btn-outline-white">See SEO Results</a>
+				</div>
+			</div>
+			<div class="svc-hero-img">
+				<img src={heroImage} alt={`${d.title} services`} width="580" height="420" loading="eager" />
+			</div>
+		</div>
+	</section>
+
+	<!-- ── FEATURES ── -->
+	<section class="svc-features">
+		<div class="container">
+			<p class="eyebrow" style="color: var(--red); display: block; text-align: center;">What's Included</p>
+			<h2 class="svc-features-heading">What's Included</h2>
+			<div class="svc-features-grid">
+				{features.map((f: any, i: number) => (
+					<div class="svc-feature-card">
+						<div class={`svc-feature-icon ${i % 2 === 0 ? "icon-red" : "icon-navy"}`}>
+							<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" set:html={icons[f.icon]} />
+						</div>
+						<h3>{f.title}</h3>
+						<p>{f.desc}</p>
+					</div>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<!-- ── PROCESS ── -->
+	{processSteps.length > 0 && (
+		<section class="svc-process">
+			<div class="container">
+				<p class="eyebrow" style="color: var(--red); display: block; text-align: center;">How It Works</p>
+				<h2 class="svc-process-heading">Our Proven Process</h2>
+				<div class="svc-process-list">
+					{processSteps.map((step: any) => (
+						<div class="svc-process-step">
+							<div class="svc-step-num">{step.step}</div>
+							<div class="svc-step-body">
+								<h3>{step.title}</h3>
+								<p>{step.body}</p>
+							</div>
+						</div>
+					))}
+				</div>
+			</div>
+		</section>
+	)}
+
+	<!-- ── CASE STUDY / RESULTS ── -->
+	{d.case_study_headline && (
+		<section class="svc-result">
+			<div class="container svc-result-inner">
+				<div class="svc-result-text">
+					<span class="eyebrow" style="color: var(--red);">{d.case_study_label || "Real Result"}</span>
+					<h2>{d.case_study_headline}</h2>
+					<p>{d.case_study_body}</p>
+				</div>
+				<div class="svc-result-stats">
+					{caseStudyStats.map((s: any) => (
+						<div class="svc-stat">
+							<span class="svc-stat-value">{s.value}</span>
+							<span class="svc-stat-label">{s.label}</span>
+						</div>
+					))}
+				</div>
+			</div>
+		</section>
+	)}
+
+	<!-- ── FAQ ── -->
+	{faqs.length > 0 && (
+		<section class="svc-faq">
+			<div class="container svc-faq-inner">
+				<div class="svc-faq-header">
+					<p class="eyebrow" style="color: var(--red);">Common Questions</p>
+					<h2>Frequently Asked Questions</h2>
+					<p class="svc-faq-sub">Can't find what you're looking for? <a href="/contact">Talk to our team.</a></p>
+				</div>
+				<div class="svc-faq-list">
+					{faqs.map((faq: any) => (
+						<details class="svc-faq-item">
+							<summary class="svc-faq-q">{faq.q}</summary>
+							<div class="svc-faq-a"><p>{faq.a}</p></div>
+						</details>
+					))}
+				</div>
+			</div>
+		</section>
+	)}
+
+	<!-- ── NEIGHBORHOOD HUB LINKS ── -->
+	<section class="svc-neighborhoods">
+		<div class="container">
+			<p class="eyebrow" style="color: var(--red); display: block; text-align: center;">Chicago Neighborhoods We Serve</p>
+			<h2 class="svc-neighborhoods-heading">{d.title} Across Chicago</h2>
+			<p class="svc-neighborhoods-sub">We deliver {d.title.toLowerCase()} strategies built around your specific Chicago neighborhood — its competition, its customers, and its growth potential.</p>
+			<div class="svc-neighborhoods-grid">
+				{neighborhoodLinks.map(n => (
+					<a href={`/${n.slug}/${slug}/`} class="svc-neighborhood-link">
+						{n.name}
+					</a>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<!-- ── INLINE CTA STRIP ── -->
+	<section class="svc-cta-strip">
+		<div class="container svc-cta-strip-inner">
+			<p class="svc-cta-strip-text">Chicago businesses trust us to grow their revenue online.</p>
+			<a href="/free-seo-audit" class="btn btn-primary">Get My Free Strategy Call →</a>
+		</div>
+	</section>
+
+	<!-- ── CTA ── -->
+	<section class="svc-cta">
+		<div class="container svc-cta-inner">
+			<h2>{ctaHeading}</h2>
+			<p>{ctaSubtext}</p>
+			<div class="svc-cta-actions">
+				<a href="/free-seo-audit" class="btn btn-primary">Get My Free SEO Audit →</a>
+				<a href="/results" class="btn btn-outline-white">View Case Studies</a>
+			</div>
+		</div>
+	</section>
+</Base>
+
+<style>
+/* ── HERO ── */
+.svc-hero {
+	background: var(--navy);
+	padding: 64px 0 72px;
+}
+
+.svc-hero-inner {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 48px;
+	align-items: center;
+}
+
+.breadcrumb {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 0.8125rem;
+	color: rgba(255,255,255,0.5);
+	margin-bottom: 24px;
+}
+
+.breadcrumb a {
+	color: rgba(255,255,255,0.5);
+	transition: color var(--transition);
+}
+
+.breadcrumb a:hover { color: rgba(255,255,255,0.8); }
+.breadcrumb span:last-child { color: rgba(255,255,255,0.7); }
+
+.svc-hero-text h1 {
+	font-size: clamp(2rem, 4vw, 3rem);
+	font-weight: 900;
+	color: var(--white);
+	line-height: 1.1;
+	letter-spacing: -0.03em;
+	margin-bottom: 20px;
+}
+
+.svc-hero-desc {
+	font-size: 1.0625rem;
+	color: rgba(255,255,255,0.7);
+	line-height: 1.7;
+	margin-bottom: 32px;
+	max-width: 480px;
+}
+
+.svc-hero-actions {
+	display: flex;
+	gap: 12px;
+	flex-wrap: wrap;
+}
+
+.svc-hero-img {
+	display: flex;
+	align-items: flex-end;
+	justify-content: center;
+}
+
+.svc-hero-img img {
+	width: 100%;
+	max-width: 500px;
+	height: 380px;
+	object-fit: cover;
+	border-radius: var(--radius-lg);
+}
+
+/* ── FEATURES ── */
+.svc-features {
+	padding: 80px 0;
+	background: var(--white);
+}
+
+.svc-features-heading {
+	font-size: clamp(1.75rem, 3vw, 2.25rem);
+	text-align: center;
+	color: var(--text-dark);
+	margin-bottom: 48px;
+}
+
+.svc-features-grid {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 24px;
+}
+
+.svc-feature-card {
+	padding: 32px 28px;
+	background: #F8FAFC;
+	border-radius: 12px;
+}
+
+.svc-feature-icon {
+	margin-bottom: 20px;
+	width: 52px;
+	height: 52px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 12px;
+	flex-shrink: 0;
+}
+
+.svc-feature-icon.icon-red { background: #E63946; }
+.svc-feature-icon.icon-navy { background: #0D1B2A; }
+
+.svc-feature-card h3 {
+	font-size: 1rem;
+	font-weight: 700;
+	color: var(--text-dark);
+	margin-bottom: 10px;
+	letter-spacing: -0.01em;
+}
+
+.svc-feature-card p {
+	font-size: 0.875rem;
+	color: var(--text-muted);
+	line-height: 1.6;
+}
+
+/* ── CASE STUDY ── */
+.svc-result {
+	background: var(--navy);
+	padding: 64px 0;
+}
+
+.svc-result-inner {
+	display: grid;
+	grid-template-columns: 1fr auto;
+	gap: 64px;
+	align-items: center;
+}
+
+.svc-result-text h2 {
+	font-size: clamp(1.5rem, 3vw, 2rem);
+	color: var(--white);
+	margin-bottom: 16px;
+	max-width: 480px;
+}
+
+.svc-result-text p {
+	font-size: 0.9375rem;
+	color: rgba(255,255,255,0.65);
+	line-height: 1.7;
+	max-width: 480px;
+}
+
+.svc-result-stats {
+	display: flex;
+	gap: 32px;
+	flex-shrink: 0;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.svc-stat {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 6px;
+}
+
+.svc-stat-value {
+	font-size: 2.25rem;
+	font-weight: 900;
+	color: var(--red);
+	letter-spacing: -0.04em;
+	line-height: 1;
+}
+
+.svc-stat-label {
+	font-size: 0.75rem;
+	color: rgba(255,255,255,0.55);
+	text-align: center;
+}
+
+/* ── CTA ── */
+.svc-cta {
+	background: var(--navy);
+	border-top: 1px solid rgba(255,255,255,0.08);
+	padding: 80px 0;
+}
+
+.svc-cta-inner {
+	text-align: center;
+	max-width: 600px;
+	margin: 0 auto;
+}
+
+.svc-cta-inner h2 {
+	font-size: clamp(1.75rem, 3vw, 2.5rem);
+	color: var(--white);
+	margin-bottom: 16px;
+}
+
+.svc-cta-inner p {
+	font-size: 1rem;
+	color: rgba(255,255,255,0.65);
+	margin-bottom: 32px;
+	line-height: 1.7;
+}
+
+.svc-cta-actions {
+	display: flex;
+	gap: 12px;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+/* ── PROCESS ── */
+.svc-process {
+	padding: 80px 0;
+	background: var(--off-white);
+}
+
+.svc-process-heading {
+	font-size: clamp(1.75rem, 3vw, 2.25rem);
+	text-align: center;
+	color: var(--text-dark);
+	margin-bottom: 56px;
+}
+
+.svc-process-list {
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+	max-width: 800px;
+	margin: 0 auto;
+}
+
+.svc-process-step {
+	display: flex;
+	gap: 32px;
+	align-items: flex-start;
+	padding: 32px 0;
+	border-bottom: 1px solid var(--border);
+}
+
+.svc-process-step:last-child {
+	border-bottom: none;
+}
+
+.svc-step-num {
+	font-size: 2rem;
+	font-weight: 900;
+	color: var(--red);
+	letter-spacing: -0.04em;
+	line-height: 1;
+	min-width: 48px;
+	flex-shrink: 0;
+	padding-top: 2px;
+}
+
+.svc-step-body h3 {
+	font-size: 1.0625rem;
+	font-weight: 700;
+	color: var(--text-dark);
+	margin-bottom: 10px;
+}
+
+.svc-step-body p {
+	font-size: 0.9375rem;
+	color: var(--text-muted);
+	line-height: 1.7;
+}
+
+/* ── FAQ ── */
+.svc-faq {
+	padding: 80px 0;
+	background: var(--white);
+}
+
+.svc-faq-inner {
+	display: grid;
+	grid-template-columns: 300px 1fr;
+	gap: 80px;
+	align-items: start;
+}
+
+.svc-faq-header h2 {
+	font-size: clamp(1.5rem, 3vw, 2rem);
+	color: var(--text-dark);
+	margin-bottom: 12px;
+	line-height: 1.2;
+}
+
+.svc-faq-sub {
+	font-size: 0.9375rem;
+	color: var(--text-muted);
+	line-height: 1.6;
+}
+
+.svc-faq-sub a {
+	color: var(--red);
+	text-decoration: underline;
+}
+
+.svc-faq-item {
+	border-bottom: 1px solid var(--border);
+	padding: 0;
+}
+
+.svc-faq-item:first-child {
+	border-top: 1px solid var(--border);
+}
+
+.svc-faq-q {
+	font-size: 1rem;
+	font-weight: 600;
+	color: var(--text-dark);
+	padding: 20px 0;
+	cursor: pointer;
+	list-style: none;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 16px;
+}
+
+.svc-faq-q::-webkit-details-marker { display: none; }
+
+.svc-faq-q::after {
+	content: "+";
+	font-size: 1.25rem;
+	font-weight: 400;
+	color: var(--red);
+	flex-shrink: 0;
+	transition: transform 200ms ease;
+}
+
+details[open] .svc-faq-q::after {
+	transform: rotate(45deg);
+}
+
+.svc-faq-a {
+	padding: 0 0 20px;
+}
+
+.svc-faq-a p {
+	font-size: 0.9375rem;
+	color: var(--text-muted);
+	line-height: 1.7;
+}
+
+/* ── NEIGHBORHOOD HUB ── */
+.svc-neighborhoods {
+	padding: 72px 0;
+	background: var(--off-white);
+}
+.svc-neighborhoods-heading {
+	font-size: clamp(22px, 3vw, 30px);
+	font-weight: 700;
+	color: var(--navy);
+	text-align: center;
+	margin: 8px 0 12px;
+}
+.svc-neighborhoods-sub {
+	text-align: center;
+	color: var(--text-muted);
+	max-width: 560px;
+	margin: 0 auto 36px;
+	line-height: 1.6;
+}
+.svc-neighborhoods-grid {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	justify-content: center;
+}
+.svc-neighborhood-link {
+	display: inline-block;
+	padding: 8px 18px;
+	border: 1.5px solid var(--border);
+	border-radius: 100px;
+	font-size: 14px;
+	font-weight: 500;
+	color: var(--navy);
+	text-decoration: none;
+	transition: border-color var(--transition), color var(--transition), background var(--transition);
+}
+.svc-neighborhood-link:hover {
+	border-color: var(--red);
+	color: var(--red);
+	background: #fff5f5;
+}
+
+/* ── CTA STRIP ── */
+.svc-cta-strip {
+	background: var(--red);
+	padding: 24px 0;
+}
+
+.svc-cta-strip-inner {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 24px;
+	flex-wrap: wrap;
+}
+
+.svc-cta-strip-text {
+	font-size: 1rem;
+	font-weight: 600;
+	color: rgba(255,255,255,0.9);
+}
+
+.svc-cta-strip .btn-primary {
+	background: var(--white);
+	color: var(--red);
+	border-color: var(--white);
+	white-space: nowrap;
+	flex-shrink: 0;
+}
+
+.svc-cta-strip .btn-primary:hover {
+	background: var(--off-white);
+	border-color: var(--off-white);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1024px) {
+	.svc-features-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (max-width: 768px) {
+	.svc-hero-inner {
+		grid-template-columns: 1fr;
+	}
+	.svc-hero-img { display: none; }
+
+	.svc-features-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.svc-result-inner {
+		grid-template-columns: 1fr;
+		gap: 40px;
+	}
+	.svc-result-stats { justify-content: center; gap: 32px; }
+
+	.svc-faq-inner {
+		grid-template-columns: 1fr;
+		gap: 40px;
+	}
+
+	.svc-cta-strip-inner { flex-direction: column; text-align: center; }
+
+	.svc-cta-actions { flex-direction: column; align-items: center; }
+}
+
+@media (max-width: 480px) {
+	.svc-process-step { gap: 20px; }
+	.svc-step-num { font-size: 1.5rem; min-width: 36px; }
+}
+</style>
