@@ -2,7 +2,7 @@ import handler from "@astrojs/cloudflare/entrypoints/server";
 export { PluginBridge } from "@emdash-cms/cloudflare/sandbox";
 
 // Bump this version string on each deploy to bust the Workers Cache
-const CACHE_VERSION = "v83";
+const CACHE_VERSION = "v84";
 const SKIP_CACHE_PATHS = ["/_emdash", "/contact", "/api"];
 
 // Cookies that indicate a CMS editor session — must bypass the edge cache so the
