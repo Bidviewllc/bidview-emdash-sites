@@ -1,0 +1,172 @@
+---
+export const prerender = false;
+
+import { env } from 'cloudflare:workers';
+
+const { slug } = Astro.params;
+const db = (env as any).DB;
+
+if (!db) return new Response('DB not available', { status: 503 });
+
+// Try native ec_posts first (blog posts migrated from ec_content_pages)
+const nativeRow: any = await db
+  .prepare(`SELECT p.id, p.slug, p.title, p.content, p.featured_image, p.published_at, p.status,
+                   s.seo_title, s.seo_description, s.seo_image
+            FROM ec_posts p
+            LEFT JOIN _emdash_seo s ON s.collection = 'posts' AND s.content_id = p.id
+            WHERE p.slug = ? AND p.status = ?`)
+  .bind(slug, 'published')
+  .first();
+
+// Fall back to ec_content_pages for brand/service pages
+const row: any = nativeRow ?? await db
+  .prepare('SELECT * FROM ec_content_pages WHERE slug = ? AND status = ?')
+  .bind(slug, 'published')
+  .first();
+
+if (!row) return new Response(null, { status: 404 });
+
+// Load blog-post shell (bundled at build time)
+const shells = import.meta.glob('/src/shells/content/*.html', { query: '?raw', import: 'default' });
+const shellLoader = shells['/src/shells/content/blog-post.html'];
+if (!shellLoader) return new Response('Shell not found', { status: 500 });
+let html = String(await shellLoader());
+
+// D1 stores values already HTML-encoded (e.g. & → &amp;). Use raw for HTML context.
+// For JSON context, decode HTML entities to raw text.
+function unesc(s: string): string {
+  return (s || '')
+    .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"').replace(/&#038;/g, '&').replace(/&#39;/g, "'");
+}
+function esc(s: string): string {
+  // Only use on values that are NOT already HTML-encoded (e.g. image paths, canonical)
+  return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// Normalise fields — native ec_posts uses different column names
+const isNative = !!nativeRow;
+const metaTitle = (isNative ? row.seo_title : row.meta_title) || '';
+const metaDesc  = (isNative ? row.seo_description : row.meta_description) || '';
+const rawContent = row.content || '';
+const ogImage   = (isNative ? row.seo_image : row.featured_image_src) || '';
+
+// featured_image in ec_posts is stored as JSON {src, alt}
+let ogImageAlt = '';
+if (isNative) {
+  try {
+    const fi = typeof row.featured_image === 'string' ? JSON.parse(row.featured_image) : row.featured_image;
+    ogImageAlt = unesc(fi?.alt || '');
+  } catch { ogImageAlt = ''; }
+} else {
+  ogImageAlt = unesc(row.featured_image_alt || '');
+}
+ogImageAlt = ogImageAlt || unesc(metaTitle).replace(/\s*[|\-–—]\s*Audiology\s*&\s*Hearing\s*Centers?.*$/i, '').trim();
+
+// Derive post title from meta_title (strip " | Audiology & Hearing Center" suffix)
+const postTitle = unesc(metaTitle)
+  .replace(/\s*[|\-–—]\s*Audiology\s*&\s*Hearing\s*Centers?.*$/i, '').trim() || unesc(metaTitle);
+
+// Format published date: "2025-04-19T00:00:00.000Z" → "April 19, 2025"
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+let postDate = '';
+try {
+  const d = new Date(row.published_at || '');
+  if (!isNaN(d.getTime())) {
+    postDate = `${MONTHS[d.getUTCMonth()]} ${d.getUTCDate()}, ${d.getUTCFullYear()}`;
+  }
+} catch {}
+
+const canonical = `/${slug}/`;
+const postId    = row.id || slug;
+
+// Build featured image HTML
+const featuredImageHtml = ogImage
+  ? `<img alt="${esc(ogImageAlt)}" class="attachment-full size-full wp-image-auto" loading="lazy" src="${ogImage}" style="max-width:100%;height:auto;"/>`
+  : '';
+
+// Build schema JSON for blog post
+const schema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "/#organization",
+      "name": "Audiology & Hearing Centers",
+      "url": "https://audiologyandhearingcenters.com",
+      "logo": {
+        "@type": "ImageObject",
+        "@id": "/#logo",
+        "url": "/assets/images/2025/01/audioogy-hearing-logow-white.png",
+        "contentUrl": "/assets/images/2025/01/audioogy-hearing-logow-white.png",
+        "caption": "Audiology & Hearing Centers"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "/#website",
+      "url": "/",
+      "name": "Audiology & Hearing Centers",
+      "publisher": { "@id": "/#organization" },
+      "inLanguage": "en-US"
+    },
+    ...(ogImage ? [{
+      "@type": "ImageObject",
+      "@id": ogImage,
+      "url": ogImage,
+      "caption": ogImageAlt,
+      "inLanguage": "en-US"
+    }] : []),
+    {
+      "@type": "BreadcrumbList",
+      "@id": `${canonical}#breadcrumb`,
+      "itemListElement": [
+        { "@type": "ListItem", "position": "1", "item": { "@id": "/", "name": "Home" } },
+        { "@type": "ListItem", "position": "2", "item": { "@id": canonical, "name": unesc(metaTitle) } }
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": `${canonical}#webpage`,
+      "url": canonical,
+      "name": unesc(metaTitle),
+      "inLanguage": "en-US",
+      "isPartOf": { "@id": "/#website" },
+      "breadcrumb": { "@id": `${canonical}#breadcrumb` },
+      ...(ogImage ? { "primaryImageOfPage": { "@id": ogImage } } : {}),
+      ...(row.published_at ? { "datePublished": row.published_at } : {})
+    },
+    {
+      "@type": "BlogPosting",
+      "@id": `${canonical}#richSnippet`,
+      "headline": unesc(metaTitle),
+      "description": unesc(metaDesc),
+      "author": { "@id": "/#organization", "name": "Audiology & Hearing Centers" },
+      "publisher": { "@id": "/#organization" },
+      "isPartOf": { "@id": `${canonical}#webpage` },
+      "inLanguage": "en-US",
+      ...(ogImage ? { "image": { "@id": ogImage } } : {}),
+      ...(row.published_at ? { "datePublished": row.published_at } : {})
+    }
+  ]
+});
+
+// Replace all placeholders
+html = html
+  .replace(/\{\{META_TITLE\}\}/g,          metaTitle)
+  .replace(/\{\{META_DESCRIPTION\}\}/g,    metaDesc)
+  .replace(/\{\{CANONICAL\}\}/g,           canonical)
+  .replace(/\{\{OG_IMAGE\}\}/g,            ogImage)
+  .replace(/\{\{OG_IMAGE_ALT\}\}/g,        esc(ogImageAlt))
+  .replace(/\{\{SCHEMA_JSON\}\}/g,         schema)
+  .replace(/\{\{POST_ID\}\}/g,             String(postId))
+  .replace(/\{\{POST_TITLE\}\}/g,          esc(postTitle))
+  .replace(/\{\{POST_TITLE_ENC\}\}/g,      encodeURIComponent(postTitle))
+  .replace(/\{\{POST_DATE\}\}/g,           postDate)
+  .replace(/\{\{FEATURED_IMAGE_HTML\}\}/g, featuredImageHtml)
+  .replace(/\{\{CONTENT\}\}/g,             rawContent);
+
+return new Response(html, {
+  headers: { 'content-type': 'text/html; charset=utf-8' }
+});
+---

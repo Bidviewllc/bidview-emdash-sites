@@ -1,0 +1,17 @@
+---
+import headHtml from '../components/head.html?raw';
+import bodyHtml from '../components/body.html?raw';
+
+export const cacheHint = 3600;
+---
+<!doctype html>
+<html lang="en-US" prefix="og: https://ogp.me/ns#">
+	<head>
+		<Fragment set:html={headHtml} />
+	</head>
+	<body class="home wp-singular page-template page-template-elementor_header_footer page page-id-11 wp-custom-logo wp-embed-responsive wp-theme-hello-elementor hello-em-default em-default em-template-full-width em-kit-21 em-page em-page-11">
+		<Fragment set:html={bodyHtml} />
+		<!-- Elfsight reviews platform: mounts the .elfsight-app-* widget in the Testimonials section -->
+		<script is:inline src="https://static.elfsight.com/platform/platform.js" async></script>
+	</body>
+</html>

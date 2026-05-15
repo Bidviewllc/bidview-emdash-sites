@@ -1,0 +1,46 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "audiologyandhearingcenters",
+	"account_id": "239e9d015c7a3a39cdc2e9400312f553", // Cameron
+	"main": "./src/worker.ts",
+	"compatibility_date": "2026-03-29",
+	"compatibility_flags": ["nodejs_compat"],
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "audiologyandhearingcenters-db",
+			"database_id": "bdc73495-8eba-4fe6-b0a2-a06b4227c3b3"
+		}
+	],
+	"r2_buckets": [
+		{
+			"binding": "MEDIA",
+			"bucket_name": "audiologyandhearingcenters-media"
+		}
+	],
+	"kv_namespaces": [
+		{
+			"binding": "SESSION",
+			"id": "85184cbbac694acaa3d9ae8842d52487"
+		}
+	],
+	"observability": { "enabled": true },
+	"placement": { "mode": "smart" },
+	"worker_loaders": [{ "binding": "LOADER" }],
+	"workers_dev": true,
+
+	// Contact form → emails leads@proheargroup.com via Cloudflare Email Workers.
+	// The destination address must be verified in Cloudflare Email Routing
+	// before sends succeed (see src/pages/api/contact.ts).
+	"send_email": [
+		{ "name": "SEND_EMAIL", "destination_address": "leads@proheargroup.com" }
+	],
+
+	// ─── PRODUCTION DOMAIN (cut over 2026-05-15) ───
+	// Zone audiologyandhearingcenters.com active in Cameron's CF account.
+	// These custom domains route the apex + www to this Worker.
+	"routes": [
+		{ "pattern": "audiologyandhearingcenters.com", "custom_domain": true },
+		{ "pattern": "www.audiologyandhearingcenters.com", "custom_domain": true }
+	]
+}

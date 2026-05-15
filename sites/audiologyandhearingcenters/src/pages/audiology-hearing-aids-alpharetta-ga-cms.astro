@@ -1,0 +1,114 @@
+---
+export const prerender = false;
+
+import { env } from "cloudflare:workers";
+
+const db = (env as any).DB;
+if (!db) return new Response("DB not available", { status: 503 });
+
+const row: any = await db
+	.prepare("SELECT * FROM ec_locations WHERE slug = ? AND status = ?")
+	.bind("audiology-hearing-aids-alpharetta-ga", "published")
+	.first();
+
+if (!row) return new Response("Alpharetta location not found in D1", { status: 404 });
+
+// Load the shell template (bundled at build time)
+const shells = import.meta.glob("/src/shells/locations/*.html", { query: "?raw", import: "default" });
+const shellLoader = shells["/src/shells/locations/alpharetta.html"];
+if (!shellLoader) return new Response("Shell not found", { status: 500 });
+let html = String(await shellLoader());
+
+// HTML-attribute-safe escape
+function escAttr(s: string): string {
+	return (s || "")
+		.replace(/&/g, "&amp;")
+		.replace(/</g, "&lt;")
+		.replace(/>/g, "&gt;")
+		.replace(/"/g, "&quot;");
+}
+
+// Build a data-emdash-ref annotation JSON for the locations collection + this entry + a field
+function refAttr(field: string): string {
+	// Use the entry slug (matches what getEmDashCollection/createEditable produce).
+	// The /_emdash/api/content/{collection}/{id} endpoint accepts the slug here.
+	const annotation = { collection: "locations", id: row.slug, field };
+	return `data-emdash-ref='${JSON.stringify(annotation).replace(/'/g, "&#39;")}'`;
+}
+
+const metaTitle    = row.meta_title       || "Alpharetta, GA - Audiology & Hearing Center";
+const metaDesc     = row.meta_description || "";
+const phoneDisplay = row.phone            || "";
+const phoneHref    = row.phone_href       || phoneDisplay.replace(/[^0-9]/g, "");
+const address      = row.address_line1    || "";
+const hours        = row.hours            || "";
+const canonical    = "https://audiologyandhearingcenters.com/audiology-hearing-aids-alpharetta-ga/";
+
+// Replace simple placeholders (no inline-edit binding)
+html = html
+	.replace(/\{\{META_TITLE\}\}/g,       escAttr(metaTitle))
+	.replace(/\{\{META_DESCRIPTION\}\}/g, escAttr(metaDesc))
+	.replace(/\{\{CANONICAL\}\}/g,        canonical)
+	.replace(/\{\{PHONE_HREF\}\}/g,       phoneHref);
+
+// Inline-editable spans: wrap each value in a span with the data-emdash-ref attribute.
+// For elements inside <p> wrappers, the surrounding <p> can stay untouched —
+// the span becomes the contenteditable target on click.
+const phoneSpan   = `<span ${refAttr("phone")}>${escAttr(phoneDisplay)}</span>`;
+const addressSpan = `<span ${refAttr("address_line1")}>${escAttr(address)}</span>`;
+const hoursSpan   = `<span ${refAttr("hours")}>${escAttr(hours)}</span>`;
+
+// SEO fields are inside <meta> tags (attribute context) — can't host data-emdash-ref directly.
+// Add a small invisible-but-targetable element near the top of <body> so editors can click it
+// to update SEO. (Workaround: emdash inline-edit needs an element with the ref attr.)
+const seoTitleSpan = `<span ${refAttr("meta_title")}        data-emdash-seo-tag="title">${escAttr(metaTitle)}</span>`;
+const seoDescSpan  = `<span ${refAttr("meta_description")} data-emdash-seo-tag="description">${escAttr(metaDesc)}</span>`;
+
+html = html
+	.replace("{{PHONE_SPAN}}",   phoneSpan)
+	.replace("{{ADDRESS_SPAN}}", addressSpan)
+	.replace("{{HOURS_SPAN}}",   hoursSpan);
+
+// Inject a small floating SEO editor bar near the top of <body>.
+// Only visible when emdash-edit-mode cookie is set (controlled by inline CSS).
+const seoBar = `
+<style>
+  body:not([data-emdash-edit]) .emdash-seo-bar { display: none; }
+  /* Show whenever the page has been hydrated with the edit-mode cookie. We use a tiny
+     inline script below to set data-emdash-edit on <body> if the cookie is true. */
+  .emdash-seo-bar {
+    position: fixed; top: 12px; right: 12px; z-index: 99998;
+    background: #212A33; color: #fff; border-radius: 10px;
+    padding: 10px 14px; font: 12px/1.45 system-ui, sans-serif;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.25); max-width: 340px;
+  }
+  .emdash-seo-bar h4 { margin: 0 0 6px; color: #E6B000; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; }
+  .emdash-seo-bar .lbl { color: rgba(255,255,255,0.55); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 6px; }
+  .emdash-seo-bar span[data-emdash-ref] {
+    display: block; background: rgba(255,255,255,0.06); padding: 4px 8px; border-radius: 5px;
+    margin-top: 2px; cursor: text; outline: none;
+  }
+  .emdash-seo-bar span[data-emdash-ref]:hover { background: rgba(255,255,255,0.12); }
+</style>
+<script>
+  (function () {
+    if (document.cookie.split('; ').some(function (c) { return c.indexOf('emdash-edit-mode=true') === 0; })) {
+      document.body.setAttribute('data-emdash-edit', '');
+    }
+  })();
+</script>
+<div class="emdash-seo-bar">
+  <h4>SEO · click to edit</h4>
+  <div class="lbl">Title</div>
+  ${seoTitleSpan}
+  <div class="lbl">Description</div>
+  ${seoDescSpan}
+</div>
+`;
+
+html = html.replace("</body>", seoBar + "</body>");
+
+return new Response(html, {
+	headers: { "content-type": "text/html; charset=utf-8" },
+});
+---
