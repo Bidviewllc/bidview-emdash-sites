@@ -24,10 +24,11 @@
         justify-content: center;
     }
 }/* End custom CSS */
-/* Mobile: hide phone numbers + call CTAs (anti-phishing measure, 2026-05-13) */
+/* Mobile: hide phone NUMBERS (anti-phishing) but keep the "Have Questions?"
+   sticky CTA (em-element-bad926f) visible + tap-to-call. (2026-05-15) */
 @media only screen and (max-width: 1024px) {
-  /* Hide any icon-box widget whose inner link is a tel: link (PHONE icon, Have Questions? card) */
-  .em-element.em-widget-icon-box:has(a[href^="tel:"]),
+  /* Hide location PHONE icon-boxes — but NOT the Have Questions sticky CTA */
+  .em-element.em-widget-icon-box:has(a[href^="tel:"]):not(.em-element-bad926f),
   .em-element.em-widget-icon-list:has(a[href^="tel:"]) {
     display: none !important;
   }
@@ -35,8 +36,6 @@
   .em-element.em-widget-text-editor:has(a[href^="tel:"]) {
     display: none !important;
   }
-  /* Fallback: hide the tel link itself in case any escaped the rules above */
-  a[href^="tel:"] { display: none !important; }
   /* Hide menu items linking to tel: (header/footer phone CTAs) */
   .em-nav-menu li:has(a[href^="tel:"]) { display: none !important; }
 }
