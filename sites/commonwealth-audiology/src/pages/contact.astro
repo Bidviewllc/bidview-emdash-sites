@@ -2,8 +2,7 @@
 import Base from "../layouts/Base.astro";
 import PageHero from "../components/PageHero.astro";
 
-const bookingUrl =
-	"https://scheduling.suno.care/?clinic=9918&token=23718121fb23614672a5dc01cefda21bf1f9a8cc&pc=ffffff&dc=1279bd";
+const bookingUrl = "/book-appointment/";
 const phone = "(502) 642-4322";
 const fax = "(502) 653-5116";
 const mapsUrl =
@@ -138,7 +137,7 @@ const mapsUrl =
 				today or book online to get started.
 			</p>
 			<div class="contact-appt-actions">
-				<a href={bookingUrl} target="_blank" rel="noopener" class="contact-appt-btn">
+				<a href={bookingUrl} class="contact-appt-btn">
 					Book an Appointment
 				</a>
 				<a href={`tel:${phone.replace(/\D/g, "")}`} class="contact-appt-phone">

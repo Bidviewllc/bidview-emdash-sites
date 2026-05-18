@@ -16,6 +16,7 @@ const STATIC_PATHS = [
 	"/aubrey-gingrich/",
 	"/magnolia/",
 	"/contact/",
+	"/book-appointment/",
 	"/give-back/",
 	"/privacy-policy/",
 	"/terms-of-service/",

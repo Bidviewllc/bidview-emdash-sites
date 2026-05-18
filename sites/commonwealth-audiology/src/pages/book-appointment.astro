@@ -1,0 +1,146 @@
+---
+/**
+ * Book an Appointment — embeds the Suno online scheduler in an iframe.
+ * Full-width layout (Base + PageHero), no sidebar. All "Book an Appointment"
+ * CTAs across the site link here.
+ */
+import Base from "../layouts/Base.astro";
+import PageHero from "../components/PageHero.astro";
+
+const schedulerUrl =
+	"https://scheduling.suno.care/?clinic=9918&token=23718121fb23614672a5dc01cefda21bf1f9a8cc&pc=ffffff&dc=1279bd";
+const phone = "(502) 642-4322";
+const telHref = `tel:${phone.replace(/\D/g, "")}`;
+---
+
+<Base
+	title="Book an Appointment"
+	description="Schedule your hearing appointment with Commonwealth Audiology in Georgetown, KY. Book online in just a few minutes."
+>
+	<PageHero
+		title="Book an Appointment"
+		breadcrumbs={[{ label: "Home", href: "/" }, { label: "Book an Appointment" }]}
+		image="/uploads/internal-hero-default.png"
+	/>
+
+	<section class="book-section">
+		<div class="book-wrap">
+			<header class="book-head">
+				<p class="book-eyebrow">Online Scheduling</p>
+				<h2 class="book-title">Schedule Your Visit in a Few Easy Steps</h2>
+				<p class="book-text">
+					Choose the service, date, and time that work best for you using the
+					secure scheduler below. Prefer to talk to someone? Call us at
+					<a href={telHref}>{phone}</a> and our team will be glad to help.
+				</p>
+			</header>
+
+			<div class="book-frame">
+				<iframe
+					src={schedulerUrl}
+					title="Commonwealth Audiology online appointment scheduler"
+					loading="lazy"
+					class="book-iframe"
+					allow="fullscreen"
+				></iframe>
+			</div>
+
+			<p class="book-fallback">
+				Trouble loading the scheduler?
+				<a href={schedulerUrl} target="_blank" rel="noopener">
+					Open it in a new tab
+				</a>
+				or call <a href={telHref}>{phone}</a>.
+			</p>
+		</div>
+	</section>
+</Base>
+
+<style>
+	.book-section {
+		background: #fff;
+		padding: 3.5rem 1.5rem 5rem;
+	}
+
+	.book-wrap {
+		max-width: 1040px;
+		margin: 0 auto;
+	}
+
+	.book-head {
+		text-align: center;
+		max-width: 680px;
+		margin: 0 auto 2.4rem;
+	}
+
+	.book-eyebrow {
+		margin: 0 0 0.6rem;
+		font-family: "Lato", sans-serif;
+		font-size: 0.95rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: #0076ba;
+	}
+
+	.book-title {
+		margin: 0 0 0.9rem;
+		font-family: "Merriweather", Georgia, "Times New Roman", serif;
+		font-size: clamp(1.9rem, 3.4vw, 2.6rem);
+		font-weight: 700;
+		line-height: 1.2;
+		color: #1f1f1f;
+	}
+
+	.book-text {
+		margin: 0;
+		font-size: 1.08rem;
+		line-height: 1.6;
+		color: #555;
+	}
+
+	.book-text a,
+	.book-fallback a {
+		color: #0076ba;
+		font-weight: 700;
+		text-decoration: none;
+	}
+
+	.book-text a:hover,
+	.book-fallback a:hover {
+		text-decoration: underline;
+	}
+
+	.book-frame {
+		background: #fff;
+		border-radius: 16px;
+		overflow: hidden;
+		box-shadow: 0 14px 40px rgba(0, 0, 0, 0.12);
+		outline: 1px solid rgba(49, 96, 159, 0.18);
+		outline-offset: -1px;
+	}
+
+	.book-iframe {
+		display: block;
+		width: 100%;
+		height: 1000px;
+		border: 0;
+	}
+
+	.book-fallback {
+		margin: 1.4rem 0 0;
+		text-align: center;
+		font-size: 0.98rem;
+		color: #666;
+	}
+
+	@media (max-width: 640px) {
+		.book-section {
+			padding: 2.5rem 1.1rem 3.5rem;
+		}
+
+		.book-iframe {
+			height: 1180px;
+		}
+	}
+</style>

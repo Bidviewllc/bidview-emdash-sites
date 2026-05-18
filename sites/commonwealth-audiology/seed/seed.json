@@ -6,34 +6,71 @@
 		"description": "Commonwealth Audiology - Professional hearing care in Georgetown, KY",
 		"author": "Commonwealth Audiology"
 	},
-
 	"settings": {
 		"title": "Commonwealth Audiology",
 		"tagline": "Compassionate hearing care that feels like home."
 	},
-
 	"collections": [
 		{
 			"slug": "posts",
 			"label": "Posts",
 			"labelSingular": "Post",
-			"supports": ["drafts", "revisions", "search", "seo"],
+			"supports": [
+				"drafts",
+				"revisions",
+				"search",
+				"seo"
+			],
 			"commentsEnabled": true,
 			"fields": [
-				{ "slug": "title", "label": "Title", "type": "string", "required": true, "searchable": true },
-				{ "slug": "featured_image", "label": "Featured Image", "type": "image" },
-				{ "slug": "content", "label": "Content", "type": "portableText", "searchable": true },
-				{ "slug": "excerpt", "label": "Excerpt", "type": "text" }
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "featured_image",
+					"label": "Featured Image",
+					"type": "image"
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "portableText",
+					"searchable": true
+				},
+				{
+					"slug": "excerpt",
+					"label": "Excerpt",
+					"type": "text"
+				}
 			]
 		},
 		{
 			"slug": "pages",
 			"label": "Pages",
 			"labelSingular": "Page",
-			"supports": ["drafts", "revisions", "search"],
+			"supports": [
+				"drafts",
+				"revisions",
+				"search"
+			],
 			"fields": [
-				{ "slug": "title", "label": "Title", "type": "string", "required": true, "searchable": true },
-				{ "slug": "content", "label": "Content", "type": "portableText", "searchable": true }
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "portableText",
+					"searchable": true
+				}
 			]
 		},
 		{
@@ -41,143 +78,437 @@
 			"label": "Site Configuration",
 			"labelSingular": "Site Configuration",
 			"fields": [
-				{ "slug": "phone", "label": "Phone Number", "type": "string" },
-				{ "slug": "address_line1", "label": "Address Line 1", "type": "string" },
-				{ "slug": "address_line2", "label": "Address Line 2", "type": "string" },
-				{ "slug": "city_state", "label": "City, State ZIP", "type": "string" },
-				{ "slug": "email", "label": "Email Address", "type": "string" },
-				{ "slug": "book_url", "label": "Book Appointment URL", "type": "string" },
-				{ "slug": "hero_heading", "label": "Hero Heading", "type": "string" },
-				{ "slug": "hero_subtext", "label": "Hero Subtext", "type": "string" },
-				{ "slug": "hero_image", "label": "Hero Background Image", "type": "image" },
-				{ "slug": "about_tagline", "label": "About Section Tagline", "type": "string" },
-				{ "slug": "about_heading", "label": "About Section Heading", "type": "string" },
-				{ "slug": "about_text", "label": "About Section Text", "type": "text" },
-				{ "slug": "about_image", "label": "About Section Image", "type": "image" },
-				{ "slug": "team_heading", "label": "Team Section Heading", "type": "string" },
-				{ "slug": "team_text", "label": "Team Section Text", "type": "text" },
-				{ "slug": "hours_mon", "label": "Hours: Monday", "type": "string" },
-				{ "slug": "hours_tue", "label": "Hours: Tuesday", "type": "string" },
-				{ "slug": "hours_wed", "label": "Hours: Wednesday", "type": "string" },
-				{ "slug": "hours_thu", "label": "Hours: Thursday", "type": "string" },
-				{ "slug": "hours_fri", "label": "Hours: Friday", "type": "string" },
-				{ "slug": "hours_sat", "label": "Hours: Saturday", "type": "string" },
-				{ "slug": "hours_sun", "label": "Hours: Sunday", "type": "string" },
-				{ "slug": "map_embed_url", "label": "Google Maps Embed URL", "type": "string" },
-				{ "slug": "services_heading", "label": "Services Section Heading", "type": "string" },
-				{ "slug": "services_subtext", "label": "Services Section Subtext", "type": "text" },
-				{ "slug": "hearing_aids_heading", "label": "Hearing Aids Section Heading", "type": "string" },
-				{ "slug": "hearing_aids_subtext", "label": "Hearing Aids Section Subtext", "type": "text" },
-				{ "slug": "protection_heading", "label": "Hearing Protection Section Heading", "type": "string" },
-				{ "slug": "protection_subtext", "label": "Hearing Protection Section Subtext", "type": "text" },
-				{ "slug": "testimonials_heading", "label": "Testimonials Section Heading", "type": "string" },
-				{ "slug": "faq_heading", "label": "FAQ Section Heading", "type": "string" },
-				{ "slug": "news_heading", "label": "News Section Heading", "type": "string" },
-				{ "slug": "facebook_url", "label": "Facebook URL", "type": "string" },
-				{ "slug": "instagram_url", "label": "Instagram URL", "type": "string" },
-				{ "slug": "twitter_url", "label": "Twitter URL", "type": "string" },
-				{ "slug": "footer_tagline", "label": "Footer Tagline", "type": "string" }
+				{
+					"slug": "phone",
+					"label": "Phone Number",
+					"type": "string"
+				},
+				{
+					"slug": "address_line1",
+					"label": "Address Line 1",
+					"type": "string"
+				},
+				{
+					"slug": "address_line2",
+					"label": "Address Line 2",
+					"type": "string"
+				},
+				{
+					"slug": "city_state",
+					"label": "City, State ZIP",
+					"type": "string"
+				},
+				{
+					"slug": "email",
+					"label": "Email Address",
+					"type": "string"
+				},
+				{
+					"slug": "book_url",
+					"label": "Book Appointment URL",
+					"type": "string"
+				},
+				{
+					"slug": "hero_heading",
+					"label": "Hero Heading",
+					"type": "string"
+				},
+				{
+					"slug": "hero_subtext",
+					"label": "Hero Subtext",
+					"type": "string"
+				},
+				{
+					"slug": "hero_image",
+					"label": "Hero Background Image",
+					"type": "image"
+				},
+				{
+					"slug": "about_tagline",
+					"label": "About Section Tagline",
+					"type": "string"
+				},
+				{
+					"slug": "about_heading",
+					"label": "About Section Heading",
+					"type": "string"
+				},
+				{
+					"slug": "about_text",
+					"label": "About Section Text",
+					"type": "text"
+				},
+				{
+					"slug": "about_image",
+					"label": "About Section Image",
+					"type": "image"
+				},
+				{
+					"slug": "team_heading",
+					"label": "Team Section Heading",
+					"type": "string"
+				},
+				{
+					"slug": "team_text",
+					"label": "Team Section Text",
+					"type": "text"
+				},
+				{
+					"slug": "hours_mon",
+					"label": "Hours: Monday",
+					"type": "string"
+				},
+				{
+					"slug": "hours_tue",
+					"label": "Hours: Tuesday",
+					"type": "string"
+				},
+				{
+					"slug": "hours_wed",
+					"label": "Hours: Wednesday",
+					"type": "string"
+				},
+				{
+					"slug": "hours_thu",
+					"label": "Hours: Thursday",
+					"type": "string"
+				},
+				{
+					"slug": "hours_fri",
+					"label": "Hours: Friday",
+					"type": "string"
+				},
+				{
+					"slug": "hours_sat",
+					"label": "Hours: Saturday",
+					"type": "string"
+				},
+				{
+					"slug": "hours_sun",
+					"label": "Hours: Sunday",
+					"type": "string"
+				},
+				{
+					"slug": "map_embed_url",
+					"label": "Google Maps Embed URL",
+					"type": "string"
+				},
+				{
+					"slug": "services_heading",
+					"label": "Services Section Heading",
+					"type": "string"
+				},
+				{
+					"slug": "services_subtext",
+					"label": "Services Section Subtext",
+					"type": "text"
+				},
+				{
+					"slug": "hearing_aids_heading",
+					"label": "Hearing Aids Section Heading",
+					"type": "string"
+				},
+				{
+					"slug": "hearing_aids_subtext",
+					"label": "Hearing Aids Section Subtext",
+					"type": "text"
+				},
+				{
+					"slug": "protection_heading",
+					"label": "Hearing Protection Section Heading",
+					"type": "string"
+				},
+				{
+					"slug": "protection_subtext",
+					"label": "Hearing Protection Section Subtext",
+					"type": "text"
+				},
+				{
+					"slug": "testimonials_heading",
+					"label": "Testimonials Section Heading",
+					"type": "string"
+				},
+				{
+					"slug": "faq_heading",
+					"label": "FAQ Section Heading",
+					"type": "string"
+				},
+				{
+					"slug": "news_heading",
+					"label": "News Section Heading",
+					"type": "string"
+				},
+				{
+					"slug": "facebook_url",
+					"label": "Facebook URL",
+					"type": "string"
+				},
+				{
+					"slug": "instagram_url",
+					"label": "Instagram URL",
+					"type": "string"
+				},
+				{
+					"slug": "twitter_url",
+					"label": "Twitter URL",
+					"type": "string"
+				},
+				{
+					"slug": "footer_tagline",
+					"label": "Footer Tagline",
+					"type": "string"
+				}
 			]
 		},
 		{
 			"slug": "services",
 			"label": "Services",
 			"labelSingular": "Service",
-			"supports": ["drafts"],
+			"supports": [
+				"drafts"
+			],
 			"fields": [
-				{ "slug": "title", "label": "Service Title", "type": "string", "required": true },
-				{ "slug": "description", "label": "Description", "type": "text" },
-				{ "slug": "image", "label": "Service Image", "type": "image" },
-				{ "slug": "link_url", "label": "Learn More URL", "type": "string" },
-				{ "slug": "sort_order", "label": "Sort Order", "type": "string" }
+				{
+					"slug": "title",
+					"label": "Service Title",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "description",
+					"label": "Description",
+					"type": "text"
+				},
+				{
+					"slug": "image",
+					"label": "Service Image",
+					"type": "image"
+				},
+				{
+					"slug": "link_url",
+					"label": "Learn More URL",
+					"type": "string"
+				},
+				{
+					"slug": "sort_order",
+					"label": "Sort Order",
+					"type": "string"
+				}
 			]
 		},
 		{
 			"slug": "hearing_aids",
 			"label": "Hearing Aid Services",
 			"labelSingular": "Hearing Aid Service",
-			"supports": ["drafts"],
+			"supports": [
+				"drafts"
+			],
 			"fields": [
-				{ "slug": "title", "label": "Service Title", "type": "string", "required": true },
-				{ "slug": "description", "label": "Description", "type": "text" },
-				{ "slug": "image", "label": "Service Image", "type": "image" },
-				{ "slug": "link_url", "label": "Learn More URL", "type": "string" },
-				{ "slug": "sort_order", "label": "Sort Order", "type": "string" }
+				{
+					"slug": "title",
+					"label": "Service Title",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "description",
+					"label": "Description",
+					"type": "text"
+				},
+				{
+					"slug": "image",
+					"label": "Service Image",
+					"type": "image"
+				},
+				{
+					"slug": "link_url",
+					"label": "Learn More URL",
+					"type": "string"
+				},
+				{
+					"slug": "sort_order",
+					"label": "Sort Order",
+					"type": "string"
+				}
 			]
 		},
 		{
 			"slug": "team",
 			"label": "Team Members",
 			"labelSingular": "Team Member",
-			"supports": ["drafts"],
+			"supports": [
+				"drafts"
+			],
 			"fields": [
-				{ "slug": "name", "label": "Full Name", "type": "string", "required": true },
-				{ "slug": "role", "label": "Title / Role", "type": "string" },
-				{ "slug": "bio", "label": "Bio", "type": "text" },
-				{ "slug": "photo", "label": "Photo", "type": "image" },
-				{ "slug": "sort_order", "label": "Sort Order", "type": "string" }
+				{
+					"slug": "name",
+					"label": "Full Name",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "role",
+					"label": "Title / Role",
+					"type": "string"
+				},
+				{
+					"slug": "bio",
+					"label": "Bio",
+					"type": "text"
+				},
+				{
+					"slug": "photo",
+					"label": "Photo",
+					"type": "image"
+				},
+				{
+					"slug": "sort_order",
+					"label": "Sort Order",
+					"type": "string"
+				}
 			]
 		},
 		{
 			"slug": "testimonials",
 			"label": "Testimonials",
 			"labelSingular": "Testimonial",
-			"supports": ["drafts"],
+			"supports": [
+				"drafts"
+			],
 			"fields": [
-				{ "slug": "patient_name", "label": "Patient Name", "type": "string", "required": true },
-				{ "slug": "rating", "label": "Rating (1-5)", "type": "string" },
-				{ "slug": "review", "label": "Review Text", "type": "text" },
-				{ "slug": "avatar", "label": "Patient Photo", "type": "image" },
-				{ "slug": "sort_order", "label": "Sort Order", "type": "string" }
+				{
+					"slug": "patient_name",
+					"label": "Patient Name",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "rating",
+					"label": "Rating (1-5)",
+					"type": "string"
+				},
+				{
+					"slug": "review",
+					"label": "Review Text",
+					"type": "text"
+				},
+				{
+					"slug": "avatar",
+					"label": "Patient Photo",
+					"type": "image"
+				},
+				{
+					"slug": "sort_order",
+					"label": "Sort Order",
+					"type": "string"
+				}
 			]
 		},
 		{
 			"slug": "faq",
 			"label": "FAQ",
 			"labelSingular": "FAQ Item",
-			"supports": ["drafts"],
+			"supports": [
+				"drafts"
+			],
 			"fields": [
-				{ "slug": "question", "label": "Question", "type": "string", "required": true },
-				{ "slug": "answer", "label": "Answer", "type": "text" },
-				{ "slug": "sort_order", "label": "Sort Order", "type": "string" }
+				{
+					"slug": "question",
+					"label": "Question",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "answer",
+					"label": "Answer",
+					"type": "text"
+				},
+				{
+					"slug": "sort_order",
+					"label": "Sort Order",
+					"type": "string"
+				}
 			]
 		},
 		{
 			"slug": "hearing_protection",
 			"label": "Hearing Protection",
 			"labelSingular": "Protection Type",
-			"supports": ["drafts"],
+			"supports": [
+				"drafts"
+			],
 			"fields": [
-				{ "slug": "title", "label": "Title", "type": "string", "required": true },
-				{ "slug": "description", "label": "Description", "type": "text" },
-				{ "slug": "sort_order", "label": "Sort Order", "type": "string" }
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "description",
+					"label": "Description",
+					"type": "text"
+				},
+				{
+					"slug": "sort_order",
+					"label": "Sort Order",
+					"type": "string"
+				}
 			]
 		},
 		{
 			"slug": "brands",
 			"label": "Hearing Aid Brands",
 			"labelSingular": "Brand",
-			"supports": ["drafts"],
+			"supports": [
+				"drafts"
+			],
 			"fields": [
-				{ "slug": "name", "label": "Brand Name", "type": "string", "required": true },
-				{ "slug": "logo", "label": "Brand Logo", "type": "image" },
-				{ "slug": "sort_order", "label": "Sort Order", "type": "string" }
+				{
+					"slug": "name",
+					"label": "Brand Name",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "logo",
+					"label": "Brand Logo",
+					"type": "image"
+				},
+				{
+					"slug": "sort_order",
+					"label": "Sort Order",
+					"type": "string"
+				}
 			]
 		}
 	],
-
 	"taxonomies": [
 		{
 			"name": "category",
 			"label": "Categories",
 			"labelSingular": "Category",
 			"hierarchical": true,
-			"collections": ["posts"],
+			"collections": [
+				"posts"
+			],
 			"terms": [
-				{ "slug": "hearing-health", "label": "Hearing Health" },
-				{ "slug": "hearing-aids", "label": "Hearing Aids" },
-				{ "slug": "audiology", "label": "Audiology" },
-				{ "slug": "hearing-protection", "label": "Hearing Protection" }
+				{
+					"slug": "hearing-health",
+					"label": "Hearing Health"
+				},
+				{
+					"slug": "hearing-aids",
+					"label": "Hearing Aids"
+				},
+				{
+					"slug": "audiology",
+					"label": "Audiology"
+				},
+				{
+					"slug": "hearing-protection",
+					"label": "Hearing Protection"
+				}
 			]
 		},
 		{
@@ -185,16 +516,29 @@
 			"label": "Tags",
 			"labelSingular": "Tag",
 			"hierarchical": false,
-			"collections": ["posts"],
+			"collections": [
+				"posts"
+			],
 			"terms": [
-				{ "slug": "tips", "label": "Tips" },
-				{ "slug": "treatment", "label": "Treatment" },
-				{ "slug": "technology", "label": "Technology" },
-				{ "slug": "tinnitus", "label": "Tinnitus" }
+				{
+					"slug": "tips",
+					"label": "Tips"
+				},
+				{
+					"slug": "treatment",
+					"label": "Treatment"
+				},
+				{
+					"slug": "technology",
+					"label": "Technology"
+				},
+				{
+					"slug": "tinnitus",
+					"label": "Tinnitus"
+				}
 			]
 		}
 	],
-
 	"bylines": [
 		{
 			"id": "byline-editorial",
@@ -212,30 +556,197 @@
 			"displayName": "Ashley Gogols"
 		}
 	],
-
 	"menus": [
 		{
 			"name": "primary",
 			"label": "Primary Navigation",
 			"items": [
-				{ "type": "custom", "label": "Home", "url": "/" },
-				{ "type": "custom", "label": "About", "url": "/pages/about" },
-				{ "type": "custom", "label": "Services", "url": "/services" },
-				{ "type": "custom", "label": "Hearing Aids", "url": "/hearing-aids" },
-				{ "type": "custom", "label": "Contact", "url": "/contact" }
+				{
+					"type": "custom",
+					"label": "Home",
+					"url": "/"
+				},
+				{
+					"type": "custom",
+					"label": "About",
+					"url": "/about/",
+					"children": [
+						{
+							"type": "custom",
+							"label": "Our Team",
+							"url": "/about/",
+							"children": [
+								{
+									"type": "custom",
+									"label": "Dr. Tiffany Brewer",
+									"url": "/tiffany-brewer/"
+								},
+								{
+									"type": "custom",
+									"label": "Aubrey Gingrich",
+									"url": "/aubrey-gingrich/"
+								},
+								{
+									"type": "custom",
+									"label": "Magnolia",
+									"url": "/magnolia/"
+								}
+							]
+						},
+						{
+							"type": "custom",
+							"label": "Insurance & Billing",
+							"url": "/about/insurance-billing/"
+						},
+						{
+							"type": "custom",
+							"label": "News & Articles",
+							"url": "/news/"
+						}
+					]
+				},
+				{
+					"type": "custom",
+					"label": "Services",
+					"url": "/audiology-services/",
+					"children": [
+						{
+							"type": "custom",
+							"label": "Hearing Tests",
+							"url": "/audiology-services/hearing-tests/"
+						},
+						{
+							"type": "custom",
+							"label": "Hearing Aid Services",
+							"url": "/audiology-services/hearing-aid-services/"
+						},
+						{
+							"type": "custom",
+							"label": "Tinnitus Evaluation & Treatment",
+							"url": "/audiology-services/tinnitus-evaluation-treatment/"
+						},
+						{
+							"type": "custom",
+							"label": "Hearing Aid Fittings",
+							"url": "/audiology-services/hearing-aid-fittings/"
+						},
+						{
+							"type": "custom",
+							"label": "Sensorineural Hearing Loss",
+							"url": "/audiology-services/sensorineural-hearing-loss/"
+						},
+						{
+							"type": "custom",
+							"label": "Ear Wax Removal",
+							"url": "/audiology-services/ear-wax-removal/"
+						},
+						{
+							"type": "custom",
+							"label": "Real Ear Measurement",
+							"url": "/audiology-services/real-ear-measurement/"
+						}
+					]
+				},
+				{
+					"type": "custom",
+					"label": "Hearing Aids",
+					"url": "/hearing-aids-products/",
+					"children": [
+						{
+							"type": "custom",
+							"label": "Custom Hearing Protection",
+							"url": "/hearing-aids-products/custom-hearing-protection/"
+						},
+						{
+							"type": "custom",
+							"label": "Hearing Aid Batteries",
+							"url": "/hearing-aids-products/hearing-aid-batteries/"
+						},
+						{
+							"type": "custom",
+							"label": "Oticon Hearing Aids",
+							"url": "/hearing-aids-products/oticon/"
+						},
+						{
+							"type": "custom",
+							"label": "Widex Hearing Aids",
+							"url": "/hearing-aids-products/widex/"
+						},
+						{
+							"type": "custom",
+							"label": "Starkey Hearing Aids",
+							"url": "/hearing-aids-products/starkey/"
+						},
+						{
+							"type": "custom",
+							"label": "Phonak Hearing Aids",
+							"url": "/hearing-aids-products/phonak/"
+						},
+						{
+							"type": "custom",
+							"label": "ReSound Hearing Aids",
+							"url": "/hearing-aids-products/resound/"
+						},
+						{
+							"type": "custom",
+							"label": "Unitron Hearing Aids",
+							"url": "/hearing-aids-products/unitron/"
+						},
+						{
+							"type": "custom",
+							"label": "Signia Hearing Aids",
+							"url": "/hearing-aids-products/signia/"
+						},
+						{
+							"type": "custom",
+							"label": "Costco Hearing Aids",
+							"url": "/hearing-aids-products/costco-hearing-aids/"
+						},
+						{
+							"type": "custom",
+							"label": "Nano Hearing Aids",
+							"url": "/hearing-aids-products/nano-hearing-aids/"
+						},
+						{
+							"type": "custom",
+							"label": "Walmart Hearing Aids",
+							"url": "/hearing-aids-products/walmart-hearing-aids/"
+						}
+					]
+				},
+				{
+					"type": "custom",
+					"label": "Contact",
+					"url": "/contact/"
+				}
 			]
 		}
 	],
-
 	"widgetAreas": [
 		{
 			"name": "sidebar",
 			"label": "Sidebar",
 			"description": "Widget area displayed on single post pages",
 			"widgets": [
-				{ "type": "component", "componentId": "core:recent-posts", "title": "Recent Articles", "settings": { "count": 5, "showDate": true } },
-				{ "type": "component", "componentId": "core:categories", "title": "Categories" },
-				{ "type": "component", "componentId": "core:tags", "title": "Tags" }
+				{
+					"type": "component",
+					"componentId": "core:recent-posts",
+					"title": "Recent Articles",
+					"settings": {
+						"count": 5,
+						"showDate": true
+					}
+				},
+				{
+					"type": "component",
+					"componentId": "core:categories",
+					"title": "Categories"
+				},
+				{
+					"type": "component",
+					"componentId": "core:tags",
+					"title": "Tags"
+				}
 			]
 		},
 		{
@@ -250,14 +761,18 @@
 						{
 							"_type": "block",
 							"style": "normal",
-							"children": [{ "_type": "span", "text": "Compassionate hearing care in Georgetown, KY. We are dedicated to helping you hear every meaningful moment of life." }]
+							"children": [
+								{
+									"_type": "span",
+									"text": "Compassionate hearing care in Georgetown, KY. We are dedicated to helping you hear every meaningful moment of life."
+								}
+							]
 						}
 					]
 				}
 			]
 		}
 	],
-
 	"content": {
 		"site_config": [
 			{
@@ -270,7 +785,7 @@
 					"address_line2": "",
 					"city_state": "Georgetown, KY 40324",
 					"email": "info@commonwealthaudiology.com",
-					"book_url": "#book",
+					"book_url": "/book-appointment/",
 					"hero_heading": "Compassionate hearing care that feels like home.",
 					"hero_subtext": "Hearing care you can trust, for every stage of life.",
 					"about_tagline": "AUDIOLOGY EXCELLENCE & PATIENT CARE",
@@ -557,13 +1072,69 @@
 			}
 		],
 		"brands": [
-			{ "id": "brand-phonak", "slug": "phonak", "status": "published", "data": { "name": "Phonak", "sort_order": "1" } },
-			{ "id": "brand-oticon", "slug": "oticon", "status": "published", "data": { "name": "Oticon", "sort_order": "2" } },
-			{ "id": "brand-widex", "slug": "widex", "status": "published", "data": { "name": "Widex", "sort_order": "3" } },
-			{ "id": "brand-starkey", "slug": "starkey", "status": "published", "data": { "name": "Starkey", "sort_order": "4" } },
-			{ "id": "brand-resound", "slug": "resound", "status": "published", "data": { "name": "ReSound", "sort_order": "5" } },
-			{ "id": "brand-unitron", "slug": "unitron", "status": "published", "data": { "name": "Unitron", "sort_order": "6" } },
-			{ "id": "brand-signia", "slug": "signia", "status": "published", "data": { "name": "Signia", "sort_order": "7" } }
+			{
+				"id": "brand-phonak",
+				"slug": "phonak",
+				"status": "published",
+				"data": {
+					"name": "Phonak",
+					"sort_order": "1"
+				}
+			},
+			{
+				"id": "brand-oticon",
+				"slug": "oticon",
+				"status": "published",
+				"data": {
+					"name": "Oticon",
+					"sort_order": "2"
+				}
+			},
+			{
+				"id": "brand-widex",
+				"slug": "widex",
+				"status": "published",
+				"data": {
+					"name": "Widex",
+					"sort_order": "3"
+				}
+			},
+			{
+				"id": "brand-starkey",
+				"slug": "starkey",
+				"status": "published",
+				"data": {
+					"name": "Starkey",
+					"sort_order": "4"
+				}
+			},
+			{
+				"id": "brand-resound",
+				"slug": "resound",
+				"status": "published",
+				"data": {
+					"name": "ReSound",
+					"sort_order": "5"
+				}
+			},
+			{
+				"id": "brand-unitron",
+				"slug": "unitron",
+				"status": "published",
+				"data": {
+					"name": "Unitron",
+					"sort_order": "6"
+				}
+			},
+			{
+				"id": "brand-signia",
+				"slug": "signia",
+				"status": "published",
+				"data": {
+					"name": "Signia",
+					"sort_order": "7"
+				}
+			}
 		],
 		"pages": [
 			{
@@ -576,12 +1147,22 @@
 						{
 							"_type": "block",
 							"style": "normal",
-							"children": [{ "_type": "span", "text": "Commonwealth Audiology is a leading audiology practice in Georgetown, KY, dedicated to providing compassionate, personalized hearing care to patients of all ages." }]
+							"children": [
+								{
+									"_type": "span",
+									"text": "Commonwealth Audiology is a leading audiology practice in Georgetown, KY, dedicated to providing compassionate, personalized hearing care to patients of all ages."
+								}
+							]
 						},
 						{
 							"_type": "block",
 							"style": "normal",
-							"children": [{ "_type": "span", "text": "Our Doctor of Audiology, Dr. Tiffany Brown, stays up to date with the latest hearing technology to ensure you receive the most effective and innovative care available." }]
+							"children": [
+								{
+									"_type": "span",
+									"text": "Our Doctor of Audiology, Dr. Tiffany Brown, stays up to date with the latest hearing technology to ensure you receive the most effective and innovative care available."
+								}
+							]
 						}
 					]
 				}
@@ -606,24 +1187,68 @@
 						{
 							"_type": "block",
 							"style": "normal",
-							"children": [{ "_type": "span", "text": "Hearing loss often develops so gradually that many people don't notice it until it begins significantly affecting their daily life. Knowing the warning signs can help you seek care before the problem worsens." }]
+							"children": [
+								{
+									"_type": "span",
+									"text": "Hearing loss often develops so gradually that many people don't notice it until it begins significantly affecting their daily life. Knowing the warning signs can help you seek care before the problem worsens."
+								}
+							]
 						},
-						{ "_type": "block", "style": "h2", "children": [{ "_type": "span", "text": "1. Asking people to repeat themselves" }] },
+						{
+							"_type": "block",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "1. Asking people to repeat themselves"
+								}
+							]
+						},
 						{
 							"_type": "block",
 							"style": "normal",
-							"children": [{ "_type": "span", "text": "If you frequently ask friends, family, or coworkers to repeat what they've said, this is one of the most common early signs of hearing loss. It may be happening more than you realize." }]
+							"children": [
+								{
+									"_type": "span",
+									"text": "If you frequently ask friends, family, or coworkers to repeat what they've said, this is one of the most common early signs of hearing loss. It may be happening more than you realize."
+								}
+							]
 						},
-						{ "_type": "block", "style": "h2", "children": [{ "_type": "span", "text": "2. Difficulty hearing in noisy environments" }] },
+						{
+							"_type": "block",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "2. Difficulty hearing in noisy environments"
+								}
+							]
+						},
 						{
 							"_type": "block",
 							"style": "normal",
-							"children": [{ "_type": "span", "text": "Struggling to follow conversations in restaurants, social gatherings, or other noisy places is a hallmark sign of hearing difficulty. Background noise can be especially challenging for people with hearing loss." }]
+							"children": [
+								{
+									"_type": "span",
+									"text": "Struggling to follow conversations in restaurants, social gatherings, or other noisy places is a hallmark sign of hearing difficulty. Background noise can be especially challenging for people with hearing loss."
+								}
+							]
 						}
 					]
 				},
-				"bylines": [{ "byline": "byline-tiffany" }],
-				"taxonomies": { "category": ["hearing-health"], "tag": ["tips"] }
+				"bylines": [
+					{
+						"byline": "byline-tiffany"
+					}
+				],
+				"taxonomies": {
+					"category": [
+						"hearing-health"
+					],
+					"tag": [
+						"tips"
+					]
+				}
 			},
 			{
 				"id": "post-2",
@@ -643,18 +1268,48 @@
 						{
 							"_type": "block",
 							"style": "normal",
-							"children": [{ "_type": "span", "text": "The hearing aids of today bear little resemblance to the bulky, whistling devices of decades past. Modern hearing aids are sleek, nearly invisible, and packed with technology that adapts to your environment in real time." }]
+							"children": [
+								{
+									"_type": "span",
+									"text": "The hearing aids of today bear little resemblance to the bulky, whistling devices of decades past. Modern hearing aids are sleek, nearly invisible, and packed with technology that adapts to your environment in real time."
+								}
+							]
 						},
-						{ "_type": "block", "style": "h2", "children": [{ "_type": "span", "text": "Bluetooth connectivity" }] },
+						{
+							"_type": "block",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Bluetooth connectivity"
+								}
+							]
+						},
 						{
 							"_type": "block",
 							"style": "normal",
-							"children": [{ "_type": "span", "text": "Most modern hearing aids can connect directly to smartphones, TVs, and other Bluetooth devices. This means you can stream phone calls, music, and audio directly to your hearing aids." }]
+							"children": [
+								{
+									"_type": "span",
+									"text": "Most modern hearing aids can connect directly to smartphones, TVs, and other Bluetooth devices. This means you can stream phone calls, music, and audio directly to your hearing aids."
+								}
+							]
 						}
 					]
 				},
-				"bylines": [{ "byline": "byline-tiffany" }],
-				"taxonomies": { "category": ["hearing-aids"], "tag": ["technology"] }
+				"bylines": [
+					{
+						"byline": "byline-tiffany"
+					}
+				],
+				"taxonomies": {
+					"category": [
+						"hearing-aids"
+					],
+					"tag": [
+						"technology"
+					]
+				}
 			},
 			{
 				"id": "post-3",
@@ -674,18 +1329,49 @@
 						{
 							"_type": "block",
 							"style": "normal",
-							"children": [{ "_type": "span", "text": "Tinnitus — the perception of ringing, buzzing, hissing, or other sounds in the ears — affects an estimated 50 million Americans. While it can be distressing, many effective management strategies are available." }]
+							"children": [
+								{
+									"_type": "span",
+									"text": "Tinnitus — the perception of ringing, buzzing, hissing, or other sounds in the ears — affects an estimated 50 million Americans. While it can be distressing, many effective management strategies are available."
+								}
+							]
 						},
-						{ "_type": "block", "style": "h2", "children": [{ "_type": "span", "text": "Common causes of tinnitus" }] },
+						{
+							"_type": "block",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Common causes of tinnitus"
+								}
+							]
+						},
 						{
 							"_type": "block",
 							"style": "normal",
-							"children": [{ "_type": "span", "text": "Tinnitus can be caused by noise-induced hearing loss, age-related hearing loss, ear infections, earwax blockage, certain medications, or other medical conditions. Identifying the underlying cause is the first step to effective treatment." }]
+							"children": [
+								{
+									"_type": "span",
+									"text": "Tinnitus can be caused by noise-induced hearing loss, age-related hearing loss, ear infections, earwax blockage, certain medications, or other medical conditions. Identifying the underlying cause is the first step to effective treatment."
+								}
+							]
 						}
 					]
 				},
-				"bylines": [{ "byline": "byline-tiffany" }],
-				"taxonomies": { "category": ["audiology"], "tag": ["tinnitus", "treatment"] }
+				"bylines": [
+					{
+						"byline": "byline-tiffany"
+					}
+				],
+				"taxonomies": {
+					"category": [
+						"audiology"
+					],
+					"tag": [
+						"tinnitus",
+						"treatment"
+					]
+				}
 			}
 		]
 	}
