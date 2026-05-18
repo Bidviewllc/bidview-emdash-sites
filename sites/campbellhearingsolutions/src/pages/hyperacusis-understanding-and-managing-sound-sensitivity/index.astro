@@ -1,0 +1,16 @@
+---
+import Base from "../../layouts/Base.astro";
+import { getPageByRoute } from "../../lib/pages.js";
+
+export const cacheHint = 3600;
+
+const page = await getPageByRoute("/hyperacusis-understanding-and-managing-sound-sensitivity/");
+
+if (!page) {
+  throw new Error("Missing dynamic page data for /hyperacusis-understanding-and-managing-sound-sensitivity/");
+}
+---
+
+<Base {...page}>
+  <Fragment set:html={page.bodyHtml} />
+</Base>

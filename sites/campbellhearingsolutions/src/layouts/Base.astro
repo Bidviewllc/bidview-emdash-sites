@@ -1,0 +1,45 @@
+---
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import "../styles/global.css";
+
+export const cacheHint = 3600;
+
+const {
+  title = "Campbell Hearing Solutions",
+  description = "",
+  canonical = "/",
+  robots = "index, follow",
+  bodyClass = "",
+  stylesheets = [],
+  headHtml = "",
+  seoHeadHtml = "",
+} = Astro.props;
+
+const stylesheetHrefs = stylesheets as string[];
+---
+
+<!doctype html>
+<html lang="en-US" prefix="og: https://ogp.me/ns#">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+    {robots && <meta name="robots" content={robots} />}
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" sizes="32x32" href="/assets/media/uploads/2025/02/Dr-Campbells-Hearing-Solutions-Favicon-150x150.png" />
+    <link rel="icon" sizes="192x192" href="/assets/media/uploads/2025/02/Dr-Campbells-Hearing-Solutions-Favicon-300x300.png" />
+    <link rel="apple-touch-icon" href="/assets/media/uploads/2025/02/Dr-Campbells-Hearing-Solutions-Favicon-300x300.png" />
+    <meta name="msapplication-TileImage" content="/assets/media/uploads/2025/02/Dr-Campbells-Hearing-Solutions-Favicon-300x300.png" />
+    <Fragment set:html={seoHeadHtml} />
+    {stylesheetHrefs.map((href) => <link rel="stylesheet" href={href} />)}
+    <Fragment set:html={headHtml} />
+  </head>
+  <body class={bodyClass}>
+    <Header />
+    <slot />
+    <Footer />
+    <script is:inline src="/assets/site.js?v=20260512-toc-v1" defer></script>
+  </body>
+</html>

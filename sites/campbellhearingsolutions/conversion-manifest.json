@@ -1,0 +1,968 @@
+{
+  "source": "../local-site",
+  "generatedAt": "2026-05-11T15:17:50.473Z",
+  "track": "Track A + Phase 2: dynamic Emdash content bridge",
+  "pageCount": 50,
+  "collections": {
+    "pages": 5,
+    "services": 9,
+    "hearing_aids": 16,
+    "articles": 8,
+    "audiologists": 4,
+    "testimonials": 2,
+    "utility_pages": 5,
+    "archives": 1
+  },
+  "pages": [
+    {
+      "id": "pages-home",
+      "slug": "home",
+      "route": "/",
+      "canonical": "https://campbellhearingsolutions.com/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "pages",
+      "collectionLabel": "Pages",
+      "contentType": "page",
+      "title": "Campbell Hearing Solutions | Audiologists & Hearing Aids in Granger, IN",
+      "description": "Experience better hearing with Campbell Hearing Solutions. Schedule a consultation today and discover personalized care from trusted audiologists.",
+      "bodyClass": "home site-singular page-template page-template-astro_header_footer page page-id-2164 site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-template-full-width astro-kit-1106 astro-page astro-page-2164",
+      "stylesheets": [
+        "/assets/styles/bundle-5.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "index.html",
+      "page": "src/pages/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "pages-about",
+      "slug": "about",
+      "route": "/about/",
+      "canonical": "https://campbellhearingsolutions.com/about/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "pages",
+      "collectionLabel": "Pages",
+      "contentType": "page",
+      "title": "About Us | Campbell Hearing Solutions",
+      "description": "Campbell Hearing Solutions is an audiology and hearing aid clinic with expert audiologists providing hearing tests, tinnitus evaluations, and professional hearing services in Granger, IN.",
+      "bodyClass": "site-singular page-template page-template-astro_header_footer page page-id-1761 site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-template-full-width astro-kit-1106 astro-page astro-page-1761",
+      "stylesheets": [
+        "/assets/styles/global.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "about/index.html",
+      "page": "src/pages/about/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "services-audiology-services",
+      "slug": "audiology-services",
+      "route": "/audiology-services/",
+      "canonical": "https://campbellhearingsolutions.com/audiology-services/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "services",
+      "collectionLabel": "Services",
+      "contentType": "service",
+      "title": "Campbell Hearing Solutions | Audiology Services",
+      "description": "Learn more about our audiology services provided by expert audiologists in Granger, IN.",
+      "bodyClass": "site-singular page-template-default page page-id-1793 site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-template-full-width astro-kit-1106 astro-page astro-page-1793 astro-page-1197",
+      "stylesheets": [
+        "/assets/styles/bundle-2.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "audiology-services/index.html",
+      "page": "src/pages/audiology-services/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "articles-best-way-to-clean-ears",
+      "slug": "best-way-to-clean-ears",
+      "route": "/best-way-to-clean-ears/",
+      "canonical": "https://campbellhearingsolutions.com/best-way-to-clean-ears/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "articles",
+      "collectionLabel": "Articles",
+      "contentType": "article",
+      "title": "The Best Way to Clean Ears: Safe Methods and Professional Solutions | Campbell Hearing Solutions",
+      "description": "Wondering how to safely clean your ears? Learn the best ear cleaning methods and why seeing an audiologist is important.",
+      "bodyClass": "site-singular post-template-default single single-post postid-4663 single-format-standard site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-kit-1106 astro-page-1203",
+      "stylesheets": [
+        "/assets/styles/bundle-3.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "best-way-to-clean-ears/index.html",
+      "page": "src/pages/best-way-to-clean-ears/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "archives-blog",
+      "slug": "blog",
+      "route": "/blog/",
+      "canonical": "https://campbellhearingsolutions.com/blog/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "archives",
+      "collectionLabel": "Archives",
+      "contentType": "archive",
+      "title": "Blog | Campbell Hearing Solutions",
+      "description": "Stay informed with expert tips on hearing health, hearing aids, and more. Read our blog and take charge of your hearing journey today!",
+      "bodyClass": "blog site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-page-1108 astro-default astro-template-full-width astro-kit-1106",
+      "stylesheets": [
+        "/assets/styles/bundle-4.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "blog/index.html",
+      "page": "src/pages/blog/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "pages-contact-us",
+      "slug": "contact-us",
+      "route": "/contact-us/",
+      "canonical": "https://campbellhearingsolutions.com/contact-us/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "pages",
+      "collectionLabel": "Pages",
+      "contentType": "page",
+      "title": "Contact Us | Campbell Hearing Solutions",
+      "description": "Contact Campbell Hearing Solutions for hearing tests, hearing aid support, tinnitus help, and personalized care. Call or fill out the form to reach out today.",
+      "bodyClass": "site-singular page-template page-template-astro_header_footer page page-id-1721 site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-template-full-width astro-kit-1106 astro-page astro-page-1721",
+      "stylesheets": [
+        "/assets/styles/bundle-6.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "contact-us/index.html",
+      "page": "src/pages/contact-us/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "hearing-aids-costco-hearing-aids",
+      "slug": "costco-hearing-aids",
+      "route": "/costco-hearing-aids/",
+      "canonical": "https://campbellhearingsolutions.com/costco-hearing-aids/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "hearing_aids",
+      "collectionLabel": "Hearing Aids",
+      "contentType": "hearing_aid",
+      "title": "Costco Hearing Aids | Campbell Hearing Solutions",
+      "description": "Curious about Costco Hearing Aids? Learn what they are, how they work, and why visiting an audiologist is the best step for your hearing health.",
+      "bodyClass": "site-singular page-template-default page page-id-1838 site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-template-full-width astro-kit-1106 astro-page astro-page-1838 astro-page-1197",
+      "stylesheets": [
+        "/assets/styles/bundle-7.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "costco-hearing-aids/index.html",
+      "page": "src/pages/costco-hearing-aids/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "articles-crackling-in-ear-causes-when-to-get-help",
+      "slug": "crackling-in-ear-causes-when-to-get-help",
+      "route": "/crackling-in-ear-causes-when-to-get-help/",
+      "canonical": "https://campbellhearingsolutions.com/crackling-in-ear-causes-when-to-get-help/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "articles",
+      "collectionLabel": "Articles",
+      "contentType": "article",
+      "title": "Crackling in Ear | Campbell Hearing Solutions",
+      "description": "Crackling in the ear can signal pressure, wax, or hearing issues. Learn causes and treatments. Schedule a hearing check in Granger, IN today.",
+      "bodyClass": "site-singular post-template-default single single-post postid-5075 single-format-standard site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-kit-1106 astro-page-1203",
+      "stylesheets": [
+        "/assets/styles/bundle-8.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "crackling-in-ear-causes-when-to-get-help/index.html",
+      "page": "src/pages/crackling-in-ear-causes-when-to-get-help/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "services-custom-hearing-protection",
+      "slug": "custom-hearing-protection",
+      "route": "/custom-hearing-protection/",
+      "canonical": "https://campbellhearingsolutions.com/custom-hearing-protection/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "services",
+      "collectionLabel": "Services",
+      "contentType": "service",
+      "title": "Custom Hearing Protection | Campbell Hearing Solutions",
+      "description": "Campbell Hearing Solutions provides custom hearing protection in Granger, IN. Contact us today to learn more!",
+      "bodyClass": "site-singular page-template-default page page-id-1833 site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-template-full-width astro-kit-1106 astro-page astro-page-1833 astro-page-1197",
+      "stylesheets": [
+        "/assets/styles/bundle-9.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "custom-hearing-protection/index.html",
+      "page": "src/pages/custom-hearing-protection/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "services-diagnostic-services-in-granger-in",
+      "slug": "diagnostic-services-in-granger-in",
+      "route": "/diagnostic-services-in-granger-in/",
+      "canonical": "https://campbellhearingsolutions.com/diagnostic-services-in-granger-in/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "services",
+      "collectionLabel": "Services",
+      "contentType": "service",
+      "title": "Diagnostic Services in Granger, IN | Campbell Hearing Solutions",
+      "description": "Campbell Hearing Solutions has audiologists providing diagnostic services in Granger, IN.",
+      "bodyClass": "site-singular page-template-default page page-id-1795 site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-template-full-width astro-kit-1106 astro-page astro-page-1795 astro-page-1197",
+      "stylesheets": [
+        "/assets/styles/bundle-10.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "diagnostic-services-in-granger-in/index.html",
+      "page": "src/pages/diagnostic-services-in-granger-in/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "articles-ear-candles-what-you-need-to-know",
+      "slug": "ear-candles-what-you-need-to-know",
+      "route": "/ear-candles-what-you-need-to-know/",
+      "canonical": "https://campbellhearingsolutions.com/ear-candles-what-you-need-to-know/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "articles",
+      "collectionLabel": "Articles",
+      "contentType": "article",
+      "title": "Are Ear Candles Safe? | Campbell Hearing Solutions",
+      "description": "Learn the truth about ear candles and why they can be dangerous. Discover safer next steps for ear discomfort and hearing concerns in Granger, IN.",
+      "bodyClass": "site-singular post-template-default single single-post postid-1787 single-format-standard site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-kit-1106 astro-page-1203",
+      "stylesheets": [
+        "/assets/styles/bundle-11.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "ear-candles-what-you-need-to-know/index.html",
+      "page": "src/pages/ear-candles-what-you-need-to-know/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "hearing-aids-hearing-aid-alternatives-assistive-listening-devices",
+      "slug": "hearing-aid-alternatives-assistive-listening-devices",
+      "route": "/hearing-aid-alternatives-assistive-listening-devices/",
+      "canonical": "https://campbellhearingsolutions.com/hearing-aid-alternatives-assistive-listening-devices/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "hearing_aids",
+      "collectionLabel": "Hearing Aids",
+      "contentType": "hearing_aid",
+      "title": "Assistive Listening Devices | Campbell Hearing Solutions",
+      "description": "Explore assistive listening devices (ALDs) at Campbell Hearing Solutions in Granger, IN. Our audiologists offer personalized solutions to help you hear clearly in any environment.",
+      "bodyClass": "site-singular page-template-default page page-id-1831 site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-template-full-width astro-kit-1106 astro-page astro-page-1831 astro-page-1197",
+      "stylesheets": [
+        "/assets/styles/bundle-12.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "hearing-aid-alternatives-assistive-listening-devices/index.html",
+      "page": "src/pages/hearing-aid-alternatives-assistive-listening-devices/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "hearing-aids-hearing-aid-batteries",
+      "slug": "hearing-aid-batteries",
+      "route": "/hearing-aid-batteries/",
+      "canonical": "https://campbellhearingsolutions.com/hearing-aid-batteries/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "hearing_aids",
+      "collectionLabel": "Hearing Aids",
+      "contentType": "hearing_aid",
+      "title": "Hearing Aid Batteries | Campbell Hearing Solutions",
+      "description": "Campbell Hearing Solutions provides hearing aid batteries in Granger, IN to ensure that your hearing devices are always functioning at their best.",
+      "bodyClass": "site-singular page-template-default page page-id-1823 site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-template-full-width astro-kit-1106 astro-page astro-page-1823 astro-page-1197",
+      "stylesheets": [
+        "/assets/styles/bundle-13.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "hearing-aid-batteries/index.html",
+      "page": "src/pages/hearing-aid-batteries/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "services-hearing-aid-fittings-in-granger-in",
+      "slug": "hearing-aid-fittings-in-granger-in",
+      "route": "/hearing-aid-fittings-in-granger-in/",
+      "canonical": "https://campbellhearingsolutions.com/hearing-aid-fittings-in-granger-in/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "services",
+      "collectionLabel": "Services",
+      "contentType": "service",
+      "title": "Hearing Aid Fittings in Granger, IN | Campbell Hearing Solutions",
+      "description": "Campbell Hearing Solutions provides expert hearing aid fittings in Granger, IN.",
+      "bodyClass": "site-singular page-template-default page page-id-1816 site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-template-full-width astro-kit-1106 astro-page astro-page-1816 astro-page-1197",
+      "stylesheets": [
+        "/assets/styles/bundle-14.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "hearing-aid-fittings-in-granger-in/index.html",
+      "page": "src/pages/hearing-aid-fittings-in-granger-in/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "services-hearing-aid-services-in-granger-in",
+      "slug": "hearing-aid-services-in-granger-in",
+      "route": "/hearing-aid-services-in-granger-in/",
+      "canonical": "https://campbellhearingsolutions.com/hearing-aid-services-in-granger-in/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "services",
+      "collectionLabel": "Services",
+      "contentType": "service",
+      "title": "Hearing Aid Services in Granger, IN | Campbell Hearing Solutions",
+      "description": "Campbell Hearing Solutions has audiologists providing expert hearing aid services in Granger, IN.",
+      "bodyClass": "site-singular page-template-default page page-id-1812 site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-template-full-width astro-kit-1106 astro-page astro-page-1812 astro-page-1197",
+      "stylesheets": [
+        "/assets/styles/bundle-15.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "hearing-aid-services-in-granger-in/index.html",
+      "page": "src/pages/hearing-aid-services-in-granger-in/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "hearing-aids-hearing-aids-for-tinnitus-relief",
+      "slug": "hearing-aids-for-tinnitus-relief",
+      "route": "/hearing-aids-for-tinnitus-relief/",
+      "canonical": "https://campbellhearingsolutions.com/hearing-aids-for-tinnitus-relief/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "hearing_aids",
+      "collectionLabel": "Hearing Aids",
+      "contentType": "hearing_aid",
+      "title": "Hearing Aids for Tinnitus Relief | Campbell Hearing Solutions",
+      "description": "Discover how hearing aids can help reduce tinnitus and improve your hearing. Visit Campbell Hearing Solutions in Granger, IN for expert care and personalized solutions.",
+      "bodyClass": "site-singular post-template-default single single-post postid-1809 single-format-standard site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-kit-1106 astro-page-1203",
+      "stylesheets": [
+        "/assets/styles/bundle-16.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "hearing-aids-for-tinnitus-relief/index.html",
+      "page": "src/pages/hearing-aids-for-tinnitus-relief/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "hearing-aids-hearing-aids-products",
+      "slug": "hearing-aids-products",
+      "route": "/hearing-aids-products/",
+      "canonical": "https://campbellhearingsolutions.com/hearing-aids-products/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "hearing_aids",
+      "collectionLabel": "Hearing Aids",
+      "contentType": "hearing_aid",
+      "title": "Hearing Aids & Products | Campbell Hearing Solutions",
+      "description": "Campbell Hearing Solutions provides quality hearing aids and products in Granger, IN, and nearby locations. Contact us to learn more!",
+      "bodyClass": "site-singular page-template-default page page-id-1829 site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-template-full-width astro-kit-1106 astro-page astro-page-1829 astro-page-1197",
+      "stylesheets": [
+        "/assets/styles/bundle-17.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "hearing-aids-products/index.html",
+      "page": "src/pages/hearing-aids-products/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "services-hearing-tests-in-granger-in",
+      "slug": "hearing-tests-in-granger-in",
+      "route": "/hearing-tests-in-granger-in/",
+      "canonical": "https://campbellhearingsolutions.com/hearing-tests-in-granger-in/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "services",
+      "collectionLabel": "Services",
+      "contentType": "service",
+      "title": "Hearing Tests in Granger, IN | Campbell Hearing Solutions",
+      "description": "Campbell Hearing Solutions provides comprehensive hearing tests in Granger, IN. Schedule your hearing test today!",
+      "bodyClass": "site-singular page-template-default page page-id-1820 site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-template-full-width astro-kit-1106 astro-page astro-page-1820 astro-page-1197",
+      "stylesheets": [
+        "/assets/styles/bundle-18.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "hearing-tests-in-granger-in/index.html",
+      "page": "src/pages/hearing-tests-in-granger-in/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "hearing-aids-how-to-service-hearing-aids",
+      "slug": "how-to-service-hearing-aids",
+      "route": "/how-to-service-hearing-aids/",
+      "canonical": "https://campbellhearingsolutions.com/how-to-service-hearing-aids/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "hearing_aids",
+      "collectionLabel": "Hearing Aids",
+      "contentType": "hearing_aid",
+      "title": "How to Service Hearing Aids | Campbell Hearing Solutions",
+      "description": "Learn how to service hearing aids, avoid common problems, and keep them working longer. Schedule hearing aid service today.",
+      "bodyClass": "site-singular post-template-default single single-post postid-5122 single-format-standard site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-kit-1106 astro-page-1203",
+      "stylesheets": [
+        "/assets/styles/bundle-19.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "how-to-service-hearing-aids/index.html",
+      "page": "src/pages/how-to-service-hearing-aids/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "articles-hyperacusis-understanding-and-managing-sound-sensitivity",
+      "slug": "hyperacusis-understanding-and-managing-sound-sensitivity",
+      "route": "/hyperacusis-understanding-and-managing-sound-sensitivity/",
+      "canonical": "https://campbellhearingsolutions.com/hyperacusis-understanding-and-managing-sound-sensitivity/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "articles",
+      "collectionLabel": "Articles",
+      "contentType": "article",
+      "title": "Hyperacusis: Understanding and Managing Sound Sensitivity | Campbell Hearing Solutions",
+      "description": "Struggling with sensitivity to sound? Learn about hyperacusis, its symptoms, causes, and treatment options from expert audiologists in Granger, IN.",
+      "bodyClass": "site-singular post-template-default single single-post postid-1802 single-format-standard site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-kit-1106 astro-page-1203",
+      "stylesheets": [
+        "/assets/styles/bundle-20.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "hyperacusis-understanding-and-managing-sound-sensitivity/index.html",
+      "page": "src/pages/hyperacusis-understanding-and-managing-sound-sensitivity/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "pages-insurance-and-billing-campbell-hearing-solutions",
+      "slug": "insurance-and-billing-campbell-hearing-solutions",
+      "route": "/insurance-and-billing-campbell-hearing-solutions/",
+      "canonical": "https://campbellhearingsolutions.com/insurance-and-billing-campbell-hearing-solutions/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "pages",
+      "collectionLabel": "Pages",
+      "contentType": "page",
+      "title": "Insurance and Billing | Campbell Hearing Solutions",
+      "description": "Learn about your billing and insurance coverage at Campbell Hearing Solutions, including Good Faith Estimates and protection from surprise medical bills.",
+      "bodyClass": "site-singular page-template-default page page-id-1858 site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-template-full-width astro-kit-1106 astro-page-1197",
+      "stylesheets": [
+        "/assets/styles/bundle-21.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "insurance-and-billing-campbell-hearing-solutions/index.html",
+      "page": "src/pages/insurance-and-billing-campbell-hearing-solutions/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "hearing-aids-lyric-hearing-aids",
+      "slug": "lyric-hearing-aids",
+      "route": "/lyric-hearing-aids/",
+      "canonical": "https://campbellhearingsolutions.com/lyric-hearing-aids/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "hearing_aids",
+      "collectionLabel": "Hearing Aids",
+      "contentType": "hearing_aid",
+      "title": "Lyric Hearing Aids | Campbell Hearing Solutions",
+      "description": "Campbell Hearing Solutions is an authorized provider of Lyric hearing aids in Granger, IN.",
+      "bodyClass": "site-singular page-template-default page page-id-4020 site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-template-full-width astro-kit-1106 astro-page astro-page-4020 astro-page-1197",
+      "stylesheets": [
+        "/assets/styles/bundle-25.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "lyric-hearing-aids/index.html",
+      "page": "src/pages/lyric-hearing-aids/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "services-online-hearing-tests",
+      "slug": "online-hearing-tests",
+      "route": "/online-hearing-tests/",
+      "canonical": "https://campbellhearingsolutions.com/online-hearing-tests/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "services",
+      "collectionLabel": "Services",
+      "contentType": "service",
+      "title": "How Accurate Are Online Hearing Tests? What to Know Before You Try One | Campbell Hearing Solutions",
+      "description": "Wondering if online hearing tests are accurate? Learn the pros and cons, how they work, and why you should visit an audiologist for expert hearing care.",
+      "bodyClass": "site-singular post-template-default single single-post postid-4666 single-format-standard site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-kit-1106 astro-page-1203",
+      "stylesheets": [
+        "/assets/styles/bundle-26.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "online-hearing-tests/index.html",
+      "page": "src/pages/online-hearing-tests/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "hearing-aids-oticon-hearing-aids",
+      "slug": "oticon-hearing-aids",
+      "route": "/oticon-hearing-aids/",
+      "canonical": "https://campbellhearingsolutions.com/oticon-hearing-aids/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "hearing_aids",
+      "collectionLabel": "Hearing Aids",
+      "contentType": "hearing_aid",
+      "title": "Oticon Hearing Aids | Campbell Hearing Solutions",
+      "description": "Campbell Hearing Solutions is an authorized provider of Oticon hearing aids in Granger, IN.",
+      "bodyClass": "site-singular page-template-default page page-id-1846 site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-template-full-width astro-kit-1106 astro-page astro-page-1846 astro-page-1197",
+      "stylesheets": [
+        "/assets/styles/bundle-27.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "oticon-hearing-aids/index.html",
+      "page": "src/pages/oticon-hearing-aids/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "hearing-aids-over-the-counter-hearing-aids",
+      "slug": "over-the-counter-hearing-aids",
+      "route": "/over-the-counter-hearing-aids/",
+      "canonical": "https://campbellhearingsolutions.com/over-the-counter-hearing-aids/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "hearing_aids",
+      "collectionLabel": "Hearing Aids",
+      "contentType": "hearing_aid",
+      "title": "Should You Buy Over-the-Counter Hearing Aids? | Campbell Hearing Solutions",
+      "description": "Understand how OTC devices compare to prescription options and get expert guidance from Campbell Hearing Solutions. Schedule your hearing evaluation today.",
+      "bodyClass": "site-singular post-template-default single single-post postid-4669 single-format-standard site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-kit-1106 astro-page-1203",
+      "stylesheets": [
+        "/assets/styles/bundle-28.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "over-the-counter-hearing-aids/index.html",
+      "page": "src/pages/over-the-counter-hearing-aids/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "pages-patient-information-campbell-hearing-solutions",
+      "slug": "patient-information-campbell-hearing-solutions",
+      "route": "/patient-information-campbell-hearing-solutions/",
+      "canonical": "https://campbellhearingsolutions.com/patient-information-campbell-hearing-solutions/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "pages",
+      "collectionLabel": "Pages",
+      "contentType": "page",
+      "title": "Patient Forms | Campbell Hearing Solutions",
+      "description": "To help us provide the best audiology care in Granger, IN, we’ve made our patient information forms available online. Connect with our audiologists today!",
+      "bodyClass": "site-singular page-template-default page page-id-1856 site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-template-full-width astro-kit-1106 astro-page-1197",
+      "stylesheets": [
+        "/assets/styles/bundle-30.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "patient-information-campbell-hearing-solutions/index.html",
+      "page": "src/pages/patient-information-campbell-hearing-solutions/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "hearing-aids-phonak-hearing-aids",
+      "slug": "phonak-hearing-aids",
+      "route": "/phonak-hearing-aids/",
+      "canonical": "https://campbellhearingsolutions.com/phonak-hearing-aids/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "hearing_aids",
+      "collectionLabel": "Hearing Aids",
+      "contentType": "hearing_aid",
+      "title": "Phonak Hearing Aids | Campbell Hearing Solutions",
+      "description": "Campbell Hearing Solutions is an authorized provider of Phonak hearing aids in Granger IN.",
+      "bodyClass": "site-singular page-template-default page page-id-1843 site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-template-full-width astro-kit-1106 astro-page astro-page-1843 astro-page-1197",
+      "stylesheets": [
+        "/assets/styles/bundle-31.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "phonak-hearing-aids/index.html",
+      "page": "src/pages/phonak-hearing-aids/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "utility-pages-privacy-policy",
+      "slug": "privacy-policy",
+      "route": "/privacy-policy/",
+      "canonical": "https://campbellhearingsolutions.com/privacy-policy/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "utility_pages",
+      "collectionLabel": "Utility Pages",
+      "contentType": "utility",
+      "title": "Campbell Hearing Solutions | Privacy Policy",
+      "description": "This Privacy Policy describes how your personal information is collected, used, and shared when you visit or make a purchase from Campbell Hearing Solutions.",
+      "bodyClass": "site-singular page-template page-template-astro_header_footer page page-id-1597 site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-template-full-width astro-kit-1106 astro-page astro-page-1597",
+      "stylesheets": [
+        "/assets/styles/bundle-32.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "privacy-policy/index.html",
+      "page": "src/pages/privacy-policy/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "hearing-aids-rechargeable-hearing-aids-easy-eco-friendly-hearing-care",
+      "slug": "rechargeable-hearing-aids-easy-eco-friendly-hearing-care",
+      "route": "/rechargeable-hearing-aids-easy-eco-friendly-hearing-care/",
+      "canonical": "https://campbellhearingsolutions.com/rechargeable-hearing-aids-easy-eco-friendly-hearing-care/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "hearing_aids",
+      "collectionLabel": "Hearing Aids",
+      "contentType": "hearing_aid",
+      "title": "Rechargeable Hearing Aids | Campbell Hearing Solutions",
+      "description": "Discover the ease and benefits of rechargeable hearing aids and why they’re a smart, eco-friendly choice.",
+      "bodyClass": "site-singular post-template-default single single-post postid-1805 single-format-standard site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-kit-1106 astro-page-1203",
+      "stylesheets": [
+        "/assets/styles/bundle-33.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "rechargeable-hearing-aids-easy-eco-friendly-hearing-care/index.html",
+      "page": "src/pages/rechargeable-hearing-aids-easy-eco-friendly-hearing-care/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "hearing-aids-resound-hearing-aids",
+      "slug": "resound-hearing-aids",
+      "route": "/resound-hearing-aids/",
+      "canonical": "https://campbellhearingsolutions.com/resound-hearing-aids/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "hearing_aids",
+      "collectionLabel": "Hearing Aids",
+      "contentType": "hearing_aid",
+      "title": "ReSound Hearing Aids | Campbell Hearing Solutions",
+      "description": "Campbell Hearing Solutions is an authorized provider of ReSound hearing aids in Granger, IN.",
+      "bodyClass": "site-singular page-template-default page page-id-1848 site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-template-full-width astro-kit-1106 astro-page astro-page-1848 astro-page-1197",
+      "stylesheets": [
+        "/assets/styles/bundle-34.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "resound-hearing-aids/index.html",
+      "page": "src/pages/resound-hearing-aids/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "services-sensorineural-hearing-loss-treatment-in-granger-in",
+      "slug": "sensorineural-hearing-loss-treatment-in-granger-in",
+      "route": "/sensorineural-hearing-loss-treatment-in-granger-in/",
+      "canonical": "https://campbellhearingsolutions.com/sensorineural-hearing-loss-treatment-in-granger-in/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "services",
+      "collectionLabel": "Services",
+      "contentType": "service",
+      "title": "Sensorineural Hearing Loss Treatment in Granger, IN | Campbell Hearing Solutions",
+      "description": "Campbell Hearing Solutions provides sensorineural hearing loss treatment in Granger, IN.",
+      "bodyClass": "site-singular post-template-default single single-post postid-1827 single-format-standard site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-kit-1106 astro-page-1203",
+      "stylesheets": [
+        "/assets/styles/bundle-35.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "sensorineural-hearing-loss-treatment-in-granger-in/index.html",
+      "page": "src/pages/sensorineural-hearing-loss-treatment-in-granger-in/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "articles-should-you-trust-nano-hearing-aids-an-audiologists-take",
+      "slug": "should-you-trust-nano-hearing-aids-an-audiologists-take",
+      "route": "/should-you-trust-nano-hearing-aids-an-audiologists-take/",
+      "canonical": "https://campbellhearingsolutions.com/should-you-trust-nano-hearing-aids-an-audiologists-take/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "articles",
+      "collectionLabel": "Articles",
+      "contentType": "article",
+      "title": "Nano Hearing Aids | Campbell Hearing Solutions",
+      "description": "Learn about Nano hearing aids, their pros and cons, and why seeing an audiologist at Campbell Hearing Solutions is the best choice for your hearing health.",
+      "bodyClass": "site-singular page-template-default page page-id-1836 site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-template-full-width astro-kit-1106 astro-page astro-page-1836 astro-page-1197",
+      "stylesheets": [
+        "/assets/styles/bundle-37.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "should-you-trust-nano-hearing-aids-an-audiologists-take/index.html",
+      "page": "src/pages/should-you-trust-nano-hearing-aids-an-audiologists-take/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "hearing-aids-signia-hearing-aids",
+      "slug": "signia-hearing-aids",
+      "route": "/signia-hearing-aids/",
+      "canonical": "https://campbellhearingsolutions.com/signia-hearing-aids/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "hearing_aids",
+      "collectionLabel": "Hearing Aids",
+      "contentType": "hearing_aid",
+      "title": "Signia Hearing Aids | Campbell Hearing Solutions",
+      "description": "Campbell Hearing Solutions is an authorized provider of Signia hearing aids in Granger, IN.",
+      "bodyClass": "site-singular page-template-default page page-id-1854 site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-template-full-width astro-kit-1106 astro-page astro-page-1854 astro-page-1197",
+      "stylesheets": [
+        "/assets/styles/bundle-38.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "signia-hearing-aids/index.html",
+      "page": "src/pages/signia-hearing-aids/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "utility-pages-sitemap",
+      "slug": "sitemap",
+      "route": "/sitemap/",
+      "canonical": "https://campbellhearingsolutions.com/sitemap/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "utility_pages",
+      "collectionLabel": "Utility Pages",
+      "contentType": "utility",
+      "title": "Sitemap | Campbell Hearing Solutions",
+      "description": "Quickly explore all pages of our hearing care website. Find services, resources, and more—start navigating to better hearing today!",
+      "bodyClass": "site-singular page-template-default page page-id-1240 site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-template-full-width astro-kit-1106 astro-page astro-page-1240 astro-page-1197",
+      "stylesheets": [
+        "/assets/styles/bundle-39.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "sitemap/index.html",
+      "page": "src/pages/sitemap/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "hearing-aids-starkey-hearing-aids",
+      "slug": "starkey-hearing-aids",
+      "route": "/starkey-hearing-aids/",
+      "canonical": "https://campbellhearingsolutions.com/starkey-hearing-aids/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "hearing_aids",
+      "collectionLabel": "Hearing Aids",
+      "contentType": "hearing_aid",
+      "title": "Starkey Hearing Aids | Campbell Hearing Solutions",
+      "description": "Campbell Hearing Solutions is an authorized provider of Starkey hearing aids in Granger, IN.",
+      "bodyClass": "site-singular page-template-default page page-id-1852 site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-template-full-width astro-kit-1106 astro-page astro-page-1852 astro-page-1197",
+      "stylesheets": [
+        "/assets/styles/bundle-41.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "starkey-hearing-aids/index.html",
+      "page": "src/pages/starkey-hearing-aids/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "articles-swimmers-ear-causes-symptoms-and-treatment",
+      "slug": "swimmers-ear-causes-symptoms-and-treatment",
+      "route": "/swimmers-ear-causes-symptoms-and-treatment/",
+      "canonical": "https://campbellhearingsolutions.com/swimmers-ear-causes-symptoms-and-treatment/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "articles",
+      "collectionLabel": "Articles",
+      "contentType": "article",
+      "title": "Swimmer’s Ear | Campbell Hearing Solutions",
+      "description": "Learn the causes, symptoms, and treatment options for swimmer’s ear from the audiology experts at Campbell Hearing Solutions in Granger, IN.",
+      "bodyClass": "site-singular post-template-default single single-post postid-1797 single-format-standard site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-kit-1106 astro-page-1203",
+      "stylesheets": [
+        "/assets/styles/bundle-42.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "swimmers-ear-causes-symptoms-and-treatment/index.html",
+      "page": "src/pages/swimmers-ear-causes-symptoms-and-treatment/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "utility-pages-terms-of-service",
+      "slug": "terms-of-service",
+      "route": "/terms-of-service/",
+      "canonical": "https://campbellhearingsolutions.com/terms-of-service/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "utility_pages",
+      "collectionLabel": "Utility Pages",
+      "contentType": "utility",
+      "title": "Campbell Hearing Solutions | Terms of Service",
+      "description": "Learn about our policies, user responsibilities, and legal guidelines for using our website and services.",
+      "bodyClass": "site-singular page-template page-template-astro_header_footer page page-id-1269 site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-template-full-width astro-kit-1106 astro-page astro-page-1269",
+      "stylesheets": [
+        "/assets/styles/bundle-43.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "terms-of-service/index.html",
+      "page": "src/pages/terms-of-service/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "services-tinnitus-support",
+      "slug": "tinnitus-support",
+      "route": "/tinnitus-support/",
+      "canonical": "https://campbellhearingsolutions.com/tinnitus-support/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "services",
+      "collectionLabel": "Services",
+      "contentType": "service",
+      "title": "Tinnitus Evaluation and Support | Campbell Hearing Solutions",
+      "description": "Campbell Hearing Solutions provides expert tinnitus evaluations and support in Granger, IN.",
+      "bodyClass": "site-singular page-template-default page page-id-1818 site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-template-full-width astro-kit-1106 astro-page astro-page-1818 astro-page-1197",
+      "stylesheets": [
+        "/assets/styles/bundle-46.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "tinnitus-support/index.html",
+      "page": "src/pages/tinnitus-support/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "articles-understanding-pressure-in-the-ear-causes-treatments-and-when-to-seek-help",
+      "slug": "understanding-pressure-in-the-ear-causes-treatments-and-when-to-seek-help",
+      "route": "/understanding-pressure-in-the-ear-causes-treatments-and-when-to-seek-help/",
+      "canonical": "https://campbellhearingsolutions.com/understanding-pressure-in-the-ear-causes-treatments-and-when-to-seek-help/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "articles",
+      "collectionLabel": "Articles",
+      "contentType": "article",
+      "title": "Understanding Pressure in the Ear | Dr. Campbell's Hearing Solutions",
+      "description": "Feeling fullness or pressure in your ear? Learn the common causes and best treatments from Dr. Campbell’s Hearing Solutions in Granger, IN. Schedule a hearing consultation today for expert care.",
+      "bodyClass": "site-singular post-template-default single single-post postid-4660 single-format-standard site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-kit-1106 astro-page-1203",
+      "stylesheets": [
+        "/assets/styles/bundle-47.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "understanding-pressure-in-the-ear-causes-treatments-and-when-to-seek-help/index.html",
+      "page": "src/pages/understanding-pressure-in-the-ear-causes-treatments-and-when-to-seek-help/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "hearing-aids-unitron-hearing-aids",
+      "slug": "unitron-hearing-aids",
+      "route": "/unitron-hearing-aids/",
+      "canonical": "https://campbellhearingsolutions.com/unitron-hearing-aids/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "hearing_aids",
+      "collectionLabel": "Hearing Aids",
+      "contentType": "hearing_aid",
+      "title": "Unitron Hearing Aids | Campbell Hearing Solutions",
+      "description": "Campbell Hearing Solutions is an authorized provider of Unitron hearing aids in Granger, IN.",
+      "bodyClass": "site-singular page-template-default page page-id-4031 site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-template-full-width astro-kit-1106 astro-page astro-page-4031 astro-page-1197",
+      "stylesheets": [
+        "/assets/styles/bundle-48.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "unitron-hearing-aids/index.html",
+      "page": "src/pages/unitron-hearing-aids/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "articles-walmart-hearing-aids-what-you-need-to-know-before-you-buy",
+      "slug": "walmart-hearing-aids-what-you-need-to-know-before-you-buy",
+      "route": "/walmart-hearing-aids-what-you-need-to-know-before-you-buy/",
+      "canonical": "https://campbellhearingsolutions.com/walmart-hearing-aids-what-you-need-to-know-before-you-buy/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "articles",
+      "collectionLabel": "Articles",
+      "contentType": "article",
+      "title": "Walmart Hearing Aids | Campbell Hearing Solutions",
+      "description": "Thinking about buying Walmart hearing aids? Learn the pros, cons, and why seeing an audiologist offers better results for your hearing health.",
+      "bodyClass": "site-singular page-template-default page page-id-1840 site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-template-full-width astro-kit-1106 astro-page astro-page-1840 astro-page-1197",
+      "stylesheets": [
+        "/assets/styles/bundle-49.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "walmart-hearing-aids-what-you-need-to-know-before-you-buy/index.html",
+      "page": "src/pages/walmart-hearing-aids-what-you-need-to-know-before-you-buy/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "hearing-aids-widex-hearing-aids",
+      "slug": "widex-hearing-aids",
+      "route": "/widex-hearing-aids/",
+      "canonical": "https://campbellhearingsolutions.com/widex-hearing-aids/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "hearing_aids",
+      "collectionLabel": "Hearing Aids",
+      "contentType": "hearing_aid",
+      "title": "Widex Hearing Aids | Campbell Hearing Solutions",
+      "description": "Campbell Hearing Solutions is an authorized provider of Widex hearing aids in Granger, IN.",
+      "bodyClass": "site-singular page-template-default page page-id-1850 site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-template-full-width astro-kit-1106 astro-page astro-page-1850 astro-page-1197",
+      "stylesheets": [
+        "/assets/styles/bundle-50.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "widex-hearing-aids/index.html",
+      "page": "src/pages/widex-hearing-aids/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "audiologists-karen-smith",
+      "slug": "karen-smith",
+      "route": "/karen-smith/",
+      "canonical": "https://campbellhearingsolutions.com/karen-smith/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "audiologists",
+      "collectionLabel": "Audiologists",
+      "contentType": "audiologist",
+      "title": "Karen Smith | Campbell Hearing Solutions",
+      "description": "Karen has been with Campbell Hearing Solutions for over 20 years. She has over 25 years of experience working in front and back medical offices, including",
+      "bodyClass": "site-singular audiologist-template-default single single-audiologist postid-919 site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-template-full-width astro-kit-1106 astro-page-1888",
+      "stylesheets": [
+        "/assets/styles/bundle-24.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "karen-smith/index.html",
+      "page": "src/pages/karen-smith/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "audiologists-sheree-richardson",
+      "slug": "sheree-richardson",
+      "route": "/sheree-richardson/",
+      "canonical": "https://campbellhearingsolutions.com/sheree-richardson/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "audiologists",
+      "collectionLabel": "Audiologists",
+      "contentType": "audiologist",
+      "title": "Sheree Richardson, M.S. | Dr. Campbell’s Hearing Solutions",
+      "description": "Dr. Sheree Richardson is an audiologist providing hearing tests and hearing aids in Granger, IN.",
+      "bodyClass": "site-singular audiologist-template-default single single-audiologist postid-1026 site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-template-full-width astro-kit-1106 astro-page-1888",
+      "stylesheets": [
+        "/assets/styles/bundle-36.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "sheree-richardson/index.html",
+      "page": "src/pages/sheree-richardson/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "utility-pages-thank-you",
+      "slug": "thank-you",
+      "route": "/thank-you/",
+      "canonical": "https://campbellhearingsolutions.com/thank-you/",
+      "robots": "follow, noindex",
+      "collection": "utility_pages",
+      "collectionLabel": "Utility Pages",
+      "contentType": "utility",
+      "title": "Thank You | Campbell Hearing Solutions",
+      "description": "Thank you for contacting Campbell Hearing Solutions! A team member will be in touch shortly. Have questions? Call us now to get the help you need.",
+      "bodyClass": "site-singular page-template page-template-astro_header_footer page page-id-1243 site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-template-full-width astro-kit-1106 astro-page astro-page-1243",
+      "stylesheets": [
+        "/assets/styles/bundle-44.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "thank-you/index.html",
+      "page": "src/pages/thank-you/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "utility-pages-thank-you-for-contacting-us",
+      "slug": "thank-you-for-contacting-us",
+      "route": "/thank-you-for-contacting-us/",
+      "canonical": "https://campbellhearingsolutions.com/thank-you-for-contacting-us/",
+      "robots": "follow, noindex",
+      "collection": "utility_pages",
+      "collectionLabel": "Utility Pages",
+      "contentType": "utility",
+      "title": "Thank you for contacting us | Campbell Hearing Solutions",
+      "description": "Our team will review your request and contact you to as soon as we are able.",
+      "bodyClass": "site-singular page-template page-template-astro_header_footer page page-id-4232 site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-template-full-width astro-kit-1106 astro-page astro-page-4232",
+      "stylesheets": [
+        "/assets/styles/bundle-45.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "thank-you-for-contacting-us/index.html",
+      "page": "src/pages/thank-you-for-contacting-us/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "audiologists-jodie-harman",
+      "slug": "jodie-harman",
+      "route": "/jodie-harman/",
+      "canonical": "https://campbellhearingsolutions.com/jodie-harman/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "audiologists",
+      "collectionLabel": "Audiologists",
+      "contentType": "audiologist",
+      "title": "Jodie Harman | Campbell Hearing Solutions",
+      "description": "Jodie has been with Campbell Hearing Solutions since 2017. Since high school she has always enjoyed working in the medical field and helping patients. As the",
+      "bodyClass": "site-singular audiologist-template-default single single-audiologist postid-2740 site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-template-full-width astro-kit-1106 astro-page-1888",
+      "stylesheets": [
+        "/assets/styles/bundle-22.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "jodie-harman/index.html",
+      "page": "src/pages/jodie-harman/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "audiologists-stacey-linville",
+      "slug": "stacey-linville",
+      "route": "/stacey-linville/",
+      "canonical": "https://campbellhearingsolutions.com/stacey-linville/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "audiologists",
+      "collectionLabel": "Audiologists",
+      "contentType": "audiologist",
+      "title": "Stacey Linville | Campbell Hearing Solutions",
+      "description": "Stacey has been with our team for nearly a decade. She has a bachelor’s degree in organizational management as well as impressive experience in customer",
+      "bodyClass": "site-singular audiologist-template-default single single-audiologist postid-2739 site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-template-full-width astro-kit-1106 astro-page-1888",
+      "stylesheets": [
+        "/assets/styles/bundle-40.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "stacey-linville/index.html",
+      "page": "src/pages/stacey-linville/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "testimonials-john-doe",
+      "slug": "john-doe",
+      "route": "/john-doe/",
+      "canonical": "https://campbellhearingsolutions.com/john-doe/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "testimonials",
+      "collectionLabel": "Testimonials",
+      "contentType": "testimonial",
+      "title": "John Doe | Campbell Hearing Solutions",
+      "description": "It was a great experience all the way around.  Check in was smooth and easy.  Wait time to be seen was minimal.  Madison was just plain great!  She is very",
+      "bodyClass": "site-singular testimonial-template-default single single-testimonial postid-394 site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-kit-1106",
+      "stylesheets": [
+        "/assets/styles/bundle-23.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "john-doe/index.html",
+      "page": "src/pages/john-doe/index.astro",
+      "descriptionPresent": true
+    },
+    {
+      "id": "testimonials-pat-johnson",
+      "slug": "pat-johnson",
+      "route": "/pat-johnson/",
+      "canonical": "https://campbellhearingsolutions.com/pat-johnson/",
+      "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "collection": "testimonials",
+      "collectionLabel": "Testimonials",
+      "contentType": "testimonial",
+      "title": "Pat Johnson | Campbell Hearing Solutions",
+      "description": "It was a great experience all the way around.  Check in was smooth and easy.  Wait time to be seen was minimal.  Madison was just plain great!  She is very",
+      "bodyClass": "site-singular testimonial-template-default single single-testimonial postid-392 site-custom-logo site-embed-responsive site-theme-hello-astro site-child-theme-hello-astro-ba hello-astro-default astro-default astro-kit-1106",
+      "stylesheets": [
+        "/assets/styles/bundle-29.css?v=20260511-desktop-header-v17"
+      ],
+      "sourceFile": "pat-johnson/index.html",
+      "page": "src/pages/pat-johnson/index.astro",
+      "descriptionPresent": true
+    }
+  ]
+}

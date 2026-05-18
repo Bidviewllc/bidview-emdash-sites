@@ -1,0 +1,8 @@
+/* Track A parity bridge. The localized site CSS lives in /public/assets/styles/bundle-5.css. */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+}

@@ -1,0 +1,16 @@
+---
+import Base from "../../layouts/Base.astro";
+import { getPageByRoute } from "../../lib/pages.js";
+
+export const cacheHint = 3600;
+
+const page = await getPageByRoute("/signia-hearing-aids/");
+
+if (!page) {
+  throw new Error("Missing dynamic page data for /signia-hearing-aids/");
+}
+---
+
+<Base {...page}>
+  <Fragment set:html={page.bodyHtml} />
+</Base>

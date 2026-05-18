@@ -1,0 +1,16 @@
+---
+import Base from "../../layouts/Base.astro";
+import { getPageByRoute } from "../../lib/pages.js";
+
+export const cacheHint = 3600;
+
+const page = await getPageByRoute("/hearing-aid-fittings-in-granger-in/");
+
+if (!page) {
+  throw new Error("Missing dynamic page data for /hearing-aid-fittings-in-granger-in/");
+}
+---
+
+<Base {...page}>
+  <Fragment set:html={page.bodyHtml} />
+</Base>

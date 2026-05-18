@@ -1,0 +1,37 @@
+{
+  "name": "campbell-hearing-solutions-emdash",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev --host 127.0.0.1",
+    "build": "astro build",
+    "build:cloudflare": "node scripts/deploy-cloudflare.mjs --build-only",
+    "deploy:cloudflare": "node scripts/deploy-cloudflare.mjs",
+    "preview": "astro preview --host 127.0.0.1",
+    "typecheck": "astro check"
+  },
+  "dependencies": {
+    "@astrojs/cloudflare": "^13.1.6",
+    "@astrojs/node": "^10.1.0",
+    "@astrojs/react": "^5.0.4",
+    "@emdash-cms/cloudflare": "^0.1.0",
+    "astro": "^6.1.2",
+    "emdash": "^0.1.0",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.7",
+    "@cloudflare/workers-types": "^4.20260401.1",
+    "typescript": "^5.9.3",
+    "wrangler": "^4.79.0"
+  },
+  "overrides": {
+    "better-sqlite3": "^12.9.0"
+  },
+  "emdash": {
+    "label": "Campbell Hearing Solutions",
+    "seed": "seed/seed.json"
+  }
+}
