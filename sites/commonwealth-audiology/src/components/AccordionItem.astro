@@ -1,0 +1,86 @@
+---
+/**
+ * Single accordion item — native <details>/<summary> (no JS, accessible).
+ * Matches the homepage FAQ accordion pattern. Slot = panel content.
+ */
+interface Props {
+	title: string;
+	open?: boolean;
+}
+const { title, open = false } = Astro.props;
+---
+
+<details class="acc-item" open={open}>
+	<summary class="acc-summary">
+		<span class="acc-title">{title}</span>
+		<svg
+			class="acc-icon"
+			width="22"
+			height="22"
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2.2"
+			aria-hidden="true"
+		>
+			<polyline points="6 9 12 15 18 9"></polyline>
+		</svg>
+	</summary>
+	<div class="acc-panel"><slot /></div>
+</details>
+
+<style>
+	.acc-item {
+		border: 1px solid rgba(0, 0, 0, 0.16);
+		border-radius: 10px;
+		background: #fff;
+		overflow: hidden;
+	}
+
+	.acc-summary {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		padding: 1.15rem 1.4rem;
+		cursor: pointer;
+		list-style: none;
+		font-family: var(--font-sans);
+		font-size: 1.05rem;
+		font-weight: 700;
+		color: #1a1a1a;
+	}
+
+	.acc-summary::-webkit-details-marker {
+		display: none;
+	}
+
+	.acc-summary:hover .acc-title {
+		color: #0076ba;
+	}
+
+	.acc-icon {
+		flex-shrink: 0;
+		color: #0076ba;
+		transition: transform 0.22s ease;
+	}
+
+	.acc-item[open] .acc-icon {
+		transform: rotate(180deg);
+	}
+
+	.acc-panel {
+		padding: 0 1.4rem 1.3rem;
+		color: #2a2a2a;
+		font-size: 1rem;
+		line-height: 1.62;
+	}
+
+	.acc-panel :global(p) {
+		margin: 0 0 0.85rem;
+	}
+
+	.acc-panel :global(p:last-child) {
+		margin-bottom: 0;
+	}
+</style>

@@ -1,0 +1,103 @@
+---
+/**
+ * Single blog post — rendered with the shared InternalPage layout
+ * (PageHero + 2-column body + Sidebar), the same template as every
+ * other internal page. The featured image is used as the hero background.
+ */
+import { getEmDashEntry, decodeSlug } from "emdash";
+import { PortableText } from "emdash/ui";
+import InternalPage from "../../layouts/InternalPage.astro";
+import TableOfContents from "../../components/TableOfContents.astro";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.redirect("/404");
+
+const { entry: post } = await getEmDashEntry("posts", slug);
+if (!post) return Astro.redirect("/404");
+
+/** Build a plain URL from a stored MediaValue (local storage uses storageKey). */
+function mediaUrl(img: unknown): string | undefined {
+	if (!img || typeof img !== "object") return undefined;
+	const m = img as Record<string, any>;
+	const key = m.meta?.storageKey;
+	if (typeof key === "string" && key) {
+		return `/_emdash/api/media/file/${key}`;
+	}
+	if (typeof m.src === "string" && m.src) return m.src;
+	return undefined;
+}
+
+const heroImage =
+	mediaUrl(post.data.featured_image) ?? "/uploads/internal-hero-default.png";
+
+const publishDate = post.data.publishedAt
+	? post.data.publishedAt.toLocaleDateString("en-US", {
+			year: "numeric",
+			month: "long",
+			day: "numeric",
+			timeZone: "UTC",
+		})
+	: null;
+
+// Author byline — posts are credited to the practice's doctor.
+const authorName =
+	post.data.bylines?.[0]?.byline?.displayName ?? "Dr. Tiffany Brewer";
+
+// One-line hero meta shown directly below the title.
+const heroMeta = [
+	publishDate ? `Published ${publishDate}` : null,
+	authorName ? `By ${authorName}` : null,
+]
+	.filter(Boolean)
+	.join("  ·  ");
+---
+
+<InternalPage
+	title={post.data.title}
+	description={post.data.excerpt ?? null}
+	heroImage={heroImage}
+	heroMeta={heroMeta}
+	breadcrumbs={[
+		{ label: "Home", href: "/" },
+		{ label: "News & Articles", href: "/news/" },
+		{ label: post.data.title },
+	]}
+>
+	<TableOfContents />
+
+	<div class="post-content">
+		<PortableText value={post.data.content} />
+	</div>
+</InternalPage>
+
+<style>
+	/* PortableText emits raw tags — the InternalPage .page-main :global()
+	   typography already styles p/h2/h3/h4/ul/li, so this only needs
+	   to cover the few extras PortableText can produce. */
+	.post-content :global(a) {
+		color: #0076ba;
+		text-decoration: underline;
+		text-underline-offset: 3px;
+	}
+
+	.post-content :global(a:hover) {
+		color: #005b8f;
+	}
+
+	.post-content :global(img) {
+		max-width: 100%;
+		height: auto;
+		border-radius: 12px;
+		margin: 1.6rem 0;
+	}
+
+	.post-content :global(blockquote) {
+		margin: 1.8rem 0;
+		padding: 1rem 1.4rem;
+		border-left: 4px solid #0076ba;
+		background: #f3f8fc;
+		border-radius: 0 8px 8px 0;
+		font-style: italic;
+		color: #333;
+	}
+</style>

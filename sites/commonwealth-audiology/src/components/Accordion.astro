@@ -1,0 +1,17 @@
+---
+/**
+ * Accordion group wrapper. Place <AccordionItem> children inside.
+ * Reused across internal-page content sections.
+ */
+---
+
+<div class="accordion"><slot /></div>
+
+<style>
+	.accordion {
+		display: flex;
+		flex-direction: column;
+		gap: 0.9rem;
+		width: 100%;
+	}
+</style>

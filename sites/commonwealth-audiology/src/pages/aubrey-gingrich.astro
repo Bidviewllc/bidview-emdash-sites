@@ -1,0 +1,166 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHero from "../components/PageHero.astro";
+import LocationSection from "../components/LocationSection.astro";
+import ServicesSection from "../components/ServicesSection.astro";
+
+const photo = "/uploads/6e9f81d4d3d1cc131aee03667f847a44c2b4765e.jpg";
+---
+
+<Base
+	title="Aubrey Gingrich — Patient Care Coordinator"
+	description="Meet Aubrey Gingrich, Patient Care Coordinator at Commonwealth Audiology in Georgetown, KY."
+>
+	<PageHero
+		title="Aubrey Gingrich"
+		breadcrumbs={[
+			{ label: "Home", href: "/" },
+			{ label: "About", href: "/about/" },
+			{ label: "Aubrey Gingrich" },
+		]}
+		image="/uploads/internal-hero-default.png"
+	/>
+
+	<section class="bio-section">
+		<div class="bio-grid">
+			<div class="bio-main">
+				<p class="bio-eyebrow">Patient Care Coordinator</p>
+				<p class="bio-lead">
+					Aubrey serves as a Patient Care Coordinator at Commonwealth
+					Audiology, bringing a strong background in healthcare leadership and
+					communication.
+				</p>
+				<p>
+					She is a recent graduate of the University of Kentucky, where she
+					earned her degree in Clinical Leadership and Management with a minor
+					in Communications.
+				</p>
+				<p>
+					During her time at the University of Kentucky, Aubrey was an active
+					member of Delta Sorority, whose philanthropy focuses on hearing and
+					speech. Through this involvement, she developed a meaningful
+					appreciation for the impact of hearing healthcare and collaborated
+					with both local and national partners to help expand access to
+					hearing-related resources.
+				</p>
+				<p>
+					Originally from Arlington, Virginia, Aubrey has enjoyed making
+					Kentucky her new home. Outside of the office, she enjoys staying
+					active at the gym, reading, and spending quality time with her
+					family. She is passionate about creating a welcoming experience for
+					every patient and looks forward to building meaningful connections
+					while supporting their care journey.
+				</p>
+			</div>
+
+			<aside class="bio-aside">
+				<div class="bio-photo-card">
+					<img src={photo} alt="Aubrey Gingrich" class="bio-photo" />
+					<div class="bio-photo-meta">
+						<p class="bio-photo-name">Aubrey Gingrich</p>
+						<p class="bio-photo-role">Patient Care Coordinator</p>
+					</div>
+				</div>
+			</aside>
+		</div>
+	</section>
+
+	<LocationSection />
+	<ServicesSection />
+</Base>
+
+<style>
+	.bio-section {
+		background: #fff;
+		padding: 3.5rem 1.5rem 1rem;
+	}
+
+	.bio-grid {
+		max-width: 1200px;
+		margin: 0 auto;
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) 360px;
+		gap: 3rem;
+		align-items: start;
+	}
+
+	.bio-main {
+		min-width: 0;
+		color: #1a1a1a;
+	}
+
+	.bio-main p {
+		margin: 0 0 1.15rem;
+		font-size: 1.075rem;
+		line-height: 1.6;
+		color: #1a1a1a;
+	}
+
+	.bio-eyebrow {
+		font-size: 0.95rem !important;
+		font-weight: 800;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: #0076ba;
+		margin-bottom: 0.4rem !important;
+	}
+
+	.bio-lead {
+		font-style: italic;
+		font-weight: 700;
+	}
+
+	.bio-aside {
+		position: sticky;
+		top: 120px;
+	}
+
+	.bio-photo-card {
+		border-radius: 16px;
+		overflow: hidden;
+		background: #fff;
+		box-shadow: 0 12px 30px rgba(0, 0, 0, 0.14);
+	}
+
+	.bio-photo {
+		display: block;
+		width: 100%;
+		height: auto;
+		aspect-ratio: 4 / 5;
+		object-fit: cover;
+	}
+
+	.bio-photo-meta {
+		padding: 1.2rem 1.4rem 1.4rem;
+		text-align: center;
+		background: #0076ba;
+	}
+
+	.bio-photo-name {
+		margin: 0 0 0.2rem;
+		font-family: "Merriweather", Georgia, serif;
+		font-size: 1.2rem;
+		font-weight: 700;
+		color: #fff;
+	}
+
+	.bio-photo-role {
+		margin: 0;
+		font-size: 0.9rem;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: rgba(255, 255, 255, 0.9);
+	}
+
+	@media (max-width: 960px) {
+		.bio-grid {
+			grid-template-columns: 1fr;
+			gap: 2rem;
+		}
+		.bio-aside {
+			position: static;
+			order: -1;
+			max-width: 360px;
+		}
+	}
+</style>

@@ -1,0 +1,236 @@
+---
+/**
+ * Internal-page sidebar — "Compassionate Hearing Care" CTA card
+ * + "Recent News & Articles" list. Used alongside page content.
+ */
+interface Post {
+	id: string;
+	title: string;
+	image?: string | null;
+}
+interface Props {
+	phone: string;
+	bookUrl: string;
+	posts?: Post[];
+}
+const { phone, bookUrl, posts = [] } = Astro.props;
+const telHref = `tel:${phone.replace(/\D/g, "")}`;
+---
+
+<aside class="sidebar">
+	<div class="sidebar-cta">
+		<img
+			src="/uploads/sidebar-care.png"
+			alt="Audiologist with a patient at Commonwealth Audiology"
+			class="sidebar-cta-img"
+		/>
+		<div class="sidebar-cta-body">
+			<h2 class="sidebar-cta-title">Compassionate Hearing Care</h2>
+			<p class="sidebar-cta-text">
+				Hearing clearly impacts your quality of life now and for years to
+				come in so many ways. Call us today and take the first step toward
+				clearer, more confident listening.
+			</p>
+			<a href={bookUrl} class="sidebar-cta-btn">
+				BOOK AN APPOINTMENT
+				<span class="sidebar-cta-arrow" aria-hidden="true"></span>
+			</a>
+			<p class="sidebar-cta-phone">
+				Or give us a call at: <a href={telHref}>{phone}</a>
+			</p>
+		</div>
+	</div>
+
+	{posts.length > 0 && (
+		<div class="sidebar-news">
+			<h2 class="sidebar-news-title">Recent News &amp; Articles</h2>
+			<ul class="sidebar-news-list">
+				{posts.map((post) => (
+					<li>
+						<a href={`/news/${post.id}/`} class="sidebar-news-item">
+							<span class="sidebar-news-thumb">
+								{post.image ? (
+									<img src={post.image} alt={post.title} loading="lazy" />
+								) : (
+									<span class="sidebar-news-thumb-fallback" aria-hidden="true" />
+								)}
+							</span>
+							<span class="sidebar-news-text">{post.title}</span>
+						</a>
+					</li>
+				))}
+			</ul>
+		</div>
+	)}
+</aside>
+
+<style>
+	.sidebar {
+		display: flex;
+		flex-direction: column;
+		gap: 1.6rem;
+	}
+
+	/* ── CTA card ── */
+	.sidebar-cta {
+		border-radius: 14px;
+		overflow: hidden;
+		background: #0076ba;
+		box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+	}
+
+	.sidebar-cta-img {
+		display: block;
+		width: 100%;
+		height: 210px;
+		object-fit: cover;
+	}
+
+	.sidebar-cta-body {
+		padding: 1.6rem 1.7rem 1.8rem;
+		text-align: center;
+		color: #fff;
+	}
+
+	.sidebar-cta-title {
+		margin: 0 0 0.7rem;
+		font-family: "Merriweather", Georgia, serif;
+		font-size: 1.6rem;
+		font-weight: 700;
+		line-height: 1.2;
+		color: #fff;
+	}
+
+	.sidebar-cta-text {
+		margin: 0 0 1.4rem;
+		font-size: 1rem;
+		line-height: 1.5;
+		color: rgba(255, 255, 255, 0.95);
+	}
+
+	.sidebar-cta-btn {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.7rem;
+		padding: 0.85rem 1.5rem;
+		background: #fff;
+		color: #0076ba;
+		font-size: 0.95rem;
+		font-weight: 700;
+		border-radius: 8px;
+		text-decoration: none;
+		transition: background 0.18s ease;
+	}
+
+	.sidebar-cta-btn:hover {
+		background: #eaf4fb;
+		color: #0076ba;
+	}
+
+	.sidebar-cta-arrow {
+		width: 1rem;
+		height: 0.6875rem;
+		background: currentColor;
+		-webkit-mask: url("/uploads/right-aerow-button.svg") center / contain no-repeat;
+		mask: url("/uploads/right-aerow-button.svg") center / contain no-repeat;
+	}
+
+	.sidebar-cta-phone {
+		margin: 1rem 0 0;
+		font-size: 0.9rem;
+		color: rgba(255, 255, 255, 0.95);
+	}
+
+	.sidebar-cta-phone a {
+		color: #fff;
+		font-weight: 700;
+		text-decoration: none;
+	}
+
+	/* ── Recent news card ── */
+	.sidebar-news {
+		padding: 1.4rem 1.5rem 1.5rem;
+		background: #fff;
+		border-radius: 14px;
+		outline: 1px solid rgba(49, 96, 159, 0.24);
+		outline-offset: -1px;
+	}
+
+	.sidebar-news-title {
+		margin: 0 0 1rem;
+		font-family: "Merriweather", Georgia, serif;
+		font-size: 1.3rem;
+		font-weight: 700;
+		color: #0076ba;
+	}
+
+	.sidebar-news-list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.sidebar-news-list li {
+		padding: 0.85rem 0;
+		border-top: 1px solid rgba(0, 0, 0, 0.1);
+	}
+
+	.sidebar-news-list li:first-child {
+		border-top: 0;
+		padding-top: 0;
+	}
+
+	.sidebar-news-list li:last-child {
+		padding-bottom: 0;
+	}
+
+	.sidebar-news-item {
+		display: flex;
+		align-items: center;
+		gap: 0.85rem;
+		color: #1f1f1f;
+		text-decoration: none;
+		transition: color 0.16s ease;
+	}
+
+	.sidebar-news-thumb {
+		flex: 0 0 64px;
+		width: 64px;
+		height: 64px;
+		border-radius: 8px;
+		overflow: hidden;
+		background: #e9eef3;
+	}
+
+	.sidebar-news-thumb img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+		transition: transform 0.2s ease;
+	}
+
+	.sidebar-news-thumb-fallback {
+		display: block;
+		width: 100%;
+		height: 100%;
+		background: linear-gradient(135deg, #d4e4f0, #b9d2e6);
+	}
+
+	.sidebar-news-text {
+		font-size: 1rem;
+		font-weight: 600;
+		line-height: 1.35;
+	}
+
+	.sidebar-news-item:hover {
+		color: #0076ba;
+	}
+
+	.sidebar-news-item:hover .sidebar-news-thumb img {
+		transform: scale(1.06);
+	}
+</style>

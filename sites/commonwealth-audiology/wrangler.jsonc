@@ -1,0 +1,75 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "commonwealth-audiology",
+	"account_id": "239e9d015c7a3a39cdc2e9400312f553",
+	"main": "./src/worker.ts",
+	"compatibility_date": "2026-03-29",
+	"compatibility_flags": ["nodejs_compat"],
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "commonwealth-audiology-db",
+			"database_id": "c0ec066d-0263-4753-9e29-b3b5203deeb8"
+		}
+	],
+	"r2_buckets": [
+		{
+			"binding": "MEDIA",
+			"bucket_name": "commonwealth-audiology-media"
+		}
+	],
+	"kv_namespaces": [
+		{
+			"binding": "SESSION",
+			"id": "028dfa4da881449cb1fcfb8ae46b6e2e"
+		}
+	],
+	"worker_loaders": [
+		{
+			"binding": "LOADER"
+		}
+	],
+	"observability": {
+		"enabled": true
+	},
+	"placement": {
+		"mode": "smart"
+	},
+	"workers_dev": true,
+	"env": {
+		"staging": {
+			"name": "commonwealth-audiology-staging",
+			"d1_databases": [
+				{
+					"binding": "DB",
+					"database_name": "commonwealth-audiology-staging-db",
+					"database_id": "fde1d6dc-e694-4a68-a50c-55bc5dc5a3c5"
+				}
+			],
+			"r2_buckets": [
+				{
+					"binding": "MEDIA",
+					"bucket_name": "commonwealth-audiology-staging-media"
+				}
+			],
+			"kv_namespaces": [
+				{
+					"binding": "SESSION",
+					"id": "028dfa4da881449cb1fcfb8ae46b6e2e"
+				}
+			],
+			"worker_loaders": [
+				{
+					"binding": "LOADER"
+				}
+			],
+			"observability": {
+				"enabled": true
+			},
+			"placement": {
+				"mode": "smart"
+			},
+			"workers_dev": true
+		}
+	}
+}

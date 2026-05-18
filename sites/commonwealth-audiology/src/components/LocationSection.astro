@@ -1,0 +1,366 @@
+---
+/**
+ * Location section — extracted verbatim from the homepage so internal
+ * pages render the identical location card + map. Self-contained.
+ */
+import { getEmDashCollection, getSiteSettings } from "emdash";
+import { resolveBlogSiteIdentity } from "../utils/site-identity";
+
+const [settingsData, { entries: configs }] = await Promise.all([
+	getSiteSettings(),
+	getEmDashCollection("site_config", { limit: 1 }),
+]);
+const { siteLogo, siteTitle } = resolveBlogSiteIdentity(settingsData);
+const cfg: Record<string, any> = configs[0]?.data ?? {};
+const logoSrc = siteLogo?.url ?? "/uploads/0d3a8fc547761a9015ed3bc9284e6d76d16f8417.png";
+const logoAlt = siteLogo?.alt || siteTitle;
+const phone = cfg.phone ?? "(844) 442-4222";
+---
+
+<section class="location-section">
+	<div class="container">
+		<div class="location-card">
+			<div class="location-info">
+				<div class="location-logo">
+					<img src={logoSrc} alt={logoAlt} class="location-logo-img" />
+				</div>
+				<div class="location-details">
+					<div class="location-left-col">
+						<div class="location-row">
+							<img src="/uploads/googlemap.svg" alt="" class="location-icon" aria-hidden="true" />
+							<div>
+								<h3>ADDRESS</h3>
+								<p>
+									{cfg.address_line1 ?? "204 Bevins Lane, Suite B"}
+									{cfg.address_line2 && <><br />{cfg.address_line2}</>}
+									<br />{cfg.city_state ?? "Georgetown, KY 40324"}
+								</p>
+							</div>
+						</div>
+						<div class="location-row">
+							<img src="/uploads/phone.svg" alt="" class="location-icon" aria-hidden="true" />
+							<div>
+								<h3>PHONE NUMBER</h3>
+								<p><strong>Text or call:</strong> {phone}</p>
+							</div>
+						</div>
+						<a href="https://maps.google.com" target="_blank" rel="noopener" class="btn-outline-dark">GET DIRECTIONS <span class="button-arrow" aria-hidden="true"></span></a>
+					</div>
+					<div class="location-right-col">
+						<div class="location-hours-heading">
+							<img src="/uploads/clock.svg" alt="" class="location-icon" aria-hidden="true" />
+							<h3>HOURS</h3>
+						</div>
+						<div class="location-hours-body">
+							<table class="hours-table">
+								<tr><td>Monday:</td><td>9:00am&nbsp; - &nbsp;5:00 pm</td></tr>
+								<tr><td>Tuesday:</td><td>9:00am&nbsp; - &nbsp;7:00 pm*</td></tr>
+								<tr><td>Wednesday:</td><td>9:00am&nbsp; - &nbsp;5:00 pm</td></tr>
+								<tr><td>Thursday:</td><td>9:00am&nbsp; - &nbsp;5:00 pm</td></tr>
+								<tr><td>Friday:</td><td>9:00am&nbsp; - &nbsp;1:00 pm</td></tr>
+								<tr><td>Saturday:</td><td>Closed</td></tr>
+								<tr><td>Sunday:</td><td>Closed</td></tr>
+							</table>
+							<p class="location-note">Lunch Daily: 1 PM – 1:30 PM</p>
+							<p class="location-note">* Evening Hours Available by Appointment Only</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="location-map">
+				{cfg.map_embed_url
+					? <iframe src={cfg.map_embed_url} width="100%" height="100%" style="border:0;" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Commonwealth Audiology location map"></iframe>
+					: <div class="map-placeholder"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#0076BA" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg><p>Add Google Maps embed URL in Admin → Site Configuration</p></div>
+				}
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	.location-section {
+		--brand: #0076ba;
+		--brand-hover: #005a8e;
+	}
+
+	.container {
+		max-width: 1440px;
+		margin: 0 auto;
+		padding: 0 2rem;
+	}
+
+	.btn-outline-dark {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.55rem;
+		padding: 0.65rem 1.5rem;
+		border: 2px solid var(--brand);
+		color: var(--brand);
+		font-size: 0.8rem;
+		font-weight: 700;
+		letter-spacing: 0.05em;
+		border-radius: 4px;
+		text-decoration: none;
+		transition: all 0.2s;
+		margin-top: 1rem;
+	}
+
+	.button-arrow {
+		display: inline-block;
+		width: 1rem;
+		height: 0.6875rem;
+		flex: 0 0 auto;
+		background: currentColor;
+		-webkit-mask: url("/uploads/right-aerow-button.svg") center / contain no-repeat;
+		mask: url("/uploads/right-aerow-button.svg") center / contain no-repeat;
+	}
+
+	.location-section {
+		padding: 3.2rem 0 4.2rem !important;
+		background: #fff !important;
+	}
+
+	.location-section .container {
+		max-width: 1440px !important;
+		padding: 0 28px !important;
+	}
+
+	.location-card {
+		display: grid;
+		grid-template-columns: 47.8% 52.2% !important;
+		align-items: center;
+		gap: 2.65rem !important;
+		min-height: 520px;
+		padding: 4rem 4.15rem 4.1rem 5.1rem;
+		border: 0 !important;
+		border-radius: 18px !important;
+		background: #eeeeee;
+		box-shadow: 0 10px 22px rgba(0,0,0,0.13) !important;
+		overflow: visible !important;
+	}
+
+	.location-info {
+		display: grid;
+		grid-template-columns: 1fr;
+		padding: 0 !important;
+		background: transparent !important;
+	}
+
+	.location-logo {
+		margin: 0 0 2.45rem !important;
+	}
+
+	.location-logo-img {
+		width: auto;
+		height: auto;
+		display: block;
+	}
+
+	.location-details {
+		display: grid !important;
+		grid-template-columns: 0.82fr 1.08fr;
+		gap: 2.65rem;
+		margin: 0 !important;
+	}
+
+	.location-left-col {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+	}
+
+	.location-right-col {
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+	}
+
+	.location-row,
+	.location-hours {
+		position: relative;
+		display: grid !important;
+		grid-template-columns: 28px 1fr;
+		gap: 0.75rem !important;
+		align-items: start;
+		color: #202020;
+		font-size: 16px !important;
+		line-height: 1.42 !important;
+	}
+
+	.location-row:nth-child(3) {
+		grid-column: 1;
+		margin-top: 1.9rem;
+	}
+
+	.location-icon {
+		width: 25px;
+		height: 25px;
+		margin-top: 0.08rem;
+		object-fit: contain;
+	}
+
+	.location-row:first-child .location-icon {
+		width: 19px;
+		height: 25px;
+		justify-self: center;
+	}
+
+	.location-row h3,
+	.location-hours h3 {
+		margin: 0 0 1rem;
+		color: #202020 !important;
+		font-family: var(--font-sans);
+		font-size: 18px;
+		font-weight: 800;
+		letter-spacing: 0 !important;
+		line-height: 1.1;
+		white-space: nowrap;
+	}
+
+	.location-row p {
+		margin: 0 0 0.32rem;
+		color: #202020;
+		font-size: 16px;
+		line-height: 1.45;
+		white-space: nowrap;
+	}
+
+	.location-row strong {
+		font-weight: 800;
+	}
+
+	.location-hours-heading {
+		display: grid;
+		grid-template-columns: 29px max-content;
+		column-gap: 0.72rem;
+		align-items: center;
+	}
+
+	.location-hours-heading h3 {
+		margin: 0 !important;
+		color: #202020 !important;
+	}
+
+	.location-hours-body {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		justify-content: flex-start;
+		min-width: 0;
+	}
+
+	.hours-table {
+		margin: 0 !important;
+		border-collapse: collapse;
+		font-size: 16px !important;
+		line-height: 1.35 !important;
+	}
+
+	.hours-table td {
+		padding: 0 1.05rem 0.43rem 0 !important;
+		color: #202020 !important;
+		white-space: nowrap;
+	}
+
+	.hours-table td:first-child {
+		min-width: 106px;
+		font-weight: 800;
+	}
+
+	.location-note {
+		margin: 0.1rem 0 0.72rem;
+		color: #202020;
+		font-size: 13px;
+		font-style: italic;
+		line-height: 1.35;
+	}
+
+	.location-info .btn-outline-dark {
+		grid-column: 1;
+		width: 204px;
+		margin: 1.6rem 0 0 0 !important;
+		padding: 0.9rem 1.15rem !important;
+		border: 0 !important;
+		border-radius: 7px !important;
+		background: #007fc2;
+		color: #fff;
+		font-size: 16px;
+		font-weight: 600;
+		letter-spacing: 0;
+		text-align: center;
+	}
+
+	.location-info .btn-outline-dark:hover {
+		background: #006ca7;
+		color: #fff;
+	}
+
+	.location-map {
+		min-height: 445px !important;
+		border-radius: 18px;
+		overflow: hidden;
+		background: #def4ed;
+		box-shadow: 0 10px 18px rgba(0,0,0,0.16);
+	}
+
+	.location-map iframe,
+	.location-map .map-placeholder {
+		width: 100%;
+		min-height: 445px !important;
+		border-radius: 18px;
+	}
+
+	.map-placeholder {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 1rem;
+		color: var(--brand);
+		font-size: 0.85rem;
+		text-align: center;
+		padding: 2rem;
+		background:
+			linear-gradient(31deg, transparent 46%, #7fc4bd 46% 48%, transparent 48%),
+			linear-gradient(145deg, transparent 48%, #d7e4ea 48% 52%, transparent 52%),
+			linear-gradient(8deg, transparent 48%, #b7cfd6 48% 50%, transparent 50%),
+			linear-gradient(90deg, rgba(54,188,147,0.18), rgba(99,192,221,0.16)),
+			#eff7f6;
+	}
+
+	@media (max-width: 900px) {
+		.location-section {
+			padding: 40px 0 !important;
+		}
+		.location-section .container {
+			max-width: 100% !important;
+			padding-left: 20px !important;
+			padding-right: 20px !important;
+		}
+		.location-card {
+			grid-template-columns: 1fr !important;
+			padding: 2rem 1.2rem !important;
+			gap: 1.5rem !important;
+			min-height: 0 !important;
+		}
+		.location-details {
+			grid-template-columns: 1fr !important;
+			gap: 1.5rem !important;
+		}
+		.location-logo {
+			width: min(320px, 100%) !important;
+			height: 64px !important;
+		}
+		.location-map {
+			min-height: 300px !important;
+		}
+		.location-map iframe,
+		.location-map .map-placeholder {
+			min-height: 300px !important;
+		}
+		.location-info .btn-outline-dark {
+			margin: 1rem 0 0 !important;
+		}
+	}
+</style>

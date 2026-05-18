@@ -1,0 +1,163 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHero from "../components/PageHero.astro";
+import LocationSection from "../components/LocationSection.astro";
+import ServicesSection from "../components/ServicesSection.astro";
+
+const photo = "/uploads/magnolia.jpg?v=1";
+---
+
+<Base
+	title="Magnolia — Office Companion"
+	description="Meet Magnolia, the beloved office companion at Commonwealth Audiology in Georgetown, KY."
+>
+	<PageHero
+		title="Magnolia"
+		breadcrumbs={[
+			{ label: "Home", href: "/" },
+			{ label: "About", href: "/about/" },
+			{ label: "Magnolia" },
+		]}
+		image="/uploads/internal-hero-default.png"
+	/>
+
+	<section class="bio-section">
+		<div class="bio-grid">
+			<div class="bio-main">
+				<p class="bio-eyebrow">Office Companion</p>
+				<p class="bio-lead">
+					Magnolia is a beloved member of the Commonwealth Audiology team,
+					known for her warm and enthusiastic greetings that make every
+					patient feel welcome.
+				</p>
+				<p>
+					Though she is deaf, Magnolia navigates her environment with ease and
+					brings a unique sense of comfort and joy to the office.
+				</p>
+				<p>
+					She can often be found resting peacefully under the desk during
+					appointments, offering a calm and reassuring presence. While she is
+					generally relaxed, Magnolia's playful personality may occasionally
+					lead to a bit of lighthearted chaos—especially since she has a
+					tendency to sneak off with items that don't quite belong to her.
+				</p>
+				<p>
+					In her spare time, Magnolia loves a good game of catch or
+					tug-of-war, always ready to trade her calm demeanor for a burst of
+					playful energy. She plays an important role in creating a friendly,
+					approachable atmosphere and is always happy to be part of each
+					patient's visit.
+				</p>
+			</div>
+
+			<aside class="bio-aside">
+				<div class="bio-photo-card">
+					<img src={photo} alt="Magnolia, office companion" class="bio-photo" />
+					<div class="bio-photo-meta">
+						<p class="bio-photo-name">Magnolia</p>
+						<p class="bio-photo-role">Office Companion</p>
+					</div>
+				</div>
+			</aside>
+		</div>
+	</section>
+
+	<LocationSection />
+	<ServicesSection />
+</Base>
+
+<style>
+	.bio-section {
+		background: #fff;
+		padding: 3.5rem 1.5rem 1rem;
+	}
+
+	.bio-grid {
+		max-width: 1200px;
+		margin: 0 auto;
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) 360px;
+		gap: 3rem;
+		align-items: start;
+	}
+
+	.bio-main {
+		min-width: 0;
+		color: #1a1a1a;
+	}
+
+	.bio-main p {
+		margin: 0 0 1.15rem;
+		font-size: 1.075rem;
+		line-height: 1.6;
+		color: #1a1a1a;
+	}
+
+	.bio-eyebrow {
+		font-size: 0.95rem !important;
+		font-weight: 800;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: #0076ba;
+		margin-bottom: 0.4rem !important;
+	}
+
+	.bio-lead {
+		font-style: italic;
+		font-weight: 700;
+	}
+
+	.bio-aside {
+		position: sticky;
+		top: 120px;
+	}
+
+	.bio-photo-card {
+		border-radius: 16px;
+		overflow: hidden;
+		background: #fff;
+		box-shadow: 0 12px 30px rgba(0, 0, 0, 0.14);
+	}
+
+	.bio-photo {
+		display: block;
+		width: 100%;
+		height: auto;
+		aspect-ratio: 4 / 5;
+		object-fit: cover;
+	}
+
+	.bio-photo-meta {
+		padding: 1.2rem 1.4rem 1.4rem;
+		text-align: center;
+		background: #0076ba;
+	}
+
+	.bio-photo-name {
+		margin: 0 0 0.2rem;
+		font-family: "Merriweather", Georgia, serif;
+		font-size: 1.2rem;
+		font-weight: 700;
+		color: #fff;
+	}
+
+	.bio-photo-role {
+		margin: 0;
+		font-size: 0.9rem;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: rgba(255, 255, 255, 0.9);
+	}
+
+	@media (max-width: 960px) {
+		.bio-grid {
+			grid-template-columns: 1fr;
+			gap: 2rem;
+		}
+		.bio-aside {
+			position: static;
+			order: -1;
+			max-width: 360px;
+		}
+	}
+</style>

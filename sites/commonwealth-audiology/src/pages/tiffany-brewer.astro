@@ -1,0 +1,319 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHero from "../components/PageHero.astro";
+import LocationSection from "../components/LocationSection.astro";
+import ServicesSection from "../components/ServicesSection.astro";
+
+const photo = "/uploads/7854b158e5b131e9a356dfaafa022012ce061557.jpg";
+---
+
+<Base
+	title="Dr. Tiffany Brewer, Au.D."
+	description="Tiffany Brewer is an audiologist providing hearing tests, hearing aids, and other hearing care services in Georgetown, KY."
+>
+	<PageHero
+		title="Dr. Tiffany Brewer, Au.D."
+		breadcrumbs={[
+			{ label: "Home", href: "/" },
+			{ label: "About", href: "/about/" },
+			{ label: "Dr. Tiffany Brewer" },
+		]}
+		image="/uploads/internal-hero-default.png"
+	/>
+
+	<section class="bio-section">
+		<div class="bio-grid">
+			<div class="bio-main">
+				<p class="bio-eyebrow">Doctor of Audiology</p>
+				<p class="bio-lead">
+					Tiffany Brewer is an audiologist providing hearing tests, hearing
+					aids, and other hearing care services in Georgetown, KY.
+				</p>
+				<p>
+					At the heart of Commonwealth Audiology is Dr. Tiffany Brewer, a
+					knowledgeable, compassionate, and deeply committed audiologist who
+					believes that hearing well is essential to living well. Her
+					approach blends clinical excellence with genuine care, ensuring
+					every patient feels heard, supported, and confidently guided on
+					their hearing journey. She is passionate about helping people
+					reconnect, not just to sound, but to relationships and moments
+					that matter most.
+				</p>
+
+				<h2>Education &amp; Professional Expertise</h2>
+				<p>
+					Dr. Tiffany Brewer earned her Doctor of Audiology (Au.D.) from the
+					University of Louisville School of Medicine, where she developed a
+					strong foundation in diagnostic testing, hearing science, and
+					patient-centered care. She completed her undergraduate studies at
+					Miami University in Oxford, Ohio, earning a degree in Speech
+					Pathology and Audiology with a minor in Special Education, an
+					experience that deepened her passion for communication and helping
+					others thrive.
+				</p>
+				<p>
+					She is licensed by the state of Kentucky as an Audiologist and
+					remains actively involved in several respected professional
+					organizations, including:
+				</p>
+				<ul>
+					<li>Academy of Doctors of Audiology (ADA) - Member</li>
+					<li>American Academy of Audiology (AAA) - Professional Member</li>
+					<li>Audiology Practice Standards Organization (ASPO) - Member</li>
+					<li>Entheos Audiology Cooperative - Member</li>
+					<li>HearingUp Provider</li>
+					<li>Kentucky Academy of Audiology (KAA) - Member and Current President</li>
+				</ul>
+				<p>
+					In addition to her clinical work, Dr. Brewer is a strong advocate
+					for the audiology profession and the patients it serves. She has
+					lobbied in Washington, DC for improved access to audiology care and
+					continues to champion the full scope of audiology practice. She has
+					also worked closely with the Kentucky Audiology Board to help
+					modernize current licensure standards, supporting the advancement
+					and accessibility of high-quality hearing healthcare. Her active
+					involvement, particularly her leadership role as President of the
+					Kentucky Academy of Audiology, reflects her commitment to advancing
+					the field and staying at the forefront of best practices in hearing
+					healthcare.
+				</p>
+
+				<h2>Her Clinical Focus</h2>
+				<p>Dr. Brewer specializes in:</p>
+				<ul>
+					<li>Comprehensive diagnostic audiologic evaluations</li>
+					<li>Hearing aid selection and fitting</li>
+					<li>Real-ear measurements and precision programming</li>
+					<li>Long-term follow-up care and counseling</li>
+				</ul>
+				<p>
+					She takes a highly personalized approach to care, recognizing that
+					no two patients, and no two hearing losses, are exactly the same. By
+					combining advanced diagnostic tools with careful listening and
+					attention to detail, she creates tailored solutions that support
+					each patient's unique lifestyle and communication goals.
+				</p>
+				<p>
+					Dr. Brewer places a strong emphasis on precision and verification,
+					using best-practice methods like real-ear measurements to ensure
+					hearing aids are programmed accurately from the start. This level of
+					detail helps reduce frustration and leads to better long-term
+					outcomes.
+				</p>
+
+				<h2>A Thoughtful, Patient-First Approach</h2>
+				<p>
+					Patients often remark on how comfortable and supported they feel
+					under Dr. Brewer's care. She takes the time to explain results
+					clearly, answer questions thoroughly, and guide each person through
+					their options without pressure. Her focus goes beyond improving
+					hearing, she strives to help patients feel confident, clear, and at
+					ease in their everyday lives.
+				</p>
+				<p>
+					For individuals experiencing hearing loss, she strongly believes in
+					early evaluation and personalized treatment. Her message is simple:
+					there are always options, and she is there to help each patient find
+					the right path forward.
+				</p>
+
+				<h2>A Passion for Helping People Reconnect</h2>
+				<p>
+					What truly sets Dr. Brewer apart is her heart for people. She loves
+					seeing her patients regain confidence, reconnect with loved ones,
+					and rediscover the sounds that make life meaningful. She considers
+					it an honor to walk alongside each person as they regain or improve
+					their hearing.
+				</p>
+
+				<h2>Life Outside the Clinic</h2>
+				<p>
+					When she's not caring for patients, Dr. Brewer enjoys spending time
+					with her husband, daughters, son, and their family pup. Her family
+					is active in Crossroads Christian Church, and she loves being part
+					of the Georgetown community. In her free time, you'll often find her
+					exploring the beauty of the Bluegrass region, spending time on the
+					water, or baking for family and friends.
+				</p>
+
+				<h2>A Doctor Who Treats You Like Family</h2>
+				<p>
+					At Commonwealth Audiology, Dr. Brewer has created a practice where
+					patients feel welcomed, understood, and genuinely cared for. With
+					advanced training, a commitment to excellence, and a heartfelt
+					approach, she provides expert, individualized care you can trust.
+				</p>
+				<p>
+					If you or someone you love is experiencing hearing difficulties, Dr.
+					Brewer is here to help you take the next step toward clearer hearing
+					and a more connected life.
+				</p>
+			</div>
+
+			<aside class="bio-aside">
+				<div class="bio-photo-card">
+					<img src={photo} alt="Dr. Tiffany Brewer, Au.D." class="bio-photo" />
+					<div class="bio-photo-meta">
+						<p class="bio-photo-name">Dr. Tiffany Brewer, Au.D.</p>
+						<p class="bio-photo-role">Doctor of Audiology</p>
+					</div>
+				</div>
+			</aside>
+		</div>
+
+	</section>
+
+	<LocationSection />
+	<ServicesSection />
+</Base>
+
+<style>
+	.bio-section {
+		background: #fff;
+		padding: 3.5rem 1.5rem 1rem;
+	}
+
+	.bio-grid {
+		max-width: 1200px;
+		margin: 0 auto;
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) 360px;
+		gap: 3rem;
+		align-items: start;
+	}
+
+	.bio-main {
+		min-width: 0;
+		color: #1a1a1a;
+	}
+
+	.bio-main p {
+		margin: 0 0 1.15rem;
+		font-size: 1.075rem;
+		line-height: 1.6;
+		color: #1a1a1a;
+	}
+
+	.bio-eyebrow {
+		font-size: 0.95rem !important;
+		font-weight: 800;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: #0076ba;
+		margin-bottom: 0.4rem !important;
+	}
+
+	.bio-lead {
+		font-style: italic;
+		font-weight: 700;
+	}
+
+	.bio-main h2 {
+		margin: 2.3rem 0 1rem;
+		font-family: "Merriweather", Georgia, serif;
+		font-size: 1.95rem;
+		font-weight: 700;
+		line-height: 1.2;
+		color: #1f1f1f;
+	}
+
+	.bio-main ul {
+		margin: 0 0 1.2rem;
+		padding-left: 1.5rem;
+	}
+
+	.bio-main li {
+		margin-bottom: 0.45rem;
+		font-size: 1.075rem;
+		line-height: 1.55;
+		color: #1a1a1a;
+	}
+
+	/* ── Photo (right column) ── */
+	.bio-aside {
+		position: sticky;
+		top: 120px;
+	}
+
+	.bio-photo-card {
+		border-radius: 16px;
+		overflow: hidden;
+		background: #fff;
+		box-shadow: 0 12px 30px rgba(0, 0, 0, 0.14);
+	}
+
+	.bio-photo {
+		display: block;
+		width: 100%;
+		height: auto;
+		aspect-ratio: 4 / 5;
+		object-fit: cover;
+	}
+
+	.bio-photo-meta {
+		padding: 1.2rem 1.4rem 1.4rem;
+		text-align: center;
+		background: #0076ba;
+	}
+
+	.bio-photo-name {
+		margin: 0 0 0.2rem;
+		font-family: "Merriweather", Georgia, serif;
+		font-size: 1.2rem;
+		font-weight: 700;
+		color: #fff;
+	}
+
+	.bio-photo-role {
+		margin: 0;
+		font-size: 0.9rem;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: rgba(255, 255, 255, 0.9);
+	}
+
+	/* ── Staff bios (full width) ── */
+	.bio-staff {
+		max-width: 1200px;
+		margin: 2.5rem auto 0;
+		color: #1a1a1a;
+	}
+
+	.bio-staff h2 {
+		margin: 0 0 1rem;
+		font-family: "Merriweather", Georgia, serif;
+		font-size: 1.95rem;
+		font-weight: 700;
+		color: #1f1f1f;
+	}
+
+	.bio-staff h3 {
+		margin: 1.8rem 0 0.7rem;
+		font-family: "Merriweather", Georgia, serif;
+		font-size: 1.4rem;
+		font-weight: 700;
+		color: #1f1f1f;
+	}
+
+	.bio-staff p {
+		margin: 0 0 1.1rem;
+		font-size: 1.075rem;
+		line-height: 1.6;
+	}
+
+	@media (max-width: 960px) {
+		.bio-grid {
+			grid-template-columns: 1fr;
+			gap: 2rem;
+		}
+		.bio-aside {
+			position: static;
+			order: -1;
+			max-width: 360px;
+		}
+		.bio-main h2,
+		.bio-staff h2 {
+			font-size: 1.7rem;
+		}
+	}
+</style>

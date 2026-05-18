@@ -1,0 +1,10 @@
+node_modules
+dist
+.astro
+.wrangler
+.env
+*.log
+data.db
+data.db-shm
+data.db-wal
+_tmp*.sql

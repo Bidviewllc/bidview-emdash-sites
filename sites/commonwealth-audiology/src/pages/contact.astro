@@ -1,0 +1,474 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHero from "../components/PageHero.astro";
+
+const bookingUrl =
+	"https://scheduling.suno.care/?clinic=9918&token=23718121fb23614672a5dc01cefda21bf1f9a8cc&pc=ffffff&dc=1279bd";
+const phone = "(502) 642-4322";
+const fax = "(502) 653-5116";
+const mapsUrl =
+	"https://maps.google.com/?q=204+Bevins+Lane+Suite+B+Georgetown+KY+40324";
+---
+
+<Base
+	title="Contact Us"
+	description="Commonwealth Audiology is an audiology and hearing aid clinic with an expert audiologist providing hearing aids, hearing tests, and professional hearing services in Georgetown, KY."
+>
+	<PageHero
+		title="Contact Us"
+		breadcrumbs={[{ label: "Home", href: "/" }, { label: "Contact" }]}
+		image="/uploads/internal-hero-default.png"
+	/>
+
+	<!-- Intro CTA -->
+	<section class="contact-intro">
+		<div class="contact-wrap">
+			<p class="contact-eyebrow">Compassion you can feel, hearing care you can trust.</p>
+			<h2 class="contact-intro-title">Take the First Step Toward Better Hearing</h2>
+			<p class="contact-intro-text">
+				At Commonwealth Audiology, your hearing health is our priority.
+				We're here to guide you with compassionate care, personalized
+				support, and trusted expertise, so you can stay connected to the
+				people and moments that matter most.
+			</p>
+		</div>
+	</section>
+
+	<!-- Message form -->
+	<section class="contact-form-section" id="contact-form">
+		<div class="contact-wrap">
+			<div class="contact-form-card">
+				<h2 class="contact-form-title">Send Us a Message</h2>
+				<p class="contact-form-intro">
+					Send us an email and we'll respond promptly to your inquiries.
+				</p>
+				{/* TODO: wire `action` to a form-handling endpoint — no backend is connected yet. */}
+				<form class="contact-form" method="post" action="#">
+					<p class="hp-field" aria-hidden="true">
+						<label>Leave this field empty
+							<input type="text" name="url" tabindex="-1" autocomplete="off" />
+						</label>
+					</p>
+					<div class="form-row">
+						<label class="form-field">
+							<span>Name <em>*</em></span>
+							<input type="text" name="name" required />
+						</label>
+						<label class="form-field">
+							<span>Phone <em>*</em></span>
+							<input type="tel" name="phone" required />
+						</label>
+					</div>
+					<label class="form-field">
+						<span>Email <em>*</em></span>
+						<input type="email" name="email" required />
+					</label>
+					<label class="form-field">
+						<span>Message <em>*</em></span>
+						<textarea name="message" rows="6" required></textarea>
+					</label>
+					<button type="submit" class="contact-submit">Send Message</button>
+				</form>
+			</div>
+		</div>
+	</section>
+
+	<!-- Contact info — 4 columns -->
+	<section class="contact-info">
+		<div class="contact-wrap">
+			<div class="contact-cards">
+				<div class="contact-card">
+					<span class="contact-icon" aria-hidden="true">
+						<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+					</span>
+					<h3 class="contact-card-label">Call or Text</h3>
+					<p class="contact-card-value">
+						<a href={`tel:${phone.replace(/\D/g, "")}`}>{phone}</a>
+					</p>
+					<p class="contact-card-sub">Fax: {fax}</p>
+				</div>
+
+				<div class="contact-card">
+					<span class="contact-icon" aria-hidden="true">
+						<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+					</span>
+					<h3 class="contact-card-label">Visit Us</h3>
+					<p class="contact-card-value">204 Bevins Lane, Suite B<br />Georgetown, KY 40324</p>
+					<p class="contact-card-sub">
+						<a href={mapsUrl} target="_blank" rel="noopener">Get Directions</a>
+					</p>
+				</div>
+
+				<div class="contact-card">
+					<span class="contact-icon" aria-hidden="true">
+						<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
+					</span>
+					<h3 class="contact-card-label">Email Us</h3>
+					<p class="contact-card-value">Prefer to reach out online?</p>
+					<p class="contact-card-sub">
+						<a href="#contact-form">Use the message form below</a>
+					</p>
+				</div>
+
+				<div class="contact-card">
+					<span class="contact-icon" aria-hidden="true">
+						<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+					</span>
+					<h3 class="contact-card-label">Office Hours</h3>
+					<ul class="contact-hours">
+						<li><span>Mon, Wed, Thu</span><span>9 AM – 5 PM</span></li>
+						<li><span>Tuesday</span><span>9 AM – 7 PM</span></li>
+						<li><span>Friday</span><span>9 AM – 1 PM</span></li>
+						<li><span>Lunch Daily</span><span>1 PM – 2 PM</span></li>
+					</ul>
+					<p class="contact-card-sub">* Evening hours by appointment</p>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Appointment CTA -->
+	<section class="contact-appt">
+		<div class="contact-wrap">
+			<h2 class="contact-appt-title">Request an Appointment</h2>
+			<p class="contact-appt-text">
+				Whether you're exploring hearing aids, scheduling a hearing
+				evaluation, or simply looking for answers, our friendly team is
+				here to help you move forward with comfort and confidence. Call us
+				today or book online to get started.
+			</p>
+			<div class="contact-appt-actions">
+				<a href={bookingUrl} target="_blank" rel="noopener" class="contact-appt-btn">
+					Book an Appointment
+				</a>
+				<a href={`tel:${phone.replace(/\D/g, "")}`} class="contact-appt-phone">
+					Or call {phone}
+				</a>
+			</div>
+		</div>
+	</section>
+</Base>
+
+<style>
+	.contact-wrap {
+		max-width: 1180px;
+		margin: 0 auto;
+		padding: 0 1.5rem;
+	}
+
+	/* ── Intro ── */
+	.contact-intro {
+		background: #fff;
+		padding: 3.5rem 0 2.4rem;
+		text-align: center;
+	}
+
+	.contact-eyebrow {
+		margin: 0 0 0.6rem;
+		font-style: italic;
+		font-weight: 700;
+		color: #0076ba;
+		font-size: 1.05rem;
+	}
+
+	.contact-intro-title {
+		margin: 0 0 0.9rem;
+		font-family: "Merriweather", Georgia, serif;
+		font-size: 2.2rem;
+		font-weight: 700;
+		line-height: 1.2;
+		color: #1f1f1f;
+	}
+
+	.contact-intro-text {
+		max-width: 720px;
+		margin: 0 auto;
+		font-size: 1.075rem;
+		line-height: 1.6;
+		color: #2a2a2a;
+	}
+
+	/* ── Contact cards ── */
+	.contact-info {
+		background: #fff;
+		padding: 1.5rem 0 3.5rem;
+	}
+
+	.contact-cards {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: 1.5rem;
+	}
+
+	.contact-card {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		padding: 2rem 1.4rem;
+		background: #fff;
+		border: 1px solid rgba(0, 0, 0, 0.1);
+		border-radius: 14px;
+		box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+	}
+
+	.contact-icon {
+		display: grid;
+		place-items: center;
+		width: 58px;
+		height: 58px;
+		margin-bottom: 1rem;
+		border-radius: 50%;
+		background: #0076ba;
+		color: #fff;
+	}
+
+	.contact-card-label {
+		margin: 0 0 0.5rem;
+		font-size: 1.15rem;
+		font-weight: 800;
+		color: #1f1f1f;
+	}
+
+	.contact-card-value {
+		margin: 0;
+		font-size: 1rem;
+		line-height: 1.45;
+		color: #2a2a2a;
+	}
+
+	.contact-card-value a {
+		color: #0076ba;
+		font-weight: 700;
+		text-decoration: none;
+	}
+
+	.contact-card-sub {
+		margin: 0.55rem 0 0;
+		font-size: 0.9rem;
+		color: #6a6a6a;
+	}
+
+	.contact-card-sub a {
+		color: #0076ba;
+		text-decoration: none;
+		font-weight: 600;
+	}
+
+	.contact-card-sub a:hover {
+		text-decoration: underline;
+	}
+
+	.contact-hours {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		width: 100%;
+		font-size: 0.92rem;
+		color: #2a2a2a;
+	}
+
+	.contact-hours li {
+		display: flex;
+		justify-content: space-between;
+		gap: 0.6rem;
+		padding: 0.22rem 0;
+	}
+
+	.contact-hours li span:first-child {
+		font-weight: 700;
+	}
+
+	/* ── Form ── */
+	.contact-form-section {
+		background: #f4f6f8;
+		padding: 4rem 0;
+	}
+
+	.contact-form-card {
+		max-width: 760px;
+		margin: 0 auto;
+		padding: 2.6rem 2.6rem 2.8rem;
+		background: #fff;
+		border-radius: 16px;
+		box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+	}
+
+	.contact-form-title {
+		margin: 0 0 0.4rem;
+		font-family: "Merriweather", Georgia, serif;
+		font-size: 1.9rem;
+		font-weight: 700;
+		color: #1f1f1f;
+		text-align: center;
+	}
+
+	.contact-form-intro {
+		margin: 0 0 1.8rem;
+		text-align: center;
+		color: #555;
+		font-size: 1rem;
+	}
+
+	.contact-form {
+		display: flex;
+		flex-direction: column;
+		gap: 1.1rem;
+	}
+
+	.hp-field {
+		position: absolute;
+		left: -9999px;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+	}
+
+	.form-row {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 1.1rem;
+	}
+
+	.form-field {
+		display: flex;
+		flex-direction: column;
+		gap: 0.4rem;
+	}
+
+	.form-field span {
+		font-size: 0.92rem;
+		font-weight: 700;
+		color: #1f1f1f;
+	}
+
+	.form-field em {
+		color: #d62828;
+		font-style: normal;
+	}
+
+	.form-field input,
+	.form-field textarea {
+		padding: 0.8rem 0.9rem;
+		border: 1px solid rgba(0, 0, 0, 0.22);
+		border-radius: 8px;
+		font: inherit;
+		font-size: 1rem;
+		color: #1a1a1a;
+		background: #fff;
+		transition: border-color 0.15s ease, box-shadow 0.15s ease;
+	}
+
+	.form-field input:focus,
+	.form-field textarea:focus {
+		outline: none;
+		border-color: #0076ba;
+		box-shadow: 0 0 0 3px rgba(0, 118, 186, 0.15);
+	}
+
+	.form-field textarea {
+		resize: vertical;
+	}
+
+	.contact-submit {
+		align-self: flex-start;
+		margin-top: 0.4rem;
+		padding: 0.9rem 2.2rem;
+		border: 0;
+		border-radius: 8px;
+		background: #0076ba;
+		color: #fff;
+		font-size: 1rem;
+		font-weight: 700;
+		cursor: pointer;
+		transition: background 0.16s ease;
+	}
+
+	.contact-submit:hover {
+		background: #005a8e;
+	}
+
+	/* ── Appointment CTA ── */
+	.contact-appt {
+		background: #0076ba;
+		padding: 3.6rem 0;
+		text-align: center;
+		color: #fff;
+	}
+
+	.contact-appt-title {
+		margin: 0 0 0.85rem;
+		font-family: "Merriweather", Georgia, serif;
+		font-size: 2rem;
+		font-weight: 700;
+		color: #fff;
+	}
+
+	.contact-appt-text {
+		max-width: 680px;
+		margin: 0 auto 1.7rem;
+		font-size: 1.05rem;
+		line-height: 1.6;
+		color: rgba(255, 255, 255, 0.95);
+	}
+
+	.contact-appt-actions {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: center;
+		gap: 1.1rem 1.6rem;
+	}
+
+	.contact-appt-btn {
+		display: inline-flex;
+		padding: 0.95rem 2.2rem;
+		background: #fff;
+		color: #0076ba;
+		font-size: 1rem;
+		font-weight: 700;
+		border-radius: 8px;
+		text-decoration: none;
+		transition: background 0.16s ease;
+	}
+
+	.contact-appt-btn:hover {
+		background: #eaf4fb;
+		color: #0076ba;
+	}
+
+	.contact-appt-phone {
+		color: #fff;
+		font-weight: 700;
+		text-decoration: none;
+	}
+
+	.contact-appt-phone:hover {
+		text-decoration: underline;
+		color: #fff;
+	}
+
+	@media (max-width: 960px) {
+		.contact-cards {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media (max-width: 600px) {
+		.contact-cards {
+			grid-template-columns: 1fr;
+		}
+
+		.form-row {
+			grid-template-columns: 1fr;
+		}
+
+		.contact-intro-title {
+			font-size: 1.8rem;
+		}
+
+		.contact-form-card {
+			padding: 1.8rem 1.4rem 2rem;
+		}
+	}
+</style>

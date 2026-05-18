@@ -1,0 +1,183 @@
+---
+/**
+ * Human-readable sitemap — a dynamic, grouped list of every page on the
+ * site. Linked from the footer. The News section is generated from the
+ * posts collection so new articles appear automatically.
+ */
+import { getEmDashCollection } from "emdash";
+import InternalPage from "../layouts/InternalPage.astro";
+
+const { entries: posts } = await getEmDashCollection("posts", {
+	orderBy: { published_at: "desc" },
+});
+
+interface Link {
+	label: string;
+	href: string;
+}
+interface Group {
+	heading: string;
+	links: Link[];
+}
+
+const groups: Group[] = [
+	{
+		heading: "Main Pages",
+		links: [
+			{ label: "Home", href: "/" },
+			{ label: "About Us", href: "/about/" },
+			{ label: "Insurance & Billing", href: "/about/insurance-billing/" },
+			{ label: "Giving Back", href: "/give-back/" },
+			{ label: "Contact Us", href: "/contact/" },
+		],
+	},
+	{
+		heading: "Our Team",
+		links: [
+			{ label: "Dr. Tiffany Brewer", href: "/tiffany-brewer/" },
+			{ label: "Aubrey Gingrich", href: "/aubrey-gingrich/" },
+			{ label: "Magnolia", href: "/magnolia/" },
+		],
+	},
+	{
+		heading: "Audiology Services",
+		links: [
+			{ label: "Audiology Services", href: "/audiology-services/" },
+			{ label: "Hearing Tests", href: "/audiology-services/hearing-tests/" },
+			{
+				label: "Hearing Aid Services",
+				href: "/audiology-services/hearing-aid-services/",
+			},
+			{
+				label: "Tinnitus Evaluation & Treatment",
+				href: "/audiology-services/tinnitus-evaluation-treatment/",
+			},
+			{
+				label: "Hearing Aid Fittings",
+				href: "/audiology-services/hearing-aid-fittings/",
+			},
+			{
+				label: "Sensorineural Hearing Loss",
+				href: "/audiology-services/sensorineural-hearing-loss/",
+			},
+			{ label: "Ear Wax Removal", href: "/audiology-services/ear-wax-removal/" },
+			{
+				label: "Real Ear Measurement",
+				href: "/audiology-services/real-ear-measurement/",
+			},
+		],
+	},
+	{
+		heading: "Hearing Aids & Products",
+		links: [
+			{ label: "Hearing Aids & Products", href: "/hearing-aids-products/" },
+			{ label: "Oticon Hearing Aids", href: "/hearing-aids-products/oticon/" },
+			{ label: "Widex Hearing Aids", href: "/hearing-aids-products/widex/" },
+			{ label: "Starkey Hearing Aids", href: "/hearing-aids-products/starkey/" },
+			{ label: "Phonak Hearing Aids", href: "/hearing-aids-products/phonak/" },
+			{ label: "ReSound Hearing Aids", href: "/hearing-aids-products/resound/" },
+			{ label: "Signia Hearing Aids", href: "/hearing-aids-products/signia/" },
+			{ label: "Unitron Hearing Aids", href: "/hearing-aids-products/unitron/" },
+			{
+				label: "Costco Hearing Aids",
+				href: "/hearing-aids-products/costco-hearing-aids/",
+			},
+			{
+				label: "Nano Hearing Aids",
+				href: "/hearing-aids-products/nano-hearing-aids/",
+			},
+			{
+				label: "Walmart Hearing Aids",
+				href: "/hearing-aids-products/walmart-hearing-aids/",
+			},
+			{
+				label: "Custom Hearing Protection",
+				href: "/hearing-aids-products/custom-hearing-protection/",
+			},
+			{
+				label: "Hearing Aid Batteries",
+				href: "/hearing-aids-products/hearing-aid-batteries/",
+			},
+		],
+	},
+	{
+		heading: "News & Articles",
+		links: [
+			{ label: "All News & Articles", href: "/news/" },
+			...posts.map((p) => ({
+				label: p.data.title,
+				href: `/news/${p.id}/`,
+			})),
+		],
+	},
+	{
+		heading: "Legal",
+		links: [
+			{ label: "Privacy Policy", href: "/privacy-policy/" },
+			{ label: "Terms of Service", href: "/terms-of-service/" },
+		],
+	},
+];
+---
+
+<InternalPage
+	title="Sitemap"
+	description="Browse every page on the Commonwealth Audiology website."
+	breadcrumbs={[{ label: "Home", href: "/" }, { label: "Sitemap" }]}
+>
+	<p>
+		Use this sitemap to quickly find any page on the Commonwealth Audiology
+		website. Looking for something specific? <a href="/contact/">Contact us</a>
+		and we'll be glad to help.
+	</p>
+
+	{
+		groups.map((group) => (
+			<section class="sitemap-group">
+				<h2>{group.heading}</h2>
+				<ul class="sitemap-links">
+					{group.links.map((link) => (
+						<li>
+							<a href={link.href}>{link.label}</a>
+						</li>
+					))}
+				</ul>
+			</section>
+		))
+	}
+</InternalPage>
+
+<style>
+	.sitemap-group {
+		margin-top: 1.5rem;
+	}
+
+	.sitemap-links {
+		list-style: none !important;
+		padding-left: 0 !important;
+		columns: 2;
+		column-gap: 2.5rem;
+	}
+
+	.sitemap-links li {
+		break-inside: avoid;
+		padding: 0.4rem 0;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+	}
+
+	.sitemap-links a {
+		color: #0076ba;
+		text-decoration: none;
+		font-weight: 600;
+	}
+
+	.sitemap-links a:hover {
+		text-decoration: underline;
+	}
+
+	@media (max-width: 560px) {
+		.sitemap-links {
+			columns: 1;
+		}
+	}
+</style>

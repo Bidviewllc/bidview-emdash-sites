@@ -1,0 +1,688 @@
+---
+/**
+ * Site header — top bar + sticky nav with dropdown menus.
+ * Rendered by Base.astro. Edit header markup/styles here.
+ */
+interface MenuItem {
+	label: string;
+	url: string;
+	target?: string | null;
+	children?: MenuItem[];
+}
+interface Props {
+	phone: string;
+	bookUrl: string;
+	logoSrc: string;
+	logoAlt: string;
+	cityName: string;
+	isLoggedIn: boolean;
+	menu: { items: MenuItem[] } | null;
+}
+const { phone, bookUrl, logoSrc, logoAlt, cityName, isLoggedIn, menu } = Astro.props;
+const navItems = (menu?.items ?? []).filter((i) => i.label !== "Home");
+---
+
+<header class="site-header">
+	<div class="header-top">
+		<div class="header-top-inner">
+			<a href={`tel:${phone.replace(/\D/g, "")}`} class="header-phone">
+				<img src="/uploads/phone.svg" alt="" aria-hidden="true" />
+				{phone}
+			</a>
+			<span class="header-location">
+				<img src="/uploads/googlemap.svg" alt="" aria-hidden="true" />
+				<span class="header-location-full">View {cityName} Location</span>
+				<span class="header-location-mobile">{cityName}</span>
+			</span>
+			{isLoggedIn && <a href="/_emdash/admin" class="header-admin">Admin ↗</a>}
+		</div>
+	</div>
+	<nav class="nav">
+		<a href="/" class="site-title">
+			<img src={logoSrc} alt={logoAlt} class="site-logo-img" />
+		</a>
+		<button
+			type="button"
+			class="nav-menu-toggle"
+			aria-label="Toggle menu"
+			aria-controls="primary-menu"
+			aria-expanded="false"
+		>
+			<img src="/uploads/burger-menu.svg" alt="" class="nav-menu-icon nav-menu-icon-open" aria-hidden="true" />
+			<img src="/uploads/close.svg" alt="" class="nav-menu-icon nav-menu-icon-close" aria-hidden="true" />
+		</button>
+		<div class="nav-links" id="primary-menu">
+			{navItems.map((item) => (
+				item.children && item.children.length > 0 ? (
+					<div class="nav-item has-children">
+						<a href={item.url} class="nav-link" target={item.target}>{item.label}</a>
+						<button
+							type="button"
+							class="nav-sub-toggle"
+							aria-label={`Toggle ${item.label} submenu`}
+							aria-expanded="false"
+						>
+							<span class="nav-caret" aria-hidden="true"></span>
+						</button>
+						<ul class="nav-dropdown">
+							{item.children.map((child) => (
+								child.children && child.children.length > 0 ? (
+									<li class="nav-subitem has-children">
+										<a href={child.url} target={child.target}>{child.label}</a>
+										<button
+											type="button"
+											class="nav-sub2-toggle"
+											aria-label={`Toggle ${child.label} submenu`}
+											aria-expanded="false"
+										>
+											<span class="nav-flyout-caret" aria-hidden="true"></span>
+										</button>
+										<ul class="nav-subdropdown">
+											{child.children.map((grandchild) => (
+												<li>
+													<a href={grandchild.url} target={grandchild.target}>{grandchild.label}</a>
+												</li>
+											))}
+										</ul>
+									</li>
+								) : (
+									<li>
+										<a href={child.url} target={child.target}>{child.label}</a>
+									</li>
+								)
+							))}
+						</ul>
+					</div>
+				) : (
+					<div class="nav-item">
+						<a href={item.url} class="nav-link" target={item.target}>{item.label}</a>
+					</div>
+				)
+			))}
+		</div>
+		<a href={bookUrl} class="nav-book-btn">BOOK AN APPOINTMENT</a>
+	</nav>
+</header>
+
+<script>
+	const nav = document.querySelector<HTMLElement>(".nav");
+	const menuToggle = document.querySelector<HTMLButtonElement>(".nav-menu-toggle");
+	const navLinks = document.querySelector<HTMLElement>(".nav-links");
+
+	// Mobile burger toggle
+	menuToggle?.addEventListener("click", () => {
+		const isOpen = nav?.classList.toggle("is-menu-open") ?? false;
+		menuToggle.setAttribute("aria-expanded", String(isOpen));
+	});
+
+	// Dropdown sub-menu toggles (drives mobile accordion; desktop also uses :hover)
+	document
+		.querySelectorAll<HTMLButtonElement>(".nav-sub-toggle, .nav-sub2-toggle")
+		.forEach((toggle) => {
+			toggle.addEventListener("click", (e) => {
+				e.preventDefault();
+				const item =
+					toggle.closest(".nav-subitem") ?? toggle.closest(".nav-item");
+				if (!item) return;
+				const open = item.classList.toggle("is-open");
+				toggle.setAttribute("aria-expanded", String(open));
+			});
+		});
+
+	// Any nav link click closes the mobile menu
+	navLinks?.querySelectorAll("a").forEach((link) => {
+		link.addEventListener("click", () => {
+			nav?.classList.remove("is-menu-open");
+			menuToggle?.setAttribute("aria-expanded", "false");
+			document
+				.querySelectorAll(".nav-item.is-open, .nav-subitem.is-open")
+				.forEach((i) => i.classList.remove("is-open"));
+		});
+	});
+
+	// Stick the header to the top once the page is scrolled.
+	// Desktop: the nav pill floats fixed. Mobile: the whole header bar
+	// goes fixed, so body padding compensates for the lost flow height.
+	const siteHeader = document.querySelector<HTMLElement>(".site-header");
+	let mobileHeaderHeight = 0;
+
+	function measureHeader() {
+		if (!siteHeader) return;
+		if (window.innerWidth <= 900) {
+			const wasStuck = siteHeader.classList.contains("is-stuck");
+			siteHeader.classList.remove("is-stuck");
+			document.body.style.paddingTop = "";
+			mobileHeaderHeight = siteHeader.offsetHeight;
+			if (wasStuck) siteHeader.classList.add("is-stuck");
+		}
+	}
+
+	function updateStuckNav() {
+		if (!siteHeader) return;
+		const stuck = window.scrollY > 140;
+		siteHeader.classList.toggle("is-stuck", stuck);
+		document.body.style.paddingTop =
+			stuck && window.innerWidth <= 900 ? `${mobileHeaderHeight}px` : "";
+	}
+
+	measureHeader();
+	window.addEventListener("scroll", updateStuckNav, { passive: true });
+	window.addEventListener("resize", () => {
+		measureHeader();
+		updateStuckNav();
+	});
+	updateStuckNav();
+</script>
+
+<style>
+	/* ── Header ── */
+	.site-header {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		z-index: 100;
+		background: transparent;
+		box-shadow: none;
+	}
+
+	.header-top {
+		background: #fff;
+		padding: 0.45rem 0;
+		border-bottom: 0;
+	}
+
+	.header-top-inner {
+		max-width: 1440px;
+		margin: 0 auto;
+		padding: 0 5rem;
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		gap: 4.25rem;
+		min-height: 30px;
+	}
+
+	.header-phone {
+		display: flex;
+		align-items: center;
+		gap: 1.45rem;
+		color: #000;
+		text-decoration: none;
+		font-size: 1rem;
+		font-weight: 500;
+		transition: opacity 0.2s;
+	}
+
+	.header-phone img {
+		width: 18px;
+		height: 18px;
+		object-fit: contain;
+	}
+
+	.header-phone:hover { opacity: 0.85; color: #000; }
+
+	.header-location {
+		display: flex;
+		align-items: center;
+		gap: 1.45rem;
+		color: #000;
+		font-size: 1rem;
+		font-weight: 500;
+	}
+
+	.header-location img {
+		width: 15px;
+		height: 20px;
+		object-fit: contain;
+	}
+
+	.header-location-mobile {
+		display: none;
+	}
+
+	.header-admin {
+		margin-left: auto;
+		font-size: 0.75rem;
+		color: #333;
+		text-decoration: none;
+	}
+
+	.header-admin:hover { color: #0076BA; }
+
+	.nav {
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+		width: calc(100% - 28px);
+		max-width: 1180px;
+		min-height: 100px;
+		margin: 1.45rem auto 0;
+		padding: 1.35rem 3rem;
+		gap: 2rem;
+		background: rgba(255,255,255,0.98);
+		border-radius: 22px;
+		box-shadow: 0 12px 34px rgba(0,0,0,0.12);
+		transition: top 0.25s ease, box-shadow 0.25s ease;
+	}
+
+	/* Sticky nav once the page is scrolled (desktop): float the pill */
+	@media (min-width: 901px) {
+		.site-header.is-stuck .nav {
+			position: fixed;
+			top: 0.5rem;
+			left: 50%;
+			margin: 0;
+			transform: translateX(-50%);
+			z-index: 200;
+			box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+		}
+	}
+
+	.site-title {
+		text-decoration: none;
+		flex-shrink: 0;
+	}
+
+	.site-name {
+		font-size: 1.15rem;
+		font-weight: 800;
+		color: #0076BA;
+		letter-spacing: -0.02em;
+	}
+
+	.site-logo-img {
+		height: 58px;
+		width: auto;
+		display: block;
+	}
+
+	.nav-links {
+		display: flex;
+		align-items: center;
+		gap: 1.5rem;
+		margin-left: 1.3rem;
+		font-size: 1rem;
+		font-weight: 500;
+	}
+
+	/* ── Nav items + dropdowns ── */
+	.nav-item {
+		position: relative;
+		display: flex;
+		flex-wrap: nowrap;
+		flex-shrink: 0;
+		align-items: center;
+		gap: 0.15rem;
+	}
+
+	.nav-link {
+		display: inline-flex;
+		align-items: center;
+		text-decoration: none;
+		color: #1b1b1b;
+		transition: color 0.2s;
+		white-space: nowrap;
+	}
+
+	.nav-link:hover {
+		color: #0076BA;
+	}
+
+	.nav-sub-toggle {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0.25rem;
+		border: 0;
+		background: none;
+		cursor: pointer;
+		color: #1b1b1b;
+	}
+
+	.nav-caret {
+		width: 0;
+		height: 0;
+		border-left: 0.3rem solid transparent;
+		border-right: 0.3rem solid transparent;
+		border-top: 0.36rem solid currentColor;
+		transition: transform 0.2s ease;
+	}
+
+	.nav-item.has-children:hover .nav-caret,
+	.nav-item.is-open .nav-caret {
+		transform: rotate(180deg);
+	}
+
+	.nav-item.has-children:hover .nav-sub-toggle,
+	.nav-item.has-children:hover .nav-link {
+		color: #0076BA;
+	}
+
+	.nav-dropdown {
+		display: none;
+		position: absolute;
+		top: 100%;
+		left: 0;
+		margin: 0;
+		padding: 0.5rem;
+		min-width: 256px;
+		list-style: none;
+		background: #fff;
+		border-radius: 12px;
+		box-shadow: 0 14px 34px rgba(0,0,0,0.18);
+		z-index: 300;
+	}
+
+	.nav-item.has-children:hover .nav-dropdown,
+	.nav-item.is-open .nav-dropdown {
+		display: block;
+	}
+
+	.nav-dropdown li {
+		margin: 0;
+	}
+
+	.nav-dropdown li a {
+		display: block;
+		padding: 0.55rem 0.85rem;
+		border-radius: 8px;
+		color: #1b1b1b;
+		font-size: 0.95rem;
+		font-weight: 500;
+		text-decoration: none;
+		white-space: nowrap;
+		transition: background 0.15s ease, color 0.15s ease;
+	}
+
+	.nav-dropdown li a:hover {
+		background: #f0f6fb;
+		color: #0076BA;
+	}
+
+	/* ── Third-level flyout submenu ── */
+	.nav-subitem {
+		position: relative;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+	}
+
+	.nav-subitem > a {
+		flex: 1;
+	}
+
+	.nav-sub2-toggle {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0.5rem 0.7rem;
+		border: 0;
+		background: none;
+		cursor: pointer;
+		color: #1b1b1b;
+	}
+
+	.nav-flyout-caret {
+		width: 0;
+		height: 0;
+		border-top: 0.3rem solid transparent;
+		border-bottom: 0.3rem solid transparent;
+		border-left: 0.36rem solid currentColor;
+		transition: transform 0.2s ease;
+	}
+
+	.nav-subdropdown {
+		display: none;
+		position: absolute;
+		left: 100%;
+		top: -0.5rem;
+		margin: 0;
+		padding: 0.5rem;
+		min-width: 234px;
+		list-style: none;
+		background: #fff;
+		border-radius: 12px;
+		box-shadow: 0 14px 34px rgba(0, 0, 0, 0.18);
+		z-index: 310;
+	}
+
+	.nav-subitem.has-children:hover .nav-subdropdown,
+	.nav-subitem.is-open .nav-subdropdown {
+		display: block;
+	}
+
+	.nav-subitem.has-children:hover > a,
+	.nav-subitem.has-children:hover .nav-sub2-toggle {
+		color: #0076BA;
+	}
+
+	.nav-subdropdown li a {
+		display: block;
+		padding: 0.55rem 0.85rem;
+		border-radius: 8px;
+		color: #1b1b1b;
+		font-size: 0.95rem;
+		font-weight: 500;
+		text-decoration: none;
+		white-space: nowrap;
+		transition: background 0.15s ease, color 0.15s ease;
+	}
+
+	.nav-subdropdown li a:hover {
+		background: #f0f6fb;
+		color: #0076BA;
+	}
+
+	.nav-menu-toggle {
+		display: none;
+		width: 42px;
+		height: 42px;
+		place-items: center;
+		border: 1px solid rgba(0,0,0,0.12);
+		border-radius: 9px;
+		background: #fff;
+		padding: 0;
+		cursor: pointer;
+	}
+
+	.nav-menu-icon {
+		display: block;
+		width: 22px;
+		height: 22px;
+		object-fit: contain;
+	}
+
+	.nav-menu-icon-close {
+		display: none;
+	}
+
+	.nav.is-menu-open .nav-menu-icon-open {
+		display: none;
+	}
+
+	.nav.is-menu-open .nav-menu-icon-close {
+		display: block;
+	}
+
+	.nav-book-btn {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.75rem;
+		padding: 1rem 1.85rem;
+		background: #0076BA;
+		color: #fff;
+		font-size: 1rem;
+		font-weight: 600;
+		letter-spacing: 0;
+		border-radius: 8px;
+		text-decoration: none;
+		white-space: nowrap;
+		transition: background 0.2s;
+		flex-shrink: 0;
+		margin-left: auto;
+	}
+
+	.nav-book-btn::after {
+		content: "";
+		display: inline-block;
+		width: 1rem;
+		height: 0.6875rem;
+		background: currentColor;
+		-webkit-mask: url("/uploads/right-aerow-button.svg") center / contain no-repeat;
+		mask: url("/uploads/right-aerow-button.svg") center / contain no-repeat;
+	}
+
+	.nav-book-btn:hover { background: #005a8e; color: #fff; }
+
+	@media (max-width: 900px) {
+		.nav-links {
+			order: 3;
+			width: 100%;
+			justify-content: center;
+			flex-wrap: wrap;
+			gap: 0.85rem 1.25rem;
+			margin-left: 0;
+			font-size: 0.95rem;
+		}
+		.site-header { position: relative; background: #fff; }
+		/* Sticky header on scroll (mobile): fixed, body padding compensates */
+		.site-header.is-stuck {
+			position: fixed;
+			top: 0;
+			left: 0;
+			right: 0;
+			z-index: 150;
+			box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+		}
+		.nav {
+			width: 100%;
+			min-height: auto;
+			margin: 0;
+			padding: 0.9rem 1rem 1rem;
+			flex-wrap: wrap;
+			gap: 0.9rem 1rem;
+			box-shadow: none;
+			border-radius: 0;
+		}
+		.site-logo-img { height: 42px; }
+		.nav-book-btn {
+			margin-left: auto;
+			padding: 0.72rem 1.1rem;
+			font-size: 0.82rem;
+		}
+	}
+
+	@media (max-width: 640px) {
+		.header-top { padding: 0.35rem 0; }
+		.header-top-inner {
+			min-height: 28px;
+			padding: 0 0.75rem;
+			justify-content: center;
+			gap: 0.85rem;
+		}
+		.header-phone,
+		.header-location {
+			gap: 0.35rem;
+			font-size: 0.78rem;
+			font-weight: 700;
+			line-height: 1;
+			white-space: nowrap;
+		}
+		.header-phone img {
+			width: 14px;
+			height: 14px;
+		}
+		.header-location {
+			display: flex;
+		}
+		.header-location img {
+			width: 12px;
+			height: 16px;
+		}
+		.header-location-full {
+			display: none;
+		}
+		.header-location-mobile {
+			display: inline;
+		}
+		.header-admin {
+			display: none;
+		}
+		.nav {
+			justify-content: space-between;
+			gap: 0.7rem;
+			padding: 0.75rem 1rem 0.9rem;
+		}
+		.nav-menu-toggle {
+			display: grid;
+		}
+		.nav-links {
+			display: none;
+			gap: 0;
+			align-items: stretch;
+			flex-direction: column;
+			width: 100%;
+			padding: 0.4rem;
+			border-radius: 12px;
+			background: #f4f6f7;
+			font-size: 0.95rem;
+		}
+		.nav.is-menu-open .nav-links {
+			display: flex;
+		}
+	}
+
+	/* ── Mobile dropdown behaviour (accordion) ── */
+	@media (max-width: 900px) {
+		.nav-item {
+			width: 100%;
+			flex-wrap: wrap;
+			justify-content: space-between;
+		}
+		.nav-link {
+			flex: 1;
+			padding: 0.8rem 0.9rem;
+		}
+		.nav-sub-toggle {
+			padding: 0.8rem 0.9rem;
+		}
+		.nav-dropdown {
+			position: static;
+			width: 100%;
+			min-width: 0;
+			box-shadow: none;
+			border-radius: 0;
+			padding: 0 0 0.4rem;
+		}
+		.nav-dropdown li a {
+			padding-left: 1.8rem;
+			font-size: 0.92rem;
+		}
+		.nav-subitem {
+			width: 100%;
+		}
+		.nav-subitem > a {
+			padding-left: 1.8rem;
+		}
+		.nav-sub2-toggle {
+			padding: 0.7rem 0.9rem;
+		}
+		.nav-subitem.is-open .nav-flyout-caret {
+			transform: rotate(90deg);
+		}
+		.nav-subdropdown {
+			position: static;
+			width: 100%;
+			min-width: 0;
+			box-shadow: none;
+			border-radius: 0;
+			padding: 0 0 0.3rem;
+		}
+		.nav-subdropdown li a {
+			padding-left: 2.7rem;
+			font-size: 0.9rem;
+		}
+	}
+</style>

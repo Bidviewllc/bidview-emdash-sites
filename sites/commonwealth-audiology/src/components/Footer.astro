@@ -1,0 +1,272 @@
+---
+/**
+ * Site footer. Rendered by Base.astro. Edit footer markup/styles here.
+ */
+interface Props {
+	siteTitle: string;
+	logoAlt: string;
+	cfg: Record<string, any>;
+}
+const { siteTitle, logoAlt, cfg } = Astro.props;
+---
+
+<footer class="site-footer">
+	<div class="footer-inner">
+		<div class="footer-grid">
+			<div class="footer-brand">
+				<a href="/" class="footer-logo">
+					<img src="/uploads/white-logo.png" alt={logoAlt} class="footer-logo-img" />
+				</a>
+				<p class="footer-tagline">We provide expert, affordable hearing care to help you stay connected to what matters most.</p>
+				<div class="footer-socials">
+					<a href={cfg.facebook_url ?? "#"} target="_blank" rel="noopener" aria-label="Facebook">
+						<img src="/uploads/Facebook.svg" alt="" aria-hidden="true" />
+					</a>
+					<a href={cfg.instagram_url ?? "#"} target="_blank" rel="noopener" aria-label="Instagram">
+						<img src="/uploads/UI2.svg" alt="" aria-hidden="true" />
+					</a>
+					<a href="#" aria-label="LinkedIn">
+						<img src="/uploads/in.svg" alt="" aria-hidden="true" />
+					</a>
+					<a href="#" aria-label="YouTube">
+						<img src="/uploads/youtube.svg" alt="" aria-hidden="true" />
+					</a>
+				</div>
+			</div>
+			<div class="footer-nav">
+				<h4 class="footer-heading">Services</h4>
+				<ul class="footer-links">
+					<li><a href="/audiology-services/">Audiology Services</a></li>
+					<li><a href="/audiology-services/hearing-tests/">Hearing Tests</a></li>
+					<li><a href="/audiology-services/hearing-aid-services/">Hearing Aid Services</a></li>
+					<li><a href="/audiology-services/tinnitus-evaluation-treatment/">Tinnitus Evaluation</a></li>
+					<li><a href="/audiology-services/hearing-aid-fittings/">Hearing Aid Fittings</a></li>
+					<li><a href="/audiology-services/sensorineural-hearing-loss/">Sensorineural Hearing Loss</a></li>
+					<li><a href="/audiology-services/ear-wax-removal/">Ear Wax Removal</a></li>
+					<li><a href="/audiology-services/real-ear-measurement/">Real Ear Measurement</a></li>
+				</ul>
+			</div>
+			<div class="footer-nav">
+				<h4 class="footer-heading">Hearing Aids</h4>
+				<ul class="footer-links">
+					<li><a href="/hearing-aids-products/">Hearing Aids & Products</a></li>
+					<li><a href="/hearing-aids-products/oticon/">Oticon Hearing Aids</a></li>
+					<li><a href="/hearing-aids-products/widex/">Widex Hearing Aids</a></li>
+					<li><a href="/hearing-aids-products/starkey/">Starkey Hearing Aids</a></li>
+					<li><a href="/hearing-aids-products/phonak/">Phonak Hearing Aids</a></li>
+					<li><a href="/hearing-aids-products/resound/">ReSound Hearing Aids</a></li>
+					<li><a href="/hearing-aids-products/custom-hearing-protection/">Custom Hearing Protection</a></li>
+					<li><a href="/hearing-aids-products/hearing-aid-batteries/">Hearing Aid Batteries</a></li>
+				</ul>
+			</div>
+			<div class="footer-nav">
+				<h4 class="footer-heading">Quick Links</h4>
+				<ul class="footer-links">
+					<li><a href="/about/">About Us</a></li>
+					<li><a href="/tiffany-brewer/">Dr. Tiffany Brewer</a></li>
+					<li><a href="/about/insurance-billing/">Insurance & Billing</a></li>
+					<li><a href="/give-back/">Giving Back</a></li>
+					<li><a href="/news/">News & Articles</a></li>
+					<li><a href="/contact/">Contact Us</a></li>
+				</ul>
+			</div>
+		</div>
+		<img
+			src="/uploads/Commonwealth%20audiowaves%20extended%201.png?v=wide"
+			alt=""
+			class="footer-wave"
+			aria-hidden="true"
+		/>
+		<div class="footer-bottom">
+			<p class="footer-copyright footer-copyright-old">
+				© {new Date().getFullYear()} {siteTitle}. All rights reserved. Powered by <a href="https://emdashcms.com">EmDash</a>
+			</p>
+			<p class="footer-copyright footer-copyright-new">
+				&copy; {new Date().getFullYear()} {siteTitle}. | HIPAA | All rights reserved.
+			</p>
+			<nav class="footer-legal" aria-label="Legal links">
+				<a href="/terms-of-service/">Terms of Use</a>
+				<a href="/privacy-policy/">Privacy Policy</a>
+				<a href="/sitemap/">Sitemap</a>
+			</nav>
+		</div>
+	</div>
+</footer>
+
+<style>
+	/* ── Footer ── */
+	.site-footer {
+		background: #333438;
+		color: #f7f7f7;
+		position: relative;
+		overflow: hidden;
+	}
+
+	.footer-inner {
+		max-width: 1440px;
+		margin: 0 auto;
+		padding: 3.25rem 2rem 1.8rem;
+		position: relative;
+		z-index: 1;
+	}
+
+	.footer-grid {
+		display: grid;
+		grid-template-columns: 1.45fr 0.95fr 1.05fr 0.95fr;
+		gap: 4.25rem;
+		align-items: start;
+		margin-bottom: 3rem;
+	}
+
+	.footer-brand {
+		max-width: 390px;
+		text-align: center;
+	}
+
+	.footer-logo {
+		text-decoration: none;
+		font-size: 1.1rem;
+		font-weight: 800;
+		color: #fff;
+		letter-spacing: -0.02em;
+		display: block;
+		margin-bottom: 1.45rem;
+	}
+
+	.footer-logo-img {
+		width: min(100%, 410px);
+		height: auto;
+		display: block;
+		margin: 0 auto;
+	}
+
+	.footer-tagline {
+		font-size: 1.03rem;
+		color: #f4f4f4;
+		line-height: 1.28;
+		margin-bottom: 2.1rem;
+	}
+
+	.footer-address {
+		font-size: 0.66rem;
+		color: #8fa8be;
+		line-height: 1.6;
+		margin-bottom: 0.5rem;
+	}
+
+	.footer-phone {
+		font-size: 0.66rem;
+		color: #cdd8e3;
+		text-decoration: none;
+		display: block;
+		margin-bottom: 1rem;
+	}
+
+	.footer-phone:hover { color: #fff; }
+
+	.footer-socials {
+		display: flex;
+		justify-content: center;
+		gap: 1rem;
+	}
+
+	.footer-socials a {
+		display: grid;
+		width: 24px;
+		height: 24px;
+		place-items: center;
+		color: #fff;
+		text-decoration: none;
+		transition: color 0.2s;
+	}
+
+	.footer-socials img {
+		width: 22px;
+		height: 22px;
+		object-fit: contain;
+	}
+
+	.footer-socials a:hover { color: #d7d7d7; }
+
+	.footer-nav { min-width: 0; }
+
+	.footer-heading {
+		font-size: 1.85rem;
+		font-weight: 400;
+		letter-spacing: 0;
+		color: #fff;
+		margin-bottom: 0.65rem;
+	}
+
+	.footer-links { list-style: none; }
+
+	.footer-links li { margin-bottom: 0.52rem; }
+
+	.footer-links a {
+		color: #f4f4f4;
+		text-decoration: none;
+		font-size: 1.03rem;
+		line-height: 1.26;
+		transition: color 0.2s;
+	}
+
+	.footer-links a:hover { color: #d7d7d7; }
+
+	.footer-wave {
+		display: block;
+		position: relative;
+		left: 50%;
+		width: min(100vw, 1660px);
+		max-width: none;
+		height: auto;
+		margin: 0 0 1.85rem;
+		opacity: 1;
+		transform: translateX(-50%);
+	}
+
+	.footer-bottom {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1.5rem;
+	}
+
+	.footer-copyright {
+		font-size: 0.92rem;
+		color: #fff;
+	}
+
+	.footer-copyright-old { display: none; }
+
+	.footer-legal {
+		display: flex;
+		gap: 1.75rem;
+	}
+
+	.footer-legal a {
+		color: #fff;
+		font-size: 0.92rem;
+		text-decoration: none;
+	}
+
+	.footer-legal a:hover { color: #d7d7d7; }
+
+	@media (max-width: 900px) {
+		.footer-grid { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+		.footer-brand { grid-column: span 2; max-width: none; }
+		.footer-bottom { align-items: flex-start; flex-direction: column; }
+	}
+
+	@media (max-width: 640px) {
+		.footer-grid { grid-template-columns: 1fr; }
+		.footer-brand { grid-column: span 1; max-width: none; text-align: left; }
+		.footer-logo-img { width: min(100%, 328px); margin: 0; }
+		.footer-socials { justify-content: flex-start; }
+		.footer-inner { padding-inline: 1.25rem; }
+		.footer-heading { font-size: 1.5rem; }
+		.footer-wave {
+			width: 100vw;
+		}
+		.footer-legal { flex-wrap: wrap; gap: 0.8rem 1.25rem; }
+	}
+</style>

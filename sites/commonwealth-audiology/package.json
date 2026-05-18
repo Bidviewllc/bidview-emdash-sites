@@ -1,0 +1,38 @@
+{
+  "name": "commonwealth-audiology",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "emdash": {
+    "label": "Commonwealth Audiology",
+    "seed": "seed/seed.json"
+  },
+  "scripts": {
+    "dev": "astro dev --config astro.config.local.mjs",
+    "dev:cloudflare": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "deploy": "astro build && wrangler deploy",
+    "deploy:staging": "astro build && node scripts/deploy-staging.mjs",
+    "bootstrap": "emdash init && emdash seed",
+    "seed": "emdash seed",
+    "typecheck": "astro check"
+  },
+  "dependencies": {
+    "@astrojs/cloudflare": "^13.1.7",
+    "@astrojs/node": "^10.0.0",
+    "@astrojs/react": "^5.0.0",
+    "@emdash-cms/cloudflare": "0.8.0",
+    "@emdash-cms/plugin-audit-log": "0.1.1",
+    "astro": "^6.0.1",
+    "better-sqlite3": "^12.8.0",
+    "emdash": "0.8.0",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.7",
+    "@cloudflare/workers-types": "^4.20260305.1",
+    "wrangler": "^4.87.0"
+  }
+}

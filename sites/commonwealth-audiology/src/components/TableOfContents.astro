@@ -1,0 +1,189 @@
+---
+/**
+ * Auto-generated Table of Contents.
+ * On load, scans the element marked [data-toc-content] for h2/h3/h4,
+ * assigns ids, and builds a linked, indented list. Collapsed by default.
+ */
+interface Props {
+	title?: string;
+}
+const { title = "Table of Contents" } = Astro.props;
+---
+
+<nav class="toc is-collapsed" data-toc aria-label="Table of contents">
+	<button type="button" class="toc-head" aria-expanded="false">
+		<span>{title}</span>
+		<svg
+			class="toc-toggle"
+			width="20"
+			height="20"
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2.6"
+			aria-hidden="true"
+		>
+			<polyline points="6 9 12 15 18 9"></polyline>
+		</svg>
+	</button>
+	<ol class="toc-list"></ol>
+</nav>
+
+<script>
+	function slugify(text: string): string {
+		const s = text
+			.toLowerCase()
+			.trim()
+			.replace(/[^\w\s-]/g, "")
+			.replace(/\s+/g, "-")
+			.replace(/-+/g, "-")
+			.replace(/^-|-$/g, "");
+		// ids must not start with a digit (keeps CSS selectors / :target valid)
+		return /^[0-9]/.test(s) ? `section-${s}` : s || "section";
+	}
+
+	document.querySelectorAll<HTMLElement>("[data-toc]").forEach((toc) => {
+		const list = toc.querySelector<HTMLOListElement>(".toc-list");
+		const content = document.querySelector<HTMLElement>("[data-toc-content]");
+		if (!list || !content) {
+			toc.style.display = "none";
+			return;
+		}
+
+		const headings = [
+			...content.querySelectorAll<HTMLElement>("h2, h3, h4"),
+		];
+		if (headings.length === 0) {
+			toc.style.display = "none";
+			return;
+		}
+
+		const used = new Set<string>();
+		for (const h of headings) {
+			let id = h.id || slugify(h.textContent || "section");
+			let candidate = id;
+			let n = 2;
+			while (used.has(candidate)) candidate = `${id}-${n++}`;
+			id = candidate;
+			used.add(id);
+			h.id = id;
+			h.style.scrollMarginTop = "120px";
+
+			const li = document.createElement("li");
+			li.className = `toc-${h.tagName.toLowerCase()}`;
+			const a = document.createElement("a");
+			a.href = `#${id}`;
+			a.textContent = h.textContent;
+			li.appendChild(a);
+			list.appendChild(li);
+		}
+
+		const head = toc.querySelector<HTMLButtonElement>(".toc-head");
+		head?.addEventListener("click", () => {
+			const collapsed = toc.classList.toggle("is-collapsed");
+			head.setAttribute("aria-expanded", String(!collapsed));
+		});
+	});
+</script>
+
+<style>
+	.toc {
+		width: 100%;
+		background: #fff;
+		border: 1px solid rgba(49, 96, 159, 0.22);
+		border-radius: 12px;
+		overflow: hidden;
+	}
+
+	/* ── Header ── */
+	.toc-head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		width: 100%;
+		padding: 0.95rem 1.25rem;
+		border: 0;
+		background: #f1f7fc;
+		cursor: pointer;
+		font-family: var(--font-sans);
+		font-size: 1.1rem;
+		font-weight: 800;
+		color: #0076ba;
+		transition: background 0.16s ease;
+	}
+
+	.toc-head:hover {
+		background: #e7f1f9;
+	}
+
+	.toc:not(.is-collapsed) .toc-head {
+		border-bottom: 1px solid rgba(49, 96, 159, 0.16);
+	}
+
+	.toc-toggle {
+		flex-shrink: 0;
+		color: #0076ba;
+		transition: transform 0.22s ease;
+	}
+
+	.toc.is-collapsed .toc-toggle {
+		transform: rotate(-90deg);
+	}
+
+	/* ── List ── */
+	.toc-list {
+		list-style: none;
+		margin: 0;
+		padding: 0.5rem 0.6rem 0.65rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.1rem;
+	}
+
+	.toc.is-collapsed .toc-list {
+		display: none;
+	}
+
+	.toc-list :global(li) {
+		margin: 0;
+	}
+
+	.toc-list :global(a) {
+		display: block;
+		padding: 0.5rem 0.7rem;
+		border-radius: 7px;
+		color: #2c2c2c;
+		text-decoration: none;
+		font-size: 0.95rem;
+		line-height: 1.38;
+		transition: background 0.14s ease, color 0.14s ease;
+	}
+
+	.toc-list :global(a:hover) {
+		background: #f0f6fb;
+		color: #0076ba;
+	}
+
+	.toc-list :global(.toc-h2 a) {
+		font-weight: 700;
+	}
+
+	.toc-list :global(.toc-h3 a) {
+		margin-left: 0.9rem;
+		padding-left: 0.95rem;
+		border-left: 2px solid rgba(49, 96, 159, 0.28);
+		border-radius: 0 7px 7px 0;
+		font-size: 0.9rem;
+		color: #545454;
+	}
+
+	.toc-list :global(.toc-h4 a) {
+		margin-left: 1.85rem;
+		padding-left: 0.95rem;
+		border-left: 2px solid rgba(49, 96, 159, 0.2);
+		border-radius: 0 7px 7px 0;
+		font-size: 0.875rem;
+		color: #666;
+	}
+</style>

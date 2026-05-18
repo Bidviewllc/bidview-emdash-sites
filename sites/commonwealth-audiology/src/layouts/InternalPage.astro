@@ -1,0 +1,182 @@
+---
+/**
+ * Internal-page layout — the shared template for every non-homepage page.
+ * Wraps Base (header + footer) + PageHero + 2-column body grid + Sidebar.
+ * Page content is slotted into <main data-toc-content>; drop a
+ * <TableOfContents /> inside the slot wherever it should appear.
+ */
+import { getEmDashCollection } from "emdash";
+import Base from "./Base.astro";
+import PageHero from "../components/PageHero.astro";
+import Sidebar from "../components/Sidebar.astro";
+
+interface Crumb {
+	label: string;
+	href?: string;
+}
+interface Props {
+	title: string;
+	breadcrumbs: Crumb[];
+	heroImage?: string;
+	description?: string | null;
+	/** Optional meta line shown in the hero, directly below the title. */
+	heroMeta?: string | null;
+}
+const {
+	title,
+	breadcrumbs,
+	heroImage = "/uploads/internal-hero-default.png",
+	description,
+	heroMeta,
+} = Astro.props;
+
+const [{ entries: configs }, { entries: postEntries }] = await Promise.all([
+	getEmDashCollection("site_config", { limit: 1 }),
+	getEmDashCollection("posts", { orderBy: { published_at: "desc" }, limit: 3 }),
+]);
+const cfg = configs[0]?.data ?? {};
+const phone = cfg.phone ?? "(844) 442-4222";
+const bookUrl = cfg.book_url ?? "#book";
+const mediaUrl = (img: any): string | null => {
+	const key = img?.meta?.storageKey;
+	if (typeof key === "string" && key) return `/_emdash/api/media/file/${key}`;
+	if (typeof img?.src === "string" && img.src) return img.src;
+	return null;
+};
+const posts = postEntries.map((p) => ({
+	id: p.id,
+	title: p.data.title,
+	image: mediaUrl(p.data.featured_image),
+}));
+---
+
+<Base title={title} description={description}>
+	<PageHero
+		title={title}
+		breadcrumbs={breadcrumbs}
+		image={heroImage}
+		meta={heroMeta}
+	/>
+
+	<div class="page-body">
+		<div class="page-body-grid">
+			<main class="page-main" data-toc-content>
+				<slot />
+			</main>
+			<Sidebar phone={phone} bookUrl={bookUrl} posts={posts} />
+		</div>
+	</div>
+</Base>
+
+<style>
+	.page-body {
+		background: #fff;
+		padding: 3.5rem 1.5rem 5rem;
+	}
+
+	.page-body-grid {
+		max-width: 1200px;
+		margin: 0 auto;
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) 360px;
+		gap: 3rem;
+		align-items: start;
+	}
+
+	.page-main {
+		min-width: 0;
+		color: #1a1a1a;
+	}
+
+	/* ── Content typography (applies to slotted content) ── */
+	.page-main :global(p) {
+		margin: 0 0 1.15rem;
+		font-size: 1.075rem;
+		line-height: 1.55;
+		color: #1a1a1a;
+	}
+
+	.page-main :global(.lead-italic) {
+		font-style: italic;
+		font-weight: 700;
+	}
+
+	.page-main :global(.note-italic) {
+		font-style: italic;
+		margin-top: 1.4rem;
+	}
+
+	.page-main :global(h2) {
+		margin: 2.4rem 0 1rem;
+		font-family: "Merriweather", Georgia, "Times New Roman", serif;
+		font-size: 2.05rem;
+		font-weight: 700;
+		line-height: 1.2;
+		color: #1f1f1f;
+	}
+
+	.page-main :global(h3) {
+		margin: 1.8rem 0 0.85rem;
+		font-family: "Merriweather", Georgia, "Times New Roman", serif;
+		font-size: 1.5rem;
+		font-weight: 700;
+		line-height: 1.25;
+		color: #1f1f1f;
+	}
+
+	.page-main :global(h4) {
+		margin: 1.5rem 0 0.7rem;
+		font-family: "Merriweather", Georgia, "Times New Roman", serif;
+		font-size: 1.2rem;
+		font-weight: 700;
+		color: #1f1f1f;
+	}
+
+	.page-main :global(ul),
+	.page-main :global(ol) {
+		margin: 0 0 1.2rem;
+		padding-left: 1.5rem;
+	}
+
+	.page-main :global(li) {
+		margin-bottom: 0.45rem;
+		font-size: 1.075rem;
+		line-height: 1.55;
+		color: #1a1a1a;
+	}
+
+	.page-main :global(.toc) {
+		margin: 2rem 0 0.5rem;
+	}
+
+	.page-main :global(.accordion) {
+		margin: 0.5rem 0;
+	}
+
+	.page-main :global(.section-rule) {
+		margin: 2.6rem 0 0.4rem;
+		border: 0;
+		border-top: 3px solid #1f1f1f;
+	}
+
+	@media (max-width: 960px) {
+		.page-body-grid {
+			grid-template-columns: 1fr;
+			gap: 2.5rem;
+		}
+	}
+
+	@media (max-width: 640px) {
+		.page-body {
+			padding: 2.5rem 1.1rem 3.5rem;
+		}
+
+		.page-main :global(h2) {
+			font-size: 1.7rem;
+		}
+
+		.page-main :global(h3) {
+			font-size: 1.3rem;
+		}
+	}
+</style>
