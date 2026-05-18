@@ -1,15 +1,21 @@
 ---
-import InternalPage from "../layouts/InternalPage.astro";
+import Base from "../layouts/Base.astro";
+import PageHero from "../components/PageHero.astro";
 ---
 
-<InternalPage
+<Base
 	title="Giving Back"
 	description="Discover how Commonwealth Audiology gives back by helping bring better hearing, connection, and hope to those who need it most."
-	breadcrumbs={[
-		{ label: "Home", href: "/" },
-		{ label: "Giving Back" },
-	]}
 >
+	<PageHero
+		title="Giving Back"
+		breadcrumbs={[
+			{ label: "Home", href: "/" },
+			{ label: "Giving Back" },
+		]}
+		image="/uploads/internal-hero-default.png"
+	/>
+	<div class="gb-body">
 	<p class="lead-italic">
 		At Commonwealth Audiology, we believe hearing is about so much more than
 		sound. It's about connection.
@@ -119,9 +125,58 @@ import InternalPage from "../layouts/InternalPage.astro";
 			<a href="https://www.hearingthecall.org" target="_blank" rel="noopener">hearingthecall.org</a>.
 		</p>
 	</div>
-</InternalPage>
+
+	</div>
+</Base>
 
 <style>
+	.gb-body {
+		background: #fff;
+		padding: 3.5rem 1.5rem 5rem;
+		max-width: 1200px;
+		margin: 0 auto;
+		color: #1a1a1a;
+	}
+
+	.gb-body p {
+		margin: 0 0 1.15rem;
+		font-size: 1.075rem;
+		line-height: 1.55;
+		color: #1a1a1a;
+	}
+
+	.gb-body .lead-italic {
+		font-style: italic;
+		font-weight: 700;
+	}
+
+	.gb-body ul {
+		margin: 0 0 1.2rem;
+		padding-left: 1.5rem;
+	}
+
+	.gb-body li {
+		margin-bottom: 0.45rem;
+		font-size: 1.075rem;
+		line-height: 1.55;
+	}
+
+	.gb-body h2 {
+		margin: 2.4rem 0 1rem;
+		font-family: "Merriweather", Georgia, "Times New Roman", serif;
+		font-size: 2.05rem;
+		font-weight: 700;
+		line-height: 1.2;
+		color: #1f1f1f;
+	}
+
+	@media (max-width: 640px) {
+		.gb-body {
+			padding: 2.5rem 1.1rem 3.5rem;
+		}
+		.gb-body h2 { font-size: 1.7rem; }
+	}
+
 	.giveback-media-row {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
