@@ -1537,9 +1537,6 @@ details[open] .accordion-icon { transform: rotate(90deg); }
 	.hero { min-height: 420px; }
 	.hero-content { padding: 4rem 1.5rem 5rem; }
 	.cards-grid { grid-template-columns: 1fr; }
-	.ha-grid { grid-template-columns: 1fr; }
-	.ha-card { grid-template-columns: 1fr; }
-	.ha-img-wrap { width: 100%; height: 180px; }
 	.news-grid { grid-template-columns: 1fr; }
 	.testimonials-grid { grid-template-columns: 1fr; }
 	.trust-badges { gap: 1.5rem; }
@@ -3671,11 +3668,15 @@ details[open] .accordion-icon { transform: rotate(90deg); }
 
 @media (max-width: 640px) {
 	.hearing-aids-section {
-		padding: 3.8rem 0 4.6rem !important;
+		padding: 1.6rem 0 1.6rem !important;
+	}
+
+	.hearing-aids-section .section-header {
+		padding: 0 18px !important;
 	}
 
 	.hearing-aids-section .section-header h2 {
-		font-size: 2rem !important;
+		font-size: clamp(1.35rem, 6.3vw, 1.65rem) !important;
 	}
 
 	.hearing-aids-section .section-subtext,
@@ -3683,14 +3684,55 @@ details[open] .accordion-icon { transform: rotate(90deg); }
 		font-size: 1rem !important;
 	}
 
+	/* 1-up horizontal snap carousel */
+	.hearing-aids-section .container {
+		overflow: hidden !important;
+		padding-left: 0 !important;
+		padding-right: 0 !important;
+	}
+
+	.hearing-aids-section .ha-grid {
+		display: flex !important;
+		flex-direction: row !important;
+		overflow-x: auto !important;
+		scroll-snap-type: x mandatory !important;
+		-webkit-overflow-scrolling: touch;
+		gap: 0 !important;
+		scrollbar-width: none !important;
+		grid-template-columns: unset !important;
+		padding: 0 !important;
+		width: 100% !important;
+	}
+
+	.hearing-aids-section .ha-grid::-webkit-scrollbar { display: none; }
+
 	.hearing-aids-section .ha-card {
-		grid-template-columns: 1fr !important;
+		flex: 0 0 100vw !important;
+		min-width: 0 !important;
+		scroll-snap-align: start !important;
+		display: flex !important;
+		flex-direction: column !important;
+		grid-template-columns: unset !important;
+		gap: 0 !important;
+		padding: 0 18px !important;
+		box-sizing: border-box !important;
+		align-items: stretch !important;
 	}
 
 	.hearing-aids-section .ha-img-wrap,
 	.hearing-aids-section .ha-img-placeholder {
 		width: 100% !important;
-		height: 260px !important;
+		height: 200px !important;
+	}
+
+	.hearing-aids-section .ha-body {
+		padding: 1.1rem 0 0.5rem !important;
+		width: 100% !important;
+		min-width: 0 !important;
+		overflow-wrap: break-word !important;
+	}
+	.hearing-aids-section .ha-desc {
+		overflow-wrap: break-word !important;
 	}
 }
 

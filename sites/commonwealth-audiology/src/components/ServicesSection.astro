@@ -425,22 +425,24 @@ const displayedServices = orderedServices.slice(0, 4);
 			font-size: clamp(1.35rem, 6.3vw, 1.65rem) !important;
 			line-height: 1.12 !important;
 		}
-		/* Single column: disable carousel, stack cards */
+		/* 1-up snapping carousel on mobile */
 		.services-carousel {
 			width: 100% !important;
 			margin-left: 0 !important;
-			overflow: visible !important;
+			overflow-x: auto !important;
+			scroll-snap-type: x mandatory !important;
+			-webkit-overflow-scrolling: touch;
 		}
 		.services-section .cards-grid {
 			display: flex !important;
-			flex-direction: column !important;
-			width: 100% !important;
+			flex-direction: row !important;
+			width: max-content !important;
 			gap: 1rem !important;
-			padding: 0.3rem 0 0.35rem !important;
+			padding: 0.3rem 0 0.75rem !important;
 		}
 		.services-section .service-card {
-			flex: 0 0 auto !important;
-			width: 100% !important;
+			flex: 0 0 calc(100vw - 36px) !important;
+			scroll-snap-align: start !important;
 		}
 		.services-section .card-img-wrap {
 			height: 200px !important;
@@ -452,6 +454,7 @@ const displayedServices = orderedServices.slice(0, 4);
 		.services-controls {
 			display: none !important;
 		}
+		/* Hide the 4 duplicate sets — only real cards (set 2) show */
 		.card-dupe {
 			display: none !important;
 		}
