@@ -65,7 +65,7 @@ const displayedServices = orderedServices.slice(0, 4);
 				<div class="cards-grid" data-services-slider>
 					{[0, 1, 2, 3, 4].map((setIndex) =>
 						displayedServices.map((svc) => (
-							<div class="service-card" aria-hidden={setIndex === 2 ? undefined : "true"}>
+							<div class={`service-card${setIndex !== 2 ? " card-dupe" : ""}`} aria-hidden={setIndex === 2 ? undefined : "true"}>
 								<div class="card-img-wrap">
 									<img src={imageSrc(svc.data.image, serviceImageSrc(svc.data.title))} alt={svc.data.image?.alt ?? svc.data.title} class="card-img" />
 								</div>
@@ -413,7 +413,7 @@ const displayedServices = orderedServices.slice(0, 4);
 	@media (max-width: 640px) {
 		.services-section {
 			padding-top: 1.6rem !important;
-			padding-bottom: 40px !important;
+			padding-bottom: 1.6rem !important;
 		}
 		.services-section .container {
 			padding: 0 18px !important;
@@ -425,20 +425,35 @@ const displayedServices = orderedServices.slice(0, 4);
 			font-size: clamp(1.35rem, 6.3vw, 1.65rem) !important;
 			line-height: 1.12 !important;
 		}
+		/* Single column: disable carousel, stack cards */
+		.services-carousel {
+			width: 100% !important;
+			margin-left: 0 !important;
+			overflow: visible !important;
+		}
 		.services-section .cards-grid {
+			display: flex !important;
+			flex-direction: column !important;
+			width: 100% !important;
 			gap: 1rem !important;
 			padding: 0.3rem 0 0.35rem !important;
 		}
-		/* Phone: 1 full card + a 30%-cut card each side. */
 		.services-section .service-card {
-			flex: 0 0 calc((100vw - 2 * 1rem) / 2.4) !important;
+			flex: 0 0 auto !important;
+			width: 100% !important;
 		}
 		.services-section .card-img-wrap {
-			height: 220px !important;
-			flex-basis: 220px;
+			height: 200px !important;
+			flex-basis: 200px;
 		}
 		.services-section .card-body {
 			padding: 1.5rem 1.35rem 1.4rem !important;
+		}
+		.services-controls {
+			display: none !important;
+		}
+		.card-dupe {
+			display: none !important;
 		}
 	}
 </style>
