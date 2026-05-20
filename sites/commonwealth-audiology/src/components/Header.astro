@@ -29,11 +29,11 @@ const navItems = (menu?.items ?? []).filter((i) => i.label !== "Home");
 				<img src="/uploads/phone.svg" alt="" aria-hidden="true" />
 				{phone}
 			</a>
-			<span class="header-location">
+			<a href="/contact/" class="header-location">
 				<img src="/uploads/googlemap.svg" alt="" aria-hidden="true" />
 				<span class="header-location-full">View {cityName} Location</span>
 				<span class="header-location-mobile">{cityName}</span>
-			</span>
+			</a>
 			{isLoggedIn && <a href="/_emdash/admin" class="header-admin">Admin ↗</a>}
 		</div>
 	</div>
@@ -141,9 +141,22 @@ const navItems = (menu?.items ?? []).filter((i) => i.label !== "Home");
 			});
 		});
 
-	// Any nav link click closes the mobile menu
+	// Mobile: tapping the parent nav-link (not just the caret) also toggles the submenu
+	document
+		.querySelectorAll<HTMLAnchorElement>(".nav-item.has-children .nav-link")
+		.forEach((link) => {
+			link.addEventListener("click", (e) => {
+				if (window.innerWidth > 900) return;
+				e.preventDefault();
+				const toggle = link.closest(".nav-item")?.querySelector<HTMLButtonElement>(".nav-sub-toggle");
+				toggle?.click();
+			});
+		});
+
+	// Any nav link click closes the mobile menu — skip parent nav-links on mobile (handled by submenu-tap above)
 	navLinks?.querySelectorAll("a").forEach((link) => {
 		link.addEventListener("click", () => {
+			if (window.innerWidth <= 900 && link.classList.contains("nav-link") && link.closest(".nav-item.has-children")) return;
 			nav?.classList.remove("is-menu-open");
 			menuToggle?.setAttribute("aria-expanded", "false");
 			document
@@ -222,7 +235,7 @@ const navItems = (menu?.items ?? []).filter((i) => i.label !== "Home");
 		color: #000;
 		text-decoration: none;
 		font-size: 1rem;
-		font-weight: 500;
+		font-weight: 700;
 		transition: opacity 0.2s;
 	}
 
@@ -240,8 +253,12 @@ const navItems = (menu?.items ?? []).filter((i) => i.label !== "Home");
 		gap: 1.45rem;
 		color: #000;
 		font-size: 1rem;
-		font-weight: 500;
+		font-weight: 700;
+		text-decoration: none;
+		transition: opacity 0.2s;
 	}
+
+	.header-location:hover { opacity: 0.85; color: #000; }
 
 	.header-location img {
 		width: 15px;
@@ -333,6 +350,9 @@ const navItems = (menu?.items ?? []).filter((i) => i.label !== "Home");
 		align-items: center;
 		text-decoration: none;
 		color: #1b1b1b;
+		font-family: "Lato", sans-serif;
+		font-size: 16px;
+		font-weight: 700;
 		transition: color 0.2s;
 		white-space: nowrap;
 	}
@@ -400,8 +420,9 @@ const navItems = (menu?.items ?? []).filter((i) => i.label !== "Home");
 		padding: 0.55rem 0.85rem;
 		border-radius: 8px;
 		color: #1b1b1b;
-		font-size: 0.95rem;
-		font-weight: 500;
+		font-family: "Lato", sans-serif;
+		font-size: 16px;
+		font-weight: 700;
 		text-decoration: none;
 		white-space: nowrap;
 		transition: background 0.15s ease, color 0.15s ease;
@@ -474,8 +495,9 @@ const navItems = (menu?.items ?? []).filter((i) => i.label !== "Home");
 		padding: 0.55rem 0.85rem;
 		border-radius: 8px;
 		color: #1b1b1b;
-		font-size: 0.95rem;
-		font-weight: 500;
+		font-family: "Lato", sans-serif;
+		font-size: 16px;
+		font-weight: 700;
 		text-decoration: none;
 		white-space: nowrap;
 		transition: background 0.15s ease, color 0.15s ease;
@@ -587,7 +609,7 @@ const navItems = (menu?.items ?? []).filter((i) => i.label !== "Home");
 			width: 100%;
 			padding: 0.4rem;
 			border-radius: 12px;
-			background: #f4f6f7;
+			background: #fff;
 			font-size: 0.95rem;
 		}
 		.nav.is-menu-open .nav-links {
