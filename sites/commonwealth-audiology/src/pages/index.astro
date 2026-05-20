@@ -21,7 +21,7 @@ const [
 	getEmDashCollection("site_config", { limit: 1 }),
 	getEmDashCollection("services"),
 	getEmDashCollection("hearing_aids"),
-	getEmDashCollection("team"),
+	getEmDashCollection("team", { orderBy: { sort_order: "asc" } }),
 	getEmDashCollection("testimonials", { limit: 5 }),
 	getEmDashCollection("faq"),
 	getEmDashCollection("hearing_protection"),
@@ -29,40 +29,39 @@ const [
 	getEmDashCollection("posts", { orderBy: { published_at: "desc" }, limit: 3 }),
 ]);
 
+// homepage collection — graceful fallback if collection not yet in DB
+let homepages: any[] = [];
+try {
+	const result = await getEmDashCollection("homepage", { limit: 1 });
+	homepages = result.entries;
+} catch { /* collection not yet added to DB — use defaults below */ }
+
 Astro.cache.set(cacheHint);
 
 const { siteTitle, siteLogo } = resolveBlogSiteIdentity(settingsData);
 const cfg = configs[0]?.data ?? {};
+const hp = homepages[0];
+const hpCfg = hp?.data ?? {};
 const fallbackLogo = "/uploads/0d3a8fc547761a9015ed3bc9284e6d76d16f8417.png";
 const logoSrc = siteLogo?.url ?? fallbackLogo;
 const logoAlt = siteLogo?.alt || siteTitle;
 
-const phone = cfg.phone ?? "(844) 442-4222";
-const bookUrl = cfg.book_url ?? "#book";
-const heroHeading = cfg.hero_heading ?? "Compassionate hearing care that feels like home.";
-const heroSubtext = cfg.hero_subtext ?? "Hearing care you can trust, for every stage of life.";
+const phone = cfg.phone ?? "(502) 642-4322";
+const bookUrl = cfg.book_url ?? "/book-appointment/";
+const heroHeading = hpCfg.hero_heading ?? cfg.hero_heading ?? "Compassionate Hearing Care in Georgetown, KY";
+const heroSubtext = hpCfg.hero_subtext ?? cfg.hero_subtext ?? "Hearing care you can trust, for every stage of life.";
 const cityLabel = (cfg.city_state ?? "Georgetown, KY").replace(/\s+\d{5}(?:-\d{4})?$/, "");
 const defaultAboutText =
 	"Life is full of meaningful sounds: laughter with family, conversations with friends, music you love, and the quiet moments that bring calm. When hearing or balance problems begin to interfere, it can feel isolating and overwhelming.\n\nAt Commonwealth Audiology, your hearing wellness is our top priority. Every recommendation we make is shaped by your everyday listening needs and the moments that bring meaning to your life.\n\nOur Doctor of Audiology, Dr. Tiffany Brewer, stays up to date with the latest hearing technology so we can offer you the most effective and innovative options available.\n\nOur care doesn't end when you choose hearing aids. We provide support each step of the way. From helping you adjust to your hearing aids, fine-tuning your device, and making sure they truly support your daily life.";
-const seededAboutText =
-	"Life is full of meaningful sounds: laughter with loved ones, conversations with friends, music you love, and the world sounds all around you.";
-const aboutTagline =
-	cfg.about_tagline && cfg.about_tagline !== "AUDIOLOGY EXCELLENCE & PATIENT CARE"
+const aboutTagline = hpCfg.about_tagline
+	?? (cfg.about_tagline && cfg.about_tagline !== "AUDIOLOGY EXCELLENCE & PATIENT CARE"
 		? cfg.about_tagline
-		: `${cityLabel.toUpperCase()} AUDIOLOGISTS & HEARING AIDS`;
-const aboutTextSource =
-	typeof cfg.about_text === "string" && !cfg.about_text.startsWith(seededAboutText)
-		? cfg.about_text
-		: defaultAboutText;
+		: `${cityLabel.toUpperCase()} AUDIOLOGISTS & HEARING AIDS`);
+const aboutTextSource = hpCfg.about_text ?? cfg.about_text ?? defaultAboutText;
 const aboutParagraphs = aboutTextSource.split(/\n\s*\n/).filter(Boolean);
-const seededTeamText =
-	"At Commonwealth Audiology, our focus is on restoring clarity, comfort, and confidence so you can fully participate in the world around you.";
 const defaultTeamText =
 	"At Commonwealth Audiology, our focus is on restoring clarity, comfort, and confidence so you can fully re-engage with the world around you.\n\nWith expert guidance, clinical excellence, and care tailored to your listening needs, we help you hear and live better each day. Our Georgetown, KY audiologist & team takes the time to understand your goals, your listening environments, and the moments that matter most.";
-const teamTextSource =
-	typeof cfg.team_text === "string" && !cfg.team_text.startsWith(seededTeamText)
-		? cfg.team_text
-		: defaultTeamText;
+const teamTextSource = hpCfg.team_text ?? cfg.team_text ?? defaultTeamText;
 const teamParagraphs = teamTextSource.split(/\n\s*\n/).filter(Boolean);
 const protectionOrder = [
 	"Custom Hearing Protection & Ear Molds",
@@ -104,15 +103,19 @@ const formatNewsDate = (d: Date | null | undefined): string =>
 			})
 		: "";
 const hearingAidsSubtext =
-	typeof cfg.hearing_aids_subtext === "string" && cfg.hearing_aids_subtext.trim()
-		? cfg.hearing_aids_subtext
-		: "Your journey with hearing aids doesn't end once you receive a device; it's just the beginning. We support you every step of the way with personalized fittings, follow-up adjustments, repairs, and ongoing maintenance.";
+	(typeof hpCfg.hearing_aids_subtext === "string" && hpCfg.hearing_aids_subtext.trim())
+		? hpCfg.hearing_aids_subtext
+		: (typeof cfg.hearing_aids_subtext === "string" && cfg.hearing_aids_subtext.trim())
+			? cfg.hearing_aids_subtext
+			: "Your journey with hearing aids doesn't end once you receive a device; it's just the beginning. We support you every step of the way with personalized fittings, follow-up adjustments, repairs, and ongoing maintenance.";
 const seededServicesSubtext =
 	"At Commonwealth Audiology, we provide hearing care to meet your every need.";
 const servicesSubtext =
-	typeof cfg.services_subtext === "string" && !cfg.services_subtext.startsWith(seededServicesSubtext)
-		? cfg.services_subtext
-		: "At Commonwealth Audiology, we believe hearing care is more than a purchase, it's a commitment to your well-being. We offer the following services to make sure you get the best hearing care in Georgetown, KY.";
+	(typeof hpCfg.services_subtext === "string" && hpCfg.services_subtext.trim())
+		? hpCfg.services_subtext
+		: (typeof cfg.services_subtext === "string" && !cfg.services_subtext.startsWith(seededServicesSubtext))
+			? cfg.services_subtext
+			: "At Commonwealth Audiology, we believe hearing care is more than a purchase, it's a commitment to your well-being. We offer the following services to make sure you get the best hearing care in Georgetown, KY.";
 const orderedServices = services.toSorted((a, b) => Number(a.data.sort_order ?? 0) - Number(b.data.sort_order ?? 0));
 const displayedServices = orderedServices.slice(0, 4);
 const serviceDescriptions: Record<string, string> = {
@@ -238,7 +241,7 @@ function stars(rating: string | undefined) {
 
 ---
 
-<Base title={siteTitle} description={cfg.hero_subtext ?? "Compassionate hearing care in Georgetown, KY"}>
+<Base title="Commonwealth Audiology | Audiologists & Hearing Aids in Georgetown, KY" description="Commonwealth Audiology is an audiology and hearing aid clinic with an expert audiologist providing hearing tests and professional hearing services in Georgetown, KY.">
 
 	<!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
 	<section
@@ -247,8 +250,8 @@ function stars(rating: string | undefined) {
 	>
 		<div class="hero-overlay"></div>
 		<div class="hero-content">
-			<h1 class="hero-heading">{heroHeading}</h1>
-			<p class="hero-subtext">{heroSubtext}</p>
+			<h1 class="hero-heading" {...hp?.edit.hero_heading}>{heroHeading}</h1>
+			<p class="hero-subtext" {...hp?.edit.hero_subtext}>{heroSubtext}</p>
 			<div class="hero-btns">
 				<a href={bookUrl} class="btn-primary">BOOK AN APPOINTMENT <span class="button-arrow" aria-hidden="true"></span></a>
 				<a href={`tel:${phone.replace(/\D/g, "")}`} class="btn-outline">
@@ -297,18 +300,18 @@ function stars(rating: string | undefined) {
 						<img src={aboutSliderImages[0].src} alt={aboutSliderImages[0].alt} class="about-img about-slider-image" data-about-slider-image />
 						<div class="about-slider-controls">
 							<button type="button" class="about-slider-arrow about-slider-prev" aria-label="Previous image" data-about-slider-prev>
-								<span class="about-slider-arrow-icon about-slider-arrow-left" aria-hidden="true"></span>
+								<i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
 							</button>
 							<button type="button" class="about-slider-arrow about-slider-next" aria-label="Next image" data-about-slider-next>
-								<span class="about-slider-arrow-icon about-slider-arrow-right" aria-hidden="true"></span>
+								<i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
 							</button>
 						</div>
 					</div>
 				</div>
 				<div class="about-content">
-					<p class="about-tagline">{aboutTagline}</p>
-					<h2 class="about-heading">{cfg.about_heading ?? "Commonwealth Audiology"}</h2>
-					<div class="about-text">
+					<p class="about-tagline" {...hp?.edit.about_tagline}>{aboutTagline}</p>
+					<h2 class="about-heading" {...hp?.edit.about_heading}>{hpCfg.about_heading ?? cfg.about_heading ?? "Commonwealth Audiology"}</h2>
+					<div class="about-text" {...hp?.edit.about_text}>
 						{aboutParagraphs.map((paragraph) => <p>{paragraph}</p>)}
 					</div>
 					<a href={bookUrl} class="btn-primary about-button">BOOK AN APPOINTMENT <span class="button-arrow" aria-hidden="true"></span></a>
@@ -323,37 +326,30 @@ function stars(rating: string | undefined) {
 			<div class="container">
 				<div class="team-grid">
 					<div class="team-intro">
-						<h2>{cfg.team_heading ?? "Meet Your Local Hearing Professionals"}</h2>
-						<div class="team-copy">
+						<h2 {...hp?.edit.team_heading}>{hpCfg.team_heading ?? cfg.team_heading ?? "Meet Your Local Hearing Professionals"}</h2>
+						<div class="team-copy" {...hp?.edit.team_text}>
 							{teamParagraphs.map((paragraph) => <p>{paragraph}</p>)}
 						</div>
 						<a href="/tiffany-brewer/" class="link-arrow">MEET THE TEAM <span class="button-arrow" aria-hidden="true"></span></a>
 					</div>
 					<div class="team-cards">
-						{team.map((member) => (
-							<div class="team-card">
-								{member.data.photo?.src
-									? <img src={member.data.photo.src} alt={member.data.name} class="team-photo" />
-									: <div class="team-photo-placeholder">{member.data.name.split(" ").map(n => n[0]).join("").slice(0,2)}</div>
-								}
-								<p class="team-name">{member.data.name}</p>
-								{member.data.role && <p class="team-role">{member.data.role}</p>}
-							</div>
-						))}
-						<div class="team-card team-card-primary" data-team-featured>
-							<img src={team[0]?.data.photo?.src ?? fallbackImages.tiffany} alt="Dr. Tiffany Brewer" class="team-photo" />
-							<p class="team-name">Dr. Tiffany Brewer</p>
-							<p class="team-role">AUDIOLOGIST</p>
-						</div>
-						<div class="team-card team-card-secondary" data-team-featured>
-							<img src={team[1]?.data.photo?.src ?? fallbackImages.ashley} alt="Aubrey Gingrick" class="team-photo" />
-							<p class="team-name">Aubrey Gingrick</p>
-							<p class="team-role">PATIENT CARE COORDINATOR</p>
-						</div>
-						<div class="team-card team-card-dog" data-team-featured>
-							<img src={fallbackImages.magnolia} alt="Magnolia" class="team-photo" />
-							<p class="team-name">Magnolia</p>
-						</div>
+						{team.map((member) => {
+							const photoSrc = member.data.photo?.src
+								?? (member.data.name?.toLowerCase().includes("tiffany") ? fallbackImages.tiffany
+									: member.data.name?.toLowerCase().includes("aubrey") ? fallbackImages.ashley
+									: member.data.name === "Magnolia" ? fallbackImages.magnolia
+									: null);
+							return (
+								<div class="team-card" {...member.edit}>
+									{photoSrc
+										? <img src={photoSrc} alt={member.data.name} class="team-photo" {...member.edit.photo} />
+										: <div class="team-photo-placeholder">{member.data.name.split(" ").map((n: string) => n[0]).join("").slice(0,2)}</div>
+									}
+									<p class="team-name" {...member.edit.name}>{member.data.name}</p>
+									{member.data.role && <p class="team-role" {...member.edit.role}>{member.data.role}</p>}
+								</div>
+							);
+						})}
 					</div>
 				</div>
 			</div>
@@ -371,8 +367,8 @@ function stars(rating: string | undefined) {
 		<section class="hearing-aids-section">
 			<div class="container">
 				<div class="section-header">
-					<h2>{cfg.hearing_aids_heading ?? "Hearing Aids & Hearing Aid Services"}</h2>
-					<p class="section-subtext">{hearingAidsSubtext}</p>
+					<h2 {...hp?.edit.hearing_aids_heading}>{hpCfg.hearing_aids_heading ?? cfg.hearing_aids_heading ?? "Hearing Aids & Hearing Aid Services"}</h2>
+					<p class="section-subtext" {...hp?.edit.hearing_aids_subtext}>{hearingAidsSubtext}</p>
 				</div>
 				<div class="ha-grid">
 					{displayedHearingAids.map((item) => (
@@ -421,8 +417,8 @@ function stars(rating: string | undefined) {
 		<section class="protection-section">
 			<div class="container">
 				<div class="section-header">
-					<h2>{cfg.protection_heading ?? "Hearing Protection Solutions"}</h2>
-					{cfg.protection_subtext && <p class="section-subtext">{cfg.protection_subtext}</p>}
+					<h2 {...hp?.edit.protection_heading}>{hpCfg.protection_heading ?? cfg.protection_heading ?? "Hearing Protection Solutions"}</h2>
+					{(hpCfg.protection_subtext || cfg.protection_subtext) && <p class="section-subtext" {...hp?.edit.protection_subtext}>{hpCfg.protection_subtext ?? cfg.protection_subtext}</p>}
 				</div>
 				<div class="accordion">
 					{orderedProtection.map((item) => (
@@ -445,7 +441,7 @@ function stars(rating: string | undefined) {
 	{testimonials.length > 0 && (
 		<section class="testimonials-section">
 			<div class="container">
-				<h2 class="testimonials-heading">{cfg.testimonials_heading ?? "What Our Patients Are Saying"}</h2>
+				<h2 class="testimonials-heading" {...hp?.edit.testimonials_heading}>{hpCfg.testimonials_heading ?? cfg.testimonials_heading ?? "What Our Patients Are Saying"}</h2>
 				<div class="testimonials-grid">
 					{testimonials.map((t) => (
 						<div class="testimonial-card">
@@ -473,7 +469,7 @@ function stars(rating: string | undefined) {
 	{faqItems.length > 0 && (
 		<section class="faq-section">
 			<div class="container">
-				<h2 class="faq-heading">{cfg.faq_heading ?? "Frequently Asked Questions"}</h2>
+				<h2 class="faq-heading" {...hp?.edit.faq_heading}>{hpCfg.faq_heading ?? cfg.faq_heading ?? "Frequently Asked Questions"}</h2>
 				<p class="faq-subtext">Can't find the answers you're looking for? <a href="/contact/">Contact Us.</a></p>
 				<div class="faq-list">
 					{faqItems.map((item) => (
@@ -497,7 +493,7 @@ function stars(rating: string | undefined) {
 		<section class="news-section">
 			<div class="container">
 				<div class="news-header">
-					<h2>{cfg.news_heading ?? "News & Articles"}</h2>
+					<h2 {...hp?.edit.news_heading}>{hpCfg.news_heading ?? cfg.news_heading ?? "News & Articles"}</h2>
 					<p>Explore the latest hearing health tips, company updates, and industry news to stay informed and connected.</p>
 					<a href="/news/" class="link-arrow">VIEW MORE <span class="button-arrow" aria-hidden="true"></span></a>
 				</div>
@@ -610,7 +606,7 @@ function stars(rating: string | undefined) {
 }
 
 .section-header h2 {
-	font-size: clamp(1.6rem, 3vw, 2.2rem);
+	font-size: 2.5rem;
 	font-weight: 700;
 	color: var(--brand);
 	margin-bottom: 0.75rem;
@@ -692,7 +688,7 @@ function stars(rating: string | undefined) {
 	align-items: center;
 	gap: 0.55rem;
 	color: var(--brand);
-	font-size: 0.85rem;
+	font-size: 1rem;
 	font-weight: 700;
 	letter-spacing: 0.05em;
 	text-decoration: none;
@@ -708,7 +704,7 @@ function stars(rating: string | undefined) {
 	align-items: center;
 	gap: 0.5rem;
 	color: var(--brand);
-	font-size: 0.8rem;
+	font-size: 1rem;
 	font-weight: 700;
 	letter-spacing: 0.05em;
 	text-decoration: none;
@@ -864,7 +860,7 @@ function stars(rating: string | undefined) {
 }
 
 .about-heading {
-	font-size: clamp(1.6rem, 3vw, 2.2rem);
+	font-size: 2.5rem;
 	font-weight: 700;
 	color: var(--brand) !important;
 	margin-bottom: 1.25rem;
@@ -891,7 +887,7 @@ function stars(rating: string | undefined) {
 }
 
 .team-intro h2 {
-	font-size: clamp(1.5rem, 2.5vw, 2rem);
+	font-size: 2.5rem;
 	color: var(--brand) !important;
 	font-weight: 700;
 	margin-bottom: 1rem;
@@ -1261,6 +1257,12 @@ function stars(rating: string | undefined) {
 
 .accordion-item {
 	border-bottom: 1px solid #e0e0e0;
+	background: rgb(244, 244, 244) !important;
+	transition: background 0.18s ease;
+}
+
+.accordion-item:hover {
+	background: #fff !important;
 }
 
 .accordion-item:last-child { border-bottom: none; }
@@ -1275,7 +1277,7 @@ function stars(rating: string | undefined) {
 	transition: background 0.15s;
 }
 
-.accordion-summary:hover { background: #f8fbfd; }
+.accordion-summary:hover { background: transparent; }
 
 .accordion-title {
 	font-size: 0.95rem;
@@ -1306,7 +1308,7 @@ details[open] .accordion-icon { transform: rotate(90deg); }
 
 .testimonials-heading {
 	text-align: center;
-	font-size: clamp(1.5rem, 3vw, 2rem);
+	font-size: 2.5rem;
 	font-weight: 700;
 	color: #fff !important;
 	margin-bottom: 2.5rem;
@@ -1380,7 +1382,7 @@ details[open] .accordion-icon { transform: rotate(90deg); }
 
 .faq-heading {
 	text-align: center;
-	font-size: clamp(1.6rem, 3vw, 2.2rem);
+	font-size: 2.5rem;
 	font-weight: 700;
 	color: var(--brand) !important;
 	margin-bottom: 0.5rem;
@@ -1389,7 +1391,7 @@ details[open] .accordion-icon { transform: rotate(90deg); }
 .faq-subtext {
 	text-align: center;
 	color: #666;
-	font-size: 0.9rem;
+	font-size: 1.125rem;
 	margin-bottom: 2.5rem;
 }
 
@@ -1421,7 +1423,7 @@ details[open] .accordion-icon { transform: rotate(90deg); }
 	gap: 1rem;
 }
 
-.faq-question:hover { background: #f8fbfd; }
+.faq-question:hover { background: transparent; }
 
 .faq-answer {
 	padding: 0 1.5rem 1.25rem;
@@ -1444,7 +1446,7 @@ details[open] .accordion-icon { transform: rotate(90deg); }
 }
 
 .news-header h2 {
-	font-size: 40px;
+	font-size: 2.5rem;
 	font-weight: 700;
 	color: #222d33 !important;
 	white-space: nowrap;
@@ -1587,13 +1589,13 @@ details[open] .accordion-icon { transform: rotate(90deg); }
 .section-header h2,
 .faq-heading,
 .news-header h2 {
-	font-size: 1.45rem;
+	font-size: 2.5rem;
 	color: var(--brand) !important;
 }
 
 .section-subtext {
 	max-width: 620px;
-	font-size: 0.78rem;
+	font-size: 1.125rem;
 	line-height: 1.45;
 }
 
@@ -1602,7 +1604,7 @@ details[open] .accordion-icon { transform: rotate(90deg); }
 .link-arrow,
 .card-link {
 	border-radius: 4px;
-	font-size: 0.62rem;
+	font-size: 1rem;
 	letter-spacing: 0;
 }
 
@@ -2200,7 +2202,7 @@ details[open] .accordion-icon { transform: rotate(90deg); }
 }
 
 .faq-subtext {
-	font-size: 0.72rem;
+	font-size: 1.125rem;
 	margin-bottom: 1.4rem;
 }
 
@@ -2420,7 +2422,7 @@ details[open] .accordion-icon { transform: rotate(90deg); }
 	.link-arrow,
 	.card-link,
 	.btn-outline-dark {
-		font-size: 0.48rem;
+		font-size: 1rem;
 	}
 
 	.team-cards {
@@ -2593,7 +2595,7 @@ details[open] .accordion-icon { transform: rotate(90deg); }
 	}
 
 	.faq-subtext {
-		font-size: 0.52rem;
+		font-size: 1.125rem;
 	}
 
 	.news-section .container {
@@ -2749,8 +2751,9 @@ details[open] .accordion-icon { transform: rotate(90deg); }
 	background: rgba(255,255,255,0.95);
 	padding: 0;
 	cursor: pointer;
-	box-shadow: 0 2px 7px rgba(0,0,0,0.18);
 	pointer-events: auto;
+	color: #111;
+	font-size: 0.75rem;
 }
 
 .about-slider-controls::before,
@@ -2759,29 +2762,9 @@ details[open] .accordion-icon { transform: rotate(90deg); }
 	content: none !important;
 }
 
-.about-slider-arrow-icon {
-	display: block;
-	width: 13px;
-	height: 11px;
-	background: #111;
-}
-
-.about-slider-arrow-left {
-	-webkit-mask: url("/uploads/aerow-left.svg") center / contain no-repeat;
-	mask: url("/uploads/aerow-left.svg") center / contain no-repeat;
-}
-
-.about-slider-arrow-right {
-	-webkit-mask: url("/uploads/aerwo-right.svg") center / contain no-repeat;
-	mask: url("/uploads/aerwo-right.svg") center / contain no-repeat;
-}
-
 .about-slider-arrow:hover {
 	background: #0076ba;
-}
-
-.about-slider-arrow:hover .about-slider-arrow-icon {
-	background: #fff;
+	color: #fff;
 }
 
 .about-img,
@@ -2946,6 +2929,7 @@ details[open] .accordion-icon { transform: rotate(90deg); }
 	line-height: 1.26 !important;
 	max-width: none !important;
 	margin: 0 0 1rem;
+	color: #000 !important;
 }
 
 .team-intro .link-arrow {
@@ -3072,8 +3056,12 @@ details[open] .accordion-icon { transform: rotate(90deg); }
 	color: #fff !important;
 }
 
-.team-card-dog .team-name {
-	bottom: 1.25rem !important;
+.team-card-dog[data-team-featured] .team-name {
+	bottom: 3.4rem !important;
+}
+
+.team-card-dog[data-team-featured] .team-role {
+	font-size: 1rem !important;
 }
 
 @media (max-width: 900px) {
@@ -3750,7 +3738,7 @@ details[open] .accordion-icon { transform: rotate(90deg); }
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	padding: 2.25rem 1.2rem 1.55rem !important;
+	padding: 2.25rem 3.125rem 1.55rem !important;
 	border-radius: 18px !important;
 	background: #eeeeee !important;
 	box-shadow: 0 10px 22px rgba(0,0,0,0.13) !important;
@@ -3887,8 +3875,13 @@ details[open] .accordion-icon { transform: rotate(90deg); }
 	background: transparent !important;
 }
 
-.protection-section .protection-row:nth-child(odd) {
-	background: #f4f4f4 !important;
+.protection-section .protection-row {
+	background: rgb(244, 244, 244) !important;
+	transition: background 0.18s ease;
+}
+
+.protection-section .protection-row:hover {
+	background: #fff !important;
 }
 
 .protection-section .accordion-summary {
@@ -3905,10 +3898,6 @@ details[open] .accordion-icon { transform: rotate(90deg); }
 	line-height: 1.35;
 }
 
-.protection-section .protection-row:nth-child(2) .accordion-title,
-.protection-section .protection-row:nth-child(2) .protection-arrow {
-	color: #0076ba !important;
-}
 
 .protection-section .accordion-body {
 	padding: 0 !important;
@@ -4032,7 +4021,7 @@ details[open] .accordion-icon { transform: rotate(90deg); }
 	margin: 0 0 2.6rem !important;
 	color: #222 !important;
 	font-family: "Lato", var(--font-sans);
-	font-size: 0.95rem !important;
+	font-size: 1.125rem !important;
 	font-weight: 700;
 	text-align: center;
 }
@@ -4141,8 +4130,14 @@ details[open] .accordion-icon { transform: rotate(90deg); }
 	border-radius: 7px;
 	background: transparent !important;
 	color: #111 !important;
-	font-size: 0.82rem !important;
+	font-size: 1rem !important;
 	font-weight: 900;
+	transition: background 0.2s ease, color 0.2s ease;
+}
+
+.news-header .link-arrow:hover {
+	background: #111 !important;
+	color: #fff !important;
 }
 
 .news-grid {
@@ -4215,8 +4210,13 @@ details[open] .accordion-icon { transform: rotate(90deg); }
 
 .news-card .card-link {
 	color: #111 !important;
-	font-size: 0.82rem !important;
+	font-size: 1rem !important;
 	font-weight: 900;
+	transition: color 0.2s ease;
+}
+
+.news-card .card-link:hover {
+	color: #0076ba !important;
 }
 
 @media (max-width: 900px) {

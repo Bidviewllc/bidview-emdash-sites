@@ -66,10 +66,20 @@
 					"searchable": true
 				},
 				{
+					"slug": "meta_description",
+					"label": "Meta Description",
+					"type": "text"
+				},
+				{
 					"slug": "content",
 					"label": "Content",
 					"type": "portableText",
 					"searchable": true
+				},
+				{
+					"slug": "featured_image",
+					"label": "Featured Image",
+					"type": "image"
 				}
 			]
 		},
@@ -81,6 +91,11 @@
 				{
 					"slug": "phone",
 					"label": "Phone Number",
+					"type": "string"
+				},
+				{
+					"slug": "fax",
+					"label": "Fax Number",
 					"type": "string"
 				},
 				{
@@ -191,6 +206,11 @@
 				{
 					"slug": "map_embed_url",
 					"label": "Google Maps Embed URL",
+					"type": "string"
+				},
+				{
+					"slug": "maps_share_url",
+					"label": "Google Maps Share URL",
 					"type": "string"
 				},
 				{
@@ -481,6 +501,29 @@
 					"type": "string"
 				}
 			]
+		},
+		{
+			"slug": "homepage",
+			"label": "Homepage Content",
+			"labelSingular": "Homepage Content",
+			"fields": [
+				{ "slug": "hero_heading", "label": "Hero Heading", "type": "string" },
+				{ "slug": "hero_subtext", "label": "Hero Subtext", "type": "text" },
+				{ "slug": "about_tagline", "label": "About Tagline", "type": "string" },
+				{ "slug": "about_heading", "label": "About Heading", "type": "string" },
+				{ "slug": "about_text", "label": "About Text", "type": "text" },
+				{ "slug": "team_heading", "label": "Team Heading", "type": "string" },
+				{ "slug": "team_text", "label": "Team Text", "type": "text" },
+				{ "slug": "hearing_aids_heading", "label": "Hearing Aids Heading", "type": "string" },
+				{ "slug": "hearing_aids_subtext", "label": "Hearing Aids Subtext", "type": "text" },
+				{ "slug": "services_heading", "label": "Services Heading", "type": "string" },
+				{ "slug": "services_subtext", "label": "Services Subtext", "type": "text" },
+				{ "slug": "protection_heading", "label": "Protection Heading", "type": "string" },
+				{ "slug": "protection_subtext", "label": "Protection Subtext", "type": "text" },
+				{ "slug": "testimonials_heading", "label": "Testimonials Heading", "type": "string" },
+				{ "slug": "faq_heading", "label": "FAQ Heading", "type": "string" },
+				{ "slug": "news_heading", "label": "News Heading", "type": "string" }
+			]
 		}
 	],
 	"taxonomies": [
@@ -547,13 +590,13 @@
 		},
 		{
 			"id": "byline-tiffany",
-			"slug": "dr-tiffany-brown",
-			"displayName": "Dr. Tiffany Brown"
+			"slug": "dr-tiffany-brewer",
+			"displayName": "Dr. Tiffany Brewer"
 		},
 		{
-			"id": "byline-ashley",
-			"slug": "ashley-gogols",
-			"displayName": "Ashley Gogols"
+			"id": "byline-aubrey",
+			"slug": "aubrey-gingrich",
+			"displayName": "Aubrey Gingrich"
 		}
 	],
 	"menus": [
@@ -765,33 +808,28 @@
 				"slug": "main",
 				"status": "published",
 				"data": {
-					"phone": "(844) 442-4222",
-					"address_line1": "201 Believe Lane, Suite B",
+					"phone": "(502) 642-4322",
+					"fax": "(502) 653-5116",
+					"address_line1": "204 Bevins Lane, Suite B",
 					"address_line2": "",
 					"city_state": "Georgetown, KY 40324",
 					"email": "info@commonwealthaudiology.com",
 					"book_url": "/book-appointment/",
-					"hero_heading": "Compassionate hearing care that feels like home.",
-					"hero_subtext": "Hearing care you can trust, for every stage of life.",
-					"about_tagline": "AUDIOLOGY EXCELLENCE & PATIENT CARE",
-					"about_heading": "Commonwealth Audiology",
-					"about_text": "Life is full of meaningful sounds: laughter with loved ones, conversations with friends, music you love, and the world sounds all around you. When this changes, it can feel isolating, but we're here to help. At Commonwealth Audiology, your hearing wellness is our top priority. Every recommendation we make is shaped by what functions for your specific lifestyle needs and the life you love to live. Our Doctor of Audiology, Dr. Tiffany Brown, stays up to date with the latest hearing technology to ensure you receive the most effective and innovative care available.",
-					"team_heading": "Meet Your Local Hearing Professionals",
-					"team_text": "At Commonwealth Audiology, our focus is on restoring clarity, comfort, and confidence so you can fully participate in the world around you. With superior guidance, clinical excellence, and care centered on you, we partner with our patients and their families each and every day.",
-					"hours_mon": "9:00am - 5:00pm",
-					"hours_tue": "9:00am - 5:00pm",
-					"hours_wed": "9:00am - 5:00pm",
-					"hours_thu": "9:00am - 5:00pm",
-					"hours_fri": "9:00am - 5:00pm",
-					"hours_sat": "9:00am - 1:00pm",
+					"hours_mon": "9 AM – 5 PM",
+					"hours_tue": "9 AM – 7 PM",
+					"hours_wed": "9 AM – 5 PM",
+					"hours_thu": "9 AM – 5 PM",
+					"hours_fri": "9 AM – 1 PM",
+					"hours_sat": "Closed",
 					"hours_sun": "Closed",
-					"map_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3134!2d-84.5603!3d38.2098!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzjCsDEyJzM1LjMiTiA4NMKwMzMnMzcuMSJX!5e0!3m2!1sen!2sus!4v1234567890",
+					"map_embed_url": "https://maps.google.com/maps?q=Commonwealth+Audiology,+204+Bevins+Lane+Suite+B,+Georgetown,+KY+40324&output=embed&z=16",
+					"maps_share_url": "https://share.google/kofYicAqx6IPamEAh",
 					"services_heading": "Audiology Services in Georgetown, KY",
-					"services_subtext": "At Commonwealth Audiology, we provide hearing care to meet your every need. It's our commitment to make sure you can hear every moment clearly.",
+					"services_subtext": "At Commonwealth Audiology, we believe hearing care is more than a purchase, it's a commitment to your well-being. We offer the following services to make sure you get the best hearing care in Georgetown, KY.",
 					"hearing_aids_heading": "Hearing Aids & Hearing Aid Services",
-					"hearing_aids_subtext": "We provide best-in-class hearing aid solutions with expert fittings, adjustments, repairs, and ongoing maintenance so you can hear your best every day.",
-					"protection_heading": "Hearing Protection Solutions in Georgetown, KY",
-					"protection_subtext": "For anyone exposed to loud noise, custom ear protection offers the safest and most comfortable way to preserve your hearing.",
+					"hearing_aids_subtext": "Your journey with hearing aids doesn't end once you receive a device; it's just the beginning. We support you every step of the way with personalized fittings, follow-up adjustments, repairs, and ongoing maintenance.",
+					"protection_heading": "Hearing Protection Solutions",
+					"protection_subtext": "",
 					"testimonials_heading": "What Our Patients Are Saying",
 					"faq_heading": "Frequently Asked Questions",
 					"news_heading": "News & Articles",
@@ -807,7 +845,7 @@
 				"data": {
 					"title": "Hearing Evaluations",
 					"description": "A comprehensive hearing evaluation is the first step toward better hearing. Our Doctor of Audiology will assess your hearing health using the latest diagnostic tools and techniques.",
-					"link_url": "/services",
+					"link_url": "/audiology-services/",
 					"sort_order": "1"
 				}
 			},
@@ -818,7 +856,7 @@
 				"data": {
 					"title": "Hearing Loss Evaluation & Treatment",
 					"description": "We work together to understand what you are experiencing and recommend treatment options tailored to your specific type and degree of hearing loss with confidence.",
-					"link_url": "/services",
+					"link_url": "/audiology-services/",
 					"sort_order": "2"
 				}
 			},
@@ -829,7 +867,7 @@
 				"data": {
 					"title": "Ear Wax Removal",
 					"description": "Excess earwax can sometimes accumulate and cause hearing loss. Our safe, professional ear wax removal services restore your hearing clarity quickly and comfortably.",
-					"link_url": "/services",
+					"link_url": "/audiology-services/",
 					"sort_order": "3"
 				}
 			},
@@ -840,7 +878,7 @@
 				"data": {
 					"title": "Tinnitus Evaluations & Treatment",
 					"description": "Ringing, buzzing, or whooshing in the ears can be stressful. We fully evaluate your tinnitus and discuss various treatment options designed to find what works best for you.",
-					"link_url": "/services",
+					"link_url": "/audiology-services/",
 					"sort_order": "4"
 				}
 			}
@@ -853,7 +891,7 @@
 				"data": {
 					"title": "Hearing Aid Selection",
 					"description": "We offer a full line of hearing aid styles, including completely-in-canal and Bluetooth-compatible models, allowing you to select the style that fits your budget, lifestyle, and hearing needs.",
-					"link_url": "/hearing-aids",
+					"link_url": "/hearing-aids-products/",
 					"sort_order": "1"
 				}
 			},
@@ -864,7 +902,7 @@
 				"data": {
 					"title": "Hearing Aid Fittings",
 					"description": "We take great care with precise new adjustments, using real-ear measurement to ensure you can be confident and comfortable with your hearing aids in any situation.",
-					"link_url": "/hearing-aids",
+					"link_url": "/hearing-aids-products/",
 					"sort_order": "2"
 				}
 			},
@@ -875,7 +913,7 @@
 				"data": {
 					"title": "Hearing Aid Cleaning & Repair",
 					"description": "We provide cleaning, troubleshooting, and simple repairs so your devices work as comfortably and as well as the day you received them, getting you back to better hearing fast.",
-					"link_url": "/hearing-aids",
+					"link_url": "/hearing-aids-products/",
 					"sort_order": "3"
 				}
 			},
@@ -886,7 +924,7 @@
 				"data": {
 					"title": "Hearing Aid Batteries & Accessories",
 					"description": "We carry a variety of batteries, chargers, cleaning tools, and accessories to keep your hearing devices running and sounding their very best.",
-					"link_url": "/hearing-aids",
+					"link_url": "/hearing-aids-products/",
 					"sort_order": "4"
 				}
 			}
@@ -894,80 +932,91 @@
 		"team": [
 			{
 				"id": "team-tiffany",
-				"slug": "dr-tiffany-brown",
+				"slug": "dr-tiffany-brewer",
 				"status": "published",
 				"data": {
-					"name": "Dr. Tiffany Brown",
-					"role": "Doctor of Audiology",
-					"bio": "Dr. Tiffany Brown is committed to providing personalized, compassionate hearing care to every patient.",
+					"name": "Dr. Tiffany Brewer",
+					"role": "AUDIOLOGIST",
+					"bio": "Dr. Tiffany Brewer, Au.D., is committed to providing personalized, compassionate hearing care to every patient. She stays up to date with the latest hearing technology to ensure patients receive the most effective and innovative care available.",
 					"sort_order": "1"
 				}
 			},
 			{
-				"id": "team-ashley",
-				"slug": "ashley-gogols",
+				"id": "team-aubrey",
+				"slug": "aubrey-gingrich",
 				"status": "published",
 				"data": {
-					"name": "Ashley Gogols",
-					"role": "Hearing Instrument Specialist",
-					"bio": "Ashley is dedicated to helping patients find the right hearing solutions for their unique lifestyle.",
+					"name": "Aubrey Gingrich",
+					"role": "PATIENT CARE COORDINATOR",
+					"bio": "Aubrey is dedicated to helping patients feel welcome and supported throughout their hearing care journey.",
 					"sort_order": "2"
+				}
+			},
+			{
+				"id": "team-magnolia",
+				"slug": "magnolia",
+				"status": "published",
+				"data": {
+					"name": "Magnolia",
+					"role": "CHIEF ENCOURAGEMENT OFFICER",
+					"bio": "Magnolia is our friendly office dog who helps patients feel calm and at ease during their visits.",
+					"sort_order": "3"
 				}
 			}
 		],
 		"testimonials": [
 			{
 				"id": "testimonial-1",
-				"slug": "testimonial-laci-wills",
+				"slug": "testimonial-google-reviewer-1",
 				"status": "published",
 				"data": {
-					"patient_name": "Laci Wills",
+					"patient_name": "Google Reviewer",
 					"rating": "5",
-					"review": "Absolutely love this place! The staff is so friendly and helpful. My hearing aids have changed my life and I couldn't be more grateful!",
+					"review": "Placeholder — replace with a real patient review from Google.",
 					"sort_order": "1"
 				}
 			},
 			{
 				"id": "testimonial-2",
-				"slug": "testimonial-tracy-davis",
+				"slug": "testimonial-google-reviewer-2",
 				"status": "published",
 				"data": {
-					"patient_name": "Tracy Davis",
+					"patient_name": "Google Reviewer",
 					"rating": "5",
-					"review": "Professional, knowledgeable, and kind. The whole team made me feel comfortable from the moment I walked in. Highly recommend Commonwealth Audiology!",
+					"review": "Placeholder — replace with a real patient review from Google.",
 					"sort_order": "2"
 				}
 			},
 			{
 				"id": "testimonial-3",
-				"slug": "testimonial-ola-mack",
+				"slug": "testimonial-google-reviewer-3",
 				"status": "published",
 				"data": {
-					"patient_name": "Ola Mack",
+					"patient_name": "Google Reviewer",
 					"rating": "5",
-					"review": "Great experience from start to finish. Dr. Brown took the time to really listen and find the perfect solution for me. Outstanding care!",
+					"review": "Placeholder — replace with a real patient review from Google.",
 					"sort_order": "3"
 				}
 			},
 			{
 				"id": "testimonial-4",
-				"slug": "testimonial-garrett-hanover",
+				"slug": "testimonial-google-reviewer-4",
 				"status": "published",
 				"data": {
-					"patient_name": "Garrett Hanover",
+					"patient_name": "Google Reviewer",
 					"rating": "5",
-					"review": "I was nervous about getting hearing aids, but the team here made the whole process easy and stress-free. Amazing patient care!",
+					"review": "Placeholder — replace with a real patient review from Google.",
 					"sort_order": "4"
 				}
 			},
 			{
 				"id": "testimonial-5",
-				"slug": "testimonial-audra-rugg",
+				"slug": "testimonial-google-reviewer-5",
 				"status": "published",
 				"data": {
-					"patient_name": "Audra Rugg",
+					"patient_name": "Google Reviewer",
 					"rating": "5",
-					"review": "Commonwealth Audiology exceeded all my expectations. The care is professional, the staff are wonderful, and I can finally hear again!",
+					"review": "Placeholder — replace with a real patient review from Google.",
 					"sort_order": "5"
 				}
 			}
@@ -1128,28 +1177,68 @@
 				"status": "published",
 				"data": {
 					"title": "About Commonwealth Audiology",
+					"meta_description": "Learn about Commonwealth Audiology in Georgetown, KY — compassionate, personalized hearing care from Doctor of Audiology Dr. Tiffany Brewer.",
 					"content": [
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "Commonwealth Audiology is a leading audiology practice in Georgetown, KY, dedicated to providing compassionate, personalized hearing care to patients of all ages."
-								}
-							]
-						},
-						{
-							"_type": "block",
-							"style": "normal",
-							"children": [
-								{
-									"_type": "span",
-									"text": "Our Doctor of Audiology, Dr. Tiffany Brown, stays up to date with the latest hearing technology to ensure you receive the most effective and innovative care available."
-								}
-							]
-						}
+						{ "_type": "block", "style": "normal", "children": [{ "_type": "span", "text": "Commonwealth Audiology is an audiology and hearing aid clinic with an expert audiologist providing hearing tests and professional hearing services in Georgetown, KY." }] },
+						{ "_type": "block", "style": "normal", "children": [{ "_type": "span", "text": "At Commonwealth Audiology, we believe better hearing brings people closer to their families, their communities, and the moments that matter most. Our practice was built on a simple promise: to deliver exceptional hearing care with the warmth, honesty, and personalized attention every patient deserves." }] },
+						{ "_type": "block", "style": "normal", "children": [{ "_type": "span", "text": "Here, you’re never just a number or a set of test results. You’re part of our patient family, and we are committed to helping you hear with clarity, comfort, and confidence every step of the way." }] },
+						{ "_type": "block", "style": "h2", "children": [{ "_type": "span", "text": "Personalized Care, Every Time" }] },
+						{ "_type": "block", "style": "h3", "children": [{ "_type": "span", "text": "Knowledgeable" }] },
+						{ "_type": "block", "style": "normal", "children": [{ "_type": "span", "text": "When you come to Commonwealth Audiology, you can feel confident you’re in experienced hands. We stay current on the latest research, technology, and best practices so you receive care that is accurate, thoughtful, and tailored to you." }] },
+						{ "_type": "block", "style": "h3", "children": [{ "_type": "span", "text": "Passionate" }] },
+						{ "_type": "block", "style": "normal", "children": [{ "_type": "span", "text": "Helping people hear better is truly why we do what we do. There’s nothing more rewarding than seeing someone reconnect with family, enjoy conversations again, or feel more like themselves." }] },
+						{ "_type": "block", "style": "h3", "children": [{ "_type": "span", "text": "Accountable" }] },
+						{ "_type": "block", "style": "normal", "children": [{ "_type": "span", "text": "Your trust means everything to us. We take the time to recommend what genuinely fits your lifestyle and goals, not just what’s available. And we’re here for the long run, providing continued support and adjustments so you always feel confident in your hearing and your care." }] },
+						{ "_type": "block", "style": "h2", "children": [{ "_type": "span", "text": "What To Expect At Commonwealth Audiology" }] },
+						{ "_type": "block", "style": "h3", "children": [{ "_type": "span", "text": "Your Hearing Comes First" }] },
+						{ "_type": "block", "style": "normal", "children": [{ "_type": "span", "text": "From the moment you walk in, our focus is on you. We take the time to listen to your concerns, answer your questions, and help you truly understand your hearing." }] },
+						{ "_type": "block", "style": "h3", "children": [{ "_type": "span", "text": "Comprehensive Diagnostic Testing" }] },
+						{ "_type": "block", "style": "normal", "children": [{ "_type": "span", "text": "Your evaluation is thorough and tailored, not rushed. We use precise, evidence-based testing to understand not only how your ears hear, but how your brain processes sound." }] },
+						{ "_type": "block", "style": "h3", "children": [{ "_type": "span", "text": "State-of-the-Art Technology & Custom Programming" }] },
+						{ "_type": "block", "style": "normal", "children": [{ "_type": "span", "text": "Choosing hearing aids is only part of the process — how they’re programmed makes all the difference. We take the time to fine-tune your devices so they sound natural, feel comfortable, and perform well in your everyday environments." }] },
+						{ "_type": "block", "style": "h3", "children": [{ "_type": "span", "text": "Ongoing Support for Long-Term Success" }] },
+						{ "_type": "block", "style": "normal", "children": [{ "_type": "span", "text": "Our relationship doesn’t end after your fitting. We’re here for you with ongoing care, including follow-up visits, adjustments, cleanings, and guidance whenever you need it." }] },
+						{ "_type": "block", "style": "normal", "children": [{ "_type": "span", "text": "Even if you didn’t purchase your hearing aids from us, you’re always welcome here. We’re happy to evaluate, service, and support your devices because everyone deserves thoughtful, professional care." }] },
+						{ "_type": "block", "style": "h2", "children": [{ "_type": "span", "text": "We Love What We Do" }] },
+						{ "_type": "block", "style": "normal", "children": [{ "_type": "span", "text": "There’s nothing more meaningful to us than seeing our patients reconnect — with conversations, with loved ones, and with the sounds that make life full." }] },
+						{ "_type": "block", "style": "h2", "children": [{ "_type": "span", "text": "Experience the Difference at Commonwealth Audiology" }] },
+						{ "_type": "block", "style": "normal", "children": [{ "_type": "span", "text": "Expert care. A family-like atmosphere. Unmatched dedication to your well-being." }] },
+						{ "_type": "block", "style": "normal", "children": [{ "_type": "span", "text": "Whether you’re seeking a hearing evaluation, exploring hearing aid options, or looking for ongoing support, we’re here to guide you with compassion, clarity, and trusted expertise." }] }
 					]
+				}
+			},
+			{
+				"id": "contact",
+				"slug": "contact",
+				"status": "published",
+				"data": {
+					"title": "Contact Us",
+					"meta_description": "Contact Commonwealth Audiology in Georgetown, KY. Call (502) 642-4322 or book an appointment online for hearing tests and hearing aid services."
+				}
+			}
+		],
+		"homepage": [
+			{
+				"id": "homepage-main",
+				"slug": "homepage-main",
+				"status": "published",
+				"data": {
+					"hero_heading": "Compassionate Hearing Care in Georgetown, KY",
+					"hero_subtext": "Hearing care you can trust, for every stage of life.",
+					"about_tagline": "GEORGETOWN, KY AUDIOLOGISTS & HEARING AIDS",
+					"about_heading": "Commonwealth Audiology",
+					"about_text": "Life is full of meaningful sounds: laughter with family, conversations with friends, music you love, and the quiet moments that bring calm. When hearing or balance problems begin to interfere, it can feel isolating and overwhelming.\n\nAt Commonwealth Audiology, your hearing wellness is our top priority. Every recommendation we make is shaped by your everyday listening needs and the moments that bring meaning to your life.\n\nOur Doctor of Audiology, Dr. Tiffany Brewer, stays up to date with the latest hearing technology so we can offer you the most effective and innovative options available.\n\nOur care doesn't end when you choose hearing aids. We provide support each step of the way. From helping you adjust to your hearing aids, fine-tuning your device, and making sure they truly support your daily life.",
+					"team_heading": "Meet Your Local Hearing Professionals",
+					"team_text": "At Commonwealth Audiology, our focus is on restoring clarity, comfort, and confidence so you can fully re-engage with the world around you.\n\nWith expert guidance, clinical excellence, and care tailored to your listening needs, we help you hear and live better each day. Our Georgetown, KY audiologist & team takes the time to understand your goals, your listening environments, and the moments that matter most.",
+					"hearing_aids_heading": "Hearing Aids & Hearing Aid Services",
+					"hearing_aids_subtext": "Your journey with hearing aids doesn't end once you receive a device; it's just the beginning. We support you every step of the way with personalized fittings, follow-up adjustments, repairs, and ongoing maintenance.",
+					"services_heading": "Audiology Services in Georgetown, KY",
+					"services_subtext": "At Commonwealth Audiology, we believe hearing care is more than a purchase, it's a commitment to your well-being. We offer the following services to make sure you get the best hearing care in Georgetown, KY.",
+					"protection_heading": "Hearing Protection Solutions",
+					"protection_subtext": "",
+					"testimonials_heading": "What Our Patients Are Saying",
+					"faq_heading": "Frequently Asked Questions",
+					"news_heading": "News & Articles"
 				}
 			}
 		],

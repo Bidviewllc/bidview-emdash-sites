@@ -1,118 +1,139 @@
 ---
+import { getEmDashEntry } from "emdash";
+import { PortableText } from "emdash/ui";
 import InternalPage from "../../layouts/InternalPage.astro";
 import TableOfContents from "../../components/TableOfContents.astro";
+
+const { entry: page, cacheHint } = await getEmDashEntry("pages", "about");
+Astro.cache.set(cacheHint);
+
+const title = page?.data.title ?? "About Commonwealth Audiology";
+const description =
+	page?.data.meta_description ??
+	"Commonwealth Audiology is an audiology and hearing aid clinic with an expert audiologist providing hearing tests and professional hearing services in Georgetown, KY.";
 ---
 
 <InternalPage
-	title="About Commonwealth Audiology"
-	description="Commonwealth Audiology is an audiology and hearing aid clinic with an expert audiologist providing hearing tests and professional hearing services in Georgetown, KY."
+	pageSlug="about"
+	title={title}
+	description={description}
 	breadcrumbs={[{ label: "Home", href: "/" }, { label: "About" }]}
 >
-	<p class="lead-italic">
-		Commonwealth Audiology is an audiology and hearing aid clinic with an
-		expert audiologist providing hearing tests and professional hearing
-		services in Georgetown, KY.
-	</p>
-	<p>
-		At Commonwealth Audiology, we believe better hearing brings people closer
-		to their families, their communities, and the moments that matter most.
-		Our practice was built on a simple promise: to deliver exceptional hearing
-		care with the warmth, honesty, and personalized attention every patient
-		deserves.
-	</p>
-	<p>
-		Here, you're never just a number or a set of test results. You're part of
-		our patient family, and we are committed to helping you hear with clarity,
-		comfort, and confidence every step of the way.
-	</p>
+	{page
+		? (
+			<>
+				<TableOfContents />
+				<div class="about-content" {...page.edit.content}>
+					<PortableText value={page.data.content} />
+				</div>
+			</>
+		)
+		: (
+			<>
+				<p class="lead-italic">
+					Commonwealth Audiology is an audiology and hearing aid clinic with an
+					expert audiologist providing hearing tests and professional hearing
+					services in Georgetown, KY.
+				</p>
+				<p>
+					At Commonwealth Audiology, we believe better hearing brings people closer
+					to their families, their communities, and the moments that matter most.
+					Our practice was built on a simple promise: to deliver exceptional hearing
+					care with the warmth, honesty, and personalized attention every patient
+					deserves.
+				</p>
+				<p>
+					Here, you're never just a number or a set of test results. You're part of
+					our patient family, and we are committed to helping you hear with clarity,
+					comfort, and confidence every step of the way.
+				</p>
 
-	<TableOfContents />
+				<TableOfContents />
 
-	<h2>Personalized Care, Every Time</h2>
+				<h2>Personalized Care, Every Time</h2>
 
-	<h3>Knowledgeable</h3>
-	<p>
-		When you come to Commonwealth Audiology, you can feel confident you're in
-		experienced hands. We stay current on the latest research, technology, and
-		best practices so you receive care that is accurate, thoughtful, and
-		tailored to you. From your first evaluation to ongoing care, every
-		recommendation is made with your specific needs in mind.
-	</p>
+				<h3>Knowledgeable</h3>
+				<p>
+					When you come to Commonwealth Audiology, you can feel confident you're in
+					experienced hands. We stay current on the latest research, technology, and
+					best practices so you receive care that is accurate, thoughtful, and
+					tailored to you. From your first evaluation to ongoing care, every
+					recommendation is made with your specific needs in mind.
+				</p>
 
-	<h3>Passionate</h3>
-	<p>
-		Helping people hear better is truly why we do what we do. There's nothing
-		more rewarding than seeing someone reconnect with family, enjoy
-		conversations again, or feel more like themselves. We're invested in your
-		journey and celebrate those moments right alongside you.
-	</p>
+				<h3>Passionate</h3>
+				<p>
+					Helping people hear better is truly why we do what we do. There's nothing
+					more rewarding than seeing someone reconnect with family, enjoy
+					conversations again, or feel more like themselves. We're invested in your
+					journey and celebrate those moments right alongside you.
+				</p>
 
-	<h3>Accountable</h3>
-	<p>
-		Your trust means everything to us. We take the time to recommend what
-		genuinely fits your lifestyle and goals, not just what's available. And
-		we're here for the long run, providing continued support and adjustments
-		so you always feel confident in your hearing and your care.
-	</p>
+				<h3>Accountable</h3>
+				<p>
+					Your trust means everything to us. We take the time to recommend what
+					genuinely fits your lifestyle and goals, not just what's available. And
+					we're here for the long run, providing continued support and adjustments
+					so you always feel confident in your hearing and your care.
+				</p>
 
-	<h2>What To Expect At Commonwealth Audiology</h2>
+				<h2>What To Expect At Commonwealth Audiology</h2>
 
-	<h3>Your Hearing Comes First</h3>
-	<p>
-		From the moment you walk in, our focus is on you. We take the time to
-		listen to your concerns, answer your questions, and help you truly
-		understand your hearing, what's going on, how it's affecting your daily
-		life, and what options will work best for you. We want you to feel
-		comfortable, informed, and confident every step of the way.
-	</p>
+				<h3>Your Hearing Comes First</h3>
+				<p>
+					From the moment you walk in, our focus is on you. We take the time to
+					listen to your concerns, answer your questions, and help you truly
+					understand your hearing, what's going on, how it's affecting your daily
+					life, and what options will work best for you. We want you to feel
+					comfortable, informed, and confident every step of the way.
+				</p>
 
-	<h3>Comprehensive Diagnostic Testing</h3>
-	<p>
-		Your evaluation is thorough and tailored, not rushed. We use precise,
-		evidence-based testing to understand not only how your ears hear, but how
-		your brain processes sound. This allows us to create recommendations that
-		are thoughtfully matched to your lifestyle, communication needs, and goals.
-	</p>
+				<h3>Comprehensive Diagnostic Testing</h3>
+				<p>
+					Your evaluation is thorough and tailored, not rushed. We use precise,
+					evidence-based testing to understand not only how your ears hear, but how
+					your brain processes sound. This allows us to create recommendations that
+					are thoughtfully matched to your lifestyle, communication needs, and goals.
+				</p>
 
-	<h3>State-of-the-Art Technology &amp; Custom Programming</h3>
-	<p>
-		Choosing hearing aids is only part of the process, how they're programmed
-		makes all the difference. We work with the latest technology and take the
-		time to fine-tune your devices so they sound natural, feel comfortable, and
-		perform well in your everyday environments. Our goal is to eliminate the
-		frustration that can come with poorly programmed hearing aids and replace
-		it with clarity and confidence.
-	</p>
+				<h3>State-of-the-Art Technology &amp; Custom Programming</h3>
+				<p>
+					Choosing hearing aids is only part of the process, how they're programmed
+					makes all the difference. We work with the latest technology and take the
+					time to fine-tune your devices so they sound natural, feel comfortable, and
+					perform well in your everyday environments.
+				</p>
 
-	<h3>Ongoing Support for Long-Term Success</h3>
-	<p>
-		Our relationship doesn't end after your fitting. We're here for you with
-		ongoing care, including follow-up visits, adjustments, cleanings, and
-		guidance whenever you need it. As your hearing or needs change, we'll be
-		right there to help you adapt and continue hearing your best.
-	</p>
-	<p>
-		Even if you didn't purchase your hearing aids from us, you're always
-		welcome here. We're happy to evaluate, service, and support your devices
-		because everyone deserves thoughtful, professional care.
-	</p>
+				<h3>Ongoing Support for Long-Term Success</h3>
+				<p>
+					Our relationship doesn't end after your fitting. We're here for you with
+					ongoing care, including follow-up visits, adjustments, cleanings, and
+					guidance whenever you need it.
+				</p>
+				<p>
+					Even if you didn't purchase your hearing aids from us, you're always
+					welcome here.
+				</p>
 
-	<h2>We Love What We Do</h2>
-	<p>
-		There's nothing more meaningful to us than seeing our patients reconnect,
-		with conversations, with loved ones, and with the sounds that make life
-		full. Being part of that journey is why we do what we do every day.
-	</p>
+				<h2>We Love What We Do</h2>
+				<p>
+					There's nothing more meaningful to us than seeing our patients reconnect,
+					with conversations, with loved ones, and with the sounds that make life
+					full.
+				</p>
 
-	<h2>Experience the Difference at Commonwealth Audiology</h2>
-	<p>Expert care. A family-like atmosphere. Unmatched dedication to your well-being.</p>
-	<p>
-		Whether you're seeking a hearing evaluation, exploring hearing aid options,
-		or looking for ongoing support, we're here to guide you with compassion,
-		clarity, and trusted expertise.
-	</p>
-	<p>
-		<a href="/contact/">Schedule an appointment</a> at Commonwealth Audiology, where your hearing health
-		is our highest priority!
-	</p>
+				<h2>Experience the Difference at Commonwealth Audiology</h2>
+				<p>Expert care. A family-like atmosphere. Unmatched dedication to your well-being.</p>
+				<p>
+					Whether you're seeking a hearing evaluation, exploring hearing aid options,
+					or looking for ongoing support, we're here to guide you with compassion,
+					clarity, and trusted expertise.
+				</p>
+				<p>
+					<a href="/contact/">Schedule an appointment</a> at Commonwealth Audiology, where your hearing health
+					is our highest priority!
+				</p>
+			</>
+		)
+	}
 </InternalPage>
