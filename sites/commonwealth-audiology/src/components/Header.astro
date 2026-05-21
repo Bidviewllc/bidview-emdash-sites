@@ -497,13 +497,11 @@ const navItems = (menu?.items ?? []).filter((i) => i.label !== "Home");
 		z-index: 310;
 	}
 
-	.nav-subitem.has-children:hover .nav-subdropdown,
 	.nav-subitem.is-open .nav-subdropdown {
 		display: block;
 	}
 
-	.nav-subitem.has-children:hover > a,
-	.nav-subitem.has-children:hover .nav-sub2-toggle {
+	.nav-subitem.has-children:hover > a {
 		color: #0076BA;
 	}
 
