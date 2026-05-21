@@ -121,10 +121,14 @@ const navItems = (menu?.items ?? []).filter((i) => i.label !== "Home");
 	const menuToggle = document.querySelector<HTMLButtonElement>(".nav-menu-toggle");
 	const navLinks = document.querySelector<HTMLElement>(".nav-links");
 
-	// Mobile burger toggle
+	// Mobile burger toggle — set nav overlay top from header's current bottom edge
 	menuToggle?.addEventListener("click", () => {
 		const isOpen = nav?.classList.toggle("is-menu-open") ?? false;
 		menuToggle.setAttribute("aria-expanded", String(isOpen));
+		if (isOpen) {
+			const hdrBottom = document.querySelector<HTMLElement>(".site-header")?.getBoundingClientRect().bottom ?? 90;
+			document.documentElement.style.setProperty("--nav-links-top", `${hdrBottom}px`);
+		}
 	});
 
 	// Dropdown sub-menu toggles (drives mobile accordion; desktop also uses :hover)
@@ -585,7 +589,7 @@ const navItems = (menu?.items ?? []).filter((i) => i.label !== "Home");
 			min-height: auto;
 			margin: 0;
 			padding: 0.9rem 1rem;
-			flex-wrap: wrap;
+			flex-wrap: nowrap;
 			gap: 0.7rem 1rem;
 			box-shadow: none;
 			border-radius: 0;
@@ -602,15 +606,21 @@ const navItems = (menu?.items ?? []).filter((i) => i.label !== "Home");
 		}
 		.nav-links {
 			display: none;
-			order: 3;
-			gap: 0;
-			align-items: stretch;
+			position: fixed;
+			top: var(--nav-links-top, 90px);
+			left: 0;
+			right: 0;
+			z-index: 500;
 			flex-direction: column;
-			width: 100%;
-			padding: 0.4rem;
-			border-radius: 12px;
+			align-items: stretch;
+			gap: 0;
+			padding: 0.5rem 0.75rem 1rem;
 			background: #fff;
+			box-shadow: 0 8px 28px rgba(0,0,0,0.18);
+			border-radius: 0 0 18px 18px;
 			font-size: 0.95rem;
+			max-height: calc(100dvh - var(--nav-links-top, 90px));
+			overflow-y: auto;
 		}
 		.nav.is-menu-open .nav-links {
 			display: flex;
