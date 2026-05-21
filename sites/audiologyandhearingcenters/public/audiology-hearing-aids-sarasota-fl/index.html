@@ -265,13 +265,32 @@ body {
 
 
 
+
+
+
+
+
+
 <style>
 /* ── Location info block: faithful port of post-1069.css (de-scoped from .em-1069) ── */
 
-/* Outer container gradient background */
+/* Outer container: must be flex block (--display CSS var not set without post-1069.css) */
+.em-element.em-element-f9d839b {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Gradient background on outer container */
 .em-element.em-element-f9d839b:not(.em-motion-effects-element-type-background) {
   background-color: transparent !important;
   background-image: linear-gradient(180deg, #C6D4E6 0%, #FFFFFF 20%) !important;
+}
+
+/* e-con-inner must be flex (--display CSS var not initialized for injected blocks) */
+.em-element.em-element-f9d839b > .e-con-inner {
+  display: flex !important;
+  flex-direction: column !important;
+  width: 100% !important;
 }
 
 /* Row container: constrained width + two columns side by side on desktop */
@@ -376,6 +395,11 @@ body {
 }
 .em-element.em-element-6889f10 iframe { height: 400px !important; }
 
+/* ── Large tablet / laptop (<=1440px): taller map so centering creates gradient space ── */
+@media (max-width: 1440px) {
+  .em-element.em-element-6889f10 iframe { height: 500px !important; }
+}
+
 /* ── Tablet (<=1024px): stack columns, center content ── */
 @media (max-width: 1024px) {
   .em-element.em-element-53f9a9d {
@@ -389,7 +413,7 @@ body {
   .em-element.em-element-7f4fd4d .em-icon-box-wrapper,
   .em-element.em-element-0fad2d1 .em-icon-box-wrapper,
   .em-element.em-element-a2cba9a .em-icon-box-wrapper { text-align: start !important; }
-  .em-element.em-element-6889f10 iframe { height: 500px !important; }
+  .em-element.em-element-6889f10 iframe { height: 400px !important; }
 }
 
 /* ── Mobile (<=767px) ── */
