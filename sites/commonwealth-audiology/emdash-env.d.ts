@@ -59,6 +59,34 @@ export interface ProtectionType {
   bylines?: ContentBylineCredit[];
 }
 
+export interface Homepage {
+  id: string;
+  slug: string | null;
+  status: string;
+  hero_heading?: string;
+  hero_subtext?: string;
+  hero_image?: { id: string; src?: string; alt?: string; width?: number; height?: number };
+  about_tagline?: string;
+  about_heading?: string;
+  about_text?: string;
+  about_image?: { id: string; src?: string; alt?: string; width?: number; height?: number };
+  team_heading?: string;
+  team_text?: string;
+  services_heading?: string;
+  services_subtext?: string;
+  hearing_aids_heading?: string;
+  hearing_aids_subtext?: string;
+  protection_heading?: string;
+  protection_subtext?: string;
+  testimonials_heading?: string;
+  faq_heading?: string;
+  news_heading?: string;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  bylines?: ContentBylineCredit[];
+}
+
 export interface Page {
   id: string;
   slug: string | null;
@@ -183,6 +211,7 @@ declare module "emdash" {
     faq: FaqItem;
     hearing_aids: HearingAidService;
     hearing_protection: ProtectionType;
+    homepage: Homepage;
     pages: Page;
     posts: Post;
     services: Service;
