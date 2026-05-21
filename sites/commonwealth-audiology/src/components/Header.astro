@@ -182,6 +182,15 @@ const navItems = (menu?.items ?? []).filter((i) => i.label !== "Home");
 		});
 	});
 
+	// Click outside nav closes any open dropdowns (desktop)
+	document.addEventListener("click", (e) => {
+		if (!(e.target as Element)?.closest(".nav-links")) {
+			document
+				.querySelectorAll(".nav-item.is-open, .nav-subitem.is-open")
+				.forEach((i) => i.classList.remove("is-open"));
+		}
+	});
+
 	// Stick the header to the top once the page is scrolled.
 	// Desktop: the nav pill floats fixed. Mobile: the whole header bar
 	// goes fixed, so body padding compensates for the lost flow height.
@@ -398,14 +407,8 @@ const navItems = (menu?.items ?? []).filter((i) => i.label !== "Home");
 		transition: transform 0.2s ease;
 	}
 
-	.nav-item.has-children:hover .nav-caret,
 	.nav-item.is-open .nav-caret {
 		transform: rotate(180deg);
-	}
-
-	.nav-item.has-children:hover .nav-sub-toggle,
-	.nav-item.has-children:hover .nav-link {
-		color: #0076BA;
 	}
 
 	.nav-dropdown {
@@ -423,7 +426,6 @@ const navItems = (menu?.items ?? []).filter((i) => i.label !== "Home");
 		z-index: 300;
 	}
 
-	.nav-item.has-children:hover .nav-dropdown,
 	.nav-item.is-open .nav-dropdown {
 		display: block;
 	}
