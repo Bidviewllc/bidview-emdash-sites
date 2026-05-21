@@ -259,6 +259,12 @@ body {
 
 
 
+
+
+
+
+
+
 <style>
 /* ── Location info block: faithful port of post-1069.css (de-scoped from .em-1069) ── */
 
@@ -268,7 +274,7 @@ body {
   background-image: linear-gradient(180deg, #C6D4E6 0%, #FFFFFF 20%) !important;
 }
 
-/* Row container: two columns side by side on desktop */
+/* Row container: constrained width + two columns side by side on desktop */
 .em-element.em-element-53f9a9d {
   display: flex !important;
   flex-direction: row !important;
@@ -276,6 +282,11 @@ body {
   margin-top: 40px !important;
   margin-bottom: 0 !important;
   flex-wrap: wrap;
+  max-width: 1440px !important;
+  width: 100% !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  box-sizing: border-box !important;
 }
 
 /* Left column */
