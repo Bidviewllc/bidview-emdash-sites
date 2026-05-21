@@ -257,41 +257,31 @@ body {
 
 
 
-<style>
-/* ── Location info block: full CSS port from post-1069.css ── */
 
-/* Outer container: flex layout + gradient background */
-.em-element.em-element-f9d839b {
-  --padding-top: 20px; --padding-bottom: 20px;
-  --padding-left: 0px; --padding-right: 0px;
-}
+
+<style>
+/* ── Location info block: faithful port of post-1069.css (de-scoped from .em-1069) ── */
+
+/* Outer container gradient background */
 .em-element.em-element-f9d839b:not(.em-motion-effects-element-type-background) {
   background-color: transparent !important;
   background-image: linear-gradient(180deg, #C6D4E6 0%, #FFFFFF 20%) !important;
 }
 
-/* Row container: side-by-side columns */
+/* Row container: two columns side by side on desktop */
 .em-element.em-element-53f9a9d {
   display: flex !important;
   flex-direction: row !important;
   align-items: center !important;
   margin-top: 40px !important;
-  margin-bottom: 0px !important;
+  margin-bottom: 0 !important;
   flex-wrap: wrap;
 }
-@media (max-width: 767px) {
-  .em-element.em-element-53f9a9d { flex-direction: column !important; }
-}
 
-/* Left column (info) */
+/* Left column */
 .em-element.em-element-ebc0845 {
   display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
   flex: 1 1 300px;
-}
-@media (max-width: 1024px) and (min-width: 768px) {
-  .em-element.em-element-ebc0845 { width: 100%; }
 }
 
 /* Right column (map) */
@@ -301,23 +291,21 @@ body {
   width: 100%;
 }
 
-/* Heading (city name) */
+/* Heading: LEFT-aligned on desktop, 38px */
 .em-element.em-element-fd96228 > .em-widget-container { margin: 0 !important; }
-.em-element.em-element-fd96228 { text-align: center !important; }
+.em-element.em-element-fd96228 { text-align: start !important; }
 .em-element.em-element-fd96228 .em-heading-title {
   font-family: "Raleway", Sans-serif !important;
   font-size: 38px !important;
 }
-@media (max-width: 1024px) {
-  .em-element.em-element-fd96228 .em-heading-title { font-size: 24px !important; }
-}
 
-/* Icon boxes: shared styles for address, phone, hours */
+/* Icon boxes: shared styles */
 .em-element.em-element-7f4fd4d .em-icon-box-wrapper,
 .em-element.em-element-0fad2d1 .em-icon-box-wrapper,
 .em-element.em-element-a2cba9a .em-icon-box-wrapper {
   align-items: center !important;
   gap: 15px !important;
+  text-align: start !important;
 }
 .em-element.em-element-7f4fd4d .em-icon-box-title,
 .em-element.em-element-0fad2d1 .em-icon-box-title,
@@ -355,11 +343,6 @@ body {
   font-size: 18px !important;
   font-weight: 600 !important;
 }
-.em-element.em-element-7f4fd4d .em-icon-box-wrapper,
-.em-element.em-element-0fad2d1 .em-icon-box-wrapper,
-.em-element.em-element-a2cba9a .em-icon-box-wrapper {
-  text-align: center !important;
-}
 
 /* Get Directions button */
 .em-element.em-element-9ed79c6 .em-button {
@@ -373,19 +356,39 @@ body {
 .em-element.em-element-9ed79c6 .em-button-content-wrapper {
   flex-direction: row-reverse !important;
 }
-.em-element.em-element-9ed79c6 { width: 100% !important; }
 
 /* Map widget */
 .em-element.em-element-6889f10 > .em-widget-container {
   margin: 0 !important;
   border-radius: 0 0 10px 10px !important;
-  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.15) !important;
+  box-shadow: 0 0 10px 0 rgba(0,0,0,0.15) !important;
 }
 .em-element.em-element-6889f10 iframe { height: 400px !important; }
+
+/* ── Tablet (<=1024px): stack columns, center content ── */
 @media (max-width: 1024px) {
+  .em-element.em-element-53f9a9d {
+    flex-direction: column !important;
+  }
+  .em-element.em-element-ebc0845 {
+    justify-content: center !important;
+    align-items: center !important;
+  }
+  .em-element.em-element-fd96228 { text-align: center !important; }
+  .em-element.em-element-7f4fd4d .em-icon-box-wrapper,
+  .em-element.em-element-0fad2d1 .em-icon-box-wrapper,
+  .em-element.em-element-a2cba9a .em-icon-box-wrapper { text-align: start !important; }
   .em-element.em-element-6889f10 iframe { height: 500px !important; }
 }
+
+/* ── Mobile (<=767px) ── */
 @media (max-width: 767px) {
+  .em-element.em-element-fd96228 .em-heading-title { font-size: 24px !important; }
+  .em-element.em-element-7f4fd4d .em-icon-box-wrapper,
+  .em-element.em-element-0fad2d1 .em-icon-box-wrapper,
+  .em-element.em-element-a2cba9a .em-icon-box-wrapper { text-align: center !important; }
+  .em-element.em-element-9ed79c6 { width: 100% !important; }
+  .em-element.em-element-9ed79c6 .em-button { font-size: 12px !important; padding: 10px 20px !important; }
   .em-element.em-element-6889f10 iframe { height: 250px !important; }
 }
 </style>
