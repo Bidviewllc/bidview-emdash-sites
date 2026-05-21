@@ -614,10 +614,10 @@ const navItems = (menu?.items ?? []).filter((i) => i.label !== "Home");
 			flex-direction: column;
 			align-items: stretch;
 			gap: 0;
-			padding: 0.5rem 0.75rem 1rem;
+			padding: 0.25rem 0 0.5rem;
 			background: #fff;
 			box-shadow: 0 8px 28px rgba(0,0,0,0.18);
-			border-radius: 0 0 18px 18px;
+			border-radius: 0;
 			font-size: 0.95rem;
 			max-height: calc(100dvh - var(--nav-links-top, 90px));
 			overflow-y: auto;
@@ -738,9 +738,19 @@ const navItems = (menu?.items ?? []).filter((i) => i.label !== "Home");
 		.nav-link {
 			flex: 1;
 			padding: 0.8rem 0.9rem;
+			border-radius: 0;
+		}
+		.nav-link:hover,
+		.nav-item.has-children:hover .nav-link {
+			color: #fff;
+			background: #0076ba;
 		}
 		.nav-sub-toggle {
 			padding: 0.8rem 0.9rem;
+		}
+		.nav-sub-toggle:hover {
+			color: #fff;
+			background: #0076ba;
 		}
 		.nav-dropdown {
 			position: static;
@@ -753,6 +763,11 @@ const navItems = (menu?.items ?? []).filter((i) => i.label !== "Home");
 		.nav-dropdown li a {
 			padding-left: 1.8rem;
 			font-size: 0.92rem;
+			border-radius: 0;
+		}
+		.nav-dropdown li a:hover {
+			background: #0076ba;
+			color: #fff;
 		}
 		.nav-subitem {
 			width: 100%;
