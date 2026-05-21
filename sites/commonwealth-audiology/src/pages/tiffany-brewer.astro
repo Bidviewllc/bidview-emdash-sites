@@ -1,10 +1,13 @@
 ---
+import { getEmDashEntry } from "emdash";
 import Base from "../layouts/Base.astro";
 import PageHero from "../components/PageHero.astro";
 import LocationSection from "../components/LocationSection.astro";
 import ServicesSection from "../components/ServicesSection.astro";
 
-const photo = "/uploads/7854b158e5b131e9a356dfaafa022012ce061557.jpg";
+const memberEntry = await getEmDashEntry("team", "dr-tiffany-brewer").catch(() => null);
+const member = memberEntry?.data ?? {};
+const photoSrc = member.photo?.src ?? "/uploads/7854b158e5b131e9a356dfaafa022012ce061557.jpg";
 ---
 
 <Base
@@ -25,9 +28,8 @@ const photo = "/uploads/7854b158e5b131e9a356dfaafa022012ce061557.jpg";
 	<section class="bio-section">
 		<div class="bio-grid">
 			<div class="bio-main">
-				<p class="bio-lead">
-					Tiffany Brewer is an audiologist providing hearing tests, hearing
-					aids, and other hearing care services in Georgetown, KY.
+				<p class="bio-lead" {...memberEntry?.edit?.bio}>
+					{member.bio ?? "Tiffany Brewer is an audiologist providing hearing tests, hearing aids, and other hearing care services in Georgetown, KY."}
 				</p>
 				<p>
 					At the heart of Commonwealth Audiology is Dr. Tiffany Brewer, a
@@ -152,10 +154,10 @@ const photo = "/uploads/7854b158e5b131e9a356dfaafa022012ce061557.jpg";
 
 			<aside class="bio-aside">
 				<div class="bio-photo-card">
-					<img src={photo} alt="Dr. Tiffany Brewer, Au.D." class="bio-photo" />
+					<img src={photoSrc} alt="Dr. Tiffany Brewer, Au.D." class="bio-photo" {...memberEntry?.edit?.photo} />
 					<div class="bio-photo-meta">
-						<p class="bio-photo-name">Dr. Tiffany Brewer, Au.D.</p>
-						<p class="bio-photo-role">Doctor of Audiology</p>
+						<p class="bio-photo-name" {...memberEntry?.edit?.name}>{member.name ?? "Dr. Tiffany Brewer, Au.D."}</p>
+						<p class="bio-photo-role" {...memberEntry?.edit?.role}>{member.role ?? "Doctor of Audiology"}</p>
 					</div>
 				</div>
 			</aside>

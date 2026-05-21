@@ -6,8 +6,9 @@ interface Props {
 	siteTitle: string;
 	logoAlt: string;
 	cfg: Record<string, any>;
+	cfgEntry?: any;
 }
-const { siteTitle, logoAlt, cfg } = Astro.props;
+const { siteTitle, logoAlt, cfg, cfgEntry } = Astro.props;
 ---
 
 <footer class="site-footer">
@@ -17,25 +18,25 @@ const { siteTitle, logoAlt, cfg } = Astro.props;
 				<a href="/" class="footer-logo">
 					<img src="/uploads/white-logo.png" alt={logoAlt} class="footer-logo-img" />
 				</a>
-				<p class="footer-tagline">We provide expert, affordable hearing care to help you stay connected to what matters most.</p>
+				<p class="footer-tagline" {...cfgEntry?.edit?.footer_tagline}>We provide expert, affordable hearing care to help you stay connected to what matters most.</p>
 				<div class="footer-socials">
 					{cfg.facebook_url && (
-						<a href={cfg.facebook_url} target="_blank" rel="noopener" aria-label="Facebook">
+						<a href={cfg.facebook_url} target="_blank" rel="noopener" aria-label="Facebook" {...cfgEntry?.edit?.facebook_url}>
 							<img src="/uploads/Facebook.svg" alt="" aria-hidden="true" />
 						</a>
 					)}
 					{cfg.instagram_url && (
-						<a href={cfg.instagram_url} target="_blank" rel="noopener" aria-label="Instagram">
+						<a href={cfg.instagram_url} target="_blank" rel="noopener" aria-label="Instagram" {...cfgEntry?.edit?.instagram_url}>
 							<img src="/uploads/UI2.svg" alt="" aria-hidden="true" />
 						</a>
 					)}
 					{cfg.youtube_url && (
-						<a href={cfg.youtube_url} target="_blank" rel="noopener" aria-label="YouTube">
+						<a href={cfg.youtube_url} target="_blank" rel="noopener" aria-label="YouTube" {...cfgEntry?.edit?.youtube_url}>
 							<img src="/uploads/youtube.svg" alt="" aria-hidden="true" />
 						</a>
 					)}
 					{cfg.twitter_url && (
-						<a href={cfg.twitter_url} target="_blank" rel="noopener" aria-label="X (Twitter)">
+						<a href={cfg.twitter_url} target="_blank" rel="noopener" aria-label="X (Twitter)" {...cfgEntry?.edit?.twitter_url}>
 							<img src="/uploads/UI2.svg" alt="" aria-hidden="true" />
 						</a>
 					)}

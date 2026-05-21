@@ -47,7 +47,8 @@ const [settingsData, { entries: configs }, menu] = await Promise.all([
 ]);
 
 const { siteTitle, siteTagline, siteLogo } = resolveBlogSiteIdentity(settingsData);
-const cfg = configs[0]?.data ?? {};
+const cfgEntry = configs[0];
+const cfg = cfgEntry?.data ?? {};
 const phone = cfg.phone ?? "(844) 442-4222";
 const bookUrl = cfg.book_url ?? "#book";
 const fallbackLogo = "/uploads/0d3a8fc547761a9015ed3bc9284e6d76d16f8417.png";
@@ -117,13 +118,14 @@ const isLoggedIn = !!Astro.locals.user;
 			cityName={cityName}
 			isLoggedIn={isLoggedIn}
 			menu={menu}
+			cfgEntry={cfgEntry}
 		/>
 
 		<main>
 			<slot />
 		</main>
 
-		<Footer siteTitle={siteTitle} logoAlt={logoAlt} cfg={cfg} />
+		<Footer siteTitle={siteTitle} logoAlt={logoAlt} cfg={cfg} cfgEntry={cfgEntry} />
 
 		<script>
 			// Theme switcher

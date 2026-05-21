@@ -1,10 +1,13 @@
 ---
+import { getEmDashEntry } from "emdash";
 import Base from "../layouts/Base.astro";
 import PageHero from "../components/PageHero.astro";
 import LocationSection from "../components/LocationSection.astro";
 import ServicesSection from "../components/ServicesSection.astro";
 
-const photo = "/uploads/magnolia.jpg?v=1";
+const memberEntry = await getEmDashEntry("team", "magnolia").catch(() => null);
+const member = memberEntry?.data ?? {};
+const photoSrc = member.photo?.src ?? "/uploads/magnolia.jpg?v=1";
 ---
 
 <Base
@@ -25,10 +28,8 @@ const photo = "/uploads/magnolia.jpg?v=1";
 	<section class="bio-section">
 		<div class="bio-grid">
 			<div class="bio-main">
-				<p class="bio-lead">
-					Magnolia is a beloved member of the Commonwealth Audiology team,
-					known for her warm and enthusiastic greetings that make every
-					patient feel welcome.
+				<p class="bio-lead" {...memberEntry?.edit?.bio}>
+					{member.bio ?? "Magnolia is a beloved member of the Commonwealth Audiology team, known for her warm and enthusiastic greetings that make every patient feel welcome."}
 				</p>
 				<p>
 					Though she is deaf, Magnolia navigates her environment with ease and
@@ -52,10 +53,10 @@ const photo = "/uploads/magnolia.jpg?v=1";
 
 			<aside class="bio-aside">
 				<div class="bio-photo-card">
-					<img src={photo} alt="Magnolia, office companion" class="bio-photo" />
+					<img src={photoSrc} alt="Magnolia, office companion" class="bio-photo" {...memberEntry?.edit?.photo} />
 					<div class="bio-photo-meta">
-						<p class="bio-photo-name">Magnolia</p>
-						<p class="bio-photo-role">Chief Encouragement Officer</p>
+						<p class="bio-photo-name" {...memberEntry?.edit?.name}>{member.name ?? "Magnolia"}</p>
+						<p class="bio-photo-role" {...memberEntry?.edit?.role}>{member.role ?? "Chief Encouragement Officer"}</p>
 						<p class="bio-photo-role bio-photo-role--sub">Office Companion</p>
 					</div>
 				</div>

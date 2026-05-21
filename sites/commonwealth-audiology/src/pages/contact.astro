@@ -11,7 +11,8 @@ const [
 	getEmDashEntry("pages", "contact"),
 ]);
 
-const cfg = configs[0]?.data ?? {};
+const cfgEntry = configs[0];
+const cfg = cfgEntry?.data ?? {};
 
 const phone = cfg.phone ?? "(502) 642-4322";
 const fax = cfg.fax ?? "(502) 653-5116";
@@ -88,9 +89,9 @@ const pageDescription =
 							</span>
 							<h3 class="contact-card-label">Call or Text</h3>
 							<p class="contact-card-value">
-								<a href={`tel:${phone.replace(/\D/g, "")}`}>{phone}</a>
+								<a href={`tel:${phone.replace(/\D/g, "")}`} {...cfgEntry?.edit?.phone}>{phone}</a>
 							</p>
-							<p class="contact-card-sub">Fax: {fax}</p>
+							<p class="contact-card-sub" {...cfgEntry?.edit?.fax}>Fax: {fax}</p>
 						</div>
 
 						<div class="contact-card">
@@ -98,7 +99,7 @@ const pageDescription =
 								<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
 							</span>
 							<h3 class="contact-card-label">Visit Us</h3>
-							<p class="contact-card-value">{address1}<br />{cityState}</p>
+							<p class="contact-card-value"><span {...cfgEntry?.edit?.address_line1}>{address1}</span><br /><span {...cfgEntry?.edit?.city_state}>{cityState}</span></p>
 							<p class="contact-card-sub">
 								<a href={mapsUrl} target="_blank" rel="noopener">Get Directions</a>
 							</p>
@@ -120,7 +121,7 @@ const pageDescription =
 								<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
 							</span>
 							<h3 class="contact-card-label">Office Hours</h3>
-							<ul class="contact-hours">
+							<ul class="contact-hours" {...cfgEntry?.edit?.hours_mon}>
 								{hours.map((h) => (
 									<li><span>{h.days}</span><span>{h.time}</span></li>
 								))}

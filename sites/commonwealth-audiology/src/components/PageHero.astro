@@ -15,11 +15,15 @@ interface Props {
 	meta?: string | null;
 	/** Optional subtitle paragraph shown below the title in the hero. */
 	subtitle?: string | null;
+	/** emdash edit binding for the hero background image field */
+	editImage?: Record<string, any>;
+	/** emdash edit binding for the page title field */
+	editTitle?: Record<string, any>;
 }
-const { title, breadcrumbs, image, meta, subtitle } = Astro.props;
+const { title, breadcrumbs, image, meta, subtitle, editImage, editTitle } = Astro.props;
 ---
 
-<section class="page-hero" style={`--page-hero-img: url('${image}')`}>
+<section class="page-hero" style={`--page-hero-img: url('${image}')`} {...(editImage ?? {})}>
 	<div class="page-hero-content">
 		<nav class="page-hero-crumbs" aria-label="Breadcrumb">
 			{breadcrumbs.map((crumb, i) => (
@@ -35,7 +39,7 @@ const { title, breadcrumbs, image, meta, subtitle } = Astro.props;
 				</span>
 			))}
 		</nav>
-		<h1 class="page-hero-title">{title}</h1>
+		<h1 class="page-hero-title" {...(editTitle ?? {})}>{title}</h1>
 		{meta && <p class="page-hero-meta">{meta}</p>}
 		{subtitle && <p class="page-hero-subtitle">{subtitle}</p>}
 	</div>

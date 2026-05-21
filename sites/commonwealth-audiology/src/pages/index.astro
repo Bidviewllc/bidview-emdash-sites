@@ -39,7 +39,8 @@ try {
 Astro.cache.set(cacheHint);
 
 const { siteTitle, siteLogo } = resolveBlogSiteIdentity(settingsData);
-const cfg = configs[0]?.data ?? {};
+const cfgEntry = configs[0];
+const cfg = cfgEntry?.data ?? {};
 const hp = homepages[0];
 const hpCfg = hp?.data ?? {};
 const fallbackLogo = "/uploads/0d3a8fc547761a9015ed3bc9284e6d76d16f8417.png";
@@ -159,15 +160,27 @@ const fallbackImages = {
 	signia: "/uploads/5aa0c3579ae5acf7a7bba2b4220ab139538fc9f8.png",
 };
 
-const brandStripItems = [
+// Brands from DB; fall back to static list if collection is empty
+const brandFallbacks = [
 	{ name: "Phonak", logo: "/uploads/brand-phonak-tight.png" },
 	{ name: "Oticon", logo: "/uploads/brand-oticon-tight.png" },
 	{ name: "Widex", logo: "/uploads/brand-widex-tight.png" },
 	{ name: "Starkey", logo: "/uploads/brand-starkey-tight.png" },
 	{ name: "ReSound GN", logo: "/uploads/brand-resound-tight.png" },
+	{ name: "ReSound", logo: "/uploads/brand-resound-tight.png" },
 	{ name: "Unitron", logo: "/uploads/brand-unitron-tight.png" },
 	{ name: "Signia", logo: "/uploads/brand-signia-tight.png" },
 ];
+const brandLogoFallback: Record<string, string> = Object.fromEntries(
+	brandFallbacks.map((b) => [b.name.toLowerCase(), b.logo])
+);
+const brandLogoSrc = (b: { data: { logo?: any; name: string } }) => {
+	const logo = b.data.logo;
+	if (logo?.src) return logo.src;
+	if (typeof logo === "string" && logo) return logo;
+	return brandLogoFallback[b.data.name.toLowerCase()] ?? "";
+};
+const brandStripItems = brands.length > 0 ? null : brandFallbacks;
 
 const aboutSliderImages = [
 	{
@@ -246,7 +259,8 @@ function stars(rating: string | undefined) {
 	<!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
 	<section
 		class="hero"
-		style={`--hero-bg-img: url('${imageSrc(cfg.hero_image, fallbackImages.hero)}')`}
+		style={`--hero-bg-img: url('${imageSrc(hpCfg.hero_image || cfg.hero_image, fallbackImages.hero)}')`}
+		{...hp?.edit.hero_image}
 	>
 		<div class="hero-overlay"></div>
 		<div class="hero-content">
@@ -293,8 +307,8 @@ function stars(rating: string | undefined) {
 			<div class="about-grid">
 				<div class="about-image-wrap">
 					{cfg.about_image?.src
-						? <img src={cfg.about_image.src} alt={cfg.about_image.alt ?? "Commonwealth Audiology building"} class="about-img" />
-						: <div class="about-img-placeholder"><svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#0076BA" stroke-width="1"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg><p>Upload building photo in Admin → Site Configuration → About Image</p></div>
+						? <img src={cfg.about_image.src} alt={cfg.about_image.alt ?? "Commonwealth Audiology building"} class="about-img" {...cfgEntry?.edit?.about_image} />
+						: <div class="about-img-placeholder" {...cfgEntry?.edit?.about_image}><svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#0076BA" stroke-width="1"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg><p>Upload building photo in Admin → Site Configuration → About Image</p></div>
 					}
 					<div class="about-slider" data-about-slider data-about-slider-items={JSON.stringify(aboutSliderImages)}>
 						<img src={aboutSliderImages[0].src} alt={aboutSliderImages[0].alt} class="about-img about-slider-image" data-about-slider-image />
@@ -340,7 +354,7 @@ function stars(rating: string | undefined) {
 									: member.data.name === "Magnolia" ? fallbackImages.magnolia
 									: null);
 							return (
-								<div class="team-card" {...member.edit}>
+								<div class="team-card">
 									{photoSrc
 										? <img src={photoSrc} alt={member.data.name} class="team-photo" {...member.edit.photo} />
 										: <div class="team-photo-placeholder">{member.data.name.split(" ").map((n: string) => n[0]).join("").slice(0,2)}</div>
@@ -389,12 +403,12 @@ function stars(rating: string | undefined) {
 					{displayedHearingAids.map((item) => (
 						<div class="ha-card">
 							<div class="ha-img-wrap">
-								<img src={imageSrc(item.data.image, hearingAidMeta(item.data.title).image)} alt={item.data.image?.alt ?? hearingAidMeta(item.data.title).title} class="ha-img" />
+								<img src={imageSrc(item.data.image, hearingAidMeta(item.data.title).image)} alt={item.data.image?.alt ?? hearingAidMeta(item.data.title).title} class="ha-img" {...item.edit.image} />
 							</div>
 							<div class="ha-body">
-								<h3 class="ha-title">{hearingAidMeta(item.data.title).title}</h3>
-								<p class="ha-desc">{hearingAidMeta(item.data.title).description || item.data.description}</p>
-								{item.data.link_url && <a href={item.data.link_url} class="card-link">LEARN MORE <span class="button-arrow" aria-hidden="true"></span></a>}
+								<h3 class="ha-title" {...item.edit.title}>{hearingAidMeta(item.data.title).title}</h3>
+								<p class="ha-desc" {...item.edit.description}>{item.data.description || hearingAidMeta(item.data.title).description}</p>
+								{item.data.link_url && <a href={item.data.link_url} class="card-link" {...item.edit.link_url}>LEARN MORE <span class="button-arrow" aria-hidden="true"></span></a>}
 							</div>
 						</div>
 					))}
@@ -404,7 +418,7 @@ function stars(rating: string | undefined) {
 	)}
 
 	<!-- ═══════════════════════════════ BRANDS ═══════════════════════════════ -->
-	{brandStripItems.length > 0 && (
+	{(brands.length > 0 || brandStripItems) && (
 		<section class="brands-section">
 			<div class="container">
 				<h3 class="brands-heading">Supported Hearing Aid Brands</h3>
@@ -413,11 +427,18 @@ function stars(rating: string | undefined) {
 						<span class="brands-arrow-icon brands-arrow-left" aria-hidden="true"></span>
 					</button>
 					<div class="brands-row" data-brands-row>
-						{brandStripItems.map((brand) => (
-							<div class="brand-item">
-								<img src={brand.logo} alt={brand.name} class="brand-logo" />
-							</div>
-						))}
+						{brands.length > 0
+							? brands.map((b) => (
+								<div class="brand-item">
+									<img src={brandLogoSrc(b)} alt={b.data.name} class="brand-logo" {...b.edit.logo} />
+								</div>
+							))
+							: brandStripItems!.map((brand) => (
+								<div class="brand-item">
+									<img src={brand.logo} alt={brand.name} class="brand-logo" />
+								</div>
+							))
+						}
 					</div>
 					<button type="button" class="brands-arrow brands-arrow-next" aria-label="Next brand" data-brands-next>
 						<span class="brands-arrow-icon brands-arrow-right" aria-hidden="true"></span>
@@ -439,10 +460,10 @@ function stars(rating: string | undefined) {
 					{orderedProtection.map((item) => (
 						<div class="accordion-item protection-row">
 							<div class="accordion-summary">
-								<span class="accordion-title">{item.data.title}</span>
+								<span class="accordion-title" {...item.edit.title}>{item.data.title}</span>
 							</div>
 							<div class="accordion-body">
-								{item.data.description && <p>{item.data.description}</p>}
+								{item.data.description && <p {...item.edit.description}>{item.data.description}</p>}
 							</div>
 							<span class="protection-arrow button-arrow" aria-hidden="true"></span>
 						</div>
@@ -463,16 +484,16 @@ function stars(rating: string | undefined) {
 							<div class="testimonial-top">
 								<div class="testimonial-avatar">
 									{t.data.avatar?.src
-										? <img src={t.data.avatar.src} alt={t.data.patient_name} />
-										: <span>{t.data.patient_name.split(" ").map(n => n[0]).join("").slice(0,2)}</span>
+										? <img src={t.data.avatar.src} alt={t.data.patient_name} {...t.edit.avatar} />
+										: <span {...t.edit.avatar}>{t.data.patient_name.split(" ").map(n => n[0]).join("").slice(0,2)}</span>
 									}
 								</div>
 								<div>
-									<p class="testimonial-name">{t.data.patient_name}</p>
-									<p class="testimonial-stars">{stars(t.data.rating)}</p>
+									<p class="testimonial-name" {...t.edit.patient_name}>{t.data.patient_name}</p>
+									<p class="testimonial-stars" {...t.edit.rating}>{stars(t.data.rating)}</p>
 								</div>
 							</div>
-							{t.data.review && <p class="testimonial-review">{t.data.review}</p>}
+							{t.data.review && <p class="testimonial-review" {...t.edit.review}>{t.data.review}</p>}
 						</div>
 					))}
 				</div>
@@ -490,11 +511,11 @@ function stars(rating: string | undefined) {
 					{faqItems.map((item) => (
 						<details class="faq-item">
 							<summary class="faq-question">
-								<span>{item.data.question}</span>
+								<span {...item.edit.question}>{item.data.question}</span>
 								<svg class="accordion-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
 							</summary>
 							<div class="faq-answer">
-								{item.data.answer && <p>{item.data.answer}</p>}
+								{item.data.answer && <p {...item.edit.answer}>{item.data.answer}</p>}
 							</div>
 						</details>
 					))}
@@ -517,8 +538,8 @@ function stars(rating: string | undefined) {
 						<a href={`/news/${post.id}/`} class="news-card">
 							<div class="news-img-wrap">
 								{newsImageUrl(post.data.featured_image)
-									? <img src={newsImageUrl(post.data.featured_image)} alt={post.data.featured_image?.alt ?? post.data.title} class="news-img" />
-									: <div class="news-img-placeholder"></div>
+									? <img src={newsImageUrl(post.data.featured_image)} alt={post.data.featured_image?.alt ?? post.data.title} class="news-img" {...post.edit.featured_image} />
+									: <div class="news-img-placeholder" {...post.edit.featured_image}></div>
 								}
 							</div>
 							<div class="news-body">
@@ -526,8 +547,8 @@ function stars(rating: string | undefined) {
 									<span><img src="/uploads/calendar.svg" alt="" aria-hidden="true" />{formatNewsDate(post.data.publishedAt)}</span>
 									<span><img src="/uploads/category.svg" alt="" aria-hidden="true" />Hearing Health</span>
 								</p>
-								<h3 class="news-title">{post.data.title}</h3>
-								{post.data.excerpt && <p class="news-excerpt">{post.data.excerpt}</p>}
+								<h3 class="news-title" {...post.edit.title}>{post.data.title}</h3>
+								{post.data.excerpt && <p class="news-excerpt" {...post.edit.excerpt}>{post.data.excerpt}</p>}
 								<span class="card-link">LEARN MORE <span class="button-arrow" aria-hidden="true"></span></span>
 							</div>
 						</a>

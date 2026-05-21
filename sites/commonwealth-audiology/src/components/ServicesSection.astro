@@ -9,7 +9,8 @@ const [{ entries: configs }, { entries: services }] = await Promise.all([
 	getEmDashCollection("site_config", { limit: 1 }),
 	getEmDashCollection("services"),
 ]);
-const cfg: Record<string, any> = configs[0]?.data ?? {};
+const cfgEntry = configs[0];
+const cfg: Record<string, any> = cfgEntry?.data ?? {};
 
 const fallbackImages: Record<string, string> = {
 	evaluation: "/uploads/454a6991e526dce986ad698d24fbe50e622dd410.jpg",
@@ -58,8 +59,8 @@ const displayedServices = orderedServices.slice(0, 4);
 	<section class="services-section">
 		<div class="container">
 			<div class="section-header">
-				<h2>{cfg.services_heading ?? "Audiology Services"}</h2>
-				<p class="section-subtext">{servicesSubtext}</p>
+				<h2 {...cfgEntry?.edit?.services_heading}>{cfg.services_heading ?? "Audiology Services"}</h2>
+				<p class="section-subtext" {...cfgEntry?.edit?.services_subtext}>{servicesSubtext}</p>
 			</div>
 			<div class="services-carousel" data-services-carousel data-set-size={displayedServices.length}>
 				<div class="cards-grid" data-services-slider>
@@ -67,12 +68,12 @@ const displayedServices = orderedServices.slice(0, 4);
 						displayedServices.map((svc) => (
 							<div class={`service-card${setIndex !== 2 ? " card-dupe" : ""}`} aria-hidden={setIndex === 2 ? undefined : "true"}>
 								<div class="card-img-wrap">
-									<img src={imageSrc(svc.data.image, serviceImageSrc(svc.data.title))} alt={svc.data.image?.alt ?? svc.data.title} class="card-img" />
+									<img src={imageSrc(svc.data.image, serviceImageSrc(svc.data.title))} alt={svc.data.image?.alt ?? svc.data.title} class="card-img" {...(setIndex === 2 ? svc.edit.image : {})} />
 								</div>
 								<div class="card-body">
-									<h3 class="card-title">{svc.data.title}</h3>
-									<p class="card-desc">{serviceDescriptions[svc.data.title] ?? svc.data.description}</p>
-									{svc.data.link_url && <a href={svc.data.link_url} class="card-link" tabindex={setIndex === 2 ? undefined : "-1"}>LEARN MORE <span class="button-arrow" aria-hidden="true"></span></a>}
+									<h3 class="card-title" {...(setIndex === 2 ? svc.edit.title : {})}>{svc.data.title}</h3>
+									<p class="card-desc" {...(setIndex === 2 ? svc.edit.description : {})}>{serviceDescriptions[svc.data.title] ?? svc.data.description}</p>
+									{svc.data.link_url && <a href={svc.data.link_url} class="card-link" tabindex={setIndex === 2 ? undefined : "-1"} {...(setIndex === 2 ? svc.edit.link_url : {})}>LEARN MORE <span class="button-arrow" aria-hidden="true"></span></a>}
 								</div>
 							</div>
 						)),

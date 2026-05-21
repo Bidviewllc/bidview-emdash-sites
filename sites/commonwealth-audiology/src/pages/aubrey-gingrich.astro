@@ -1,10 +1,13 @@
 ---
+import { getEmDashEntry } from "emdash";
 import Base from "../layouts/Base.astro";
 import PageHero from "../components/PageHero.astro";
 import LocationSection from "../components/LocationSection.astro";
 import ServicesSection from "../components/ServicesSection.astro";
 
-const photo = "/uploads/6e9f81d4d3d1cc131aee03667f847a44c2b4765e.jpg";
+const memberEntry = await getEmDashEntry("team", "aubrey-gingrich").catch(() => null);
+const member = memberEntry?.data ?? {};
+const photoSrc = member.photo?.src ?? "/uploads/6e9f81d4d3d1cc131aee03667f847a44c2b4765e.jpg";
 ---
 
 <Base
@@ -25,10 +28,8 @@ const photo = "/uploads/6e9f81d4d3d1cc131aee03667f847a44c2b4765e.jpg";
 	<section class="bio-section">
 		<div class="bio-grid">
 			<div class="bio-main">
-				<p class="bio-lead">
-					Aubrey serves as a Patient Care Coordinator at Commonwealth
-					Audiology, bringing a strong background in healthcare leadership and
-					communication.
+				<p class="bio-lead" {...memberEntry?.edit?.bio}>
+					{member.bio ?? "Aubrey serves as a Patient Care Coordinator at Commonwealth Audiology, bringing a strong background in healthcare leadership and communication."}
 				</p>
 				<p>
 					She is a recent graduate of the University of Kentucky, where she
@@ -55,10 +56,10 @@ const photo = "/uploads/6e9f81d4d3d1cc131aee03667f847a44c2b4765e.jpg";
 
 			<aside class="bio-aside">
 				<div class="bio-photo-card">
-					<img src={photo} alt="Aubrey Gingrich" class="bio-photo" />
+					<img src={photoSrc} alt="Aubrey Gingrich" class="bio-photo" {...memberEntry?.edit?.photo} />
 					<div class="bio-photo-meta">
-						<p class="bio-photo-name">Aubrey Gingrich</p>
-						<p class="bio-photo-role">Patient Care Coordinator</p>
+						<p class="bio-photo-name" {...memberEntry?.edit?.name}>{member.name ?? "Aubrey Gingrich"}</p>
+						<p class="bio-photo-role" {...memberEntry?.edit?.role}>{member.role ?? "Patient Care Coordinator"}</p>
 					</div>
 				</div>
 			</aside>

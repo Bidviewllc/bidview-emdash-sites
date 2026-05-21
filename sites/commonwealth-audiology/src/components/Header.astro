@@ -17,15 +17,16 @@ interface Props {
 	cityName: string;
 	isLoggedIn: boolean;
 	menu: { items: MenuItem[] } | null;
+	cfgEntry?: any;
 }
-const { phone, bookUrl, logoSrc, logoAlt, cityName, isLoggedIn, menu } = Astro.props;
+const { phone, bookUrl, logoSrc, logoAlt, cityName, isLoggedIn, menu, cfgEntry } = Astro.props;
 const navItems = (menu?.items ?? []).filter((i) => i.label !== "Home");
 ---
 
 <header class="site-header">
 	<div class="header-top">
 		<div class="header-top-inner">
-			<a href={`tel:${phone.replace(/\D/g, "")}`} class="header-phone">
+			<a href={`tel:${phone.replace(/\D/g, "")}`} class="header-phone" {...cfgEntry?.edit?.phone}>
 				<img src="/uploads/phone.svg" alt="" aria-hidden="true" />
 				{phone}
 			</a>
@@ -100,7 +101,7 @@ const navItems = (menu?.items ?? []).filter((i) => i.label !== "Home");
 				)
 			))}
 		</div>
-		<a href={bookUrl} class="nav-book-btn">BOOK AN APPOINTMENT</a>
+		<a href={bookUrl} class="nav-book-btn" {...cfgEntry?.edit?.book_url}>BOOK AN APPOINTMENT</a>
 	</nav>
 </header>
 
@@ -505,6 +506,15 @@ const navItems = (menu?.items ?? []).filter((i) => i.label !== "Home");
 
 	.nav-subitem.has-children:hover > a {
 		color: #0076BA;
+	}
+
+	@media (min-width: 901px) {
+		.nav-item.has-children:hover .nav-dropdown {
+			display: block;
+		}
+		.nav-subitem.has-children:hover .nav-subdropdown {
+			display: block;
+		}
 	}
 
 	.nav-subdropdown li a {

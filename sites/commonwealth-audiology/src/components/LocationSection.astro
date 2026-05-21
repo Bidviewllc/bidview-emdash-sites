@@ -11,7 +11,8 @@ const [settingsData, { entries: configs }] = await Promise.all([
 	getEmDashCollection("site_config", { limit: 1 }),
 ]);
 const { siteLogo, siteTitle } = resolveBlogSiteIdentity(settingsData);
-const cfg: Record<string, any> = configs[0]?.data ?? {};
+const cfgEntry = configs[0];
+const cfg: Record<string, any> = cfgEntry?.data ?? {};
 const logoSrc = siteLogo?.url ?? "/uploads/0d3a8fc547761a9015ed3bc9284e6d76d16f8417.png";
 const logoAlt = siteLogo?.alt || siteTitle;
 const phone = cfg.phone ?? "(844) 442-4222";
@@ -32,9 +33,9 @@ const phone = cfg.phone ?? "(844) 442-4222";
 								<h3>ADDRESS</h3>
 								<p>
 									<a href="https://share.google/kofYicAqx6IPamEAh" target="_blank" rel="noopener" class="location-address-link">
-										{cfg.address_line1 ?? "204 Bevins Lane, Suite B"}
-										{cfg.address_line2 && <><br />{cfg.address_line2}</>}
-										<br />{cfg.city_state ?? "Georgetown, KY 40324"}
+										<span {...cfgEntry?.edit?.address_line1}>{cfg.address_line1 ?? "204 Bevins Lane, Suite B"}</span>
+										{cfg.address_line2 && <><br /><span {...cfgEntry?.edit?.address_line2}>{cfg.address_line2}</span></>}
+										<br /><span {...cfgEntry?.edit?.city_state}>{cfg.city_state ?? "Georgetown, KY 40324"}</span>
 									</a>
 								</p>
 							</div>
@@ -43,7 +44,7 @@ const phone = cfg.phone ?? "(844) 442-4222";
 							<img src="/uploads/phone.svg" alt="" class="location-icon" aria-hidden="true" />
 							<div>
 								<h3>PHONE NUMBER</h3>
-								<p><strong>Text or call:</strong> <a href={`tel:${phone.replace(/\D/g, "")}`} class="location-phone-link">{phone}</a></p>
+								<p><strong>Text or call:</strong> <a href={`tel:${phone.replace(/\D/g, "")}`} class="location-phone-link" {...cfgEntry?.edit?.phone}>{phone}</a></p>
 							</div>
 						</div>
 						<a href="https://share.google/kofYicAqx6IPamEAh" target="_blank" rel="noopener" class="btn-outline-dark">GET DIRECTIONS <span class="button-arrow" aria-hidden="true"></span></a>
@@ -69,7 +70,7 @@ const phone = cfg.phone ?? "(844) 442-4222";
 					</div>
 				</div>
 			</div>
-			<div class="location-map">
+			<div class="location-map" {...cfgEntry?.edit?.map_embed_url}>
 				{cfg.map_embed_url
 					? <iframe src={cfg.map_embed_url} width="100%" height="100%" style="border:0;" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Commonwealth Audiology location map"></iframe>
 					: <div class="map-placeholder"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#0076BA" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg><p>Add Google Maps embed URL in Admin → Site Configuration</p></div>
