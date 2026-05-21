@@ -14,7 +14,13 @@
   @media (prefers-color-scheme: dark) block and/or in the :root.dark rule.
 */
 
+/* Ensure Lato is used for all body text and links */
+p, a, li, span, label, input, textarea, button {
+	font-family: 'Lato', sans-serif;
+}
+
 :root {
+	--font-sans: 'Lato', sans-serif;
 	/* --- Colors ---
 	--color-bg: #ffffff;
 	--color-bg-subtle: #fafafa;

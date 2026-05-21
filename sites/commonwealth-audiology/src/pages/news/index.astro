@@ -31,18 +31,11 @@ const formatDate = (date?: Date | null) =>
 		title="News & Articles"
 		breadcrumbs={[{ label: "Home", href: "/" }, { label: "News & Articles" }]}
 		image="/uploads/internal-hero-default.png"
+		subtitle="Explore the latest hearing health tips, company updates, and industry news to stay informed and connected."
 	/>
 
 	<section class="news-archive">
 		<div class="news-archive-inner">
-			<header class="news-archive-head">
-				<h2>The Latest from Commonwealth Audiology</h2>
-				<p>
-					Explore the latest hearing health tips, company updates, and industry
-					news to stay informed and connected.
-				</p>
-			</header>
-
 			{
 				posts.length === 0 ? (
 					<p class="news-empty">No articles have been published yet.</p>

@@ -21,20 +21,11 @@ const telHref = `tel:${phone.replace(/\D/g, "")}`;
 		title="Book an Appointment"
 		breadcrumbs={[{ label: "Home", href: "/" }, { label: "Book an Appointment" }]}
 		image="/uploads/internal-hero-default.png"
+		subtitle={`Choose the service, date, and time that work best for you using the secure scheduler below. Prefer to talk to someone? Call us at ${phone} and our team will be glad to help.`}
 	/>
 
 	<section class="book-section">
 		<div class="book-wrap">
-			<header class="book-head">
-				<p class="book-eyebrow">Online Scheduling</p>
-				<h2 class="book-title">Schedule Your Visit in a Few Easy Steps</h2>
-				<p class="book-text">
-					Choose the service, date, and time that work best for you using the
-					secure scheduler below. Prefer to talk to someone? Call us at
-					<a href={telHref}>{phone}</a> and our team will be glad to help.
-				</p>
-			</header>
-
 			<div class="book-frame">
 				<iframe
 					src={schedulerUrl}

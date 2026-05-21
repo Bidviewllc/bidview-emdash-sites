@@ -13,8 +13,10 @@ interface Props {
 	image: string;
 	/** Optional meta line shown centered directly below the title (e.g. blog post date + author). */
 	meta?: string | null;
+	/** Optional subtitle paragraph shown below the title in the hero. */
+	subtitle?: string | null;
 }
-const { title, breadcrumbs, image, meta } = Astro.props;
+const { title, breadcrumbs, image, meta, subtitle } = Astro.props;
 ---
 
 <section class="page-hero" style={`--page-hero-img: url('${image}')`}>
@@ -35,6 +37,7 @@ const { title, breadcrumbs, image, meta } = Astro.props;
 		</nav>
 		<h1 class="page-hero-title">{title}</h1>
 		{meta && <p class="page-hero-meta">{meta}</p>}
+		{subtitle && <p class="page-hero-subtitle">{subtitle}</p>}
 	</div>
 </section>
 
@@ -76,7 +79,7 @@ const { title, breadcrumbs, image, meta } = Astro.props;
 		justify-content: center;
 		gap: 8px;
 		font-family: "Lato", sans-serif;
-		font-size: 18px;
+		font-size: 16px;
 		font-weight: 700;
 		text-transform: uppercase;
 		line-height: 1.2;
@@ -127,6 +130,17 @@ const { title, breadcrumbs, image, meta } = Astro.props;
 		letter-spacing: 0.04em;
 		color: rgba(255, 255, 255, 0.92);
 		text-align: center;
+	}
+
+	.page-hero-subtitle {
+		margin: 8px 0 0;
+		font-family: "Lato", sans-serif;
+		font-size: 1.1rem;
+		font-weight: 500;
+		line-height: 1.55;
+		color: rgba(255, 255, 255, 0.88);
+		text-align: center;
+		max-width: 680px;
 	}
 
 	@media (max-width: 900px) {

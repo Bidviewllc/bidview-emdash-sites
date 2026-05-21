@@ -65,6 +65,7 @@ export interface Page {
   status: string;
   title: string;
   content?: PortableTextBlock[];
+  featured_image?: { id: string; src?: string; alt?: string; width?: number; height?: number };
   createdAt: Date;
   updatedAt: Date;
   publishedAt: Date | null;

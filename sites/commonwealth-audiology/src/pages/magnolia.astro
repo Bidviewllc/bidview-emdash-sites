@@ -19,12 +19,12 @@ const photo = "/uploads/magnolia.jpg?v=1";
 			{ label: "Magnolia" },
 		]}
 		image="/uploads/internal-hero-default.png"
+		meta="Chief Encouragement Officer"
 	/>
 
 	<section class="bio-section">
 		<div class="bio-grid">
 			<div class="bio-main">
-				<p class="bio-eyebrow">Office Companion</p>
 				<p class="bio-lead">
 					Magnolia is a beloved member of the Commonwealth Audiology team,
 					known for her warm and enthusiastic greetings that make every
@@ -55,7 +55,8 @@ const photo = "/uploads/magnolia.jpg?v=1";
 					<img src={photo} alt="Magnolia, office companion" class="bio-photo" />
 					<div class="bio-photo-meta">
 						<p class="bio-photo-name">Magnolia</p>
-						<p class="bio-photo-role">Office Companion</p>
+						<p class="bio-photo-role">Chief Encouragement Officer</p>
+						<p class="bio-photo-role bio-photo-role--sub">Office Companion</p>
 					</div>
 				</div>
 			</aside>
@@ -147,6 +148,12 @@ const photo = "/uploads/magnolia.jpg?v=1";
 		letter-spacing: 0.04em;
 		text-transform: uppercase;
 		color: rgba(255, 255, 255, 0.9);
+	}
+
+	.bio-photo-role--sub {
+		font-size: 0.78rem;
+		opacity: 0.7;
+		margin-top: 0.15rem;
 	}
 
 	@media (max-width: 960px) {

@@ -5,10 +5,12 @@
  * Page content is slotted into <main data-toc-content>; drop a
  * <TableOfContents /> inside the slot wherever it should appear.
  */
-import { getEmDashCollection } from "emdash";
+import { getEmDashCollection, getEmDashEntry } from "emdash";
+import { PortableText } from "emdash/ui";
 import Base from "./Base.astro";
 import PageHero from "../components/PageHero.astro";
 import Sidebar from "../components/Sidebar.astro";
+import TableOfContents from "../components/TableOfContents.astro";
 
 interface Crumb {
 	label: string;
@@ -17,6 +19,8 @@ interface Crumb {
 interface Props {
 	title: string;
 	breadcrumbs: Crumb[];
+	/** CMS pages-collection slug for this page (e.g. "hearing-tests"). Used to pull the featured image. */
+	pageSlug?: string;
 	heroImage?: string;
 	description?: string | null;
 	/** Optional meta line shown in the hero, directly below the title. */
@@ -25,24 +29,36 @@ interface Props {
 const {
 	title,
 	breadcrumbs,
-	heroImage = "/uploads/internal-hero-default.png",
+	pageSlug,
+	heroImage: heroImageProp = "/uploads/internal-hero-default.png",
 	description,
 	heroMeta,
 } = Astro.props;
 
-const [{ entries: configs }, { entries: postEntries }] = await Promise.all([
-	getEmDashCollection("site_config", { limit: 1 }),
-	getEmDashCollection("posts", { orderBy: { published_at: "desc" }, limit: 3 }),
-]);
-const cfg = configs[0]?.data ?? {};
-const phone = cfg.phone ?? "(844) 442-4222";
-const bookUrl = cfg.book_url ?? "#book";
 const mediaUrl = (img: any): string | null => {
 	const key = img?.meta?.storageKey;
 	if (typeof key === "string" && key) return `/_emdash/api/media/file/${key}`;
 	if (typeof img?.src === "string" && img.src) return img.src;
 	return null;
 };
+
+const [{ entries: configs }, { entries: postEntries }, pageEntryResult] = await Promise.all([
+	getEmDashCollection("site_config", { limit: 1 }),
+	getEmDashCollection("posts", { orderBy: { published_at: "desc" }, limit: 3 }),
+	pageSlug ? getEmDashEntry("pages", pageSlug).catch(() => null) : Promise.resolve(null),
+]);
+const pageEntry = (pageEntryResult as any)?.entry ?? null;
+const cfg = configs[0]?.data ?? {};
+const phone = cfg.phone ?? "(844) 442-4222";
+const bookUrl = cfg.book_url ?? "#book";
+
+const heroImage =
+	(pageEntry ? mediaUrl((pageEntry as any).data?.hero_image) : null)
+	?? heroImageProp;
+
+const pageEditImage = pageEntry ? (pageEntry as any).edit?.hero_image : undefined;
+const pageEditTitle = pageEntry ? (pageEntry as any).edit?.title : undefined;
+
 const posts = postEntries.map((p) => ({
 	id: p.id,
 	title: p.data.title,
@@ -56,12 +72,23 @@ const posts = postEntries.map((p) => ({
 		breadcrumbs={breadcrumbs}
 		image={heroImage}
 		meta={heroMeta}
+		editImage={pageEditImage}
+		editTitle={pageEditTitle}
 	/>
 
 	<div class="page-body">
 		<div class="page-body-grid">
 			<main class="page-main" data-toc-content>
-				<slot />
+				{pageEntry && (pageEntry as any).data?.content ? (
+					<>
+						<TableOfContents />
+						<div {...((pageEntry as any).edit?.content ?? {})}>
+							<PortableText value={(pageEntry as any).data.content} />
+						</div>
+					</>
+				) : (
+					<slot />
+				)}
 			</main>
 			<Sidebar phone={phone} bookUrl={bookUrl} posts={posts} />
 		</div>
@@ -91,7 +118,8 @@ const posts = postEntries.map((p) => ({
 	/* ── Content typography (applies to slotted content) ── */
 	.page-main :global(p) {
 		margin: 0 0 1.15rem;
-		font-size: 1.075rem;
+		font-family: "Lato", sans-serif;
+		font-size: 1.125rem;
 		line-height: 1.55;
 		color: #1a1a1a;
 	}
@@ -140,7 +168,8 @@ const posts = postEntries.map((p) => ({
 
 	.page-main :global(li) {
 		margin-bottom: 0.45rem;
-		font-size: 1.075rem;
+		font-family: "Lato", sans-serif;
+		font-size: 1.125rem;
 		line-height: 1.55;
 		color: #1a1a1a;
 	}

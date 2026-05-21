@@ -16,26 +16,29 @@ import PageHero from "../components/PageHero.astro";
 		image="/uploads/internal-hero-default.png"
 	/>
 	<div class="gb-body">
-	<p class="lead-italic">
-		At Commonwealth Audiology, we believe hearing is about so much more than
-		sound. It's about connection.
-	</p>
-	<p>
-		It's about hearing a loved one's voice, joining in on laughter, feeling
-		confident in conversation, and staying connected to the world around you.
-	</p>
-	<p>
-		For many people, those moments slowly fade when hearing loss goes
-		untreated. And for some, access to hearing care simply isn't within reach.
-	</p>
-	<p>
-		That is why Dr. Tiffany Brewer is proud to support <strong>Hearing the Call</strong>, a
-		nonprofit organization dedicated to helping individuals receive the hearing
-		care they need when they otherwise may not have the opportunity.
-	</p>
 
-	<h2>Why This Work Matters</h2>
+	<!-- Centered intro paragraphs -->
+	<div class="gb-intro">
+		<p class="lead-italic">
+			At Commonwealth Audiology, we believe hearing is about so much more than
+			sound. It's about connection.
+		</p>
+		<p>
+			It's about hearing a loved one's voice, joining in on laughter, feeling
+			confident in conversation, and staying connected to the world around you.
+		</p>
+		<p>
+			For many people, those moments slowly fade when hearing loss goes
+			untreated. And for some, access to hearing care simply isn't within reach.
+		</p>
+		<p>
+			That is why Dr. Tiffany Brewer is proud to support <strong>Hearing the Call</strong>, a
+			nonprofit organization dedicated to helping individuals receive the hearing
+			care they need when they otherwise may not have the opportunity.
+		</p>
+	</div>
 
+	<!-- Media row: images left | "Why This Work Matters" h2 + GIFT OF HEARING right -->
 	<div class="giveback-media-row">
 		<div class="giveback-image-grid">
 			<img src="/uploads/CWA-sensorineural.webp" alt="Audiologist fitting a patient with a hearing aid" />
@@ -44,6 +47,7 @@ import PageHero from "../components/PageHero.astro";
 			<img src="/uploads/CWA-hearing-aid-fitting.webp" alt="Hearing aid fitting consultation" />
 		</div>
 		<div class="giveback-why">
+			<h2 class="giveback-why-heading">Why This Work Matters</h2>
 			<p class="giveback-label">GIFT OF HEARING</p>
 			<p>The gift of hearing can change a life in ways that are hard to measure. It can mean:</p>
 			<ul>
@@ -65,6 +69,43 @@ import PageHero from "../components/PageHero.astro";
 		</div>
 	</div>
 
+	<!-- Cards with gray bg + audiowaves -->
+	<div class="giveback-cards-row">
+		<div class="giveback-card">
+			<div class="giveback-card-content">
+				<h2>A Mission Close to the Heart</h2>
+				<p>
+					For Dr. Brewer, supporting Hearing the Call reflects the heart behind
+					Commonwealth Audiology's work each day. Providing expert care is important,
+					but so is compassion, service, and making sure people feel seen, heard, and
+					cared for.
+				</p>
+				<p>Giving back is a meaningful extension of that mission.</p>
+				<p>
+					It is a reminder that hearing care has the power to do more than improve
+					communication. It can restore confidence, strengthen families, and open the
+					door to life's everyday joys once again.
+				</p>
+			</div>
+		</div>
+		<div class="giveback-card">
+			<div class="giveback-card-content">
+				<h2>Changing Lives, One Person at a Time</h2>
+				<p>
+					At Commonwealth Audiology, we have the privilege of seeing firsthand how
+					better hearing can transform lives. It's in the smile of recognition, the
+					relief of finally understanding conversation again, and the joy of
+					reconnecting with familiar voices.
+				</p>
+				<p>
+					That is why we are honored to support an organization like Hearing the Call,
+					because everyone deserves the opportunity to experience those moments.
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<!-- YouTube video -->
 	<div class="giveback-video-wrap">
 		<iframe
 			src="https://www.youtube.com/embed/3enhHe4UXJU?controls=1&rel=0"
@@ -74,56 +115,29 @@ import PageHero from "../components/PageHero.astro";
 		></iframe>
 	</div>
 
-	<div class="giveback-cards-row">
-		<div class="giveback-card">
-			<h2>A Mission Close to the Heart</h2>
-			<p>
-				For Dr. Brewer, supporting Hearing the Call reflects the heart behind
-				Commonwealth Audiology's work each day. Providing expert care is important,
-				but so is compassion, service, and making sure people feel seen, heard, and
-				cared for.
-			</p>
-			<p>Giving back is a meaningful extension of that mission.</p>
-			<p>
-				It is a reminder that hearing care has the power to do more than improve
-				communication. It can restore confidence, strengthen families, and open the
-				door to life's everyday joys once again.
-			</p>
-		</div>
-		<div class="giveback-card">
-			<h2>Changing Lives, One Person at a Time</h2>
-			<p>
-				At Commonwealth Audiology, we have the privilege of seeing firsthand how
-				better hearing can transform lives. It's in the smile of recognition, the
-				relief of finally understanding conversation again, and the joy of
-				reconnecting with familiar voices.
-			</p>
-			<p>
-				That is why we are honored to support an organization like Hearing the Call,
-				because everyone deserves the opportunity to experience those moments.
-			</p>
-		</div>
-	</div>
-
+	<!-- Dark CTA — 50/50 columns -->
 	<div class="giveback-cta-block">
-		<div class="giveback-htc-logo">
+		<div class="giveback-cta-logo">
 			<img src="/uploads/Hearing-the-Call-Colorado-White.webp" alt="Hearing the Call Colorado" />
 		</div>
-		<h2>Giving Back Through Hearing the Call</h2>
-		<p>
-			If you feel inspired to learn more or would like to be part of this effort,
-			we welcome you to reach out. Whether you have questions, want to get
-			involved, or simply want to better understand how you can make a
-			difference, our team is here to connect with you.
-		</p>
-		<p>
-			<a href="/contact/">Contact Commonwealth Audiology</a> today to learn how you
-			can help bring the gift of hearing to someone in need.
-		</p>
-		<p>
-			To learn more about Hearing the Call and the impact they are making, visit
-			<a href="https://www.hearingthecall.org" target="_blank" rel="noopener">hearingthecall.org</a>.
-		</p>
+		<div class="giveback-cta-text">
+			<h2>Giving Back Through Hearing the Call</h2>
+			<p>
+				If you feel inspired to learn more or would like to be part of this effort,
+				we welcome you to reach out. Whether you have questions, want to get
+				involved, or simply want to better understand how you can make a
+				difference, our team is here to connect with you.
+			</p>
+			<p>
+				<a href="/contact/">Contact Commonwealth Audiology</a> today to learn how you
+				can help bring the gift of hearing to someone in need.
+			</p>
+			<p>
+				To learn more about Hearing the Call and the impact they are making, visit
+				<a href="https://www.hearingthecall.org" target="_blank" rel="noopener">hearingthecall.org</a>.
+			</p>
+			<a href="https://www.hearingthecall.org/colorado/" target="_blank" rel="noopener" class="giveback-donate-btn giveback-donate-btn--white">DONATE TO HEARING THE CALL</a>
+		</div>
 	</div>
 
 	</div>
@@ -132,10 +146,17 @@ import PageHero from "../components/PageHero.astro";
 <style>
 	.gb-body {
 		background: #fff;
-		padding: 3.5rem 1.5rem 5rem;
+		padding: 3.5rem 2rem 5rem;
 		max-width: 1200px;
 		margin: 0 auto;
 		color: #1a1a1a;
+	}
+
+	/* ── Centered intro block ── */
+	.gb-intro {
+		text-align: center;
+		margin: 0 auto 2rem;
+		padding-bottom: 40px;
 	}
 
 	.gb-body p {
@@ -162,27 +183,19 @@ import PageHero from "../components/PageHero.astro";
 	}
 
 	.gb-body h2 {
-		margin: 2.4rem 0 1rem;
 		font-family: "Merriweather", Georgia, "Times New Roman", serif;
-		font-size: 2.05rem;
 		font-weight: 700;
 		line-height: 1.2;
 		color: #1f1f1f;
 	}
 
-	@media (max-width: 640px) {
-		.gb-body {
-			padding: 2.5rem 1.1rem 3.5rem;
-		}
-		.gb-body h2 { font-size: 1.7rem; }
-	}
-
+	/* ── Media row: images left, text right ── */
 	.giveback-media-row {
 		display: grid;
-		grid-template-columns: 1fr 1fr;
-		gap: 2rem;
-		align-items: start;
-		margin: 2rem 0;
+		grid-template-columns: 0.9fr 1.1fr;
+		gap: 2.5rem;
+		align-items: center;
+		margin: 0 0 2rem;
 	}
 
 	.giveback-image-grid {
@@ -193,9 +206,15 @@ import PageHero from "../components/PageHero.astro";
 
 	.giveback-image-grid img {
 		width: 100%;
-		aspect-ratio: 1 / 1;
+		aspect-ratio: 3 / 4;
 		object-fit: cover;
 		border-radius: 6px;
+	}
+
+	/* "Why This Work Matters" in the right column */
+	.giveback-why-heading {
+		font-size: 2rem;
+		margin: 0 0 1rem;
 	}
 
 	.giveback-label {
@@ -205,6 +224,7 @@ import PageHero from "../components/PageHero.astro";
 		text-transform: uppercase;
 		color: #0076ba;
 		margin-bottom: 0.5rem;
+		margin-top: 0;
 	}
 
 	.giveback-donate-btn {
@@ -225,6 +245,56 @@ import PageHero from "../components/PageHero.astro";
 		background: #005a8e;
 	}
 
+	.giveback-donate-btn--white {
+		background: transparent;
+		border: 2px solid #fff;
+		color: #fff;
+	}
+
+	.giveback-donate-btn--white:hover {
+		background: rgba(255,255,255,0.15);
+	}
+
+	/* ── Cards with gray bg + audiowaves ── */
+	.giveback-cards-row {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 1.5rem;
+		margin: 2rem 0;
+	}
+
+	.giveback-card {
+		background: #ececec;
+		border-radius: 10px;
+		overflow: hidden;
+		position: relative;
+	}
+
+	.giveback-card-content {
+		padding: 2rem 2rem 3.5rem;
+	}
+
+	.giveback-card::after {
+		content: "";
+		display: block;
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		height: 60px;
+		background: url("/uploads/audiowaves-footer.webp") center bottom / cover no-repeat;
+		opacity: 0.35;
+		pointer-events: none;
+	}
+
+	.giveback-card h2 {
+		font-size: 1.85rem;
+		margin-top: 0;
+		margin-bottom: 1rem;
+		color: #1f1f1f;
+	}
+
+	/* ── Video ── */
 	.giveback-video-wrap {
 		position: relative;
 		width: 100%;
@@ -232,7 +302,6 @@ import PageHero from "../components/PageHero.astro";
 		margin: 2.5rem 0;
 		border-radius: 8px;
 		overflow: hidden;
-		background: #000;
 	}
 
 	.giveback-video-wrap iframe {
@@ -243,59 +312,65 @@ import PageHero from "../components/PageHero.astro";
 		border: 0;
 	}
 
-	.giveback-cards-row {
+	/* ── Dark CTA — 50/50 columns ── */
+	.giveback-cta-block {
+		background: #222D33;
+		color: #fff;
+		border-radius: 10px;
+		padding: 3rem 3.5rem;
+		margin: 2rem 0;
 		display: grid;
 		grid-template-columns: 1fr 1fr;
-		gap: 1.5rem;
-		margin: 2rem 0;
+		gap: 3rem;
+		align-items: center;
 	}
 
-	.giveback-card {
-		background: #f7f9fc;
-		border-radius: 10px;
-		padding: 1.75rem;
+	.giveback-cta-logo {
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 
-	.giveback-card h2 {
-		font-size: 1.3rem;
-		margin-bottom: 1rem;
+	.giveback-cta-logo img {
+		max-width: 360px;
+		width: 100%;
+		height: auto;
 	}
 
-	.giveback-cta-block {
-		background: #1b3328;
-		color: #fff;
-		border-radius: 10px;
-		padding: 2.5rem;
-		margin: 2rem 0;
-		text-align: center;
-	}
-
-	.giveback-cta-block h2 {
+	.giveback-cta-text h2 {
 		color: #fff;
 		font-size: 1.6rem;
+		margin-top: 0;
 		margin-bottom: 1rem;
 	}
 
-	.giveback-cta-block p { color: rgba(255,255,255,0.88); }
+	.giveback-cta-text p {
+		color: rgba(255,255,255,0.88);
+	}
 
-	.giveback-cta-block a {
+	.giveback-cta-text a:not(.giveback-donate-btn) {
 		color: #7ec8f0;
 	}
 
-	.giveback-htc-logo {
-		margin-bottom: 1.5rem;
-	}
-
-	.giveback-htc-logo img {
-		height: 60px;
-		width: auto;
-		margin: 0 auto;
+	/* ── Responsive ── */
+	@media (max-width: 900px) {
+		.giveback-cta-block {
+			grid-template-columns: 1fr;
+			text-align: center;
+			gap: 1.5rem;
+			padding: 2.5rem 1.5rem;
+		}
+		.giveback-cta-text h2 { text-align: center; }
 	}
 
 	@media (max-width: 640px) {
+		.gb-body { padding: 2.5rem 1.1rem 3.5rem; }
+		.gb-body h2 { font-size: 1.7rem; }
 		.giveback-media-row,
 		.giveback-cards-row {
 			grid-template-columns: 1fr;
 		}
+		.giveback-why-heading { font-size: 1.65rem; }
+		.giveback-card h2 { font-size: 1.5rem; }
 	}
 </style>

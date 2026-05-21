@@ -23,9 +23,9 @@ export default defineConfig({
 	fonts: [
 		{
 			provider: fontProviders.google(),
-			name: "Inter",
+			name: "Lato",
 			cssVariable: "--font-sans",
-			weights: [400, 500, 600, 700],
+			weights: [400, 700, 900],
 			fallbacks: ["sans-serif"],
 		},
 		{
