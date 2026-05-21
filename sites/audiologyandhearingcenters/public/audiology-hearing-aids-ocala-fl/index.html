@@ -242,33 +242,138 @@ body {
 
 
 
+
+
 <style>
-/* Location info block layout fix (missing post-1069.css scope) */
+/* ── Location info block: full CSS port from post-1069.css ── */
+
+/* Outer container: flex layout + gradient background */
+.em-element.em-element-f9d839b {
+  --padding-top: 20px; --padding-bottom: 20px;
+  --padding-left: 0px; --padding-right: 0px;
+}
 .em-element.em-element-f9d839b:not(.em-motion-effects-element-type-background) {
   background-color: transparent !important;
   background-image: linear-gradient(180deg, #C6D4E6 0%, #FFFFFF 20%) !important;
 }
+
+/* Row container: side-by-side columns */
 .em-element.em-element-53f9a9d {
   display: flex !important;
   flex-direction: row !important;
   align-items: center !important;
   margin-top: 40px !important;
+  margin-bottom: 0px !important;
   flex-wrap: wrap;
 }
+@media (max-width: 767px) {
+  .em-element.em-element-53f9a9d { flex-direction: column !important; }
+}
+
+/* Left column (info) */
 .em-element.em-element-ebc0845 {
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
   flex: 1 1 300px;
 }
+@media (max-width: 1024px) and (min-width: 768px) {
+  .em-element.em-element-ebc0845 { width: 100%; }
+}
+
+/* Right column (map) */
 .em-element.em-element-7329c49 {
   display: flex !important;
   flex: 1 1 300px;
+  width: 100%;
+}
+
+/* Heading (city name) */
+.em-element.em-element-fd96228 > .em-widget-container { margin: 0 !important; }
+.em-element.em-element-fd96228 { text-align: center !important; }
+.em-element.em-element-fd96228 .em-heading-title {
+  font-family: "Raleway", Sans-serif !important;
+  font-size: 38px !important;
+}
+@media (max-width: 1024px) {
+  .em-element.em-element-fd96228 .em-heading-title { font-size: 24px !important; }
+}
+
+/* Icon boxes: shared styles for address, phone, hours */
+.em-element.em-element-7f4fd4d .em-icon-box-wrapper,
+.em-element.em-element-0fad2d1 .em-icon-box-wrapper,
+.em-element.em-element-a2cba9a .em-icon-box-wrapper {
+  align-items: center !important;
+  gap: 15px !important;
+}
+.em-element.em-element-7f4fd4d .em-icon-box-title,
+.em-element.em-element-0fad2d1 .em-icon-box-title,
+.em-element.em-element-a2cba9a .em-icon-box-title {
+  margin-block-end: 4px !important;
+}
+.em-element.em-element-7f4fd4d.em-view-stacked .em-icon,
+.em-element.em-element-0fad2d1.em-view-stacked .em-icon,
+.em-element.em-element-a2cba9a.em-view-stacked .em-icon {
+  background-color: #1956A6 !important;
+  fill: #FFFFFF !important;
+  color: #FFFFFF !important;
+}
+.em-element.em-element-7f4fd4d .em-icon,
+.em-element.em-element-0fad2d1 .em-icon,
+.em-element.em-element-a2cba9a .em-icon {
+  font-size: 24px !important;
+}
+.em-element.em-element-7f4fd4d .em-icon-box-title,
+.em-element.em-element-7f4fd4d .em-icon-box-title a,
+.em-element.em-element-0fad2d1 .em-icon-box-title,
+.em-element.em-element-0fad2d1 .em-icon-box-title a,
+.em-element.em-element-a2cba9a .em-icon-box-title,
+.em-element.em-element-a2cba9a .em-icon-box-title a {
+  font-family: "Raleway", Sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 2.2px !important;
+}
+.em-element.em-element-7f4fd4d .em-icon-box-description,
+.em-element.em-element-0fad2d1 .em-icon-box-description,
+.em-element.em-element-a2cba9a .em-icon-box-description {
+  font-family: "Open Sans", Sans-serif !important;
+  font-size: 18px !important;
+  font-weight: 600 !important;
+}
+.em-element.em-element-7f4fd4d .em-icon-box-wrapper,
+.em-element.em-element-0fad2d1 .em-icon-box-wrapper,
+.em-element.em-element-a2cba9a .em-icon-box-wrapper {
+  text-align: center !important;
+}
+
+/* Get Directions button */
+.em-element.em-element-9ed79c6 .em-button {
+  background-color: #1956A6 !important;
+  font-size: 15px !important;
+  fill: #FFFFFF !important;
+  color: #FFFFFF !important;
+  border-radius: 100px !important;
+  padding: 10px 10px 10px 20px !important;
+}
+.em-element.em-element-9ed79c6 .em-button-content-wrapper {
+  flex-direction: row-reverse !important;
+}
+.em-element.em-element-9ed79c6 { width: 100% !important; }
+
+/* Map widget */
+.em-element.em-element-6889f10 > .em-widget-container {
+  margin: 0 !important;
+  border-radius: 0 0 10px 10px !important;
+  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.15) !important;
+}
+.em-element.em-element-6889f10 iframe { height: 400px !important; }
+@media (max-width: 1024px) {
+  .em-element.em-element-6889f10 iframe { height: 500px !important; }
 }
 @media (max-width: 767px) {
-  .em-element.em-element-53f9a9d {
-    flex-direction: column !important;
-  }
+  .em-element.em-element-6889f10 iframe { height: 250px !important; }
 }
 </style>
 </head>
