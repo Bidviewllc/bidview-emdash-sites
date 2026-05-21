@@ -199,7 +199,7 @@ const { siteTitle, logoAlt, cfg } = Astro.props;
 	.footer-nav { min-width: 0; }
 
 	.footer-heading {
-		font-size: 1.85rem;
+		font-size: 1.625rem;
 		font-weight: 400;
 		letter-spacing: 0;
 		color: #fff;
@@ -224,7 +224,7 @@ const { siteTitle, logoAlt, cfg } = Astro.props;
 		display: block;
 		position: relative;
 		left: 50%;
-		width: min(100vw, 1660px);
+		width: 100vw;
 		max-width: none;
 		height: auto;
 		margin: 0 0 1.85rem;
@@ -262,7 +262,7 @@ const { siteTitle, logoAlt, cfg } = Astro.props;
 	@media (max-width: 900px) {
 		.footer-grid { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
 		.footer-brand { grid-column: span 2; max-width: none; }
-		.footer-bottom { align-items: flex-start; flex-direction: column; }
+		.footer-bottom { align-items: center; flex-direction: column; text-align: center; }
 	}
 
 	@media (max-width: 640px) {
