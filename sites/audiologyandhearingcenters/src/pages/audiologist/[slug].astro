@@ -11,6 +11,17 @@ const db = (env as any).DB;
 
 if (!db) return new Response('DB not available — check Cloudflare bindings', { status: 503 });
 
+// 301 redirects for renamed audiologist slugs (preserves SEO + old bookmarks)
+const SLUG_REDIRECTS: Record<string, string> = {
+  'kim-borrelli-has': 'kim-borrelli-bc-his',  // 2026-05-15: credentials updated HAS → BC-HIS
+};
+if (slug && SLUG_REDIRECTS[slug]) {
+  return new Response(null, {
+    status: 301,
+    headers: { Location: `/audiologist/${SLUG_REDIRECTS[slug]}/` },
+  });
+}
+
 const row: any = await db
   .prepare('SELECT * FROM ec_audiologists WHERE slug = ? AND status = ?')
   .bind(slug, 'published')
