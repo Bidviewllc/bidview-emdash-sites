@@ -4,12 +4,32 @@ import SiteNav from "../components/SiteNav.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 
 export const cacheHint = 3600;
+
+const schema = {
+	"@context": "https://schema.org",
+	"@type": "AboutPage",
+	"name": "About AudiologistDirectory.com",
+	"description": "Learn about our mission to connect patients with trusted hearing care professionals across the United States.",
+	"url": "https://audiologistdirectory.com/about",
+	"publisher": {
+		"@type": "Organization",
+		"name": "AudiologistDirectory",
+		"url": "https://audiologistdirectory.com",
+		"logo": "https://audiologistdirectory.com/favicon.svg",
+		"contactPoint": {
+			"@type": "ContactPoint",
+			"contactType": "customer support",
+			"url": "https://audiologistdirectory.com/contact",
+		},
+	},
+};
 ---
 
 <Base
 	title="About AudiologistDirectory.com"
 	description="Learn about our mission to connect patients with trusted hearing care professionals across the United States."
 	canonical="https://audiologistdirectory.com/about"
+	schema={schema}
 >
 	<SiteNav />
 
@@ -69,6 +89,31 @@ export const cacheHint = 3600;
 			</p>
 			<p class="text-slate leading-relaxed mb-4">
 				This matters because trust is the foundation of a useful directory. When you search for an audiologist on our site, the results you see are based on publicly available data and geographic relevance — not on who paid the most to appear first. We believe this approach serves patients better and ultimately creates a more valuable resource for everyone, including the practices themselves.
+			</p>
+		</section>
+
+		<!-- Content Standards -->
+		<section class="mb-16">
+			<h2 class="font-serif text-3xl text-ink mb-6">Content Standards</h2>
+			<p class="text-slate leading-relaxed mb-4">
+				The educational articles in our <a href="/resources" class="text-primary hover:text-primary-dark underline">Resources</a> section are written by our editorial team and reviewed for clinical accuracy before publication. We do not publish content that makes specific medical recommendations or claims to substitute for professional diagnosis. Our content goal is always the same: give patients better context so they can have more informed conversations with their own audiologist.
+			</p>
+			<p class="text-slate leading-relaxed mb-4">
+				Practice listing information — including addresses, phone numbers, business hours, patient ratings, and reviews — comes directly from publicly available sources (HealthyHearing.com and Google Maps). We do not editorialize, alter, or summarize patient reviews. They are displayed as submitted by patients on the original platforms.
+			</p>
+			<p class="text-slate leading-relaxed mb-4">
+				We do not display hearing aid pricing, make clinical comparisons between practices, or suggest one audiology provider is more qualified than another based on anything other than verifiable public data. Choosing the right audiologist is a personal decision that depends on factors only the patient can assess.
+			</p>
+		</section>
+
+		<!-- Corrections -->
+		<section class="mb-16">
+			<h2 class="font-serif text-3xl text-ink mb-6">Corrections &amp; Updates</h2>
+			<p class="text-slate leading-relaxed mb-4">
+				We are committed to accuracy. If you notice incorrect information on any listing — a wrong phone number, outdated address, or a practice that has permanently closed — please let us know through our <a href="/contact" class="text-primary hover:text-primary-dark underline">contact page</a>. We review and process correction requests on a rolling basis, typically within 5–10 business days.
+			</p>
+			<p class="text-slate leading-relaxed mb-4">
+				Practice owners can also claim and update their listing directly by visiting our <a href="/list-your-practice" class="text-primary hover:text-primary-dark underline">List Your Practice</a> page. We verify ownership before publishing any changes to an existing listing.
 			</p>
 		</section>
 

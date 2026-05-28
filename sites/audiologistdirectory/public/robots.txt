@@ -3,4 +3,7 @@ Allow: /
 Disallow: /search
 Disallow: /_emdash/
 
+User-agent: Google-Extended
+Allow: /
+
 Sitemap: https://audiologistdirectory.com/sitemap.xml

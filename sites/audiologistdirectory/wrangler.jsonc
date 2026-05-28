@@ -38,6 +38,10 @@
 		"mode": "smart"
 	},
 	"workers_dev": true,
+	"routes": [
+		{ "pattern": "audiologistdirectory.com", "custom_domain": true },
+		{ "pattern": "www.audiologistdirectory.com", "custom_domain": true }
+	],
 
 	"env": {
 		"staging": {

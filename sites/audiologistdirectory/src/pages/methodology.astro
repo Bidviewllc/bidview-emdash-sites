@@ -4,12 +4,33 @@ import SiteNav from "../components/SiteNav.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 
 export const cacheHint = 3600;
+
+const schema = {
+	"@context": "https://schema.org",
+	"@type": "WebPage",
+	"name": "Our Methodology | AudiologistDirectory.com",
+	"description": "How we source, verify, rank, and maintain practice data for more than 4,900 audiology practices nationwide.",
+	"url": "https://audiologistdirectory.com/methodology",
+	"publisher": {
+		"@type": "Organization",
+		"name": "AudiologistDirectory",
+		"url": "https://audiologistdirectory.com",
+	},
+	"breadcrumb": {
+		"@type": "BreadcrumbList",
+		"itemListElement": [
+			{ "@type": "ListItem", "position": 1, "name": "Home", "item": "https://audiologistdirectory.com/" },
+			{ "@type": "ListItem", "position": 2, "name": "Methodology" },
+		],
+	},
+};
 ---
 
 <Base
 	title="Our Methodology | AudiologistDirectory.com"
 	description="How we source, verify, rank, and maintain practice data for more than 4,900 audiology practices nationwide."
 	canonical="https://audiologistdirectory.com/methodology"
+	schema={schema}
 >
 	<SiteNav />
 
@@ -78,6 +99,39 @@ export const cacheHint = 3600;
 			<p class="text-slate leading-relaxed mb-4">
 				Between scheduled refreshes, we process corrections and updates reported by users and practice owners on a rolling basis. If you need to update your practice's information, visit our <a href="/list-your-practice" class="text-primary hover:text-primary-dark underline">List Your Practice</a> page or <a href="/contact" class="text-primary hover:text-primary-dark underline">contact us</a> directly.
 			</p>
+		</section>
+
+		<!-- Clinical Review -->
+		<section class="mb-16">
+			<h2 class="font-serif text-3xl text-ink mb-6">Clinical Accuracy &amp; Review</h2>
+			<p class="text-slate leading-relaxed mb-4">
+				AudiologistDirectory.com is a directory and information resource — we do not provide medical advice, diagnosis, or treatment recommendations. All clinical and health-related content published in our <a href="/resources" class="text-primary hover:text-primary-dark underline">Resources</a> section is reviewed for factual accuracy before publication.
+			</p>
+			<p class="text-slate leading-relaxed mb-4">
+				Our review process checks that:
+			</p>
+			<ul class="list-disc list-outside ml-6 space-y-2 text-slate leading-relaxed mb-4">
+				<li>Statistics and prevalence figures cite a recognized public health source (such as the National Institute on Deafness and Other Communication Disorders, the American Academy of Audiology, or the CDC).</li>
+				<li>Descriptions of clinical procedures, device types, and treatment approaches are consistent with current standard-of-care practices.</li>
+				<li>No content makes specific promises about hearing improvement outcomes or implies clinical outcomes beyond what the evidence supports.</li>
+			</ul>
+			<p class="text-slate leading-relaxed mb-4">
+				If you believe any content on our site contains a clinical inaccuracy, please <a href="/contact" class="text-primary hover:text-primary-dark underline">contact us</a>. We take these reports seriously and will review them promptly.
+			</p>
+		</section>
+
+		<!-- What We Don't Do -->
+		<section class="mb-16">
+			<h2 class="font-serif text-3xl text-ink mb-6">What We Don't Do</h2>
+			<p class="text-slate leading-relaxed mb-4">
+				To be transparent about the limits of our methodology:
+			</p>
+			<ul class="list-disc list-outside ml-6 space-y-2 text-slate leading-relaxed mb-4">
+				<li><strong class="text-ink">We do not independently verify practice credentials.</strong> Licensing information is not currently displayed in our directory. Patients should verify licensure directly with their state's audiology licensing board.</li>
+				<li><strong class="text-ink">We do not conduct site visits.</strong> Our data comes from third-party sources and user reports, not in-person inspections.</li>
+				<li><strong class="text-ink">We do not guarantee real-time accuracy.</strong> Business details — especially hours and phone numbers — can change between our quarterly data refreshes. Always confirm directly with the practice before your appointment.</li>
+				<li><strong class="text-ink">We do not rank practices by quality of care.</strong> Our sort order reflects geographic proximity and patient review data, not any editorial judgment about clinical quality.</li>
+			</ul>
 		</section>
 
 	</main>

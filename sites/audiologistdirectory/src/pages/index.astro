@@ -24,6 +24,31 @@ const hero = allPages.find((p) => p.data.page_key === "homepage_hero")?.data;
 const trust = allPages.find((p) => p.data.page_key === "homepage_trust")?.data;
 const howHeading = allPages.find((p) => p.data.page_key === "homepage_how_heading")?.data;
 
+const homeSchema = [
+	{
+		"@context": "https://schema.org",
+		"@type": "Organization",
+		"name": "AudiologistDirectory",
+		"url": "https://audiologistdirectory.com",
+		"description": "The most comprehensive US directory of verified audiology practices. ~4,900 listings with ratings, specializations, hearing aid brands, and insurance information.",
+		"logo": "https://audiologistdirectory.com/favicon.svg",
+	},
+	{
+		"@context": "https://schema.org",
+		"@type": "WebSite",
+		"name": "AudiologistDirectory",
+		"url": "https://audiologistdirectory.com",
+		"potentialAction": {
+			"@type": "SearchAction",
+			"target": {
+				"@type": "EntryPoint",
+				"urlTemplate": "https://audiologistdirectory.com/search?q={search_term_string}",
+			},
+			"query-input": "required name=search_term_string",
+		},
+	},
+];
+
 // Sort collections
 const stats = allStats
 	.filter((s) => s.data.page_key === "homepage")
@@ -38,6 +63,7 @@ const resources = [...allResources].sort((a, b) => (a.data.sort_order ?? 0) - (b
 	title="AudiologistDirectory — Find an audiologist you can trust"
 	description={hero?.subheadline || "Find a trusted audiologist near you."}
 	canonical="https://audiologistdirectory.com/"
+	schema={homeSchema}
 >
 	<SiteNav active="find" />
 
@@ -204,7 +230,7 @@ const resources = [...allResources].sort((a, b) => (a.data.sort_order ?? 0) - (b
 				{resources.map((r) => (
 					<article class="bg-white rounded-xl overflow-hidden shadow-soft flex flex-col group">
 						<div class="aspect-[16/10] bg-primary/10 relative overflow-hidden">
-							<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt={r.data.title} src={r.data.image_url} loading="lazy" decoding="async" />
+							<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt={r.data.title} src={r.data.image_url} loading="lazy" />
 						</div>
 						<div class="p-8 space-y-4">
 							<span class="text-xs font-bold text-primary uppercase tracking-widest">{r.data.tag}</span>

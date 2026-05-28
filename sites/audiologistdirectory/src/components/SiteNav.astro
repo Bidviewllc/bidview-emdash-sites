@@ -5,7 +5,7 @@ export interface Props {
 const { active = null } = Astro.props;
 ---
 
-<nav aria-label="Primary" class="bg-white/80 text-[#124737] top-0 sticky border-b border-mist z-40 backdrop-blur-md">
+<nav aria-label="Primary" class="bg-white/95 text-[#124737] top-0 sticky border-b border-mist z-50 backdrop-blur-md">
 	<div class="flex justify-between items-center gap-3 w-full px-4 md:px-6 lg:px-8 py-4 max-w-7xl mx-auto">
 		<div class="flex items-center gap-8 min-w-0">
 			<a class="text-base lg:text-xl font-medium font-serif text-[#124737] flex items-center gap-2 min-w-0" href="/">
@@ -20,7 +20,10 @@ const { active = null } = Astro.props;
 			</div>
 		</div>
 		<div class="flex items-center gap-2 lg:gap-4 shrink-0">
-			<a class="hidden sm:inline-flex bg-primary hover:bg-primary-dark text-white px-3 py-2 text-sm lg:px-6 lg:py-3 lg:text-base rounded-lg font-medium transition-transform active:scale-95 whitespace-nowrap" href="/list-your-practice">List<span class="hidden md:inline"> Your</span> Practice</a>
+			<a class="hidden sm:inline-flex bg-primary hover:bg-primary-dark text-white px-3 py-2 text-sm lg:px-6 lg:py-3 lg:text-base rounded-lg font-medium transition-transform active:scale-95 whitespace-nowrap" href="/list-your-practice">
+				<span class="md:hidden">List Practice</span>
+				<span class="hidden md:inline">List Your Practice</span>
+			</a>
 			<button
 				type="button"
 				id="mobile-menu-toggle"
