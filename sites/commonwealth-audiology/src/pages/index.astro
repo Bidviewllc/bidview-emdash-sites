@@ -689,12 +689,12 @@ function stars(rating: string | undefined) {
 	letter-spacing: 0.05em;
 	border-radius: 4px;
 	text-decoration: none;
-	transition: background 0.2s;
+	transition: background 0.2s, color 0.2s;
 }
 
 .btn-outline:hover {
-	background: rgba(255,255,255,0.15);
-	color: #fff;
+	background: #fff;
+	color: #0076ba;
 }
 
 .btn-outline-dark {
@@ -1649,13 +1649,7 @@ details[open] .accordion-icon { transform: rotate(90deg); }
 }
 
 .btn-outline {
-	display: inline-flex;
-	align-items: center;
 	gap: 0.75rem;
-	padding: 0;
-	border: 0;
-	background: transparent;
-	color: #fff;
 	font-size: 0.95rem;
 	font-weight: 600;
 	letter-spacing: 0;

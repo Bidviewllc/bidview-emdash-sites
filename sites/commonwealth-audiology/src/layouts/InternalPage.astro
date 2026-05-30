@@ -52,9 +52,7 @@ const cfg = configs[0]?.data ?? {};
 const phone = cfg.phone ?? "(844) 442-4222";
 const bookUrl = cfg.book_url ?? "#book";
 
-const heroImage =
-	(pageEntry ? mediaUrl((pageEntry as any).data?.hero_image) : null)
-	?? heroImageProp;
+const heroImage = heroImageProp;
 
 const pageEditImage = pageEntry ? (pageEntry as any).edit?.hero_image : undefined;
 const pageEditTitle = pageEntry ? (pageEntry as any).edit?.title : undefined;
