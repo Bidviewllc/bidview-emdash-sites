@@ -202,12 +202,12 @@ body {
 <div class="em-widget-container">
 <div class="em-icon-box-wrapper">
 <div class="em-icon-box-icon">
-<a aria-label="View All Locations" class="em-icon" href="/contact-us/#locations" tabindex="-1">
+<a aria-label="View All Locations" class="em-icon" href="/all-locations/" tabindex="-1">
 <i aria-hidden="true" class="fas fa-map-marker-alt"></i> </a>
 </div>
 <div class="em-icon-box-content">
 <span class="em-icon-box-title">
-<a href="/contact-us/#locations">
+<a href="/all-locations/">
 							View All Locations						</a>
 </span>
 </div>
@@ -279,7 +279,7 @@ body {
 </li>
 </ul>
 </li>
-<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-3573"><a class="em-sub-item em-item-anchor" href="/contact-us/#locations">Locations</a>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-3573"><a class="em-sub-item em-item-anchor" href="/all-locations/">Locations</a>
 <ul class="sub-menu em-nav-menu--dropdown">
 <li class="menu-item menu-item-type-post_type menu-item-object-location menu-item-4259"><a class="em-sub-item" href="/audiology-hearing-aids-alpharetta-ga/">Alpharetta, GA</a></li>
 <li class="menu-item menu-item-type-post_type menu-item-object-location menu-item-4265"><a class="em-sub-item" href="/audiology-hearing-aids-bonita-springs-fl/">Bonita Springs, FL</a></li>
@@ -393,7 +393,7 @@ body {
 </li>
 </ul>
 </li>
-<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-3573"><a class="em-sub-item em-item-anchor" href="/contact-us/#locations" tabindex="-1">Locations</a>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-3573"><a class="em-sub-item em-item-anchor" href="/all-locations/" tabindex="-1">Locations</a>
 <ul class="sub-menu em-nav-menu--dropdown">
 <li class="menu-item menu-item-type-post_type menu-item-object-location menu-item-4259"><a class="em-sub-item" href="/audiology-hearing-aids-alpharetta-ga/" tabindex="-1">Alpharetta, GA</a></li>
 <li class="menu-item menu-item-type-post_type menu-item-object-location menu-item-4265"><a class="em-sub-item" href="/audiology-hearing-aids-bonita-springs-fl/" tabindex="-1">Bonita Springs, FL</a></li>
@@ -537,7 +537,7 @@ body {
 </li>
 </ul>
 </li>
-<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-3573"><a class="em-sub-item em-item-anchor" href="/contact-us/#locations">Locations</a>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-3573"><a class="em-sub-item em-item-anchor" href="/all-locations/">Locations</a>
 <ul class="sub-menu em-nav-menu--dropdown">
 <li class="menu-item menu-item-type-post_type menu-item-object-location menu-item-4259"><a class="em-sub-item" href="/audiology-hearing-aids-alpharetta-ga/">Alpharetta, GA</a></li>
 <li class="menu-item menu-item-type-post_type menu-item-object-location menu-item-4265"><a class="em-sub-item" href="/audiology-hearing-aids-bonita-springs-fl/">Bonita Springs, FL</a></li>
@@ -651,7 +651,7 @@ body {
 </li>
 </ul>
 </li>
-<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-3573"><a class="em-sub-item em-item-anchor" href="/contact-us/#locations" tabindex="-1">Locations</a>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-3573"><a class="em-sub-item em-item-anchor" href="/all-locations/" tabindex="-1">Locations</a>
 <ul class="sub-menu em-nav-menu--dropdown">
 <li class="menu-item menu-item-type-post_type menu-item-object-location menu-item-4259"><a class="em-sub-item" href="/audiology-hearing-aids-alpharetta-ga/" tabindex="-1">Alpharetta, GA</a></li>
 <li class="menu-item menu-item-type-post_type menu-item-object-location menu-item-4265"><a class="em-sub-item" href="/audiology-hearing-aids-bonita-springs-fl/" tabindex="-1">Bonita Springs, FL</a></li>
@@ -725,7 +725,7 @@ body {
 <style>
 .all-locations__hero {
   background: #1956A6;
-  padding: 64px 40px 56px;
+  padding: 94px 40px 56px;
   text-align: center;
   color: #fff;
 }
@@ -748,17 +748,16 @@ body {
   padding: 60px 40px 80px;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 20px;
+  gap: 24px;
 }
 .all-locations__card {
   display: grid;
-  grid-template-columns: 56px 1fr auto;
-  align-items: center;
-  gap: 24px;
+  grid-template-columns: 360px 1fr;
+  align-items: stretch;
   background: #fff;
   border: 1px solid #e2e6ed;
   border-radius: 12px;
-  padding: 28px 32px;
+  overflow: hidden;
   box-shadow: 0 2px 10px rgba(25,86,166,0.07);
   transition: box-shadow 0.2s, transform 0.2s;
 }
@@ -766,27 +765,47 @@ body {
   box-shadow: 0 6px 28px rgba(25,86,166,0.14);
   transform: translateY(-2px);
 }
-.all-locations__icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.all-locations__img-wrap {
+  display: block;
+  overflow: hidden;
   flex-shrink: 0;
 }
+.all-locations__img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s;
+}
+.all-locations__card:hover .all-locations__img-wrap img {
+  transform: scale(1.04);
+}
+.all-locations__info {
+  padding: 28px 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+}
 .all-locations__name {
-  font-size: 21px;
+  font-size: 22px;
   font-weight: 700;
-  color: #1956A6;
-  margin: 0 0 6px;
+  margin: 0 0 4px;
   font-family: inherit;
 }
+.all-locations__name a {
+  color: #1956A6;
+  text-decoration: none;
+}
+.all-locations__name a:hover { text-decoration: underline; }
 .all-locations__address {
   font-size: 15px;
   color: #555;
-  margin: 0 0 5px;
+  margin: 0 0 4px;
   line-height: 1.5;
 }
 .all-locations__phone {
-  margin: 0;
+  margin: 0 0 16px;
   font-size: 15px;
 }
 .all-locations__phone a {
@@ -797,10 +816,9 @@ body {
 .all-locations__phone a:hover { text-decoration: underline; }
 .all-locations__actions {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-  flex-shrink: 0;
-  min-width: 150px;
+  flex-direction: row;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 .all-locations__btn {
   display: inline-block;
@@ -832,31 +850,22 @@ body {
 }
 @media (max-width: 900px) {
   .all-locations__card {
-    grid-template-columns: 48px 1fr;
-    gap: 16px;
-    padding: 22px 24px;
-  }
-  .all-locations__actions {
-    grid-column: 2;
-    flex-direction: row;
-    flex-wrap: wrap;
-    min-width: 0;
+    grid-template-columns: 280px 1fr;
   }
 }
-@media (max-width: 600px) {
+@media (max-width: 700px) {
   .all-locations__card {
     grid-template-columns: 1fr;
-    gap: 12px;
+  }
+  .all-locations__img-wrap img {
+    height: 220px;
+  }
+  .all-locations__info {
     padding: 20px;
   }
-  .all-locations__icon { display: none; }
-  .all-locations__actions {
-    grid-column: 1;
-    flex-direction: row;
-  }
-  .all-locations__hero { padding: 48px 20px 40px; }
+  .all-locations__hero { padding: 60px 20px 40px; }
   .all-locations__hero h1 { font-size: 30px; }
-  .all-locations__grid { padding: 40px 16px 60px; }
+  .all-locations__grid { padding: 32px 16px 60px; }
 }
 </style>
 <div class="all-locations__hero">
@@ -865,111 +874,111 @@ body {
 </div>
 <div class="all-locations__grid">
 <div class="all-locations__card">
-  <div class="all-locations__icon"><svg fill="none" height="40" viewBox="0 0 40 40" width="40" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" fill="#1956A6" r="20"/><path d="M20 9a8 8 0 0 1 8 8c0 5.5-8 16-8 16S12 22.5 12 17a8 8 0 0 1 8-8zm0 5a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" fill="white"/></svg></div>
+  <a class="all-locations__img-wrap" href="/audiology-hearing-aids-alpharetta-ga/"><img alt="Alpharetta, GA Audiology &amp; Hearing Center location" src="/assets/images/2025/06/DSC03937-scaled.jpg" loading="lazy" width="360" height="240"/></a>
   <div class="all-locations__info">
-    <h2 class="all-locations__name">Alpharetta, GA</h2>
+    <h2 class="all-locations__name"><a href="/audiology-hearing-aids-alpharetta-ga/">Alpharetta, GA</a></h2>
     <p class="all-locations__address">3400-C Old Milton Pkwy #385<br>Alpharetta, GA 30005</p>
     <p class="all-locations__phone"><a href="tel:7707665424">770-766-5424</a></p>
-  </div>
-  <div class="all-locations__actions">
-    <a class="all-locations__btn all-locations__btn--primary" href="/audiology-hearing-aids-alpharetta-ga/">Learn More</a>
-    <a class="all-locations__btn all-locations__btn--secondary" href="https://maps.google.com/maps?q=3400-C+Old+Milton+Pkwy+385+Alpharetta+GA+30005" rel="noopener" target="_blank">Get Directions</a>
+    <div class="all-locations__actions">
+      <a class="all-locations__btn all-locations__btn--primary" href="/audiology-hearing-aids-alpharetta-ga/">Learn More</a>
+      <a class="all-locations__btn all-locations__btn--secondary" href="https://maps.google.com/maps?q=3400-C+Old+Milton+Pkwy+385+Alpharetta+GA+30005" rel="noopener" target="_blank">Get Directions</a>
+    </div>
   </div>
 </div>
 <div class="all-locations__card">
-  <div class="all-locations__icon"><svg fill="none" height="40" viewBox="0 0 40 40" width="40" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" fill="#1956A6" r="20"/><path d="M20 9a8 8 0 0 1 8 8c0 5.5-8 16-8 16S12 22.5 12 17a8 8 0 0 1 8-8zm0 5a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" fill="white"/></svg></div>
+  <a class="all-locations__img-wrap" href="/audiology-hearing-aids-bonita-springs-fl/"><img alt="Bonita Springs, FL Audiology &amp; Hearing Center location" src="/assets/images/2025/09/audiology-and-hearing-center-bonita-springs-location-01.webp" loading="lazy" width="360" height="240"/></a>
   <div class="all-locations__info">
-    <h2 class="all-locations__name">Bonita Springs, FL</h2>
+    <h2 class="all-locations__name"><a href="/audiology-hearing-aids-bonita-springs-fl/">Bonita Springs, FL</a></h2>
     <p class="all-locations__address">24810 Burnt Pine Dr #2<br>Bonita Springs, FL 34134</p>
     <p class="all-locations__phone"><a href="tel:8667406274">866-740-6274</a></p>
-  </div>
-  <div class="all-locations__actions">
-    <a class="all-locations__btn all-locations__btn--primary" href="/audiology-hearing-aids-bonita-springs-fl/">Learn More</a>
-    <a class="all-locations__btn all-locations__btn--secondary" href="https://maps.google.com/maps?q=24810+Burnt+Pine+Dr+2+Bonita+Springs+FL+34134" rel="noopener" target="_blank">Get Directions</a>
+    <div class="all-locations__actions">
+      <a class="all-locations__btn all-locations__btn--primary" href="/audiology-hearing-aids-bonita-springs-fl/">Learn More</a>
+      <a class="all-locations__btn all-locations__btn--secondary" href="https://maps.google.com/maps?q=24810+Burnt+Pine+Dr+2+Bonita+Springs+FL+34134" rel="noopener" target="_blank">Get Directions</a>
+    </div>
   </div>
 </div>
 <div class="all-locations__card">
-  <div class="all-locations__icon"><svg fill="none" height="40" viewBox="0 0 40 40" width="40" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" fill="#1956A6" r="20"/><path d="M20 9a8 8 0 0 1 8 8c0 5.5-8 16-8 16S12 22.5 12 17a8 8 0 0 1 8-8zm0 5a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" fill="white"/></svg></div>
+  <a class="all-locations__img-wrap" href="/audiology-hearing-aids-ocala-fl/"><img alt="Ocala, FL Audiology &amp; Hearing Center location" src="/assets/images/2025/10/ocala-location-01.webp" loading="lazy" width="360" height="240"/></a>
   <div class="all-locations__info">
-    <h2 class="all-locations__name">Ocala, FL</h2>
+    <h2 class="all-locations__name"><a href="/audiology-hearing-aids-ocala-fl/">Ocala, FL</a></h2>
     <p class="all-locations__address">1901 SE 18th Ave #102<br>Ocala, FL 34471</p>
     <p class="all-locations__phone"><a href="tel:3526057764">352-605-7764</a></p>
-  </div>
-  <div class="all-locations__actions">
-    <a class="all-locations__btn all-locations__btn--primary" href="/audiology-hearing-aids-ocala-fl/">Learn More</a>
-    <a class="all-locations__btn all-locations__btn--secondary" href="https://maps.google.com/maps?q=1901+SE+18th+Ave+102+Ocala+FL+34471" rel="noopener" target="_blank">Get Directions</a>
+    <div class="all-locations__actions">
+      <a class="all-locations__btn all-locations__btn--primary" href="/audiology-hearing-aids-ocala-fl/">Learn More</a>
+      <a class="all-locations__btn all-locations__btn--secondary" href="https://maps.google.com/maps?q=1901+SE+18th+Ave+102+Ocala+FL+34471" rel="noopener" target="_blank">Get Directions</a>
+    </div>
   </div>
 </div>
 <div class="all-locations__card">
-  <div class="all-locations__icon"><svg fill="none" height="40" viewBox="0 0 40 40" width="40" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" fill="#1956A6" r="20"/><path d="M20 9a8 8 0 0 1 8 8c0 5.5-8 16-8 16S12 22.5 12 17a8 8 0 0 1 8-8zm0 5a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" fill="white"/></svg></div>
+  <a class="all-locations__img-wrap" href="/audiology-hearing-aids-palm-harbor-fl/"><img alt="Palm Harbor, FL Audiology &amp; Hearing Center location" src="/assets/images/2025/05/PH-Outside-sign-1.jpg" loading="lazy" width="360" height="240"/></a>
   <div class="all-locations__info">
-    <h2 class="all-locations__name">Palm Harbor, FL</h2>
+    <h2 class="all-locations__name"><a href="/audiology-hearing-aids-palm-harbor-fl/">Palm Harbor, FL</a></h2>
     <p class="all-locations__address">33917 US Highway 19 N<br>Palm Harbor, FL 34684</p>
     <p class="all-locations__phone"><a href="tel:7272283997">727-228-3997</a></p>
-  </div>
-  <div class="all-locations__actions">
-    <a class="all-locations__btn all-locations__btn--primary" href="/audiology-hearing-aids-palm-harbor-fl/">Learn More</a>
-    <a class="all-locations__btn all-locations__btn--secondary" href="https://maps.google.com/maps?q=33917+US+Highway+19+N+Palm+Harbor+FL+34684" rel="noopener" target="_blank">Get Directions</a>
+    <div class="all-locations__actions">
+      <a class="all-locations__btn all-locations__btn--primary" href="/audiology-hearing-aids-palm-harbor-fl/">Learn More</a>
+      <a class="all-locations__btn all-locations__btn--secondary" href="https://maps.google.com/maps?q=33917+US+Highway+19+N+Palm+Harbor+FL+34684" rel="noopener" target="_blank">Get Directions</a>
+    </div>
   </div>
 </div>
 <div class="all-locations__card">
-  <div class="all-locations__icon"><svg fill="none" height="40" viewBox="0 0 40 40" width="40" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" fill="#1956A6" r="20"/><path d="M20 9a8 8 0 0 1 8 8c0 5.5-8 16-8 16S12 22.5 12 17a8 8 0 0 1 8-8zm0 5a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" fill="white"/></svg></div>
+  <a class="all-locations__img-wrap" href="/audiology-hearing-aids-sarasota-fl/"><img alt="Sarasota, FL Audiology &amp; Hearing Center location" src="/assets/images/2025/03/sarasota-location-image-01.webp" loading="lazy" width="360" height="240"/></a>
   <div class="all-locations__info">
-    <h2 class="all-locations__name">Sarasota, FL</h2>
+    <h2 class="all-locations__name"><a href="/audiology-hearing-aids-sarasota-fl/">Sarasota, FL</a></h2>
     <p class="all-locations__address">5455 Fruitville Rd<br>Sarasota, FL 34232</p>
     <p class="all-locations__phone"><a href="tel:9413419444">941-341-9444</a></p>
-  </div>
-  <div class="all-locations__actions">
-    <a class="all-locations__btn all-locations__btn--primary" href="/audiology-hearing-aids-sarasota-fl/">Learn More</a>
-    <a class="all-locations__btn all-locations__btn--secondary" href="https://maps.google.com/maps?q=5455+Fruitville+Rd+Sarasota+FL+34232" rel="noopener" target="_blank">Get Directions</a>
+    <div class="all-locations__actions">
+      <a class="all-locations__btn all-locations__btn--primary" href="/audiology-hearing-aids-sarasota-fl/">Learn More</a>
+      <a class="all-locations__btn all-locations__btn--secondary" href="https://maps.google.com/maps?q=5455+Fruitville+Rd+Sarasota+FL+34232" rel="noopener" target="_blank">Get Directions</a>
+    </div>
   </div>
 </div>
 <div class="all-locations__card">
-  <div class="all-locations__icon"><svg fill="none" height="40" viewBox="0 0 40 40" width="40" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" fill="#1956A6" r="20"/><path d="M20 9a8 8 0 0 1 8 8c0 5.5-8 16-8 16S12 22.5 12 17a8 8 0 0 1 8-8zm0 5a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" fill="white"/></svg></div>
+  <a class="all-locations__img-wrap" href="/audiology-hearing-aids-tampa-palms-fl/"><img alt="Tampa Palms, FL Audiology &amp; Hearing Center location" src="/assets/images/2025/03/28-DSC03618-scaled.jpg" loading="lazy" width="360" height="240"/></a>
   <div class="all-locations__info">
-    <h2 class="all-locations__name">Tampa Palms, FL</h2>
+    <h2 class="all-locations__name"><a href="/audiology-hearing-aids-tampa-palms-fl/">Tampa Palms, FL</a></h2>
     <p class="all-locations__address">15310 Amberly Drive, Suite 170<br>Tampa, FL 33647</p>
     <p class="all-locations__phone"><a href="tel:8133030652">813-303-0652</a></p>
-  </div>
-  <div class="all-locations__actions">
-    <a class="all-locations__btn all-locations__btn--primary" href="/audiology-hearing-aids-tampa-palms-fl/">Learn More</a>
-    <a class="all-locations__btn all-locations__btn--secondary" href="https://maps.google.com/maps?q=15310+Amberly+Drive+Suite+170+Tampa+FL+33647" rel="noopener" target="_blank">Get Directions</a>
+    <div class="all-locations__actions">
+      <a class="all-locations__btn all-locations__btn--primary" href="/audiology-hearing-aids-tampa-palms-fl/">Learn More</a>
+      <a class="all-locations__btn all-locations__btn--secondary" href="https://maps.google.com/maps?q=15310+Amberly+Drive+Suite+170+Tampa+FL+33647" rel="noopener" target="_blank">Get Directions</a>
+    </div>
   </div>
 </div>
 <div class="all-locations__card">
-  <div class="all-locations__icon"><svg fill="none" height="40" viewBox="0 0 40 40" width="40" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" fill="#1956A6" r="20"/><path d="M20 9a8 8 0 0 1 8 8c0 5.5-8 16-8 16S12 22.5 12 17a8 8 0 0 1 8-8zm0 5a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" fill="white"/></svg></div>
+  <a class="all-locations__img-wrap" href="/audiology-hearing-aids-tampa-westchase-fl/"><img alt="Tampa Westchase, FL Audiology &amp; Hearing Center location" src="/assets/images/2025/03/TWC-Frontdesk-scaled.jpg" loading="lazy" width="360" height="240"/></a>
   <div class="all-locations__info">
-    <h2 class="all-locations__name">Tampa Westchase, FL</h2>
+    <h2 class="all-locations__name"><a href="/audiology-hearing-aids-tampa-westchase-fl/">Tampa Westchase, FL</a></h2>
     <p class="all-locations__address">6906 W Linebaugh Ave, Suite 101<br>Tampa, FL 33625</p>
     <p class="all-locations__phone"><a href="tel:8133030920">813-303-0920</a></p>
-  </div>
-  <div class="all-locations__actions">
-    <a class="all-locations__btn all-locations__btn--primary" href="/audiology-hearing-aids-tampa-westchase-fl/">Learn More</a>
-    <a class="all-locations__btn all-locations__btn--secondary" href="https://maps.google.com/maps?q=6906+W+Linebaugh+Ave+Suite+101+Tampa+FL+33625" rel="noopener" target="_blank">Get Directions</a>
+    <div class="all-locations__actions">
+      <a class="all-locations__btn all-locations__btn--primary" href="/audiology-hearing-aids-tampa-westchase-fl/">Learn More</a>
+      <a class="all-locations__btn all-locations__btn--secondary" href="https://maps.google.com/maps?q=6906+W+Linebaugh+Ave+Suite+101+Tampa+FL+33625" rel="noopener" target="_blank">Get Directions</a>
+    </div>
   </div>
 </div>
 <div class="all-locations__card">
-  <div class="all-locations__icon"><svg fill="none" height="40" viewBox="0 0 40 40" width="40" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" fill="#1956A6" r="20"/><path d="M20 9a8 8 0 0 1 8 8c0 5.5-8 16-8 16S12 22.5 12 17a8 8 0 0 1 8-8zm0 5a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" fill="white"/></svg></div>
+  <a class="all-locations__img-wrap" href="/audiology-hearing-aids-venice-fl/"><img alt="Venice, FL Audiology &amp; Hearing Center location" src="/assets/images/2025/05/audiology-and-hearing-center-venice-01.webp" loading="lazy" width="360" height="240"/></a>
   <div class="all-locations__info">
-    <h2 class="all-locations__name">Venice, FL</h2>
+    <h2 class="all-locations__name"><a href="/audiology-hearing-aids-venice-fl/">Venice, FL</a></h2>
     <p class="all-locations__address">183 Center Road<br>Venice, FL 34285</p>
     <p class="all-locations__phone"><a href="tel:9413077518">941-307-7518</a></p>
-  </div>
-  <div class="all-locations__actions">
-    <a class="all-locations__btn all-locations__btn--primary" href="/audiology-hearing-aids-venice-fl/">Learn More</a>
-    <a class="all-locations__btn all-locations__btn--secondary" href="https://maps.google.com/maps?q=183+Center+Road+Venice+FL+34285" rel="noopener" target="_blank">Get Directions</a>
+    <div class="all-locations__actions">
+      <a class="all-locations__btn all-locations__btn--primary" href="/audiology-hearing-aids-venice-fl/">Learn More</a>
+      <a class="all-locations__btn all-locations__btn--secondary" href="https://maps.google.com/maps?q=183+Center+Road+Venice+FL+34285" rel="noopener" target="_blank">Get Directions</a>
+    </div>
   </div>
 </div>
 <div class="all-locations__card">
-  <div class="all-locations__icon"><svg fill="none" height="40" viewBox="0 0 40 40" width="40" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" fill="#1956A6" r="20"/><path d="M20 9a8 8 0 0 1 8 8c0 5.5-8 16-8 16S12 22.5 12 17a8 8 0 0 1 8-8zm0 5a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" fill="white"/></svg></div>
+  <a class="all-locations__img-wrap" href="/audiology-hearing-aids-naples-fl/"><img alt="Naples, FL Audiology &amp; Hearing Center location" src="/assets/images/2025/06/DSC00702.jpg" loading="lazy" width="360" height="240"/></a>
   <div class="all-locations__info">
-    <h2 class="all-locations__name">Naples, FL</h2>
+    <h2 class="all-locations__name"><a href="/audiology-hearing-aids-naples-fl/">Naples, FL</a></h2>
     <p class="all-locations__address">2390 Tamiami Trail N, Ste #106<br>Naples, FL 34103</p>
     <p class="all-locations__phone"><a href="tel:2399902159">239-990-2159</a></p>
-  </div>
-  <div class="all-locations__actions">
-    <a class="all-locations__btn all-locations__btn--primary" href="/audiology-hearing-aids-naples-fl/">Learn More</a>
-    <a class="all-locations__btn all-locations__btn--secondary" href="https://maps.google.com/maps?q=2390+Tamiami+Trail+N+Ste+106+Naples+FL+34103" rel="noopener" target="_blank">Get Directions</a>
+    <div class="all-locations__actions">
+      <a class="all-locations__btn all-locations__btn--primary" href="/audiology-hearing-aids-naples-fl/">Learn More</a>
+      <a class="all-locations__btn all-locations__btn--secondary" href="https://maps.google.com/maps?q=2390+Tamiami+Trail+N+Ste+106+Naples+FL+34103" rel="noopener" target="_blank">Get Directions</a>
+    </div>
   </div>
 </div>
 </div>
