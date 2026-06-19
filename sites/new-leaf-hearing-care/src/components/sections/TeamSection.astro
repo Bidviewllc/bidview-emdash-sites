@@ -1,0 +1,42 @@
+---
+import { getPublishedTeamMembers } from "../../utils/teamMembers";
+
+const teamMembers = await getPublishedTeamMembers();
+const hasCarousel = teamMembers.length > 4;
+---
+
+{teamMembers.length > 0 && (
+  <section class={`team-section new-leaf-texture-overlay${hasCarousel ? " has-carousel" : ""}`} aria-labelledby="team-heading">
+    <div class="team-section__inner heading-group">
+      <p class="eyebrow eyebrow--light">Serving Arvada, CO and Littleton, CO</p>
+      <h2 id="team-heading" class="section-title section-title--light">Meet The Team</h2>
+    </div>
+    <div class="team-carousel">
+      <div class="team-track" aria-label="Team members">
+        {teamMembers.map((member) => (
+          <a class="team-card" href={member.href}>
+            <img src={member.image.src} alt={member.image.alt} loading="lazy" decoding="async" />
+            <div class="team-card__label">
+              <h3>{member.name}</h3>
+              {member.jobTitle && <p>{member.jobTitle}</p>}
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+    {hasCarousel && (
+      <div class="team-controls" aria-label="Team carousel controls">
+        <button class="team-nav" type="button" aria-label="Previous team member" data-team-prev>
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path d="M19 12H5m0 0 6-6m-6 6 6 6" />
+          </svg>
+        </button>
+        <button class="team-nav" type="button" aria-label="Next team member" data-team-next>
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path d="M5 12h14m0 0-6-6m6 6-6 6" />
+          </svg>
+        </button>
+      </div>
+    )}
+  </section>
+)}

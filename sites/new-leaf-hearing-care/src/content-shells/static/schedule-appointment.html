@@ -1,0 +1,33 @@
+<main>
+      <section class="internal-hero-section new-leaf-texture-overlay" aria-labelledby="schedule-page-heading">
+        <div class="internal-hero-container">
+          <nav class="eyebrow internal-hero-breadcrumb" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <span aria-hidden="true">&gt;</span>
+            <span>Schedule An Appointment</span>
+          </nav>
+          <h1 id="schedule-page-heading" class="internal-hero-title">Schedule An Appointment</h1>
+        </div>
+      </section>
+
+      <section class="internal-content-section">
+        <div class="contact-content-container">
+          <div class="schedule-embed-container">
+            <div class="schedule-tabs" role="tablist" aria-label="Choose a clinic for scheduling">
+              <button class="schedule-tab schedule-tab--active" id="schedule-tab-arvada" type="button" role="tab" aria-selected="true" aria-controls="schedule-panel-arvada" data-schedule-tab="schedule-panel-arvada">Arvada, CO</button>
+              <button class="schedule-tab" id="schedule-tab-littleton" type="button" role="tab" aria-selected="false" aria-controls="schedule-panel-littleton" data-schedule-tab="schedule-panel-littleton">Littleton, CO</button>
+            </div>
+
+            <div class="schedule-embed-panels">
+              <div class="schedule-embed-panel schedule-embed-panel--active" id="schedule-panel-arvada" role="tabpanel" aria-labelledby="schedule-tab-arvada">
+                <div class="schedule-iframe-mask"><iframe id="ceschedule-arvada" title="Schedule an appointment at New Leaf Hearing Care in Arvada, Colorado" style="border: 0;" src="https://scheduling.suno.care/?clinic=9915&amp;token=7a65306ebcbe389696a5dbc6fab466a95e7e5904&amp;pc=eeeeee&amp;dc=ffffff" width="100%" height="860px" frameborder="0"></iframe></div>
+              </div>
+
+              <div class="schedule-embed-panel" id="schedule-panel-littleton" role="tabpanel" aria-labelledby="schedule-tab-littleton" hidden>
+                <div class="schedule-iframe-mask"><iframe id="ceschedule-littleton" title="Schedule an appointment at New Leaf Hearing Care in Littleton, Colorado" style="border: 0;" src="https://scheduling.suno.care/?clinic=9914&amp;token=7a65306ebcbe389696a5dbc6fab466a95e7e5904&amp;pc=eeeeee&amp;dc=ffffff" width="100%" height="860px" frameborder="0"></iframe></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>

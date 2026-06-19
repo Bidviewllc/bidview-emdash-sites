@@ -1,0 +1,410 @@
+---
+// Standalone wellness assessment page — no site layout, self-contained
+const logoSrc = '/assets/new-leaf-hearing-care-logo.webp';
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>New Leaf Hearing Care – Hearing Wellness Report</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/webp" href="/assets/new-leaf-hearing-care-favicon.webp">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--green-dark:#2D6A35;--green-mid:#5DB83A;--green-light:#8DC63F;--purple-dark:#3D1A6B;--purple-mid:#5B2D8E;--purple-light:#7B52AB;--black:#0A0A0F;--off-white:#F7F5F0;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:linear-gradient(135deg,var(--purple-dark) 0%,var(--purple-mid) 50%,var(--green-dark) 100%);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem;}
+.landing{text-align:center;max-width:700px;animation:fadeUp 1s ease both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+.logo-wrap{display:flex;align-items:center;justify-content:center;gap:1rem;margin-bottom:2.5rem;}
+.landing h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:300;color:var(--off-white);line-height:1.2;margin-bottom:1.2rem;}
+.landing h1 em{font-style:italic;background:linear-gradient(135deg,var(--green-mid),var(--green-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.landing p{color:rgba(247,245,240,0.65);font-size:1.05rem;line-height:1.7;margin-bottom:2.5rem;font-weight:300;}
+.cta-btn{display:inline-block;background:linear-gradient(135deg,var(--green-dark),var(--green-mid));color:white;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:600;letter-spacing:0.05em;padding:1rem 2.5rem;border:none;border-radius:50px;cursor:pointer;transition:all 0.3s;box-shadow:0 8px 30px rgba(93,184,58,0.3);}
+.cta-btn:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(93,184,58,0.45);}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(10,10,15,0.85);backdrop-filter:blur(8px);z-index:1000;align-items:center;justify-content:center;padding:1.5rem;}
+.modal-overlay.active{display:flex;animation:fadeIn 0.3s ease;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+.modal{background:var(--off-white);border-radius:20px;width:100%;max-width:680px;max-height:90vh;overflow-y:auto;box-shadow:0 30px 80px rgba(0,0,0,0.6);animation:slideUp 0.4s cubic-bezier(0.16,1,0.3,1);position:relative;}
+@keyframes slideUp{from{opacity:0;transform:translateY(40px) scale(0.97);}to{opacity:1;transform:translateY(0) scale(1);}}
+.modal-header{background:linear-gradient(135deg,var(--purple-dark) 0%,var(--purple-mid) 50%,var(--green-dark) 100%);padding:2rem 2rem 1.5rem;border-radius:20px 20px 0 0;position:relative;}
+.close-btn{position:absolute;top:1rem;right:1rem;background:rgba(255,255,255,0.15);border:none;color:white;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;transition:background 0.2s;}
+.close-btn:hover{background:rgba(255,255,255,0.3);}
+.modal-logo{display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem;}
+.modal-header h2{font-family:'Cormorant Garamond',serif;color:white;font-size:1.6rem;font-weight:400;margin-bottom:0.3rem;}
+.modal-header p{color:rgba(255,255,255,0.75);font-size:0.85rem;line-height:1.5;}
+.progress-bar{height:4px;background:rgba(255,255,255,0.2);margin-top:1rem;border-radius:2px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--green-light),var(--green-mid));transition:width 0.4s ease;}
+.form-body{padding:1.5rem 2rem 2rem;}
+.step{display:none;}
+.step.active{display:block;animation:fadeUp 0.35s ease;}
+.step-label{font-size:0.7rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--purple-mid);margin-bottom:0.5rem;}
+.step h3{font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--black);margin-bottom:1.2rem;font-weight:600;}
+.question-block{background:white;border:1.5px solid #E8E4F0;border-radius:12px;padding:1rem 1.2rem;margin-bottom:0.75rem;transition:border-color 0.2s;}
+.question-block:hover{border-color:var(--purple-light);}
+.q-text{font-size:0.88rem;color:#2A2A35;line-height:1.5;margin-bottom:0.75rem;}
+.q-tag{display:inline-block;font-size:0.6rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:0.15rem 0.5rem;border-radius:4px;margin-right:0.4rem;vertical-align:middle;}
+.q-tag.E{background:#EDE9F8;color:var(--purple-mid);}
+.q-tag.S{background:#E8F5E0;color:var(--green-dark);}
+.radio-group{display:flex;gap:0.5rem;}
+.radio-opt{flex:1;text-align:center;}
+.radio-opt input[type="radio"]{display:none;}
+.radio-opt label{display:block;padding:0.5rem 0.3rem;border:1.5px solid #DDD;border-radius:8px;font-size:0.78rem;font-weight:500;color:#555;cursor:pointer;transition:all 0.2s;user-select:none;}
+.radio-opt input:checked+label{border-color:var(--purple-mid);background:var(--purple-dark);color:white;}
+.radio-opt label:hover{border-color:var(--purple-light);background:#F0EBF8;}
+.field-group{margin-bottom:1.2rem;}
+.field-group label{display:block;font-size:0.8rem;font-weight:600;color:#3A3A45;margin-bottom:0.4rem;}
+.field-group input{width:100%;padding:0.75rem 1rem;border:1.5px solid #DDD;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.9rem;color:var(--black);background:white;transition:border-color 0.2s,box-shadow 0.2s;outline:none;}
+.field-group input:focus{border-color:var(--purple-mid);box-shadow:0 0 0 3px rgba(91,45,142,0.1);}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.consent-block{background:#F0EBF8;border:1.5px solid #DDD;border-radius:12px;padding:1rem 1.2rem;margin-top:1rem;display:flex;gap:0.75rem;align-items:flex-start;}
+.consent-block input[type="checkbox"]{width:18px;height:18px;min-width:18px;accent-color:var(--purple-mid);cursor:pointer;margin-top:2px;}
+.consent-block label{font-size:0.8rem;color:#3A3A45;line-height:1.55;cursor:pointer;}
+.consent-block label strong{color:var(--purple-dark);}
+.consent-note{font-size:0.72rem;color:#888;margin-top:0.75rem;line-height:1.5;font-style:italic;}
+.form-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;gap:1rem;}
+.btn-back{background:none;border:1.5px solid #CCC;color:#666;padding:0.7rem 1.5rem;border-radius:50px;font-family:'DM Sans',sans-serif;font-size:0.88rem;cursor:pointer;transition:all 0.2s;}
+.btn-back:hover{border-color:var(--purple-light);color:var(--purple-mid);}
+.btn-next{background:linear-gradient(135deg,var(--purple-dark),var(--purple-mid));color:white;border:none;padding:0.75rem 2rem;border-radius:50px;font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:600;cursor:pointer;transition:all 0.25s;box-shadow:0 4px 15px rgba(91,45,142,0.35);flex:1;}
+.btn-next:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(91,45,142,0.45);}
+.btn-submit{background:linear-gradient(135deg,var(--green-dark),var(--green-mid));box-shadow:0 4px 15px rgba(93,184,58,0.35);}
+.btn-submit:hover{box-shadow:0 6px 20px rgba(93,184,58,0.45);}
+.error-msg{background:#FFF0F0;border:1px solid #FFCDD2;color:#C62828;border-radius:8px;padding:0.6rem 1rem;font-size:0.8rem;margin-top:0.75rem;display:none;}
+.error-msg.show{display:block;}
+.thankyou-box{text-align:center;padding:2.5rem 2rem;}
+.thankyou-box .ty-icon{font-size:3rem;margin-bottom:1rem;}
+.thankyou-box h3{font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--black);margin-bottom:0.75rem;}
+.thankyou-box p{font-size:0.9rem;color:#666;line-height:1.6;}
+#report-page{display:none;max-width:760px;width:100%;animation:fadeUp 0.6s ease;}
+.report-card{background:white;border-radius:24px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,0.5);}
+.report-header{background:linear-gradient(135deg,var(--purple-dark) 0%,var(--purple-mid) 45%,var(--green-dark) 100%);padding:2.5rem 2.5rem 3rem;position:relative;overflow:hidden;}
+.report-header::before{content:'';position:absolute;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,0.04);top:-100px;right:-80px;}
+.report-logo-wrap{display:flex;align-items:center;gap:0.8rem;}
+.report-title-block{margin-top:1.8rem;}
+.report-eyebrow{font-size:0.7rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:0.4rem;}
+.report-title-block h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:300;color:white;line-height:1.2;}
+.report-meta{display:flex;gap:2rem;margin-top:1.2rem;flex-wrap:wrap;}
+.meta-label{font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.55);margin-bottom:0.15rem;}
+.meta-value{font-size:0.95rem;font-weight:500;color:white;}
+.report-body{padding:2rem 2.5rem;}
+.score-section{background:linear-gradient(135deg,#F7F5FF,#F0F8E8);border-radius:16px;padding:1.8rem;margin-bottom:2rem;border:1px solid #E8E4F0;}
+.score-section-title{font-size:0.68rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--purple-mid);margin-bottom:1rem;}
+.score-display{display:flex;align-items:center;gap:2rem;flex-wrap:wrap;margin-bottom:1.5rem;}
+.score-circle{width:110px;height:110px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 8px 25px rgba(0,0,0,0.15);}
+.score-num{font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:700;color:white;line-height:1;}
+.score-sublabel{font-size:0.7rem;font-weight:600;color:rgba(255,255,255,0.85);text-transform:uppercase;letter-spacing:0.05em;}
+.score-grade{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:600;line-height:1;margin-bottom:0.3rem;}
+.score-description{font-size:0.85rem;color:#555;line-height:1.6;}
+.meter-label{font-size:0.68rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#888;margin-bottom:0.5rem;margin-top:1rem;}
+.meter-bar{display:flex;height:28px;gap:2px;background:#EEE;padding:3px;border-radius:10px;}
+.meter-segment{flex:1;border-radius:6px;opacity:0.3;transition:all 0.3s;}
+.meter-segment.active{opacity:1;transform:scaleY(1.15);box-shadow:0 2px 8px rgba(0,0,0,0.25);}
+.meter-labels{display:flex;margin-top:0.4rem;}
+.meter-labels span{font-size:0.6rem;color:#888;font-weight:500;flex:1;text-align:center;}
+.subscore-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-top:1rem;}
+.subscore-box{background:white;border-radius:10px;padding:0.75rem 1rem;border:1px solid #EEE;}
+.sub-label{font-size:0.68rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#999;margin-bottom:0.2rem;}
+.sub-val{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;color:var(--purple-dark);}
+.rec-section{margin-bottom:2rem;}
+.section-heading{font-size:0.68rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--purple-mid);border-bottom:1.5px solid #EEE;padding-bottom:0.5rem;margin-bottom:1.2rem;}
+.rec-list{display:flex;flex-direction:column;gap:0.75rem;}
+.rec-item{display:flex;align-items:flex-start;gap:0.9rem;background:white;border:1px solid #EEE;border-radius:12px;padding:1rem 1.2rem;}
+.rec-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+.rec-text h4{font-size:0.9rem;font-weight:600;color:var(--black);margin-bottom:0.25rem;}
+.rec-text p{font-size:0.8rem;color:#666;line-height:1.5;}
+.report-footer{background:linear-gradient(135deg,var(--black),#1A0D2E);padding:1.8rem 2rem;display:flex;flex-direction:column;align-items:center;gap:1.2rem;}
+.footer-brand{font-family:'Cormorant Garamond',serif;color:white;font-size:1.15rem;font-weight:500;}
+.print-btn{background:linear-gradient(135deg,var(--green-dark),var(--green-mid));color:white;border:none;padding:0.75rem 2rem;border-radius:50px;font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:600;cursor:pointer;margin-top:1.5rem;display:block;width:100%;transition:all 0.25s;box-shadow:0 4px 15px rgba(93,184,58,0.3);}
+.print-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(93,184,58,0.4);}
+.loading-overlay{display:none;position:fixed;inset:0;background:rgba(10,10,15,0.92);z-index:2000;align-items:center;justify-content:center;flex-direction:column;gap:1.5rem;}
+.loading-overlay.active{display:flex;}
+.spinner{width:50px;height:50px;border:3px solid rgba(141,198,63,0.2);border-top-color:var(--green-light);border-radius:50%;animation:spin 0.8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.loading-overlay p{color:rgba(247,245,240,0.7);font-size:0.95rem;font-weight:300;}
+@media print{body{background:white;padding:0;}.landing,.modal-overlay,.print-btn,.loading-overlay{display:none !important;}#report-page{display:block !important;max-width:100%;}.report-card{box-shadow:none;border-radius:0;}}
+@media(max-width:500px){.field-row{grid-template-columns:1fr;}.report-body{padding:1.2rem;}.report-header{padding:1.5rem 1.5rem 2rem;}.score-display{flex-direction:column;gap:1rem;}.subscore-grid{grid-template-columns:1fr;}.report-footer{padding:1.2rem;}}
+</style>
+</head>
+<body>
+
+<!-- LANDING -->
+<div class="landing" id="landing-page">
+  <div class="logo-wrap">
+    <a href="/"><img src={logoSrc} alt="New Leaf Hearing Care" style="max-height:80px;width:auto;" /></a>
+  </div>
+  <h1>Discover Your<br><em>Hearing Wellness</em><br>Score</h1>
+  <p>Take our brief 10-question screening assessment and receive a personalized Hearing Wellness Report — designed to help you understand your hearing health and what to do next.</p>
+  <button class="cta-btn" onclick="openModal()">Get My Personalized Hearing Wellness Report</button>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-header">
+      <button class="close-btn" onclick="closeModal()">✕</button>
+      <div class="modal-logo">
+        <a href="/"><img src={logoSrc} alt="New Leaf Hearing Care" style="max-height:52px;width:auto;" /></a>
+      </div>
+      <h2>Hearing Difficulty Inventory (HHIE-S)</h2>
+      <p>Please answer all 10 questions honestly. Answer as you hear <em>without</em> a hearing aid.</p>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:5%"></div></div>
+    </div>
+    <div class="form-body">
+      <div class="step active" id="step-1">
+        <div class="step-label">Step 1 of 3 — Questions 1–5</div>
+        <h3>How does hearing affect your daily life?</h3>
+        <div id="q-container-1"></div>
+        <div class="form-nav"><div></div><button class="btn-next" onclick="goToStep(2)">Next →</button></div>
+      </div>
+      <div class="step" id="step-2">
+        <div class="step-label">Step 2 of 3 — Questions 6–10</div>
+        <h3>A few more questions about your experience.</h3>
+        <div id="q-container-2"></div>
+        <div class="form-nav"><button class="btn-back" onclick="goToStep(1)">← Back</button><button class="btn-next" onclick="goToStep(3)">Next →</button></div>
+      </div>
+      <div class="step" id="step-3">
+        <div class="step-label">Step 3 of 3 — Your Information</div>
+        <h3>Receive your personalized Hearing Wellness Report</h3>
+        <div class="field-row">
+          <div class="field-group"><label>First Name *</label><input type="text" id="firstName" placeholder="Jane"/></div>
+          <div class="field-group"><label>Last Name *</label><input type="text" id="lastName" placeholder="Smith"/></div>
+        </div>
+        <div class="field-group"><label>Email Address *</label><input type="email" id="email" placeholder="jane@example.com"/></div>
+        <div class="consent-block">
+          <input type="checkbox" id="consent"/>
+          <label for="consent"><strong>Yes, I give New Leaf Hearing Care permission to email me.</strong><br>I understand I will receive my Hearing Wellness Report and may receive the New Leaf Hearing Care Monthly Newsletter. I can unsubscribe at any time.</label>
+        </div>
+        <p class="consent-note">⚠️ Checking this box is required to receive your Hearing Wellness Report. If you prefer not to receive emails, no further action will be taken.</p>
+        <div class="error-msg" id="form-error"></div>
+        <div class="form-nav"><button class="btn-back" onclick="goToStep(2)">← Back</button><button class="btn-next btn-submit" onclick="submitForm()">Get My Report 🌿</button></div>
+      </div>
+      <div class="step" id="step-no-consent">
+        <div class="thankyou-box">
+          <div class="ty-icon">🌿</div>
+          <h3>Thank You for Completing the Assessment</h3>
+          <p>Since you haven't opted in to receive emails, we won't send you anything. If you change your mind, feel free to reach out at <strong>arvada@newleafhearing.com</strong>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- REPORT -->
+<div id="report-page">
+  <div class="report-card">
+    <div class="report-header">
+      <div class="report-logo-wrap">
+        <img src={logoSrc} alt="New Leaf Hearing Care" style="max-height:70px;width:auto;" />
+      </div>
+      <div class="report-title-block">
+        <div class="report-eyebrow">Auditory Wellness Assessment — HHIE-S</div>
+        <h1 id="report-patient-name">Hearing Wellness Report</h1>
+      </div>
+      <div class="report-meta">
+        <div><div class="meta-label">Date</div><div class="meta-value" id="report-date"></div></div>
+        <div><div class="meta-label">Assessment</div><div class="meta-value">HHIE-S Screening</div></div>
+        <div><div class="meta-label">Prepared by</div><div class="meta-value">New Leaf Hearing Care</div></div>
+      </div>
+    </div>
+    <div class="report-body">
+      <div class="score-section">
+        <div class="score-section-title">Your Auditory Wellness Score</div>
+        <div class="score-display">
+          <div class="score-circle" id="score-circle">
+            <div class="score-num" id="score-num">–</div>
+            <div class="score-sublabel">out of 5</div>
+          </div>
+          <div>
+            <div class="score-grade" id="score-grade">–</div>
+            <div class="score-description" id="score-desc">–</div>
+          </div>
+        </div>
+        <div class="meter-label">Auditory Wellness Scale</div>
+        <div class="meter-bar">
+          <div class="meter-segment" id="seg-1" style="background:#2D6A35"></div>
+          <div class="meter-segment" id="seg-2" style="background:#5DB83A"></div>
+          <div class="meter-segment" id="seg-3" style="background:#C8B400"></div>
+          <div class="meter-segment" id="seg-4" style="background:#E07B00"></div>
+          <div class="meter-segment" id="seg-5" style="background:#C0392B"></div>
+        </div>
+        <div class="meter-labels"><span>Excellent</span><span>Good</span><span>Fair</span><span>Poor</span><span>Very Poor</span></div>
+        <div class="subscore-grid">
+          <div class="subscore-box"><div class="sub-label">HHIE-S Total Score</div><div class="sub-val" id="raw-total">–</div></div>
+          <div class="subscore-box"><div class="sub-label">Difficulty Level</div><div class="sub-val" id="handicap-level" style="font-size:1rem">–</div></div>
+        </div>
+      </div>
+      <div class="rec-section">
+        <div class="section-heading">What Your Score Means</div>
+        <div class="rec-list" id="score-meaning-list"></div>
+      </div>
+      <div class="rec-section">
+        <div class="section-heading">Our Recommendations for You</div>
+        <div class="rec-list" id="rec-list"></div>
+      </div>
+      <div style="background:linear-gradient(135deg,var(--purple-dark),var(--purple-mid));border-radius:16px;padding:1.5rem 2rem;text-align:center;margin-bottom:0.5rem;">
+        <p style="color:rgba(255,255,255,0.8);font-size:0.85rem;margin-bottom:0.5rem;">Ready to take the next step toward better hearing?</p>
+        <p style="color:white;font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:400;">Contact New Leaf Hearing Care today</p>
+        <div style="display:flex;justify-content:center;gap:2rem;margin-top:0.75rem;flex-wrap:wrap;">
+          <div style="color:rgba(255,255,255,0.75);font-size:0.82rem;">📧 <a href="mailto:arvada@newleafhearing.com" style="color:rgba(255,255,255,0.85);text-decoration:none;">arvada@newleafhearing.com</a><br><span style="color:rgba(255,255,255,0.55);font-size:0.78rem;">Arvada · 303-300-1475</span></div>
+          <div style="color:rgba(255,255,255,0.75);font-size:0.82rem;">📧 <a href="mailto:littleton@newleafhearing.com" style="color:rgba(255,255,255,0.85);text-decoration:none;">littleton@newleafhearing.com</a><br><span style="color:rgba(255,255,255,0.55);font-size:0.78rem;">Littleton · 303-972-2922</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="report-footer">
+      <div style="text-align:center;">
+        <div class="footer-brand">New Leaf Hearing Care</div>
+        <div style="margin-top:0.3rem;"><a href="https://www.newleafhearing.com" target="_blank" style="color:rgba(141,198,63,0.9);font-size:0.82rem;text-decoration:none;letter-spacing:0.05em;border-bottom:1px solid rgba(141,198,63,0.4);padding-bottom:1px;">www.newleafhearing.com</a></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;width:100%;flex-wrap:wrap;gap:1rem;">
+        <div>
+          <div style="color:rgba(255,255,255,0.85);font-size:0.8rem;font-weight:600;margin-bottom:0.3rem;">New Leaf Hearing Care — Arvada</div>
+          <div style="color:rgba(255,255,255,0.5);font-size:0.75rem;line-height:1.8;"><a href="mailto:arvada@newleafhearing.com" style="color:rgba(255,255,255,0.5);text-decoration:none;">arvada@newleafhearing.com</a><br>303-300-1475</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="color:rgba(255,255,255,0.85);font-size:0.8rem;font-weight:600;margin-bottom:0.3rem;">New Leaf Hearing Care — Littleton</div>
+          <div style="color:rgba(255,255,255,0.5);font-size:0.75rem;line-height:1.8;"><a href="mailto:littleton@newleafhearing.com" style="color:rgba(255,255,255,0.5);text-decoration:none;">littleton@newleafhearing.com</a><br>303-972-2922</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button class="print-btn" onclick="window.print()">🖨️ Print / Save as PDF</button>
+</div>
+
+<!-- Loading -->
+<div class="loading-overlay" id="loading">
+  <div class="spinner"></div>
+  <p id="loading-msg">Processing your assessment…</p>
+</div>
+
+<script is:inline>
+const QUESTIONS = [
+  {id:1,type:'E',text:'Does a hearing problem cause you to feel embarrassed when meeting new people?'},
+  {id:2,type:'E',text:'Does a hearing problem cause you to feel frustrated when talking to members of your family?'},
+  {id:3,type:'S',text:'Do you have difficulty hearing when someone speaks in a whisper?'},
+  {id:4,type:'E',text:'Do you feel handicapped by a hearing problem?'},
+  {id:5,type:'S',text:'Does a hearing problem cause you difficulty when visiting friends, relatives or neighbors?'},
+  {id:6,type:'S',text:'Does a hearing problem cause you difficulty when attending religious services less often than you would like?'},
+  {id:7,type:'E',text:'Does a hearing problem cause you to have arguments with family members?'},
+  {id:8,type:'S',text:'Does a hearing problem cause you difficulty when listening to TV or radio?'},
+  {id:9,type:'E',text:'Do you feel that any difficulty with your hearing limits or hampers your personal or social life?'},
+  {id:10,type:'S',text:'Does a hearing problem cause you difficulty when in a restaurant with relatives or friends?'},
+];
+const answers = {};
+let currentStep = 1;
+
+function renderQuestions(el, qs) {
+  el.innerHTML = '';
+  qs.forEach(q => {
+    el.innerHTML += '<div class="question-block">' +
+      '<div class="q-text"><span class="q-tag ' + q.type + '">' + q.type + '</span>' + q.id + '. ' + q.text + '</div>' +
+      '<div class="radio-group">' +
+      [['Yes','yes'],['Sometimes','sometimes'],['No','no']].map(function(opt) {
+        var label = opt[0], val = opt[1];
+        return '<div class="radio-opt">' +
+          '<input type="radio" name="q' + q.id + '" id="q' + q.id + '_' + val + '" value="' + val + '" ' + (answers[q.id]===val?'checked':'') + ' onchange="setAnswer(' + q.id + ',this.value)">' +
+          '<label for="q' + q.id + '_' + val + '">' + label + '</label>' +
+          '</div>';
+      }).join('') +
+      '</div></div>';
+  });
+}
+
+renderQuestions(document.getElementById('q-container-1'), QUESTIONS.slice(0,5));
+renderQuestions(document.getElementById('q-container-2'), QUESTIONS.slice(5,10));
+
+function setAnswer(id, val) { answers[id] = val; }
+function openModal() { document.getElementById('modal').classList.add('active'); document.body.style.overflow='hidden'; }
+function closeModal() { document.getElementById('modal').classList.remove('active'); document.body.style.overflow=''; }
+function updateProgress(step) { document.getElementById('progress-fill').style.width = ({1:10,2:45,3:80}[step]||100)+'%'; }
+
+function goToStep(step) {
+  if (step===2 && QUESTIONS.slice(0,5).some(function(q){return answers[q.id]===undefined;})) { alert('Please answer all 5 questions before continuing.'); return; }
+  if (step===3 && QUESTIONS.slice(5,10).some(function(q){return answers[q.id]===undefined;})) { alert('Please answer all questions before continuing.'); return; }
+  document.getElementById('step-'+currentStep).classList.remove('active');
+  currentStep = step;
+  document.getElementById('step-'+step).classList.add('active');
+  updateProgress(step);
+  document.querySelector('.modal').scrollTop = 0;
+}
+
+async function submitForm() {
+  var fn = document.getElementById('firstName').value.trim();
+  var ln = document.getElementById('lastName').value.trim();
+  var em = document.getElementById('email').value.trim();
+  var consent = document.getElementById('consent').checked;
+  var errEl = document.getElementById('form-error');
+
+  if (!fn || !ln || !em) { errEl.textContent='Please fill in your first name, last name, and email address.'; errEl.classList.add('show'); return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) { errEl.textContent='Please enter a valid email address.'; errEl.classList.add('show'); return; }
+  errEl.classList.remove('show');
+
+  if (!consent) {
+    document.getElementById('step-3').classList.remove('active');
+    document.getElementById('step-no-consent').classList.add('active');
+    updateProgress(4);
+    return;
+  }
+
+  var loading = document.getElementById('loading');
+  loading.classList.add('active');
+  document.getElementById('loading-msg').textContent = 'Processing your assessment…';
+
+  try {
+    var resp = await fetch('/api/wellness-submit', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ answers: answers, firstName: fn, lastName: ln, email: em })
+    });
+    if (!resp.ok) throw new Error('Server error '+resp.status);
+    var data = await resp.json();
+    renderReport(fn, ln, data);
+    loading.classList.remove('active');
+    closeModal();
+    document.getElementById('landing-page').style.display = 'none';
+    document.getElementById('report-page').style.display = 'block';
+    window.scrollTo(0,0);
+  } catch(err) {
+    loading.classList.remove('active');
+    errEl.textContent = 'Something went wrong. Please try again.';
+    errEl.classList.add('show');
+  }
+}
+
+function renderReport(fn, ln, d) {
+  document.getElementById('report-patient-name').textContent = fn + ' ' + ln + '’s Hearing Wellness Report';
+  document.getElementById('report-date').textContent = new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  var circle = document.getElementById('score-circle');
+  circle.style.background = 'radial-gradient(circle at 35% 35%, ' + d.color + 'CC, ' + d.color + ')';
+  document.getElementById('score-num').textContent = d.grade;
+  var gradeEl = document.getElementById('score-grade');
+  gradeEl.textContent = d.label;
+  gradeEl.style.color = d.color;
+  document.getElementById('score-desc').textContent = d.desc;
+  document.getElementById('raw-total').textContent = d.total + ' / 40';
+  document.getElementById('handicap-level').textContent = d.handicap;
+  for (var i=1;i<=5;i++) { document.getElementById('seg-'+i).classList.toggle('active', i===d.grade); }
+  var meanings = [
+    {max:2,  text:'Scores of 0–2 indicate no significant hearing difficulty. Most everyday listening situations are comfortable and hearing is unlikely to be causing meaningful difficulty in your life.'},
+    {max:6,  text:'Scores of 4–6 suggest a mild degree of hearing difficulty. While most situations are manageable, you may occasionally notice difficulty in challenging listening environments.'},
+    {max:14, text:'Scores of 8–14 indicate a moderate degree of hearing difficulty. Hearing difficulties are likely affecting your communication in various everyday situations and may be causing emotional strain.'},
+    {max:22, text:'Scores of 16–22 reflect significant hearing difficulty. Hearing loss is likely impacting your social interactions, relationships, and emotional wellbeing on a regular basis.'},
+    {max:40, text:'Scores of 24–40 indicate severe hearing difficulty. Hearing challenges are almost certainly having a profound impact on your daily life, relationships, and emotional health. Prompt professional care is strongly advised.'},
+  ];
+  var meaning = meanings.find(function(m){return d.total<=m.max;}) || meanings[meanings.length-1];
+  document.getElementById('score-meaning-list').innerHTML =
+    '<div class="rec-item"><div class="rec-icon" style="background:#F0EBF8">📊</div><div class="rec-text"><h4>Your HHIE-S Score: ' + d.total + ' / 40</h4><p>' + meaning.text + '</p></div></div>';
+  var ICONS = {
+    check:  '✅', shield: '🛡️', cal: '📅', micro: '🔬',
+    salad:  '🥗', chat: '💬', hosp: '🏥', alert: '🚨',
+    ear:    '<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 4C9.2 4 7 6.2 7 9c0 2.2 1.3 4.1 3.2 5L10 17c-.1.5.1 1 .5 1.3.3.2.7.3 1 .2l2.5-.6c.5-.1.9-.6.9-1.1v-.3c1.9-.9 3.1-2.8 3.1-5 0-2.8-2.2-5-5-5z" fill="#5B2D8E" opacity="0.9"/><circle cx="12" cy="9" r="1.8" fill="white"/><path d="M10 18.5h4" stroke="#5B2D8E" stroke-width="1.5" stroke-linecap="round"/></svg>',
+  };
+  document.getElementById('rec-list').innerHTML = d.recs.map(function(r) {
+    return '<div class="rec-item"><div class="rec-icon" style="background:' + r.bg + '">' + (ICONS[r.icon] || r.icon) + '</div><div class="rec-text"><h4>' + r.h + '</h4><p>' + r.p + '</p></div></div>';
+  }).join('');
+}
+
+document.getElementById('modal').addEventListener('click', function(e) { if(e.target===document.getElementById('modal')) closeModal(); });
+</script>
+</body>
+</html>
