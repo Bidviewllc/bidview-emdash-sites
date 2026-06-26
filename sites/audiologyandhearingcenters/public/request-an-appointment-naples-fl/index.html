@@ -726,7 +726,7 @@ body {
 <div class="em-widget-container">
 <div aria-label="Tabs. Open items with Enter or Space, close with Escape and navigate using the Arrow keys." class="e-n-tabs" data-widget-number="29349477">
 <div class="e-n-tabs-heading" role="tablist">
-<button aria-controls="e-n-tab-content-293494771" aria-selected="true" class="e-n-tab-title" data-tab-index="1" data-tab-title-id="e-n-tab-title-293494771" id="e-n-tab-title-293494771" role="tab" style="--n-tabs-title-order: 1;" tabindex="0">
+<button aria-controls="e-n-tab-content-293494771" aria-selected="false" class="e-n-tab-title" data-tab-index="1" data-tab-title-id="e-n-tab-title-293494771" id="e-n-tab-title-293494771" role="tab" style="--n-tabs-title-order: 1;" tabindex="-1">
 <span class="e-n-tab-title-text">
 				Alpharetta, GA			</span>
 </button>
@@ -758,7 +758,7 @@ body {
 <span class="e-n-tab-title-text">
 				Venice, FL			</span>
 </button>
-<button aria-controls="e-n-tab-content-293494779" aria-selected="false" class="e-n-tab-title" data-tab-index="9" data-tab-title-id="e-n-tab-title-293494779" id="e-n-tab-title-293494779" role="tab" style="--n-tabs-title-order: 9;" tabindex="-1">
+<button aria-controls="e-n-tab-content-293494779" aria-selected="true" class="e-n-tab-title" data-tab-index="9" data-tab-title-id="e-n-tab-title-293494779" id="e-n-tab-title-293494779" role="tab" style="--n-tabs-title-order: 9;" tabindex="0">
 <span class="e-n-tab-title-text">
 				Naples, FL			</span>
 </button>
@@ -1640,6 +1640,24 @@ var ElementorProFrontendConfig = {"ajaxurl":"\/wp-admin\/admin-ajax.php","nonce"
 })();
 </script>
 
+
+<script id="appt-tab-init">
+(function() {
+  function activateTab() {
+    var btn = document.getElementById('e-n-tab-title-293494779');
+    if (btn) {
+      btn.click();
+    } else {
+      setTimeout(activateTab, 200);
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() { setTimeout(activateTab, 300); });
+  } else {
+    setTimeout(activateTab, 300);
+  }
+})();
+</script>
 </body>
 </html>
 <!-- Cache served by breeze CACHE - Last modified: Tue, 28 Apr 2026 07:00:50 GMT -->
