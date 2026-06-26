@@ -178,8 +178,9 @@
 /* Naples, FL tab panel */
 .em-3227 .em-element.em-element-naples01{--display:flex;border-style:solid;--border-style:solid;border-width:1px 1px 1px 1px;border-color:#C6D4E6;--border-color:#C6D4E6;--border-radius:0px 0px 13px 13px;--padding-top:20px;--padding-bottom:20px;--padding-left:20px;--padding-right:20px;}
 .em-3227 .em-element.em-element-naples02{--display:flex;--margin-top:0px;--margin-bottom:0px;--margin-left:0px;--margin-right:0px;--padding-top:0px;--padding-bottom:0px;--padding-left:0px;--padding-right:0px;}
-/* Hide Naples BOOK AN APPOINTMENT button */
-.em-3227 .em-element.em-element-naples-btn{display:none!important;}
+/* Hide Naples + Ave Maria BOOK AN APPOINTMENT buttons */
+.em-3227 .em-element.em-element-naples-btn,
+.em-3227 .em-element.em-element-ave-btn{display:none!important;}
 /* Naples staff grid centering */
 .em-3227 .em-element.em-element-naples-staff .em-loop-container{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(300px,380px))!important;gap:24px!important;justify-content:center!important;margin-left:auto!important;margin-right:auto!important;}
 /* Naples staff heading + description centered */
@@ -313,7 +314,8 @@
 .em-element.em-element-d1b8df7,
 .em-element.em-element-345e030,
 .em-element.em-element-31fac07,
-.em-element.em-element-naples-btn{display:none!important;}
+.em-element.em-element-naples-btn,
+.em-element.em-element-ave-btn{display:none!important;}
 
 /* Hide eyebrow */
 .em-element.em-element-31844544{display:none!important;}
