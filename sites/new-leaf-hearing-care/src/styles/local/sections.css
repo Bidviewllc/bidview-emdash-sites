@@ -2719,9 +2719,9 @@ padding: 0 70px 30px 0;
 .schedule-tab:hover,
 .schedule-tab:focus-visible,
 .schedule-tab--active {
-  border-color: var(--accent);
+  border-color: var(--secondary);
   color: var(--light);
-  background: var(--accent);
+  background: var(--secondary);
 }
 
 .schedule-tab:focus-visible {
