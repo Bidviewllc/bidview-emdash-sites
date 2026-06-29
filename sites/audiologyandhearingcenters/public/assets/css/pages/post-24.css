@@ -173,3 +173,10 @@
   }
   .em-24 .em-menu-toggle.em-active i { color: #ffffff !important; fill: #ffffff !important; }
 }
+
+/* === Ave Maria hidden pending approval === */
+.menu-item-4610,
+.menu-item-4611,
+.menu-item-4612 {
+    display: none !important;
+}
