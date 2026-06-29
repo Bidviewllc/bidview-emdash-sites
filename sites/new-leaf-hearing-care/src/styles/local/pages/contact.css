@@ -1,1 +1,22 @@
 /* Page-specific styles only. Do not place reusable section/component styles here. */
+
+/* CR #33 — contact location CTA buttons in brand green */
+.contact-content-container .button-row--location .btn-primary {
+  background: var(--secondary);
+  border-color: var(--secondary);
+  color: var(--light);
+}
+.contact-content-container .button-row--location .btn-primary:hover {
+  background: #0f4a22;
+  border-color: #0f4a22;
+}
+.contact-content-container .button-row--location .btn-outline-purple {
+  color: var(--secondary);
+  border-color: var(--secondary);
+  background: var(--light);
+}
+.contact-content-container .button-row--location .btn-outline-purple:hover {
+  background: var(--secondary);
+  border-color: var(--secondary);
+  color: var(--light);
+}
