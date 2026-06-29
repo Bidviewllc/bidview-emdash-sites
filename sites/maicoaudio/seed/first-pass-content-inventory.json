@@ -1,0 +1,508 @@
+{
+  "content_pages": [
+    {
+      "id": "home",
+      "slug": "home",
+      "status": "published",
+      "data": {
+        "title": "Maico Audiological Services | Audiologists & Hearing Aids in Virginia",
+        "route": "/",
+        "meta_description": "Maico Audiological Services is an audiology and hearing aid clinic with audiologists and hearing instrument specialists providing professional hearing services in Newport News, Chesapeake and Smithfield, VA.",
+        "shell_path": "src/shells/pages/index.html",
+        "page_type": "static-shell"
+      }
+    },
+    {
+      "id": "about",
+      "slug": "about",
+      "status": "published",
+      "data": {
+        "title": "About Us | Maico Audiological Services",
+        "route": "/about/",
+        "meta_description": "Maico Audiological Services is an audiology and hearing aid clinic with audiologists and hearing instrument specialists providing professional hearing services in Virginia.",
+        "shell_path": "src/shells/pages/about.html",
+        "page_type": "static-shell"
+      }
+    },
+    {
+      "id": "audiologist-hearing-aids-chesapeake-va",
+      "slug": "audiologist-hearing-aids-chesapeake-va",
+      "status": "published",
+      "data": {
+        "title": "Maico Audiological Services | Audiologists and Hearing Aids in Chesapeake, VA",
+        "route": "/audiologist-hearing-aids-chesapeake-va/",
+        "meta_description": "Maico Audiological Services provides expert hearing care and hearing aids in Chesapeake, VA.",
+        "shell_path": "src/shells/pages/audiologist-hearing-aids-chesapeake-va.html",
+        "page_type": "static-shell"
+      }
+    },
+    {
+      "id": "audiologist-hearing-aids-newport-news-va",
+      "slug": "audiologist-hearing-aids-newport-news-va",
+      "status": "published",
+      "data": {
+        "title": "Maico Audiological Services | Audiologists and Hearing Aids in Newport News, VA",
+        "route": "/audiologist-hearing-aids-newport-news-va/",
+        "meta_description": "Maico Audiological Services provides expert hearing care and hearing aids in Newport News, VA.",
+        "shell_path": "src/shells/pages/audiologist-hearing-aids-newport-news-va.html",
+        "page_type": "static-shell"
+      }
+    },
+    {
+      "id": "audiologist-hearing-aids-smithfield-va",
+      "slug": "audiologist-hearing-aids-smithfield-va",
+      "status": "published",
+      "data": {
+        "title": "Maico Audiological Services | Audiologists and Hearing Aids in Smithfield, VA",
+        "route": "/audiologist-hearing-aids-smithfield-va/",
+        "meta_description": "Maico Audiological Services provides expert hearing care and hearing aids in Smithfield, VA.",
+        "shell_path": "src/shells/pages/audiologist-hearing-aids-smithfield-va.html",
+        "page_type": "static-shell"
+      }
+    },
+    {
+      "id": "audiologist--stephanie-howard",
+      "slug": "audiologist/stephanie-howard",
+      "status": "published",
+      "data": {
+        "title": "Stephanie R. Howard, M.A., CCC-A | Maico Audiological Services",
+        "route": "/audiologist/stephanie-howard/",
+        "meta_description": "Stephanie R. Howard is an audiologist providing hearing tests, hearing aids, and professional audiology services in Chesapeake, VA.",
+        "shell_path": "src/shells/pages/audiologist__stephanie-howard.html",
+        "page_type": "static-shell"
+      }
+    },
+    {
+      "id": "audiologist--tracey-hudson",
+      "slug": "audiologist/tracey-hudson",
+      "status": "published",
+      "data": {
+        "title": "Tracey E. Hudson, Au.D., CCC-A | Maico Audiological Services",
+        "route": "/audiologist/tracey-hudson/",
+        "meta_description": "Tracey E. Hudson is an audiologist providing hearing tests, hearing aids abd professional audiology services in Newport News, VA.",
+        "shell_path": "src/shells/pages/audiologist__tracey-hudson.html",
+        "page_type": "static-shell"
+      }
+    },
+    {
+      "id": "audiology-services",
+      "slug": "audiology-services",
+      "status": "published",
+      "data": {
+        "title": "Audiology Services | Maico Audiological Services",
+        "route": "/audiology-services/",
+        "meta_description": "Learn more about our audiology services provided by our expert audiologists and hearing instrument specialists in Virginia.",
+        "shell_path": "src/shells/pages/audiology-services.html",
+        "page_type": "static-shell"
+      }
+    },
+    {
+      "id": "audiology-services--hearing-aid-fittings",
+      "slug": "audiology-services/hearing-aid-fittings",
+      "status": "published",
+      "data": {
+        "title": "Hearing Aid Fittings | Maico Audiological Services",
+        "route": "/audiology-services/hearing-aid-fittings/",
+        "meta_description": "Maico Audiological Services provides expert hearing aid fittings in Virginia. Call us to book an appointment!",
+        "shell_path": "src/shells/pages/audiology-services__hearing-aid-fittings.html",
+        "page_type": "static-shell"
+      }
+    },
+    {
+      "id": "audiology-services--hearing-aid-services",
+      "slug": "audiology-services/hearing-aid-services",
+      "status": "published",
+      "data": {
+        "title": "Hearing Aid Services | Maico Audiological Services",
+        "route": "/audiology-services/hearing-aid-services/",
+        "meta_description": "Maico Audiological Services provides expert hearing aid services in Virginia. Schedule an appointment today!",
+        "shell_path": "src/shells/pages/audiology-services__hearing-aid-services.html",
+        "page_type": "static-shell"
+      }
+    },
+    {
+      "id": "audiology-services--hearing-tests",
+      "slug": "audiology-services/hearing-tests",
+      "status": "published",
+      "data": {
+        "title": "Hearing Tests | Maico Audiological Services",
+        "route": "/audiology-services/hearing-tests/",
+        "meta_description": "Maico Audiological Services provides comprehensive hearing tests in Virginia. Schedule one today!",
+        "shell_path": "src/shells/pages/audiology-services__hearing-tests.html",
+        "page_type": "static-shell"
+      }
+    },
+    {
+      "id": "audiology-services--real-ear-measurement",
+      "slug": "audiology-services/real-ear-measurement",
+      "status": "published",
+      "data": {
+        "title": "Real Ear Measurement | Maico Audiological Services",
+        "route": "/audiology-services/real-ear-measurement/",
+        "meta_description": "Maico Audiological Servicesprovides real ear measurements as part of hearing aid fitting best practices in Virginia. Contact us to learn more.",
+        "shell_path": "src/shells/pages/audiology-services__real-ear-measurement.html",
+        "page_type": "static-shell"
+      }
+    },
+    {
+      "id": "audiology-services--sensorineural-hearing-loss",
+      "slug": "audiology-services/sensorineural-hearing-loss",
+      "status": "published",
+      "data": {
+        "title": "Sensorineural Hearing Loss Evaluation and Treatment | Maico Audiological Services",
+        "route": "/audiology-services/sensorineural-hearing-loss/",
+        "meta_description": "Maico Audiological Services provides sensorineural hearing loss evaluation and treatment in Virginia. Call us to book an appointment!",
+        "shell_path": "src/shells/pages/audiology-services__sensorineural-hearing-loss.html",
+        "page_type": "static-shell"
+      }
+    },
+    {
+      "id": "audiology-services--tinnitus-support",
+      "slug": "audiology-services/tinnitus-support",
+      "status": "published",
+      "data": {
+        "title": "Tinnitus Support | Maico Audiological Services",
+        "route": "/audiology-services/tinnitus-support/",
+        "meta_description": "Maico Audiological Services provides expert tinnitus support in Virginia.",
+        "shell_path": "src/shells/pages/audiology-services__tinnitus-support.html",
+        "page_type": "static-shell"
+      }
+    },
+    {
+      "id": "book-appointment",
+      "slug": "book-appointment",
+      "status": "published",
+      "data": {
+        "title": "Book Appointment - Maico Audiological Services",
+        "route": "/book-appointment/",
+        "meta_description": "Better hearing starts with a simple appointment. Fill out the form below to schedule your visit at our Newport News clinic.",
+        "shell_path": "src/shells/pages/book-appointment.html",
+        "page_type": "static-shell"
+      }
+    },
+    {
+      "id": "contact",
+      "slug": "contact",
+      "status": "published",
+      "data": {
+        "title": "Contact - Maico Audiological Services",
+        "route": "/contact/",
+        "meta_description": "Contact Maico Audiological Services in Virginia for hearing tests, hearing aid support, and expert care. Call or send a message to connect with us today.",
+        "shell_path": "src/shells/pages/contact.html",
+        "page_type": "static-shell"
+      }
+    },
+    {
+      "id": "custom-hearing-protection",
+      "slug": "custom-hearing-protection",
+      "status": "published",
+      "data": {
+        "title": "Custom Hearing Protection | Maico Audiological Services",
+        "route": "/custom-hearing-protection/",
+        "meta_description": "Maico Audiological Services provides custom hearing protection in Virginia. Contact us today!",
+        "shell_path": "src/shells/pages/custom-hearing-protection.html",
+        "page_type": "static-shell"
+      }
+    },
+    {
+      "id": "ear-candles-what-you-need-to-know",
+      "slug": "ear-candles-what-you-need-to-know",
+      "status": "published",
+      "data": {
+        "title": "Ear Candles | Maico Audiological Services",
+        "route": "/ear-candles-what-you-need-to-know/",
+        "meta_description": "Thinking about trying ear candles? Learn why they’re unsafe and discover safer options from an audiologist. Call today for expert hearing care in Virginia.",
+        "shell_path": "src/shells/pages/ear-candles-what-you-need-to-know.html",
+        "page_type": "static-shell"
+      }
+    },
+    {
+      "id": "hearing-aid--oticon",
+      "slug": "hearing-aid/oticon",
+      "status": "published",
+      "data": {
+        "title": "Oticon Hearing Aids | Maico Audiological Services",
+        "route": "/hearing-aid/oticon/",
+        "meta_description": "Maico Audiological Services is an authorized provider of Oticon hearing aids in Virginia. Contact us to learn more!",
+        "shell_path": "src/shells/pages/hearing-aid__oticon.html",
+        "page_type": "static-shell"
+      }
+    },
+    {
+      "id": "hearing-aid--phonak",
+      "slug": "hearing-aid/phonak",
+      "status": "published",
+      "data": {
+        "title": "Phonak Hearing Aids | Maico Audiological Services",
+        "route": "/hearing-aid/phonak/",
+        "meta_description": "Maico Audiological Services is an authorized provider of Phonak hearing aids in Virginia. Contact us to learn more!",
+        "shell_path": "src/shells/pages/hearing-aid__phonak.html",
+        "page_type": "static-shell"
+      }
+    },
+    {
+      "id": "hearing-aid--resound",
+      "slug": "hearing-aid/resound",
+      "status": "published",
+      "data": {
+        "title": "ReSound Hearing Aids | Maico Audiological Services",
+        "route": "/hearing-aid/resound/",
+        "meta_description": "Maico Audiological Services is an authorized provider of ReSound hearing aids in Virginia. Contact us to learn more!",
+        "shell_path": "src/shells/pages/hearing-aid__resound.html",
+        "page_type": "static-shell"
+      }
+    },
+    {
+      "id": "hearing-aid--signia",
+      "slug": "hearing-aid/signia",
+      "status": "published",
+      "data": {
+        "title": "Signia Hearing Aids | Maico Audiological Services",
+        "route": "/hearing-aid/signia/",
+        "meta_description": "Maico Audiological Services is an authorized provider of Signia hearing aids in Virginia. Contact us to learn more!",
+        "shell_path": "src/shells/pages/hearing-aid__signia.html",
+        "page_type": "static-shell"
+      }
+    },
+    {
+      "id": "hearing-aid--starkey",
+      "slug": "hearing-aid/starkey",
+      "status": "published",
+      "data": {
+        "title": "Starkey Hearing Aids | Maico Audiological Services",
+        "route": "/hearing-aid/starkey/",
+        "meta_description": "Maico Audiological Services is an authorized provider of Starkey hearing aids in Virginia. Contact us to learn more!",
+        "shell_path": "src/shells/pages/hearing-aid__starkey.html",
+        "page_type": "static-shell"
+      }
+    },
+    {
+      "id": "hearing-aid--unitron",
+      "slug": "hearing-aid/unitron",
+      "status": "published",
+      "data": {
+        "title": "Unitron Hearing Aids | Maico Audiological Services",
+        "route": "/hearing-aid/unitron/",
+        "meta_description": "Maico Audiological Services is an authorized provider of Unitron hearing aids in Virginia. Contact us to learn more!",
+        "shell_path": "src/shells/pages/hearing-aid__unitron.html",
+        "page_type": "static-shell"
+      }
+    },
+    {
+      "id": "hearing-aid--widex",
+      "slug": "hearing-aid/widex",
+      "status": "published",
+      "data": {
+        "title": "Widex Hearing Aids | Maico Audiological Services",
+        "route": "/hearing-aid/widex/",
+        "meta_description": "Maico Audiological Services is an authorized provider of Widex hearing aids in Virginia. Contact us to learn more!",
+        "shell_path": "src/shells/pages/hearing-aid__widex.html",
+        "page_type": "static-shell"
+      }
+    },
+    {
+      "id": "hearing-aids-for-tinnitus",
+      "slug": "hearing-aids-for-tinnitus",
+      "status": "published",
+      "data": {
+        "title": "Hearing Aids for Tinnitus | Maico Audiological Services",
+        "route": "/hearing-aids-for-tinnitus/",
+        "meta_description": "Hearing aids for tinnitus can improve hearing and help reduce ringing in the ears. Visit Maico Audiology to connect with expert audiologists in Virginia.",
+        "shell_path": "src/shells/pages/hearing-aids-for-tinnitus.html",
+        "page_type": "static-shell"
+      }
+    },
+    {
+      "id": "hearing-aids-products",
+      "slug": "hearing-aids-products",
+      "status": "published",
+      "data": {
+        "title": "Hearing Aids & Products | Maico Audiological Services",
+        "route": "/hearing-aids-products/",
+        "meta_description": "Maico Audiological Services provides quality hearing aids and products in Virginia. Contact us to learn more!",
+        "shell_path": "src/shells/pages/hearing-aids-products.html",
+        "page_type": "static-shell"
+      }
+    },
+    {
+      "id": "hearing-aids-products--hearing-aid-alternatives",
+      "slug": "hearing-aids-products/hearing-aid-alternatives",
+      "status": "published",
+      "data": {
+        "title": "Assistive Listening Devices | Maico Audiological Services",
+        "route": "/hearing-aids-products/hearing-aid-alternatives/",
+        "meta_description": "Maico Audiological Services offers assistive listening devices in Virginia. Contact us today!",
+        "shell_path": "src/shells/pages/hearing-aids-products__hearing-aid-alternatives.html",
+        "page_type": "static-shell"
+      }
+    },
+    {
+      "id": "hearing-aids-products--hearing-aid-batteries",
+      "slug": "hearing-aids-products/hearing-aid-batteries",
+      "status": "published",
+      "data": {
+        "title": "Hearing Aid Batteries | Maico Audiological Services",
+        "route": "/hearing-aids-products/hearing-aid-batteries/",
+        "meta_description": "Maico Audiological Services provides hearing aid batteries in Virginia to ensure that your hearing devices always function at their best. Visit us today!",
+        "shell_path": "src/shells/pages/hearing-aids-products__hearing-aid-batteries.html",
+        "page_type": "static-shell"
+      }
+    },
+    {
+      "id": "hearing-instrument-specialist--jenny-flamini",
+      "slug": "hearing-instrument-specialist/jenny-flamini",
+      "status": "published",
+      "data": {
+        "title": "Jenny Flamini, H.I.S, CDP | Maico Audiological Services",
+        "route": "/hearing-instrument-specialist/jenny-flamini/",
+        "meta_description": "Jenny Flamini is a hearing instrument specialist providing hearing tests, hearing aids, and professional hearing services in Smithfield, VA.",
+        "shell_path": "src/shells/pages/hearing-instrument-specialist__jenny-flamini.html",
+        "page_type": "static-shell"
+      }
+    },
+    {
+      "id": "hyperacusis-symptoms-diagnosis-risk-factors",
+      "slug": "hyperacusis-symptoms-diagnosis-risk-factors",
+      "status": "published",
+      "data": {
+        "title": "Understanding Hyperacusis | Maico Audiological Services",
+        "route": "/hyperacusis-symptoms-diagnosis-risk-factors/",
+        "meta_description": "Hyperacusis makes normal sounds feel painful or overwhelming. Schedule a hearing evaluation in Virginia today at Maico Audiological Services.",
+        "shell_path": "src/shells/pages/hyperacusis-symptoms-diagnosis-risk-factors.html",
+        "page_type": "static-shell"
+      }
+    },
+    {
+      "id": "insurance",
+      "slug": "insurance",
+      "status": "published",
+      "data": {
+        "title": "Insurance and Billing | Maico Audiological Services",
+        "route": "/insurance/",
+        "meta_description": "Learn more about Maico Audiological Services accepted insurance plans, billing, and payments.",
+        "shell_path": "src/shells/pages/insurance.html",
+        "page_type": "static-shell"
+      }
+    },
+    {
+      "id": "microsuction-vs-irrigation-which-ear-wax-removal-method-is-right-for-you",
+      "slug": "microsuction-vs-irrigation-which-ear-wax-removal-method-is-right-for-you",
+      "status": "published",
+      "data": {
+        "title": "Microsuction vs Irrigation: Ear Wax Removal | Maico Audiological Services",
+        "route": "/microsuction-vs-irrigation-which-ear-wax-removal-method-is-right-for-you/",
+        "meta_description": "Microsuction vs irrigation for ear wax removal: compare how each method works, who may be a good fit, risks, comfort, and when to see an audiologist.",
+        "shell_path": "src/shells/pages/microsuction-vs-irrigation-which-ear-wax-removal-method-is-right-for-you.html",
+        "page_type": "static-shell"
+      }
+    },
+    {
+      "id": "pressure-in-the-ear-causes-care-and-when-to-see-an-audiologist",
+      "slug": "pressure-in-the-ear-causes-care-and-when-to-see-an-audiologist",
+      "status": "published",
+      "data": {
+        "title": "Pressure in Ears | Maico Audiological Services",
+        "route": "/pressure-in-the-ear-causes-care-and-when-to-see-an-audiologist/",
+        "meta_description": "Struggling with ear pressure? Our audiologists in Newport News, Chesapeake & Smithfield can help. Call Maico Audiological Services today!",
+        "shell_path": "src/shells/pages/pressure-in-the-ear-causes-care-and-when-to-see-an-audiologist.html",
+        "page_type": "static-shell"
+      }
+    },
+    {
+      "id": "privacy-policy",
+      "slug": "privacy-policy",
+      "status": "published",
+      "data": {
+        "title": "Maico Audiological Services | Privacy Policy",
+        "route": "/privacy-policy/",
+        "meta_description": "Learn how Maico Audiological Services collects, uses, and protects your personal information. Read our privacy policy for full details on your rights and data security.",
+        "shell_path": "src/shells/pages/privacy-policy.html",
+        "page_type": "static-shell"
+      }
+    },
+    {
+      "id": "rechargeable-hearing-aids-features-benefits",
+      "slug": "rechargeable-hearing-aids-features-benefits",
+      "status": "published",
+      "data": {
+        "title": "Rechargeable Hearing Aids | Maico Audiological Services",
+        "route": "/rechargeable-hearing-aids-features-benefits/",
+        "meta_description": "Learn about rechargeable hearing aids, features, price, and apps. Schedule a hearing test at Maico Audiology today.",
+        "shell_path": "src/shells/pages/rechargeable-hearing-aids-features-benefits.html",
+        "page_type": "static-shell"
+      }
+    },
+    {
+      "id": "sitemap",
+      "slug": "sitemap",
+      "status": "published",
+      "data": {
+        "title": "Sitemap - Maico Audiological Services",
+        "route": "/sitemap/",
+        "meta_description": "Explore all services & information at Maico Audiological Services — hearing tests, fittings, repairs, tinnitus care, and more. Visit now to discover what we offer!",
+        "shell_path": "src/shells/pages/sitemap.html",
+        "page_type": "static-shell"
+      }
+    },
+    {
+      "id": "swimmers-ear",
+      "slug": "swimmers-ear",
+      "status": "published",
+      "data": {
+        "title": "Understanding Swimmer's Ear: Causes, Symptoms, and Safe Treatment | Maico Audiological Services",
+        "route": "/swimmers-ear/",
+        "meta_description": "If you’re struggling with swimmer’s ear, don’t wait for symptoms to worsen. Call Maico Audiological Services today to schedule your appointment with an audiologist.",
+        "shell_path": "src/shells/pages/swimmers-ear.html",
+        "page_type": "static-shell"
+      }
+    },
+    {
+      "id": "terms-of-use",
+      "slug": "terms-of-use",
+      "status": "published",
+      "data": {
+        "title": "Maico Audiological Services | Terms of Service",
+        "route": "/terms-of-use/",
+        "meta_description": "Review Maico Audiological Services’ Terms of Use — rules for site usage, privacy & liability. Read now to stay informed and use the site with confidence.",
+        "shell_path": "src/shells/pages/terms-of-use.html",
+        "page_type": "static-shell"
+      }
+    },
+    {
+      "id": "thank-you-for-contacting-us",
+      "slug": "thank-you-for-contacting-us",
+      "status": "published",
+      "data": {
+        "title": "Thank you for contacting us - Maico Audiological Services",
+        "route": "/thank-you-for-contacting-us/",
+        "meta_description": "Thank you for contacting Maico Audiological Services! We’ve received your message and will be in touch shortly — explore our hearing services or schedule your visit today!",
+        "shell_path": "src/shells/pages/thank-you-for-contacting-us.html",
+        "page_type": "static-shell"
+      }
+    },
+    {
+      "id": "thank-you",
+      "slug": "thank-you",
+      "status": "published",
+      "data": {
+        "title": "Thank You - Maico Audiological Services",
+        "route": "/thank-you/",
+        "meta_description": "Thanks for reaching out! We’ve received your message and will be in touch shortly",
+        "shell_path": "src/shells/pages/thank-you.html",
+        "page_type": "static-shell"
+      }
+    },
+    {
+      "id": "the-best-way-to-clean-your-ears",
+      "slug": "the-best-way-to-clean-your-ears",
+      "status": "published",
+      "data": {
+        "title": "The Best Way to Clean Your Ears | Maico Audiological Services",
+        "route": "/the-best-way-to-clean-your-ears/",
+        "meta_description": "Wondering how to clean your ears safely? Maico Audiological Services in Newport News, Chesapeake & Smithfield can help. Call us today!",
+        "shell_path": "src/shells/pages/the-best-way-to-clean-your-ears.html",
+        "page_type": "static-shell"
+      }
+    }
+  ]
+}

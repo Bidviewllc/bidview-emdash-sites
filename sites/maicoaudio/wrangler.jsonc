@@ -1,0 +1,62 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "maico-audiological-services",
+	"account_id": "981338e6544cfe45d9819bf0ea6eb83a",
+	"main": "./src/worker.ts",
+	"compatibility_date": "2026-02-24",
+	"compatibility_flags": ["nodejs_compat"],
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "maico-audiological-services-db",
+		},
+	],
+	"r2_buckets": [
+		{
+			"binding": "MEDIA",
+			"bucket_name": "maico-audiological-services-media",
+		},
+	],
+	"kv_namespaces": [
+		{
+			"binding": "SESSION",
+			"id": "b0a88beb034a433788cd9725301d5f5f",
+		},
+	],
+	// Worker Loader for plugin sandboxing
+	"worker_loaders": [
+		{
+			"binding": "LOADER",
+		},
+	],
+	"env": {
+		"staging": {
+			"name": "maicoaudio-staging",
+			"d1_databases": [
+				{
+					"binding": "DB",
+					"database_name": "maicoaudio-staging-db",
+					"database_id": "18d342a8-7648-40ca-90e8-6d2514f088f4",
+				},
+			],
+			"r2_buckets": [
+				{
+					"binding": "MEDIA",
+					"bucket_name": "maicoaudio-staging-media",
+				},
+			],
+			"kv_namespaces": [
+				{
+					"binding": "SESSION",
+					"id": "5658f284c7004a11a73812c7b3f9a838",
+				},
+			],
+			"worker_loaders": [
+				{
+					"binding": "LOADER",
+				},
+			],
+			"workers_dev": true,
+		},
+	},
+}

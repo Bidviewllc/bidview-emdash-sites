@@ -1,0 +1,649 @@
+{
+  "$schema": "https://emdashcms.com/seed.schema.json",
+  "version": "1",
+  "meta": {
+    "name": "Maico Audiological Services",
+    "description": "First-pass emdash conversion from the local static HTML copy.",
+    "author": "Bidview Marketing",
+    "url": "https://maicoaudio.com"
+  },
+  "settings": {
+    "title": "Maico Audiological Services",
+    "tagline": "Expert audiology and hearing care in Virginia"
+  },
+  "collections": [
+    {
+      "slug": "services",
+      "label": "Services",
+      "labelSingular": "Service",
+      "supports": [
+        "drafts",
+        "revisions",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Page Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText",
+          "required": true
+        },
+        {
+          "slug": "meta_title",
+          "label": "Meta Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "meta_description",
+          "label": "Meta Description",
+          "type": "text",
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "hearing_aid_brands",
+      "label": "Hearing Aid Brands",
+      "labelSingular": "Hearing Aid Brand",
+      "supports": [
+        "drafts",
+        "revisions",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Page Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText",
+          "required": true
+        },
+        {
+          "slug": "meta_title",
+          "label": "Meta Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "meta_description",
+          "label": "Meta Description",
+          "type": "text",
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "blog_post",
+      "label": "Blog Post",
+      "labelSingular": "Blog Post",
+      "supports": [
+        "drafts",
+        "revisions",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Blog Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "publish_date",
+          "label": "Publish Date",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "author",
+          "label": "Author",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "category",
+          "label": "Category",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText",
+          "required": true
+        },
+        {
+          "slug": "featured_image",
+          "label": "Featured Image",
+          "type": "image",
+          "required": true
+        },
+        {
+          "slug": "meta_title",
+          "label": "Meta Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "meta_description",
+          "label": "Meta Description",
+          "type": "text",
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "utility_pages",
+      "label": "Utility Pages",
+      "labelSingular": "Utility Page",
+      "supports": [
+        "drafts",
+        "revisions",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Page Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText",
+          "required": true
+        },
+        {
+          "slug": "meta_title",
+          "label": "Meta Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "meta_description",
+          "label": "Meta Description",
+          "type": "text",
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "locations",
+      "label": "Locations",
+      "urlPattern": "/{slug}",
+      "labelSingular": "Location",
+      "supports": [
+        "drafts",
+        "revisions",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "location_name",
+          "label": "Location name",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "address",
+          "label": "Address",
+          "type": "portableText",
+          "required": true
+        },
+        {
+          "slug": "phone_number",
+          "label": "Phone Number",
+          "type": "portableText",
+          "required": true
+        },
+        {
+          "slug": "phone_number_url",
+          "label": "Phone Number URL",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "office_hours",
+          "label": "Office Hours",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "map_url",
+          "label": "Map URL",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "map_widget",
+          "label": "Map widget",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "location_image_1",
+          "label": "Location Image 1",
+          "type": "image",
+          "required": true
+        },
+        {
+          "slug": "location_image_2",
+          "label": "Location Image 2",
+          "type": "image",
+          "required": true
+        },
+        {
+          "slug": "location_image_3",
+          "label": "Location Image 3",
+          "type": "image",
+          "required": true
+        },
+        {
+          "slug": "location_image_4",
+          "label": "Location Image 4",
+          "type": "image",
+          "required": true
+        },
+        {
+          "slug": "location_image_5",
+          "label": "Location Image 5",
+          "type": "image",
+          "required": true
+        },
+        {
+          "slug": "location_image_6",
+          "label": "Location Image 6",
+          "type": "image",
+          "required": true
+        },
+        {
+          "slug": "hero_intro",
+          "label": "Hero Intro",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "h1_title",
+          "label": "H1 Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "location_body",
+          "label": "Location Body",
+          "type": "portableText",
+          "required": true
+        },
+        {
+          "slug": "location_trust_badge_1",
+          "label": "Location Trust Badge 1",
+          "type": "image",
+          "required": true
+        },
+        {
+          "slug": "location_trust_badge_2",
+          "label": "Location Trust Badge 2",
+          "type": "image",
+          "required": true
+        },
+        {
+          "slug": "featured_image",
+          "label": "Featured Image",
+          "type": "image",
+          "required": true
+        },
+        {
+          "slug": "meta_title",
+          "label": "Meta Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "meta_description",
+          "label": "Meta Description",
+          "type": "text",
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "homepage",
+      "label": "Homepage",
+      "labelSingular": "Homepage",
+      "supports": [
+        "drafts",
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "hero_intro",
+          "label": "Hero Intro",
+          "type": "text",
+          "required": true
+        },
+        {
+          "slug": "hero_cta",
+          "label": "Hero CTA",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "intro_section_title",
+          "label": "Intro Section Title",
+          "type": "text",
+          "required": true
+        },
+        {
+          "slug": "intro_body",
+          "label": "Intro Body",
+          "type": "portableText",
+          "required": true
+        },
+        {
+          "slug": "badge_1",
+          "label": "Badge 1",
+          "type": "image",
+          "required": true
+        },
+        {
+          "slug": "badge_2",
+          "label": "Badge 2",
+          "type": "image",
+          "required": true
+        },
+        {
+          "slug": "badge_3",
+          "label": "Badge 3",
+          "type": "image",
+          "required": true
+        },
+        {
+          "slug": "audiology_services_featured_image",
+          "label": "Audiology Services Featured Image",
+          "type": "image",
+          "required": true
+        },
+        {
+          "slug": "audiology_services_body",
+          "label": "Audiology Services Body",
+          "type": "portableText",
+          "required": true
+        },
+        {
+          "slug": "hearing_aids_protection_solutions_image",
+          "label": "Hearing Aids & Protection Solutions Image",
+          "type": "image",
+          "required": true
+        },
+        {
+          "slug": "hearing_aids_protection_solutions_body",
+          "label": "Hearing Aids & Protection Solutions Body",
+          "type": "portableText",
+          "required": true
+        },
+        {
+          "slug": "hearing_aid_brand_image_1",
+          "label": "Hearing Aid Brand Image 1",
+          "type": "image",
+          "required": true
+        },
+        {
+          "slug": "hearing_aid_brand_image_2",
+          "label": "Hearing Aid Brand Image 2",
+          "type": "image",
+          "required": true
+        },
+        {
+          "slug": "hearing_aid_brand_image_3",
+          "label": "Hearing Aid Brand Image 3",
+          "type": "image",
+          "required": true
+        },
+        {
+          "slug": "hearing_aid_brand_image_4",
+          "label": "Hearing Aid Brand Image 4",
+          "type": "image",
+          "required": true
+        },
+        {
+          "slug": "hearing_aid_brand_image_5",
+          "label": "Hearing Aid Brand Image 5",
+          "type": "image",
+          "required": true
+        },
+        {
+          "slug": "hearing_aid_brand_image_6",
+          "label": "Hearing Aid Brand Image 6",
+          "type": "image",
+          "required": true
+        },
+        {
+          "slug": "hearing_aid_brand_image_7",
+          "label": "Hearing Aid Brand Image 7",
+          "type": "image",
+          "required": true
+        },
+        {
+          "slug": "testimonial_section_title",
+          "label": "Testimonial Section Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "testimonial_eyebrow",
+          "label": "Testimonial Eyebrow",
+          "type": "text",
+          "required": true
+        },
+        {
+          "slug": "faq_section_title",
+          "label": "FAQ Section Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "faq_eyebrow",
+          "label": "FAQ Eyebrow",
+          "type": "text",
+          "required": true
+        },
+        {
+          "slug": "faq_description",
+          "label": "FAQ Description",
+          "type": "portableText",
+          "required": true
+        },
+        {
+          "slug": "faq_content",
+          "label": "FAQ Content",
+          "type": "portableText",
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "contact_page",
+      "label": "Contact Page",
+      "labelSingular": "Contact Page",
+      "supports": [
+        "drafts",
+        "revisions",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "content_body",
+          "label": "Content body",
+          "type": "portableText",
+          "required": true
+        },
+        {
+          "slug": "meta_title",
+          "label": "Meta Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "meta_description",
+          "label": "Meta Description",
+          "type": "text",
+          "required": true
+        }
+      ],
+      "urlPattern": "/{slug}"
+    },
+    {
+      "slug": "about",
+      "label": "About",
+      "labelSingular": "About",
+      "supports": [
+        "drafts",
+        "revisions",
+        "seo"
+      ],
+      "urlPattern": "/{slug}",
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Page Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText",
+          "required": true
+        },
+        {
+          "slug": "featured_image",
+          "label": "Featured image",
+          "type": "image",
+          "required": true
+        },
+        {
+          "slug": "meta_title",
+          "label": "Meta Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "meta_description",
+          "label": "Meta Description",
+          "type": "text",
+          "required": true
+        }
+      ]
+    },
+    {
+      "slug": "team",
+      "label": "Team",
+      "labelSingular": "Team Member",
+      "supports": [
+        "drafts",
+        "revisions",
+        "seo"
+      ],
+      "urlPattern": "/{slug}",
+      "fields": [
+        {
+          "slug": "name",
+          "label": "Name",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "team_title",
+          "label": "Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "location",
+          "label": "Location",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "biography",
+          "label": "Biography",
+          "type": "portableText",
+          "required": true
+        },
+        {
+          "slug": "featured_image",
+          "label": "Featured Image",
+          "type": "image",
+          "required": true
+        },
+        {
+          "slug": "meta_title",
+          "label": "Meta Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "meta_description",
+          "label": "Meta Description",
+          "type": "text",
+          "required": true
+        }
+      ]
+    }
+  ],
+  "taxonomies": [],
+  "menus": [
+    {
+      "name": "primary",
+      "label": "Primary Navigation",
+      "items": [
+        {
+          "type": "custom",
+          "label": "Home",
+          "url": "/"
+        },
+        {
+          "type": "custom",
+          "label": "About",
+          "url": "/about/"
+        },
+        {
+          "type": "custom",
+          "label": "Services",
+          "url": "/audiology-services/"
+        },
+        {
+          "type": "custom",
+          "label": "Hearing Aids",
+          "url": "/custom-hearing-protection/"
+        },
+        {
+          "type": "custom",
+          "label": "Contact",
+          "url": "/contact/"
+        }
+      ]
+    }
+  ],
+  "widgetAreas": []
+}
