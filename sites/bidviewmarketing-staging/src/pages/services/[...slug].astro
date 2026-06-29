@@ -1,0 +1,5 @@
+---
+const slugParam = Astro.params.slug;
+const slug = Array.isArray(slugParam) ? slugParam.join('/') : (slugParam ?? '');
+return Astro.redirect(`/${slug}/`, 301);
+---

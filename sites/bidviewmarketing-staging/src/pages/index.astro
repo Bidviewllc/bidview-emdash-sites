@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import '../styles/bidview-homepage.css';
+
+import raw from '../../Pages/bidview-homepage.html?raw';
+const bodyMatch = raw.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
+const bodyHtml = bodyMatch ? bodyMatch[1] : '';
+const pageHtml = bodyHtml
+  .replace(/<header class="site-header"[\s\S]*?<\/header>/i, '')
+  .replace(/<footer class="site-footer"[\s\S]*?<\/footer>/i, '')
+  .replace(/<script\s+src="\.\/[^\"]+\.js"[^>]*><\/script>\s*$/i, '')
+  .trim();
+---
+<BaseLayout title="Bidview Marketing" scriptSrc="/scripts/bidview-homepage.js">
+  <SiteHeader />
+  <Fragment set:html={pageHtml} />
+  <SiteFooter />
+</BaseLayout>

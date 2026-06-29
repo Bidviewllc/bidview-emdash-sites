@@ -1,0 +1,28 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "bidviewmarketing-staging",
+  "account_id": "981338e6544cfe45d9819bf0ea6eb83a",
+  "main": "./src/worker.ts",
+  "compatibility_date": "2026-05-12",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "bidviewmarketing-staging",
+      "database_id": "fab06df6-4160-4c6e-bfe4-1287f5f731b2"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "MEDIA",
+      "bucket_name": "bidviewmarketing-staging-media"
+    }
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "SESSION",
+      "id": "75f39e9a26824f9281fcf8a692a14395"
+    }
+  ]
+}
