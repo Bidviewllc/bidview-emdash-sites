@@ -1,0 +1,464 @@
+---
+import sharedHeaderRaw from "../../public/assets/partials/header.html?raw";
+import sharedFooterRaw from "../../public/assets/partials/footer.html?raw";
+
+export const prerender = false;
+export const cacheHint = 3600;
+
+function normalizeSharedPartialHtml(html: string): string {
+	return html
+		.replaceAll("Â©", "&copy;")
+		.replaceAll('href="./"', 'href="/"')
+		.replaceAll('src="../media/', 'src="/assets/media/')
+		.replace(/(srcset=")([^"]*)"/g, (_match, prefix: string, value: string) => {
+			const normalized = value
+				.replace(/(^|,\s*)assets\/media\//g, "$1/assets/media/")
+				.replace(/(^|,\s*)\.\.\/media\//g, "$1/assets/media/");
+			return `${prefix}${normalized}"`;
+		})
+		.replace(
+			/\s(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/gi,
+			(_match, attr: string, value: string) => ` ${attr}="/${value}"`,
+		);
+}
+
+const sharedHeaderHtml = normalizeSharedPartialHtml(sharedHeaderRaw);
+const sharedFooterHtml = normalizeSharedPartialHtml(sharedFooterRaw);
+---
+
+<!doctype html>
+<html lang="en-US">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Insurance - Maico Audiological Services</title>
+		<meta
+			name="description"
+			content="The Maico Audiological team delivers comprehensive, person-focused hearing and balance solutions while providing transparent pricing and peace of mind."
+		/>
+		<link rel="canonical" href="/insurance/" />
+		<link href="/assets/styles/extracted-inline-head.css?v=20260522-inline-cleanup-v3" class="extracted-inline-head-css" media="all" rel="stylesheet" />
+		<link href="/assets/styles/post-58-4fcfa887f0.css?v=20260520-maico-local-v2" id="astro-element-post-58-css" media="all" rel="stylesheet" />
+		<link href="/assets/styles/sticky.min-cf6c06ac18.css?v=20260520-maico-local-v2" id="e-sticky-css" media="all" rel="stylesheet" />
+		<link href="/assets/styles/style-274246c875.css?v=20260520-maico-local-v2" id="parent-style-css" media="all" rel="stylesheet" />
+		<link href="/assets/styles/style-3bb1eca9d2.css?v=20260520-maico-local-v2" id="child-style-css" media="all" rel="stylesheet" />
+		<link href="/assets/styles/reset-61409adc8b.css?v=20260520-maico-local-v2" id="hello-astro-element-css" media="all" rel="stylesheet" />
+		<link href="/assets/styles/theme-ffad9a530f.css?v=20260520-maico-local-v2" id="hello-astro-element-theme-style-css" media="all" rel="stylesheet" />
+		<link href="/assets/styles/header-footer-309d7abb04.css?v=20260520-maico-local-v2" id="hello-astro-element-header-footer-css" media="all" rel="stylesheet" />
+		<link href="/assets/styles/custom-frontend.min-90f5339f2c.css?v=20260520-maico-local-v2" id="astro-element-frontend-css" media="all" rel="stylesheet" />
+		<link href="/assets/styles/post-7-3a5222af59.css?v=20260520-maico-local-v2" id="astro-element-post-7-css" media="all" rel="stylesheet" />
+		<link href="/assets/styles/custom-widget-icon-list.min-483d378750.css?v=20260520-maico-local-v2" id="widget-icon-list-css" media="all" rel="stylesheet" />
+		<link href="/assets/styles/widget-image.min-789f366eae.css?v=20260520-maico-local-v2" id="widget-image-css" media="all" rel="stylesheet" />
+		<link href="/assets/styles/custom-pro-widget-nav-menu.min-292ea919b5.css?v=20260520-maico-local-v2" id="widget-nav-menu-css" media="all" rel="stylesheet" />
+		<link href="/assets/styles/widget-heading.min-5f84d93ba3.css?v=20260520-maico-local-v2" id="widget-heading-css" media="all" rel="stylesheet" />
+		<link href="/assets/styles/astro-element-icons.min-a0fe184a80.css?v=20260520-maico-local-v2" id="astro-element-icons-css" media="all" rel="stylesheet" />
+		<link href="/assets/styles/post-1047-3e9572c974.css?v=20260520-maico-local-v2" id="astro-element-post-1047-css" media="all" rel="stylesheet" />
+		<link href="/assets/styles/post-168-5f903e2015.css?v=20260520-maico-local-v2" id="astro-element-post-168-css" media="all" rel="stylesheet" />
+		<link href="/assets/styles/css-78df3fbd36.css?v=20260520-maico-local-v2" id="astro-element-gf-raleway-css" media="all" rel="stylesheet" />
+		<link href="/assets/styles/css-490ebd1ef2.css?v=20260520-maico-local-v2" id="astro-element-gf-montserrat-css" media="all" rel="stylesheet" />
+		<link href="/assets/styles/local-runtime.css?v=20260520-maico-local-v2" rel="stylesheet" />
+		<link href="/favicon.ico?v=20260520-maico-local-v2" rel="icon" sizes="any" type="image/x-icon" />
+		<link href="/favicon.ico?v=20260520-maico-local-v2" rel="shortcut icon" type="image/x-icon" />
+		<link href="/assets/media/cropped-759c1927819973d7ad6fa9cd9da34a89b7caec1f-32x32-88ba8254bc.png?v=20260520-maico-local-v2" rel="icon" sizes="32x32" type="image/png" />
+		<link href="/assets/media/cropped-759c1927819973d7ad6fa9cd9da34a89b7caec1f-192x192-7faf52f54e.png?v=20260520-maico-local-v2" rel="icon" sizes="192x192" type="image/png" />
+		<link href="/assets/media/cropped-759c1927819973d7ad6fa9cd9da34a89b7caec1f-180x180-fadbc494b9.png?v=20260520-maico-local-v2" rel="apple-touch-icon" />
+	</head>
+	<body class="astro-singular page-template-default page astro-custom-logo astro-embed-responsive astro-theme-hello-astro-element astro-child-theme-maico-audiological-services hello-astro-element-default astro-element-default astro-element-kit-7">
+		<a class="skip-link screen-reader-text" href="#content">Skip to content</a>
+		<Fragment set:html={sharedHeaderHtml} />
+
+		<main id="content" class="insurance-main">
+			<section class="page-hero" aria-labelledby="page-title">
+				<div class="page-hero__inner">
+					<nav class="breadcrumb" aria-label="Breadcrumb">
+						<a href="/">Home</a>
+						<span aria-hidden="true">&raquo;</span>
+						<span>Insurance</span>
+					</nav>
+					<h1 id="page-title">Insurance</h1>
+				</div>
+			</section>
+
+			<section class="intro-section">
+				<div class="content-wrap">
+					<h2>Transparency You Can Trust</h2>
+					<p>
+						The Maico Audiological team delivers comprehensive, person-focused hearing and
+						balance solutions that exceeds expectations while providing patients with
+						transparent pricing and peace of mind.
+					</p>
+					<p><strong>Not sure what hearing benefits are included with your insurance coverage?</strong></p>
+					<p>
+						We are happy to call your insurance company on your behalf, and explain your
+						benefits to you. Simply complete the form below and we will call you soon!
+					</p>
+					<img
+						class="insurance-card"
+						src="/assets/media/3333-1024x615.png"
+						alt="Sample CVS Caremark prescription insurance card showing Rx Bin, Rx PCNA, Rx GRP, issuer, ID, and name fields"
+						width="1024"
+						height="615"
+					/>
+				</div>
+			</section>
+
+			<section class="benefits-section" id="insuranceform" aria-labelledby="benefits-title">
+				<div class="content-wrap">
+					<h2 id="benefits-title">Check Your Insurance Benefits</h2>
+					<form class="benefits-form" action="/thank-you/" method="post">
+						<div class="form-grid">
+							<label class="field field-half">
+								<span class="sr-only">First Name</span>
+								<input name="first_name" type="text" placeholder="First Name *" required />
+							</label>
+							<label class="field field-half">
+								<span class="sr-only">Last Name</span>
+								<input name="last_name" type="text" placeholder="Last Name *" required />
+							</label>
+							<label class="field field-date">
+								<span class="sr-only">Date of Birth</span>
+								<input name="date_of_birth" type="text" placeholder="Date of Birth *" required />
+							</label>
+							<label class="field">
+								<span class="sr-only">Insurance Company Name</span>
+								<input
+									name="insurance_company"
+									type="text"
+									placeholder="Insurance Company Name *"
+									required
+								/>
+							</label>
+							<label class="field">
+								<span class="sr-only">Group Number</span>
+								<input name="group_number" type="text" placeholder="Group Number *" />
+							</label>
+							<label class="field">
+								<span class="sr-only">Plan Number</span>
+								<input name="plan_number" type="text" placeholder="Plan Number *" />
+							</label>
+							<label class="field">
+								<span class="sr-only">Callback Phone</span>
+								<input name="phone" type="tel" placeholder="Phone *" required />
+							</label>
+							<label class="field">
+								<span class="sr-only">Email</span>
+								<input name="email" type="email" placeholder="Email *" required />
+							</label>
+							<label class="field">
+								<span class="sr-only">Closest Clinic</span>
+								<select name="closest_clinic" required>
+									<option value="">Closest Clinic</option>
+									<option value="newport-news">Newport News, VA</option>
+									<option value="chesapeake">Chesapeake, VA</option>
+									<option value="smithfield">Smithfield, VA</option>
+								</select>
+							</label>
+						</div>
+						<div class="captcha-space" aria-hidden="true"></div>
+						<button class="submit-button" type="submit">Submit</button>
+					</form>
+				</div>
+			</section>
+
+			<section class="photo-section" aria-label="Maico clinic photos">
+				<div class="photo-grid">
+					<img
+						src="/assets/media/DSC01785-1024x683-243f4e0c67.jpg"
+						alt="Exterior entrance of Maico Audiological Services office at 206"
+						width="1024"
+						height="683"
+					/>
+					<img
+						class="photo-grid__secondary"
+						src="/assets/media/Jenny-action-shot-loc.webp"
+						alt="Maico team member helping a patient with hearing care"
+						width="1000"
+						height="667"
+					/>
+				</div>
+			</section>
+		</main>
+
+		<Fragment set:html={sharedFooterHtml} />
+		<script is:inline src="/assets/site.js?v=20260520-maico-local-v2"></script>
+	</body>
+</html>
+
+<style>
+	:root {
+		--insurance-teal: #00a39a;
+		--insurance-teal-dark: #06988f;
+		--insurance-ink: #333333;
+		--insurance-white: #ffffff;
+	}
+
+	.insurance-main,
+	.insurance-main * {
+		box-sizing: border-box;
+	}
+
+	.insurance-main {
+		color: var(--insurance-ink);
+		background: var(--insurance-white);
+		font-family: "Montserrat", Arial, sans-serif;
+		font-size: 16px;
+		line-height: 1.5;
+	}
+
+	.insurance-main a {
+		color: inherit;
+		text-decoration: none;
+	}
+
+	.insurance-main img {
+		display: block;
+		max-width: 100%;
+		height: auto;
+	}
+
+	.insurance-main button,
+	.insurance-main input,
+	.insurance-main select {
+		font: inherit;
+	}
+
+	.page-hero {
+		display: grid;
+		place-items: center;
+		min-height: 200px;
+		color: var(--insurance-white);
+		text-align: center;
+		background:
+			linear-gradient(rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)),
+			url("/assets/media/widex-hearing-aids-0901556acb.jpg") center 52% / cover no-repeat;
+	}
+
+	.page-hero__inner {
+		width: min(100% - 20px, 1420px);
+	}
+
+	.breadcrumb {
+		margin-bottom: 14px;
+		font-size: 16px;
+	}
+
+	.page-hero h1 {
+		margin: 0;
+		color: var(--insurance-white);
+		font-family: "Raleway", Arial, sans-serif;
+		font-size: 54px;
+		font-weight: 700;
+		line-height: 1;
+	}
+
+	.content-wrap {
+		width: min(100% - 40px, 980px);
+		margin: 0 auto;
+	}
+
+	.intro-section {
+		padding: 89px 0 100px;
+	}
+
+	.intro-section h2,
+	.benefits-section h2 {
+		margin: 0 0 17px;
+		font-family: "Raleway", Arial, sans-serif;
+		font-size: 32px;
+		font-weight: 600;
+		line-height: 1.2;
+	}
+
+	.intro-section p {
+		margin: 0 0 14px;
+	}
+
+	.intro-section strong {
+		font-weight: 700;
+	}
+
+	.insurance-card {
+		width: 800px;
+		margin-top: 35px;
+		border-radius: 24px;
+	}
+
+	.benefits-section {
+		padding: 90px 0 98px;
+		color: var(--insurance-white);
+		background: var(--insurance-teal);
+	}
+
+	.benefits-section h2 {
+		margin-bottom: 52px;
+		color: var(--insurance-white);
+		line-height: 1;
+	}
+
+	.form-grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 20px 16px;
+	}
+
+	.field {
+		display: block;
+		grid-column: 1 / -1;
+	}
+
+	.field-half {
+		grid-column: span 1;
+	}
+
+	.field-date {
+		width: 196px;
+	}
+
+	.sr-only {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+		border: 0;
+	}
+
+	.benefits-form input,
+	.benefits-form select {
+		width: 100%;
+		height: 38px;
+		border: 1px solid #bfc7c9;
+		border-radius: 0;
+		color: #112337;
+		background: var(--insurance-white);
+		font-size: 14px;
+		line-height: 38px;
+		padding: 0 12px;
+	}
+
+	.benefits-form select {
+		appearance: auto;
+		padding-right: 32px;
+	}
+
+	.benefits-form input::placeholder {
+		color: #5e6c73;
+		opacity: 1;
+	}
+
+	.captcha-space {
+		height: 122px;
+	}
+
+	.submit-button {
+		min-width: 147px;
+		min-height: 48px;
+		border: 1px solid rgba(255, 255, 255, 0.9);
+		border-radius: 6px;
+		color: var(--insurance-white);
+		background: transparent;
+		font-size: 16px;
+		font-weight: 700;
+		text-transform: uppercase;
+		cursor: pointer;
+	}
+
+	.submit-button:hover,
+	.submit-button:focus-visible {
+		background: var(--insurance-teal-dark);
+	}
+
+	.photo-section {
+		padding: 84px 20px 80px;
+		background: var(--insurance-white);
+	}
+
+	.photo-grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 40px;
+		max-width: 1400px;
+		margin: 0 auto;
+	}
+
+	.photo-grid img {
+		width: 100%;
+		aspect-ratio: 1024 / 683;
+		object-fit: cover;
+	}
+
+	@media (max-width: 767px) {
+		.page-hero {
+			min-height: 200px;
+		}
+
+		.breadcrumb {
+			margin-bottom: 12px;
+		}
+
+		.page-hero h1 {
+			font-size: 24px;
+		}
+
+		.content-wrap {
+			width: min(100% - 40px, 980px);
+		}
+
+		.intro-section {
+			padding: 40px 0;
+		}
+
+		.intro-section h2 {
+			font-size: 32px;
+		}
+
+		.insurance-card {
+			width: 100%;
+			margin-top: 29px;
+			border-radius: 10px;
+		}
+
+		.benefits-section {
+			padding: 35px 0 29px;
+		}
+
+		.benefits-section h2 {
+			margin-bottom: 34px;
+			font-size: 26px;
+			line-height: 1.5;
+		}
+
+		.form-grid {
+			grid-template-columns: 1fr;
+			gap: 20px;
+		}
+
+		.field-half {
+			grid-column: 1;
+		}
+
+		.field-date {
+			width: 196px;
+		}
+
+		.captcha-space {
+			height: 122px;
+		}
+
+		.photo-section {
+			padding: 40px 20px 50px;
+		}
+
+		.photo-grid {
+			grid-template-columns: 1fr;
+			gap: 30px;
+		}
+
+		.photo-grid__secondary {
+			width: calc(100% - 20px);
+			margin: 0 auto;
+		}
+	}
+</style>

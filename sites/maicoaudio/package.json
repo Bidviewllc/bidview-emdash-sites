@@ -1,0 +1,39 @@
+{
+  "name": "maicoaudio",
+  "version": "0.0.3",
+  "private": true,
+  "type": "module",
+  "emdash": {
+    "label": "Starter",
+    "seed": "seed/seed.json"
+  },
+  "scripts": {
+    "patch:emdash": "node scripts/patch-emdash-preview-url.mjs",
+    "predev": "npm run patch:emdash && npm run clean:vite",
+    "dev": "astro dev",
+    "prebuild": "npm run patch:emdash",
+    "build": "set VITE_CACHE_DIR=node_modules/.vite-build&& astro build",
+    "prepreview": "npm run patch:emdash",
+    "preview": "astro preview",
+    "predeploy": "npm run patch:emdash",
+    "deploy": "astro build && wrangler deploy",
+    "deploy:staging": "node scripts/deploy-staging.mjs",
+    "deploy:staging:dry-run": "node scripts/deploy-staging.mjs --dry-run",
+    "typecheck": "set VITE_CACHE_DIR=node_modules/.vite-check&& astro check",
+    "clean:vite": "node scripts/clean-vite-cache.mjs"
+  },
+  "dependencies": {
+    "@astrojs/cloudflare": "^13.5.3",
+    "@astrojs/react": "^5.0.0",
+    "@emdash-cms/cloudflare": "^0.14.0",
+    "astro": "^6.3.0",
+    "emdash": "^0.14.0",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.7",
+    "@cloudflare/workers-types": "^4.20260305.1",
+    "wrangler": "^4.83.0"
+  }
+}
