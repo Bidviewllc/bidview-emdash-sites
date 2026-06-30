@@ -2,7 +2,7 @@ import handler from "@astrojs/cloudflare/entrypoints/server";
 export { PluginBridge } from "@emdash-cms/cloudflare/sandbox";
 
 // Bump this version string on each Cloudflare deploy to bust Workers Cache.
-const CACHE_VERSION = "v6";
+const CACHE_VERSION = "v8";
 const SKIP_CACHE_PATHS = ["/_emdash", "/api"];
 
 const withStagingRobotsHeader = (requestUrl: URL, response: Response) => {
