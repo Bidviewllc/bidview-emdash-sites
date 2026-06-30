@@ -19,6 +19,10 @@ if (requestedSlug === "404") {
   return new Response("Not found", { status: 404 });
 }
 
+if (requestedSlug === "research-linking-untreated-hearing-loss-to-dementia-risk-and-falls") {
+  return Astro.redirect("/resources/research-linking-untreated-hearing-loss/", 301);
+}
+
 for (const candidate of collections) {
   const lookupSlug = requestedSlug.replace(/^blog\//, "");
   const result = await getEmDashEntry(candidate, lookupSlug);
