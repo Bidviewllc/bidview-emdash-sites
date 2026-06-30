@@ -1,0 +1,27 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "raleighhearingandtinnituscenter-staging",
+	"account_id": "981338e6544cfe45d9819bf0ea6eb83a",
+	"main": "./src/worker.ts",
+	"compatibility_date": "2026-02-24",
+	"compatibility_flags": ["nodejs_compat"],
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "raleighhearingandtinnituscenter-staging-db",
+			"database_id": "b6b8df96-a0d1-4591-a3a4-6779ec583298",
+		},
+	],
+	"r2_buckets": [
+		{
+			"binding": "MEDIA",
+			"bucket_name": "raleighhearingandtinnituscenter-staging-media",
+		},
+	],
+	// Worker Loader for plugin sandboxing
+	"worker_loaders": [
+		{
+			"binding": "LOADER",
+		},
+	],
+}

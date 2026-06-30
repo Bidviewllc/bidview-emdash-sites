@@ -1,0 +1,43 @@
+﻿---
+import { getEmDashEntry } from "emdash";
+import { PortableText } from "emdash/ui";
+
+type ImageField = { src?: string; id?: string; alt?: string; width?: number; height?: number; meta?: Record<string, unknown> } | null | undefined;
+
+const { entry, cacheHint } = await getEmDashEntry("about_page", "about");
+if (cacheHint) Astro.cache.set(cacheHint);
+const contentBody = Array.isArray(entry?.data?.content_body) ? entry.data.content_body : [];
+const image = entry?.data?.section_image as ImageField;
+
+function mediaSrc(value: ImageField) {
+  if (!value) return "";
+  if (value.src) return value.src;
+  const storageKey = typeof value.meta?.storageKey === "string" ? value.meta.storageKey : value.id;
+  return storageKey ? `/_emdash/api/media/file/${storageKey}` : "";
+}
+const imageSrc = mediaSrc(image);
+---
+
+<div class="astro-element astro-element-9e5204b e-con-full e-flex e-con e-child" data-id="9e5204b" data-element_type="container" data-e-type="container">
+  <div class="astro-element astro-element-fa90ead e-con-full e-flex e-con e-child" data-id="fa90ead" data-element_type="container" data-e-type="container">
+    <div class="astro-element astro-element-35a7487 astro-widget astro-widget-text-editor" data-id="35a7487" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
+      {contentBody.length > 0 && <PortableText value={contentBody} />}
+    </div>
+  </div>
+  <div class="astro-element astro-element-b40c84f e-con-full e-flex e-con e-child" data-id="b40c84f" data-element_type="container" data-e-type="container">
+    <div class="astro-element astro-element-ed5ce0d astro-widget astro-widget-image" data-id="ed5ce0d" data-element_type="widget" data-e-type="widget" data-widget_type="image.default">
+      {imageSrc && (
+        <img
+          decoding="async"
+          width={image?.width ?? 800}
+          height={image?.height ?? 534}
+          src={imageSrc}
+          class="attachment-large size-large astro-image-5220"
+          alt={image?.alt ?? "JC Audiology office"}
+          srcset={`${imageSrc} ${image?.width ?? 1024}w`}
+          sizes="(max-width: 800px) 100vw, 800px"
+        />
+      )}
+    </div>
+  </div>
+</div>

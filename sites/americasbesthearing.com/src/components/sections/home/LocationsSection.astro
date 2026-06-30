@@ -1,0 +1,56 @@
+---
+import { dataOf, textToParagraphs } from "./helpers";
+
+interface Props {
+	content: Record<string, unknown>;
+	locations: Array<Record<string, unknown> | { data: Record<string, unknown> }>;
+}
+
+const { content, locations } = Astro.props;
+const tabs = locations.map(dataOf);
+const paragraphs = textToParagraphs(content.body);
+---
+
+<div class="astro-element astro-element-dd08e84 e-flex e-con-boxed e-con e-parent" data-id="dd08e84" data-element_type="container" data-e-type="container">
+	<div class="e-con-inner">
+		<div class="astro-element astro-element-0ac5f9c e-con-full e-flex e-con e-child" data-id="0ac5f9c" data-element_type="container" data-e-type="container">
+			<div class="astro-element astro-element-98dcf55 astro-widget astro-widget-heading" data-id="98dcf55" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
+				<div class="astro-widget-container"><h2 class="astro-heading-title astro-size-default">{content.heading}</h2></div>
+			</div>
+			<div class="astro-element astro-element-c5a16a7 astro-widget astro-widget-text-editor" data-id="c5a16a7" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
+				<div class="astro-widget-container">{paragraphs.map((paragraph) => <p>{paragraph}</p>)}</div>
+			</div>
+		</div>
+		<div class="astro-element astro-element-9cf2d78 astro-widget astro-widget-n-tabs" data-id="9cf2d78" data-element_type="widget" data-e-type="widget" data-widget_type="nested-tabs.default">
+			<div class="astro-widget-container">
+				<div class="e-n-tabs" role="tablist" aria-label="Office locations">
+					<div class="e-n-tabs-heading" role="tablist">
+						{tabs.map((location, index) => {
+							const tabId = `home-location-tab-${index}`;
+							const panelId = `home-location-panel-${index}`;
+							return (
+								<button class="e-n-tab-title" id={tabId} role="tab" type="button" aria-selected={index === 0  "true" : "false"} aria-controls={panelId} tabindex={index === 0  "0" : "-1"}>
+									<span class="e-n-tab-title-text">{location.name}</span>
+								</button>
+							);
+						})}
+					</div>
+					<div class="e-n-tabs-content">
+						{tabs.map((location, index) => (
+							<div id={`home-location-panel-${index}`} role="tabpanel" aria-labelledby={`home-location-tab-${index}`} class:list={["e-con-full", "e-flex", "e-con", "e-child", index === 0 && "e-active"]} hidden={index !== 0} aria-hidden={index === 0  "false" : "true"} style={index === 0  "display:flex" : "display:none"}>
+								<div class="astro-element astro-widget astro-widget-heading"><div class="astro-widget-container"><h3 class="astro-heading-title astro-size-default">{location.name}</h3></div></div>
+								<div class="astro-element astro-widget astro-widget-text-editor"><div class="astro-widget-container"><p>{location.address}</p><p><a href={`tel:${String(location.phone || "").replace(/[^0-9+]/g, "")}`}>{location.phone}</a></p></div></div>
+								<div class="astro-element astro-mobile-align-justify astro-widget astro-widget-button">
+									<div class="astro-widget-container"><div class="astro-button-wrapper"><a class="astro-button astro-button-link astro-size-sm" href={String(location.appointmentUrl || location.appointment_url || "/request-an-appointment/")}><span class="astro-button-content-wrapper"><span class="astro-button-icon"><i aria-hidden="true" class="far fa-long-arrow-right"></i></span><span class="astro-button-text">Schedule your Appointment</span></span></a></div></div>
+								</div>
+								<div class="astro-element astro-mobile-align-justify astro-widget astro-widget-button">
+									<div class="astro-widget-container"><div class="astro-button-wrapper"><a class="astro-button astro-button-link astro-size-sm" href={String(location.directionsUrl || location.directions_url || "#")}><span class="astro-button-content-wrapper"><span class="astro-button-icon"><i aria-hidden="true" class="far fa-long-arrow-right"></i></span><span class="astro-button-text">Get Directions</span></span></a></div></div>
+								</div>
+							</div>
+						))}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

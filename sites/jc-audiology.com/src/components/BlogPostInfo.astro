@@ -1,0 +1,38 @@
+---
+import { getEmDashEntry } from "emdash";
+import { formatDisplayDate, systemCreatedAt } from "./blog-utils";
+
+type Props = { route: string };
+const { route } = Astro.props;
+const slug = route.replace(/^\/+|\/+$/g, "").replace(/\//g, "__");
+const { entry, cacheHint } = await getEmDashEntry("blog_posts", slug);
+if (cacheHint) Astro.cache.set(cacheHint);
+
+const publishedDate = formatDisplayDate(systemCreatedAt(entry));
+const category = entry?.data.category ?? "";
+---
+
+<div class="astro-element astro-element-962d9b9 astro-widget astro-widget-post-info" data-id="962d9b9" data-element_type="widget" data-e-type="widget" data-widget_type="post-info.default">
+  <ul class="astro-inline-items astro-icon-list-items astro-post-info">
+    {publishedDate && (
+      <li class="astro-icon-list-item astro-repeater-item-date astro-post-info__item--type-date">
+        <span class="astro-icon-list-icon">
+          <svg aria-hidden="true" class="e-font-icon-svg e-fas-calendar" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M12 192h424c6.6 0 12 5.4 12 12v260c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V204c0-6.6 5.4-12 12-12zm436-44v-36c0-26.5-21.5-48-48-48h-48V12c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v52H160V12c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v52H48C21.5 64 0 85.5 0 112v36c0 6.6 5.4 12 12 12h424c6.6 0 12-5.4 12-12z"></path></svg>
+        </span>
+        <span class="astro-icon-list-text astro-post-info__item astro-post-info__item--type-date">
+          <time>{publishedDate}</time>
+        </span>
+      </li>
+    )}
+    {category && (
+      <li class="astro-icon-list-item astro-repeater-item-terms astro-post-info__item--type-terms">
+        <span class="astro-icon-list-icon">
+          <svg aria-hidden="true" class="e-font-icon-svg e-fas-tag" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path d="M0 252.1V48C0 21.5 21.5 0 48 0h204.1c12.7 0 24.9 5.1 33.9 14.1l211.9 211.9c18.7 18.7 18.7 49.1 0 67.9L293.8 497.9c-18.7 18.7-49.1 18.7-67.9 0L14.1 286.1C5.1 277.1 0 264.8 0 252.1zM112 64c-26.5 0-48 21.5-48 48s21.5 48 48 48 48-21.5 48-48-21.5-48-48-48z"></path></svg>
+        </span>
+        <span class="astro-icon-list-text astro-post-info__item astro-post-info__item--type-terms">
+          <span class="astro-post-info__terms-list">{category}</span>
+        </span>
+      </li>
+    )}
+  </ul>
+</div>

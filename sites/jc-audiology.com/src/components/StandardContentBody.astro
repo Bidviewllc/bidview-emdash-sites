@@ -1,0 +1,278 @@
+﻿---
+import { getEmDashEntry } from "emdash";
+import { PortableText } from "emdash/ui";
+
+type Props = {
+  route: string;
+  collection?: "services" | "hearing_aid_brands" | "utility_pages" | "blog_posts";
+  mode?: "standard" | "blog";
+};
+
+type PortableBlock = {
+  _type?: string;
+  style?: string;
+  children?: Array<{ text?: string }>;
+  [key: string]: unknown;
+};
+
+type AccordionItem = {
+  headingStyle: "h3" | "h4";
+  title: string;
+  answer: PortableBlock[];
+};
+
+const { route, collection = collectionForRoute(route), mode = collection === "blog_posts" ? "blog" : "standard" } = Astro.props;
+const slug = route.replace(/^\/+|\/+$/g, "").replace(/\//g, "__") || "home";
+const pageAstroIds: Record<string, string> = {
+  "audiology-services": "4953",
+  "audiology-services__hearing-aid-fittings": "4871",
+  "audiology-services__hearing-aid-services": "4848",
+  "audiology-services__hearing-tests": "4869",
+  "audiology-services__real-ear-measurement": "4872",
+  "audiology-services__sensorineural-hearing-loss": "4887",
+  "audiology-services__tinnitus-evaluation-support": "4801",
+  "custom-hearing-protection": "4908",
+  "hearing-aids-products": "4889",
+  "hearing-aids-products__hearing-aid-alternatives": "4909",
+  "hearing-aids-products__hearing-aid-batteries": "4888",
+  "resources__insurance": "5042",
+  "privacy-policy": "4705",
+  "terms-of-service": "4705",
+  "hearing-aids__phonak": "4901",
+  "hearing-aids__lyric": "4901",
+  "hearing-aids__oticon": "4901",
+  "hearing-aids__resound": "4901",
+  "hearing-aids__signia": "4901",
+  "hearing-aids__starkey": "4901",
+  "hearing-aids__unitron": "4901",
+  "hearing-aids__widex": "4901",
+};
+const pageAstroId = pageAstroIds[slug] ?? "4705";
+const { entry, cacheHint } = await getEmDashEntry(collection, slug);
+if (cacheHint) Astro.cache.set(cacheHint);
+
+const content = Array.isArray(entry?.data.body_content) ? entry.data.body_content as PortableBlock[] : [];
+
+function collectionForRoute(value: string): Props["collection"] {
+  const normalized = `/${value.replace(/^\/+|\/+$/g, "")}/`;
+  if (normalized.startsWith("/hearing-aids/")) return "hearing_aid_brands";
+  if (["/resources/insurance/", "/privacy-policy/", "/terms-of-service/"].includes(normalized)) return "utility_pages";
+  if (["/crackling-in-ear/", "/hearing-aids-for-tinnitus/", "/hearing-test-online-helpful-or-risky/", "/in-the-canal-hearing-aids-a-practical-guide/", "/rechargeable-hearing-aids/", "/swimmers-ear-causes-symptoms-treatment-prevention/"].includes(normalized)) return "blog_posts";
+  return "services";
+}
+
+function hasPortableContent(value: unknown) {
+  return Array.isArray(value) && value.length > 0;
+}
+
+function blockText(block: PortableBlock) {
+  return (block.children ?? []).map((child) => child.text ?? "").join("").trim();
+}
+function blockStyle(block: PortableBlock | undefined) {
+  if (!block) return "";
+  if (typeof block.style === "string") return block.style.toLowerCase();
+  const level = typeof block.level === "number" ? block.level : Number(block.level);
+  return Number.isInteger(level) && level >= 1 && level <= 6 ? `h${level}` : "";
+}
+
+function splitH4Accordion(group: PortableBlock[]) {
+  const beforeH4: PortableBlock[] = [];
+  const h4Groups: Array<PortableBlock[]> = [];
+  let active: PortableBlock[] | null = null;
+
+  for (const block of group) {
+    if (blockStyle(block) === "h4") {
+      active = [block];
+      h4Groups.push(active);
+    } else if (active) {
+      active.push(block);
+    } else {
+      beforeH4.push(block);
+    }
+  }
+
+  return {
+    beforeH4,
+    items: h4Groups.map((h4Group) => ({ headingStyle: "h4" as const, title: blockText(h4Group[0]), answer: h4Group.slice(1) })),
+  };
+}
+
+function splitStandardContent(blocks: PortableBlock[]) {
+  const output: Array<{ type: "content"; divider?: boolean; blocks: PortableBlock[] } | { type: "accordion"; items: AccordionItem[] }> = [];
+  let prelude: PortableBlock[] = [];
+  let index = 0;
+
+  while (index < blocks.length && blockStyle(blocks[index]) !== "h2") {
+    prelude.push(blocks[index]);
+    index += 1;
+  }
+  if (prelude.length) output.push({ type: "content", blocks: prelude });
+
+  while (index < blocks.length) {
+    const h2 = blocks[index];
+    const section: PortableBlock[] = [h2];
+    index += 1;
+
+    while (index < blocks.length && blockStyle(blocks[index]) !== "h2") {
+      section.push(blocks[index]);
+      index += 1;
+    }
+
+    const beforeH3: PortableBlock[] = [];
+    const h3Groups: Array<PortableBlock[]> = [];
+    let active: PortableBlock[] | null = null;
+
+    for (const block of section) {
+      if (blockStyle(block) === "h3") {
+        active = [block];
+        h3Groups.push(active);
+      } else if (active) {
+        active.push(block);
+      } else {
+        beforeH3.push(block);
+      }
+    }
+
+    if (beforeH3.length) output.push({ type: "content", divider: true, blocks: beforeH3 });
+    if (h3Groups.length >= 2) {
+      const hasNestedH4 = h3Groups.some((group) => group.some((block) => blockStyle(block) === "h4"));
+      if (hasNestedH4) {
+        for (const group of h3Groups) {
+          const h4Accordion = splitH4Accordion(group);
+          if (h4Accordion.items.length) {
+            if (h4Accordion.beforeH4.length) output.push({ type: "content", blocks: h4Accordion.beforeH4 });
+            output.push({ type: "accordion", items: h4Accordion.items });
+          } else {
+            output.push({ type: "content", blocks: group });
+          }
+        }
+      } else {
+        output.push({
+          type: "accordion",
+          items: h3Groups.map((group) => ({ headingStyle: "h3", title: blockText(group[0]), answer: group.slice(1) })),
+        });
+      }
+    } else if (h3Groups.length === 1) {
+      const h4Accordion = splitH4Accordion(h3Groups[0]);
+      if (h4Accordion.items.length) {
+        if (h4Accordion.beforeH4.length) output.push({ type: "content", blocks: h4Accordion.beforeH4 });
+        output.push({ type: "accordion", items: h4Accordion.items });
+      } else {
+        output.push({ type: "content", blocks: h3Groups[0] });
+      }
+    }
+  }
+
+  return output;
+}
+
+const standardParts = mode === "standard" ? splitStandardContent(content) : [];
+const bodyClass = `astro astro-${pageAstroId} astro-service-body ${mode === "blog" ? "astro-blog-body" : "astro-standard-body"}`;
+---
+
+{hasPortableContent(content) ? (
+  <div class={`astro-element astro-element-69dc79d ${mode === "blog" ? "astro-blog-content-body" : "astro-standard-content-body"} e-con-full e-flex e-con e-child`} data-id="69dc79d" data-element_type="container" data-e-type="container">
+    <div class="astro-element astro-element-b5bc4fa astro-widget astro-widget-theme-post-content" data-id="b5bc4fa" data-element_type="widget" data-e-type="widget" data-widget_type="theme-post-content.default">
+      <div data-astro-type="astro-page" data-astro-id={pageAstroId} class={bodyClass} data-astro-post-type="page">
+        <div class="astro-element astro-element-78a0079 e-flex e-con-boxed e-con e-parent" data-id="78a0079" data-element_type="container">
+          <div class="e-con-inner">
+            {mode === "blog" ? (
+              <div class="astro-element astro-element-273f23b astro-widget astro-widget-theme-post-content astro-widget-text-editor" data-id="273f23b" data-element_type="widget" data-e-type="widget" data-widget_type="theme-post-content.default">
+                <PortableText value={content} />
+              </div>
+            ) : standardParts.map((part, index) => (
+              part.type === "content" ? (
+                <div class="astro-element astro-element-standard-content astro-widget astro-widget-text-editor" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
+                  {part.divider && (
+                    <div class="astro-widget-divider--view-line astro-widget astro-widget-divider astro-service-h2-divider" data-element_type="widget" data-e-type="widget" data-widget_type="divider.default">
+                      <div class="astro-divider"><span class="astro-divider-separator"></span></div>
+                    </div>
+                  )}
+                  <PortableText value={part.blocks} />
+                </div>
+              ) : (
+                <div class="astro-element astro-element-standard-accordion custom-accordion astro-widget astro-widget-n-accordion" data-element_type="widget" data-e-type="widget" data-widget_type="nested-accordion.default">
+                  <div class="e-n-accordion" aria-label="Accordion. Open links with Enter or Space, close with Escape, and navigate with Arrow Keys">
+                    {part.items.map((item, itemIndex) => (
+                      <details id={`standard-content-accordion-${index}-${itemIndex}`} class="e-n-accordion-item">
+                        <summary class="e-n-accordion-item-title" data-accordion-index={String(itemIndex + 1)} tabindex={itemIndex === 0 ? "0" : "-1"} aria-expanded="false" aria-controls={`standard-content-accordion-${index}-${itemIndex}`}>
+                          <span class="e-n-accordion-item-title-header">
+                            {item.headingStyle === "h4" ? (
+                              <h4 class="e-n-accordion-item-title-text">{item.title}</h4>
+                            ) : (
+                              <h3 class="e-n-accordion-item-title-text">{item.title}</h3>
+                            )}
+                          </span>
+                          <span class="e-n-accordion-item-title-icon"><span class="e-opened"><i aria-hidden="true" class="far fa-chevron-down"></i></span><span class="e-closed"><i aria-hidden="true" class="far fa-chevron-up"></i></span></span>
+                        </summary>
+                        <div role="region" class="astro-element astro-element-standard-accordion-answer e-con-full e-flex e-con e-child" data-settings='{"background_background":"classic"}'>
+                          <div class="astro-element astro-element-standard-accordion-text astro-widget astro-widget-text-editor">
+                            {hasPortableContent(item.answer) && <PortableText value={item.answer} />}
+                          </div>
+                        </div>
+                      </details>
+                    ))}
+                  </div>
+                </div>
+              )
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+) : null}
+
+<script is:inline>
+  (() => {
+    const bindDynamicAccordions = () => {
+      document.querySelectorAll(".astro-standard-body .astro-element-standard-accordion details").forEach((details) => {
+        if (details.dataset.astroAccordionBound === "true") return;
+        details.dataset.astroAccordionBound = "true";
+        const summary = details.querySelector("summary");
+        if (!summary) return;
+
+        const enforceState = (isOpen) => {
+          if (isOpen) details.setAttribute("open", "");
+          else details.removeAttribute("open");
+          details.style.removeProperty("height");
+          details.style.removeProperty("overflow");
+          summary.setAttribute("aria-expanded", String(isOpen));
+        };
+
+        const toggle = () => {
+          const accordion = details.closest(".astro-element-standard-accordion");
+          accordion?.querySelectorAll("details[open]").forEach((openDetails) => {
+            if (openDetails !== details) {
+              openDetails.removeAttribute("open");
+              openDetails.querySelector("summary")?.setAttribute("aria-expanded", "false");
+            }
+          });
+          const willOpen = summary.getAttribute("aria-expanded") !== "true";
+          enforceState(willOpen);
+          requestAnimationFrame(() => enforceState(willOpen));
+          window.setTimeout(() => enforceState(willOpen), 50);
+          window.setTimeout(() => enforceState(willOpen), 250);
+        };
+
+        summary.addEventListener("click", (event) => {
+          event.preventDefault();
+          event.stopImmediatePropagation();
+          toggle();
+        }, true);
+        summary.addEventListener("keydown", (event) => {
+          if (event.key !== "Enter" && event.key !== " ") return;
+          event.preventDefault();
+          event.stopImmediatePropagation();
+          toggle();
+        }, true);
+      });
+    };
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", bindDynamicAccordions, { once: true });
+    } else {
+      bindDynamicAccordions();
+    }
+  })();
+</script>

@@ -1,0 +1,37 @@
+---
+import Base from "../../../layouts/Base.astro";
+import { getEmDashCollection, getEmDashEntry } from "emdash";
+import StaffPage from "../../../components/sections/staff/StaffPage.astro";
+import { findStaff, staffPageDescription, staffPageTitle, entryData } from "../../../components/sections/staff/staff-page-renderer";
+import { audiologyServices as defaultAudiologyServices, hearingAidServices as defaultHearingAidServices, locations as defaultLocations, staffMembers as defaultStaffMembers } from "../../../data/homepage-defaults";
+import contentHtml from "../../../components/raw-pages/hearing-instrument-specialist__darren-duso.html?raw";
+
+export const cacheHint = 3600;
+
+const staffType = String(Astro.params.staffType || "");
+const staffSlug = String(Astro.params.staffSlug || "");
+const profilePath = "/" + staffType + "/" + staffSlug + "/";
+const homeResult = await getEmDashEntry("homepages", "home");
+const staffResult = await getEmDashCollection("staff", { status: "published" });
+const staffPageResult = await getEmDashCollection("staff_pages");
+const locationResult = await getEmDashCollection("locations");
+const locationPageResult = await getEmDashCollection("location_pages");
+const audiologyResult = await getEmDashCollection("audiology_services");
+const hearingAidResult = await getEmDashCollection("hearing_aid_services");
+const home = homeResult.entry?.data || {};
+const staff = staffResult.entries.length ? staffResult.entries : defaultStaffMembers;
+const staffPages = staffPageResult.entries;
+const locations = locationResult.entries.length ? locationResult.entries : defaultLocations;
+const locationPages = locationPageResult.entries;
+const audiologyServices = audiologyResult.entries.length ? audiologyResult.entries : defaultAudiologyServices;
+const hearingAidServices = hearingAidResult.entries.length ? hearingAidResult.entries : defaultHearingAidServices;
+const currentStaff = findStaff(staff, staffSlug, profilePath);
+if (!currentStaff) return Astro.redirect("/404/");
+const currentStaffPage = staffPages.map(entryData).find((page: any) => page.staff_slug === currentStaff?.slug || page.slug === currentStaff?.slug || page.id === currentStaff?.slug);
+const pageTitle = staffPageTitle(currentStaff, currentStaffPage);
+const pageDescription = staffPageDescription(currentStaff, currentStaffPage);
+---
+
+<Base title={pageTitle} description={pageDescription} bodyClass={"astro-singular audiologist-template-default single single-audiologist postid-218 astro-custom-logo astro-embed-responsive astro-theme-hello-astro astro-child-theme-hello-theme-child-master hello-astro-default astro-default astro-kit-7 astro-page astro-page-218 astro-page-1347"}>
+	<StaffPage rawHtml={contentHtml} staffSlug={staffSlug} profilePath={profilePath} staff={staff} staffPages={staffPages} locations={locations} locationPages={locationPages} home={home} audiologyServices={audiologyServices} hearingAidServices={hearingAidServices} />
+</Base>

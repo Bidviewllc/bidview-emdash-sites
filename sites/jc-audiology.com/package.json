@@ -1,0 +1,35 @@
+{
+  "name": "jc-audiology.com",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "local-copy": "npx -y browser-sync start --server local-copy --files \"local-copy/**/*\" --port 4173 --host 127.0.0.1 --no-open --no-notify",
+    "dev": "astro dev --host 127.0.0.1 --port 4321",
+    "build": "astro build",
+    "preview": "astro preview --host 127.0.0.1 --port 4321",
+    "emdash:dev": "emdash dev",
+    "emdash:types": "emdash types",
+    "seed:validate": "emdash seed seed/seed.json --validate",
+    "deploy:staging": "npm run build && wrangler deploy",
+    "postinstall": "node scripts/patch-emdash-sitemap-route.cjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "playwright": "^1.60.0"
+  },
+  "dependencies": {
+    "@astrojs/cloudflare": "^13.5.2",
+    "@astrojs/node": "^10.1.1",
+    "@astrojs/react": "^5.0.5",
+    "@emdash-cms/cloudflare": "^0.13.0",
+    "astro": "^6.3.5",
+    "emdash": "^0.13.0",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "wrangler": "^4.93.0"
+  }
+}

@@ -1,0 +1,24 @@
+---
+import { getEmDashCollection } from "emdash";
+import { getSharedHeaderHtml } from "../lib/static-html";
+
+interface Props {
+	route?: string;
+}
+
+const { route = "" } = Astro.props;
+
+const staffResult = await getEmDashCollection("staff" as never, { limit: 100 });
+Astro.cache.set(staffResult.cacheHint);
+
+const headerHtml = getSharedHeaderHtml(
+	route,
+	(staffResult.entries ?? []).map((entry) => ({
+		slug: entry.id,
+		name: (entry.data as { name?: string }).name,
+		route: (entry.data as { route?: string }).route,
+	})),
+);
+---
+
+<Fragment set:html={headerHtml} />

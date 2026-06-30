@@ -1,0 +1,15 @@
+---
+import Base from "../layouts/Base.astro";
+import { getShellPage } from "../lib/shells";
+
+export const prerender = false;
+export const cacheHint = 3600;
+Astro.cache.set(cacheHint);
+
+const page = getShellPage("/");
+if (!page) {
+  Astro.response.status = 404;
+}
+---
+
+{page ? <Base page={page} /> : <p>Homepage not found.</p>}

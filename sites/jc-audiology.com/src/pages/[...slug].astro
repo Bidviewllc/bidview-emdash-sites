@@ -1,0 +1,43 @@
+---
+import Base from "../layouts/Base.astro";
+import { getEmDashCollection } from "emdash";
+import { createHearingAidBrandFallbackShell, createUtilityFallbackShell, getShellPage } from "../lib/shells";
+
+export const prerender = false;
+export const cacheHint = 3600;
+Astro.cache.set(cacheHint);
+
+const slugParam = Astro.params.slug;
+const slug = Array.isArray(slugParam) ? slugParam.join("/") : slugParam ?? "";
+let page = getShellPage(slug);
+
+if (!page) {
+  const route = `/${slug.replace(/^\/+|\/+$/g, "")}/`;
+  if (route.startsWith("/hearing-aids/")) {
+    const { entries, cacheHint } = await getEmDashCollection("hearing_aid_brands", {
+      status: "published",
+      limit: 1,
+      where: { route },
+    });
+    if (cacheHint) Astro.cache.set(cacheHint);
+    if (entries.length > 0) page = createHearingAidBrandFallbackShell(route);
+  }
+}
+
+if (!page) {
+  const route = `/${slug.replace(/^\/+|\/+$/g, "")}/`;
+  const { entries, cacheHint } = await getEmDashCollection("utility_pages", {
+    status: "published",
+    limit: 1,
+    where: { route },
+  });
+  if (cacheHint) Astro.cache.set(cacheHint);
+  if (entries.length > 0) page = createUtilityFallbackShell(route);
+}
+
+if (!page) {
+  Astro.response.status = 404;
+}
+---
+
+{page ? <Base page={page} /> : <p>Page not found.</p>}

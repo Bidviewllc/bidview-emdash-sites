@@ -1,0 +1,21 @@
+﻿---
+import rawHomePage from "../../raw-pages/index.html?raw";
+import { renderHomepageHtml } from "./homepage-original-renderer";
+
+interface Props {
+	home: Record<string, unknown>;
+	images: unknown[];
+	staff: unknown[];
+	locations: unknown[];
+	locationPages?: unknown[];
+	audiologyServices: unknown[];
+	hearingAidServices: unknown[];
+	faqs: unknown[];
+	testimonials: unknown[];
+	posts: unknown[];
+}
+
+const html = renderHomepageHtml(rawHomePage, Astro.props);
+---
+
+<Fragment set:html={html} />

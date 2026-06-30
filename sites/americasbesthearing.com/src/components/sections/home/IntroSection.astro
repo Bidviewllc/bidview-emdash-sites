@@ -1,0 +1,57 @@
+---
+import { dataOf, imageAlt, imageSrc, textToParagraphs } from "./helpers";
+
+interface Props {
+	content: Record<string, unknown>;
+	images: Array<Record<string, unknown> | { data: Record<string, unknown> }>;
+}
+
+const { content, images } = Astro.props;
+const paragraphs = textToParagraphs(content.body);
+---
+
+<div class="astro-element astro-element-f3e1e4c e-flex e-con-boxed e-con e-parent" data-id="f3e1e4c" data-element_type="container" data-e-type="container">
+	<div class="e-con-inner">
+		<div class="astro-element astro-element-98655ce e-con-full e-flex e-con e-child" data-id="98655ce" data-element_type="container" data-e-type="container">
+			<div class="astro-element astro-element-23f4905 e-con-full e-flex e-con e-child" data-id="23f4905" data-element_type="container" data-e-type="container">
+				<div class="astro-element astro-element-b4c8e33 astro-pagination-position-outside astro-widget astro-widget-image-carousel" data-id="b4c8e33" data-element_type="widget" data-e-type="widget" data-widget_type="image-carousel.default">
+					<div class="astro-widget-container">
+						<div class="astro-image-carousel-wrapper swiper" role="region" aria-roledescription="carousel" aria-label="Image Carousel" dir="ltr">
+							<div class="astro-image-carousel swiper-wrapper" aria-live="off">
+								{images.map((item, index) => {
+									const data = dataOf(item);
+									return (
+										<div class="swiper-slide" role="group" aria-roledescription="slide" aria-label={`${index + 1} of ${images.length}`}>
+											<figure class="swiper-slide-inner">
+												<img decoding="async" class="swiper-slide-image" src={imageSrc(data.image)} alt={imageAlt(data.image, String(data.title || ""))} />
+											</figure>
+										</div>
+									);
+								})}
+							</div>
+							<div class="swiper-pagination"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="astro-element astro-element-a63f688 e-con-full e-flex e-con e-child" data-id="a63f688" data-element_type="container" data-e-type="container">
+				<div class="astro-element astro-element-3024643 e-con-full e-flex e-con e-child" data-id="3024643" data-element_type="container" data-e-type="container">
+					<div class="astro-element astro-element-4521674 astro-widget astro-widget-heading" data-id="4521674" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
+						<div class="astro-widget-container"><h1 class="astro-heading-title astro-size-default"><span class="sub-heading-design">{content.kicker}</span> <br />{content.headline}</h1></div>
+					</div>
+				</div>
+				<div class="astro-element astro-element-b0f1c35 astro-widget astro-widget-text-editor" data-id="b0f1c35" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
+					<div class="astro-widget-container">{paragraphs.map((paragraph) => <p>{paragraph}</p>)}</div>
+				</div>
+				<div class="astro-element astro-element-c4b80bf e-con-full e-flex e-con e-child" data-id="c4b80bf" data-element_type="container" data-e-type="container">
+					<div class="astro-element astro-element-8c7d959 astro-mobile-align-justify astro-widget astro-widget-button" data-id="8c7d959" data-element_type="widget" data-e-type="widget" data-widget_type="button.default">
+						<div class="astro-widget-container"><div class="astro-button-wrapper"><a class="astro-button astro-button-link astro-size-sm" href={String(content.primaryCtaUrl || "/audiology-services/hearing-aid-services/")}><span class="astro-button-content-wrapper"><span class="astro-button-icon"><i aria-hidden="true" class="far fa-long-arrow-right"></i></span><span class="astro-button-text">{content.primaryCtaText}</span></span></a></div></div>
+					</div>
+					<div class="astro-element astro-element-060c211 astro-mobile-align-justify astro-widget astro-widget-button" data-id="060c211" data-element_type="widget" data-e-type="widget" data-widget_type="button.default">
+						<div class="astro-widget-container"><div class="astro-button-wrapper"><a class="astro-button astro-button-link astro-size-sm" href={String(content.secondaryCtaUrl || "/our-team/")}><span class="astro-button-content-wrapper"><span class="astro-button-icon"><i aria-hidden="true" class="far fa-long-arrow-right"></i></span><span class="astro-button-text">{content.secondaryCtaText}</span></span></a></div></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

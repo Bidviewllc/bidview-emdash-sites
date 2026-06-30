@@ -1,0 +1,42 @@
+---
+import { getEmDashEntry } from "emdash";
+import { mediaSrc } from "./blog-utils";
+
+const { entry, cacheHint } = await getEmDashEntry("homepage", "home");
+if (cacheHint) Astro.cache.set(cacheHint);
+const data = entry?.data ?? {};
+const badges = [data.badge_1, data.badge_2, data.badge_3, data.badge_4].filter(Boolean);
+---
+
+<div class="astro-element astro-element-d11824d e-flex e-con-boxed e-con e-child" data-id="d11824d" data-element_type="container" data-e-type="container">
+  <div class="e-con-inner">
+    <div class="astro-element astro-element-b4fa40c gallery-spacing-custom astro-hidden-mobile astro-widget astro-widget-image-gallery" data-id="b4fa40c" data-element_type="widget" data-e-type="widget" data-widget_type="image-gallery.default">
+      <div class="astro-image-gallery">
+        <div id="gallery-1" class="gallery galleryid-4431 gallery-columns-4 gallery-size-full">
+          {badges.map((badge) => {
+            const src = mediaSrc(badge);
+            return src && (
+              <figure class="gallery-item"><div class="gallery-icon landscape"><img loading="lazy" decoding="async" width={badge?.width ?? 340} height={badge?.height ?? 240} src={src} class="attachment-full size-full" alt={badge?.alt ?? ""} srcset={`${src} ${badge?.width ?? 340}w`} sizes={`(max-width: ${badge?.width ?? 340}px) 100vw, ${badge?.width ?? 340}px`} /></div></figure>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+    <div class="astro-element astro-element-6748a55 astro-arrows-position-outside astro-pagination-position-inside astro-hidden-desktop astro-hidden-laptop astro-hidden-tablet astro-widget astro-widget-image-carousel e-widget-swiper" data-id="6748a55" data-element_type="widget" data-e-type="widget" data-settings='{"slides_to_show_mobile":"1","navigation":"both","autoplay":"yes","pause_on_hover":"yes","pause_on_interaction":"yes","autoplay_speed":5000,"infinite":"yes","speed":500}' data-widget_type="image-carousel.default">
+      <div class="astro-image-carousel-wrapper swiper" role="region" aria-roledescription="carousel" aria-label="Image Carousel" dir="ltr">
+        <div class="astro-image-carousel swiper-wrapper" aria-live="off">
+          {badges.map((badge, index) => {
+            const src = mediaSrc(badge);
+            return src && (
+              <div class="swiper-slide" role="group" aria-roledescription="slide" aria-label={`${index + 1} of ${badges.length}`} data-swiper-slide-index={String(index)}><figure class="swiper-slide-inner"><img decoding="async" class="swiper-slide-image" src={src} alt={badge?.alt ?? ""} /></figure></div>
+            );
+          })}
+        </div>
+        <div class="astro-swiper-button astro-swiper-button-prev" role="button" tabindex="0" aria-label="Previous slide"><svg aria-hidden="true" class="e-font-icon-svg e-eicon-chevron-left" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg"><path d="M646 125C629 125 613 133 604 142L308 442C296 454 292 471 292 487 292 504 296 521 308 533L604 854C617 867 629 875 646 875 663 875 679 871 692 858 704 846 713 829 713 812 713 796 708 779 692 767L438 487 692 225C700 217 708 204 708 187 708 171 704 154 692 142 675 129 663 125 646 125Z"></path></svg></div>
+        <div class="astro-swiper-button astro-swiper-button-next" role="button" tabindex="0" aria-label="Next slide"><svg aria-hidden="true" class="e-font-icon-svg e-eicon-chevron-right" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg"><path d="M696 533C708 521 713 504 713 487 713 471 708 454 696 446L400 146C388 133 375 125 354 125 338 125 325 129 313 142 300 154 292 171 292 187 292 204 296 221 308 233L563 492 304 771C292 783 288 800 288 817 288 833 296 850 308 863 321 871 338 875 354 875 371 875 388 867 400 854L696 533Z"></path></svg></div>
+        <div class="swiper-pagination swiper-pagination-clickable swiper-pagination-bullets swiper-pagination-horizontal"></div>
+        <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+      </div>
+    </div>
+  </div>
+</div>

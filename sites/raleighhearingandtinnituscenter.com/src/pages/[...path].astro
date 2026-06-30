@@ -1,0 +1,26 @@
+---
+import StaticPageLayout from "../layouts/StaticPageLayout.astro";
+import { wireBlogCards } from "../lib/blogs-emdash";
+import { wireSinglePageWithSidebar } from "../lib/single-page-sidebar-emdash";
+import { getStaffTemplatePage, getStaticPage, wireCanonicalHeadUrls } from "../lib/static-html";
+
+export const prerender = false;
+
+const route = Astro.params.path ?? "";
+const staticPage = getStaticPage(route) ?? (route.startsWith("audiologist/") ? getStaffTemplatePage(route) : null);
+
+if (!staticPage) {
+	return new Response("Not found", {
+		status: 404,
+		headers: { "Content-Type": "text/plain; charset=utf-8" },
+	});
+}
+
+const page = await wireSinglePageWithSidebar(staticPage, Astro.cache);
+page.headHtml = wireCanonicalHeadUrls(page.headHtml, page.route, Astro.url.origin);
+if (route === "blog" || route.startsWith("category")) {
+	page.contentHtml = await wireBlogCards(page.contentHtml, Astro.cache);
+}
+---
+
+<StaticPageLayout page={page} />

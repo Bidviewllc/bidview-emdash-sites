@@ -1,0 +1,22 @@
+---
+import StaticPageLayout from "../layouts/StaticPageLayout.astro";
+import { wireBlogCards } from "../lib/blogs-emdash";
+import { wireHomepageEmDashContent, wireHomepageEmDashHead } from "../lib/homepage-emdash";
+import { getStaticPage, wireCanonicalHeadUrls } from "../lib/static-html";
+
+const page = getStaticPage("");
+
+if (!page) {
+	return new Response("Not found", {
+		status: 404,
+		headers: { "Content-Type": "text/plain; charset=utf-8" },
+	});
+}
+
+page.headHtml = await wireHomepageEmDashHead(page.headHtml, Astro.cache);
+page.headHtml = wireCanonicalHeadUrls(page.headHtml, page.route, Astro.url.origin);
+page.contentHtml = await wireHomepageEmDashContent(page.contentHtml, Astro.cache);
+page.contentHtml = await wireBlogCards(page.contentHtml, Astro.cache, 3);
+---
+
+<StaticPageLayout page={page} />

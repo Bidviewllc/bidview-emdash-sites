@@ -1,0 +1,73 @@
+﻿# Dependencies
+node_modules/
+
+# Build and generated output
+dist/
+.astro/
+.vite/
+.vite-dev/
+.vite-build/
+.wrangler/
+worker-configuration.d.ts
+
+# Local databases and runtime state
+data.db
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+*.db
+*.db-shm
+*.db-wal
+
+# Secrets and local env files
+.env
+.env.*
+!.env.example
+.dev.vars
+.dev.vars.*
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Static migration/source backups not needed in app repo
+backups/
+local-copy/
+local-site/
+scraped-html/
+partials/
+uploads/
+audit/
+visual-audit/
+
+# Temporary QA artifacts
+*.tmp
+.tmp/
+tmp-*
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.zip
+
+# Keep source-controlled public assets despite image ignores above
+!public/**/*.png
+!public/**/*.jpg
+!public/**/*.jpeg
+!public/**/*.gif
+!public/**/*.webp
+
+# Alternate/local Git metadata safety
+.git/
+.abh-git/
+
+# Audit/report artifacts not needed for app source
+ABH-media-inventory.*
+EMDASH-READINESS-AUDIT-*
+ABH-developer-handoff.md
+phonak-*-sample
+-

@@ -1,0 +1,471 @@
+---
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import StaffCarousel from "../components/StaffCarousel.astro";
+import OfficeInfoMapCta from "../components/OfficeInfoMapCta.astro";
+import ReusableShowcaseSection from "../components/ReusableShowcaseSection.astro";
+import HomepageHero from "../components/HomepageHero.astro";
+import HomepageIntro from "../components/HomepageIntro.astro";
+import HomepageTrustBadges from "../components/HomepageTrustBadges.astro";
+import HomepageTestimonials from "../components/HomepageTestimonials.astro";
+import HomepageFaq from "../components/HomepageFaq.astro";
+import StaffProfileIntro from "../components/StaffProfileIntro.astro";
+import AboutPageMain from "../components/AboutPageMain.astro";
+import ContactPageInfo from "../components/ContactPageInfo.astro";
+import ScheduleAppointmentEmbed from "../components/ScheduleAppointmentEmbed.astro";
+import StandardContentBody from "../components/StandardContentBody.astro";
+import BlogFeaturedImage from "../components/BlogFeaturedImage.astro";
+import BlogPostInfo from "../components/BlogPostInfo.astro";
+import BlogPostsGrid from "../components/BlogPostsGrid.astro";
+import { ABOUT_PAGE_MAIN_TOKEN, BLOG_BODY_TOKEN, BLOG_FEATURED_IMAGE_TOKEN, BLOG_POST_INFO_TOKEN, BLOG_POSTS_TOKEN_PATTERN, CONTACT_PAGE_INFO_TOKEN, HOME_FAQ_TOKEN, HOME_HERO_TOKEN, HOME_INTRO_TOKEN, HOME_TESTIMONIALS_TOKEN, HOME_TRUST_BADGES_TOKEN, OFFICE_INFO_TOKEN_PATTERN, SCHEDULE_APPOINTMENT_EMBED_TOKEN, SERVICE_BODY_TOKEN, SHARED_CTA_TOKEN_PATTERN, STAFF_CAROUSEL_TOKEN, STAFF_PROFILE_INTRO_TOKEN } from "../lib/shells";
+import { getEmDashEntry } from "emdash";
+
+const { page } = Astro.props;
+
+const STAFF_PROFILE_SHELLS: Record<string, { name: string; roleHtml: string; imagePath: string }> = {
+  "judith-l-reese-ph-d": { name: "Judith L. Reese, Ph.D.", roleHtml: "Audiologist<br> Founder", imagePath: "../assets/media/45fa544b-jc-audiology-judith-reese.png" },
+  "ryan-nurge-has": { name: "Ryan Nurge, HAS", roleHtml: "Hearing Aid Specialist", imagePath: "../assets/media/9da9305e-jc-audiology-ryan-nurge.png" },
+  "charlie-reese": { name: "Charlie Reese", roleHtml: "Listener-in-Chief<br> Founder", imagePath: "../assets/media/56f24c95-jc-audiology-charlie-reese.png" },
+  "graciela-wentz": { name: "Graciela Wentz", roleHtml: "Patient Care Coordinator", imagePath: "../assets/media/d05fe949-jc-audiology-graciela-wentz.png" },
+};
+
+function escapeHtml(value: string) {
+  return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+function escapeRegExp(value: string) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+function contentSlugForRoute(route: string) {
+  const normalized = normalizedRoute(route);
+  if (normalized === "/about/") return "about";
+  if (normalized === "/contact/") return "contact";
+  if (normalized === "/schedule-appointment/") return "schedule-appointment";
+  return route?.replace(/^\/|\/$/g, "").replace(/\//g, "__") || "home";
+}
+function normalizedRoute(route: string) {
+  const clean = route?.replace(/^\/+|\/+$/g, "") ?? "";
+  return clean ? `/${clean}/` : "/";
+}
+function contentCollectionForRoute(route: string): "services" | "hearing_aid_brands" | "utility_pages" | "blog_posts" | "staff_profile_pages" | "about_page" | "contact_page" | "schedule_appointment_page" | null {
+  const normalized = normalizedRoute(route);
+  if (["/judith-l-reese-ph-d/", "/ryan-nurge-has/", "/charlie-reese/", "/graciela-wentz/"].includes(normalized)) return "staff_profile_pages";
+  if (normalized === "/about/") return "about_page";
+  if (normalized === "/contact/") return "contact_page";
+  if (normalized === "/schedule-appointment/") return "schedule_appointment_page";
+  if (normalized.startsWith("/hearing-aids/")) return "hearing_aid_brands";
+  if (["/resources/insurance/", "/privacy-policy/", "/terms-of-service/"].includes(normalized)) return "utility_pages";
+  if (["/crackling-in-ear/", "/hearing-aids-for-tinnitus/", "/hearing-test-online-helpful-or-risky/", "/in-the-canal-hearing-aids-a-practical-guide/", "/rechargeable-hearing-aids/", "/swimmers-ear-causes-symptoms-treatment-prevention/"].includes(normalized)) return "blog_posts";
+  if (normalized.startsWith("/audiology-services/") || normalized === "/custom-hearing-protection/" || normalized.startsWith("/hearing-aids-products/")) return "services";
+  return null;
+}
+function setHeadTitle(headHtml: string, title: string) {
+  const clean = escapeHtml(title.includes("JC Audiology") ? title : `${title} | JC Audiology`);
+  if (/<title[^>]*>[\s\S]*?<\/title>/i.test(headHtml)) return headHtml.replace(/<title[^>]*>[\s\S]*?<\/title>/i, `<title>${clean}</title>`);
+  return `${headHtml}\n<title>${clean}</title>`;
+}
+function setMetaDescription(headHtml: string, description: string) {
+  if (!description) return headHtml;
+  const escaped = escapeHtml(description);
+  if (/<meta\s+name=["']description["'][^>]*>/i.test(headHtml)) return headHtml.replace(/<meta\s+name=["']description["'][^>]*>/i, `<meta name="description" content="${escaped}">`);
+  return `${headHtml}\n<meta name="description" content="${escaped}">`;
+}
+function setMetaProperty(headHtml: string, property: string, content: string) {
+  const escaped = escapeHtml(content);
+  const propertyPattern = escapeRegExp(property);
+  const tagPattern = new RegExp(`<meta\\s+property=["']${propertyPattern}["'][^>]*>`, "i");
+  if (tagPattern.test(headHtml)) return headHtml.replace(tagPattern, `<meta property="${property}" content="${escaped}">`);
+  return `${headHtml}\n<meta property="${property}" content="${escaped}">`;
+}
+function setMetaName(headHtml: string, name: string, content: string) {
+  const escaped = escapeHtml(content);
+  const namePattern = escapeRegExp(name);
+  const tagPattern = new RegExp(`<meta\\s+name=["']${namePattern}["'][^>]*>`, "i");
+  if (tagPattern.test(headHtml)) return headHtml.replace(tagPattern, `<meta name="${name}" content="${escaped}">`);
+  return `${headHtml}\n<meta name="${name}" content="${escaped}">`;
+}
+function stripLegacySchema(headHtml: string) {
+  return headHtml.replace(/<script\b[^>]*class=["']rank-math-schema-pro["'][^>]*>[\s\S]*?<\/script>\s*/gi, "");
+}
+function setFallbackHeadMeta(headHtml: string, title: string, description: string, route: string) {
+  const pageUrl = new URL(normalizedRoute(route), Astro.url.origin).toString();
+  const cleanDescription = description || title;
+  let next = stripLegacySchema(headHtml);
+  next = setMetaProperty(next, "og:title", title);
+  next = setMetaProperty(next, "og:description", cleanDescription);
+  next = setMetaProperty(next, "og:url", pageUrl);
+  next = setMetaName(next, "twitter:title", title);
+  next = setMetaName(next, "twitter:description", cleanDescription);
+  return next;
+}
+function contentEntryTitle(data: Record<string, unknown>) {
+  return String(data.title ?? data.brand_name ?? data.page_title ?? "").trim();
+}
+function contentMetaTitle(data: Record<string, unknown>) {
+  return String(data.meta_title ?? data.title ?? data.brand_name ?? data.page_title ?? "").trim();
+}
+function setHeroH1(contentHtml: string, title: string) {
+  if (!title) return contentHtml;
+  return contentHtml.replace(/<h1\b([^>]*)>[\s\S]*?<\/h1>/i, `<h1$1>${escapeHtml(title)}</h1>`);
+}
+function setBreadcrumbTitle(contentHtml: string, title: string) {
+  if (!title) return contentHtml;
+  return contentHtml.replace(/<span\s+class=["']last["']>[\s\S]*?<\/span>/i, `<span class="last">${escapeHtml(title)}</span>`);
+}
+function stripInheritedToc(contentHtml: string) {
+  return contentHtml.replace(
+    /<div class="astro-element astro-element-ef10e88[\s\S]*?(?=<div class="astro-element astro-element-ff2dcce)/i,
+    "",
+  );
+}
+type PortableHeadingBlock = {
+  style?: string;
+  level?: number | string;
+  children?: Array<{ text?: string }>;
+};
+function portableBlockText(block: PortableHeadingBlock) {
+  return (block.children ?? []).map((child) => child.text ?? "").join("").trim();
+}
+function portableBlockStyle(block: PortableHeadingBlock) {
+  if (typeof block.style === "string") return block.style.toLowerCase();
+  const level = Number(block.level);
+  return Number.isInteger(level) && level >= 1 && level <= 6 ? `h${level}` : "";
+}
+function slugifyHeading(value: string) {
+  return value
+    .toLowerCase()
+    .replace(/&/g, " and ")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+function tocItemHtml(title: string, level: number) {
+  const topLevelClass = level === 2 ? " astro-toc__top-level" : "";
+  return `<li class="astro-toc__list-item"><div class="astro-toc__list-item-text-wrapper"><a href="#${escapeHtml(slugifyHeading(title))}" class="astro-toc__list-item-text${topLevelClass}">${escapeHtml(title)}</a></div>`;
+}
+function buildTocList(blocks: unknown) {
+  if (!Array.isArray(blocks)) return "";
+  const headings = blocks
+    .map((block) => {
+      const typedBlock = block as PortableHeadingBlock;
+      const style = portableBlockStyle(typedBlock);
+      const level = Number(style.replace("h", ""));
+      const title = portableBlockText(typedBlock);
+      return { level, title };
+    })
+    .filter((heading) => heading.title && heading.level >= 2 && heading.level <= 4);
+
+  if (!headings.length) return "";
+
+  let html = "";
+  let currentLevel = 0;
+  for (const heading of headings) {
+    const level = heading.level;
+    if (currentLevel === 0) {
+      html += `<ul class="astro-toc__list-wrapper">`;
+      currentLevel = level;
+    }
+    while (currentLevel < level) {
+      html += `<ul class="astro-toc__list-wrapper">`;
+      currentLevel += 1;
+    }
+    while (currentLevel > level) {
+      html += `</li></ul>`;
+      currentLevel -= 1;
+    }
+    if (html.endsWith("</div>")) html += `</li>`;
+    html += tocItemHtml(heading.title, level);
+  }
+  while (currentLevel > 0) {
+    html += `</li></ul>`;
+    currentLevel -= 1;
+  }
+  return html;
+}
+function setFallbackToc(contentHtml: string, blocks: unknown) {
+  const listHtml = buildTocList(blocks);
+  if (!listHtml) return contentHtml;
+  return contentHtml.replace(
+    /(<div id="astro-toc__e3fcf84" class="astro-toc__body"[^>]*>)[\s\S]*?(<\/div>\s*<\/div>\s*<\/div>\s*<\/div>\s*<\/div>\s*<\/div>\s*<\/div>\s*)/i,
+    `$1${listHtml}$2`,
+  );
+}
+function mediaSrc(image: { src?: string; id?: string; meta?: Record<string, unknown> } | null | undefined) {
+  if (!image) return "";
+  if (image.src) return image.src;
+  const storageKey = typeof image.meta?.storageKey === "string" ? image.meta.storageKey : image.id;
+  return storageKey ? `/_emdash/api/media/file/${storageKey}` : "";
+}
+function staffRoleHtml(data: Record<string, unknown>) {
+  const roleLines = [data.role_1, data.role_2].filter(Boolean).map((role) => escapeHtml(String(role)));
+  if (roleLines.length) return roleLines.join("<br>");
+  return escapeHtml(String(data.role ?? "")).replace(/\r?\n/g, "<br>");
+}
+function hydrateStaffHtml(html: string, slug: string, data: Record<string, unknown>) {
+  const shell = STAFF_PROFILE_SHELLS[slug];
+  if (!shell) return html;
+  let next = html;
+  const name = escapeHtml(String(data.name ?? shell.name));
+  const role = staffRoleHtml(data);
+  const image = mediaSrc(data.profile_image as { src?: string; id?: string; meta?: Record<string, unknown> } | null | undefined);
+  next = next.replace(new RegExp(escapeRegExp(shell.name), "g"), name);
+  next = next.replace(new RegExp(escapeRegExp(shell.roleHtml), "g"), role);
+  next = next.replace(new RegExp(escapeRegExp(shell.imagePath), "g"), image || shell.imagePath);
+  return next;
+}
+function fixConvertedText(html: string) {
+  return html
+    .replace(/\u00c3\u00a2\u00e2\u201a\u00ac\u00c2\u00ba/g, "&#8250;")
+    .replace(/\u00c3\u00a2\u00e2\u201a\u00ac\u00e2\u20ac\u0153/g, "-")
+    .replace(/\u00c3\u00a2\u00e2\u201a\u00ac\u00e2\u20ac\u009d/g, "-")
+    .replace(/\u00c3\u00a2\u00e2\u201a\u00ac\u00e2\u201e\u00a2/g, "&#8217;")
+    .replace(/\u00c3\u00a2\u00e2\u201a\u00ac\u00c5\u201c/g, "&ldquo;")
+    .replace(/\u00c3\u00a2\u00e2\u201a\u00ac\u00ef\u00bf\u00bd/g, "&rdquo;")
+    .replace(/\u00e2\u20ac\u2122/g, "&#8217;")
+    .replace(/\u00e2\u20ac\u02dc/g, "&#8216;")
+    .replace(/\u00e2\u20ac\u009c/g, "&ldquo;")
+    .replace(/\u00e2\u20ac\u009d/g, "&rdquo;")
+    .replace(/\u00e2\u20ac\u0153/g, "&ldquo;")
+    .replace(/\u00e2\u20ac\ufffd/g, "&rdquo;")
+    .replace(/\u00e2\u20ac\u201c/g, "-")
+    .replace(/\u00e2\u20ac\u201d/g, "-")
+    .replace(/\u00e2\u20ac\u00ba/g, "&#8250;")
+    .replace(/\u00c3\u00a9/g, "�")
+    .replace(/\u00c3\u00a8/g, "�")
+    .replace(/\u00c3\u00a1/g, "�")
+    .replace(/\u00c3\u00ad/g, "�")
+    .replace(/\u00c3\u00b3/g, "�")
+    .replace(/\u00c3\u00ba/g, "�")
+    .replace(/\u00c3\u00b1/g, "�")
+    .replace(/\u00c2\u00a9/g, "&copy;")
+    .replace(/\u00c2\u00bb/g, "&raquo;")
+    .replace(/\u00c2/g, "")
+    .replace(/\ufffd/g, "");
+}
+
+function stripLegacyHeadLinks(html: string) {
+  return html
+    .replace(/<link\b[^>]*rel=["']canonical["'][^>]*>\s*/gi, "")
+    .replace(/<link\b[^>]*rel=["'](?:icon|apple-touch-icon)["'][^>]*>\s*/gi, "")
+    .replace(/<meta\b[^>]*name=["']msapplication-TileImage["'][^>]*>\s*/gi, "");
+}
+
+let renderedPage = page;
+const contentSlug = contentSlugForRoute(page.route);
+const contentCollection = page.contentCollection ?? contentCollectionForRoute(page.route);
+const { entry: contentEntry, cacheHint: contentCacheHint } = contentCollection ? await getEmDashEntry(contentCollection, contentSlug) : { entry: null, cacheHint: undefined };
+if (contentCacheHint) Astro.cache.set(contentCacheHint);
+if (contentEntry) {
+  const title = contentEntryTitle(contentEntry.data);
+  const metaTitle = contentMetaTitle(contentEntry.data) || title || renderedPage.route;
+  const metaDescription = String(contentEntry.data.meta_description ?? "");
+  let headHtml = contentEntry.data.meta_description
+    ? setMetaDescription(setHeadTitle(renderedPage.headHtml, metaTitle), metaDescription)
+    : setHeadTitle(renderedPage.headHtml, metaTitle);
+  if (page.contentCollection) {
+    headHtml = setFallbackHeadMeta(headHtml, metaTitle, metaDescription, renderedPage.route);
+  }
+  const hydratedContentHtml = setBreadcrumbTitle(setHeroH1(renderedPage.contentHtml, title), title);
+  renderedPage = {
+    ...renderedPage,
+    headHtml,
+    contentHtml: page.contentCollection === "utility_pages"
+      ? stripInheritedToc(hydratedContentHtml)
+      : page.contentCollection === "hearing_aid_brands"
+        ? setFallbackToc(hydratedContentHtml, contentEntry.data.body_content)
+        : hydratedContentHtml,
+  };
+}
+
+const staffSlug = page.route?.replace(/^\/|\/$/g, "");
+if (staffSlug && STAFF_PROFILE_SHELLS[staffSlug]) {
+  const { entry, cacheHint } = await getEmDashEntry("staff_profiles", staffSlug);
+  if (cacheHint) Astro.cache.set(cacheHint);
+  if (entry) {
+    renderedPage = { ...renderedPage, headHtml: hydrateStaffHtml(renderedPage.headHtml, staffSlug, entry.data), contentHtml: hydrateStaffHtml(renderedPage.contentHtml, staffSlug, entry.data) };
+  }
+}
+
+type ContentSegment =
+  | { type: "html"; html: string }
+  | { type: "staffCarousel" }
+  | { type: "officeInfo"; sectionId: string; sourceSection?: string }
+  | { type: "sharedCta"; band: "services" | "hearing"; sectionId: string; sourceSection?: string }
+  | { type: "serviceBody" }
+  | { type: "blogBody" }
+  | { type: "blogPosts"; variant: "home" | "listing" }
+  | { type: "blogFeaturedImage" }
+  | { type: "blogPostInfo" }
+  | { type: "homeHero" }
+  | { type: "homeIntro" }
+  | { type: "homeTrustBadges" }
+  | { type: "homeTestimonials" }
+  | { type: "homeFaq" }
+  | { type: "staffProfileIntro" }
+  | { type: "aboutPageMain" }
+  | { type: "contactPageInfo" }
+  | { type: "scheduleAppointmentEmbed" };
+
+function escapeToken(token: string) {
+  return token.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function buildContentSegments(html: string): ContentSegment[] {
+  const segments: ContentSegment[] = [];
+  const escapedTokens = [
+    STAFF_CAROUSEL_TOKEN,
+    SERVICE_BODY_TOKEN,
+    BLOG_BODY_TOKEN,
+    BLOG_FEATURED_IMAGE_TOKEN,
+    BLOG_POST_INFO_TOKEN,
+    HOME_HERO_TOKEN,
+    HOME_INTRO_TOKEN,
+    HOME_TRUST_BADGES_TOKEN,
+    HOME_TESTIMONIALS_TOKEN,
+    HOME_FAQ_TOKEN,
+    STAFF_PROFILE_INTRO_TOKEN,
+    ABOUT_PAGE_MAIN_TOKEN,
+    CONTACT_PAGE_INFO_TOKEN,
+    SCHEDULE_APPOINTMENT_EMBED_TOKEN,
+  ].map(escapeToken);
+  const tokenPattern = new RegExp(`${escapedTokens.join("|")}|${BLOG_POSTS_TOKEN_PATTERN.source}|${OFFICE_INFO_TOKEN_PATTERN.source}|${SHARED_CTA_TOKEN_PATTERN.source}`, "g");
+  let cursor = 0;
+  let match: RegExpExecArray | null;
+  while ((match = tokenPattern.exec(html))) {
+    if (match.index > cursor) segments.push({ type: "html", html: html.slice(cursor, match.index) });
+    if (match[0] === STAFF_CAROUSEL_TOKEN) segments.push({ type: "staffCarousel" });
+    else if (match[0] === SERVICE_BODY_TOKEN) segments.push({ type: "serviceBody" });
+    else if (match[0] === BLOG_BODY_TOKEN) segments.push({ type: "blogBody" });
+    else if (match[0] === BLOG_FEATURED_IMAGE_TOKEN) segments.push({ type: "blogFeaturedImage" });
+    else if (match[0] === BLOG_POST_INFO_TOKEN) segments.push({ type: "blogPostInfo" });
+    else if (match[0] === HOME_HERO_TOKEN) segments.push({ type: "homeHero" });
+    else if (match[0] === HOME_INTRO_TOKEN) segments.push({ type: "homeIntro" });
+    else if (match[0] === HOME_TRUST_BADGES_TOKEN) segments.push({ type: "homeTrustBadges" });
+    else if (match[0] === HOME_TESTIMONIALS_TOKEN) segments.push({ type: "homeTestimonials" });
+    else if (match[0] === HOME_FAQ_TOKEN) segments.push({ type: "homeFaq" });
+    else if (match[0] === STAFF_PROFILE_INTRO_TOKEN) segments.push({ type: "staffProfileIntro" });
+    else if (match[0] === ABOUT_PAGE_MAIN_TOKEN) segments.push({ type: "aboutPageMain" });
+    else if (match[0] === CONTACT_PAGE_INFO_TOKEN) segments.push({ type: "contactPageInfo" });
+    else if (match[0] === SCHEDULE_APPOINTMENT_EMBED_TOKEN) segments.push({ type: "scheduleAppointmentEmbed" });
+    else if (match[0].startsWith("<!-- ASTRO_DYNAMIC_BLOG_POSTS:")) segments.push({ type: "blogPosts", variant: (match[1] === "home" ? "home" : "listing") });
+    else if (match[0].startsWith("<!-- ASTRO_DYNAMIC_OFFICE_INFO:")) segments.push({ type: "officeInfo", sectionId: match[2] ?? "a14cb86", sourceSection: match[3] });
+    else segments.push({ type: "sharedCta", band: match[4] === "hearing" ? "hearing" : "services", sectionId: match[5] ?? (match[4] === "hearing" ? "f757fb5" : "b77ad45"), sourceSection: match[6] });
+    cursor = tokenPattern.lastIndex;
+  }
+  if (cursor < html.length) segments.push({ type: "html", html: html.slice(cursor) });
+  return segments.length ? segments : [{ type: "html", html }];
+}
+const { entry: homepageEntry, cacheHint: homepageCacheHint } = await getEmDashEntry("homepage", "home");
+if (homepageCacheHint) Astro.cache.set(homepageCacheHint);
+const appointmentUrl = String(homepageEntry?.data?.appointment_cta_url ?? "/schedule-appointment/");
+const faviconHref = "/_emdash/api/media/file/site/jcaudiology-favicon-150x150.webp";
+const canonicalHref = new URL(normalizedRoute(renderedPage.route), Astro.url.origin).toString();
+
+const contentSegments = buildContentSegments(renderedPage.contentHtml);
+---
+
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <Fragment set:html={fixConvertedText(stripLegacyHeadLinks(renderedPage.headHtml))} />
+    <link rel="canonical" href={canonicalHref} />
+    <link rel="icon" href={faviconHref} sizes="32x32" />
+    <link rel="icon" href={faviconHref} sizes="192x192" />
+    <link rel="apple-touch-icon" href={faviconHref} />
+    <meta name="msapplication-TileImage" content={faviconHref} />
+  </head>
+  <body class={renderedPage.bodyClass} data-astro-device-mode={renderedPage.deviceMode} data-appointment-url={appointmentUrl}>
+    <Fragment set:html={fixConvertedText(renderedPage.preHeaderHtml)} />
+    <Header />
+    {contentSegments.map((segment) => (
+      segment.type === "html" ? (
+        <Fragment set:html={fixConvertedText(segment.html)} />
+      ) : segment.type === "staffCarousel" ? (
+        renderedPage.staffCarouselSectionId && <StaffCarousel sectionId={renderedPage.staffCarouselSectionId} sourceSection={renderedPage.staffCarouselSourceSection} />
+       ) : segment.type === "homeHero" ? (
+        <HomepageHero />
+      ) : segment.type === "homeIntro" ? (
+        <HomepageIntro />
+      ) : segment.type === "homeTrustBadges" ? (
+        <HomepageTrustBadges />
+      ) : segment.type === "homeTestimonials" ? (
+        <HomepageTestimonials />
+      ) : segment.type === "homeFaq" ? (
+        <HomepageFaq />
+      ) : segment.type === "staffProfileIntro" ? (
+        <StaffProfileIntro route={renderedPage.route} />
+      ) : segment.type === "aboutPageMain" ? (
+        <AboutPageMain />
+      ) : segment.type === "contactPageInfo" ? (
+        <ContactPageInfo />
+      ) : segment.type === "scheduleAppointmentEmbed" ? (
+        <ScheduleAppointmentEmbed />
+      ) : segment.type === "officeInfo" ? (
+        <OfficeInfoMapCta sectionId={segment.sectionId} sourceSection={segment.sourceSection} />
+      ) : segment.type === "serviceBody" ? (
+        <StandardContentBody route={renderedPage.route} collection={contentCollection ?? undefined} />
+      ) : segment.type === "blogBody" ? (
+        <StandardContentBody route={renderedPage.route} collection="blog_posts" mode="blog" />
+      ) : segment.type === "blogPosts" ? (
+        <BlogPostsGrid variant={segment.variant} />
+      ) : segment.type === "blogFeaturedImage" ? (
+        <BlogFeaturedImage route={renderedPage.route} />
+      ) : segment.type === "blogPostInfo" ? (
+        <BlogPostInfo route={renderedPage.route} />
+      ) : (
+        <ReusableShowcaseSection band={segment.band} sectionId={segment.sectionId} sourceSection={segment.sourceSection} />
+      )
+    ))}
+    <Footer />
+    <script is:inline>
+      (() => {
+        const slugifyHeading = (value) => String(value || "")
+          .toLowerCase()
+          .replace(/&/g, " and ")
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-+|-+$/g, "");
+
+        const ensureContentHeadingIds = () => {
+          const used = new Set(Array.from(document.querySelectorAll("[id]")).map((el) => el.id).filter(Boolean));
+          document.querySelectorAll(".astro-standard-body h2, .astro-standard-body h3, .astro-standard-body h4").forEach((heading) => {
+            if (heading.id) return;
+            const base = slugifyHeading(heading.textContent);
+            if (!base) return;
+            let candidate = base;
+            let index = 2;
+            while (used.has(candidate)) {
+              candidate = `${base}-${index}`;
+              index += 1;
+            }
+            heading.id = candidate;
+            used.add(candidate);
+          });
+        };
+
+        const scrollToTocTarget = (event) => {
+          const link = event.target?.closest?.(".astro-toc__list-item-text[href^='#']");
+          if (!link) return;
+          const hash = link.getAttribute("href");
+          if (!hash || hash === "#") return;
+          const targetId = decodeURIComponent(hash.slice(1));
+          window.setTimeout(() => {
+            ensureContentHeadingIds();
+            const target = document.getElementById(targetId) || document.querySelector(hash);
+            if (!target) return;
+            target.scrollIntoView({ behavior: "smooth", block: "start" });
+            history.replaceState(null, "", hash);
+          }, 90);
+        };
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", ensureContentHeadingIds, { once: true });
+        } else {
+          ensureContentHeadingIds();
+        }
+        document.addEventListener("click", scrollToTocTarget, true);
+      })();
+    </script>
+    <Fragment set:html={fixConvertedText(renderedPage.tailHtml)} />
+  </body>
+</html>
+
+
+

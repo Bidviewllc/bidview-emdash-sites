@@ -1,0 +1,57 @@
+---
+import { dataOf, imageAlt, imageSrc } from "./helpers";
+
+interface Props {
+	content: Record<string, unknown>;
+	posts: Array<Record<string, unknown> | { data: Record<string, unknown> }>;
+}
+
+const { content, posts } = Astro.props;
+const items = posts.map(dataOf);
+
+function plainTextFromPortable(value: unknown): string {
+	if (typeof value === "string") return value;
+	if (!Array.isArray(value)) return "";
+	return value
+		.flatMap((block: any) => Array.isArray(block?.children) ? block.children : [])
+		.map((child: any) => child?.text || "")
+		.join(" ")
+		.replace(/\s+/g, " ")
+		.trim();
+}
+
+function truncateWords(value: unknown, maxWords = 15): string {
+	const words = plainTextFromPortable(value).split(/\s+/).filter(Boolean);
+	if (words.length <= maxWords) return words.join(" ");
+	return `${words.slice(0, maxWords).join(" ")}...`;
+}
+---
+
+<div class="astro-element astro-element-f660051 shadow-con-blog e-flex e-con-boxed e-con e-parent" data-id="f660051" data-element_type="container" data-e-type="container">
+	<div class="e-con-inner">
+		<div class="astro-element astro-widget astro-widget-heading"><div class="astro-widget-container"><div class="astro-heading-title astro-size-default">{content.kicker}</div></div></div>
+		<div class="astro-element astro-widget astro-widget-heading"><div class="astro-widget-container"><h2 class="astro-heading-title astro-size-default">{content.heading}</h2></div></div>
+		<div class="astro-element astro-widget astro-widget-text-editor"><div class="astro-widget-container"><p>{content.body}</p></div></div>
+		<div class="astro-element astro-element-d67df5e astro-widget astro-widget-loop-grid">
+			<div class="astro-widget-container">
+				<div class="astro-loop-container">
+					{items.map((post) => (
+						<div class="astro astro-1500 e-loop-item">
+							<div class="astro-element astro-element-034113f e-con-full e-flex e-con e-parent" data-id="034113f" data-element_type="container" data-e-type="container">
+								<div class="astro-element astro-element-e701454 astro-widget__width-initial astro-widget-mobile__width-inherit astro-widget astro-widget-theme-post-featured-image astro-widget-image" data-id="e701454" data-element_type="widget" data-e-type="widget" data-widget_type="theme-post-featured-image.default">
+									<div class="astro-widget-container"><img loading="lazy" decoding="async" src={imageSrc(post.image)} alt={imageAlt(post.image, String(post.title || ""))} /></div>
+								</div>
+								<div class="astro-element astro-element-45b7f09 e-con-full e-flex e-con e-child" data-id="45b7f09" data-element_type="container" data-e-type="container">
+									<div class="astro-element astro-element-3ed5065 astro-widget astro-widget-post-info" data-id="3ed5065" data-element_type="widget" data-e-type="widget"><div class="astro-widget-container"><ul class="astro-inline-items astro-icon-list-items astro-post-info"><li class="astro-icon-list-item astro-inline-item"><span class="astro-icon-list-text astro-post-info__item astro-post-info__item--type-date"><time>{post.date}</time></span></li><li class="astro-icon-list-item astro-inline-item"><span class="astro-icon-list-text astro-post-info__item astro-post-info__item--type-terms">{post.category}</span></li></ul></div></div>
+									<div class="astro-element astro-element-4a11a3d astro-widget astro-widget-heading" data-id="4a11a3d" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default"><div class="astro-widget-container"><div class="astro-heading-title astro-size-default"><a href={String(post.url || "#")}>{post.title}</a></div></div></div>
+									<div class="astro-element astro-element-d587b3e astro-widget astro-widget-theme-post-excerpt" data-id="d587b3e" data-element_type="widget" data-e-type="widget"><div class="astro-widget-container"><p>{truncateWords(post.content)}</p></div></div>
+									<div class="astro-element astro-element-a2a793c astro-widget astro-widget-button" data-id="a2a793c" data-element_type="widget" data-e-type="widget"><div class="astro-widget-container"><div class="astro-button-wrapper"><a class="astro-button astro-button-link astro-size-sm" href={String(post.url || "#")}><span class="astro-button-content-wrapper"><span class="astro-button-icon"><i aria-hidden="true" class="far fa-long-arrow-right"></i></span><span class="astro-button-text">Learn More</span></span></a></div></div></div>
+								</div>
+							</div>
+						</div>
+					))}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

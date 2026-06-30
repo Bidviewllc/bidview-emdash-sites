@@ -1,0 +1,35 @@
+---
+import { dataOf } from "./helpers";
+
+interface Props {
+	content: Record<string, unknown>;
+	testimonials: Array<Record<string, unknown> | { data: Record<string, unknown> }>;
+}
+
+const { content, testimonials } = Astro.props;
+const items = testimonials.map(dataOf);
+---
+
+<div class="astro-element astro-element-b8edb83 e-flex e-con-boxed e-con e-parent" data-id="b8edb83" data-element_type="container" data-e-type="container">
+	<div class="e-con-inner">
+		<div class="astro-element astro-widget astro-widget-heading"><div class="astro-widget-container"><h2 class="astro-heading-title astro-size-default">{content.heading}</h2></div></div>
+		<div class="astro-element astro-widget astro-widget-heading"><div class="astro-widget-container"><div class="astro-heading-title astro-size-default">{content.subheading}</div></div></div>
+		<div class="astro-element astro-widget astro-widget-testimonial-carousel astro-element-68060980">
+			<div class="astro-widget-container">
+				<div class="swiper" role="region" aria-label="Testimonials">
+					<div class="swiper-wrapper">
+						{items.map((item) => (
+							<div class="swiper-slide">
+								<div class="astro-testimonial">
+									<div class="astro-testimonial-content"><p>{item.quote}</p></div>
+									<cite class="astro-testimonial-name">{item.name}</cite>
+								</div>
+							</div>
+						))}
+					</div>
+					<div class="swiper-pagination"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

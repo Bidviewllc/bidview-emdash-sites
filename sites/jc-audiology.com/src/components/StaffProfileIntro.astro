@@ -1,0 +1,57 @@
+﻿---
+import { getEmDashEntry } from "emdash";
+import { PortableText } from "emdash/ui";
+
+type ImageField = { src?: string; id?: string; alt?: string; width?: number; height?: number; meta?: Record<string, unknown> } | null | undefined;
+
+type Props = { route: string };
+
+const { route } = Astro.props;
+const slug = route.replace(/^\/+|\/+$/g, "");
+const { entry: pageEntry, cacheHint: pageCacheHint } = await getEmDashEntry("staff_profile_pages", slug);
+if (pageCacheHint) Astro.cache.set(pageCacheHint);
+const staffSlug = String(pageEntry?.data?.staff_profile_slug ?? slug);
+const { entry: staffEntry, cacheHint: staffCacheHint } = await getEmDashEntry("staff_profiles", staffSlug);
+if (staffCacheHint) Astro.cache.set(staffCacheHint);
+
+const contentBody = Array.isArray(pageEntry?.data?.content_body) ? pageEntry.data.content_body : [];
+const staff = staffEntry?.data ?? {};
+const name = String(staff.name ?? "");
+const image = staff.profile_image as ImageField;
+
+function mediaSrc(value: ImageField) {
+  if (!value) return "";
+  if (value.src) return value.src;
+  const storageKey = typeof value.meta?.storageKey === "string" ? value.meta.storageKey : value.id;
+  return storageKey ? `/_emdash/api/media/file/${storageKey}` : "";
+}
+
+const imageSrc = mediaSrc(image);
+---
+
+<div class="astro-element astro-element-75a11d3 astro-staff-profile-intro e-flex e-con-boxed e-con e-parent" data-id="75a11d3" data-element_type="container" data-e-type="container" data-settings='{"background_background":"classic"}'>
+  <div class="e-con-inner">
+    <div class="astro-element astro-element-f8971f3 e-con-full e-flex e-con e-child" data-id="f8971f3" data-element_type="container" data-e-type="container">
+      <div class="astro-element astro-element-cc4f7b5 e-con-full e-flex e-con e-child" data-id="cc4f7b5" data-element_type="container" data-e-type="container">
+        <div class="astro-element astro-element-ac2b506 astro-widget astro-widget-theme-post-content" data-id="ac2b506" data-element_type="widget" data-e-type="widget" data-widget_type="theme-post-content.default">
+          {contentBody.length > 0 && <PortableText value={contentBody} />}
+        </div>
+      </div>
+      <div class="astro-element astro-element-733f2f6 e-con-full e-flex e-con e-child" data-id="733f2f6" data-element_type="container" data-e-type="container">
+        <div class="astro-element astro-element-e6ef5d3 astro-widget astro-widget-image" data-id="e6ef5d3" data-element_type="widget" data-e-type="widget" data-widget_type="image.default">
+          {imageSrc && (
+            <img
+              width={image?.width ?? 600}
+              height={image?.height ?? 800}
+              src={imageSrc}
+              class="attachment-large size-large astro-image-5253"
+              alt={image?.alt ?? name}
+              srcset={`${imageSrc} ${image?.width ?? 600}w`}
+              sizes={`(max-width: ${image?.width ?? 600}px) 100vw, ${image?.width ?? 600}px`}
+            />
+          )}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

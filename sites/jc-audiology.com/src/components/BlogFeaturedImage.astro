@@ -1,0 +1,29 @@
+---
+import { getEmDashEntry } from "emdash";
+import { mediaSrc } from "./blog-utils";
+
+type Props = { route: string };
+const { route } = Astro.props;
+const slug = route.replace(/^\/+|\/+$/g, "").replace(/\//g, "__");
+const { entry, cacheHint } = await getEmDashEntry("blog_posts", slug);
+if (cacheHint) Astro.cache.set(cacheHint);
+
+const image = entry?.data.featured_image;
+const src = mediaSrc(image);
+const title = entry?.data.title ?? "";
+---
+
+<div class="astro-element astro-element-7378d4f astro-widget astro-widget-image astro-widget-theme-post-featured-image" data-id="7378d4f" data-element_type="widget" data-e-type="widget" data-widget_type="theme-post-featured-image.default">
+  {src && (
+    <img
+      width={image?.width ?? 1024}
+      height={image?.height ?? 681}
+      src={src}
+      class="attachment-large size-large astro-image-blog-featured"
+      alt={image?.alt ?? title}
+      decoding="async"
+      srcset={`${src} ${image?.width ?? 1024}w`}
+      sizes={`(max-width: ${image?.width ?? 1024}px) 100vw, ${image?.width ?? 1024}px`}
+    />
+  )}
+</div>

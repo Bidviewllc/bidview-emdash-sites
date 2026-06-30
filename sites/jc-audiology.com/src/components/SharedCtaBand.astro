@@ -1,0 +1,54 @@
+---
+import indexShellHtml from "../shells/pages/index.html?raw";
+
+type Props = {
+  band: "services" | "hearing";
+  sectionId?: string;
+  sourceSection?: string;
+};
+
+const { band, sectionId, sourceSection } = Astro.props;
+const sourceId = band === "services" ? "bbd51ae" : "b5283fc";
+const targetId = sectionId ?? sourceId;
+const routeDepth = Astro.url.pathname.replace(/^\/|\/$/g, "").split("/").filter(Boolean).length;
+const assetPrefix = "../".repeat(routeDepth);
+
+function extractBalancedDivByClass(source: string, className: string): string {
+  const classIndex = source.indexOf(className);
+  if (classIndex < 0) return "";
+  const divStart = source.lastIndexOf("<div", classIndex);
+  if (divStart < 0) return "";
+
+  const tagPattern = /<\/?div\b[^>]*>/gi;
+  tagPattern.lastIndex = divStart;
+  let depth = 0;
+  let match: RegExpExecArray | null;
+
+  while ((match = tagPattern.exec(source))) {
+    if (match[0].startsWith("</")) {
+      depth -= 1;
+      if (depth === 0) return source.slice(divStart, tagPattern.lastIndex);
+    } else {
+      depth += 1;
+    }
+  }
+
+  return "";
+}
+
+let sectionHtml = extractBalancedDivByClass(indexShellHtml, `astro-element-${sourceId}`);
+if (targetId !== sourceId) {
+  sectionHtml = sectionHtml
+    .replace(`astro-element-${sourceId}`, `astro-element-${targetId}`)
+    .replace(`data-id="${sourceId}"`, `data-id="${targetId}"`);
+}
+if (sourceSection) {
+  sectionHtml = sectionHtml.replace(/(<div\b[^>]*data-id="[^"]+"[^>]*)(>)/, `$1 data-source-section="${sourceSection}"$2`);
+}
+sectionHtml = sectionHtml
+  .replace(/(src|href)="assets\//g, `$1="${assetPrefix}assets/`)
+  .replace(/srcset="assets\//g, `srcset="${assetPrefix}assets/`)
+  .replace(/, assets\//g, `, ${assetPrefix}assets/`);
+---
+
+<Fragment set:html={sectionHtml} />

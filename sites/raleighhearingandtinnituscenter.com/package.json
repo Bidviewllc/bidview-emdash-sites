@@ -1,0 +1,42 @@
+{
+  "name": "raleigh-hearing-and-tinnitus-center",
+  "version": "0.0.3",
+  "private": true,
+  "type": "module",
+  "emdash": {
+    "label": "Raleigh Hearing and Tinnitus Center",
+    "seed": "seed/seed.json"
+  },
+  "scripts": {
+    "predev": "node scripts/patch-emdash-oauth-env.cjs",
+    "dev": "astro dev",
+    "preastro:dev": "node scripts/patch-emdash-oauth-env.cjs",
+    "astro:dev": "astro dev",
+    "preemdash:dev": "node scripts/patch-emdash-oauth-env.cjs",
+    "emdash:dev": "emdash dev",
+    "prebuild": "node scripts/patch-emdash-oauth-env.cjs",
+    "build": "astro build",
+    "preview": "astro preview",
+    "deploy": "astro build && wrangler deploy",
+    "typecheck": "astro check",
+    "seed:validate": "emdash seed seed/seed.json --validate"
+  },
+  "dependencies": {
+    "@astrojs/cloudflare": "13.6.1",
+    "@astrojs/react": "5.0.7",
+    "@emdash-cms/cloudflare": "0.16.1",
+    "@emdash-cms/plugin-forms": "0.2.3",
+    "@emdash-cms/plugin-webhook-notifier": "0.2.0",
+    "astro": "6.4.3",
+    "emdash": "0.16.1",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.9",
+    "@cloudflare/workers-types": "4.20260602.1",
+    "playwright": "1.60.0",
+    "semver": "^7.8.1",
+    "wrangler": "4.97.0"
+  }
+}

@@ -1,0 +1,31 @@
+---
+import { getEmDashEntry } from "emdash";
+import { PortableText } from "emdash/ui";
+
+const { entry, cacheHint } = await getEmDashEntry("homepage", "home");
+if (cacheHint) Astro.cache.set(cacheHint);
+const data = entry?.data ?? {};
+const eyebrow = String(data.testimonial_eyebrow_text ?? "What Our Patients Are Saying");
+const title = String(data.testimonial_h2_title ?? "Client Testimonials");
+const body = Array.isArray(data.testimonial_body_content) ? data.testimonial_body_content : [];
+---
+
+<div class="astro-element astro-element-bb317b2 e-flex e-con-boxed e-con e-parent" data-id="bb317b2" data-element_type="container" data-e-type="container" data-settings='{"background_background":"classic","shape_divider_top_negative":"yes","shape_divider_top":"curve"}'>
+  <div class="e-con-inner">
+    <div class="astro-shape astro-shape-top" aria-hidden="true" data-negative="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" preserveAspectRatio="none"><path class="astro-shape-fill" d="M500,97C126.7,96.3,0.8,19.8,0,0v100l1000,0V1C1000,19.4,873.3,97.8,500,97z"></path></svg></div>
+    <div class="astro-element astro-element-aa05216 e-con-full e-flex e-con e-child" data-id="aa05216" data-element_type="container" data-e-type="container">
+      <div class="astro-element astro-element-621f536 e-con-full e-flex e-con e-child" data-id="621f536" data-element_type="container" data-e-type="container">
+        <div class="astro-element astro-element-b45d8a2 astro-widget astro-widget-heading" data-id="b45d8a2" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default"><div class="astro-heading-title astro-size-default">{eyebrow}</div></div>
+        <div class="astro-element astro-element-6298b96 astro-widget astro-widget-heading" data-id="6298b96" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default"><h2 class="astro-heading-title astro-size-default" id="client-testimonials">{title}</h2></div>
+      </div>
+      <div class="astro-element astro-element-2f13c4e astro-widget astro-widget-text-editor" data-id="2f13c4e" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default"><PortableText value={body} /></div>
+    </div>
+    <div class="astro-element astro-element-5804509 e-con-full e-flex e-con e-child" data-id="5804509" data-element_type="container" data-e-type="container">
+      <div class="astro-element astro-element-bfe5a46 astro-widget astro-widget-html" data-id="bfe5a46" data-element_type="widget" data-e-type="widget" data-widget_type="html.default">
+        <!-- Elfsight Google Reviews | JC Audiology -->
+        <script src="assets/js/6b7384ef-platform.js" async></script>
+        <div class="elfsight-app-441fbd51-35a6-4684-84c4-3b06e2638fc6" data-elfsight-app-lazy></div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,40 @@
+---
+interface Props {
+	content: {
+		eyebrow?: string;
+		headline?: string;
+		ctaText?: string;
+		ctaUrl?: string;
+	};
+}
+
+const { content } = Astro.props;
+---
+
+<div class="astro-element astro-element-3dff6b7 hero-con e-flex e-con-boxed e-con e-parent" data-id="3dff6b7" data-element_type="container" data-e-type="container" data-settings='{"background_background":"classic"}'>
+	<div class="e-con-inner">
+		<div class="astro-element astro-element-dd050d4 e-con-full e-flex e-con e-child" data-id="dd050d4" data-element_type="container" data-e-type="container">
+			<div class="astro-element astro-element-dc8fc02 e-con-full e-flex e-con e-child" data-id="dc8fc02" data-element_type="container" data-e-type="container">
+				<div class="astro-element astro-element-82bd10f astro-widget astro-widget-heading" data-id="82bd10f" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
+					<div class="astro-widget-container"><div class="astro-heading-title astro-size-default">{content.eyebrow}</div></div>
+				</div>
+				<div class="astro-element astro-element-23947cf astro-widget astro-widget-heading" data-id="23947cf" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
+					<div class="astro-widget-container"><div class="astro-heading-title astro-size-default">{content.headline}</div></div>
+				</div>
+				<div class="astro-element astro-element-26a33ab astro-mobile-align-justify astro-widget astro-widget-button" data-id="26a33ab" data-element_type="widget" data-e-type="widget" data-widget_type="button.default">
+					<div class="astro-widget-container">
+						<div class="astro-button-wrapper">
+							<a class="astro-button astro-button-link astro-size-sm" href={content.ctaUrl || "/request-an-appointment/"}>
+								<span class="astro-button-content-wrapper">
+									<span class="astro-button-icon"><i aria-hidden="true" class="far fa-long-arrow-right"></i></span>
+									<span class="astro-button-text">{content.ctaText || "Schedule your Appointment"}</span>
+								</span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="astro-element astro-element-9e50db7 e-con-full e-flex e-con e-child" data-id="9e50db7" data-element_type="container" data-e-type="container" data-settings='{"background_background":"classic"}'></div>
+		</div>
+	</div>
+</div>
