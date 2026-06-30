@@ -17717,6 +17717,791 @@
         }
       },
       {
+        "id": "internal_pages-resources-research-linking-untreated-hearing-loss",
+        "slug": "resources/research-linking-untreated-hearing-loss",
+        "status": "published",
+        "data": {
+          "page_title": "Research Linking Untreated Hearing Loss to Dementia Risk and Falls",
+          "page_slug": "/resources/research-linking-untreated-hearing-loss/",
+          "meta_title": "Hearing Aids and Brain Health: Dementia, Brain Health, and Fall Risk | New Leaf Hearing Care",
+          "meta_description": "Research links untreated hearing loss to dementia and falls. See the evidence and schedule a hearing consult at New Leaf Hearing Care today.",
+          "intro_content": [
+            {
+              "_type": "block",
+              "_key": "researchIntro",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchIntros",
+                  "text": "Research shows that untreated hearing loss increases the risk of cognitive decline and dementia. Multiple large studies, including a landmark randomized clinical trial, demonstrate that hearing aids help protect brain health by keeping the brain stimulated, reducing listening effort, and supporting long-term cognitive function.",
+                  "marks": []
+                }
+              ]
+            }
+          ],
+          "content": [
+            {
+              "_type": "block",
+              "_key": "researchH2Lancet",
+              "style": "h2",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchH2Lancets",
+                  "text": "Hearing loss is the largest potentially modifiable risk factor for dementia.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchLancetCitation",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchLancetCitations",
+                  "text": "Livingston et al., The Lancet Commission on Dementia Prevention (2020, updated 2024)",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchLancetRef",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchLancetRefa",
+                  "text": "Reference: ",
+                  "marks": [
+                    "strong"
+                  ]
+                },
+                {
+                  "_type": "span",
+                  "_key": "researchLancetRefb",
+                  "text": "Livingston G, et al. Dementia prevention, intervention, and care. The Lancet, 2020; updated 2024.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchLancetKey",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchLancetKeys",
+                  "text": "Key points:",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchLancetBullet1",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchLancetBullet1s",
+                  "text": "Identifies untreated hearing loss as the single largest modifiable risk factor for dementia",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchLancetBullet2",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchLancetBullet2s",
+                  "text": "Estimates up to 8-9% of dementia cases could be prevented by addressing hearing loss",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchLancetBullet3",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchLancetBullet3s",
+                  "text": "Explicitly recommends hearing aid use as a preventive strategy",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchH2Achieve",
+              "style": "h2",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchH2Achieves",
+                  "text": "Hearing intervention slowed cognitive decline in older adults at increased risk for dementia.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchAchieveCitation",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchAchieveCitations",
+                  "text": "ACHIEVE Trial - Lin et al., The Lancet (2023)",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchAchieveRef",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchAchieveRefa",
+                  "text": "Reference: ",
+                  "marks": [
+                    "strong"
+                  ]
+                },
+                {
+                  "_type": "span",
+                  "_key": "researchAchieveRefb",
+                  "text": "Lin FR, et al. Hearing intervention versus health education control to reduce cognitive decline in older adults (ACHIEVE). The Lancet, 2023.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchAchieveKey",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchAchieveKeys",
+                  "text": "Key points:",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchAchieveBullet1",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchAchieveBullet1s",
+                  "text": "First large randomized controlled trial (gold standard)",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchAchieveBullet2",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchAchieveBullet2s",
+                  "text": "Showed 48% reduction in cognitive decline over 3 years in high-risk older adults using hearing aids",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchAchieveBullet3",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchAchieveBullet3s",
+                  "text": "Strong evidence that hearing treatment is protective for brain health, not just correlated",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchH2CognitiveLoad",
+              "style": "h2",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchH2CognitiveLoads",
+                  "text": "When the brain receives clearer sound, it stays more active and engaged - reducing cognitive load and decline.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchDealCitation",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchDealCitations",
+                  "text": "Deal et al., Journal of the American Geriatrics Society (2015)",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchDealRef",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchDealRefa",
+                  "text": "Reference: ",
+                  "marks": [
+                    "strong"
+                  ]
+                },
+                {
+                  "_type": "span",
+                  "_key": "researchDealRefb",
+                  "text": "Deal JA, et al. Hearing impairment and incident dementia and cognitive decline. Journal of the American Geriatrics Society, 2015.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchDealKey",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchDealKeys",
+                  "text": "Key points:",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchDealBullet1",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchDealBullet1s",
+                  "text": "Longitudinal study following adults over time",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchDealBullet2",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchDealBullet2s",
+                  "text": "Found lower rates of cognitive decline in people with treated hearing loss",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchDealBullet3",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchDealBullet3s",
+                  "text": "Helped establish the link between auditory input and brain stimulation",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchH2Physical",
+              "style": "h2",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchH2Physicals",
+                  "text": "Research Proving Hearing Aids Support Physical Health And Safety",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchPhysicalIntro",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchPhysicalIntros",
+                  "text": "Research shows that untreated hearing loss increases the risk of falls, balance problems, and physical decline. Hearing aids improve environmental awareness, support balance, and help people stay active, safe, and independent.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchH3Falls",
+              "style": "h3",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchH3Fallss",
+                  "text": "Reduced auditory input affects balance cues and situational awareness, increasing fall risk.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchFallsCitation",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchFallsCitations",
+                  "text": "Lin & Ferrucci, Archives of Internal Medicine (2012)",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchFallsRef",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchFallsRefa",
+                  "text": "Reference: ",
+                  "marks": [
+                    "strong"
+                  ]
+                },
+                {
+                  "_type": "span",
+                  "_key": "researchFallsRefb",
+                  "text": "Lin FR, Ferrucci L. Hearing loss and falls among older adults in the United States. Archives of Internal Medicine, 2012.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchFallsKey",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchFallsKeys",
+                  "text": "Key points:",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchFallsBullet1",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchFallsBullet1s",
+                  "text": "Found that adults with hearing loss had a significantly higher risk of falls",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchFallsBullet2",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchFallsBullet2s",
+                  "text": "Each 10 dB increase in hearing loss was associated with a 1.4x increased fall risk",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchFallsBullet3",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchFallsBullet3s",
+                  "text": "Suggests hearing plays a critical role in spatial awareness, balance, and environmental monitoring",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchH3Posture",
+              "style": "h3",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchH3Postures",
+                  "text": "Hearing aids don't just improve hearing - they help the brain orient the body in space.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchPostureCitation",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchPostureCitations",
+                  "text": "Rumalla, Karim, & Hullar, Otology & Neurotology (2015)",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchPostureRef",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchPostureRefa",
+                  "text": "Reference: ",
+                  "marks": [
+                    "strong"
+                  ]
+                },
+                {
+                  "_type": "span",
+                  "_key": "researchPostureRefb",
+                  "text": "Rumalla K, Karim AM, Hullar TE. The effect of hearing aids on postural stability. Otology & Neurotology, 2015.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchPostureKey",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchPostureKeys",
+                  "text": "Key points:",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchPostureBullet1",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchPostureBullet1s",
+                  "text": "Demonstrated improved balance and postural control when hearing aids were worn",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchPostureBullet2",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchPostureBullet2s",
+                  "text": "Shows hearing contributes to multisensory balance integration, not just communication",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchPostureBullet3",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchPostureBullet3s",
+                  "text": "One of the strongest studies linking hearing aid use to physical stability",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchH3Mobility",
+              "style": "h3",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchH3Mobilitys",
+                  "text": "Treating hearing loss helps people stay active, mobile, and independent longer.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchMobilityCitation",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchMobilityCitations",
+                  "text": "Maharani et al., Age and Ageing (2018)",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchMobilityRef",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchMobilityRefa",
+                  "text": "Reference: ",
+                  "marks": [
+                    "strong"
+                  ]
+                },
+                {
+                  "_type": "span",
+                  "_key": "researchMobilityRefb",
+                  "text": "Maharani A, et al. Longitudinal relationship between hearing aid use and physical functioning. Age and Ageing, 2018.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchMobilityKey",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchMobilityKeys",
+                  "text": "Key points:",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchMobilityBullet1",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchMobilityBullet1s",
+                  "text": "Long-term study showing better physical functioning in hearing aid users",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchMobilityBullet2",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchMobilityBullet2s",
+                  "text": "Hearing aid use was associated with slower physical decline over time",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchMobilityBullet3",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchMobilityBullet3s",
+                  "text": "Supports the link between hearing, mobility, and independence",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchH2Cta",
+              "style": "h2",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchH2Ctas",
+                  "text": "Ready to Protect Your Brain Health and Stay Steady on Your Feet?",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchCta1",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchCta1s",
+                  "text": "If you've noticed you're missing words, avoiding noisy places, or feeling more tired after conversations, don't ignore it.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchCta2",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchCta2s",
+                  "text": "A professional hearing evaluation can clarify what's happening and give you a plan that supports clearer communication, stronger confidence, and long-term wellness.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "researchCta3",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "researchCta3s",
+                  "text": "Schedule a hearing consultation with New Leaf Hearing Care in Arvada or Littleton today.",
+                  "marks": []
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
         "id": "internal_pages-cherry",
         "slug": "cherry",
         "status": "published",
