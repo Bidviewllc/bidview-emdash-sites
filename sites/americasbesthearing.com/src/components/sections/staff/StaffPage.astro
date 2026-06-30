@@ -1,0 +1,20 @@
+﻿---
+import { renderStaffPageHtml } from "./staff-page-renderer";
+
+interface Props {
+	rawHtml: string;
+	staffSlug: string;
+	profilePath: string;
+	staff: unknown[];
+	staffPages?: unknown[];
+	locations: unknown[];
+	locationPages?: unknown[];
+	home?: any;
+	audiologyServices?: unknown[];
+	hearingAidServices?: unknown[];
+}
+
+const html = renderStaffPageHtml(Astro.props.rawHtml, Astro.props);
+---
+
+<Fragment set:html={html} />

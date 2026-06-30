@@ -1,0 +1,41 @@
+node_modules/
+
+# Astro / build output
+.astro/
+dist/
+dist-check/
+
+# Cloudflare local state
+.wrangler/
+
+# Local EmDash / SQLite data
+data/
+data.db
+data.db-shm
+data.db-wal
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+
+# Logs
+*.log
+.dev-server*.log
+
+# Temporary QA/debug artifacts
+.tmp-*
+tmp-*.png
+scripts/.generated/
+scripts/.generated*
+
+# Static crawl outputs kept locally for reference, not needed by Cloudflare build
+local-copy/
+local-copy-qa/
+
+# Large visual reference screenshots
+Home.png
+About.png
+contact.png
+Internal-page-template.png
+blog-post-template.png
+hearing-aid-brand-pages.png
+staff-page-temaplate.png

@@ -1,0 +1,19 @@
+---
+import { renderLocationPageHtml } from "./location-page-renderer";
+
+interface Props {
+	rawHtml: string;
+	locationSlug: string;
+	locations: unknown[];
+	locationPages?: unknown[];
+	staff: unknown[];
+	home?: any;
+	audiologyServices?: unknown[];
+	hearingAidServices?: unknown[];
+	faqs?: unknown[];
+}
+
+const html = renderLocationPageHtml(Astro.props.rawHtml, Astro.props);
+---
+
+<Fragment set:html={html} />

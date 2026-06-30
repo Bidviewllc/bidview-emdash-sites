@@ -1,0 +1,22 @@
+﻿---
+import { getEmDashCollection, getEmDashEntry, getMenu } from "emdash";
+import html from "./raw-pages/footer.html?raw";
+import { renderFooterHtml } from "./sections/global-nav-renderer";
+
+const settingsResult = await getEmDashEntry("site_settings", "site").catch(() => null);
+const locationResult = await getEmDashCollection("locations", { status: "published" }).catch(() => ({ entries: [] }));
+const brandResult = await getEmDashCollection("hearing_aid_brand_pages", { status: "published" }).catch(() => ({ entries: [] }));
+const footerServicesMenu = await getMenu("footer_services").catch(() => null);
+const footerLegalMenu = await getMenu("footer_legal").catch(() => null);
+
+const renderedHtml = renderFooterHtml(html, {
+	settings: settingsResult?.data,
+	locations: locationResult.entries,
+	staff: [],
+	brands: brandResult.entries,
+	footerServicesMenu,
+	footerLegalMenu,
+});
+---
+
+<Fragment set:html={renderedHtml} />

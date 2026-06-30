@@ -1,0 +1,18 @@
+---
+import { renderHearingAidBrandPageHtml } from "./hearing-aid-brand-page-renderer";
+import { getEmDashEntry } from "emdash";
+
+interface Props {
+	rawHtml: string;
+	brandPage: any;
+	carouselImages?: any[];
+	models?: any[];
+	faqs?: any[];
+}
+
+const { rawHtml, brandPage, carouselImages = [], models = [], faqs = [] } = Astro.props;
+const ctaResult = await getEmDashEntry("internal_page_ctas", "default");
+const html = renderHearingAidBrandPageHtml(rawHtml, brandPage, { carouselImages, models, faqs, internalCta: ctaResult.entry });
+---
+
+<Fragment set:html={html} />

@@ -1,0 +1,57 @@
+---
+import { dataOf, imageAlt, imageSrc, textToParagraphs } from "./helpers";
+
+interface Props {
+	content: Record<string, unknown>;
+	staff: Array<Record<string, unknown> | { data: Record<string, unknown> }>;
+}
+
+const { content, staff } = Astro.props;
+const paragraphs = textToParagraphs(content.body);
+---
+
+<div class="astro-element astro-element-29f3065 shadow-con e-flex e-con-boxed e-con e-parent" data-id="29f3065" data-element_type="container" data-e-type="container" data-settings='{"background_background":"classic"}'>
+	<div class="e-con-inner">
+		<div class="astro-element astro-element-abb14b1 e-con-full e-flex e-con e-child" data-id="abb14b1" data-element_type="container" data-e-type="container">
+			<div class="astro-element astro-element-19e710b astro-widget astro-widget-heading" data-id="19e710b" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
+				<div class="astro-widget-container"><h2 class="astro-heading-title astro-size-default">{content.heading}</h2></div>
+			</div>
+			<div class="astro-element astro-element-286c6b3 astro-widget astro-widget-text-editor" data-id="286c6b3" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
+				<div class="astro-widget-container">{paragraphs.map((paragraph) => <p>{paragraph}</p>)}</div>
+			</div>
+		</div>
+		<div class="astro-element astro-element-6e2ff94 e-con-full animated-slow e-flex e-con e-child" data-id="6e2ff94" data-element_type="container" data-e-type="container">
+			<div class="astro-element astro-element-3df0900 astro-pagination-type-bullets astro-arrows-position-inside astro-pagination-position-outside astro-widget astro-widget-loop-carousel" data-id="3df0900" data-element_type="widget" data-e-type="widget" data-widget_type="loop-carousel.post">
+				<div class="astro-widget-container">
+					<div class="swiper astro-loop-container astro-grid" role="list" dir="ltr">
+						<div class="swiper-wrapper" aria-live="off">
+							{staff.map((item) => {
+								const person = dataOf(item);
+								return (
+									<div class="astro astro-1567 swiper-slide e-loop-item" role="group" aria-roledescription="slide" data-custom-edit-handle="1" data-astro-type="loop-item" data-astro-id="1567" data-astro-post-type="astro_library">
+										<div class="astro-element astro-element-feaa7f8 e-con-full e-flex e-con e-parent" data-id="feaa7f8" data-element_type="container" data-e-type="container">
+											<a class="astro-element astro-element-1afbd9f e-con-full e-flex e-con e-child" data-id="1afbd9f" data-element_type="container" data-e-type="container" href={String(person.profileUrl || person.profile_url || "#")}>
+												<div class="astro-element astro-element-fe60f82 e-con-full e-flex e-con e-child" data-id="fe60f82" data-element_type="container" data-e-type="container">
+													<div class="astro-element astro-element-2409b03 astro-widget__width-inherit astro-widget astro-widget-theme-post-featured-image astro-widget-image" data-id="2409b03" data-element_type="widget" data-e-type="widget" data-widget_type="theme-post-featured-image.default">
+														<div class="astro-widget-container"><img loading="lazy" decoding="async" src={imageSrc(person.image)} alt={imageAlt(person.image, String(person.name || ""))} draggable="false" /></div>
+													</div>
+												</div>
+												<div class="astro-element astro-element-5800482 e-con-full e-flex e-con e-child" data-id="5800482" data-element_type="container" data-e-type="container">
+													<div class="astro-element astro-element-8234441 astro-widget astro-widget-heading" data-id="8234441" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default"><div class="astro-widget-container"><div class="astro-heading-title astro-size-default">{person.name}</div></div></div>
+													<div class="astro-element astro-element-1866741 astro-widget astro-widget-heading" data-id="1866741" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default"><div class="astro-widget-container"><div class="astro-heading-title astro-size-default">{person.role}</div></div></div>
+													<div class="astro-element astro-element-3cd6206 astro-widget astro-widget-heading" data-id="3cd6206" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default"><div class="astro-widget-container"><div class="astro-heading-title astro-size-default">{person.locations}</div></div></div>
+												</div>
+											</a>
+										</div>
+									</div>
+								);
+							})}
+						</div>
+						<span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+					</div>
+					<div class="swiper-pagination"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

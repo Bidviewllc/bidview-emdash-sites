@@ -1,0 +1,25 @@
+---
+import { getEmDashEntry } from "emdash";
+import { PortableText } from "emdash/ui";
+
+const { entry, cacheHint } = await getEmDashEntry("homepage", "home");
+if (cacheHint) Astro.cache.set(cacheHint);
+const data = entry?.data ?? {};
+const sectionIntro = String(data.intro_section_intro ?? "JC Audiology");
+const h1Title = String(data.intro_h1_title ?? "LUTZ, FL AUDIOLOGIST, HEARING AID SPECIALIST & HEARING AIDS");
+const bodyContent = Array.isArray(data.intro_body_content) ? data.intro_body_content : [];
+---
+
+<div class="astro-element astro-element-fe208ad e-con-full e-flex e-con e-child" data-id="fe208ad" data-element_type="container" data-e-type="container">
+  <div class="astro-element astro-element-b651c06 e-con-full e-flex e-con e-child" data-id="b651c06" data-element_type="container" data-e-type="container">
+    <div class="astro-element astro-element-209b2b5 astro-widget astro-widget-heading" data-id="209b2b5" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
+      <h1 class="astro-heading-title astro-size-default" id="lutz-fl-audiologist-hearing-aid-specialist-hearing-aids">{h1Title}</h1>
+    </div>
+    <div class="astro-element astro-element-3ff49a6 astro-widget astro-widget-heading" data-id="3ff49a6" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
+      <h2 class="astro-heading-title astro-size-default" id="jc-audiology">{sectionIntro}</h2>
+    </div>
+  </div>
+  <div class="astro-element astro-element-0e4d788 astro-widget astro-widget-text-editor" data-id="0e4d788" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
+    <PortableText value={bodyContent} />
+  </div>
+</div>

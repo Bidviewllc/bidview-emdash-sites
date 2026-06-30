@@ -1,0 +1,1974 @@
+@font-face {
+  font-family: "Arsenal";
+  src: url("../fonts/269dfc09-arsenal-3b385cb9.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Arsenal";
+  src: url("../fonts/f2cda2aa-arsenal-519edd44.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Open Sans";
+  src: url("../fonts/21aa9568-opensans-8a8b2b0f.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Open Sans";
+  src: url("../fonts/a8ab69fa-opensans-30aee4f9.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Open Sans Contact";
+  src: url("../fonts/21aa9568-opensans-8a8b2b0f.woff2") format("woff2");
+  font-weight: 400 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --e-global-typography-primary-font-family: "Arsenal";
+  --e-global-typography-secondary-font-family: "Arsenal";
+  --e-global-typography-text-font-family: "Open Sans";
+  --e-global-typography-accent-font-family: "Open Sans";
+  --e-global-typography-17a51fc-font-family: "Arsenal";
+  --e-global-typography-42952eb-font-family: "Open Sans";
+  --e-global-typography-b61e25e-font-family: "Open Sans";
+  --e-global-typography-cf602b8-font-family: "Arsenal";
+  --e-global-typography-ee41610-font-family: "Arsenal";
+}
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+  font-family: "Open Sans", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.astro-heading-title {
+  font-family: "Arsenal", sans-serif;
+}
+
+.astro-location-header .astro-element-2c7138b,
+.astro-location-header .astro-element-e14e10a {
+  left: 0 !important;
+  right: 0 !important;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  box-sizing: border-box;
+}
+
+.astro-location-header .astro-element-e14e10a {
+  position: fixed !important;
+  z-index: 9998 !important;
+  padding-block: 0 !important;
+  transition: background-color 220ms ease, box-shadow 220ms ease, min-height 220ms ease, padding 220ms ease;
+}
+
+.astro-location-header .astro-element-e14e10a > .e-con-inner {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: 20px;
+  box-sizing: border-box;
+}
+
+.astro-location-header .astro-element-6c8f7f2,
+.astro-location-header .astro-element-6c8f7f2 img {
+  transition: width 220ms ease, max-width 220ms ease, height 220ms ease;
+}
+
+.astro-location-header .astro-element-6c8f7f2 img {
+  width: 100% !important;
+  height: auto !important;
+}
+
+body.local-scrolled .astro-location-header .astro-element-e14e10a {
+  background: #fff !important;
+  box-shadow: 0 6px 18px rgba(24, 53, 38, 0.08);
+}
+
+body:not(.home) .astro-location-header .astro-element-e14e10a {
+  background: #fff !important;
+}
+
+@media (min-width: 1025px) {
+  .astro-location-header .astro-element-4da6423 .astro-nav-menu--main .menu-item-has-children {
+    position: relative;
+  }
+
+  .astro-location-header .astro-element-4da6423 .astro-nav-menu--main .sub-menu {
+    display: block !important;
+    position: absolute !important;
+    top: 100% !important;
+    left: 0 !important;
+    min-width: 240px;
+    width: max-content;
+    max-width: 320px;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 12px 24px rgba(24, 53, 38, 0.16);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(8px);
+    transition: opacity 180ms ease, transform 180ms ease, visibility 180ms ease;
+    z-index: 10020;
+  }
+
+  .astro-location-header .astro-element-4da6423 .astro-nav-menu--main .sub-menu .sub-menu {
+    top: -8px !important;
+    left: 100% !important;
+    border-radius: 8px;
+  }
+
+  .astro-location-header .astro-element-4da6423 .astro-nav-menu--main li:hover > .sub-menu,
+  .astro-location-header .astro-element-4da6423 .astro-nav-menu--main li:focus-within > .sub-menu,
+  .astro-location-header .astro-element-4da6423 .astro-nav-menu--main li.local-submenu-open > .sub-menu {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  .astro-location-header .astro-element-4da6423 .astro-nav-menu--main .sub-menu a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 42px;
+    padding: 10px 18px !important;
+    white-space: nowrap;
+  }
+}
+
+@media (min-width: 1367px) {
+  .astro-location-header .astro-element-e14e10a {
+    top: 36px !important;
+    min-height: 153px;
+    --padding-top: 20px !important;
+    --padding-bottom: 20px !important;
+    padding-block: 0 !important;
+  }
+
+  body.local-scrolled .astro-location-header .astro-element-e14e10a {
+    min-height: 100px;
+    --padding-top: 20px !important;
+    --padding-bottom: 20px !important;
+    padding-block: 0 !important;
+  }
+
+  body.local-scrolled .astro-location-header .astro-element-6c8f7f2 {
+    width: 200px !important;
+    max-width: 200px !important;
+    --container-widget-width: 200px !important;
+  }
+
+  body.local-scrolled .astro-location-header .astro-element-6c8f7f2 img {
+    width: 200px !important;
+    max-width: 200px !important;
+  }
+}
+
+@media (min-width: 1025px) and (max-width: 1366px) {
+  .astro-location-header .astro-element-e14e10a {
+    top: 36px !important;
+    min-height: 92px;
+    --padding-top: 16px !important;
+    --padding-bottom: 16px !important;
+    padding-block: 0 !important;
+  }
+
+  .astro-location-header .astro-element-6c8f7f2 {
+    width: 200px !important;
+    max-width: 200px !important;
+    --container-widget-width: 200px !important;
+  }
+
+  body.local-scrolled .astro-location-header .astro-element-e14e10a {
+    min-height: 82px;
+    --padding-top: 12px !important;
+    --padding-bottom: 12px !important;
+    padding-block: 0 !important;
+  }
+
+  body.local-scrolled .astro-location-header .astro-element-6c8f7f2 {
+    width: 150px !important;
+    max-width: 150px !important;
+    --container-widget-width: 150px !important;
+  }
+
+  body.local-scrolled .astro-location-header .astro-element-6c8f7f2 img {
+    width: 150px !important;
+    max-width: 150px !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  .astro-location-header .astro-element-e14e10a {
+    top: 36px !important;
+    min-height: 104px;
+    --padding-top: 16px !important;
+    --padding-bottom: 16px !important;
+    padding-block: 0 !important;
+    background: #fff !important;
+  }
+
+  .astro-location-header .astro-element-e14e10a > .e-con-inner {
+    padding-inline: 20px;
+  }
+
+  .astro-location-header .astro-element-6c8f7f2 {
+    width: 240px !important;
+    max-width: 240px !important;
+    --container-widget-width: 240px !important;
+  }
+
+  .astro-location-header .astro-element-d6ca60b {
+    margin-left: auto;
+    width: auto;
+    flex: 0 0 auto;
+  }
+
+  .astro-location-header .astro-element-3146a90,
+  .astro-location-header .astro-nav-menu--main {
+    display: none !important;
+  }
+
+  .astro-location-header .astro-element-4da6423 .astro-menu-toggle {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 48px !important;
+    height: 48px !important;
+    margin: 0 !important;
+    border-radius: 3px;
+    background: #f4f7f2 !important;
+    color: #355543 !important;
+  }
+
+  .astro-location-header .astro-element-4da6423 .astro-menu-toggle svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor !important;
+  }
+
+  .astro-location-header .astro-element-4da6423 nav.astro-nav-menu--dropdown {
+    display: block !important;
+    position: fixed !important;
+    top: 140px !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100vw !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding-top: 0 !important;
+    transform: none !important;
+    max-height: 0;
+    overflow: hidden;
+    background: #f4f7f2 !important;
+    box-shadow: 0 10px 22px rgba(24, 53, 38, 0.12);
+    transition: max-height 250ms ease;
+  }
+
+  body.local-menu-open .astro-location-header .astro-element-4da6423 nav.astro-nav-menu--dropdown {
+    top: 140px !important;
+    margin: 0 !important;
+    height: auto !important;
+    --menu-height: calc(100vh - 104px) !important;
+    transform: none !important;
+    max-height: calc(100vh - 104px);
+    overflow-y: auto;
+  }
+
+  .astro-location-header .astro-element-4da6423 nav.astro-nav-menu--dropdown ul {
+    display: block;
+    width: 100%;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .astro-location-header .astro-element-4da6423 nav.astro-nav-menu--dropdown li {
+    display: block;
+    width: 100%;
+  }
+
+  .astro-location-header .astro-element-4da6423 nav.astro-nav-menu--dropdown a {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .astro-location-header .astro-element-4da6423 nav.astro-nav-menu--dropdown .sub-menu {
+    position: static !important;
+    width: 100% !important;
+    margin: 0 !important;
+    max-height: 0;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.7) !important;
+  }
+
+  .astro-location-header .astro-element-4da6423 nav.astro-nav-menu--dropdown li.local-submenu-open > .sub-menu {
+    max-height: 900px;
+  }
+}
+
+@media (max-width: 767px) {
+  body {
+    padding-bottom: 70px;
+  }
+
+  .astro-location-header .astro-element-2c7138b {
+    display: none !important;
+  }
+
+  .astro-location-header .astro-element-e14e10a {
+    top: 0 !important;
+    min-height: 86px;
+    --padding-top: 16px !important;
+    --padding-bottom: 16px !important;
+    padding-block: 0 !important;
+  }
+
+  .astro-location-header .astro-element-e14e10a > .e-con-inner {
+    padding-inline: 20px;
+  }
+
+  .astro-location-header .astro-element-6c8f7f2 {
+    width: 180px !important;
+    max-width: 180px !important;
+    --container-widget-width: 180px !important;
+  }
+
+  .astro-location-header .astro-element-6c8f7f2 img {
+    width: 180px !important;
+    max-width: 180px !important;
+    height: 54px !important;
+    object-fit: contain;
+  }
+
+  .astro-location-header .astro-element-4da6423 {
+    display: block !important;
+  }
+
+  .astro-location-header .astro-element-997cec5 {
+    display: none !important;
+  }
+
+  body.local-menu-open .astro-location-header .astro-element-4da6423 nav.astro-nav-menu--dropdown {
+    top: 86px !important;
+    margin: 0 !important;
+    --menu-height: calc(100vh - 86px) !important;
+    max-height: calc(100vh - 86px);
+  }
+
+  .astro-location-footer .astro-element-a2e79f7 {
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    z-index: 9997 !important;
+    width: 100vw !important;
+    margin: 0 !important;
+    transform: none !important;
+    box-shadow: 0 -8px 20px rgba(24, 53, 38, 0.18);
+  }
+
+  .astro-location-footer .astro-sticky__spacer.astro-element-a2e79f7 {
+    display: none !important;
+  }
+
+  .astro-location-footer .astro-element-a2e79f7 > .e-con-inner {
+    width: 100% !important;
+  }
+
+  .astro-location-footer .astro-element-3fce854 i.fa-phone,
+  .astro-location-footer .astro-element-3fce854 i.fa-phone::before,
+  .astro-location-footer .astro-element-3fce854 i.fa-phone::after {
+    display: inline-block !important;
+    width: 1em !important;
+    height: 1em !important;
+    min-width: 1em !important;
+    color: currentColor !important;
+    content: "" !important;
+    font-family: inherit !important;
+    font-style: normal !important;
+    line-height: 1 !important;
+  }
+
+  .astro-location-footer .astro-element-3fce854 i.fa-phone {
+    background: transparent !important;
+  }
+
+  .astro-location-footer .astro-element-3fce854 i.fa-phone::before {
+    background-color: currentColor !important;
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath d='M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64 0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z'/%3E%3C/svg%3E") !important;
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath d='M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64 0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z'/%3E%3C/svg%3E") !important;
+    -webkit-mask-repeat: no-repeat !important;
+    mask-repeat: no-repeat !important;
+    -webkit-mask-position: center !important;
+    mask-position: center !important;
+    -webkit-mask-size: contain !important;
+    mask-size: contain !important;
+  }
+
+  .astro-location-footer .astro-element-3fce854 i.fa-phone::after {
+    display: none !important;
+    content: none !important;
+    background: none !important;
+    -webkit-mask-image: none !important;
+    mask-image: none !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .astro-location-header .astro-element-e14e10a > .e-con-inner {
+    gap: 20px;
+  }
+
+  .astro-location-header .astro-element-a299ba2 {
+    flex: 1 1 auto;
+    width: auto !important;
+    min-width: 230px;
+  }
+
+  .astro-location-header .astro-element-d6ca60b {
+    display: flex !important;
+    --flex-direction: row !important;
+    flex-direction: row !important;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 22px;
+  }
+
+  .astro-location-header .astro-element-3146a90 {
+    display: block !important;
+    order: 1;
+  }
+
+  .astro-location-header .astro-element-4da6423 {
+    order: 2;
+  }
+
+  .astro-location-header .astro-element-3146a90 .astro-button {
+    white-space: nowrap;
+  }
+}
+
+.astro-4431 .astro-element.astro-element-b99d118 {
+  background-image: url("../media/9e95e57b-jcaudiology-home-featured.webp") !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+}
+
+.astro-4431 .astro-element.astro-element-b99d118.gradient-container::before {
+  pointer-events: none;
+}
+
+.astro-4431 .astro-element.astro-element-b99d118 > .e-con-inner {
+  position: relative;
+  z-index: 1;
+}
+
+.astro-4431 .astro-element.astro-element-b99d118 > .astro-shape-bottom,
+.astro-4431 .astro-element.astro-element-b99d118 > .e-con-inner > .astro-shape-bottom {
+  left: 50% !important;
+  right: auto !important;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  transform: translateX(-50%) !important;
+}
+
+.astro-4431 .astro-element.astro-element-b99d118 > .astro-shape-bottom svg,
+.astro-4431 .astro-element.astro-element-b99d118 > .e-con-inner > .astro-shape-bottom svg {
+  width: calc(100vw + 1.3px) !important;
+}
+
+.astro-button,
+.astro-button *,
+.astro-button .astro-button-text,
+.astro-element-3146a90 .astro-button,
+.astro-element-3146a90 .astro-button * {
+  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif !important;
+  font-style: normal !important;
+  font-synthesis: none !important;
+  font-synthesis-style: none !important;
+  text-transform: uppercase !important;
+}
+
+.astro-button .astro-button-icon i {
+  font-family: "Open Sans", sans-serif !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+}
+
+.astro-button .astro-button-icon i::before {
+  content: "\2192" !important;
+}
+
+.astro-element-c146eba .swiper {
+  overflow: hidden;
+  cursor: grab;
+  touch-action: pan-y;
+  height: auto !important;
+}
+
+.astro-element-c146eba .swiper.local-dragging {
+  cursor: grabbing;
+}
+
+.astro-element-c146eba .swiper a,
+.astro-element-c146eba .swiper img {
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+.astro-element-c146eba .swiper.local-dragging a {
+  cursor: grabbing;
+}
+
+.astro-element-c146eba .swiper-wrapper {
+  display: flex !important;
+  align-items: stretch;
+  overflow: visible !important;
+  will-change: transform;
+  transition: transform 500ms ease;
+}
+
+.astro-element-c146eba .swiper-slide {
+  flex: 0 0 auto !important;
+  height: auto !important;
+  box-sizing: border-box;
+}
+
+.astro-element-c146eba .astro-element-188c9e2 {
+  min-height: 0 !important;
+  padding: 0 !important;
+  --padding-top: 0px !important;
+  --padding-right: 0px !important;
+  --padding-bottom: 0px !important;
+  --padding-left: 0px !important;
+}
+
+.astro-element-c146eba .astro-element-188c9e2 > .e-con-inner {
+  min-height: 0 !important;
+  padding: 10px 10px !important;
+  --padding-top: 10px !important;
+  --padding-right: 10px !important;
+  --padding-bottom: 10px !important;
+  --padding-left: 10px !important;
+}
+
+.astro-element-c146eba .astro-element-06fbb6b,
+.astro-element-c146eba .astro-element-fb69c56,
+.astro-element-c146eba .astro-element-255e804 {
+  min-height: 0 !important;
+  padding: 0 !important;
+  --padding-top: 0px !important;
+  --padding-right: 0px !important;
+  --padding-bottom: 0px !important;
+  --padding-left: 0px !important;
+}
+
+.astro-element-c146eba .astro-element-06fbb6b {
+  overflow: hidden;
+  height: auto !important;
+  background-color: #fff !important;
+  border-radius: 15px !important;
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.15) !important;
+  gap: 0 !important;
+  row-gap: 0 !important;
+  column-gap: 0 !important;
+  --gap: 0px 0px !important;
+  --row-gap: 0px !important;
+  --column-gap: 0px !important;
+}
+
+.astro-element-c146eba .astro-element-fb69c56 {
+  flex: 0 0 auto !important;
+  height: 380px !important;
+  gap: 0 !important;
+  row-gap: 0 !important;
+  column-gap: 0 !important;
+  --gap: 0px 0px !important;
+  --row-gap: 0px !important;
+  --column-gap: 0px !important;
+}
+
+.astro-element-c146eba .astro-element-255e804 img {
+  display: block !important;
+  width: 100% !important;
+  height: 380px !important;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.astro-element-c146eba .astro-element-b75c8c4 {
+  min-height: 120px !important;
+  height: auto !important;
+  padding: 20px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  gap: 10px !important;
+  row-gap: 10px !important;
+  column-gap: 10px !important;
+  --gap: 10px 10px !important;
+  --row-gap: 10px !important;
+  --column-gap: 10px !important;
+  --padding-top: 20px !important;
+  --padding-right: 20px !important;
+  --padding-bottom: 20px !important;
+  --padding-left: 20px !important;
+}
+
+.astro-element-c146eba .astro-element-4eb79b4,
+.astro-element-c146eba .astro-element-d4da657 {
+  width: 100%;
+  text-align: center !important;
+}
+
+.astro-element-c146eba .astro-element-4eb79b4 .astro-heading-title,
+.astro-element-c146eba .astro-element-4eb79b4 .astro-heading-title a {
+  color: rgb(13, 13, 13) !important;
+  font-family: "Arsenal", sans-serif !important;
+  font-size: 22px !important;
+  font-style: normal !important;
+  font-weight: 700 !important;
+  line-height: 1.2em !important;
+  text-align: center !important;
+  text-transform: uppercase !important;
+}
+
+.astro-element-c146eba .astro-element-d4da657 .astro-heading-title {
+  color: rgb(13, 13, 13) !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 16px !important;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  line-height: 1.4em !important;
+  text-align: center !important;
+  text-transform: uppercase !important;
+}
+
+@media (max-width: 1024px) {
+  .astro-element-c146eba .astro-element-fb69c56,
+  .astro-element-c146eba .astro-element-255e804 img {
+    height: 360px !important;
+  }
+
+  .astro-element-c146eba .astro-element-b75c8c4 {
+    min-height: 114px !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .astro-element-c146eba .astro-element-fb69c56,
+  .astro-element-c146eba .astro-element-255e804 img {
+    height: 320px !important;
+  }
+
+  .astro-element-c146eba .astro-element-b75c8c4 {
+    min-height: 112px !important;
+  }
+}
+
+.astro-element-c146eba .swiper-pagination-bullet {
+  opacity: 1 !important;
+  background: #d3d5cf !important;
+}
+
+.astro-element-c146eba .swiper-pagination-bullet-active {
+  background: #fff !important;
+}
+
+@media (max-width: 1024px) {
+  .astro-location-header .astro-element-4da6423 nav.astro-nav-menu--dropdown.astro-nav-menu__container {
+    margin: 0 !important;
+    margin-top: 0 !important;
+    margin-block-start: 0 !important;
+    padding-top: 0 !important;
+    inset-inline-start: 0 !important;
+  }
+
+  body.local-menu-open .astro-location-header .astro-element-4da6423 nav.astro-nav-menu--dropdown.astro-nav-menu__container {
+    top: 140px !important;
+    margin-top: 0 !important;
+    margin-block-start: 0 !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .astro-location-header .astro-element-4da6423 nav.astro-nav-menu--dropdown.astro-nav-menu__container,
+  body.local-menu-open .astro-location-header .astro-element-4da6423 nav.astro-nav-menu--dropdown.astro-nav-menu__container {
+    top: 86px !important;
+    margin-top: 0 !important;
+    margin-block-start: 0 !important;
+  }
+}
+
+.local-mobile-menu-popup {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  body.local-mobile-popup-open {
+    overflow: hidden;
+  }
+
+  body.local-mobile-popup-open .astro-location-header .astro-element-4da6423 nav.astro-nav-menu--dropdown.astro-nav-menu__container {
+    max-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .local-mobile-menu-popup {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: stretch;
+    background: rgba(13, 13, 13, 0.4);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 220ms ease, visibility 220ms ease;
+    z-index: 100000;
+  }
+
+  body.local-mobile-popup-open .local-mobile-menu-popup {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .local-mobile-menu-popup .dialog-widget-content {
+    position: relative;
+    width: min(260px, 82vw);
+    max-width: 100vw;
+    height: 100vh;
+    margin: 0;
+    background: #fff;
+    box-shadow: 2px 8px 23px 3px rgba(0, 0, 0, 0.2);
+    transform: translate3d(100%, 0, 0);
+    transition: transform 360ms ease;
+    overflow: visible;
+  }
+
+  body.local-mobile-popup-open .local-mobile-menu-popup .dialog-widget-content {
+    transform: translate3d(0, 0, 0);
+  }
+
+  .local-mobile-menu-popup .dialog-close-button {
+    position: absolute;
+    top: 24px;
+    right: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: #f4f7f2;
+    color: #355543;
+    cursor: pointer;
+    z-index: 2;
+  }
+
+  .local-mobile-menu-popup .dialog-close-button svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+  }
+
+  .local-mobile-menu-popup .dialog-message {
+    width: 100%;
+    height: 100vh;
+    max-height: 100vh;
+    padding: 0;
+    overflow-y: auto;
+  }
+
+  .local-mobile-menu-panel,
+  .local-mobile-menu-inner {
+    width: 100%;
+  }
+
+  .local-mobile-menu-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    min-height: 100vh;
+    box-sizing: border-box;
+    padding: 30px 20px;
+    background: #fff;
+  }
+
+  .local-mobile-menu-logo {
+    width: 168px;
+    max-width: 168px;
+    margin: 0;
+    padding: 0;
+  }
+
+  .local-mobile-menu-logo img {
+    display: block;
+    width: 168px !important;
+    max-width: 168px !important;
+    height: auto !important;
+  }
+
+  .local-mobile-menu-nav {
+    display: block !important;
+    position: static !important;
+    width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    transform: none !important;
+  }
+
+  .local-mobile-menu-nav .astro-nav-menu,
+  .local-mobile-menu-nav li {
+    display: block;
+    width: 100%;
+    margin: 0 !important;
+    padding: 0 !important;
+    list-style: none;
+  }
+
+  .local-mobile-menu-nav a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 0 !important;
+    color: #0d0d0d !important;
+    fill: #0d0d0d !important;
+    font-family: "Open Sans", sans-serif !important;
+    font-size: 16px !important;
+    font-style: normal !important;
+    font-weight: 700 !important;
+    line-height: 1.2 !important;
+    text-transform: uppercase !important;
+  }
+
+  .local-mobile-menu-nav .sub-menu {
+    position: static !important;
+    display: block !important;
+    width: 100% !important;
+    max-height: 0;
+    margin: 0 !important;
+    padding: 0 0 0 14px !important;
+    overflow: hidden;
+    background: transparent !important;
+    box-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+    transition: max-height 240ms ease;
+  }
+
+  .local-mobile-menu-nav li.local-submenu-open > .sub-menu {
+    max-height: 900px;
+  }
+
+  .local-mobile-menu-nav .sub-arrow svg {
+    width: 12px;
+    height: 12px;
+    transition: transform 180ms ease;
+  }
+
+  .local-mobile-menu-nav li.local-submenu-open > a .sub-arrow svg {
+    transform: rotate(180deg);
+  }
+
+  .local-mobile-menu-cta {
+    width: 100%;
+    margin: 20px 0 0;
+    padding: 0;
+  }
+
+  .local-mobile-menu-cta .astro-button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 767px) {
+  #local-mobile-menu-popup.local-mobile-menu-popup {
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-items: stretch !important;
+  }
+
+  #local-mobile-menu-popup.local-mobile-menu-popup .dialog-widget-content {
+    flex: 0 0 min(260px, 82vw) !important;
+    width: min(260px, 82vw) !important;
+    max-width: min(260px, 82vw) !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+  }
+
+  #local-mobile-menu-popup.local-mobile-menu-popup .dialog-message {
+    width: 100% !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+  }
+}
+
+@media (max-width: 767px) {
+  #local-mobile-menu-popup.local-mobile-menu-popup {
+    background-color: rgba(13, 13, 13, 0.4) !important;
+    align-items: center !important;
+  }
+
+  #local-mobile-menu-popup.local-mobile-menu-popup .dialog-widget-content {
+    box-shadow: 2px 8px 23px 3px rgba(0, 0, 0, 0.2) !important;
+  }
+
+  #local-mobile-menu-popup .local-mobile-menu-nav a,
+  #local-mobile-menu-popup .local-mobile-menu-nav .astro-item,
+  #local-mobile-menu-popup .local-mobile-menu-nav .astro-sub-item {
+    width: auto !important;
+    min-height: 44px !important;
+    justify-content: flex-start !important;
+    gap: 8px !important;
+    color: #0d0d0d !important;
+    fill: #0d0d0d !important;
+    font-family: "Open Sans", sans-serif !important;
+    font-size: 14px !important;
+    font-style: normal !important;
+    font-weight: 600 !important;
+    line-height: 20px !important;
+    text-transform: uppercase !important;
+    background: transparent !important;
+  }
+
+  #local-mobile-menu-popup .local-mobile-menu-nav .sub-menu {
+    padding-left: 14px !important;
+  }
+
+  #local-mobile-menu-popup .local-mobile-menu-cta .astro-button {
+    display: inline-block !important;
+    width: 220px !important;
+    min-height: 60px !important;
+    padding: 14px 16px !important;
+    border-radius: 40px !important;
+    background-color: #0e591a !important;
+    color: #fff !important;
+    fill: #fff !important;
+    font-family: "Open Sans", sans-serif !important;
+    font-size: 15px !important;
+    font-style: normal !important;
+    font-weight: 700 !important;
+    line-height: 15px !important;
+    text-align: center !important;
+    text-transform: uppercase !important;
+  }
+
+  #local-mobile-menu-popup .local-mobile-menu-cta .astro-button *,
+  #local-mobile-menu-popup .local-mobile-menu-cta .astro-button-text,
+  #local-mobile-menu-popup .local-mobile-menu-cta .astro-button-icon,
+  #local-mobile-menu-popup .local-mobile-menu-cta .astro-button-icon i {
+    color: #fff !important;
+    fill: #fff !important;
+    font-family: "Open Sans", sans-serif !important;
+    font-style: normal !important;
+    font-weight: 700 !important;
+  }
+
+  #local-mobile-menu-popup .local-mobile-menu-cta .astro-button-content-wrapper {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 8px !important;
+  }
+
+  #local-mobile-menu-popup .local-mobile-menu-cta .astro-button-text {
+    display: block !important;
+    font-size: 15px !important;
+    line-height: 15px !important;
+    text-align: left !important;
+  }
+}
+
+@media (max-width: 767px) {
+  #local-mobile-menu-popup .local-mobile-menu-cta .astro-button,
+  #local-mobile-menu-popup .local-mobile-menu-cta .astro-button * {
+    font-size: 14px !important;
+    font-style: normal !important;
+    font-synthesis: none !important;
+    font-synthesis-style: none !important;
+  }
+
+  #local-mobile-menu-popup .local-mobile-menu-cta .astro-button-content-wrapper {
+    flex-direction: row-reverse !important;
+    justify-content: center !important;
+    gap: 8px !important;
+  }
+
+  #local-mobile-menu-popup .local-mobile-menu-cta .astro-button-icon {
+    display: inline-flex !important;
+    margin: 0 !important;
+    order: 2;
+  }
+
+  #local-mobile-menu-popup .local-mobile-menu-cta .astro-button-text {
+    font-size: 14px !important;
+    font-style: normal !important;
+    text-align: center !important;
+  }
+}
+
+@media (max-width: 767px) {
+  #local-mobile-menu-popup .local-mobile-menu-cta .astro-button-content-wrapper {
+    flex-direction: row !important;
+  }
+
+  #local-mobile-menu-popup .local-mobile-menu-cta .astro-button-text {
+    order: 1 !important;
+  }
+
+  #local-mobile-menu-popup .local-mobile-menu-cta .astro-button-icon {
+    order: 2 !important;
+  }
+}
+
+@media (max-width: 767px) {
+  #local-mobile-menu-popup .local-mobile-menu-cta .astro-button,
+  #local-mobile-menu-popup .local-mobile-menu-cta .astro-button *,
+  #local-mobile-menu-popup .local-mobile-menu-cta .astro-button-text,
+  #local-mobile-menu-popup .local-mobile-menu-cta .astro-button-icon,
+  #local-mobile-menu-popup .local-mobile-menu-cta .astro-button-icon i {
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif !important;
+    font-size: 15px !important;
+    font-style: normal !important;
+    font-synthesis: none !important;
+    font-synthesis-style: none !important;
+  }
+}
+
+@media (max-width: 767px) {
+  #local-mobile-menu-popup .local-mobile-menu-cta .astro-button-icon,
+  #local-mobile-menu-popup .local-mobile-menu-cta .astro-button-icon i {
+    width: 15px !important;
+    height: 15px !important;
+    min-width: 15px !important;
+    font-size: 15px !important;
+    line-height: 15px !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .astro-element-c146eba .astro-element-4eb79b4 .astro-heading-title,
+  .astro-element-c146eba .astro-element-4eb79b4 .astro-heading-title a {
+    font-size: 20px !important;
+  }
+}
+
+/* Homepage responsive header starts transparent, then becomes white on scroll. */
+@media (max-width: 1024px) {
+  body.home:not(.local-scrolled) .astro-location-header .astro-element-e14e10a {
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  body.home.local-scrolled .astro-location-header .astro-element-e14e10a,
+  body:not(.home) .astro-location-header .astro-element-e14e10a {
+    background: #fff !important;
+  }
+}
+
+/* Site-wide button arrow icon families. */
+.astro-button .astro-button-icon i,
+.astro-button .astro-button-icon i::before {
+  display: inline-block !important;
+  width: 1em !important;
+  height: 1em !important;
+  min-width: 1em !important;
+  font-size: inherit !important;
+  line-height: 1 !important;
+  color: currentColor !important;
+  background-color: currentColor !important;
+  content: "" !important;
+  font-family: inherit !important;
+  font-style: normal !important;
+  vertical-align: -0.08em;
+}
+
+.astro-button .astro-button-icon i::before {
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+.astro-button.local-icon-arrow-right-long .astro-button-icon i::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath d='M502.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 224H32c-17.7 0-32 14.3-32 32s14.3 32 32 32h370.7L297.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath d='M502.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 224H32c-17.7 0-32 14.3-32 32s14.3 32 32 32h370.7L297.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z'/%3E%3C/svg%3E");
+}
+
+.astro-button.local-icon-arrow-right .astro-button-icon i::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512'%3E%3Cpath d='M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224H32c-17.7 0-32 14.3-32 32s14.3 32 32 32h306.7L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512'%3E%3Cpath d='M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224H32c-17.7 0-32 14.3-32 32s14.3 32 32 32h306.7L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z'/%3E%3C/svg%3E");
+}
+
+.astro-button.local-icon-arrow-right-long .astro-button-icon i,
+.astro-button.local-icon-arrow-right .astro-button-icon i {
+  background: transparent !important;
+}
+
+.astro-button.local-icon-arrow-right-long .astro-button-icon i::before,
+.astro-button.local-icon-arrow-right .astro-button-icon i::before {
+  background-color: currentColor !important;
+}
+
+i.fas.fa-long-arrow-right,
+i.fas.fa-arrow-right-long,
+i.local-fa-arrow-right-long,
+i.fas.fa-long-arrow-right::before,
+i.fas.fa-arrow-right-long::before,
+i.local-fa-arrow-right-long::before {
+  display: inline-block !important;
+  width: 1em !important;
+  height: 1em !important;
+  min-width: 1em !important;
+  font-size: inherit !important;
+  line-height: 1 !important;
+  color: currentColor !important;
+  content: "" !important;
+  font-family: inherit !important;
+  font-style: normal !important;
+  vertical-align: -0.08em;
+}
+
+i.fas.fa-long-arrow-right,
+i.fas.fa-arrow-right-long,
+i.local-fa-arrow-right-long {
+  background: transparent !important;
+}
+
+i.fas.fa-long-arrow-right::before,
+i.fas.fa-arrow-right-long::before,
+i.local-fa-arrow-right-long::before {
+  background-color: currentColor !important;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath d='M502.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 224H32c-17.7 0-32 14.3-32 32s14.3 32 32 32h370.7L297.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z'/%3E%3C/svg%3E") !important;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath d='M502.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 224H32c-17.7 0-32 14.3-32 32s14.3 32 32 32h370.7L297.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z'/%3E%3C/svg%3E") !important;
+  -webkit-mask-repeat: no-repeat !important;
+  mask-repeat: no-repeat !important;
+  -webkit-mask-position: center !important;
+  mask-position: center !important;
+  -webkit-mask-size: contain !important;
+  mask-size: contain !important;
+}
+
+/* Standard internal content/sidebar pages: keep generated text styles sane and restore local FA chevrons. */
+.astro-4705 .astro-element-69dc79d strong,
+.astro-4705 .astro-element-69dc79d .e-n-accordion-item-title-text {
+  font-style: normal !important;
+}
+
+body:not(.home) strong,
+body:not(.home) b,
+body:not(.home) strong *,
+body:not(.home) b * {
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-style: normal !important;
+  font-synthesis: none !important;
+}
+
+body:not(.home) em strong,
+body:not(.home) em b,
+body:not(.home) strong em,
+body:not(.home) b em,
+body:not(.home) em strong *,
+body:not(.home) em b *,
+body:not(.home) strong em *,
+body:not(.home) b em * {
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-style: italic !important;
+  font-synthesis: none !important;
+}
+
+body.page-id-4953 .astro-4953 .astro-element-0a9bc56 p,
+body.page-id-4953 .astro-4953 .astro-element-0a9bc56 p strong,
+body.page-id-4953 .astro-4953 .astro-element-0a9bc56 p strong em,
+body.page-id-4953 .astro-4953 .astro-element-0a9bc56 p em strong {
+  font-style: normal !important;
+}
+
+body:not(.home):not(.page-id-4953) .astro-4705 .astro-element-69dc79d p em strong,
+body:not(.home):not(.page-id-4953) .astro-4705 .astro-element-69dc79d p strong em,
+body:not(.home):not(.page-id-4953) .astro-4705 .astro-element-69dc79d p em b,
+body:not(.home):not(.page-id-4953) .astro-4705 .astro-element-69dc79d p b em {
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-style: italic !important;
+  font-synthesis: none !important;
+}
+
+body:not(.home) .astro-4705 .astro-element-69dc79d :is(h2, h3, h4, h5, h6),
+body:not(.home) .astro-4705 .astro-element-69dc79d :is(h2, h3, h4, h5, h6) :is(strong, b, em) {
+  font-family: Arsenal, sans-serif !important;
+  font-style: normal !important;
+  font-synthesis: none !important;
+}
+
+body:not(.home) .astro-4758 :is(h1, h2, h3, h4, h5, h6),
+body:not(.home) .astro-4758 :is(h1, h2, h3, h4, h5, h6) :is(strong, b, em) {
+  font-family: Arsenal, sans-serif !important;
+  font-style: normal !important;
+  font-synthesis: none !important;
+}
+
+body:not(.home) i.far.fa-chevron-up,
+body:not(.home) i.far.fa-chevron-down,
+body:not(.home) i.far.fa-chevron-up::before,
+body:not(.home) i.far.fa-chevron-down::before {
+  display: inline-block !important;
+  width: 1em !important;
+  height: 1em !important;
+  min-width: 1em !important;
+  font-size: inherit !important;
+  line-height: 1 !important;
+  color: currentColor !important;
+  content: "" !important;
+  font-family: inherit !important;
+  font-style: normal !important;
+  vertical-align: -0.08em;
+}
+
+body:not(.home) i.far.fa-chevron-up,
+body:not(.home) i.far.fa-chevron-down {
+  background: transparent !important;
+}
+
+body:not(.home) i.far.fa-chevron-up::before,
+body:not(.home) i.far.fa-chevron-down::before {
+  background-color: currentColor !important;
+  -webkit-mask-repeat: no-repeat !important;
+  mask-repeat: no-repeat !important;
+  -webkit-mask-position: center !important;
+  mask-position: center !important;
+  -webkit-mask-size: contain !important;
+  mask-size: contain !important;
+}
+
+body:not(.home) i.far.fa-chevron-up::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath d='M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z'/%3E%3C/svg%3E") !important;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath d='M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z'/%3E%3C/svg%3E") !important;
+}
+
+body:not(.home) i.far.fa-chevron-down::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath d='M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z'/%3E%3C/svg%3E") !important;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath d='M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z'/%3E%3C/svg%3E") !important;
+}
+
+body:not(.home) .astro-widget-table-of-contents i.far.fa-plus,
+body:not(.home) .astro-widget-table-of-contents i.far.fa-minus,
+body:not(.home) .astro-widget-table-of-contents i.far.fa-plus::before,
+body:not(.home) .astro-widget-table-of-contents i.far.fa-minus::before {
+  display: inline-block !important;
+  width: 1em !important;
+  height: 1em !important;
+  min-width: 1em !important;
+  font-size: inherit !important;
+  line-height: 1 !important;
+  color: currentColor !important;
+  content: "" !important;
+  font-family: inherit !important;
+  font-style: normal !important;
+  vertical-align: -0.08em;
+}
+
+body:not(.home) .astro-widget-table-of-contents i.far.fa-plus,
+body:not(.home) .astro-widget-table-of-contents i.far.fa-minus {
+  background: transparent !important;
+}
+
+body:not(.home) .astro-widget-table-of-contents i.far.fa-plus::before,
+body:not(.home) .astro-widget-table-of-contents i.far.fa-minus::before {
+  background-color: currentColor !important;
+  -webkit-mask-repeat: no-repeat !important;
+  mask-repeat: no-repeat !important;
+  -webkit-mask-position: center !important;
+  mask-position: center !important;
+  -webkit-mask-size: contain !important;
+  mask-size: contain !important;
+}
+
+body:not(.home) .astro-widget-table-of-contents i.far.fa-plus::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512'%3E%3Cpath d='M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32v144H48c-17.7 0-32 14.3-32 32s14.3 32 32 32h144v144c0 17.7 14.3 32 32 32s32-14.3 32-32V288h144c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z'/%3E%3C/svg%3E") !important;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512'%3E%3Cpath d='M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32v144H48c-17.7 0-32 14.3-32 32s14.3 32 32 32h144v144c0 17.7 14.3 32 32 32s32-14.3 32-32V288h144c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z'/%3E%3C/svg%3E") !important;
+}
+
+body:not(.home) .astro-widget-table-of-contents i.far.fa-minus::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512'%3E%3Cpath d='M432 256c0 17.7-14.3 32-32 32H48c-17.7 0-32-14.3-32-32s14.3-32 32-32h352c17.7 0 32 14.3 32 32z'/%3E%3C/svg%3E") !important;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512'%3E%3Cpath d='M432 256c0 17.7-14.3 32-32 32H48c-17.7 0-32-14.3-32-32s14.3-32 32-32h352c17.7 0 32 14.3 32 32z'/%3E%3C/svg%3E") !important;
+}
+
+.astro-contact-form {
+  font-family: "Open Sans Contact", "Open Sans", sans-serif !important;
+  font-style: normal !important;
+  font-synthesis: none !important;
+  width: 100%;
+}
+
+.astro-element-c5e75c9,
+.astro-element-c5e75c9 *,
+.astro-contact-form,
+.astro-contact-form * {
+  font-family: "Open Sans Contact", "Open Sans", sans-serif !important;
+  font-style: normal !important;
+  font-synthesis: none !important;
+}
+
+.astro-contact-form__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 8px;
+}
+
+.astro-contact-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: 0;
+  font-family: "Open Sans Contact", "Open Sans", sans-serif;
+  font-style: normal !important;
+}
+
+.astro-contact-form__field--full,
+.astro-contact-form__captcha,
+.astro-contact-form__submit {
+  grid-column: 1 / -1;
+}
+
+.astro-contact-form__label {
+  color: #000;
+  font-family: "Open Sans Contact", "Open Sans", sans-serif;
+  font-size: 16px;
+  font-style: normal !important;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.astro-contact-form__required {
+  color: #c9432f;
+  font-family: "Open Sans Contact", "Open Sans", sans-serif;
+  font-size: 12px;
+  font-style: normal !important;
+  font-weight: 400;
+  margin-left: 2px;
+}
+
+.astro-contact-form input,
+.astro-contact-form textarea {
+  width: 100%;
+  border: 0;
+  border-radius: 8px;
+  background: #fff;
+  color: #000;
+  font-family: "Open Sans Contact", "Open Sans", sans-serif;
+  font-size: 16px;
+  font-style: normal !important;
+  min-height: 45px;
+  padding: 10px 12px;
+  box-shadow: none;
+}
+
+.astro-contact-form textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+.astro-contact-form__captcha {
+  align-items: center;
+  background: #f9f9f9;
+  border: 1px solid #d8d8d8;
+  display: grid;
+  grid-template-columns: 24px 1fr auto;
+  gap: 8px;
+  min-height: 78px;
+  max-width: 304px;
+  padding: 14px 10px;
+}
+
+.astro-contact-form__checkbox {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #666;
+  background: #fff;
+}
+
+.astro-contact-form__captcha-text,
+.astro-contact-form__captcha-brand {
+  color: #333;
+  font-family: "Open Sans Contact", "Open Sans", sans-serif;
+  font-style: normal !important;
+}
+
+.astro-contact-form__captcha-text {
+  font-size: 11px;
+}
+
+.astro-contact-form__captcha-brand {
+  align-self: end;
+  color: #777;
+  font-size: 8px;
+}
+
+.astro-contact-form__submit {
+  align-items: center;
+  background: rgb(14, 89, 26) !important;
+  border: 0 !important;
+  border-radius: 40px !important;
+  color: #fff;
+  cursor: default;
+  display: block !important;
+  font-family: "Open Sans Contact", "Open Sans", sans-serif !important;
+  font-size: 18px !important;
+  font-style: normal !important;
+  font-synthesis: none !important;
+  font-variant: normal !important;
+  font-weight: 700;
+  height: 56px !important;
+  justify-content: center;
+  letter-spacing: normal !important;
+  line-height: 36px !important;
+  min-height: 52px !important;
+  padding: 10px 16px !important;
+  text-transform: uppercase !important;
+  transform: none !important;
+  width: 100% !important;
+}
+
+@media (max-width: 767px) {
+  .astro-element-fa0f508,
+  .astro-element-fa0f508 .astro-heading-title,
+  .astro-element-fa0f508 .astro-heading-title a {
+    text-align: center !important;
+  }
+
+  .astro-contact-form__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Desktop dropdowns: no rounded container, width follows content, and hover bridge prevents flicker. */
+body:not(.home) .astro-location-single,
+body:not(.home) > [data-astro-type="astro-page"] {
+  margin-top: 86px !important;
+}
+
+@media (min-width: 768px) {
+  body:not(.home) .astro-location-single,
+  body:not(.home) > [data-astro-type="astro-page"] {
+    margin-top: 104px !important;
+  }
+}
+
+@media (min-width: 1025px) {
+  body:not(.home) .astro-location-single,
+  body:not(.home) > [data-astro-type="astro-page"] {
+    margin-top: 92px !important;
+  }
+}
+
+@media (min-width: 1367px) {
+  body:not(.home) .astro-location-single,
+  body:not(.home) > [data-astro-type="astro-page"] {
+    margin-top: 153px !important;
+  }
+}
+
+@media (min-width: 1025px) {
+  .astro-location-header .astro-element-4da6423 .astro-nav-menu--main .sub-menu {
+    min-width: max-content !important;
+    width: max-content !important;
+    max-width: none !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    border-radius: 0 !important;
+    transform: translateY(0) !important;
+  }
+
+  .astro-location-header .astro-element-4da6423 .astro-nav-menu--main .sub-menu::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -12px;
+    height: 12px;
+    background: transparent;
+  }
+
+  .astro-location-header .astro-element-4da6423 .astro-nav-menu--main .sub-menu .sub-menu {
+    top: 0 !important;
+    border-radius: 0 !important;
+  }
+
+  .astro-location-header .astro-element-4da6423 .astro-nav-menu--main .sub-menu a {
+    width: 100%;
+    min-width: max-content;
+    padding-left: 18px !important;
+    padding-right: 18px !important;
+  }
+}
+
+
+
+
+/* Keep the About staff carousel aligned with the homepage source carousel on touch viewports. */
+@media (max-width: 1024px) {
+  .astro-element-b04feb3 .astro-element-c146eba .swiper {
+    box-sizing: border-box !important;
+    padding-left: 60px !important;
+    padding-right: 60px !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .astro-element-b04feb3 .astro-element-c146eba .swiper {
+    padding-left: 50px !important;
+    padding-right: 50px !important;
+  }
+}
+
+
+/* Preserve the homepage staff carousel source width after moving cards into the CMS-backed component. */
+@media (min-width: 1025px) {
+  .astro-element-e6fd213 > .e-con-inner {
+    max-width: 1060px !important;
+    width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  .astro-element-b04feb3 > .e-con-inner {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    --padding-left: 0px !important;
+    --padding-right: 0px !important;
+  }
+}
+
+.astro-element-c146eba .swiper-wrapper {
+  gap: 0 !important;
+  row-gap: 0 !important;
+  column-gap: 0 !important;
+}
+
+.astro-element-e6fd213 .astro-element-c146eba .swiper-pagination-bullet-active {
+  background: #0e591a !important;
+}
+
+
+/* CMS-backed office/map CTA: keep the live full-width section proportions after component extraction. */
+.astro-element-a14cb86 .astro-element-6d2a6d5 > .e-con-inner,
+.astro-element-8693da8 .astro-element-6d2a6d5 > .e-con-inner,
+.astro-element-4b41eeb .astro-element-6d2a6d5 > .e-con-inner {
+  max-width: none !important;
+  width: 100% !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+@media (min-width: 1025px) {
+  .astro-element-a14cb86 .astro-element-6d2a6d5,
+  .astro-element-8693da8 .astro-element-6d2a6d5,
+  .astro-element-4b41eeb .astro-element-6d2a6d5 {
+    --content-width: 100% !important;
+    --gap: 40px 40px !important;
+    --row-gap: 40px !important;
+    --column-gap: 40px !important;
+  }
+
+  .astro-element-a14cb86 .astro-element-017d2b1,
+  .astro-element-8693da8 .astro-element-017d2b1,
+  .astro-element-4b41eeb .astro-element-017d2b1 {
+    width: 44.5% !important;
+    flex: 0 0 44.5% !important;
+  }
+
+  .astro-element-a14cb86 .astro-element-2994219,
+  .astro-element-8693da8 .astro-element-2994219,
+  .astro-element-4b41eeb .astro-element-2994219 {
+    width: calc(55.5% - 40px) !important;
+    flex: 0 0 calc(55.5% - 40px) !important;
+  }
+
+  .astro-element-a14cb86 .astro-element-b28303c,
+  .astro-element-8693da8 .astro-element-b28303c,
+  .astro-element-4b41eeb .astro-element-b28303c {
+    gap: 20px !important;
+    row-gap: 20px !important;
+    column-gap: 20px !important;
+    flex-wrap: wrap !important;
+  }
+
+  .astro-element-a14cb86 .astro-element-b28303c .astro-button,
+  .astro-element-8693da8 .astro-element-b28303c .astro-button,
+  .astro-element-4b41eeb .astro-element-b28303c .astro-button {
+    min-height: 0 !important;
+    height: auto !important;
+    line-height: 18px !important;
+    padding: 16px 28px !important;
+    white-space: nowrap !important;
+  }
+}
+
+/* Non-widget office component wrappers should not shrink the source section. */
+.astro-element-a14cb86 > div,
+.astro-element-a14cb86 > div > div,
+.astro-element-8693da8 > div,
+.astro-element-8693da8 > div > div {
+  width: 100% !important;
+}
+
+@media (min-width: 1025px) {
+  .astro-element-a14cb86 .astro-element-b28303c .astro-button,
+  .astro-element-8693da8 .astro-element-b28303c .astro-button,
+  .astro-element-4b41eeb .astro-element-b28303c .astro-button {
+    padding: 16px 18px !important;
+  }
+}
+
+/* Dynamic Standard Internal Content accordions */
+.astro-service-body .astro-element-standard-accordion {
+  margin: 0 0 20px;
+}
+.astro-service-body .astro-element-standard-accordion .e-n-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.astro-service-body .astro-element-standard-accordion .e-n-accordion-item {
+  border: 0;
+  background: transparent;
+  margin: 0 0 20px;
+  height: auto !important;
+  overflow: visible !important;
+}
+.astro-service-body .astro-element-standard-accordion .e-n-accordion-item-title {
+  align-items: center;
+  background: #fff;
+  border: 1px solid rgba(13, 13, 13, 0.15);
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  list-style: none;
+  margin: 0;
+  padding: 20px;
+}
+.astro-service-body .astro-element-standard-accordion .e-n-accordion-item-title::-webkit-details-marker {
+  display: none;
+}
+.astro-service-body .astro-element-standard-accordion .e-n-accordion-item-title-header {
+  flex: 1 1 auto;
+  order: 0 !important;
+}
+.astro-service-body .astro-element-standard-accordion .e-n-accordion-item-title-text {
+  color: var(--e-global-color-text, #0d0d0d);
+  font-family: Arsenal, sans-serif;
+  font-size: 26px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1.2em;
+  margin: 0;
+  text-align: left;
+  text-transform: uppercase;
+}
+.astro-service-body .astro-element-standard-accordion .e-n-accordion-item-title-icon {
+  color: var(--e-global-color-primary, #0e591a);
+  flex: 0 0 auto;
+  font-size: 18px;
+  line-height: 1;
+  margin: 0 0 0 20px !important;
+  order: 1 !important;
+}
+.astro-service-body .astro-element-standard-accordion details:not([open]) .e-opened,
+.astro-service-body .astro-element-standard-accordion details[open] .e-closed {
+  display: none;
+}
+.astro-service-body .astro-element-standard-accordion details[open] .e-opened,
+.astro-service-body .astro-element-standard-accordion details:not([open]) .e-closed {
+  display: inline-flex;
+}
+.astro-service-body .astro-element-standard-accordion-answer {
+  background: #fff;
+  border: 1px solid rgba(13, 13, 13, 0.15);
+  border-top: 0;
+  border-radius: 0 0 10px 10px;
+  padding: 10px 20px 20px;
+  margin-top: -10px;
+}
+.astro-service-body .astro-element-standard-accordion .e-n-accordion-item-title[aria-expanded="false"] + .astro-element-standard-accordion-answer {
+  display: none !important;
+}
+.astro-service-body .astro-element-standard-accordion .e-n-accordion-item-title[aria-expanded="true"] {
+  border-radius: 10px 10px 0 0;
+}
+.astro-service-body .astro-element-standard-accordion .e-n-accordion-item-title[aria-expanded="false"] {
+  border-radius: 10px;
+}
+.astro-service-body .astro-element-standard-accordion .e-n-accordion-item-title[aria-expanded="true"] + .astro-element-standard-accordion-answer {
+  display: flex !important;
+}
+.astro-service-body .astro-element-standard-accordion-text {
+  color: var(--e-global-color-text, #0d0d0d);
+  font-family: "Open Sans", sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  line-height: 1.7;
+}
+.astro-service-body .astro-element-standard-content > h2:first-child,
+.astro-service-body .astro-element-standard-content > h3:first-child,
+.astro-service-body .astro-element-standard-content > p:first-child {
+  margin-top: 0;
+}
+
+.astro-element-69dc79d.astro-blog-content-body {
+  padding: 0 !important;
+}
+
+.astro-blog-body .astro-element-78a0079,
+.astro-blog-body .astro-element-78a0079 > .e-con-inner,
+.astro-blog-body .astro-element-273f23b {
+  padding: 0 !important;
+}
+
+.astro-element-69dc79d.astro-standard-content-body,
+.astro-standard-body .astro-element-78a0079,
+.astro-standard-body .astro-element-78a0079 > .e-con-inner {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* Dynamic CMS-backed blog cards keep the converted Elementor/Astro loop visual language. */
+.astro-dynamic-blog-grid .astro-loop-container.astro-grid,
+.astro-dynamic-blog-listing .astro-posts-container.astro-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 20px !important;
+}
+
+.astro-4629 .astro-element-93a3cd3,
+.astro-4629 .astro-element-93a3cd3 > .e-con-inner {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  overflow: hidden !important;
+  border: 1px solid var(--e-global-color-primary, #0e591a) !important;
+  border-radius: 15px !important;
+  background: rgba(255, 255, 255, 0.5) !important;
+  height: 100% !important;
+  padding: 0 !important;
+}
+
+.astro-4629 .astro-element-84afe6b,
+.astro-4629 .astro-element-84afe6b img {
+  display: block !important;
+  width: 100% !important;
+}
+
+.astro-4629 .astro-element-84afe6b img {
+  height: 280px !important;
+  object-fit: cover !important;
+  object-position: bottom center !important;
+}
+
+.astro-4629 .astro-element-617d8aa {
+  display: flex !important;
+  flex: 1 1 auto !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 16px !important;
+  padding: 24px !important;
+  text-align: center !important;
+}
+
+.astro-4629 .astro-element-cc76d2d .astro-heading-title,
+.astro-4629 .astro-element-cc76d2d .astro-heading-title a {
+  color: var(--e-global-color-text, #0d0d0d) !important;
+  font-family: Arsenal, sans-serif !important;
+  font-size: 24px !important;
+  font-style: normal !important;
+  font-weight: 700 !important;
+  line-height: 1.2 !important;
+  text-decoration: none !important;
+  text-transform: uppercase !important;
+}
+
+.astro-4629 .astro-element-89f2a6f .astro-icon-list-items {
+  align-items: center !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 10px 20px !important;
+  justify-content: center !important;
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.astro-4629 .astro-element-89f2a6f .astro-icon-list-item {
+  align-items: center !important;
+  color: var(--e-global-color-accent, #0e591a) !important;
+  display: inline-flex !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 14px !important;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  line-height: 1.25 !important;
+}
+
+.astro-4629 .astro-element-89f2a6f svg {
+  fill: var(--e-global-color-accent, #0e591a) !important;
+  height: 13px !important;
+  margin-right: 8px !important;
+  width: 13px !important;
+}
+
+.astro-4629 .astro-element-ded4394 {
+  color: var(--e-global-color-text, #0d0d0d) !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 16px !important;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  line-height: 1.6 !important;
+}
+
+.astro-4629 .astro-element-48ec47a .astro-button {
+  background: transparent !important;
+  border: 0 !important;
+  color: var(--e-global-color-text, #0d0d0d) !important;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 15px !important;
+  font-style: normal !important;
+  font-weight: 700 !important;
+  padding: 0 !important;
+  text-decoration: none !important;
+  text-transform: uppercase !important;
+}
+
+.astro-4629 .astro-button-content-wrapper {
+  align-items: center !important;
+  display: inline-flex !important;
+  flex-direction: row-reverse !important;
+  gap: 16px !important;
+}
+
+.astro-4629 .astro-element-48ec47a svg {
+  fill: currentColor !important;
+  height: 14px !important;
+  width: 14px !important;
+}
+
+.astro-dynamic-blog-listing .astro-post__thumbnail img {
+  height: 280px !important;
+  object-fit: cover !important;
+  width: 100% !important;
+}
+
+.astro-dynamic-blog-listing .astro-post-avatar {
+  color: var(--e-global-color-accent, #0e591a) !important;
+}
+
+@media (max-width: 1024px) {
+  .astro-4629 .astro-element-84afe6b img,
+  .astro-dynamic-blog-listing .astro-post__thumbnail img {
+    height: 250px !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .astro-dynamic-blog-grid .astro-loop-container.astro-grid,
+  .astro-dynamic-blog-listing .astro-posts-container.astro-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .astro-4629 .astro-element-84afe6b img,
+  .astro-dynamic-blog-listing .astro-post__thumbnail img {
+    height: 200px !important;
+  }
+}
+
+/* Keep reusable homepage showcase accordion headings visually matched to the live widgets even though the CMS field is rendered semantically. */
+.astro-reusable-showcase .e-n-accordion-item-title-text {
+  margin: 0 !important;
+  text-transform: none !important;
+}
+
+/* CMS-wired internal page sections */
+.astro-staff-profile-intro > .e-con-inner { padding-bottom: 0 !important; }
+.astro-element-396a925 .astro-heading-title p { margin: 0; }
+
+
+/* Contact form backend states */
+.astro-contact-form__status { grid-column: 1 / -1; margin-top: 12px; font-family: 'Open Sans', sans-serif; font-size: 15px; line-height: 1.4; }
+.astro-contact-form__status--success { color: #075f1c; }
+.astro-contact-form__status--error { color: #b42318; }
+.astro-contact-form__submit:disabled { cursor: wait; opacity: .78; }
+
+
+/* CMS-wired internal content dividers: PortableText sections do not inherit Elementor's per-page divider vars. */
+.astro-standard-body .astro-service-h2-divider {
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  --divider-border-style: solid;
+  --divider-color: #0d0d0d33;
+  --divider-border-width: 1px;
+}
+
+.astro-standard-body .astro-service-h2-divider .astro-divider {
+  display: flex !important;
+  padding-block-start: 24px !important;
+  padding-block-end: 24px !important;
+  width: 100% !important;
+}
+
+.astro-standard-body .astro-service-h2-divider .astro-divider-separator {
+  border-block-start: 1px solid #0d0d0d33 !important;
+  display: flex !important;
+  height: 0 !important;
+  width: 100% !important;
+}

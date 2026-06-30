@@ -1,0 +1,90 @@
+---
+import { EmDashHead, EmDashBodyStart, EmDashBodyEnd } from "emdash/ui";
+import { createPublicPageContext } from "emdash/page";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+
+interface Props {
+	title: string;
+	description?: string;
+	canonical?: string;
+	bodyClass?: string;
+	extraHead?: string;
+}
+
+const { title, description, canonical, bodyClass = "", extraHead = "" } = Astro.props;
+const assetVersion = "20260515-supported-brands-v4";
+const resolvedCanonical = canonical
+	? new URL(canonical, Astro.url.origin).href
+	: new URL(Astro.url.pathname, Astro.url.origin).href;
+const normalizedExtraHead = extraHead
+	.replace(/<\/?(?:html|head|body)[^>]*>/gi, "")
+	.replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, "")
+	.replace(/<link\b[^>]*rel=["']canonical["'][^>]*>/gi, "")
+	.replace(/<meta\b[^>]*(?:property|name)=["']og:url["'][^>]*>/gi, "")
+	.replace(/<meta\b[^>]*(?:property|name)=["']twitter:url["'][^>]*>/gi, "")
+	.replace(
+		/abh-static-fixes-20260513e\.css\?v=[^"']+/g,
+		`abh-static-fixes-20260513e.css?v=${assetVersion}`,
+	);
+const locationStylesheets: Record<string, string> = {
+	"195": "breeze_audiologist-hearing-aids-lansing-mi-1-195-d45268160f.css",
+	"231": "breeze_audiologist-hearing-aids-portage-mi-1-231-0133cfc39e.css",
+	"315": "breeze_audiologist-hearing-aids-anoka-mn-1-315-79fd5aebf4.css",
+	"317": "breeze_audiologist-hearing-aids-eden-prairie-mn-1-317-d33605b892.css",
+	"331": "breeze_audiologist-hearing-aids-edina-mn-1-331-c3bfd45655.css",
+	"333": "breeze_audiologist-hearing-aids-maple-grove-mn-1-333-5f271a0943.css",
+	"335": "breeze_audiologist-hearing-aids-mendota-heights-mn-1-335-9cf668a995.css",
+	"337": "breeze_audiologist-hearing-aids-new-ulm-mn-1-337-f4d4682f75.css",
+	"339": "breeze_audiologist-hearing-aids-roseville-mn-1-339-abe3bf8f4c.css",
+	"341": "breeze_audiologist-hearing-aids-willmar-mn-1-341-fb3750db09.css",
+	"345": "breeze_audiologist-hearing-aids-lake-wales-fl-1-345-12b4c7d18b.css",
+	"347": "breeze_audiologist-hearing-aids-sebring-fl-1-347-4c004d1b4f.css",
+	"351": "breeze_audiologist-hearing-aids-winter-haven-fl-1-351-e3c98a7ec0.css",
+};
+const locationPostId = bodyClass.match(/\bpostid-(\d+)\b/)?.[1];
+const locationStylesheet = locationPostId ? locationStylesheets[locationPostId] : undefined;
+const scopedBodyClass =
+	locationPostId && !bodyClass.split(/\s+/).includes(`astro-${locationPostId}`)
+		? `${bodyClass} astro-${locationPostId}`
+		: bodyClass;
+const pageCtx = createPublicPageContext({
+	Astro,
+	kind: "custom",
+	pageType: "website",
+	title,
+	pageTitle: title,
+	description,
+	canonical: resolvedCanonical,
+	siteName: "America's Best Hearing",
+});
+const cacheSeconds = import.meta.env.DEV ? 0 : 300;
+if (Astro.cache?.enabled && cacheSeconds > 0) Astro.cache.set(cacheSeconds);
+---
+
+<!doctype html>
+<html lang="en-US">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>{title}</title>
+		{description && <meta name="description" content={description} />}
+		{canonical && <link rel="canonical" href={canonical} />}
+		<link type="text/css" media="all" href="/assets/styles/breeze_americasbesthearing-com-1-105-87acb52074.css?v=20260513-static-v1" rel="stylesheet" />
+		<link rel="stylesheet" href={`/assets/styles/abh-extracted-inline-head.css?v=${assetVersion}`} />
+		<link rel="stylesheet" href={`/assets/styles/abh-static-fixes-20260513e.css?v=${assetVersion}`} />
+		{locationStylesheet && <link type="text/css" media="all" href={`/assets/styles/${locationStylesheet}?v=20260513-static-v1`} rel="stylesheet" />}
+		<Fragment set:html={normalizedExtraHead} />
+		<EmDashHead page={pageCtx} />
+	</head>
+	<body class={scopedBodyClass}>
+		<EmDashBodyStart page={pageCtx} />
+		<Header />
+		<main>
+			<slot />
+		</main>
+		<Footer />
+		<script is:inline src={`/assets/site.js?v=${assetVersion}`}></script>
+		<EmDashBodyEnd page={pageCtx} />
+	</body>
+</html>

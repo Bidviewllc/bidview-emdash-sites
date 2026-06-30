@@ -1,0 +1,35 @@
+---
+import { getEmDashEntry } from "emdash";
+
+type Props = { sectionId?: string };
+const { sectionId = "b99d118" } = Astro.props;
+const { entry, cacheHint } = await getEmDashEntry("homepage", "home");
+if (cacheHint) Astro.cache.set(cacheHint);
+const data = entry?.data ?? {};
+const heroIntro = String(data.hero_intro ?? "Hearing For Life");
+const heroContent = String(data.hero_content ?? "Let’s help you make meaningful connections with expert hearing care!");
+const ctaUrl = String(data.appointment_cta_url ?? "/schedule-appointment/");
+---
+
+<div class={`astro-element astro-element-${sectionId} gradient-container e-flex e-con-boxed e-con e-parent`} data-id={sectionId} data-element_type="container" data-e-type="container" data-settings='{"background_background":"classic","shape_divider_bottom":"curve","shape_divider_bottom_negative":"yes"}'>
+  <div class="e-con-inner">
+    <div class="astro-shape astro-shape-bottom" aria-hidden="true" data-negative="true">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" preserveAspectRatio="none"><path class="astro-shape-fill" d="M500,97C126.7,96.3,0.8,19.8,0,0v100l1000,0V1C1000,19.4,873.3,97.8,500,97z"></path></svg>
+    </div>
+    <div class="astro-element astro-element-fca5453 e-con-full e-flex e-con e-child" data-id="fca5453" data-element_type="container" data-e-type="container">
+      <div class="astro-element astro-element-e5ea2fb astro-widget astro-widget-heading" data-id="e5ea2fb" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
+        <div class="astro-heading-title astro-size-default">{heroIntro}</div>
+      </div>
+      <div class="astro-element astro-element-34a5a85 astro-widget astro-widget-text-editor" data-id="34a5a85" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
+        <p>{heroContent}</p>
+      </div>
+    </div>
+    <div class="astro-element astro-element-ac812b5 astro-widget astro-widget-template" data-id="ac812b5" data-element_type="widget" data-e-type="widget" data-widget_type="template.default">
+      <div class="astro-widget-container"><div class="astro-template"><div data-astro-type="container" data-astro-id="4407" class="astro astro-4407" data-astro-post-type="astro_library"><div class="astro-element astro-element-6b58007 e-con-full e-flex e-con e-parent" data-id="6b58007" data-element_type="container" data-e-type="container"><div class="astro-element astro-element-80af31e astro-mobile-align-justify astro-widget astro-widget-button" data-id="80af31e" data-element_type="widget" data-e-type="widget" data-widget_type="button.default">
+        <a class="astro-button astro-button-link astro-size-sm" href={ctaUrl}>
+          <span class="astro-button-content-wrapper"><span class="astro-button-icon"><i aria-hidden="true" class="fas fa-arrow-right-long local-fa-arrow-right-long"></i></span><span class="astro-button-text">Schedule Your Appointment</span></span>
+        </a>
+      </div></div></div></div></div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,251 @@
+---
+import { getEmDashEntry } from "emdash";
+import { mediaSrc } from "./blog-utils";
+
+type Props = {
+  band: "services" | "hearing";
+  sectionId?: string;
+  sourceSection?: string;
+};
+
+type RepeaterItem = {
+  service_title?: string;
+  description?: string;
+  service_url?: string;
+};
+
+const { band, sectionId, sourceSection } = Astro.props;
+const isHearing = band === "hearing";
+const targetId = sectionId ?? (isHearing ? "b5283fc" : "bbd51ae");
+const sectionCollection = isHearing ? "homepage_hearing_solutions_section" : "homepage_services_section";
+const sectionEntryId = isHearing ? "our-hearing-solutions" : "our-services";
+
+const { entry: section, cacheHint } = await getEmDashEntry(sectionCollection, sectionEntryId);
+if (cacheHint) Astro.cache.set(cacheHint);
+
+const data = section?.data ?? {};
+const repeaterValue = data.services;
+const items: RepeaterItem[] = Array.isArray(repeaterValue)
+  ? repeaterValue
+  : typeof repeaterValue === "string"
+    ? JSON.parse(repeaterValue || "[]")
+    : [];
+
+const featuredImage = data.featured_image;
+const featuredSrc = mediaSrc(featuredImage);
+const brandLogos = isHearing
+  ? Array.from({ length: 8 }, (_, index) => data[`brand_logo_${index + 1}`]).filter(Boolean)
+  : [];
+
+const outerWidgetId = isHearing ? "16cb86f" : "9fdf323";
+const libraryId = isHearing ? "4666" : "4663";
+const mainContainerId = isHearing ? "c791b60" : "7cfb1e36";
+const headingWrapId = isHearing ? "1537189c" : "40a7c6f6";
+const eyebrowId = isHearing ? "22647ca6" : "1bc2d9c5";
+const subheadingId = isHearing ? "3657667c" : "c83e950";
+const columnsId = isHearing ? "69868a69" : "58814ca3";
+const imageColId = isHearing ? "4cbbc06f" : "17f60ecb";
+const imageWidgetId = isHearing ? "4a7dd276" : "3f36eef3";
+const accordionColId = isHearing ? "4b311261" : "29a8523f";
+const accordionWidgetId = isHearing ? "7b35b950" : "307cb078";
+const panelId = isHearing ? "4265ec1e" : "43fcd134";
+const textWidgetId = isHearing ? "2003b3a" : "3ea35dc5";
+const buttonWidgetId = isHearing ? "7a064f81" : "4cd232c9";
+---
+
+<div
+  class={`astro-element astro-element-${targetId} e-flex e-con-boxed e-con e-parent astro-reusable-showcase astro-reusable-showcase--${band}`}
+  data-id={targetId}
+  data-source-section={sourceSection}
+  data-element_type="container"
+  data-e-type="container"
+>
+  <div class="e-con-inner">
+    <div class={`astro-element astro-element-${outerWidgetId} astro-widget astro-widget-template`} data-id={outerWidgetId} data-element_type="widget" data-e-type="widget" data-widget_type="template.default">
+      <div class="astro-widget-container">
+        <div class="astro-template">
+          <div data-astro-type="container" data-astro-id={libraryId} class={`astro astro-${libraryId}`} data-astro-post-type="astro_library">
+            <div class={`astro-element astro-element-${mainContainerId} e-flex e-con-boxed e-con e-parent`} data-id={mainContainerId} data-element_type="container" data-e-type="container" data-settings={!isHearing ? '{"background_background":"classic","shape_divider_top":"curve","shape_divider_top_negative":"yes","shape_divider_bottom":"curve","shape_divider_bottom_negative":"yes"}' : undefined}>
+              <div class="e-con-inner">
+                {!isHearing && (
+                  <>
+                    <div class="astro-shape astro-shape-top" aria-hidden="true" data-negative="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" preserveAspectRatio="none"><path class="astro-shape-fill" d="M500,97C126.7,96.3,0.8,19.8,0,0v100l1000,0V1C1000,19.4,873.3,97.8,500,97z"></path></svg></div>
+                    <div class="astro-shape astro-shape-bottom" aria-hidden="true" data-negative="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" preserveAspectRatio="none"><path class="astro-shape-fill" d="M500,97C126.7,96.3,0.8,19.8,0,0v100l1000,0V1C1000,19.4,873.3,97.8,500,97z"></path></svg></div>
+                  </>
+                )}
+                <div class={`astro-element astro-element-${headingWrapId} e-con-full e-flex e-con e-child`} data-id={headingWrapId} data-element_type="container" data-e-type="container">
+                  <div class={`astro-element astro-element-${eyebrowId} astro-widget astro-widget-heading`} data-id={eyebrowId} data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
+                    <h2 class="astro-heading-title astro-size-default">{data.section_title}</h2>
+                  </div>
+                  <div class={`astro-element astro-element-${subheadingId} astro-widget astro-widget-heading`} data-id={subheadingId} data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
+                    <div class="astro-heading-title astro-size-default">{data.section_subheading}</div>
+                  </div>
+                </div>
+                <div class={`astro-element astro-element-${columnsId} e-con-full e-flex e-con e-child`} data-id={columnsId} data-element_type="container" data-e-type="container">
+                  <div class={`astro-element astro-element-${imageColId} e-con-full e-flex e-con e-child`} data-id={imageColId} data-element_type="container" data-e-type="container">
+                    <div class={`astro-element astro-element-${imageWidgetId} astro-widget astro-widget-image`} data-id={imageWidgetId} data-element_type="widget" data-e-type="widget" data-widget_type="image.default">
+                      {featuredSrc && (
+                        <img loading="lazy" decoding="async" width={featuredImage?.width ?? (isHearing ? 1024 : 1200)} height={featuredImage?.height ?? (isHearing ? 683 : 800)} src={featuredSrc} class={`attachment-full size-full astro-image-${isHearing ? "4782" : "5257"}`} alt={featuredImage?.alt ?? ""} srcset={`${featuredSrc} ${featuredImage?.width ?? (isHearing ? 1024 : 1200)}w`} sizes={`(max-width: ${featuredImage?.width ?? (isHearing ? 1024 : 1200)}px) 100vw, ${featuredImage?.width ?? (isHearing ? 1024 : 1200)}px`} />
+                      )}
+                    </div>
+                  </div>
+                  <div class={`astro-element astro-element-${accordionColId} e-con-full e-flex e-con e-child`} data-id={accordionColId} data-element_type="container" data-e-type="container">
+                    <div class={`astro-element astro-element-${accordionWidgetId} astro-widget astro-widget-n-accordion`} data-id={accordionWidgetId} data-element_type="widget" data-e-type="widget" data-settings='{"default_state":"expanded","max_items_expended":"one","n_accordion_animation_duration":{"unit":"ms","size":400,"sizes":[]}}' data-widget_type="nested-accordion.default">
+                      <div class="e-n-accordion" aria-label="Accordion. Open links with Enter or Space, close with Escape, and navigate with Arrow Keys">
+                        {items.map((item, index) => {
+                          const itemId = `${targetId}-accordion-item-${index}`;
+                          return (
+                            <details id={itemId} class="e-n-accordion-item" open={index === 0}>
+                              <summary class="e-n-accordion-item-title" data-accordion-index={String(index + 1)} tabindex={index === 0 ? "0" : "-1"} aria-expanded={index === 0 ? "true" : "false"} aria-controls={itemId}>
+                                <span class="e-n-accordion-item-title-header"><h3 class="e-n-accordion-item-title-text">{item.service_title}</h3></span>
+                                <span class="e-n-accordion-item-title-icon">
+                                  <span class="e-opened"><svg aria-hidden="true" class="e-font-icon-svg e-fas-minus" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M416 208H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg></span>
+                                  <span class="e-closed"><svg aria-hidden="true" class="e-font-icon-svg e-fas-plus" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg></span>
+                                </span>
+                              </summary>
+                              <div role="region" aria-labelledby={itemId} class={`astro-element astro-element-${panelId} e-con-full e-flex e-con e-child`} data-id={panelId} data-element_type="container" data-e-type="container" data-settings='{"background_background":"classic"}'>
+                                <div class={`astro-element astro-element-${textWidgetId} astro-widget astro-widget-text-editor`} data-id={textWidgetId} data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
+                                  <p>{item.description}</p>
+                                </div>
+                                <div class={`astro-element astro-element-${buttonWidgetId} astro-widget astro-widget-button`} data-id={buttonWidgetId} data-element_type="widget" data-e-type="widget" data-widget_type="button.default">
+                                  <a class="astro-button astro-button-link astro-size-sm astro-animation-skew-forward" href={item.service_url ?? "#"}>
+                                    <span class="astro-button-content-wrapper"><span class="astro-button-icon"><i aria-hidden="true" class="far fa-arrow-right"></i></span><span class="astro-button-text">learn more</span></span>
+                                  </a>
+                                </div>
+                              </div>
+                            </details>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {isHearing && (
+                  <div class="astro-element astro-element-4eaf8327 e-con-full e-flex e-con e-child" data-id="4eaf8327" data-element_type="container" data-e-type="container">
+                    <div class="astro-element astro-element-64f09551 astro-widget astro-widget-heading" data-id="64f09551" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
+                      <div class="astro-heading-title astro-size-default">{data.brands_label}</div>
+                    </div>
+                    <div class="astro-element astro-element-66c5c8e6 astro-pagination-position-outside astro-widget astro-widget-image-carousel e-widget-swiper" data-id="66c5c8e6" data-element_type="widget" data-e-type="widget" data-settings='{"slides_to_show":"6","slides_to_show_tablet":"4","slides_to_show_mobile":"2","navigation":"dots","image_spacing_custom":{"unit":"px","size":60,"sizes":[]},"image_spacing_custom_laptop":{"unit":"px","size":40,"sizes":[]},"autoplay":"yes","pause_on_hover":"yes","pause_on_interaction":"yes","autoplay_speed":5000,"infinite":"yes","speed":500}' data-widget_type="image-carousel.default">
+                      <div class="astro-image-carousel-wrapper swiper" role="region" aria-roledescription="carousel" aria-label="Image Carousel" dir="ltr">
+                        <div class="astro-image-carousel swiper-wrapper" aria-live="off">
+                          {brandLogos.map((logo, index) => {
+                            const src = mediaSrc(logo);
+                            return src && (
+                              <div class="swiper-slide" role="group" aria-roledescription="slide" aria-label={`${index + 1} / ${brandLogos.length}`} data-swiper-slide-index={String(index)}>
+                                <figure class="swiper-slide-inner"><img decoding="async" class="swiper-slide-image" src={src} alt={logo?.alt ?? ""} /></figure>
+                              </div>
+                            );
+                          })}
+                        </div>
+                        <div class="swiper-pagination swiper-pagination-clickable swiper-pagination-bullets swiper-pagination-horizontal"></div>
+                        <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  (() => {
+    const bindShowcaseAccordions = () => {
+      document.querySelectorAll(".astro-reusable-showcase .e-n-accordion-item").forEach((details) => {
+        if (details.dataset.showcaseAccordionBound === "true") return;
+        details.dataset.showcaseAccordionBound = "true";
+        const summary = details.querySelector("summary");
+        if (!summary) return;
+        const panel = details.querySelector("summary + [role='region']");
+        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const setOpen = (open, animate = true) => {
+          summary.setAttribute("aria-expanded", String(open));
+          if (!panel || prefersReducedMotion || !animate) {
+            details.toggleAttribute("open", open);
+            return;
+          }
+
+          panel.getAnimations().forEach((animation) => animation.cancel());
+          if (open) {
+            details.setAttribute("open", "");
+            panel.style.overflow = "hidden";
+            panel.style.height = "0px";
+            panel.style.opacity = "0";
+            const targetHeight = panel.scrollHeight;
+            panel.animate(
+              [{ height: "0px", opacity: 0 }, { height: `${targetHeight}px`, opacity: 1 }],
+              { duration: 320, easing: "cubic-bezier(.25,.8,.25,1)" }
+            ).onfinish = () => {
+              panel.style.removeProperty("height");
+              panel.style.removeProperty("overflow");
+              panel.style.removeProperty("opacity");
+            };
+            return;
+          }
+
+          const startHeight = panel.scrollHeight;
+          panel.style.overflow = "hidden";
+          panel.style.height = `${startHeight}px`;
+          panel.style.opacity = "1";
+          panel.animate(
+            [{ height: `${startHeight}px`, opacity: 1 }, { height: "0px", opacity: 0 }],
+            { duration: 260, easing: "cubic-bezier(.4,0,.2,1)" }
+          ).onfinish = () => {
+            details.removeAttribute("open");
+            panel.style.removeProperty("height");
+            panel.style.removeProperty("overflow");
+            panel.style.removeProperty("opacity");
+          };
+        };
+        const toggle = () => {
+          const wasOpen = details.hasAttribute("open");
+          const accordion = details.closest(".e-n-accordion");
+          accordion?.querySelectorAll(".e-n-accordion-item[open]").forEach((item) => {
+            if (item !== details) {
+              const itemSummary = item.querySelector("summary");
+              itemSummary?.setAttribute("aria-expanded", "false");
+              const itemPanel = item.querySelector("summary + [role='region']");
+              if (!itemPanel || prefersReducedMotion) {
+                item.removeAttribute("open");
+              } else {
+                itemPanel.getAnimations().forEach((animation) => animation.cancel());
+                const startHeight = itemPanel.scrollHeight;
+                itemPanel.style.overflow = "hidden";
+                itemPanel.style.height = `${startHeight}px`;
+                itemPanel.style.opacity = "1";
+                itemPanel.animate(
+                  [{ height: `${startHeight}px`, opacity: 1 }, { height: "0px", opacity: 0 }],
+                  { duration: 240, easing: "cubic-bezier(.4,0,.2,1)" }
+                ).onfinish = () => {
+                  item.removeAttribute("open");
+                  itemPanel.style.removeProperty("height");
+                  itemPanel.style.removeProperty("overflow");
+                  itemPanel.style.removeProperty("opacity");
+                };
+              }
+            }
+          });
+          setOpen(!wasOpen);
+        };
+        summary.addEventListener("click", (event) => {
+          event.preventDefault();
+          event.stopImmediatePropagation();
+          toggle();
+        }, true);
+        summary.addEventListener("keydown", (event) => {
+          if (event.key !== "Enter" && event.key !== " ") return;
+          event.preventDefault();
+          event.stopImmediatePropagation();
+          toggle();
+        }, true);
+      });
+    };
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", bindShowcaseAccordions, { once: true });
+    else bindShowcaseAccordions();
+  })();
+</script>
+

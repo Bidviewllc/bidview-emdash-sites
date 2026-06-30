@@ -1,0 +1,41 @@
+{
+  "name": "americasbesthearing-emdash",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "emdash": {
+    "label": "America's Best Hearing",
+    "seed": "seed/seed.json"
+  },
+  "scripts": {
+    "predev": "node scripts/patch-emdash-runtime.cjs && node scripts/clean-vite-dev-cache.cjs && node scripts/setup-abh-data-hooks.cjs && node scripts/seed-utility-pages-and-location-images.cjs && node scripts/fix-location-featured-gallery-images.cjs",
+    "prebuild": "node scripts/patch-emdash-runtime.cjs && node scripts/setup-abh-data-hooks.cjs && node scripts/seed-utility-pages-and-location-images.cjs && node scripts/fix-location-featured-gallery-images.cjs",
+    "dev": "astro dev --port 4321 --force",
+    "build": "astro build",
+    "preview": "astro preview",
+    "deploy": "astro build && wrangler deploy",
+    "typecheck": "astro check",
+    "seed:validate": "emdash seed seed/seed.json --validate",
+    "content:backup": "node scripts/backup-local-emdash-db.cjs",
+    "migrate:static": "node scripts/migrate-static-to-emdash.cjs",
+    "contact:submissions": "node scripts/list-contact-submissions.cjs",
+    "deploy:staging:safe": "npm run build && node scripts/deploy-staging-safe.cjs",
+    "deploy:ledger:update": "node scripts/update-deploy-safety-ledger.cjs"
+  },
+  "dependencies": {
+    "@astrojs/cloudflare": "^13.1.7",
+    "@astrojs/react": "^5.0.0",
+    "@emdash-cms/cloudflare": "^0.12.0",
+    "astro": "^6.0.1",
+    "cheerio": "^1.2.0",
+    "emdash": "^0.12.0",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.7",
+    "@cloudflare/workers-types": "^4.20260305.1",
+    "playwright": "^1.60.0",
+    "wrangler": "^4.83.0"
+  }
+}

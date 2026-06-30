@@ -1,0 +1,93 @@
+---
+import { getEmDashCollection } from "emdash";
+import { excerptFromPortableText, formatDisplayDate, mediaSrc, normalizeRoute, parseDateForSort, systemCreatedAt } from "./blog-utils";
+
+type Props = { variant?: "home" | "listing" };
+const { variant = "listing" } = Astro.props;
+
+const { entries, cacheHint } = await getEmDashCollection("blog_posts", {
+  status: "published",
+});
+Astro.cache.set(cacheHint);
+
+const posts = entries
+  .map((entry) => {
+    const image = entry.data.featured_image;
+    return {
+      id: entry.id,
+      title: entry.data.title ?? "",
+      route: normalizeRoute(entry.data.route ?? `/${entry.id.replace(/__/g, "/")}/`),
+      publishedDate: formatDisplayDate(systemCreatedAt(entry)),
+      sortDate: systemCreatedAt(entry),
+      category: entry.data.category ?? "",
+      image,
+      imageSrc: mediaSrc(image),
+      excerpt: excerptFromPortableText(entry.data.body_content),
+    };
+  })
+  .sort((a, b) => parseDateForSort(b.sortDate) - parseDateForSort(a.sortDate));
+
+const visiblePosts = variant === "home" ? posts.slice(0, 4) : posts;
+---
+
+{variant === "home" ? (
+  <div class="astro-element astro-element-f92922c astro-grid-2 astro-grid-tablet-2 astro-grid-mobile-1 astro-widget astro-widget-loop-grid astro-dynamic-blog-grid" data-id="f92922c" data-element_type="widget" data-e-type="widget" data-widget_type="loop-grid.post">
+    <div class="astro-widget-container">
+      <div class="astro-loop-container astro-grid" role="list">
+        {visiblePosts.map((post) => (
+          <div data-astro-type="loop-item" data-astro-id="4629" class="astro astro-4629 e-loop-item post type-post status-publish format-standard has-post-thumbnail hentry" data-astro-post-type="astro_library" data-custom-edit-handle="1">
+            <div class="astro-element astro-element-93a3cd3 e-flex e-con-boxed e-con e-parent" data-id="93a3cd3" data-element_type="container" data-e-type="container">
+              <div class="e-con-inner">
+                <a class="astro-element astro-element-84afe6b astro-widget astro-widget-image" data-id="84afe6b" data-element_type="widget" data-e-type="widget" data-widget_type="image.default" href={post.route}>
+                  {post.imageSrc && <img loading="lazy" width={post.image?.width ?? 1024} height={post.image?.height ?? 681} src={post.imageSrc} class="attachment-full size-full astro-image-blog-card" alt={post.image?.alt ?? post.title} decoding="async" />}
+                </a>
+                <div class="astro-element astro-element-617d8aa e-con-full e-flex e-con e-child" data-id="617d8aa" data-element_type="container" data-e-type="container">
+                  <div class="astro-element astro-element-cc76d2d astro-widget astro-widget-heading" data-id="cc76d2d" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
+                    <h3 class="astro-heading-title astro-size-default"><a href={post.route}>{post.title}</a></h3>
+                  </div>
+                  <div class="astro-element astro-element-89f2a6f astro-widget astro-widget-icon-list" data-id="89f2a6f" data-element_type="widget" data-e-type="widget" data-widget_type="icon-list.default">
+                    <ul class="astro-icon-list-items astro-inline-items">
+                      {post.publishedDate && <li class="astro-icon-list-item"><span class="astro-icon-list-icon"><svg aria-hidden="true" class="e-font-icon-svg e-fas-calendar" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M12 192h424c6.6 0 12 5.4 12 12v260c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V204c0-6.6 5.4-12 12-12zm436-44v-36c0-26.5-21.5-48-48-48h-48V12c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v52H160V12c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v52H48C21.5 64 0 85.5 0 112v36c0 6.6 5.4 12 12 12h424c6.6 0 12-5.4 12-12z"></path></svg></span><span class="astro-icon-list-text">{post.publishedDate}</span></li>}
+                      {post.category && <li class="astro-icon-list-item"><span class="astro-icon-list-icon"><svg aria-hidden="true" class="e-font-icon-svg e-fas-tag" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path d="M0 252.1V48C0 21.5 21.5 0 48 0h204.1c12.7 0 24.9 5.1 33.9 14.1l211.9 211.9c18.7 18.7 18.7 49.1 0 67.9L293.8 497.9c-18.7 18.7-49.1 18.7-67.9 0L14.1 286.1C5.1 277.1 0 264.8 0 252.1zM112 64c-26.5 0-48 21.5-48 48s21.5 48 48 48 48-21.5 48-48-21.5-48-48-48z"></path></svg></span><span class="astro-icon-list-text">{post.category}</span></li>}
+                    </ul>
+                  </div>
+                  {post.excerpt && <div class="astro-element astro-element-ded4394 astro-widget astro-widget-text-editor" data-id="ded4394" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">{post.excerpt}</div>}
+                  <div class="astro-element astro-element-48ec47a astro-mobile-align-center astro-widget astro-widget-button" data-id="48ec47a" data-element_type="widget" data-e-type="widget" data-widget_type="button.default">
+                    <a class="astro-button astro-button-link astro-size-sm" href={post.route}>
+                      <span class="astro-button-content-wrapper"><span class="astro-button-icon"><svg aria-hidden="true" class="e-font-icon-svg e-fas-arrow-right" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M438.6 278.6 278.6 438.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L338.8 288H32c-17.7 0-32-14.3-32-32s14.3-32 32-32h306.7L233.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160c12.4 12.5 12.4 32.8-.1 45.3z"></path></svg></span><span class="astro-button-text">Read More</span></span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+) : (
+  <div class="astro-element astro-element-55af06c astro-grid-2 astro-grid-tablet-2 astro-grid-mobile-1 astro-posts--thumbnail-top astro-card-shadow-yes astro-posts__hover-gradient astro-widget astro-widget-posts astro-dynamic-blog-listing" data-id="55af06c" data-element_type="widget" data-e-type="widget" data-widget_type="posts.cards">
+    <div class="astro-widget-container">
+      <div class="astro-posts-container astro-posts astro-posts--skin-cards astro-grid astro-has-item-ratio" role="list">
+        {visiblePosts.map((post) => (
+          <article class="astro-post astro-grid-item post type-post status-publish format-standard has-post-thumbnail hentry" role="listitem">
+            <div class="astro-post__card">
+              <a class="astro-post__thumbnail__link" href={post.route} tabindex="-1">
+                <div class="astro-post__thumbnail">{post.imageSrc && <img loading="lazy" width={post.image?.width ?? 1024} height={post.image?.height ?? 681} src={post.imageSrc} class="attachment-full size-full astro-image-blog-listing" alt={post.image?.alt ?? post.title} decoding="async" />}</div>
+              </a>
+              <div class="astro-post__text">
+                <h3 class="astro-post__title"><a href={post.route}>{post.title}</a></h3>
+                {post.excerpt && <div class="astro-post__excerpt"><p>{post.excerpt}</p></div>}
+                <a class="astro-post__read-more" href={post.route} aria-label={`Read more about ${post.title}`} tabindex="-1">Read More »</a>
+              </div>
+              <div class="astro-post__meta-data">
+                {post.publishedDate && <span class="astro-post-date">{post.publishedDate}</span>}
+                {post.category && <span class="astro-post-avatar">{post.category}</span>}
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </div>
+)}

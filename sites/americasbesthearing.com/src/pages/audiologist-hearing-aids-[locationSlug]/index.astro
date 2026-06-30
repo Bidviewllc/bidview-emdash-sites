@@ -1,0 +1,37 @@
+---
+import Base from "../../layouts/Base.astro";
+import { getEmDashCollection, getEmDashEntry } from "emdash";
+import LocationPage from "../../components/sections/location/LocationPage.astro";
+import { findLocation, locationPageDescription, locationPageTitle, entryData } from "../../components/sections/location/location-page-renderer";
+import { audiologyServices as defaultAudiologyServices, faqs as defaultFaqs, hearingAidServices as defaultHearingAidServices, locations as defaultLocations, staffMembers as defaultStaffMembers } from "../../data/homepage-defaults";
+import contentHtml from "../../components/raw-pages/audiologist-hearing-aids-lansing-mi.html?raw";
+
+export const cacheHint = 3600;
+
+const routeSegment = String(Astro.params.locationSlug || "");
+const locationSlug = routeSegment.replace(/^audiologist-hearing-aids-/, "");
+const homeResult = await getEmDashEntry("homepages", "home");
+const locationResult = await getEmDashCollection("locations");
+const locationPageResult = await getEmDashCollection("location_pages");
+const staffResult = await getEmDashCollection("staff");
+const audiologyResult = await getEmDashCollection("audiology_services");
+const hearingAidResult = await getEmDashCollection("hearing_aid_services");
+const faqResult = await getEmDashCollection("faqs");
+const locations = locationResult.entries.length ? locationResult.entries : defaultLocations;
+const locationPages = locationPageResult.entries;
+const staff = staffResult.entries.length ? staffResult.entries : defaultStaffMembers;
+const home = homeResult.entry?.data || {};
+const audiologyServices = audiologyResult.entries.length ? audiologyResult.entries : defaultAudiologyServices;
+const hearingAidServices = hearingAidResult.entries.length ? hearingAidResult.entries : defaultHearingAidServices;
+const faqs = faqResult.entries.length ? faqResult.entries : defaultFaqs;
+const currentLocation = findLocation(locations, locationSlug);
+if (!currentLocation) return Astro.redirect("/404/");
+const currentLocationPage = locationPages.map(entryData).find((page: any) => page.location_slug === locationSlug || page.slug === locationSlug || page.id === locationSlug);
+const pageData = { ...(currentLocation || {}), ...(currentLocationPage || {}) };
+const pageTitle = locationPageTitle(pageData);
+const pageDescription = locationPageDescription(pageData);
+---
+
+<Base title={pageTitle} description={pageDescription} bodyClass={"astro-singular location-template-default single single-location postid-195 astro-custom-logo astro-embed-responsive astro-theme-hello-astro astro-child-theme-hello-theme-child-master hello-astro-default astro-default astro-kit-7 astro-page astro-page-195 astro-page-1157"}>
+	<LocationPage rawHtml={contentHtml} locationSlug={locationSlug} locations={locations} locationPages={locationPages} staff={staff} home={home} audiologyServices={audiologyServices} hearingAidServices={hearingAidServices} faqs={faqs} />
+</Base>

@@ -1,0 +1,117 @@
+---
+import { getEmDashCollection } from "emdash";
+
+type Props = {
+  sectionId?: string;
+  sourceSection?: string;
+};
+
+const { sectionId = "e6fd213", sourceSection } = Astro.props;
+const { entries, cacheHint } = await getEmDashCollection("staff_profiles", {
+  status: "published",
+  orderBy: { sort_order: "asc" },
+});
+Astro.cache.set(cacheHint);
+
+function mediaSrc(image: { src?: string; id?: string; meta?: Record<string, unknown> } | null | undefined) {
+  if (!image) return "";
+  if (image.src) return image.src;
+  const storageKey = typeof image.meta?.storageKey === "string" ? image.meta.storageKey : image.id;
+  return storageKey ? `/_emdash/api/media/file/${storageKey}` : "";
+}
+
+const staff = entries.map((entry, index) => ({
+  id: entry.id,
+  index,
+  name: entry.data.name ?? "",
+  roleLines: [entry.data.role_1, entry.data.role_2].filter(Boolean) as string[],
+  route: entry.data.route ?? "/",
+  image: entry.data.profile_image,
+  imageSrc: mediaSrc(entry.data.profile_image),
+}));
+---
+
+<div
+  class={`astro-element astro-element-${sectionId} e-flex e-con-boxed e-con e-parent animated fadeInUp`}
+  data-id={sectionId}
+  data-source-section={sourceSection}
+  data-element_type="container"
+  data-e-type="container"
+  data-settings='{"animation":"fadeInUp","animation_delay":200}'
+>
+  <div class="e-con-inner">
+    <div
+      class="astro-element astro-element-c146eba astro-widget-laptop__width-inherit astro-pagination-type-bullets astro-arrows-position-inside astro-pagination-position-outside astro-widget astro-widget-loop-carousel e-widget-swiper"
+      data-id="c146eba"
+      data-element_type="widget"
+      data-e-type="widget"
+      data-widget_type="loop-carousel.post"
+      data-settings='{"slides_to_show":"3","slides_to_show_laptop":"3","slides_to_show_tablet":"2","slides_to_show_mobile":"1","arrows":"yes","pagination":"bullets","infinite":"yes"}'
+    >
+      <div class="swiper astro-loop-container astro-grid offset-both" role="list" dir="ltr">
+        <div class="swiper-wrapper" aria-live="off">
+          {staff.map((person) => (
+            <div
+              data-astro-type="loop-item"
+              data-astro-id="4560"
+              class={`astro astro-4560 swiper-slide e-loop-item e-loop-item-${person.id} audiologist type-audiologist status-publish has-post-thumbnail hentry`}
+              data-astro-post-type="astro_library"
+              role="group"
+              aria-roledescription="slide"
+              data-custom-edit-handle="1"
+              aria-label={`${person.index + 1} / ${staff.length}`}
+              data-swiper-slide-index={String(person.index)}
+            >
+              <div class="astro-element astro-element-188c9e2 e-flex e-con-boxed e-con e-parent" data-id="188c9e2" data-element_type="container" data-e-type="container">
+                <div class="e-con-inner">
+                  <div class="astro-element astro-element-06fbb6b e-con-full e-flex e-con e-child" data-id="06fbb6b" data-element_type="container" data-e-type="container">
+                    <a class="astro-element astro-element-fb69c56 e-con-full e-flex e-con e-child" data-id="fb69c56" data-element_type="container" data-e-type="container" href={person.route}>
+                      <div class="astro-element astro-element-255e804 astro-widget astro-widget-image" data-id="255e804" data-element_type="widget" data-e-type="widget" data-widget_type="image.default">
+                        {person.imageSrc && (
+                          <img
+                            loading={person.index > 1 ? "lazy" : undefined}
+                            decoding="async"
+                            width={person.image.width ?? 600}
+                            height={person.image.height ?? 800}
+                            src={person.imageSrc}
+                            class="attachment-full size-full astro-image-staff"
+                            alt={person.image.alt ?? person.name}
+                            srcset={`${person.imageSrc} ${person.image.width ?? 600}w`}
+                            sizes={`(max-width: ${person.image.width ?? 600}px) 100vw, ${person.image.width ?? 600}px`}
+                          />
+                        )}
+                      </div>
+                    </a>
+                    <div class="astro-element astro-element-b75c8c4 e-con-full e-flex e-con e-child" data-id="b75c8c4" data-element_type="container" data-e-type="container">
+                      <div class="astro-element astro-element-4eb79b4 astro-widget astro-widget-heading" data-id="4eb79b4" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
+                        <span class="astro-heading-title astro-size-default"><a href={person.route}>{person.name}</a></span>
+                      </div>
+                      <div class="astro-element astro-element-d4da657 astro-widget astro-widget-heading" data-id="d4da657" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default">
+                        <div class="astro-heading-title astro-size-default">
+                          {person.roleLines.map((line, lineIndex) => (
+                            <Fragment>
+                              {lineIndex > 0 && <br />}
+                              {line}
+                            </Fragment>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+      </div>
+      <div class="astro-swiper-button astro-swiper-button-prev" role="button" tabindex="0" aria-label="Previous slide">
+        <svg aria-hidden="true" class="e-font-icon-svg e-eicon-chevron-left" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg"><path d="M646 125C629 125 613 133 604 142L308 442C296 454 292 471 292 487 292 504 296 521 308 533L604 854C617 867 629 875 646 875 663 875 679 871 692 858 704 846 713 829 713 812 713 796 708 779 692 767L438 487 692 225C700 217 708 204 708 187 708 171 704 154 692 142 675 129 663 125 646 125Z"></path></svg>
+      </div>
+      <div class="astro-swiper-button astro-swiper-button-next" role="button" tabindex="0" aria-label="Next slide">
+        <svg aria-hidden="true" class="e-font-icon-svg e-eicon-chevron-right" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg"><path d="M696 533C708 521 713 504 713 487 713 471 708 454 696 446L400 146C388 133 375 125 354 125 338 125 325 129 313 142 300 154 292 171 292 187 292 204 296 221 308 233L563 492 304 771C292 783 288 800 288 817 288 833 296 850 308 863 321 871 338 875 354 875 371 875 388 867 400 854L696 533Z"></path></svg>
+      </div>
+      <div class="swiper-pagination swiper-pagination-clickable swiper-pagination-bullets swiper-pagination-horizontal"></div>
+    </div>
+  </div>
+</div>

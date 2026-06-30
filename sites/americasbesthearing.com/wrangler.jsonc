@@ -1,0 +1,27 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "americas-best-hearing-staging",
+	"main": "./src/worker.ts",
+	"compatibility_date": "2026-02-24",
+	"compatibility_flags": ["nodejs_compat"],
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "americas-best-hearing-staging-db-20260515d",
+			"database_id": "0b44aa7a-132b-4ab2-a313-48ed3cc859b1",
+		},
+	],
+	"r2_buckets": [
+		{
+			"binding": "MEDIA",
+			"bucket_name": "americasbesthearing-media",
+		},
+	],
+	// Worker Loader for plugin sandboxing
+	"worker_loaders": [
+		{
+			"binding": "LOADER",
+		},
+	],
+}
+

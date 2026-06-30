@@ -1,0 +1,148 @@
+---
+import { getEmDashEntry } from "emdash";
+import { PortableText } from "emdash/ui";
+
+type FaqItem = { question?: string; answer?: string };
+const { entry, cacheHint } = await getEmDashEntry("homepage", "home");
+if (cacheHint) Astro.cache.set(cacheHint);
+const data = entry?.data ?? {};
+const title = String(data.faq_h2_title ?? "Frequently Asked Questions");
+const body = Array.isArray(data.faq_body_content) ? data.faq_body_content : [];
+const ctaUrl = String(data.faq_cta_url ?? "/contact/");
+const rawItems = data.faq_items;
+const faqItems: FaqItem[] = Array.isArray(rawItems) ? rawItems : typeof rawItems === "string" ? JSON.parse(rawItems || "[]") : [];
+function answerParagraphs(answer: string | undefined) {
+  return String(answer ?? "").split(/\n{2,}|\r?\n/).map((line) => line.trim()).filter(Boolean);
+}
+---
+
+<div class="astro-element astro-element-4cee412 e-flex e-con-boxed e-con e-parent astro-homepage-faq" data-id="4cee412" data-element_type="container" data-e-type="container" data-settings='{"background_background":"classic"}'>
+  <div class="e-con-inner">
+    <div class="astro-element astro-element-97d591b e-con-full e-flex e-con e-child" data-id="97d591b" data-element_type="container" data-e-type="container">
+      <div class="astro-element astro-element-0bb8029 astro-widget astro-widget-heading" data-id="0bb8029" data-element_type="widget" data-e-type="widget" data-widget_type="heading.default"><h2 class="astro-heading-title astro-size-default" id="frequently-asked-questions">{title}</h2></div>
+      <div class="astro-element astro-element-0587593 astro-widget astro-widget-text-editor" data-id="0587593" data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default"><PortableText value={body} /></div>
+      <div class="astro-element astro-element-9449070 astro-align-center astro-mobile-align-justify astro-widget astro-widget-button" data-id="9449070" data-element_type="widget" data-e-type="widget" data-widget_type="button.default">
+        <a class="astro-button astro-button-link astro-size-sm" href={ctaUrl}><span class="astro-button-content-wrapper"><span class="astro-button-icon"><i aria-hidden="true" class="fas fa-arrow-right-long local-fa-arrow-right-long"></i></span><span class="astro-button-text">Contact Us</span></span></a>
+      </div>
+    </div>
+    <div class="astro-element astro-element-ae7a98e e-con-full e-flex e-con e-child" data-id="ae7a98e" data-element_type="container" data-e-type="container">
+      <div class="astro-element astro-element-8cff4fe astro-widget astro-widget-n-accordion" data-id="8cff4fe" data-element_type="widget" data-e-type="widget" data-settings='{"default_state":"expanded","max_items_expended":"one","n_accordion_animation_duration":{"unit":"ms","size":400,"sizes":[]}}' data-widget_type="nested-accordion.default">
+        <div class="e-n-accordion" aria-label="Accordion. Open links with Enter or Space, close with Escape, and navigate with Arrow Keys">
+          {faqItems.map((item, index) => {
+            const itemId = `e-n-accordion-item-147${index}`;
+            return (
+              <details id={itemId} class="e-n-accordion-item" open={index === 0}>
+                <summary class="e-n-accordion-item-title" data-accordion-index={String(index + 1)} tabindex={index === 0 ? "0" : "-1"} aria-expanded={index === 0 ? "true" : "false"} aria-controls={itemId}>
+                  <span class="e-n-accordion-item-title-header"><h3 class="e-n-accordion-item-title-text"> {item.question} </h3></span>
+                  <span class="e-n-accordion-item-title-icon"><span class="e-opened"><svg aria-hidden="true" class="e-font-icon-svg e-fas-minus" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M416 208H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg></span><span class="e-closed"><svg aria-hidden="true" class="e-font-icon-svg e-fas-plus" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg></span></span>
+                </summary>
+                <div role="region" aria-labelledby={itemId} class={`astro-element astro-element-${index === 0 ? "121ce35" : index === 1 ? "1055ae6" : index === 2 ? "e789f57" : "63ce336"} e-con-full e-flex e-con e-child`} data-element_type="container" data-e-type="container" data-settings='{"background_background":"classic"}'>
+                  <div class={`astro-element astro-element-${index === 0 ? "522f039" : index === 1 ? "adc0d98" : index === 2 ? "77f284c" : "4ad80f1"} astro-widget astro-widget-text-editor`} data-element_type="widget" data-e-type="widget" data-widget_type="text-editor.default">
+                    {answerParagraphs(item.answer).map((line) => <p>{line}</p>)}
+                  </div>
+                </div>
+              </details>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  (() => {
+    const bindHomepageFaq = () => {
+      document.querySelectorAll(".astro-homepage-faq .e-n-accordion-item").forEach((details) => {
+        if (details.dataset.homepageFaqBound === "true") return;
+        details.dataset.homepageFaqBound = "true";
+        const summary = details.querySelector("summary");
+        if (!summary) return;
+        const panel = details.querySelector("summary + [role='region']");
+        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const setOpen = (isOpen, animate = true) => {
+          summary.setAttribute("aria-expanded", String(isOpen));
+          if (!panel || prefersReducedMotion || !animate) {
+            details.toggleAttribute("open", isOpen);
+            return;
+          }
+
+          panel.getAnimations().forEach((animation) => animation.cancel());
+          if (isOpen) {
+            details.setAttribute("open", "");
+            panel.style.overflow = "hidden";
+            panel.style.height = "0px";
+            panel.style.opacity = "0";
+            const targetHeight = panel.scrollHeight;
+            panel.animate(
+              [{ height: "0px", opacity: 0 }, { height: `${targetHeight}px`, opacity: 1 }],
+              { duration: 320, easing: "cubic-bezier(.25,.8,.25,1)" }
+            ).onfinish = () => {
+              panel.style.removeProperty("height");
+              panel.style.removeProperty("overflow");
+              panel.style.removeProperty("opacity");
+            };
+            return;
+          }
+
+          const startHeight = panel.scrollHeight;
+          panel.style.overflow = "hidden";
+          panel.style.height = `${startHeight}px`;
+          panel.style.opacity = "1";
+          panel.animate(
+            [{ height: `${startHeight}px`, opacity: 1 }, { height: "0px", opacity: 0 }],
+            { duration: 260, easing: "cubic-bezier(.4,0,.2,1)" }
+          ).onfinish = () => {
+            details.removeAttribute("open");
+            panel.style.removeProperty("height");
+            panel.style.removeProperty("overflow");
+            panel.style.removeProperty("opacity");
+          };
+        };
+        const toggle = () => {
+          const wasOpen = details.hasAttribute("open");
+          const accordion = details.closest(".e-n-accordion");
+          accordion?.querySelectorAll(".e-n-accordion-item[open]").forEach((item) => {
+            if (item !== details) {
+              const itemSummary = item.querySelector("summary");
+              itemSummary?.setAttribute("aria-expanded", "false");
+              const itemPanel = item.querySelector("summary + [role='region']");
+              if (!itemPanel || prefersReducedMotion) {
+                item.removeAttribute("open");
+              } else {
+                itemPanel.getAnimations().forEach((animation) => animation.cancel());
+                const startHeight = itemPanel.scrollHeight;
+                itemPanel.style.overflow = "hidden";
+                itemPanel.style.height = `${startHeight}px`;
+                itemPanel.style.opacity = "1";
+                itemPanel.animate(
+                  [{ height: `${startHeight}px`, opacity: 1 }, { height: "0px", opacity: 0 }],
+                  { duration: 240, easing: "cubic-bezier(.4,0,.2,1)" }
+                ).onfinish = () => {
+                  item.removeAttribute("open");
+                  itemPanel.style.removeProperty("height");
+                  itemPanel.style.removeProperty("overflow");
+                  itemPanel.style.removeProperty("opacity");
+                };
+              }
+            }
+          });
+          setOpen(!wasOpen);
+        };
+        summary.addEventListener("click", (event) => {
+          event.preventDefault();
+          event.stopImmediatePropagation();
+          toggle();
+        }, true);
+        summary.addEventListener("keydown", (event) => {
+          if (event.key !== "Enter" && event.key !== " ") return;
+          event.preventDefault();
+          event.stopImmediatePropagation();
+          toggle();
+        }, true);
+      });
+    };
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", bindHomepageFaq, { once: true });
+    else bindHomepageFaq();
+  })();
+</script>

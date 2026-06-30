@@ -1,0 +1,24 @@
+---
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import type { StaticPage } from "../lib/static-html";
+
+interface Props {
+	page: StaticPage;
+}
+
+const { page } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<Fragment set:html={page.headHtml} />
+	</head>
+	<body class={page.bodyClass}>
+		<a class="skip-link screen-reader-text" href="#content">Skip to content</a>
+		<Header route={page.route} />
+		<Fragment set:html={page.contentHtml} />
+		<Footer />
+	</body>
+</html>

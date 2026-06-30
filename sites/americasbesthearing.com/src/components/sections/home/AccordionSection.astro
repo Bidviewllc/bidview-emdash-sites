@@ -1,0 +1,37 @@
+---
+import { dataOf } from "./helpers";
+
+interface Props {
+	id: string;
+	heading: string;
+	items: Array<Record<string, unknown> | { data: Record<string, unknown> }>;
+}
+
+const { id, heading, items } = Astro.props;
+const sectionItems = items.map(dataOf);
+---
+
+<div class={`astro-element astro-element-${id} e-flex e-con-boxed e-con e-parent`} data-id={id} data-element_type="container" data-e-type="container">
+	<div class="e-con-inner">
+		<div class="astro-element astro-widget astro-widget-heading">
+			<div class="astro-widget-container"><h2 class="astro-heading-title astro-size-default">{heading}</h2></div>
+		</div>
+		<div class="astro-element astro-widget astro-widget-n-accordion">
+			<div class="astro-widget-container">
+				<div class="e-n-accordion" aria-label={heading}>
+					{sectionItems.map((item, index) => (
+						<details class="e-n-accordion-item" open={index === 0}>
+							<summary class="e-n-accordion-item-title" aria-expanded={index === 0  "true" : "false"}>
+								<span class="e-n-accordion-item-title-header"><span class="e-n-accordion-item-title-text">{item.title || item.question}</span></span>
+								<span class="e-n-accordion-item-title-icon"><span class="e-opened"></span><span class="e-closed"></span></span>
+							</summary>
+							<div role="region">
+								<div class="astro-widget-container"><p>{item.body || item.answer}</p></div>
+							</div>
+						</details>
+					))}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
