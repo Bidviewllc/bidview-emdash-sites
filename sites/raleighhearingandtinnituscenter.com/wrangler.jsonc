@@ -1,7 +1,7 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "raleighhearingandtinnituscenter-staging",
-	"account_id": "981338e6544cfe45d9819bf0ea6eb83a",
+	"account_id": "239e9d015c7a3a39cdc2e9400312f553",
 	"main": "./src/worker.ts",
 	"compatibility_date": "2026-02-24",
 	"compatibility_flags": ["nodejs_compat"],
@@ -9,7 +9,7 @@
 		{
 			"binding": "DB",
 			"database_name": "raleighhearingandtinnituscenter-staging-db",
-			"database_id": "b6b8df96-a0d1-4591-a3a4-6779ec583298",
+			"database_id": "fbf4e6c8-7eba-47d8-9876-17eed415fc50",
 		},
 	],
 	"r2_buckets": [
