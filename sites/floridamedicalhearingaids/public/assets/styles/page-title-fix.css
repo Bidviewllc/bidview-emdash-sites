@@ -1,0 +1,5 @@
+/* Interior pages fall back to the HOME breeze bundle, which sets
+   :root{--page-title-display:none} (the home page hides its title band).
+   That wrongly hides the blue page-title heading on interior pages, whose own
+   bundle would set block. Restore it. Loaded last in <head> so it wins. */
+:root { --page-title-display: block !important; }

@@ -1,0 +1,180 @@
+/* ── Nav dropdown: expand to fit content width ─────────────────────────── */
+.astro-nav-menu--main .sub-menu.astro-nav-menu--dropdown {
+    min-width: max-content;
+    width: max-content;
+    max-width: 400px;
+}
+
+/* Ensure dropdown sits above hero */
+.astro-nav-menu--main li.menu-item-has-children {
+    position: relative;
+}
+.astro-nav-menu--main .sub-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 9999;
+}
+
+/* ── Blue page hero: standard interior pages (insurance, services, etc.) ── */
+.astro-element-02e5a91 {
+    background-color: rgb(16, 86, 179) !important;
+    min-height: 200px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100%;
+}
+.astro-element-02e5a91 h1,
+.astro-element-02e5a91 h2,
+.astro-element-02e5a91 .astro-heading-title {
+    color: #ffffff !important;
+}
+.astro-element-02e5a91 .rank-math-breadcrumb,
+.astro-element-02e5a91 .rank-math-breadcrumb a,
+.astro-element-02e5a91 .rank-math-breadcrumb span {
+    color: rgba(255,255,255,0.85) !important;
+}
+
+/* ── Blue page hero: about page ─────────────────────────────────────────── */
+.astro-element-76623ef {
+    background-color: rgb(16, 86, 179) !important;
+    min-height: 200px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100%;
+}
+.astro-element-76623ef h1,
+.astro-element-76623ef h2,
+.astro-element-76623ef .astro-heading-title {
+    color: #ffffff !important;
+}
+.astro-element-76623ef .rank-math-breadcrumb,
+.astro-element-76623ef .rank-math-breadcrumb a,
+.astro-element-76623ef .rank-math-breadcrumb span {
+    color: rgba(255,255,255,0.85) !important;
+}
+
+/* ── Blue page hero: blog/article pages (taller hero) ───────────────────── */
+.astro-element-66ecf6f {
+    background-color: rgb(16, 86, 179) !important;
+    min-height: 283px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100%;
+}
+.astro-element-66ecf6f h1,
+.astro-element-66ecf6f h2,
+.astro-element-66ecf6f .astro-heading-title {
+    color: #ffffff !important;
+}
+.astro-element-66ecf6f .rank-math-breadcrumb,
+.astro-element-66ecf6f .rank-math-breadcrumb a,
+.astro-element-66ecf6f .rank-math-breadcrumb span {
+    color: rgba(255,255,255,0.85) !important;
+}
+.astro-element-66ecf6f .astro-post-info,
+.astro-element-66ecf6f .astro-post-info span,
+.astro-element-66ecf6f .astro-post-info a {
+    color: rgba(255,255,255,0.85) !important;
+}
+
+/* ── Location page hero (Sebring + Lake Placid): two-column layout ───────── */
+.astro-element-e3bf6b8,
+.astro-element-4d8c185 {
+    display: flex !important;
+    min-height: 500px;
+    background: linear-gradient(rgba(255,255,255,0) 0%, rgba(255,255,255,0.99) 10%) !important;
+    align-items: center;
+    padding: 60px 40px !important;
+}
+.astro-element-e3bf6b8 > .e-con-inner,
+.astro-element-4d8c185 > .e-con-inner {
+    display: flex !important;
+    flex-direction: row !important;
+    width: 100%;
+    gap: 40px;
+    align-items: center;
+}
+.astro-element-e3bf6b8 > .e-con-inner > .e-con:first-child,
+.astro-element-4d8c185 > .e-con-inner > .e-con:first-child {
+    flex: 1;
+}
+.astro-element-e3bf6b8 > .e-con-inner > .e-con:last-child,
+.astro-element-4d8c185 > .e-con-inner > .e-con:last-child {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+}
+.astro-element-e3bf6b8 img,
+.astro-element-4d8c185 img {
+    max-width: 100%;
+    border-radius: 8px;
+}
+
+/* ── Staff loop carousel: show all slides without Swiper JS ─────────────── */
+.astro-widget-loop-carousel .swiper-wrapper {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    transform: none !important;
+    gap: 20px;
+}
+.astro-widget-loop-carousel .swiper-slide {
+    width: calc(50% - 10px) !important;
+    flex-shrink: 0;
+    margin-right: 0 !important;
+}
+@media (max-width: 768px) {
+    .astro-widget-loop-carousel .swiper-slide {
+        width: 100% !important;
+    }
+}
+
+/* ── 2026-06-04 fixes ─────────────────────────────────────────────────────── */
+
+/* Nav dropdown: bridge the ~5px gap so the pointer stays "in" the submenu */
+.astro-nav-menu--main .menu-item-has-children > .sub-menu::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -8px;
+  height: 8px;
+}
+
+/* Supported Hearing Aid Brands: the Swiper carousel never initialises in the
+   static mirror, leaving the logos crammed with no spacing. Show all logos in a
+   clean, evenly-spaced row (they all fit) instead of a broken carousel. */
+.astro-widget-image-carousel .swiper-wrapper {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: 40px;
+  flex-wrap: wrap;
+  transform: none !important;
+  width: 100% !important;
+  height: auto !important;
+}
+.astro-widget-image-carousel .swiper-slide {
+  flex: 0 0 auto;
+  width: auto !important;
+  height: auto !important;
+  margin: 0 !important;
+  opacity: 1 !important;
+}
+.astro-widget-image-carousel .swiper-slide img {
+  max-height: 64px;
+  width: auto;
+  object-fit: contain;
+}
+/* hide the now-pointless carousel arrows */
+.astro-widget-image-carousel .swiper-button-next,
+.astro-widget-image-carousel .swiper-button-prev,
+.astro-widget-image-carousel .astro-swiper-button {
+  display: none !important;
+}
+
+/* Table of Contents collapse toggle */
+.astro-toc--collapsed .astro-toc__body { display: none !important; }

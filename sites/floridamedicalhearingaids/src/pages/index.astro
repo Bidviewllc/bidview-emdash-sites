@@ -1,0 +1,10 @@
+---
+import Base from "../layouts/Base.astro";
+import { getEntry } from "../content";
+export const cacheHint = 3600;
+const e = getEntry("home");
+const d = e?.data ?? {};
+---
+<Base title={d.meta_title} description={d.meta_description} image={d.og_image} headExtra={d.head_extra} bodyClass="wp-singular page-id-44 home">
+	<Fragment set:html={d.body} />
+</Base>

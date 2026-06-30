@@ -1,0 +1,41 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "floridamedicalhearingaids",
+	"account_id": "239e9d015c7a3a39cdc2e9400312f553",
+	"main": "./src/worker.ts",
+	"compatibility_date": "2026-03-29",
+	"compatibility_flags": [
+		"nodejs_compat"
+	],
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "floridamedicalhearingaids-db",
+			"database_id": "d08abcd3-9ee6-474b-8edc-35e78542335f",
+		},
+	],
+	"r2_buckets": [
+		{
+			"binding": "MEDIA",
+			"bucket_name": "floridamedicalhearingaids-media",
+		},
+	],
+	"kv_namespaces": [
+		{
+			"binding": "SESSION",
+			"id": "028dfa4da881449cb1fcfb8ae46b6e2e",
+		},
+	],
+	"observability": {
+		"enabled": true,
+	},
+	"placement": {
+		"mode": "smart",
+	},
+	"worker_loaders": [
+		{
+			"binding": "LOADER",
+		},
+	],
+	"workers_dev": true,
+}

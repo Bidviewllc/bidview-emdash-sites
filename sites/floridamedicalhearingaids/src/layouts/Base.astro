@@ -1,0 +1,51 @@
+---
+import { EmDashHead } from "emdash/ui";
+import { createPublicPageContext } from "emdash/page";
+import shell from "../_shell.json";
+
+interface Props {
+	title?: string;
+	description?: string;
+	image?: string;
+	headExtra?: string;
+	bodyClass?: string;
+}
+
+const { title, description, image, headExtra = "", bodyClass = "" } = Astro.props;
+
+const siteName = "Florida Medical Hearing";
+const fullTitle = title || siteName;
+const siteDescription = description || "Expert hearing care, hearing aids, and audiology services in Sebring and Lake Placid, FL.";
+
+const pageCtx = createPublicPageContext({
+	Astro,
+	kind: "custom",
+	pageType: "website",
+	title: fullTitle,
+	description: siteDescription,
+	canonical: `https://floridamedicalhearingaids.com${Astro.url.pathname}`,
+	image,
+	seo: { ogImage: image },
+	siteName,
+});
+---
+
+<!doctype html>
+<html lang="en-US">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>{fullTitle}</title>
+		<link rel="icon" href="/assets/media/Company-Placeholder-Alt-1-150x100.png" sizes="32x32" />
+		<link rel="icon" href="/assets/media/Company-Placeholder-Alt-1-e1759827728687.png" sizes="192x192" />
+		<link rel="apple-touch-icon" href="/assets/media/Company-Placeholder-Alt-1-e1759827728687.png" />
+		<EmDashHead page={pageCtx} />
+		<Fragment set:html={headExtra} />
+	</head>
+	<body class={bodyClass}>
+		<Fragment set:html={shell.header} />
+		<slot />
+		<Fragment set:html={shell.footer} />
+		<Fragment set:html={shell.scripts} />
+	</body>
+</html>
