@@ -78,6 +78,7 @@ def update_row(table, slug, page):
             seo_title       = ?,
             meta_description = ?,
             robots          = ?,
+            stylesheets     = ?,
             updated_at      = ?
         WHERE slug = ?''',
         [
@@ -88,11 +89,12 @@ def update_row(table, slug, page):
             page.get("title", ""),
             page.get("description", ""),
             page.get("robots", "follow, index"),
+            json.dumps(page.get("stylesheets", [])),
             NOW,
             slug,
         ],
     )
-    print(f"  OK  body={len(page.get('bodyHtml',''))} chars")
+    print(f"  OK  body={len(page.get('bodyHtml',''))} chars  styles={page.get('stylesheets')}")
 
 
 def insert_row(table, page):
