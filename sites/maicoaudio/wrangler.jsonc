@@ -1,6 +1,6 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "maico-audiological-services",
+	"name": "maicoaudio",
 	"account_id": "981338e6544cfe45d9819bf0ea6eb83a",
 	"main": "./src/worker.ts",
 	"compatibility_date": "2026-02-24",
@@ -8,13 +8,13 @@
 	"d1_databases": [
 		{
 			"binding": "DB",
-			"database_name": "maico-audiological-services-db",
+			"database_name": "maicoaudio-db",
 		},
 	],
 	"r2_buckets": [
 		{
 			"binding": "MEDIA",
-			"bucket_name": "maico-audiological-services-media",
+			"bucket_name": "maicoaudio-media",
 		},
 	],
 	"kv_namespaces": [
