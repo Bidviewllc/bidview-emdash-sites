@@ -1,6 +1,7 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "americas-best-hearing-staging",
+	"account_id": "239e9d015c7a3a39cdc2e9400312f553",
 	"main": "./src/worker.ts",
 	"compatibility_date": "2026-02-24",
 	"compatibility_flags": ["nodejs_compat"],
@@ -8,7 +9,7 @@
 		{
 			"binding": "DB",
 			"database_name": "americas-best-hearing-staging-db-20260515d",
-			"database_id": "0b44aa7a-132b-4ab2-a313-48ed3cc859b1",
+			"database_id": "bd080fa7-6c8e-4ceb-8a09-8c4c5ae57a7b",
 		},
 	],
 	"r2_buckets": [
