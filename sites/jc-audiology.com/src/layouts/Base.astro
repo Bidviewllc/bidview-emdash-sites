@@ -367,10 +367,12 @@ const contentSegments = buildContentSegments(renderedPage.contentHtml);
   <head>
     <Fragment set:html={fixConvertedText(stripLegacyHeadLinks(renderedPage.headHtml))} />
     <link rel="canonical" href={canonicalHref} />
-    <link rel="icon" href={faviconHref} sizes="32x32" />
-    <link rel="icon" href={faviconHref} sizes="192x192" />
-    <link rel="apple-touch-icon" href={faviconHref} />
-    <meta name="msapplication-TileImage" content={faviconHref} />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16" />
+    <link rel="icon" href={faviconHref} type="image/webp" sizes="192x192" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="msapplication-TileImage" content="/favicon-32x32.png" />
   </head>
   <body class={renderedPage.bodyClass} data-astro-device-mode={renderedPage.deviceMode} data-appointment-url={appointmentUrl}>
     <Fragment set:html={fixConvertedText(renderedPage.preHeaderHtml)} />
