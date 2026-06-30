@@ -1,6 +1,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "jc-audiology-staging",
+  "account_id": "239e9d015c7a3a39cdc2e9400312f553",
   "compatibility_date": "2026-05-20",
   "compatibility_flags": ["nodejs_compat"],
   "assets": {
@@ -11,7 +12,7 @@
     {
       "binding": "DB",
       "database_name": "jc-audiology-staging-db",
-      "database_id": "56d8369c-87ce-4f46-8e6b-c258194d11f5"
+      "database_id": "963b3086-d42c-4de2-99db-e20e5723930b"
     }
   ],
   "r2_buckets": [
@@ -23,7 +24,7 @@
   "kv_namespaces": [
     {
       "binding": "SESSION",
-      "id": "2851c4afe7b04b36a517a59024888f92"
+      "id": "028dfa4da881449cb1fcfb8ae46b6e2e"
     }
   ],
   "worker_loaders": [
