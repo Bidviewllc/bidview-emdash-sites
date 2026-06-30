@@ -6651,7 +6651,7 @@
                 {
                   "_type": "span",
                   "_key": "kob",
-                  "text": "These help you hear speech more clearly across distance, in noise, and in group settings -  examples include remote microphones, TV streamers, and other listening tools.",
+                  "text": " These help you hear speech more clearly across distance, in noise, and in group settings -  examples include remote microphones, TV streamers, and other listening tools.",
                   "marks": []
                 }
               ]
@@ -6675,7 +6675,7 @@
                 {
                   "_type": "span",
                   "_key": "koe",
-                  "text": "These protect your investment and reduce breakdowns - examples include cleaning tools, wax guards, dryers/dehumidifiers, extra chargers, and retention options.",
+                  "text": " These protect your investment and reduce breakdowns - examples include cleaning tools, wax guards, dryers/dehumidifiers, extra chargers, and retention options.",
                   "marks": []
                 }
               ]
@@ -7747,20 +7747,6 @@
                   "_type": "span",
                   "_key": "ksi",
                   "text": "No two ears are the same, so no fitting should be generic. A proper hearing aid fitting customizes sound and comfort to your hearing needs, your ear shape, and your daily routine.",
-                  "marks": []
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "_key": "ksl",
-              "style": "normal",
-              "markDefs": [],
-              "children": [
-                {
-                  "_type": "span",
-                  "_key": "ksk",
-                  "text": "New Leaf Hearing Care offers hearing aid fittings in Arvada and Littleton, CO. The Littleton office is formerly known as Columbine Hearing Care and is now part of New Leaf Hearing Care.",
                   "marks": []
                 }
               ]
@@ -8943,7 +8929,7 @@
             {
               "_type": "block",
               "_key": "kx3",
-              "style": "h3",
+              "style": "h2",
               "markDefs": [],
               "children": [
                 {
@@ -8973,7 +8959,7 @@
             {
               "_type": "block",
               "_key": "kx7",
-              "style": "h4",
+              "style": "h3",
               "markDefs": [],
               "children": [
                 {
@@ -9001,7 +8987,7 @@
             {
               "_type": "block",
               "_key": "kxb",
-              "style": "h4",
+              "style": "h3",
               "markDefs": [],
               "children": [
                 {
@@ -9031,7 +9017,7 @@
             {
               "_type": "block",
               "_key": "kxf",
-              "style": "h4",
+              "style": "h3",
               "markDefs": [],
               "children": [
                 {
@@ -9061,7 +9047,7 @@
             {
               "_type": "block",
               "_key": "kxj",
-              "style": "h4",
+              "style": "h3",
               "markDefs": [],
               "children": [
                 {
@@ -9091,7 +9077,7 @@
             {
               "_type": "block",
               "_key": "kxn",
-              "style": "h4",
+              "style": "h3",
               "markDefs": [],
               "children": [
                 {
@@ -12153,7 +12139,7 @@
                 {
                   "_type": "span",
                   "_key": "k196",
-                  "text": "styles are lightweight and popular for comfort. Many people like how natural they feel for everyday listening.",
+                  "text": " styles are lightweight and popular for comfort. Many people like how natural they feel for everyday listening.",
                   "marks": []
                 }
               ]
@@ -15455,7 +15441,9 @@
                   "text": "You ask people to repeat words.",
                   "marks": []
                 }
-              ]
+              ],
+              "listItem": "bullet",
+              "level": 1
             },
             {
               "_type": "block",
@@ -15469,7 +15457,9 @@
                   "text": "Voices sound soft or unclear.",
                   "marks": []
                 }
-              ]
+              ],
+              "listItem": "bullet",
+              "level": 1
             },
             {
               "_type": "block",
@@ -15483,7 +15473,9 @@
                   "text": "Group talk feels hard to follow.",
                   "marks": []
                 }
-              ]
+              ],
+              "listItem": "bullet",
+              "level": 1
             },
             {
               "_type": "block",
@@ -15497,7 +15489,9 @@
                   "text": "You turn the TV up higher than others want.",
                   "marks": []
                 }
-              ]
+              ],
+              "listItem": "bullet",
+              "level": 1
             },
             {
               "_type": "block",
@@ -15511,7 +15505,9 @@
                   "text": "You feel tired after long talks.",
                   "marks": []
                 }
-              ]
+              ],
+              "listItem": "bullet",
+              "level": 1
             },
             {
               "_type": "block",
@@ -15525,7 +15521,9 @@
                   "text": "You avoid restaurants because noise takes over.",
                   "marks": []
                 }
-              ]
+              ],
+              "listItem": "bullet",
+              "level": 1
             },
             {
               "_type": "block",
@@ -17349,13 +17347,21 @@
               "_type": "block",
               "_key": "k1t6",
               "style": "normal",
-              "markDefs": [],
+              "markDefs": [
+                {
+                  "_key": "priceListLink",
+                  "_type": "link",
+                  "href": "https://5keys.my.canva.site/2026-pricing-webpage"
+                }
+              ],
               "children": [
                 {
                   "_type": "span",
                   "_key": "k1t5",
-                  "text": "(This can link to the pricing page: “View Our Price List”.)",
-                  "marks": []
+                  "text": "View Our Price List",
+                  "marks": [
+                    "priceListLink"
+                  ]
                 }
               ]
             },
@@ -17446,7 +17452,7 @@
             {
               "_type": "block",
               "_key": "k1tk",
-              "style": "normal",
+              "style": "h3",
               "markDefs": [],
               "children": [
                 {
@@ -17463,13 +17469,27 @@
               "style": "normal",
               "listItem": "bullet",
               "level": 1,
-              "markDefs": [],
+              "markDefs": [
+                {
+                  "_key": "cherryFinancingLink",
+                  "_type": "link",
+                  "href": "/cherry/"
+                }
+              ],
               "children": [
                 {
                   "_type": "span",
-                  "_key": "k1tl",
-                  "text": "Financing options through Cherry",
+                  "_key": "cherryFinancingLinka",
+                  "text": "Financing options through ",
                   "marks": []
+                },
+                {
+                  "_type": "span",
+                  "_key": "cherryFinancingLinkb",
+                  "text": "Cherry",
+                  "marks": [
+                    "cherryFinancingLink"
+                  ]
                 }
               ]
             },
@@ -17593,12 +17613,32 @@
               "_type": "block",
               "_key": "k1u2",
               "style": "normal",
-              "markDefs": [],
+              "markDefs": [
+                {
+                  "_key": "cherryFlexibleLink",
+                  "_type": "link",
+                  "href": "/cherry/"
+                }
+              ],
               "children": [
                 {
                   "_type": "span",
-                  "_key": "k1u1",
-                  "text": "We offer flexible financing through Cherry (with approved credit) so you can choose hearing technology that matches your needs and lifestyle. (include link to Cherry page)",
+                  "_key": "cherryFlexibleLinka",
+                  "text": "We offer flexible financing through ",
+                  "marks": []
+                },
+                {
+                  "_type": "span",
+                  "_key": "cherryFlexibleLinkb",
+                  "text": "Cherry",
+                  "marks": [
+                    "cherryFlexibleLink"
+                  ]
+                },
+                {
+                  "_type": "span",
+                  "_key": "cherryFlexibleLinkc",
+                  "text": " (with approved credit) so you can choose hearing technology that matches your needs and lifestyle.",
                   "marks": []
                 }
               ]
@@ -17674,6 +17714,19 @@
               ]
             }
           ]
+        }
+      },
+      {
+        "id": "internal_pages-cherry",
+        "slug": "cherry",
+        "status": "published",
+        "data": {
+          "page_title": "Cherry",
+          "page_slug": "/cherry/",
+          "meta_title": "Cherry | New Leaf Hearing Care",
+          "meta_description": "Explore Cherry financing options for hearing care at New Leaf Hearing Care.",
+          "intro_content": [],
+          "content": []
         }
       },
       {
@@ -28290,7 +28343,7 @@
             {
               "_type": "block",
               "_key": "k2yg",
-              "style": "h3",
+              "style": "h2",
               "markDefs": [],
               "children": [
                 {
@@ -33836,7 +33889,7 @@
             {
               "_type": "block",
               "_key": "k3is",
-              "style": "h3",
+              "style": "h2",
               "markDefs": [],
               "children": [
                 {
@@ -35783,7 +35836,7 @@
             }
           ],
           "title": "Lisa Marie Bell, Au.D.",
-          "job_title": "Audiologist",
+          "job_title": "Office Manager & Audiologist",
           "featured_image": {
             "provider": "external",
             "id": "audiologist-lisa-marie-bell",
@@ -35805,14 +35858,56 @@
           "content": [
             {
               "_type": "block",
-              "_key": "k3pv",
+              "_key": "roseBio1",
               "style": "normal",
               "markDefs": [],
               "children": [
                 {
                   "_type": "span",
-                  "_key": "k3pu",
-                  "text": "This page is ready for future content.",
+                  "_key": "roseBio1s",
+                  "text": "Rose is our patient care coordinator and helps to ensure that you feel seen, heard and comfortable from the moment you walk in the door!",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "roseBio2",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "roseBio2s",
+                  "text": "Rose has worked in healthcare since the early 2000s, beginning her career after attending Health One to become an EMT. Over the years, she has gained experience in ENT and other medical offices, serving as a Medical Assistant, Patient Care Coordinator, and Audiologist Assistant. She feels that supporting patients and ensuring they feel cared for is the most rewarding part of her work and she truly enjoys building connections and learning about each patient's story.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "roseBio3",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "roseBio3s",
+                  "text": "Family is at the center of Rose's life. She is married to her amazing husband and is a proud mom of two wonderful sons, two incredible daughters-in-law, and three grandsons - plus several beloved grand-dogs.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "roseBio4",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "roseBio4s",
+                  "text": "In her free time, she enjoys crafting, especially hand-knitting chunky blankets. She is also an avid sports fan who loves cheering on Denver teams, including college athletics. Most of all, she is her grandchildren's biggest fan and loves attending their sporting events.",
                   "marks": []
                 }
               ]

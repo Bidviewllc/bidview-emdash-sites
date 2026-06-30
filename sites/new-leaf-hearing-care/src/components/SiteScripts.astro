@@ -798,13 +798,12 @@
 
           const group = document.createElement("div");
           group.className = "internal-accordion-group";
+          childHeadings[0].before(group);
 
           childHeadings.forEach((heading) => {
             const contentNodes = getNodesUntil(heading, `${childSelector}, ${nextParentSelector}`);
             group.append(createAccordion(heading, contentNodes));
           });
-
-          parentHeading.after(group);
         };
 
         const buildArticleToc = (article) => {
