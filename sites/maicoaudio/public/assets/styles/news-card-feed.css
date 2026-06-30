@@ -1,0 +1,8 @@
+.local-news-card-feed {
+	--grid-row-gap: 30px;
+	--grid-column-gap: 30px;
+}
+
+.local-news-card-feed-grid {
+	row-gap: 30px;
+}

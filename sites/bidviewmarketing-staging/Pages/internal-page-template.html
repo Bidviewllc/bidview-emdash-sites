@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Internal Page Template</title>
+  <link rel="stylesheet" href="./internal-page-template.css" />
+</head>
+<body>
+  <article class="page-article">
+    <section class="internal-hero" aria-labelledby="internal-hero-title">
+      <div class="internal-hero__content">
+        <p class="internal-hero__eyebrow">Pages</p>
+        <h1 id="internal-hero-title" class="internal-hero__title">Internal Page Title</h1>
+      </div>
+    </section>
+
+    <nav class="hero-breadcrumb" aria-label="Breadcrumb">
+      <div class="hero-breadcrumb__inner">
+        <a href="#">Home</a>
+        <span aria-hidden="true">&raquo;</span>
+        <a href="#">Pages</a>
+        <span aria-hidden="true">&raquo;</span>
+        <span class="hero-breadcrumb__current" aria-current="page">Internal Page Title</span>
+      </div>
+    </nav>
+
+    <header class="page-header">
+      <h2 class="page-title">Page Content</h2>
+    </header>
+
+    <div class="page-content">
+      <h2>Content Heading</h2>
+      <p>Replace with your page content.</p>
+      <h3>Subheading</h3>
+      <p>More content here.</p>
+    </div>
+  </article>
+</body>
+</html>

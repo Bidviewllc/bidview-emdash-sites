@@ -1,0 +1,1062 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { getDb } from 'emdash/runtime';
+import '../styles/service-page-template.css';
+
+type MarkDef = {
+  _key?: string;
+  _type?: string;
+  href?: string;
+};
+
+type Span = {
+  _type?: string;
+  text?: string;
+  marks?: string[];
+};
+
+type ContentBlock = {
+  _type?: string;
+  _key?: string;
+  style?: string;
+  listItem?: string;
+  level?: number;
+  markDefs?: MarkDef[];
+  children?: Span[];
+};
+
+type Subsection = {
+  title: string;
+  id: string;
+  blocks: ContentBlock[];
+};
+
+type Section = {
+  title: string;
+  id: string;
+  blocks: ContentBlock[];
+  subsections: Subsection[];
+  headingLevel?: 'h2' | 'h3';
+};
+
+const escapeHtml = (value: string) =>
+  value
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+
+const slugify = (value: string) =>
+  value
+    .toLowerCase()
+    .replaceAll(/&/g, 'and')
+    .replaceAll(/[^a-z0-9]+/g, '-')
+    .replaceAll(/^-+|-+$/g, '');
+
+const segmentToLabel = (value: string) =>
+  value
+    .split('-')
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ');
+
+const normalizeHeading = (value: string) =>
+  value
+    .toLowerCase()
+    .replaceAll(/[^a-z0-9]+/g, ' ')
+    .trim();
+
+const applyMarks = (text: string, marks: string[] = [], markDefs: MarkDef[] = []) => {
+  const sanitizedText = text
+    .replaceAll('<#|*', '')
+    .replaceAll('*>', '');
+  let output = escapeHtml(sanitizedText);
+
+  for (const mark of marks) {
+    if (mark === 'strong') {
+      output = `<b>${output}</b>`;
+      continue;
+    }
+
+    if (mark === 'em') {
+      output = `<i>${output}</i>`;
+      continue;
+    }
+
+    const markDef = markDefs.find((def) => def._key === mark && def._type === 'link' && def.href);
+    if (markDef?.href) {
+      output = `<a href="${escapeHtml(markDef.href)}">${output}</a>`;
+    }
+  }
+
+  return output;
+};
+
+const getPlainText = (block: ContentBlock) =>
+  (block.children ?? []).map((child) => child.text ?? '').join('').trim();
+
+const renderInline = (block: ContentBlock) =>
+  (block.children ?? [])
+    .map((child) => applyMarks(child.text ?? '', child.marks ?? [], block.markDefs ?? []))
+    .join('');
+
+const renderBlocksHtml = (blocks: ContentBlock[]) => {
+  let html = '';
+  let listOpen = false;
+
+  for (const block of blocks) {
+    const style = block.style ?? 'normal';
+    const rawText = getPlainText(block)
+      .replaceAll('<#|*', '')
+      .replaceAll('*>', '')
+      .trim();
+    const textHtml = renderInline(block).trim();
+
+    if (!textHtml || style === 'h1' || style === 'h2' || style === 'h3') {
+      continue;
+    }
+
+    const isBullet = block.listItem === 'bullet';
+
+    if (isBullet) {
+      if (!listOpen) {
+        html += '<ul>';
+        listOpen = true;
+      }
+      html += `<li>${textHtml}</li>`;
+      continue;
+    }
+
+    if (listOpen) {
+      html += '</ul>';
+      listOpen = false;
+    }
+
+    const pseudoBulletItems = rawText
+      .split('•')
+      .map((item) => item.trim())
+      .filter(Boolean);
+    if (pseudoBulletItems.length >= 2 || (pseudoBulletItems.length === 1 && rawText.startsWith('•'))) {
+      html += '<ul>';
+      for (const item of pseudoBulletItems) {
+        html += `<li>${escapeHtml(item)}</li>`;
+      }
+      html += '</ul>';
+      continue;
+    }
+
+    html += `<p>${textHtml}</p>`;
+  }
+
+  if (listOpen) {
+    html += '</ul>';
+  }
+
+  return html;
+};
+
+const hasRenderableContent = (blocks: ContentBlock[]) => renderBlocksHtml(blocks).trim().length > 0;
+const hasNonEmptyText = (value: string) => value.replaceAll(/<[^>]+>/g, '').trim().length > 0;
+const shouldRenderSubHeading = (sectionTitle: string, subsectionTitle: string, subsectionCount: number) =>
+  !(subsectionCount === 1 && normalizeHeading(subsectionTitle) === normalizeHeading(sectionTitle));
+const renderSectionHeadingHtml = (section: Section) =>
+  section.headingLevel === 'h3'
+    ? `<h3>${escapeHtml(section.title)}</h3>`
+    : `<h2>${escapeHtml(section.title)}</h2>`;
+const shouldRenderTocSubLink = (
+  slugValue: string,
+  sectionTitle: string,
+  subsectionTitle: string,
+  subsectionCount: number,
+) => {
+  // Keep TOC anchors in sync with actual rendered heading IDs.
+  if (!shouldRenderSubHeading(sectionTitle, subsectionTitle, subsectionCount)) {
+    return false;
+  }
+
+  return true;
+};
+const getServiceCardColsClass = (count: number) => {
+  if (count === 2 || count === 4) return 'service-cards--cols-2';
+  if (count === 3 || count >= 5) return 'service-cards--cols-3';
+  return 'service-cards--cols-3';
+};
+
+const getSplitPatternForSection = (section: Section) => {
+  const hasBody = hasRenderableContent(section.blocks);
+  const subCount = section.subsections.length;
+  if (subCount === 0) return 'h2-p';
+  if (subCount === 1) return hasBody ? 'h2-p-h3-p' : 'h2-h3-p';
+  return hasBody ? 'h2-p-multi-h3-p' : 'h2-multi-h3-p';
+};
+
+const isEligibleSecondaryPattern = (pattern: string) =>
+  pattern === 'h2-p' || pattern === 'h2-h3-p';
+
+type SecondaryEntry = {
+  kind: 'cards' | 'split';
+  section: Section;
+  splitPattern?: string;
+  eligible?: boolean;
+};
+
+const getSecondaryPairPlan = (runLength: number) => {
+  if (runLength === 3 || runLength === 4 || runLength === 5) {
+    return { normalPairs: [[2, 3]], containedPairs: [] as number[][] };
+  }
+  if (runLength === 6) {
+    return { normalPairs: [[3, 4]], containedPairs: [] as number[][] };
+  }
+  if (runLength === 7 || runLength === 8 || runLength === 9) {
+    return { normalPairs: [[2, 3]], containedPairs: [[6, 7]] };
+  }
+  return { normalPairs: [] as number[][], containedPairs: [] as number[][] };
+};
+
+const buildSecondaryLayout = (sections: Section[]) => {
+  const entries: SecondaryEntry[] = sections.map((section) => {
+    if (section.subsections.length >= 2) {
+      return { kind: 'cards', section };
+    }
+    const splitPattern = getSplitPatternForSection(section);
+    return {
+      kind: 'split',
+      section,
+      splitPattern,
+      eligible: isEligibleSecondaryPattern(splitPattern),
+    };
+  });
+
+  const pairMeta = new Map<number, { mate: number; lead: boolean; type: 'normal' | 'contained' }>();
+  let i = 0;
+
+  while (i < entries.length) {
+    if (!(entries[i].kind === 'split' && entries[i].eligible)) {
+      i += 1;
+      continue;
+    }
+
+    const runStart = i;
+    let runEnd = i;
+    while (runEnd < entries.length && entries[runEnd].kind === 'split' && entries[runEnd].eligible) {
+      runEnd += 1;
+    }
+
+    const runLength = runEnd - runStart;
+    const plan = getSecondaryPairPlan(runLength);
+    const applyPairs = (pairs: number[][], type: 'normal' | 'contained') => {
+      for (const [a, b] of pairs) {
+        if (a < 1 || b < 1 || a > runLength || b > runLength) continue;
+        const ia = runStart + (a - 1);
+        const ib = runStart + (b - 1);
+        if (ib !== ia + 1) continue;
+        pairMeta.set(ia, { mate: ib, lead: true, type });
+        pairMeta.set(ib, { mate: ia, lead: false, type });
+      }
+    };
+
+    applyPairs(plan.normalPairs, 'normal');
+    applyPairs(plan.containedPairs, 'contained');
+    i = runEnd;
+  }
+
+  return { entries, pairMeta };
+};
+
+const buildContentDisplaySections = (sourceSections: Section[]) => {
+  const displaySections: Section[] = [];
+
+  for (const section of sourceSections) {
+    if (section.subsections.length === 1 && hasRenderableContent(section.blocks)) {
+      const [subsection] = section.subsections;
+      displaySections.push({
+        ...section,
+        subsections: [],
+      });
+      displaySections.push({
+        title: subsection.title,
+        id: subsection.id,
+        blocks: subsection.blocks,
+        subsections: [],
+        headingLevel: 'h3',
+      });
+      continue;
+    }
+
+    displaySections.push(section);
+  }
+
+  return displaySections;
+};
+
+const buildSections = (blocks: ContentBlock[], pageTitle: string) => {
+  const filteredBlocks = blocks.filter((block) => block?._type === 'block');
+
+  const normalizedBlocks =
+    filteredBlocks.length > 0 && getPlainText(filteredBlocks[0]) === pageTitle
+      ? filteredBlocks.slice(1)
+      : filteredBlocks;
+
+  const introBlocks: ContentBlock[] = [];
+  const sections: Section[] = [];
+  let currentSection: Section | null = null;
+  let currentSubsection: Subsection | null = null;
+
+  const finalizeSection = () => {
+    if (currentSection) {
+      sections.push(currentSection);
+    }
+    currentSection = null;
+    currentSubsection = null;
+  };
+
+  for (const block of normalizedBlocks) {
+    const style = block.style ?? 'normal';
+
+    if (style === 'h1') {
+      continue;
+    }
+
+    if (style === 'h2') {
+      finalizeSection();
+      const heading = getPlainText(block);
+      currentSection = {
+        title: heading,
+        id: slugify(heading),
+        blocks: [],
+        subsections: [],
+      };
+      continue;
+    }
+
+    if (style === 'h3') {
+      if (!currentSection) {
+        introBlocks.push(block);
+        continue;
+      }
+
+      const heading = getPlainText(block);
+      currentSubsection = {
+        title: heading,
+        id: slugify(heading),
+        blocks: [],
+      };
+      currentSection.subsections.push(currentSubsection);
+      continue;
+    }
+
+    if (currentSubsection) {
+      currentSubsection.blocks.push(block);
+      continue;
+    }
+
+    if (currentSection) {
+      currentSection.blocks.push(block);
+      continue;
+    }
+
+    introBlocks.push(block);
+  }
+
+  finalizeSection();
+
+  return { introBlocks, sections };
+};
+
+const slugParam = Astro.params.slug;
+const slug = Array.isArray(slugParam) ? slugParam.join('/') : (slugParam ?? '');
+const db = await getDb();
+const row = await db
+  .selectFrom('ec_services')
+  .select([
+    'id',
+    'slug',
+    'status',
+    'locale',
+    'title',
+    'content',
+    'seo_title',
+    'meta_description',
+    'eyebrow',
+  ])
+  .where('slug', '=', slug)
+  .where('status', '=', 'published')
+  .where('locale', '=', 'en')
+  .executeTakeFirst();
+
+if (!row) {
+  return new Response('Not found', { status: 404 });
+}
+
+const title = row.title ?? 'Service';
+const seoTitle = row.seo_title ?? title;
+const metaDescription = row.meta_description ?? '';
+const content = typeof row.content === 'string' ? JSON.parse(row.content) : row.content ?? [];
+const slugParts = slug.split('/').filter(Boolean);
+const parentSlug = slugParts[0] ?? '';
+const isGroup1 =
+  parentSlug.startsWith('audiology-marketing') ||
+  parentSlug.startsWith('cosmetic-') ||
+  parentSlug.startsWith('dental-marketing-services') ||
+  parentSlug.startsWith('dermatology-') ||
+  parentSlug.startsWith('healthcare-marketing-services') ||
+  parentSlug.startsWith('medical-spa-marketing-services');
+const pageGroupClass = isGroup1 ? 'service-page--group-1' : 'service-page--group-2';
+const eyebrow = (row.eyebrow ?? '').toString().trim() || (slugParts.length > 0 ? segmentToLabel(slugParts[slugParts.length - 1]) : segmentToLabel(slug));
+const heroImageByEyebrow: Record<string, string> = {
+  Audiology: '/Assets/bidviewmarketing-audiology-marketing.webp',
+  Cosmetic: '/Assets/bidviewmarketing-cosmetic-healthcare.webp',
+  Dermatology: '/Assets/bidviewmarketing-dermatology-marketing.webp',
+  Healthcare: '/Assets/bidviewmarketing-healthcare-marketing.webp',
+  'OB-GYN': '/Assets/bidviewmarketing-ob-gyn-marketing.webp',
+  Ophthalmologist: '/Assets/bidviewmarketing-ophthalmologist-marketing.webp',
+  Optometry: '/Assets/bidviewmarketing-optometry-marketing.webp',
+  Pediatrics: '/Assets/bidviewmarketing-pediatrics-marketing.webp',
+  'Medical Spa': '/Assets/bidviewmarketing-medical-spa.webp',
+  'Dental Marketing': '/Assets/bidviewmarketing-dental-marketing.webp',
+  'Digital ENT': '/Assets/bidviewmarketing-digital-ent.webp',
+  Podiatry: '/Assets/bidviewmarketing-podiatry-marketing.webp',
+  'Urgent Care': '/Assets/bidviewmarketing-urgent-care-marketing.webp',
+};
+const heroImage = heroImageByEyebrow[eyebrow] ?? '/Assets/bidview-marketing-internal-hero-image.webp';
+const breadcrumbTrail = slugParts.map((part, index) => {
+  const href = `/${slugParts.slice(0, index + 1).join('/')}`;
+  return {
+    label: segmentToLabel(part),
+    href,
+    isCurrent: index === slugParts.length - 1,
+  };
+});
+
+const { introBlocks, sections } = buildSections(Array.isArray(content) ? content : [], title);
+const featureSection = sections.length > 0 ? sections[sections.length - 1] : null;
+const splitSection = sections.length > 1 ? sections[sections.length - 2] : null;
+const contentSectionSource = sections.length > 2 ? sections.slice(0, -2) : [];
+const contentSections = buildContentDisplaySections(contentSectionSource);
+const tocSections = [
+  ...contentSections,
+  ...(splitSection ? [splitSection] : []),
+  ...(featureSection ? [featureSection] : []),
+];
+const primarySection = contentSections[0] ?? null;
+const secondarySection = contentSections[1] ?? null;
+const tertiarySection = contentSections[2] ?? null;
+const introHasContent = hasRenderableContent(introBlocks);
+const secondarySectionIsMultiCardPattern =
+  !!secondarySection && secondarySection.subsections.length >= 2;
+const renderSecondaryInIntro = !!secondarySection && secondarySectionIsMultiCardPattern;
+const introBlockBaseCount = (introHasContent ? 1 : 0) + (primarySection ? 1 : 0) + (secondarySection ? 1 : 0);
+const renderTertiaryInIntro = !!tertiarySection && introBlockBaseCount < 3;
+const servicesSectionIndex = contentSections.findIndex((s, index) => {
+  if (index === 0) return false;
+  if (renderTertiaryInIntro && index === 2) return false;
+  if (renderSecondaryInIntro && index === 1) return false;
+  return s.subsections.length >= 2;
+});
+const servicesSection = servicesSectionIndex >= 0 ? contentSections[servicesSectionIndex] : null;
+const tailSections = contentSections.filter((_, i) => i !== 0 && i !== 1 && !(renderTertiaryInIntro && i === 2) && i !== servicesSectionIndex);
+const secondaryLayout = buildSecondaryLayout(tailSections);
+const splitSectionBlocksHtml = splitSection ? renderBlocksHtml(splitSection.blocks) : '';
+const splitSectionHasBody = hasNonEmptyText(splitSectionBlocksHtml);
+const splitSubsectionCount = splitSection?.subsections.length ?? 0;
+const splitSectionPattern =
+  splitSubsectionCount === 0
+    ? 'h2-p'
+    : splitSubsectionCount === 1
+      ? splitSectionHasBody
+        ? 'h2-p-h3-p'
+        : 'h2-h3-p'
+      : splitSectionHasBody
+        ? 'h2-p-multi-h3-p'
+        : 'h2-multi-h3-p';
+const splitSectionLeftHtml =
+  splitSectionHasBody && (splitSectionPattern === 'h2-p-h3-p' || splitSectionPattern === 'h2-p-multi-h3-p')
+    ? splitSectionBlocksHtml
+    : '';
+const splitSectionRightSubsections = splitSection?.subsections ?? [];
+const splitSectionRightBodyHtml = splitSectionPattern === 'h2-p' ? splitSectionBlocksHtml : '';
+
+const featureBlocksHtml = featureSection ? renderBlocksHtml(featureSection.blocks) : '';
+const featureSubsectionsHtml = featureSection
+  ? featureSection.subsections
+      .map((sub) => {
+        const body = renderBlocksHtml(sub.blocks);
+        if (!sub.title && !hasNonEmptyText(body)) {
+          return '';
+        }
+        return `${sub.title ? `<h3 id="${sub.id}">${escapeHtml(sub.title)}</h3>` : ''}${body}`;
+      })
+      .join('')
+  : '';
+
+const ctaLeftHtml =
+  featureSection && hasNonEmptyText(featureBlocksHtml) && featureSection.subsections.length > 0
+    ? featureBlocksHtml
+    : '';
+const ctaRightHtml =
+  featureSection && featureSection.subsections.length > 0 ? featureSubsectionsHtml : featureBlocksHtml;
+
+const ctaPattern =
+  featureSection && featureSection.subsections.length > 0
+    ? hasNonEmptyText(featureBlocksHtml)
+      ? 'h2-p-h3-p'
+      : 'h2-h3-p'
+    : 'h2-p';
+---
+
+<BaseLayout
+  title={seoTitle}
+  metaDescription={metaDescription}
+>
+  <SiteHeader />
+
+  <main class="page-main">
+    <article class={`service-page ${pageGroupClass}`}>
+      <section class="hero" aria-labelledby="service-title" style={`--hero-image-url: url('${heroImage}')`}>
+        <div class="container hero__layout">
+          <div class="hero__content">
+            <nav class="hero-breadcrumb" aria-label="Breadcrumb">
+              <a href="/">Home</a>
+              {breadcrumbTrail.map((crumb) => (
+                <>
+                  <span aria-hidden="true">/</span>
+                  {crumb.isCurrent ? (
+                    <span aria-current="page">{crumb.label}</span>
+                  ) : (
+                    <a href={crumb.href}>{crumb.label}</a>
+                  )}
+                </>
+              ))}
+            </nav>
+            <p class="hero__eyebrow">
+              <svg class="hero__eyebrow-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l2.5 6.5L21 11l-6.5 2.5L12 20l-2.5-6.5L3 11l6.5-2.5L12 2z"/></svg>
+              <span>{eyebrow}</span>
+            </p>
+            <h1 id="service-title">{title}</h1>
+            {metaDescription && <p>{metaDescription}</p>}
+            <a class="btn-primary" href="/contact-us">
+              <img class="btn-icon" src="/Assets/bidview-marketing-icon-calendar-plus.svg" alt="" aria-hidden="true" width="20" height="20" />
+              <span>Book a strategy session</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section" aria-label="Service page content">
+        <div class="container content-section-intro">
+          <aside class="sidebar" aria-label="Supporting widgets">
+            {tocSections.length > 0 && (
+              <nav class="toc-card" aria-label="Table of contents">
+                <details class="toc-card__accordion">
+                  <summary class="toc-card__title">Table of Contents</summary>
+                  <div class="toc-card__content">
+                    <ul>
+                      {tocSections.map((section) => (
+                        <li class={section.headingLevel === 'h3' ? 'toc-card__item toc-card__item--h3' : 'toc-card__item'}>
+                          <a href={`#${section.id}`}>{section.title}</a>
+                          {section.subsections.length > 0 && (
+                            <ul class="toc-card__sublist">
+                              {section.subsections
+                                .filter((sub) =>
+                                  shouldRenderTocSubLink(
+                                    slug,
+                                    section.title,
+                                    sub.title,
+                                    section.subsections.length,
+                                  ),
+                                )
+                                .map((sub) => (
+                                  <li><a href={`#${sub.id}`}>{sub.title}</a></li>
+                                ))}
+                            </ul>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </details>
+              </nav>
+            )}
+
+            <section class="hero-form-card" aria-label="Free audit form sidebar">
+              <p class="hero-form-card__title">Get Your Free Audit</p>
+              <p>See how your practice compares to local competitors.</p>
+              <form class="audit-form" action="#" method="post">
+                <div class="audit-form-field"><input type="text" name="name" placeholder="Name" aria-label="Name" /></div>
+                <div class="audit-form-field"><input type="tel" name="phone" placeholder="Phone" aria-label="Phone" /></div>
+                <div class="audit-form-field"><input type="email" name="email" placeholder="Email" aria-label="Email" /></div>
+                <div class="audit-form-field"><input type="url" name="website" placeholder="Website" aria-label="Website" /></div>
+                <button class="audit-form-submit" type="submit">Submit</button>
+              </form>
+            </section>
+          </aside>
+
+          <div class="content-intro">
+            {hasRenderableContent(introBlocks) && (
+              <section class="content-intro-block" id="intro">
+                <Fragment set:html={renderBlocksHtml(introBlocks)} />
+              </section>
+            )}
+            {primarySection && (
+              primarySection.subsections.length >= 2 ? (
+                <>
+                  <section class="content-intro-block" id={primarySection.id}>
+                    {hasRenderableContent(primarySection.blocks) ? (
+                      <div class="content-block__intro">
+                        <div class="content-block__intro-title">
+                          <Fragment set:html={renderSectionHeadingHtml(primarySection)} />
+                        </div>
+                        <div class="content-block__intro-main">
+                          <Fragment set:html={renderBlocksHtml(primarySection.blocks)} />
+                        </div>
+                      </div>
+                    ) : (
+                      <div class="content-block__intro content-block__intro--center-title">
+                        <Fragment set:html={renderSectionHeadingHtml(primarySection)} />
+                      </div>
+                    )}
+                  </section>
+                  <section class={`service-cards ${getServiceCardColsClass(primarySection.subsections.length)}`} aria-label="Service cards">
+                    {primarySection.subsections.map((sub) => (
+                      <article class="service-card" id={sub.id}>
+                        <h3>{sub.title}</h3>
+                        <Fragment set:html={renderBlocksHtml(sub.blocks)} />
+                      </article>
+                    ))}
+                  </section>
+                </>
+              ) : (
+                <section class="content-intro-block" id={primarySection.id}>
+                  <Fragment set:html={renderSectionHeadingHtml(primarySection)} />
+                  <Fragment set:html={renderBlocksHtml(primarySection.blocks)} />
+                  {primarySection.subsections.map((sub) => (
+                    <>
+                      {shouldRenderSubHeading(primarySection.title, sub.title, primarySection.subsections.length) && (
+                        <h3 id={sub.id}>{sub.title}</h3>
+                      )}
+                      <Fragment set:html={renderBlocksHtml(sub.blocks)} />
+                    </>
+                  ))}
+                </section>
+              )
+            )}
+            {secondarySection && renderSecondaryInIntro && (
+              <>
+                <section class="content-intro-block" id={secondarySection.id}>
+                  {hasRenderableContent(secondarySection.blocks) ? (
+                    <div class="content-block__intro">
+                      <div class="content-block__intro-title">
+                        <Fragment set:html={renderSectionHeadingHtml(secondarySection)} />
+                      </div>
+                      <div class="content-block__intro-main">
+                        <Fragment set:html={renderBlocksHtml(secondarySection.blocks)} />
+                      </div>
+                    </div>
+                  ) : (
+                    <div class="content-block__intro content-block__intro--center-title">
+                      <Fragment set:html={renderSectionHeadingHtml(secondarySection)} />
+                    </div>
+                  )}
+                </section>
+                <section class="service-cards service-cards--second-paragraph-main" aria-label="Service cards">
+                  {secondarySection.subsections.map((sub) => (
+                    <article class="service-card" id={sub.id}>
+                      <h3>{sub.title}</h3>
+                      <Fragment set:html={renderBlocksHtml(sub.blocks)} />
+                    </article>
+                  ))}
+                </section>
+              </>
+            )}
+            {secondarySection && !secondarySectionIsMultiCardPattern && (
+              <section class="content-intro-block" id={secondarySection.id}>
+                <Fragment set:html={renderSectionHeadingHtml(secondarySection)} />
+                <Fragment set:html={renderBlocksHtml(secondarySection.blocks)} />
+                {secondarySection.subsections.map((sub) => (
+                  <>
+                    {shouldRenderSubHeading(secondarySection.title, sub.title, secondarySection.subsections.length) && (
+                      <h3 id={sub.id}>{sub.title}</h3>
+                    )}
+                    <Fragment set:html={renderBlocksHtml(sub.blocks)} />
+                  </>
+                ))}
+              </section>
+            )}
+            {renderTertiaryInIntro && tertiarySection && (
+              tertiarySection.subsections.length >= 2 ? (
+                <>
+                  <section class="content-intro-block" id={tertiarySection.id}>
+                    {hasRenderableContent(tertiarySection.blocks) ? (
+                      <div class="content-block__intro">
+                        <div class="content-block__intro-title">
+                          <Fragment set:html={renderSectionHeadingHtml(tertiarySection)} />
+                        </div>
+                        <div class="content-block__intro-main">
+                          <Fragment set:html={renderBlocksHtml(tertiarySection.blocks)} />
+                        </div>
+                      </div>
+                    ) : (
+                      <div class="content-block__intro content-block__intro--center-title">
+                        <Fragment set:html={renderSectionHeadingHtml(tertiarySection)} />
+                      </div>
+                    )}
+                  </section>
+                  <section class={`service-cards ${getServiceCardColsClass(tertiarySection.subsections.length)}`} aria-label="Service cards">
+                    {tertiarySection.subsections.map((sub) => (
+                      <article class="service-card" id={sub.id}>
+                        <h3>{sub.title}</h3>
+                        <Fragment set:html={renderBlocksHtml(sub.blocks)} />
+                      </article>
+                    ))}
+                  </section>
+                </>
+              ) : (
+                <section class="content-intro-block" id={tertiarySection.id}>
+                  <Fragment set:html={renderSectionHeadingHtml(tertiarySection)} />
+                  <Fragment set:html={renderBlocksHtml(tertiarySection.blocks)} />
+                  {tertiarySection.subsections.map((sub) => (
+                    <>
+                      {shouldRenderSubHeading(tertiarySection.title, sub.title, tertiarySection.subsections.length) && (
+                        <h3 id={sub.id}>{sub.title}</h3>
+                      )}
+                      <Fragment set:html={renderBlocksHtml(sub.blocks)} />
+                    </>
+                  ))}
+                </section>
+              )
+            )}
+          </div>
+        </div>
+
+        <div class="container content-section-break">
+          <div class="content-section-break__grid">
+            <aside class="cta-mini" aria-label="Reputation CTA">
+              <div class="cta-mini__copy">
+                <p class="cta-mini__title">Is your reputation healthy?</p>
+                <p>Get a free analysis of your online reviews and ratings.</p>
+              </div>
+              <div class="cta-mini__action">
+                <a class="btn-secondary" href="/contact-us">
+                  <img class="btn-icon" src="/Assets/bidview-marketing-icon-logo.svg" alt="" aria-hidden="true" width="20" height="20" />
+                  <span>Check My Score</span>
+                </a>
+              </div>
+            </aside>
+            <section class="testimonial-card" aria-label="Testimonial">
+              <div class="sidebar-widget-testimonials">
+                <script src="https://elfsightcdn.com/platform.js" async></script>
+                <div class="elfsight-app-a8761047-7680-49ae-8d79-173bee42ef96"></div>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        {servicesSection && (
+          <div class="container content-layout-tertiary">
+            <div class="content-main content-main--full">
+              <section class="content-block" id={servicesSection.id}>
+                {hasRenderableContent(servicesSection.blocks) ? (
+                  <div class="content-block__intro content-block__intro--split">
+                    <div class="content-block__intro-title">
+                      <Fragment set:html={renderSectionHeadingHtml(servicesSection)} />
+                    </div>
+                    <div class="content-block__intro-main">
+                      <Fragment set:html={renderBlocksHtml(servicesSection.blocks)} />
+                    </div>
+                  </div>
+                ) : (
+                  <div class="content-block__intro content-block__intro--center-title">
+                    <Fragment set:html={renderSectionHeadingHtml(servicesSection)} />
+                  </div>
+                )}
+              </section>
+              <section class={`service-cards ${getServiceCardColsClass(servicesSection.subsections.length)}`} aria-label="Service cards">
+                {servicesSection.subsections.map((sub) => (
+                  <article class="service-card" id={sub.id}>
+                    <h3>{sub.title}</h3>
+                    <Fragment set:html={renderBlocksHtml(sub.blocks)} />
+                  </article>
+                ))}
+              </section>
+            </div>
+          </div>
+        )}
+
+        {tailSections.length > 0 && (
+          <div class="container content-section-secondary">
+            <div class="content-main content-main--full">
+              {secondaryLayout.entries.map((entry, index) => {
+                const pair = secondaryLayout.pairMeta.get(index);
+                if (pair && !pair.lead) return null;
+
+                if (pair && pair.lead) {
+                  const mateEntry = secondaryLayout.entries[pair.mate];
+                  if (!(entry.kind === 'split' && mateEntry?.kind === 'split')) return null;
+                  return (
+                    <div class={`content-secondary-pair-row ${pair.type === 'contained' ? 'content-secondary-pair-row--contained' : ''}`}>
+                      <section class={`content-row content-row--split content-row--split--${entry.splitPattern}`} id={entry.section.id}>
+                        <div class="content-row__title">
+                          <Fragment set:html={renderSectionHeadingHtml(entry.section)} />
+                        </div>
+                        <div class="content-row__main">
+                          <Fragment set:html={renderBlocksHtml(entry.section.blocks)} />
+                          {entry.section.subsections.map((sub) => (
+                            <>
+                              {shouldRenderSubHeading(entry.section.title, sub.title, entry.section.subsections.length) && (
+                                <h3 id={sub.id}>{sub.title}</h3>
+                              )}
+                              <Fragment set:html={renderBlocksHtml(sub.blocks)} />
+                            </>
+                          ))}
+                        </div>
+                      </section>
+                      <section class={`content-row content-row--split content-row--split--${mateEntry.splitPattern}`} id={mateEntry.section.id}>
+                        <div class="content-row__title">
+                          <Fragment set:html={renderSectionHeadingHtml(mateEntry.section)} />
+                        </div>
+                        <div class="content-row__main">
+                          <Fragment set:html={renderBlocksHtml(mateEntry.section.blocks)} />
+                          {mateEntry.section.subsections.map((sub) => (
+                            <>
+                              {shouldRenderSubHeading(mateEntry.section.title, sub.title, mateEntry.section.subsections.length) && (
+                                <h3 id={sub.id}>{sub.title}</h3>
+                              )}
+                              <Fragment set:html={renderBlocksHtml(sub.blocks)} />
+                            </>
+                          ))}
+                        </div>
+                      </section>
+                    </div>
+                  );
+                }
+
+                if (entry.kind === 'cards') {
+                  const section = entry.section;
+                  return (
+                    <>
+                      <section class="content-block" id={section.id}>
+                        {hasRenderableContent(section.blocks) ? (
+                          <div class="content-block__intro content-block__intro--split">
+                            <div class="content-block__intro-title">
+                              <Fragment set:html={renderSectionHeadingHtml(section)} />
+                            </div>
+                            <div class="content-block__intro-main">
+                              <Fragment set:html={renderBlocksHtml(section.blocks)} />
+                            </div>
+                          </div>
+                        ) : (
+                          <div class="content-block__intro content-block__intro--center-title">
+                            <Fragment set:html={renderSectionHeadingHtml(section)} />
+                          </div>
+                        )}
+                      </section>
+                      <section class={`service-cards ${getServiceCardColsClass(section.subsections.length)}`} aria-label="Service cards">
+                        {section.subsections.map((sub) => (
+                          <article class="service-card" id={sub.id}>
+                            <h3>{sub.title}</h3>
+                            <Fragment set:html={renderBlocksHtml(sub.blocks)} />
+                          </article>
+                        ))}
+                      </section>
+                    </>
+                  );
+                }
+
+                if (entry.kind === 'split') {
+                  const section = entry.section;
+                  return (
+                    <section class={`content-row content-row--split content-row--split--${entry.splitPattern}`} id={section.id}>
+                      <div class="content-row__title">
+                        <Fragment set:html={renderSectionHeadingHtml(section)} />
+                      </div>
+                      <div class="content-row__main">
+                        <Fragment set:html={renderBlocksHtml(section.blocks)} />
+                        {section.subsections.map((sub) => (
+                          <>
+                            {shouldRenderSubHeading(section.title, sub.title, section.subsections.length) && (
+                              <h3 id={sub.id}>{sub.title}</h3>
+                            )}
+                            <Fragment set:html={renderBlocksHtml(sub.blocks)} />
+                          </>
+                        ))}
+                      </div>
+                    </section>
+                  );
+                }
+
+                return null;
+              })}
+            </div>
+          </div>
+        )}
+
+      </section>
+
+      {splitSection && (
+        <section class="content-section-conclusion" aria-label="Service page conclusion">
+          <div class="container content-section-secondary">
+            <div class="content-main content-main--full">
+              <section class={`content-row content-conclusion content-conclusion--${splitSectionPattern}`} id={splitSection.id}>
+                <div class="content-row__title">
+                  <h2>{splitSection.title}</h2>
+                  {hasNonEmptyText(splitSectionLeftHtml) && <Fragment set:html={splitSectionLeftHtml} />}
+                </div>
+                <div class="content-row__main">
+                  {hasNonEmptyText(splitSectionRightBodyHtml) && <Fragment set:html={splitSectionRightBodyHtml} />}
+                  {splitSectionRightSubsections.length > 1 ? (
+                    splitSectionPattern === 'h2-p-multi-h3-p' || splitSectionPattern === 'h2-multi-h3-p' ? (
+                      <div class="content-row__subsections-list">
+                        {splitSectionRightSubsections.map((sub) => (
+                          <details class="content-row__accordion" id={sub.id} name={`split-accordion-${splitSection.id}`}>
+                            <summary class="content-row__accordion-title">
+                              <h3 class="content-row__accordion-heading">
+                                {shouldRenderSubHeading(splitSection.title, sub.title, splitSectionRightSubsections.length)
+                                  ? sub.title
+                                  : splitSection.title}
+                              </h3>
+                            </summary>
+                            <div class="content-row__accordion-content">
+                              <div class="content-row__accordion-content-inner">
+                                <Fragment set:html={renderBlocksHtml(sub.blocks)} />
+                              </div>
+                            </div>
+                          </details>
+                        ))}
+                      </div>
+                    ) : (
+                      <div class="content-row__subsections-grid">
+                        {splitSectionRightSubsections.map((sub) => (
+                          <article class="content-row__subsection">
+                            {shouldRenderSubHeading(splitSection.title, sub.title, splitSectionRightSubsections.length) && (
+                              <h3 id={sub.id}>{sub.title}</h3>
+                            )}
+                            <Fragment set:html={renderBlocksHtml(sub.blocks)} />
+                          </article>
+                        ))}
+                      </div>
+                    )
+                  ) : (
+                    splitSectionRightSubsections.map((sub) => (
+                      <>
+                        {shouldRenderSubHeading(splitSection.title, sub.title, splitSectionRightSubsections.length) && (
+                          <h3 id={sub.id}>{sub.title}</h3>
+                        )}
+                        <Fragment set:html={renderBlocksHtml(sub.blocks)} />
+                      </>
+                    ))
+                  )}
+                </div>
+              </section>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {featureSection && (
+        <section class={`cta-band cta-band--${ctaPattern}`} id={featureSection.id} aria-label="Final CTA">
+          <div class="container cta-band__layout">
+            <div class="cta-band__title">
+              <h2>{featureSection.title}</h2>
+              {hasNonEmptyText(ctaLeftHtml) && <Fragment set:html={ctaLeftHtml} />}
+              <a class="btn-secondary" href="/contact-us">
+                <img class="btn-icon" src="/Assets/bidview-marketing-icon-logo.svg" alt="" aria-hidden="true" width="20" height="20" />
+                <span>Contact Us Today</span>
+              </a>
+            </div>
+            <div class="cta-band__content">
+              {hasNonEmptyText(ctaRightHtml) && <Fragment set:html={ctaRightHtml} />}
+            </div>
+          </div>
+        </section>
+      )}
+    </article>
+  </main>
+
+  <SiteFooter />
+  <script is:inline>
+    (() => {
+      const TABLET_MAX = 1024;
+      const MOBILE_MAX = 767;
+      const CARD_HEIGHT_LIMIT = 600;
+      const INTRO_CARD_HEIGHT_LIMIT = 600;
+
+      const applyServiceCardTabletStacking = () => {
+        const grids = document.querySelectorAll('.service-cards');
+        const width = window.innerWidth;
+        const isTablet = width > MOBILE_MAX && width <= TABLET_MAX;
+
+        grids.forEach((grid) => {
+          grid.classList.remove('service-cards--stack-tablet');
+          if (!isTablet) return;
+
+          const cards = Array.from(grid.querySelectorAll('.service-card'));
+          const hasTallCard = cards.some((card) => card.getBoundingClientRect().height > CARD_HEIGHT_LIMIT);
+          if (hasTallCard) {
+            grid.classList.add('service-cards--stack-tablet');
+          }
+        });
+      };
+
+      const applyIntroCardHeightStacking = () => {
+        const grids = document.querySelectorAll('.service-cards--second-paragraph-main');
+        grids.forEach((grid) => {
+          grid.classList.remove('service-cards--intro-stack');
+          const cards = Array.from(grid.querySelectorAll('.service-card'));
+          const hasTallCard = cards.some((card) => card.getBoundingClientRect().height > INTRO_CARD_HEIGHT_LIMIT);
+          if (hasTallCard) {
+            grid.classList.add('service-cards--intro-stack');
+          }
+        });
+      };
+
+      const runLayoutChecks = () => {
+        applyServiceCardTabletStacking();
+        applyIntroCardHeightStacking();
+      };
+
+      const wireTocLinksWithoutHash = () => {
+        const tocLinks = document.querySelectorAll('.toc-card a[href^="#"]');
+        tocLinks.forEach((link) => {
+          link.addEventListener('click', (event) => {
+            event.preventDefault();
+            const targetId = link.getAttribute('href');
+            if (!targetId) return;
+            const target = document.querySelector(targetId);
+            if (!target) return;
+            const header = document.querySelector('.site-header');
+            const headerOffset = header ? header.getBoundingClientRect().height : 0;
+            const targetTop = target.getBoundingClientRect().top + window.scrollY;
+            const y = Math.max(targetTop - headerOffset - 16, 0);
+            window.scrollTo({ top: y, behavior: 'smooth' });
+            window.history.replaceState(null, '', window.location.pathname + window.location.search);
+          });
+        });
+      };
+
+      const pruneMissingTocTargets = () => {
+        const tocLinks = document.querySelectorAll('.toc-card a[href^="#"]');
+        tocLinks.forEach((link) => {
+          const href = link.getAttribute('href');
+          if (!href) return;
+          const target = document.querySelector(href);
+          if (target) return;
+
+          const li = link.closest('li');
+          if (li) {
+            li.remove();
+          } else {
+            link.remove();
+          }
+        });
+      };
+
+      window.addEventListener('load', runLayoutChecks);
+      window.addEventListener('load', pruneMissingTocTargets);
+      window.addEventListener('load', wireTocLinksWithoutHash);
+      window.addEventListener('resize', runLayoutChecks);
+    })();
+  </script>
+</BaseLayout>

@@ -1,0 +1,20 @@
+---
+import { getRenderedContentPageHtml } from "../lib/render-content-page";
+import { normalizeStaticRoute } from "../lib/static-pages";
+
+export const prerender = false;
+export const cacheHint = 3600;
+
+const route = normalizeStaticRoute(Astro.params.slug);
+const html = await getRenderedContentPageHtml(route);
+
+if (!html) {
+	return new Response(null, { status: 404, statusText: "Not Found" });
+}
+
+return new Response(html, {
+	headers: {
+		"content-type": "text/html; charset=utf-8",
+	},
+});
+---
