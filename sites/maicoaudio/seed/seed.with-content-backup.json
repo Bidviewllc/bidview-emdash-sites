@@ -1,0 +1,3319 @@
+{
+  "$schema": "https://emdashcms.com/seed.schema.json",
+  "version": "1",
+  "meta": {
+    "name": "Maico Audiological Services",
+    "description": "First-pass emdash conversion from the local static HTML copy.",
+    "author": "Bidview Marketing",
+    "url": "https://maicoaudio.com"
+  },
+  "settings": {
+    "title": "Maico Audiological Services",
+    "tagline": "Expert audiology and hearing care in Virginia"
+  },
+  "collections": [
+    {
+      "slug": "content_pages",
+      "label": "Content Pages",
+      "labelSingular": "Content Page",
+      "supports": [
+        "drafts",
+        "revisions",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "route",
+          "label": "Route",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "meta_description",
+          "label": "Meta Description",
+          "type": "text"
+        },
+        {
+          "slug": "shell_path",
+          "label": "Static Shell Path",
+          "type": "string"
+        },
+        {
+          "slug": "page_type",
+          "label": "Page Type",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "slug": "media_assets",
+      "label": "Media Assets",
+      "labelSingular": "Media Asset",
+      "supports": [
+        "search"
+      ],
+      "fields": [
+        {
+          "slug": "file",
+          "label": "File Name",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "public_path",
+          "label": "Current Public Path",
+          "type": "string"
+        },
+        {
+          "slug": "size",
+          "label": "File Size",
+          "type": "number"
+        }
+      ]
+    }
+  ],
+  "taxonomies": [],
+  "menus": [
+    {
+      "name": "primary",
+      "label": "Primary Navigation",
+      "items": [
+        {
+          "type": "custom",
+          "label": "Home",
+          "url": "/"
+        },
+        {
+          "type": "custom",
+          "label": "About",
+          "url": "/about/"
+        },
+        {
+          "type": "custom",
+          "label": "Services",
+          "url": "/audiology-services/"
+        },
+        {
+          "type": "custom",
+          "label": "Hearing Aids",
+          "url": "/custom-hearing-protection/"
+        },
+        {
+          "type": "custom",
+          "label": "Contact",
+          "url": "/contact/"
+        }
+      ]
+    }
+  ],
+  "widgetAreas": [],
+  "content": {
+    "content_pages": [
+      {
+        "id": "home",
+        "slug": "home",
+        "status": "published",
+        "data": {
+          "title": "Maico Audiological Services | Audiologists & Hearing Aids in Virginia",
+          "route": "/",
+          "meta_description": "Maico Audiological Services is an audiology and hearing aid clinic with audiologists and hearing instrument specialists providing professional hearing services in Newport News, Chesapeake and Smithfield, VA.",
+          "shell_path": "src/shells/pages/index.html",
+          "page_type": "static-shell"
+        }
+      },
+      {
+        "id": "about",
+        "slug": "about",
+        "status": "published",
+        "data": {
+          "title": "About Us | Maico Audiological Services",
+          "route": "/about/",
+          "meta_description": "Maico Audiological Services is an audiology and hearing aid clinic with audiologists and hearing instrument specialists providing professional hearing services in Virginia.",
+          "shell_path": "src/shells/pages/about.html",
+          "page_type": "static-shell"
+        }
+      },
+      {
+        "id": "audiologist-hearing-aids-chesapeake-va",
+        "slug": "audiologist-hearing-aids-chesapeake-va",
+        "status": "published",
+        "data": {
+          "title": "Maico Audiological Services | Audiologists and Hearing Aids in Chesapeake, VA",
+          "route": "/audiologist-hearing-aids-chesapeake-va/",
+          "meta_description": "Maico Audiological Services provides expert hearing care and hearing aids in Chesapeake, VA.",
+          "shell_path": "src/shells/pages/audiologist-hearing-aids-chesapeake-va.html",
+          "page_type": "static-shell"
+        }
+      },
+      {
+        "id": "audiologist-hearing-aids-newport-news-va",
+        "slug": "audiologist-hearing-aids-newport-news-va",
+        "status": "published",
+        "data": {
+          "title": "Maico Audiological Services | Audiologists and Hearing Aids in Newport News, VA",
+          "route": "/audiologist-hearing-aids-newport-news-va/",
+          "meta_description": "Maico Audiological Services provides expert hearing care and hearing aids in Newport News, VA.",
+          "shell_path": "src/shells/pages/audiologist-hearing-aids-newport-news-va.html",
+          "page_type": "static-shell"
+        }
+      },
+      {
+        "id": "audiologist-hearing-aids-smithfield-va",
+        "slug": "audiologist-hearing-aids-smithfield-va",
+        "status": "published",
+        "data": {
+          "title": "Maico Audiological Services | Audiologists and Hearing Aids in Smithfield, VA",
+          "route": "/audiologist-hearing-aids-smithfield-va/",
+          "meta_description": "Maico Audiological Services provides expert hearing care and hearing aids in Smithfield, VA.",
+          "shell_path": "src/shells/pages/audiologist-hearing-aids-smithfield-va.html",
+          "page_type": "static-shell"
+        }
+      },
+      {
+        "id": "audiologist--stephanie-howard",
+        "slug": "audiologist/stephanie-howard",
+        "status": "published",
+        "data": {
+          "title": "Stephanie R. Howard, M.A., CCC-A | Maico Audiological Services",
+          "route": "/audiologist/stephanie-howard/",
+          "meta_description": "Stephanie R. Howard is an audiologist providing hearing tests, hearing aids, and professional audiology services in Chesapeake, VA.",
+          "shell_path": "src/shells/pages/audiologist__stephanie-howard.html",
+          "page_type": "static-shell"
+        }
+      },
+      {
+        "id": "audiologist--tracey-hudson",
+        "slug": "audiologist/tracey-hudson",
+        "status": "published",
+        "data": {
+          "title": "Tracey E. Hudson, Au.D., CCC-A | Maico Audiological Services",
+          "route": "/audiologist/tracey-hudson/",
+          "meta_description": "Tracey E. Hudson is an audiologist providing hearing tests, hearing aids abd professional audiology services in Newport News, VA.",
+          "shell_path": "src/shells/pages/audiologist__tracey-hudson.html",
+          "page_type": "static-shell"
+        }
+      },
+      {
+        "id": "audiology-services",
+        "slug": "audiology-services",
+        "status": "published",
+        "data": {
+          "title": "Audiology Services | Maico Audiological Services",
+          "route": "/audiology-services/",
+          "meta_description": "Learn more about our audiology services provided by our expert audiologists and hearing instrument specialists in Virginia.",
+          "shell_path": "src/shells/pages/audiology-services.html",
+          "page_type": "static-shell"
+        }
+      },
+      {
+        "id": "audiology-services--hearing-aid-fittings",
+        "slug": "audiology-services/hearing-aid-fittings",
+        "status": "published",
+        "data": {
+          "title": "Hearing Aid Fittings | Maico Audiological Services",
+          "route": "/audiology-services/hearing-aid-fittings/",
+          "meta_description": "Maico Audiological Services provides expert hearing aid fittings in Virginia. Call us to book an appointment!",
+          "shell_path": "src/shells/pages/audiology-services__hearing-aid-fittings.html",
+          "page_type": "static-shell"
+        }
+      },
+      {
+        "id": "audiology-services--hearing-aid-services",
+        "slug": "audiology-services/hearing-aid-services",
+        "status": "published",
+        "data": {
+          "title": "Hearing Aid Services | Maico Audiological Services",
+          "route": "/audiology-services/hearing-aid-services/",
+          "meta_description": "Maico Audiological Services provides expert hearing aid services in Virginia. Schedule an appointment today!",
+          "shell_path": "src/shells/pages/audiology-services__hearing-aid-services.html",
+          "page_type": "static-shell"
+        }
+      },
+      {
+        "id": "audiology-services--hearing-tests",
+        "slug": "audiology-services/hearing-tests",
+        "status": "published",
+        "data": {
+          "title": "Hearing Tests | Maico Audiological Services",
+          "route": "/audiology-services/hearing-tests/",
+          "meta_description": "Maico Audiological Services provides comprehensive hearing tests in Virginia. Schedule one today!",
+          "shell_path": "src/shells/pages/audiology-services__hearing-tests.html",
+          "page_type": "static-shell"
+        }
+      },
+      {
+        "id": "audiology-services--real-ear-measurement",
+        "slug": "audiology-services/real-ear-measurement",
+        "status": "published",
+        "data": {
+          "title": "Real Ear Measurement | Maico Audiological Services",
+          "route": "/audiology-services/real-ear-measurement/",
+          "meta_description": "Maico Audiological Servicesprovides real ear measurements as part of hearing aid fitting best practices in Virginia. Contact us to learn more.",
+          "shell_path": "src/shells/pages/audiology-services__real-ear-measurement.html",
+          "page_type": "static-shell"
+        }
+      },
+      {
+        "id": "audiology-services--sensorineural-hearing-loss",
+        "slug": "audiology-services/sensorineural-hearing-loss",
+        "status": "published",
+        "data": {
+          "title": "Sensorineural Hearing Loss Evaluation and Treatment | Maico Audiological Services",
+          "route": "/audiology-services/sensorineural-hearing-loss/",
+          "meta_description": "Maico Audiological Services provides sensorineural hearing loss evaluation and treatment in Virginia. Call us to book an appointment!",
+          "shell_path": "src/shells/pages/audiology-services__sensorineural-hearing-loss.html",
+          "page_type": "static-shell"
+        }
+      },
+      {
+        "id": "audiology-services--tinnitus-support",
+        "slug": "audiology-services/tinnitus-support",
+        "status": "published",
+        "data": {
+          "title": "Tinnitus Support | Maico Audiological Services",
+          "route": "/audiology-services/tinnitus-support/",
+          "meta_description": "Maico Audiological Services provides expert tinnitus support in Virginia.",
+          "shell_path": "src/shells/pages/audiology-services__tinnitus-support.html",
+          "page_type": "static-shell"
+        }
+      },
+      {
+        "id": "book-appointment",
+        "slug": "book-appointment",
+        "status": "published",
+        "data": {
+          "title": "Book Appointment - Maico Audiological Services",
+          "route": "/book-appointment/",
+          "meta_description": "Better hearing starts with a simple appointment. Fill out the form below to schedule your visit at our Newport News clinic.",
+          "shell_path": "src/shells/pages/book-appointment.html",
+          "page_type": "static-shell"
+        }
+      },
+      {
+        "id": "contact",
+        "slug": "contact",
+        "status": "published",
+        "data": {
+          "title": "Contact - Maico Audiological Services",
+          "route": "/contact/",
+          "meta_description": "Contact Maico Audiological Services in Virginia for hearing tests, hearing aid support, and expert care. Call or send a message to connect with us today.",
+          "shell_path": "src/shells/pages/contact.html",
+          "page_type": "static-shell"
+        }
+      },
+      {
+        "id": "custom-hearing-protection",
+        "slug": "custom-hearing-protection",
+        "status": "published",
+        "data": {
+          "title": "Custom Hearing Protection | Maico Audiological Services",
+          "route": "/custom-hearing-protection/",
+          "meta_description": "Maico Audiological Services provides custom hearing protection in Virginia. Contact us today!",
+          "shell_path": "src/shells/pages/custom-hearing-protection.html",
+          "page_type": "static-shell"
+        }
+      },
+      {
+        "id": "ear-candles-what-you-need-to-know",
+        "slug": "ear-candles-what-you-need-to-know",
+        "status": "published",
+        "data": {
+          "title": "Ear Candles | Maico Audiological Services",
+          "route": "/ear-candles-what-you-need-to-know/",
+          "meta_description": "Thinking about trying ear candles? Learn why they\u2019re unsafe and discover safer options from an audiologist. Call today for expert hearing care in Virginia.",
+          "shell_path": "src/shells/pages/ear-candles-what-you-need-to-know.html",
+          "page_type": "static-shell"
+        }
+      },
+      {
+        "id": "hearing-aid--oticon",
+        "slug": "hearing-aid/oticon",
+        "status": "published",
+        "data": {
+          "title": "Oticon Hearing Aids | Maico Audiological Services",
+          "route": "/hearing-aid/oticon/",
+          "meta_description": "Maico Audiological Services is an authorized provider of Oticon hearing aids in Virginia. Contact us to learn more!",
+          "shell_path": "src/shells/pages/hearing-aid__oticon.html",
+          "page_type": "static-shell"
+        }
+      },
+      {
+        "id": "hearing-aid--phonak",
+        "slug": "hearing-aid/phonak",
+        "status": "published",
+        "data": {
+          "title": "Phonak Hearing Aids | Maico Audiological Services",
+          "route": "/hearing-aid/phonak/",
+          "meta_description": "Maico Audiological Services is an authorized provider of Phonak hearing aids in Virginia. Contact us to learn more!",
+          "shell_path": "src/shells/pages/hearing-aid__phonak.html",
+          "page_type": "static-shell"
+        }
+      },
+      {
+        "id": "hearing-aid--resound",
+        "slug": "hearing-aid/resound",
+        "status": "published",
+        "data": {
+          "title": "ReSound Hearing Aids | Maico Audiological Services",
+          "route": "/hearing-aid/resound/",
+          "meta_description": "Maico Audiological Services is an authorized provider of ReSound hearing aids in Virginia. Contact us to learn more!",
+          "shell_path": "src/shells/pages/hearing-aid__resound.html",
+          "page_type": "static-shell"
+        }
+      },
+      {
+        "id": "hearing-aid--signia",
+        "slug": "hearing-aid/signia",
+        "status": "published",
+        "data": {
+          "title": "Signia Hearing Aids | Maico Audiological Services",
+          "route": "/hearing-aid/signia/",
+          "meta_description": "Maico Audiological Services is an authorized provider of Signia hearing aids in Virginia. Contact us to learn more!",
+          "shell_path": "src/shells/pages/hearing-aid__signia.html",
+          "page_type": "static-shell"
+        }
+      },
+      {
+        "id": "hearing-aid--starkey",
+        "slug": "hearing-aid/starkey",
+        "status": "published",
+        "data": {
+          "title": "Starkey Hearing Aids | Maico Audiological Services",
+          "route": "/hearing-aid/starkey/",
+          "meta_description": "Maico Audiological Services is an authorized provider of Starkey hearing aids in Virginia. Contact us to learn more!",
+          "shell_path": "src/shells/pages/hearing-aid__starkey.html",
+          "page_type": "static-shell"
+        }
+      },
+      {
+        "id": "hearing-aid--unitron",
+        "slug": "hearing-aid/unitron",
+        "status": "published",
+        "data": {
+          "title": "Unitron Hearing Aids | Maico Audiological Services",
+          "route": "/hearing-aid/unitron/",
+          "meta_description": "Maico Audiological Services is an authorized provider of Unitron hearing aids in Virginia. Contact us to learn more!",
+          "shell_path": "src/shells/pages/hearing-aid__unitron.html",
+          "page_type": "static-shell"
+        }
+      },
+      {
+        "id": "hearing-aid--widex",
+        "slug": "hearing-aid/widex",
+        "status": "published",
+        "data": {
+          "title": "Widex Hearing Aids | Maico Audiological Services",
+          "route": "/hearing-aid/widex/",
+          "meta_description": "Maico Audiological Services is an authorized provider of Widex hearing aids in Virginia. Contact us to learn more!",
+          "shell_path": "src/shells/pages/hearing-aid__widex.html",
+          "page_type": "static-shell"
+        }
+      },
+      {
+        "id": "hearing-aids-for-tinnitus",
+        "slug": "hearing-aids-for-tinnitus",
+        "status": "published",
+        "data": {
+          "title": "Hearing Aids for Tinnitus | Maico Audiological Services",
+          "route": "/hearing-aids-for-tinnitus/",
+          "meta_description": "Hearing aids for tinnitus can improve hearing and help reduce ringing in the ears. Visit Maico Audiology to connect with expert audiologists in Virginia.",
+          "shell_path": "src/shells/pages/hearing-aids-for-tinnitus.html",
+          "page_type": "static-shell"
+        }
+      },
+      {
+        "id": "hearing-aids-products",
+        "slug": "hearing-aids-products",
+        "status": "published",
+        "data": {
+          "title": "Hearing Aids & Products | Maico Audiological Services",
+          "route": "/hearing-aids-products/",
+          "meta_description": "Maico Audiological Services provides quality hearing aids and products in Virginia. Contact us to learn more!",
+          "shell_path": "src/shells/pages/hearing-aids-products.html",
+          "page_type": "static-shell"
+        }
+      },
+      {
+        "id": "hearing-aids-products--hearing-aid-alternatives",
+        "slug": "hearing-aids-products/hearing-aid-alternatives",
+        "status": "published",
+        "data": {
+          "title": "Assistive Listening Devices | Maico Audiological Services",
+          "route": "/hearing-aids-products/hearing-aid-alternatives/",
+          "meta_description": "Maico Audiological Services offers assistive listening devices in Virginia. Contact us today!",
+          "shell_path": "src/shells/pages/hearing-aids-products__hearing-aid-alternatives.html",
+          "page_type": "static-shell"
+        }
+      },
+      {
+        "id": "hearing-aids-products--hearing-aid-batteries",
+        "slug": "hearing-aids-products/hearing-aid-batteries",
+        "status": "published",
+        "data": {
+          "title": "Hearing Aid Batteries | Maico Audiological Services",
+          "route": "/hearing-aids-products/hearing-aid-batteries/",
+          "meta_description": "Maico Audiological Services provides hearing aid batteries in Virginia to ensure that your hearing devices always function at their best. Visit us today!",
+          "shell_path": "src/shells/pages/hearing-aids-products__hearing-aid-batteries.html",
+          "page_type": "static-shell"
+        }
+      },
+      {
+        "id": "hearing-instrument-specialist--jenny-flamini",
+        "slug": "hearing-instrument-specialist/jenny-flamini",
+        "status": "published",
+        "data": {
+          "title": "Jenny Flamini, H.I.S, CDP | Maico Audiological Services",
+          "route": "/hearing-instrument-specialist/jenny-flamini/",
+          "meta_description": "Jenny Flamini is a hearing instrument specialist providing hearing tests, hearing aids, and professional hearing services in Smithfield, VA.",
+          "shell_path": "src/shells/pages/hearing-instrument-specialist__jenny-flamini.html",
+          "page_type": "static-shell"
+        }
+      },
+      {
+        "id": "hyperacusis-symptoms-diagnosis-risk-factors",
+        "slug": "hyperacusis-symptoms-diagnosis-risk-factors",
+        "status": "published",
+        "data": {
+          "title": "Understanding Hyperacusis | Maico Audiological Services",
+          "route": "/hyperacusis-symptoms-diagnosis-risk-factors/",
+          "meta_description": "Hyperacusis makes normal sounds feel painful or overwhelming. Schedule a hearing evaluation in Virginia today at Maico Audiological Services.",
+          "shell_path": "src/shells/pages/hyperacusis-symptoms-diagnosis-risk-factors.html",
+          "page_type": "static-shell"
+        }
+      },
+      {
+        "id": "insurance-and-billing-faqs",
+        "slug": "insurance-and-billing-faqs",
+        "status": "published",
+        "data": {
+          "title": "Insurance and Billing | Maico Audiological Services",
+          "route": "/insurance-and-billing-faqs/",
+          "meta_description": "Learn more about Maico Audiological Services accepted insurance plans, billing, and payments.",
+          "shell_path": "src/shells/pages/insurance.html",
+          "page_type": "static-shell"
+        }
+      },
+      {
+        "id": "microsuction-vs-irrigation-which-ear-wax-removal-method-is-right-for-you",
+        "slug": "microsuction-vs-irrigation-which-ear-wax-removal-method-is-right-for-you",
+        "status": "published",
+        "data": {
+          "title": "Microsuction vs Irrigation: Ear Wax Removal | Maico Audiological Services",
+          "route": "/microsuction-vs-irrigation-which-ear-wax-removal-method-is-right-for-you/",
+          "meta_description": "Microsuction vs irrigation for ear wax removal: compare how each method works, who may be a good fit, risks, comfort, and when to see an audiologist.",
+          "shell_path": "src/shells/pages/microsuction-vs-irrigation-which-ear-wax-removal-method-is-right-for-you.html",
+          "page_type": "static-shell"
+        }
+      },
+      {
+        "id": "pressure-in-the-ear-causes-care-and-when-to-see-an-audiologist",
+        "slug": "pressure-in-the-ear-causes-care-and-when-to-see-an-audiologist",
+        "status": "published",
+        "data": {
+          "title": "Pressure in Ears | Maico Audiological Services",
+          "route": "/pressure-in-the-ear-causes-care-and-when-to-see-an-audiologist/",
+          "meta_description": "Struggling with ear pressure? Our audiologists in Newport News, Chesapeake & Smithfield can help. Call Maico Audiological Services today!",
+          "shell_path": "src/shells/pages/pressure-in-the-ear-causes-care-and-when-to-see-an-audiologist.html",
+          "page_type": "static-shell"
+        }
+      },
+      {
+        "id": "privacy-policy",
+        "slug": "privacy-policy",
+        "status": "published",
+        "data": {
+          "title": "Maico Audiological Services | Privacy Policy",
+          "route": "/privacy-policy/",
+          "meta_description": "Learn how Maico Audiological Services collects, uses, and protects your personal information. Read our privacy policy for full details on your rights and data security.",
+          "shell_path": "src/shells/pages/privacy-policy.html",
+          "page_type": "static-shell"
+        }
+      },
+      {
+        "id": "rechargeable-hearing-aids-features-benefits",
+        "slug": "rechargeable-hearing-aids-features-benefits",
+        "status": "published",
+        "data": {
+          "title": "Rechargeable Hearing Aids | Maico Audiological Services",
+          "route": "/rechargeable-hearing-aids-features-benefits/",
+          "meta_description": "Learn about rechargeable hearing aids, features, price, and apps. Schedule a hearing test at Maico Audiology today.",
+          "shell_path": "src/shells/pages/rechargeable-hearing-aids-features-benefits.html",
+          "page_type": "static-shell"
+        }
+      },
+      {
+        "id": "sitemap",
+        "slug": "sitemap",
+        "status": "published",
+        "data": {
+          "title": "Sitemap - Maico Audiological Services",
+          "route": "/sitemap/",
+          "meta_description": "Explore all services & information at Maico Audiological Services \u2014 hearing tests, fittings, repairs, tinnitus care, and more. Visit now to discover what we offer!",
+          "shell_path": "src/shells/pages/sitemap.html",
+          "page_type": "static-shell"
+        }
+      },
+      {
+        "id": "swimmers-ear",
+        "slug": "swimmers-ear",
+        "status": "published",
+        "data": {
+          "title": "Understanding Swimmer's Ear: Causes, Symptoms, and Safe Treatment | Maico Audiological Services",
+          "route": "/swimmers-ear/",
+          "meta_description": "If you\u2019re struggling with swimmer\u2019s ear, don\u2019t wait for symptoms to worsen. Call Maico Audiological Services today to schedule your appointment with an audiologist.",
+          "shell_path": "src/shells/pages/swimmers-ear.html",
+          "page_type": "static-shell"
+        }
+      },
+      {
+        "id": "terms-of-use",
+        "slug": "terms-of-use",
+        "status": "published",
+        "data": {
+          "title": "Maico Audiological Services | Terms of Service",
+          "route": "/terms-of-use/",
+          "meta_description": "Review Maico Audiological Services\u2019 Terms of Use \u2014 rules for site usage, privacy & liability. Read now to stay informed and use the site with confidence.",
+          "shell_path": "src/shells/pages/terms-of-use.html",
+          "page_type": "static-shell"
+        }
+      },
+      {
+        "id": "thank-you-for-contacting-us",
+        "slug": "thank-you-for-contacting-us",
+        "status": "published",
+        "data": {
+          "title": "Thank you for contacting us - Maico Audiological Services",
+          "route": "/thank-you-for-contacting-us/",
+          "meta_description": "Thank you for contacting Maico Audiological Services! We\u2019ve received your message and will be in touch shortly \u2014 explore our hearing services or schedule your visit today!",
+          "shell_path": "src/shells/pages/thank-you-for-contacting-us.html",
+          "page_type": "static-shell"
+        }
+      },
+      {
+        "id": "thank-you",
+        "slug": "thank-you",
+        "status": "published",
+        "data": {
+          "title": "Thank You - Maico Audiological Services",
+          "route": "/thank-you/",
+          "meta_description": "Thanks for reaching out! We\u2019ve received your message and will be in touch shortly",
+          "shell_path": "src/shells/pages/thank-you.html",
+          "page_type": "static-shell"
+        }
+      },
+      {
+        "id": "the-best-way-to-clean-your-ears",
+        "slug": "the-best-way-to-clean-your-ears",
+        "status": "published",
+        "data": {
+          "title": "The Best Way to Clean Your Ears | Maico Audiological Services",
+          "route": "/the-best-way-to-clean-your-ears/",
+          "meta_description": "Wondering how to clean your ears safely? Maico Audiological Services in Newport News, Chesapeake & Smithfield can help. Call us today!",
+          "shell_path": "src/shells/pages/the-best-way-to-clean-your-ears.html",
+          "page_type": "static-shell"
+        }
+      }
+    ],
+    "media_assets": [
+      {
+        "id": "0fe542364bad1d04cf43fe57ffe07dbe48c47f61-7a7a82690d-png",
+        "slug": "0fe542364bad1d04cf43fe57ffe07dbe48c47f61-7a7a82690d-png",
+        "status": "published",
+        "data": {
+          "file": "0fe542364bad1d04cf43fe57ffe07dbe48c47f61-7a7a82690d.png",
+          "public_path": "/assets/media/0fe542364bad1d04cf43fe57ffe07dbe48c47f61-7a7a82690d.png",
+          "size": 68403
+        }
+      },
+      {
+        "id": "195aaa95f751c96d6a2634b6f3e52cbf4c72cb1b-1024x248-31b86039ab-png",
+        "slug": "195aaa95f751c96d6a2634b6f3e52cbf4c72cb1b-1024x248-31b86039ab-png",
+        "status": "published",
+        "data": {
+          "file": "195aaa95f751c96d6a2634b6f3e52cbf4c72cb1b-1024x248-31b86039ab.png",
+          "public_path": "/assets/media/195aaa95f751c96d6a2634b6f3e52cbf4c72cb1b-1024x248-31b86039ab.png",
+          "size": 13476
+        }
+      },
+      {
+        "id": "195aaa95f751c96d6a2634b6f3e52cbf4c72cb1b-300x73-8dc8d009ca-png",
+        "slug": "195aaa95f751c96d6a2634b6f3e52cbf4c72cb1b-300x73-8dc8d009ca-png",
+        "status": "published",
+        "data": {
+          "file": "195aaa95f751c96d6a2634b6f3e52cbf4c72cb1b-300x73-8dc8d009ca.png",
+          "public_path": "/assets/media/195aaa95f751c96d6a2634b6f3e52cbf4c72cb1b-300x73-8dc8d009ca.png",
+          "size": 2152
+        }
+      },
+      {
+        "id": "195aaa95f751c96d6a2634b6f3e52cbf4c72cb1b-768x186-f23d964fbe-png",
+        "slug": "195aaa95f751c96d6a2634b6f3e52cbf4c72cb1b-768x186-f23d964fbe-png",
+        "status": "published",
+        "data": {
+          "file": "195aaa95f751c96d6a2634b6f3e52cbf4c72cb1b-768x186-f23d964fbe.png",
+          "public_path": "/assets/media/195aaa95f751c96d6a2634b6f3e52cbf4c72cb1b-768x186-f23d964fbe.png",
+          "size": 8883
+        }
+      },
+      {
+        "id": "195aaa95f751c96d6a2634b6f3e52cbf4c72cb1b-a1d73d0e09-png",
+        "slug": "195aaa95f751c96d6a2634b6f3e52cbf4c72cb1b-a1d73d0e09-png",
+        "status": "published",
+        "data": {
+          "file": "195aaa95f751c96d6a2634b6f3e52cbf4c72cb1b-a1d73d0e09.png",
+          "public_path": "/assets/media/195aaa95f751c96d6a2634b6f3e52cbf4c72cb1b-a1d73d0e09.png",
+          "size": 153714
+        }
+      },
+      {
+        "id": "19fa12c9e1b8c9fbdb145766c99d4f292d5b1211-1024x683-f3468d307e-jpg",
+        "slug": "19fa12c9e1b8c9fbdb145766c99d4f292d5b1211-1024x683-f3468d307e-jpg",
+        "status": "published",
+        "data": {
+          "file": "19fa12c9e1b8c9fbdb145766c99d4f292d5b1211-1024x683-f3468d307e.jpg",
+          "public_path": "/assets/media/19fa12c9e1b8c9fbdb145766c99d4f292d5b1211-1024x683-f3468d307e.jpg",
+          "size": 81107
+        }
+      },
+      {
+        "id": "19fa12c9e1b8c9fbdb145766c99d4f292d5b1211-1536x1024-00a34470ac-jpg",
+        "slug": "19fa12c9e1b8c9fbdb145766c99d4f292d5b1211-1536x1024-00a34470ac-jpg",
+        "status": "published",
+        "data": {
+          "file": "19fa12c9e1b8c9fbdb145766c99d4f292d5b1211-1536x1024-00a34470ac.jpg",
+          "public_path": "/assets/media/19fa12c9e1b8c9fbdb145766c99d4f292d5b1211-1536x1024-00a34470ac.jpg",
+          "size": 164798
+        }
+      },
+      {
+        "id": "19fa12c9e1b8c9fbdb145766c99d4f292d5b1211-2048x1366-b85fbc302b-jpg",
+        "slug": "19fa12c9e1b8c9fbdb145766c99d4f292d5b1211-2048x1366-b85fbc302b-jpg",
+        "status": "published",
+        "data": {
+          "file": "19fa12c9e1b8c9fbdb145766c99d4f292d5b1211-2048x1366-b85fbc302b.jpg",
+          "public_path": "/assets/media/19fa12c9e1b8c9fbdb145766c99d4f292d5b1211-2048x1366-b85fbc302b.jpg",
+          "size": 286118
+        }
+      },
+      {
+        "id": "19fa12c9e1b8c9fbdb145766c99d4f292d5b1211-300x200-273cab38c4-jpg",
+        "slug": "19fa12c9e1b8c9fbdb145766c99d4f292d5b1211-300x200-273cab38c4-jpg",
+        "status": "published",
+        "data": {
+          "file": "19fa12c9e1b8c9fbdb145766c99d4f292d5b1211-300x200-273cab38c4.jpg",
+          "public_path": "/assets/media/19fa12c9e1b8c9fbdb145766c99d4f292d5b1211-300x200-273cab38c4.jpg",
+          "size": 11030
+        }
+      },
+      {
+        "id": "19fa12c9e1b8c9fbdb145766c99d4f292d5b1211-768x512-119cec1224-jpg",
+        "slug": "19fa12c9e1b8c9fbdb145766c99d4f292d5b1211-768x512-119cec1224-jpg",
+        "status": "published",
+        "data": {
+          "file": "19fa12c9e1b8c9fbdb145766c99d4f292d5b1211-768x512-119cec1224.jpg",
+          "public_path": "/assets/media/19fa12c9e1b8c9fbdb145766c99d4f292d5b1211-768x512-119cec1224.jpg",
+          "size": 49585
+        }
+      },
+      {
+        "id": "1pt-g8zys-skggpnycgsqamb1w0lwk4s4bbldrmfjq-df7731c2dd-ttf",
+        "slug": "1pt-g8zys-skggpnycgsqamb1w0lwk4s4bbldrmfjq-df7731c2dd-ttf",
+        "status": "published",
+        "data": {
+          "file": "1Pt_g8zYS_SKggPNyCgSQamb1W0lwk4S4bbLDrMfJQ-df7731c2dd.ttf",
+          "public_path": "/assets/media/1Pt_g8zYS_SKggPNyCgSQamb1W0lwk4S4bbLDrMfJQ-df7731c2dd.ttf",
+          "size": 48960
+        }
+      },
+      {
+        "id": "1pt-g8zys-skggpnycgsqamb1w0lwk4s4chldrmfjq-08c8499b15-ttf",
+        "slug": "1pt-g8zys-skggpnycgsqamb1w0lwk4s4chldrmfjq-08c8499b15-ttf",
+        "status": "published",
+        "data": {
+          "file": "1Pt_g8zYS_SKggPNyCgSQamb1W0lwk4S4cHLDrMfJQ-08c8499b15.ttf",
+          "public_path": "/assets/media/1Pt_g8zYS_SKggPNyCgSQamb1W0lwk4S4cHLDrMfJQ-08c8499b15.ttf",
+          "size": 48720
+        }
+      },
+      {
+        "id": "1pt-g8zys-skggpnycgsqamb1w0lwk4s4ejldrmfjq-21d2b6453f-ttf",
+        "slug": "1pt-g8zys-skggpnycgsqamb1w0lwk4s4ejldrmfjq-21d2b6453f-ttf",
+        "status": "published",
+        "data": {
+          "file": "1Pt_g8zYS_SKggPNyCgSQamb1W0lwk4S4ejLDrMfJQ-21d2b6453f.ttf",
+          "public_path": "/assets/media/1Pt_g8zYS_SKggPNyCgSQamb1W0lwk4S4ejLDrMfJQ-21d2b6453f.ttf",
+          "size": 48940
+        }
+      },
+      {
+        "id": "1pt-g8zys-skggpnycgsqamb1w0lwk4s4ejmdrmfjq-21acddb15b-ttf",
+        "slug": "1pt-g8zys-skggpnycgsqamb1w0lwk4s4ejmdrmfjq-21acddb15b-ttf",
+        "status": "published",
+        "data": {
+          "file": "1Pt_g8zYS_SKggPNyCgSQamb1W0lwk4S4ejMDrMfJQ-21acddb15b.ttf",
+          "public_path": "/assets/media/1Pt_g8zYS_SKggPNyCgSQamb1W0lwk4S4ejMDrMfJQ-21acddb15b.ttf",
+          "size": 48964
+        }
+      },
+      {
+        "id": "1pt-g8zys-skggpnycgsqamb1w0lwk4s4tbmdrmfjq-b1b8e1f776-ttf",
+        "slug": "1pt-g8zys-skggpnycgsqamb1w0lwk4s4tbmdrmfjq-b1b8e1f776-ttf",
+        "status": "published",
+        "data": {
+          "file": "1Pt_g8zYS_SKggPNyCgSQamb1W0lwk4S4TbMDrMfJQ-b1b8e1f776.ttf",
+          "public_path": "/assets/media/1Pt_g8zYS_SKggPNyCgSQamb1W0lwk4S4TbMDrMfJQ-b1b8e1f776.ttf",
+          "size": 48916
+        }
+      },
+      {
+        "id": "1pt-g8zys-skggpnycgsqamb1w0lwk4s4vrmdrmfjq-a2df58906c-ttf",
+        "slug": "1pt-g8zys-skggpnycgsqamb1w0lwk4s4vrmdrmfjq-a2df58906c-ttf",
+        "status": "published",
+        "data": {
+          "file": "1Pt_g8zYS_SKggPNyCgSQamb1W0lwk4S4VrMDrMfJQ-a2df58906c.ttf",
+          "public_path": "/assets/media/1Pt_g8zYS_SKggPNyCgSQamb1W0lwk4S4VrMDrMfJQ-a2df58906c.ttf",
+          "size": 48920
+        }
+      },
+      {
+        "id": "1pt-g8zys-skggpnycgsqamb1w0lwk4s4wjmdrmfjq-ca44b75ef3-ttf",
+        "slug": "1pt-g8zys-skggpnycgsqamb1w0lwk4s4wjmdrmfjq-ca44b75ef3-ttf",
+        "status": "published",
+        "data": {
+          "file": "1Pt_g8zYS_SKggPNyCgSQamb1W0lwk4S4WjMDrMfJQ-ca44b75ef3.ttf",
+          "public_path": "/assets/media/1Pt_g8zYS_SKggPNyCgSQamb1W0lwk4S4WjMDrMfJQ-ca44b75ef3.ttf",
+          "size": 48808
+        }
+      },
+      {
+        "id": "1pt-g8zys-skggpnycgsqamb1w0lwk4s4wjndrmfjq-9d556219b9-ttf",
+        "slug": "1pt-g8zys-skggpnycgsqamb1w0lwk4s4wjndrmfjq-9d556219b9-ttf",
+        "status": "published",
+        "data": {
+          "file": "1Pt_g8zYS_SKggPNyCgSQamb1W0lwk4S4WjNDrMfJQ-9d556219b9.ttf",
+          "public_path": "/assets/media/1Pt_g8zYS_SKggPNyCgSQamb1W0lwk4S4WjNDrMfJQ-9d556219b9.ttf",
+          "size": 48884
+        }
+      },
+      {
+        "id": "1pt-g8zys-skggpnycgsqamb1w0lwk4s4y-ldrmfjq-eebb29d348-ttf",
+        "slug": "1pt-g8zys-skggpnycgsqamb1w0lwk4s4y-ldrmfjq-eebb29d348-ttf",
+        "status": "published",
+        "data": {
+          "file": "1Pt_g8zYS_SKggPNyCgSQamb1W0lwk4S4Y_LDrMfJQ-eebb29d348.ttf",
+          "public_path": "/assets/media/1Pt_g8zYS_SKggPNyCgSQamb1W0lwk4S4Y_LDrMfJQ-eebb29d348.ttf",
+          "size": 48856
+        }
+      },
+      {
+        "id": "1ptxg8zys-skggpn4iegvnhyvvelxvs9pbciprq-e110296046-ttf",
+        "slug": "1ptxg8zys-skggpn4iegvnhyvvelxvs9pbciprq-e110296046-ttf",
+        "status": "published",
+        "data": {
+          "file": "1Ptxg8zYS_SKggPN4iEgvnHyvveLxVs9pbCIPrQ-e110296046.ttf",
+          "public_path": "/assets/media/1Ptxg8zYS_SKggPN4iEgvnHyvveLxVs9pbCIPrQ-e110296046.ttf",
+          "size": 49512
+        }
+      },
+      {
+        "id": "1ptxg8zys-skggpn4iegvnhyvvelxvsepbciprq-56df6f0d0b-ttf",
+        "slug": "1ptxg8zys-skggpn4iegvnhyvvelxvsepbciprq-56df6f0d0b-ttf",
+        "status": "published",
+        "data": {
+          "file": "1Ptxg8zYS_SKggPN4iEgvnHyvveLxVsEpbCIPrQ-56df6f0d0b.ttf",
+          "public_path": "/assets/media/1Ptxg8zYS_SKggPN4iEgvnHyvveLxVsEpbCIPrQ-56df6f0d0b.ttf",
+          "size": 49600
+        }
+      },
+      {
+        "id": "1ptxg8zys-skggpn4iegvnhyvvelxvtaorciprq-12a7848ae5-ttf",
+        "slug": "1ptxg8zys-skggpn4iegvnhyvvelxvtaorciprq-12a7848ae5-ttf",
+        "status": "published",
+        "data": {
+          "file": "1Ptxg8zYS_SKggPN4iEgvnHyvveLxVtaorCIPrQ-12a7848ae5.ttf",
+          "public_path": "/assets/media/1Ptxg8zYS_SKggPN4iEgvnHyvveLxVtaorCIPrQ-12a7848ae5.ttf",
+          "size": 49612
+        }
+      },
+      {
+        "id": "1ptxg8zys-skggpn4iegvnhyvvelxvtapbciprq-1d2d3267d2-ttf",
+        "slug": "1ptxg8zys-skggpn4iegvnhyvvelxvtapbciprq-1d2d3267d2-ttf",
+        "status": "published",
+        "data": {
+          "file": "1Ptxg8zYS_SKggPN4iEgvnHyvveLxVtapbCIPrQ-1d2d3267d2.ttf",
+          "public_path": "/assets/media/1Ptxg8zYS_SKggPN4iEgvnHyvveLxVtapbCIPrQ-1d2d3267d2.ttf",
+          "size": 49572
+        }
+      },
+      {
+        "id": "1ptxg8zys-skggpn4iegvnhyvvelxvtzpbciprq-a793e80e67-ttf",
+        "slug": "1ptxg8zys-skggpn4iegvnhyvvelxvtzpbciprq-a793e80e67-ttf",
+        "status": "published",
+        "data": {
+          "file": "1Ptxg8zYS_SKggPN4iEgvnHyvveLxVtzpbCIPrQ-a793e80e67.ttf",
+          "public_path": "/assets/media/1Ptxg8zYS_SKggPN4iEgvnHyvveLxVtzpbCIPrQ-a793e80e67.ttf",
+          "size": 49396
+        }
+      },
+      {
+        "id": "1ptxg8zys-skggpn4iegvnhyvvelxvueorciprq-61964072ca-ttf",
+        "slug": "1ptxg8zys-skggpn4iegvnhyvvelxvueorciprq-61964072ca-ttf",
+        "status": "published",
+        "data": {
+          "file": "1Ptxg8zYS_SKggPN4iEgvnHyvveLxVuEorCIPrQ-61964072ca.ttf",
+          "public_path": "/assets/media/1Ptxg8zYS_SKggPN4iEgvnHyvveLxVuEorCIPrQ-61964072ca.ttf",
+          "size": 49556
+        }
+      },
+      {
+        "id": "1ptxg8zys-skggpn4iegvnhyvvelxvvao7ciprq-25a18ce261-ttf",
+        "slug": "1ptxg8zys-skggpn4iegvnhyvvelxvvao7ciprq-25a18ce261-ttf",
+        "status": "published",
+        "data": {
+          "file": "1Ptxg8zYS_SKggPN4iEgvnHyvveLxVvao7CIPrQ-25a18ce261.ttf",
+          "public_path": "/assets/media/1Ptxg8zYS_SKggPN4iEgvnHyvveLxVvao7CIPrQ-25a18ce261.ttf",
+          "size": 49532
+        }
+      },
+      {
+        "id": "1ptxg8zys-skggpn4iegvnhyvvelxvvaorciprq-2908991aa9-ttf",
+        "slug": "1ptxg8zys-skggpn4iegvnhyvvelxvvaorciprq-2908991aa9-ttf",
+        "status": "published",
+        "data": {
+          "file": "1Ptxg8zYS_SKggPN4iEgvnHyvveLxVvaorCIPrQ-2908991aa9.ttf",
+          "public_path": "/assets/media/1Ptxg8zYS_SKggPN4iEgvnHyvveLxVvaorCIPrQ-2908991aa9.ttf",
+          "size": 49552
+        }
+      },
+      {
+        "id": "1ptxg8zys-skggpn4iegvnhyvvelxvvoorciprq-a77c4fcab1-ttf",
+        "slug": "1ptxg8zys-skggpn4iegvnhyvvelxvvoorciprq-a77c4fcab1-ttf",
+        "status": "published",
+        "data": {
+          "file": "1Ptxg8zYS_SKggPN4iEgvnHyvveLxVvoorCIPrQ-a77c4fcab1.ttf",
+          "public_path": "/assets/media/1Ptxg8zYS_SKggPN4iEgvnHyvveLxVvoorCIPrQ-a77c4fcab1.ttf",
+          "size": 49552
+        }
+      },
+      {
+        "id": "5au19-a8oxmifjpberysia-79a50bf267-ttf",
+        "slug": "5au19-a8oxmifjpberysia-79a50bf267-ttf",
+        "status": "published",
+        "data": {
+          "file": "5aU19_a8oxmIfJpbERySiA-79a50bf267.ttf",
+          "public_path": "/assets/media/5aU19_a8oxmIfJpbERySiA-79a50bf267.ttf",
+          "size": 39664
+        }
+      },
+      {
+        "id": "5au19-a8oxmiflzcerysia-df6dbda29d-ttf",
+        "slug": "5au19-a8oxmiflzcerysia-df6dbda29d-ttf",
+        "status": "published",
+        "data": {
+          "file": "5aU19_a8oxmIfLZcERySiA-df6dbda29d.ttf",
+          "public_path": "/assets/media/5aU19_a8oxmIfLZcERySiA-df6dbda29d.ttf",
+          "size": 39200
+        }
+      },
+      {
+        "id": "5au19-a8oxmifmjaerysia-8a185f2fb3-ttf",
+        "slug": "5au19-a8oxmifmjaerysia-8a185f2fb3-ttf",
+        "status": "published",
+        "data": {
+          "file": "5aU19_a8oxmIfMJaERySiA-8a185f2fb3.ttf",
+          "public_path": "/assets/media/5aU19_a8oxmIfMJaERySiA-8a185f2fb3.ttf",
+          "size": 37648
+        }
+      },
+      {
+        "id": "5au19-a8oxmifnjderysia-08fc1dc1d7-ttf",
+        "slug": "5au19-a8oxmifnjderysia-08fc1dc1d7-ttf",
+        "status": "published",
+        "data": {
+          "file": "5aU19_a8oxmIfNJdERySiA-08fc1dc1d7.ttf",
+          "public_path": "/assets/media/5aU19_a8oxmIfNJdERySiA-08fc1dc1d7.ttf",
+          "size": 39548
+        }
+      },
+      {
+        "id": "5au69-a8oxmidgl4aq-7d5e287c29-ttf",
+        "slug": "5au69-a8oxmidgl4aq-7d5e287c29-ttf",
+        "status": "published",
+        "data": {
+          "file": "5aU69_a8oxmIdGl4AQ-7d5e287c29.ttf",
+          "public_path": "/assets/media/5aU69_a8oxmIdGl4AQ-7d5e287c29.ttf",
+          "size": 37904
+        }
+      },
+      {
+        "id": "5d9c3eb94b8bdfdaf3550c8c9eb8ec99ee179a8f-a83a7bf292-png",
+        "slug": "5d9c3eb94b8bdfdaf3550c8c9eb8ec99ee179a8f-a83a7bf292-png",
+        "status": "published",
+        "data": {
+          "file": "5d9c3eb94b8bdfdaf3550c8c9eb8ec99ee179a8f-a83a7bf292.png",
+          "public_path": "/assets/media/5d9c3eb94b8bdfdaf3550c8c9eb8ec99ee179a8f-a83a7bf292.png",
+          "size": 30314
+        }
+      },
+      {
+        "id": "759c1927819973d7ad6fa9cd9da34a89b7caec1f-1024x242-8a1a8b7f29-png",
+        "slug": "759c1927819973d7ad6fa9cd9da34a89b7caec1f-1024x242-8a1a8b7f29-png",
+        "status": "published",
+        "data": {
+          "file": "759c1927819973d7ad6fa9cd9da34a89b7caec1f-1024x242-8a1a8b7f29.png",
+          "public_path": "/assets/media/759c1927819973d7ad6fa9cd9da34a89b7caec1f-1024x242-8a1a8b7f29.png",
+          "size": 27297
+        }
+      },
+      {
+        "id": "759c1927819973d7ad6fa9cd9da34a89b7caec1f-29d67f5191-png",
+        "slug": "759c1927819973d7ad6fa9cd9da34a89b7caec1f-29d67f5191-png",
+        "status": "published",
+        "data": {
+          "file": "759c1927819973d7ad6fa9cd9da34a89b7caec1f-29d67f5191.png",
+          "public_path": "/assets/media/759c1927819973d7ad6fa9cd9da34a89b7caec1f-29d67f5191.png",
+          "size": 141895
+        }
+      },
+      {
+        "id": "759c1927819973d7ad6fa9cd9da34a89b7caec1f-300x71-61bb5f7842-png",
+        "slug": "759c1927819973d7ad6fa9cd9da34a89b7caec1f-300x71-61bb5f7842-png",
+        "status": "published",
+        "data": {
+          "file": "759c1927819973d7ad6fa9cd9da34a89b7caec1f-300x71-61bb5f7842.png",
+          "public_path": "/assets/media/759c1927819973d7ad6fa9cd9da34a89b7caec1f-300x71-61bb5f7842.png",
+          "size": 5458
+        }
+      },
+      {
+        "id": "759c1927819973d7ad6fa9cd9da34a89b7caec1f-768x181-26d2af4e91-png",
+        "slug": "759c1927819973d7ad6fa9cd9da34a89b7caec1f-768x181-26d2af4e91-png",
+        "status": "published",
+        "data": {
+          "file": "759c1927819973d7ad6fa9cd9da34a89b7caec1f-768x181-26d2af4e91.png",
+          "public_path": "/assets/media/759c1927819973d7ad6fa9cd9da34a89b7caec1f-768x181-26d2af4e91.png",
+          "size": 18052
+        }
+      },
+      {
+        "id": "88d181692132923dbbbe93e746ab1c04b78c12d1-a6cb5ac68e-png",
+        "slug": "88d181692132923dbbbe93e746ab1c04b78c12d1-a6cb5ac68e-png",
+        "status": "published",
+        "data": {
+          "file": "88d181692132923dbbbe93e746ab1c04b78c12d1-a6cb5ac68e.png",
+          "public_path": "/assets/media/88d181692132923dbbbe93e746ab1c04b78c12d1-a6cb5ac68e.png",
+          "size": 15703
+        }
+      },
+      {
+        "id": "9-5236920a7c-jpg",
+        "slug": "9-5236920a7c-jpg",
+        "status": "published",
+        "data": {
+          "file": "9-5236920a7c.jpg",
+          "public_path": "/assets/media/9-5236920a7c.jpg",
+          "size": 411805
+        }
+      },
+      {
+        "id": "9630f9ccdd250ed5d95e8dc192ec9ee4edd82d78-5f3ed2b78b-png",
+        "slug": "9630f9ccdd250ed5d95e8dc192ec9ee4edd82d78-5f3ed2b78b-png",
+        "status": "published",
+        "data": {
+          "file": "9630f9ccdd250ed5d95e8dc192ec9ee4edd82d78-5f3ed2b78b.png",
+          "public_path": "/assets/media/9630f9ccdd250ed5d95e8dc192ec9ee4edd82d78-5f3ed2b78b.png",
+          "size": 112113
+        }
+      },
+      {
+        "id": "american-academy-of-audiology-197e3fa696-webp",
+        "slug": "american-academy-of-audiology-197e3fa696-webp",
+        "status": "published",
+        "data": {
+          "file": "american-academy-of-audiology-197e3fa696.webp",
+          "public_path": "/assets/media/american-academy-of-audiology-197e3fa696.webp",
+          "size": 24080
+        }
+      },
+      {
+        "id": "american-academy-of-audiology-300x212-a33445ac36-webp",
+        "slug": "american-academy-of-audiology-300x212-a33445ac36-webp",
+        "status": "published",
+        "data": {
+          "file": "american-academy-of-audiology-300x212-a33445ac36.webp",
+          "public_path": "/assets/media/american-academy-of-audiology-300x212-a33445ac36.webp",
+          "size": 16612
+        }
+      },
+      {
+        "id": "asha-300x212-57e86f84a9-webp",
+        "slug": "asha-300x212-57e86f84a9-webp",
+        "status": "published",
+        "data": {
+          "file": "asha-300x212-57e86f84a9.webp",
+          "public_path": "/assets/media/asha-300x212-57e86f84a9.webp",
+          "size": 7824
+        }
+      },
+      {
+        "id": "asha-61a58f8bb8-webp",
+        "slug": "asha-61a58f8bb8-webp",
+        "status": "published",
+        "data": {
+          "file": "asha-61a58f8bb8.webp",
+          "public_path": "/assets/media/asha-61a58f8bb8.webp",
+          "size": 11448
+        }
+      },
+      {
+        "id": "better-hearing-lp-bb4810a181-webp",
+        "slug": "better-hearing-lp-bb4810a181-webp",
+        "status": "published",
+        "data": {
+          "file": "better-hearing-lp-bb4810a181.webp",
+          "public_path": "/assets/media/better-hearing-lp-bb4810a181.webp",
+          "size": 74438
+        }
+      },
+      {
+        "id": "c9e2e0c48788d7e2452b75bf4158177f9fac0e08-7b273d533b-png",
+        "slug": "c9e2e0c48788d7e2452b75bf4158177f9fac0e08-7b273d533b-png",
+        "status": "published",
+        "data": {
+          "file": "c9e2e0c48788d7e2452b75bf4158177f9fac0e08-7b273d533b.png",
+          "public_path": "/assets/media/c9e2e0c48788d7e2452b75bf4158177f9fac0e08-7b273d533b.png",
+          "size": 46593
+        }
+      },
+      {
+        "id": "chosen-sprite-2x-2481933f6f-png",
+        "slug": "chosen-sprite-2x-2481933f6f-png",
+        "status": "published",
+        "data": {
+          "file": "chosen-sprite-2x-2481933f6f.png",
+          "public_path": "/assets/media/chosen-sprite-2x-2481933f6f.png",
+          "size": 738
+        }
+      },
+      {
+        "id": "chosen-sprite-f74190589a-png",
+        "slug": "chosen-sprite-f74190589a-png",
+        "status": "published",
+        "data": {
+          "file": "chosen-sprite-f74190589a.png",
+          "public_path": "/assets/media/chosen-sprite-f74190589a.png",
+          "size": 538
+        }
+      },
+      {
+        "id": "cropped-759c1927819973d7ad6fa9cd9da34a89b7caec1f-180x180-fadbc494b9-png",
+        "slug": "cropped-759c1927819973d7ad6fa9cd9da34a89b7caec1f-180x180-fadbc494b9-png",
+        "status": "published",
+        "data": {
+          "file": "cropped-759c1927819973d7ad6fa9cd9da34a89b7caec1f-180x180-fadbc494b9.png",
+          "public_path": "/assets/media/cropped-759c1927819973d7ad6fa9cd9da34a89b7caec1f-180x180-fadbc494b9.png",
+          "size": 5721
+        }
+      },
+      {
+        "id": "cropped-759c1927819973d7ad6fa9cd9da34a89b7caec1f-192x192-7faf52f54e-png",
+        "slug": "cropped-759c1927819973d7ad6fa9cd9da34a89b7caec1f-192x192-7faf52f54e-png",
+        "status": "published",
+        "data": {
+          "file": "cropped-759c1927819973d7ad6fa9cd9da34a89b7caec1f-192x192-7faf52f54e.png",
+          "public_path": "/assets/media/cropped-759c1927819973d7ad6fa9cd9da34a89b7caec1f-192x192-7faf52f54e.png",
+          "size": 6262
+        }
+      },
+      {
+        "id": "cropped-759c1927819973d7ad6fa9cd9da34a89b7caec1f-270x270-0e4cb5ffb0-png",
+        "slug": "cropped-759c1927819973d7ad6fa9cd9da34a89b7caec1f-270x270-0e4cb5ffb0-png",
+        "status": "published",
+        "data": {
+          "file": "cropped-759c1927819973d7ad6fa9cd9da34a89b7caec1f-270x270-0e4cb5ffb0.png",
+          "public_path": "/assets/media/cropped-759c1927819973d7ad6fa9cd9da34a89b7caec1f-270x270-0e4cb5ffb0.png",
+          "size": 10515
+        }
+      },
+      {
+        "id": "cropped-759c1927819973d7ad6fa9cd9da34a89b7caec1f-32x32-88ba8254bc-png",
+        "slug": "cropped-759c1927819973d7ad6fa9cd9da34a89b7caec1f-32x32-88ba8254bc-png",
+        "status": "published",
+        "data": {
+          "file": "cropped-759c1927819973d7ad6fa9cd9da34a89b7caec1f-32x32-88ba8254bc.png",
+          "public_path": "/assets/media/cropped-759c1927819973d7ad6fa9cd9da34a89b7caec1f-32x32-88ba8254bc.png",
+          "size": 866
+        }
+      },
+      {
+        "id": "df20d30b24e0e24425ac05171bd6c1a6fc636e81-0808b50979-png",
+        "slug": "df20d30b24e0e24425ac05171bd6c1a6fc636e81-0808b50979-png",
+        "status": "published",
+        "data": {
+          "file": "df20d30b24e0e24425ac05171bd6c1a6fc636e81-0808b50979.png",
+          "public_path": "/assets/media/df20d30b24e0e24425ac05171bd6c1a6fc636e81-0808b50979.png",
+          "size": 82060
+        }
+      },
+      {
+        "id": "down-arrow-6316338ba3-svg",
+        "slug": "down-arrow-6316338ba3-svg",
+        "status": "published",
+        "data": {
+          "file": "down-arrow-6316338ba3.svg",
+          "public_path": "/assets/media/down-arrow-6316338ba3.svg",
+          "size": 485
+        }
+      },
+      {
+        "id": "dsc01255-1024x683-2268b5bfee-jpg",
+        "slug": "dsc01255-1024x683-2268b5bfee-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01255-1024x683-2268b5bfee.jpg",
+          "public_path": "/assets/media/DSC01255-1024x683-2268b5bfee.jpg",
+          "size": 215492
+        }
+      },
+      {
+        "id": "dsc01255-1536x1024-31df5594bb-jpg",
+        "slug": "dsc01255-1536x1024-31df5594bb-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01255-1536x1024-31df5594bb.jpg",
+          "public_path": "/assets/media/DSC01255-1536x1024-31df5594bb.jpg",
+          "size": 414533
+        }
+      },
+      {
+        "id": "dsc01255-2048x1365-68f545c7e9-jpg",
+        "slug": "dsc01255-2048x1365-68f545c7e9-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01255-2048x1365-68f545c7e9.jpg",
+          "public_path": "/assets/media/DSC01255-2048x1365-68f545c7e9.jpg",
+          "size": 671215
+        }
+      },
+      {
+        "id": "dsc01255-300x200-7da2bc2817-jpg",
+        "slug": "dsc01255-300x200-7da2bc2817-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01255-300x200-7da2bc2817.jpg",
+          "public_path": "/assets/media/DSC01255-300x200-7da2bc2817.jpg",
+          "size": 45601
+        }
+      },
+      {
+        "id": "dsc01255-768x512-648f0e97f7-jpg",
+        "slug": "dsc01255-768x512-648f0e97f7-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01255-768x512-648f0e97f7.jpg",
+          "public_path": "/assets/media/DSC01255-768x512-648f0e97f7.jpg",
+          "size": 136212
+        }
+      },
+      {
+        "id": "dsc01255-scaled-e0f6d7533d-jpg",
+        "slug": "dsc01255-scaled-e0f6d7533d-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01255-scaled-e0f6d7533d.jpg",
+          "public_path": "/assets/media/DSC01255-scaled-e0f6d7533d.jpg",
+          "size": 987292
+        }
+      },
+      {
+        "id": "dsc01288-1024x683-99cb1657be-jpg",
+        "slug": "dsc01288-1024x683-99cb1657be-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01288-1024x683-99cb1657be.jpg",
+          "public_path": "/assets/media/DSC01288-1024x683-99cb1657be.jpg",
+          "size": 274405
+        }
+      },
+      {
+        "id": "dsc01288-1536x1024-1f27436667-jpg",
+        "slug": "dsc01288-1536x1024-1f27436667-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01288-1536x1024-1f27436667.jpg",
+          "public_path": "/assets/media/DSC01288-1536x1024-1f27436667.jpg",
+          "size": 564714
+        }
+      },
+      {
+        "id": "dsc01288-2048x1365-c8a2d4059a-jpg",
+        "slug": "dsc01288-2048x1365-c8a2d4059a-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01288-2048x1365-c8a2d4059a.jpg",
+          "public_path": "/assets/media/DSC01288-2048x1365-c8a2d4059a.jpg",
+          "size": 957542
+        }
+      },
+      {
+        "id": "dsc01288-300x200-ac07a1d723-jpg",
+        "slug": "dsc01288-300x200-ac07a1d723-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01288-300x200-ac07a1d723.jpg",
+          "public_path": "/assets/media/DSC01288-300x200-ac07a1d723.jpg",
+          "size": 53273
+        }
+      },
+      {
+        "id": "dsc01288-768x512-a78cf5519a-jpg",
+        "slug": "dsc01288-768x512-a78cf5519a-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01288-768x512-a78cf5519a.jpg",
+          "public_path": "/assets/media/DSC01288-768x512-a78cf5519a.jpg",
+          "size": 168396
+        }
+      },
+      {
+        "id": "dsc01288-scaled-8848ad8faa-jpg",
+        "slug": "dsc01288-scaled-8848ad8faa-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01288-scaled-8848ad8faa.jpg",
+          "public_path": "/assets/media/DSC01288-scaled-8848ad8faa.jpg",
+          "size": 1439577
+        }
+      },
+      {
+        "id": "dsc01332-1024x683-89c456840f-jpg",
+        "slug": "dsc01332-1024x683-89c456840f-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01332-1024x683-89c456840f.jpg",
+          "public_path": "/assets/media/DSC01332-1024x683-89c456840f.jpg",
+          "size": 138805
+        }
+      },
+      {
+        "id": "dsc01332-1536x1024-fd74de3168-jpg",
+        "slug": "dsc01332-1536x1024-fd74de3168-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01332-1536x1024-fd74de3168.jpg",
+          "public_path": "/assets/media/DSC01332-1536x1024-fd74de3168.jpg",
+          "size": 223399
+        }
+      },
+      {
+        "id": "dsc01332-2048x1365-3f300c130a-jpg",
+        "slug": "dsc01332-2048x1365-3f300c130a-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01332-2048x1365-3f300c130a.jpg",
+          "public_path": "/assets/media/DSC01332-2048x1365-3f300c130a.jpg",
+          "size": 331443
+        }
+      },
+      {
+        "id": "dsc01332-300x200-85c6bcbb94-jpg",
+        "slug": "dsc01332-300x200-85c6bcbb94-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01332-300x200-85c6bcbb94.jpg",
+          "public_path": "/assets/media/DSC01332-300x200-85c6bcbb94.jpg",
+          "size": 60093
+        }
+      },
+      {
+        "id": "dsc01332-768x512-93c02cc331-jpg",
+        "slug": "dsc01332-768x512-93c02cc331-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01332-768x512-93c02cc331.jpg",
+          "public_path": "/assets/media/DSC01332-768x512-93c02cc331.jpg",
+          "size": 104978
+        }
+      },
+      {
+        "id": "dsc01332-scaled-1bcef15fb8-jpg",
+        "slug": "dsc01332-scaled-1bcef15fb8-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01332-scaled-1bcef15fb8.jpg",
+          "public_path": "/assets/media/DSC01332-scaled-1bcef15fb8.jpg",
+          "size": 472047
+        }
+      },
+      {
+        "id": "dsc01344-1024x683-dd7138b5c1-jpg",
+        "slug": "dsc01344-1024x683-dd7138b5c1-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01344-1024x683-dd7138b5c1.jpg",
+          "public_path": "/assets/media/DSC01344-1024x683-dd7138b5c1.jpg",
+          "size": 166494
+        }
+      },
+      {
+        "id": "dsc01344-1536x1024-e56ee58796-jpg",
+        "slug": "dsc01344-1536x1024-e56ee58796-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01344-1536x1024-e56ee58796.jpg",
+          "public_path": "/assets/media/DSC01344-1536x1024-e56ee58796.jpg",
+          "size": 310853
+        }
+      },
+      {
+        "id": "dsc01344-2048x1365-88fcea61b9-jpg",
+        "slug": "dsc01344-2048x1365-88fcea61b9-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01344-2048x1365-88fcea61b9.jpg",
+          "public_path": "/assets/media/DSC01344-2048x1365-88fcea61b9.jpg",
+          "size": 504621
+        }
+      },
+      {
+        "id": "dsc01344-300x200-e4db40e09d-jpg",
+        "slug": "dsc01344-300x200-e4db40e09d-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01344-300x200-e4db40e09d.jpg",
+          "public_path": "/assets/media/DSC01344-300x200-e4db40e09d.jpg",
+          "size": 44859
+        }
+      },
+      {
+        "id": "dsc01344-768x512-b95c0ae7c5-jpg",
+        "slug": "dsc01344-768x512-b95c0ae7c5-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01344-768x512-b95c0ae7c5.jpg",
+          "public_path": "/assets/media/DSC01344-768x512-b95c0ae7c5.jpg",
+          "size": 110451
+        }
+      },
+      {
+        "id": "dsc01344-scaled-e24769f229-jpg",
+        "slug": "dsc01344-scaled-e24769f229-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01344-scaled-e24769f229.jpg",
+          "public_path": "/assets/media/DSC01344-scaled-e24769f229.jpg",
+          "size": 750925
+        }
+      },
+      {
+        "id": "dsc01379-1024x683-736763d286-jpg",
+        "slug": "dsc01379-1024x683-736763d286-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01379-1024x683-736763d286.jpg",
+          "public_path": "/assets/media/DSC01379-1024x683-736763d286.jpg",
+          "size": 118416
+        }
+      },
+      {
+        "id": "dsc01379-1536x1024-b8eaec01b2-jpg",
+        "slug": "dsc01379-1536x1024-b8eaec01b2-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01379-1536x1024-b8eaec01b2.jpg",
+          "public_path": "/assets/media/DSC01379-1536x1024-b8eaec01b2.jpg",
+          "size": 214370
+        }
+      },
+      {
+        "id": "dsc01379-2048x1365-4ad784bd8b-jpg",
+        "slug": "dsc01379-2048x1365-4ad784bd8b-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01379-2048x1365-4ad784bd8b.jpg",
+          "public_path": "/assets/media/DSC01379-2048x1365-4ad784bd8b.jpg",
+          "size": 348045
+        }
+      },
+      {
+        "id": "dsc01379-300x200-62a0810e67-jpg",
+        "slug": "dsc01379-300x200-62a0810e67-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01379-300x200-62a0810e67.jpg",
+          "public_path": "/assets/media/DSC01379-300x200-62a0810e67.jpg",
+          "size": 38269
+        }
+      },
+      {
+        "id": "dsc01379-768x512-f25e44e51f-jpg",
+        "slug": "dsc01379-768x512-f25e44e51f-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01379-768x512-f25e44e51f.jpg",
+          "public_path": "/assets/media/DSC01379-768x512-f25e44e51f.jpg",
+          "size": 82915
+        }
+      },
+      {
+        "id": "dsc01379-scaled-d8baa21751-jpg",
+        "slug": "dsc01379-scaled-d8baa21751-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01379-scaled-d8baa21751.jpg",
+          "public_path": "/assets/media/DSC01379-scaled-d8baa21751.jpg",
+          "size": 528468
+        }
+      },
+      {
+        "id": "dsc01494-1024x683-36bbac39ba-jpg",
+        "slug": "dsc01494-1024x683-36bbac39ba-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01494-1024x683-36bbac39ba.jpg",
+          "public_path": "/assets/media/DSC01494-1024x683-36bbac39ba.jpg",
+          "size": 184571
+        }
+      },
+      {
+        "id": "dsc01494-1536x1024-1a67b89b17-jpg",
+        "slug": "dsc01494-1536x1024-1a67b89b17-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01494-1536x1024-1a67b89b17.jpg",
+          "public_path": "/assets/media/DSC01494-1536x1024-1a67b89b17.jpg",
+          "size": 307283
+        }
+      },
+      {
+        "id": "dsc01494-2048x1365-8403cca91d-jpg",
+        "slug": "dsc01494-2048x1365-8403cca91d-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01494-2048x1365-8403cca91d.jpg",
+          "public_path": "/assets/media/DSC01494-2048x1365-8403cca91d.jpg",
+          "size": 472272
+        }
+      },
+      {
+        "id": "dsc01494-300x200-26e24be495-jpg",
+        "slug": "dsc01494-300x200-26e24be495-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01494-300x200-26e24be495.jpg",
+          "public_path": "/assets/media/DSC01494-300x200-26e24be495.jpg",
+          "size": 81463
+        }
+      },
+      {
+        "id": "dsc01494-768x512-e0bda100eb-jpg",
+        "slug": "dsc01494-768x512-e0bda100eb-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01494-768x512-e0bda100eb.jpg",
+          "public_path": "/assets/media/DSC01494-768x512-e0bda100eb.jpg",
+          "size": 137874
+        }
+      },
+      {
+        "id": "dsc01494-scaled-eaa8a7e030-jpg",
+        "slug": "dsc01494-scaled-eaa8a7e030-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01494-scaled-eaa8a7e030.jpg",
+          "public_path": "/assets/media/DSC01494-scaled-eaa8a7e030.jpg",
+          "size": 681158
+        }
+      },
+      {
+        "id": "dsc01500-1024x683-9a31cee789-jpg",
+        "slug": "dsc01500-1024x683-9a31cee789-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01500-1024x683-9a31cee789.jpg",
+          "public_path": "/assets/media/DSC01500-1024x683-9a31cee789.jpg",
+          "size": 162550
+        }
+      },
+      {
+        "id": "dsc01500-1536x1024-47bf2ed03d-jpg",
+        "slug": "dsc01500-1536x1024-47bf2ed03d-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01500-1536x1024-47bf2ed03d.jpg",
+          "public_path": "/assets/media/DSC01500-1536x1024-47bf2ed03d.jpg",
+          "size": 279544
+        }
+      },
+      {
+        "id": "dsc01500-2048x1365-9d3c0cc477-jpg",
+        "slug": "dsc01500-2048x1365-9d3c0cc477-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01500-2048x1365-9d3c0cc477.jpg",
+          "public_path": "/assets/media/DSC01500-2048x1365-9d3c0cc477.jpg",
+          "size": 429413
+        }
+      },
+      {
+        "id": "dsc01500-300x200-5b7a6bd4b9-jpg",
+        "slug": "dsc01500-300x200-5b7a6bd4b9-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01500-300x200-5b7a6bd4b9.jpg",
+          "public_path": "/assets/media/DSC01500-300x200-5b7a6bd4b9.jpg",
+          "size": 47979
+        }
+      },
+      {
+        "id": "dsc01500-768x512-532df77193-jpg",
+        "slug": "dsc01500-768x512-532df77193-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01500-768x512-532df77193.jpg",
+          "public_path": "/assets/media/DSC01500-768x512-532df77193.jpg",
+          "size": 112951
+        }
+      },
+      {
+        "id": "dsc01500-scaled-7dde15f25b-jpg",
+        "slug": "dsc01500-scaled-7dde15f25b-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01500-scaled-7dde15f25b.jpg",
+          "public_path": "/assets/media/DSC01500-scaled-7dde15f25b.jpg",
+          "size": 620226
+        }
+      },
+      {
+        "id": "dsc01528-1024x683-034c2cd6bc-jpg",
+        "slug": "dsc01528-1024x683-034c2cd6bc-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01528-1024x683-034c2cd6bc.jpg",
+          "public_path": "/assets/media/DSC01528-1024x683-034c2cd6bc.jpg",
+          "size": 119627
+        }
+      },
+      {
+        "id": "dsc01528-1536x1024-fb3005393e-jpg",
+        "slug": "dsc01528-1536x1024-fb3005393e-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01528-1536x1024-fb3005393e.jpg",
+          "public_path": "/assets/media/DSC01528-1536x1024-fb3005393e.jpg",
+          "size": 206556
+        }
+      },
+      {
+        "id": "dsc01528-2048x1365-6d9ec8f822-jpg",
+        "slug": "dsc01528-2048x1365-6d9ec8f822-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01528-2048x1365-6d9ec8f822.jpg",
+          "public_path": "/assets/media/DSC01528-2048x1365-6d9ec8f822.jpg",
+          "size": 321439
+        }
+      },
+      {
+        "id": "dsc01528-300x200-7c95a25087-jpg",
+        "slug": "dsc01528-300x200-7c95a25087-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01528-300x200-7c95a25087.jpg",
+          "public_path": "/assets/media/DSC01528-300x200-7c95a25087.jpg",
+          "size": 44660
+        }
+      },
+      {
+        "id": "dsc01528-768x512-14ac6f8aed-jpg",
+        "slug": "dsc01528-768x512-14ac6f8aed-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01528-768x512-14ac6f8aed.jpg",
+          "public_path": "/assets/media/DSC01528-768x512-14ac6f8aed.jpg",
+          "size": 86427
+        }
+      },
+      {
+        "id": "dsc01528-scaled-9ddedfbdba-jpg",
+        "slug": "dsc01528-scaled-9ddedfbdba-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01528-scaled-9ddedfbdba.jpg",
+          "public_path": "/assets/media/DSC01528-scaled-9ddedfbdba.jpg",
+          "size": 467669
+        }
+      },
+      {
+        "id": "dsc01596-1024x683-2fe4f8a2b2-jpg",
+        "slug": "dsc01596-1024x683-2fe4f8a2b2-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01596-1024x683-2fe4f8a2b2.jpg",
+          "public_path": "/assets/media/DSC01596-1024x683-2fe4f8a2b2.jpg",
+          "size": 141266
+        }
+      },
+      {
+        "id": "dsc01596-1536x1024-3eda8dcaa5-jpg",
+        "slug": "dsc01596-1536x1024-3eda8dcaa5-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01596-1536x1024-3eda8dcaa5.jpg",
+          "public_path": "/assets/media/DSC01596-1536x1024-3eda8dcaa5.jpg",
+          "size": 250612
+        }
+      },
+      {
+        "id": "dsc01596-2048x1365-da5af0bd52-jpg",
+        "slug": "dsc01596-2048x1365-da5af0bd52-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01596-2048x1365-da5af0bd52.jpg",
+          "public_path": "/assets/media/DSC01596-2048x1365-da5af0bd52.jpg",
+          "size": 393275
+        }
+      },
+      {
+        "id": "dsc01596-300x200-3770bdc368-jpg",
+        "slug": "dsc01596-300x200-3770bdc368-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01596-300x200-3770bdc368.jpg",
+          "public_path": "/assets/media/DSC01596-300x200-3770bdc368.jpg",
+          "size": 44841
+        }
+      },
+      {
+        "id": "dsc01596-768x512-a11dda1bf9-jpg",
+        "slug": "dsc01596-768x512-a11dda1bf9-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01596-768x512-a11dda1bf9.jpg",
+          "public_path": "/assets/media/DSC01596-768x512-a11dda1bf9.jpg",
+          "size": 97788
+        }
+      },
+      {
+        "id": "dsc01596-scaled-420d770a8b-jpg",
+        "slug": "dsc01596-scaled-420d770a8b-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01596-scaled-420d770a8b.jpg",
+          "public_path": "/assets/media/DSC01596-scaled-420d770a8b.jpg",
+          "size": 567051
+        }
+      },
+      {
+        "id": "dsc01668-1024x683-b653a47933-jpg",
+        "slug": "dsc01668-1024x683-b653a47933-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01668-1024x683-b653a47933.jpg",
+          "public_path": "/assets/media/DSC01668-1024x683-b653a47933.jpg",
+          "size": 136717
+        }
+      },
+      {
+        "id": "dsc01668-1536x1024-2685a05eee-jpg",
+        "slug": "dsc01668-1536x1024-2685a05eee-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01668-1536x1024-2685a05eee.jpg",
+          "public_path": "/assets/media/DSC01668-1536x1024-2685a05eee.jpg",
+          "size": 243403
+        }
+      },
+      {
+        "id": "dsc01668-2048x1365-839924b7c8-jpg",
+        "slug": "dsc01668-2048x1365-839924b7c8-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01668-2048x1365-839924b7c8.jpg",
+          "public_path": "/assets/media/DSC01668-2048x1365-839924b7c8.jpg",
+          "size": 379955
+        }
+      },
+      {
+        "id": "dsc01668-300x200-2bf6da7b29-jpg",
+        "slug": "dsc01668-300x200-2bf6da7b29-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01668-300x200-2bf6da7b29.jpg",
+          "public_path": "/assets/media/DSC01668-300x200-2bf6da7b29.jpg",
+          "size": 40965
+        }
+      },
+      {
+        "id": "dsc01668-768x512-5c630bf2d8-jpg",
+        "slug": "dsc01668-768x512-5c630bf2d8-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01668-768x512-5c630bf2d8.jpg",
+          "public_path": "/assets/media/DSC01668-768x512-5c630bf2d8.jpg",
+          "size": 93901
+        }
+      },
+      {
+        "id": "dsc01668-scaled-a68d8aec4b-jpg",
+        "slug": "dsc01668-scaled-a68d8aec4b-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01668-scaled-a68d8aec4b.jpg",
+          "public_path": "/assets/media/DSC01668-scaled-a68d8aec4b.jpg",
+          "size": 544727
+        }
+      },
+      {
+        "id": "dsc01679-1024x683-e78cdb6106-jpg",
+        "slug": "dsc01679-1024x683-e78cdb6106-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01679-1024x683-e78cdb6106.jpg",
+          "public_path": "/assets/media/DSC01679-1024x683-e78cdb6106.jpg",
+          "size": 249760
+        }
+      },
+      {
+        "id": "dsc01679-1536x1024-b882620490-jpg",
+        "slug": "dsc01679-1536x1024-b882620490-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01679-1536x1024-b882620490.jpg",
+          "public_path": "/assets/media/DSC01679-1536x1024-b882620490.jpg",
+          "size": 477953
+        }
+      },
+      {
+        "id": "dsc01679-2048x1365-8ed4b12a75-jpg",
+        "slug": "dsc01679-2048x1365-8ed4b12a75-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01679-2048x1365-8ed4b12a75.jpg",
+          "public_path": "/assets/media/DSC01679-2048x1365-8ed4b12a75.jpg",
+          "size": 768788
+        }
+      },
+      {
+        "id": "dsc01679-300x200-688c1e6801-jpg",
+        "slug": "dsc01679-300x200-688c1e6801-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01679-300x200-688c1e6801.jpg",
+          "public_path": "/assets/media/DSC01679-300x200-688c1e6801.jpg",
+          "size": 56236
+        }
+      },
+      {
+        "id": "dsc01679-768x512-ec1112b7dd-jpg",
+        "slug": "dsc01679-768x512-ec1112b7dd-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01679-768x512-ec1112b7dd.jpg",
+          "public_path": "/assets/media/DSC01679-768x512-ec1112b7dd.jpg",
+          "size": 160989
+        }
+      },
+      {
+        "id": "dsc01679-scaled-efbfea0d9b-jpg",
+        "slug": "dsc01679-scaled-efbfea0d9b-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01679-scaled-efbfea0d9b.jpg",
+          "public_path": "/assets/media/DSC01679-scaled-efbfea0d9b.jpg",
+          "size": 1116096
+        }
+      },
+      {
+        "id": "dsc01687-1024x683-77ee910006-jpg",
+        "slug": "dsc01687-1024x683-77ee910006-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01687-1024x683-77ee910006.jpg",
+          "public_path": "/assets/media/DSC01687-1024x683-77ee910006.jpg",
+          "size": 237647
+        }
+      },
+      {
+        "id": "dsc01687-1536x1024-9aa7098b82-jpg",
+        "slug": "dsc01687-1536x1024-9aa7098b82-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01687-1536x1024-9aa7098b82.jpg",
+          "public_path": "/assets/media/DSC01687-1536x1024-9aa7098b82.jpg",
+          "size": 453864
+        }
+      },
+      {
+        "id": "dsc01687-2048x1365-a317eec534-jpg",
+        "slug": "dsc01687-2048x1365-a317eec534-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01687-2048x1365-a317eec534.jpg",
+          "public_path": "/assets/media/DSC01687-2048x1365-a317eec534.jpg",
+          "size": 738849
+        }
+      },
+      {
+        "id": "dsc01687-300x200-80a43b40ef-jpg",
+        "slug": "dsc01687-300x200-80a43b40ef-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01687-300x200-80a43b40ef.jpg",
+          "public_path": "/assets/media/DSC01687-300x200-80a43b40ef.jpg",
+          "size": 60723
+        }
+      },
+      {
+        "id": "dsc01687-768x512-76988c2377-jpg",
+        "slug": "dsc01687-768x512-76988c2377-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01687-768x512-76988c2377.jpg",
+          "public_path": "/assets/media/DSC01687-768x512-76988c2377.jpg",
+          "size": 157415
+        }
+      },
+      {
+        "id": "dsc01687-scaled-d02e57f031-jpg",
+        "slug": "dsc01687-scaled-d02e57f031-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01687-scaled-d02e57f031.jpg",
+          "public_path": "/assets/media/DSC01687-scaled-d02e57f031.jpg",
+          "size": 1089804
+        }
+      },
+      {
+        "id": "dsc01700-1024x683-91831c4421-jpg",
+        "slug": "dsc01700-1024x683-91831c4421-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01700-1024x683-91831c4421.jpg",
+          "public_path": "/assets/media/DSC01700-1024x683-91831c4421.jpg",
+          "size": 179603
+        }
+      },
+      {
+        "id": "dsc01700-1536x1024-1e8bc16c15-jpg",
+        "slug": "dsc01700-1536x1024-1e8bc16c15-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01700-1536x1024-1e8bc16c15.jpg",
+          "public_path": "/assets/media/DSC01700-1536x1024-1e8bc16c15.jpg",
+          "size": 316554
+        }
+      },
+      {
+        "id": "dsc01700-2048x1365-d66cca3d24-jpg",
+        "slug": "dsc01700-2048x1365-d66cca3d24-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01700-2048x1365-d66cca3d24.jpg",
+          "public_path": "/assets/media/DSC01700-2048x1365-d66cca3d24.jpg",
+          "size": 487572
+        }
+      },
+      {
+        "id": "dsc01700-300x200-8c088eab6a-jpg",
+        "slug": "dsc01700-300x200-8c088eab6a-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01700-300x200-8c088eab6a.jpg",
+          "public_path": "/assets/media/DSC01700-300x200-8c088eab6a.jpg",
+          "size": 46029
+        }
+      },
+      {
+        "id": "dsc01700-768x512-d57a5be2b4-jpg",
+        "slug": "dsc01700-768x512-d57a5be2b4-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01700-768x512-d57a5be2b4.jpg",
+          "public_path": "/assets/media/DSC01700-768x512-d57a5be2b4.jpg",
+          "size": 121081
+        }
+      },
+      {
+        "id": "dsc01700-scaled-22e8249ea2-jpg",
+        "slug": "dsc01700-scaled-22e8249ea2-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01700-scaled-22e8249ea2.jpg",
+          "public_path": "/assets/media/DSC01700-scaled-22e8249ea2.jpg",
+          "size": 691593
+        }
+      },
+      {
+        "id": "dsc01735-1024x683-9b74438788-jpg",
+        "slug": "dsc01735-1024x683-9b74438788-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01735-1024x683-9b74438788.jpg",
+          "public_path": "/assets/media/DSC01735-1024x683-9b74438788.jpg",
+          "size": 104894
+        }
+      },
+      {
+        "id": "dsc01735-1536x1024-89ccea8a69-jpg",
+        "slug": "dsc01735-1536x1024-89ccea8a69-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01735-1536x1024-89ccea8a69.jpg",
+          "public_path": "/assets/media/DSC01735-1536x1024-89ccea8a69.jpg",
+          "size": 176699
+        }
+      },
+      {
+        "id": "dsc01735-2048x1365-03d08ec699-jpg",
+        "slug": "dsc01735-2048x1365-03d08ec699-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01735-2048x1365-03d08ec699.jpg",
+          "public_path": "/assets/media/DSC01735-2048x1365-03d08ec699.jpg",
+          "size": 270996
+        }
+      },
+      {
+        "id": "dsc01735-300x200-462b512c40-jpg",
+        "slug": "dsc01735-300x200-462b512c40-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01735-300x200-462b512c40.jpg",
+          "public_path": "/assets/media/DSC01735-300x200-462b512c40.jpg",
+          "size": 41609
+        }
+      },
+      {
+        "id": "dsc01735-768x512-44d210243a-jpg",
+        "slug": "dsc01735-768x512-44d210243a-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01735-768x512-44d210243a.jpg",
+          "public_path": "/assets/media/DSC01735-768x512-44d210243a.jpg",
+          "size": 77332
+        }
+      },
+      {
+        "id": "dsc01735-scaled-9a55c9246b-jpg",
+        "slug": "dsc01735-scaled-9a55c9246b-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01735-scaled-9a55c9246b.jpg",
+          "public_path": "/assets/media/DSC01735-scaled-9a55c9246b.jpg",
+          "size": 390005
+        }
+      },
+      {
+        "id": "dsc01773-1024x683-0a926f0e7c-jpg",
+        "slug": "dsc01773-1024x683-0a926f0e7c-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01773-1024x683-0a926f0e7c.jpg",
+          "public_path": "/assets/media/DSC01773-1024x683-0a926f0e7c.jpg",
+          "size": 138390
+        }
+      },
+      {
+        "id": "dsc01773-1536x1024-5392ca3c19-jpg",
+        "slug": "dsc01773-1536x1024-5392ca3c19-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01773-1536x1024-5392ca3c19.jpg",
+          "public_path": "/assets/media/DSC01773-1536x1024-5392ca3c19.jpg",
+          "size": 238649
+        }
+      },
+      {
+        "id": "dsc01773-2048x1365-12f6a630f3-jpg",
+        "slug": "dsc01773-2048x1365-12f6a630f3-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01773-2048x1365-12f6a630f3.jpg",
+          "public_path": "/assets/media/DSC01773-2048x1365-12f6a630f3.jpg",
+          "size": 365754
+        }
+      },
+      {
+        "id": "dsc01773-300x200-fe79be6baa-jpg",
+        "slug": "dsc01773-300x200-fe79be6baa-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01773-300x200-fe79be6baa.jpg",
+          "public_path": "/assets/media/DSC01773-300x200-fe79be6baa.jpg",
+          "size": 44042
+        }
+      },
+      {
+        "id": "dsc01773-768x512-aa5f0341d9-jpg",
+        "slug": "dsc01773-768x512-aa5f0341d9-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01773-768x512-aa5f0341d9.jpg",
+          "public_path": "/assets/media/DSC01773-768x512-aa5f0341d9.jpg",
+          "size": 97225
+        }
+      },
+      {
+        "id": "dsc01773-scaled-809ecf7604-jpg",
+        "slug": "dsc01773-scaled-809ecf7604-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01773-scaled-809ecf7604.jpg",
+          "public_path": "/assets/media/DSC01773-scaled-809ecf7604.jpg",
+          "size": 524695
+        }
+      },
+      {
+        "id": "dsc01781-1024x683-03ccc562b1-jpg",
+        "slug": "dsc01781-1024x683-03ccc562b1-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01781-1024x683-03ccc562b1.jpg",
+          "public_path": "/assets/media/DSC01781-1024x683-03ccc562b1.jpg",
+          "size": 102838
+        }
+      },
+      {
+        "id": "dsc01781-1536x1024-f2f6e24973-jpg",
+        "slug": "dsc01781-1536x1024-f2f6e24973-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01781-1536x1024-f2f6e24973.jpg",
+          "public_path": "/assets/media/DSC01781-1536x1024-f2f6e24973.jpg",
+          "size": 174861
+        }
+      },
+      {
+        "id": "dsc01781-2048x1365-e6b03ae92b-jpg",
+        "slug": "dsc01781-2048x1365-e6b03ae92b-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01781-2048x1365-e6b03ae92b.jpg",
+          "public_path": "/assets/media/DSC01781-2048x1365-e6b03ae92b.jpg",
+          "size": 271608
+        }
+      },
+      {
+        "id": "dsc01781-300x200-e9c2d8aaa8-jpg",
+        "slug": "dsc01781-300x200-e9c2d8aaa8-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01781-300x200-e9c2d8aaa8.jpg",
+          "public_path": "/assets/media/DSC01781-300x200-e9c2d8aaa8.jpg",
+          "size": 38703
+        }
+      },
+      {
+        "id": "dsc01781-768x512-971c873801-jpg",
+        "slug": "dsc01781-768x512-971c873801-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01781-768x512-971c873801.jpg",
+          "public_path": "/assets/media/DSC01781-768x512-971c873801.jpg",
+          "size": 74700
+        }
+      },
+      {
+        "id": "dsc01781-scaled-08ef69b6b4-jpg",
+        "slug": "dsc01781-scaled-08ef69b6b4-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01781-scaled-08ef69b6b4.jpg",
+          "public_path": "/assets/media/DSC01781-scaled-08ef69b6b4.jpg",
+          "size": 396776
+        }
+      },
+      {
+        "id": "dsc01785-1024x683-243f4e0c67-jpg",
+        "slug": "dsc01785-1024x683-243f4e0c67-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01785-1024x683-243f4e0c67.jpg",
+          "public_path": "/assets/media/DSC01785-1024x683-243f4e0c67.jpg",
+          "size": 162336
+        }
+      },
+      {
+        "id": "dsc01785-1536x1024-783dae6d1a-jpg",
+        "slug": "dsc01785-1536x1024-783dae6d1a-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01785-1536x1024-783dae6d1a.jpg",
+          "public_path": "/assets/media/DSC01785-1536x1024-783dae6d1a.jpg",
+          "size": 337677
+        }
+      },
+      {
+        "id": "dsc01785-300x200-d2f86cbd5e-jpg",
+        "slug": "dsc01785-300x200-d2f86cbd5e-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01785-300x200-d2f86cbd5e.jpg",
+          "public_path": "/assets/media/DSC01785-300x200-d2f86cbd5e.jpg",
+          "size": 16487
+        }
+      },
+      {
+        "id": "dsc01785-768x512-4bc5943066-jpg",
+        "slug": "dsc01785-768x512-4bc5943066-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01785-768x512-4bc5943066.jpg",
+          "public_path": "/assets/media/DSC01785-768x512-4bc5943066.jpg",
+          "size": 95115
+        }
+      },
+      {
+        "id": "dsc01785-ace4616b36-jpg",
+        "slug": "dsc01785-ace4616b36-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01785-ace4616b36.jpg",
+          "public_path": "/assets/media/DSC01785-ace4616b36.jpg",
+          "size": 439090
+        }
+      },
+      {
+        "id": "dsc01794-1024x683-dbb8accc5a-jpg",
+        "slug": "dsc01794-1024x683-dbb8accc5a-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01794-1024x683-dbb8accc5a.jpg",
+          "public_path": "/assets/media/DSC01794-1024x683-dbb8accc5a.jpg",
+          "size": 183554
+        }
+      },
+      {
+        "id": "dsc01794-1536x1024-ec1868c6e7-jpg",
+        "slug": "dsc01794-1536x1024-ec1868c6e7-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01794-1536x1024-ec1868c6e7.jpg",
+          "public_path": "/assets/media/DSC01794-1536x1024-ec1868c6e7.jpg",
+          "size": 354498
+        }
+      },
+      {
+        "id": "dsc01794-2048x1365-a8c500910d-jpg",
+        "slug": "dsc01794-2048x1365-a8c500910d-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01794-2048x1365-a8c500910d.jpg",
+          "public_path": "/assets/media/DSC01794-2048x1365-a8c500910d.jpg",
+          "size": 576749
+        }
+      },
+      {
+        "id": "dsc01794-300x200-d5e67ccab1-jpg",
+        "slug": "dsc01794-300x200-d5e67ccab1-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01794-300x200-d5e67ccab1.jpg",
+          "public_path": "/assets/media/DSC01794-300x200-d5e67ccab1.jpg",
+          "size": 44068
+        }
+      },
+      {
+        "id": "dsc01794-768x512-ba80bf8b7b-jpg",
+        "slug": "dsc01794-768x512-ba80bf8b7b-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01794-768x512-ba80bf8b7b.jpg",
+          "public_path": "/assets/media/DSC01794-768x512-ba80bf8b7b.jpg",
+          "size": 118670
+        }
+      },
+      {
+        "id": "dsc01794-scaled-8dce82476d-jpg",
+        "slug": "dsc01794-scaled-8dce82476d-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01794-scaled-8dce82476d.jpg",
+          "public_path": "/assets/media/DSC01794-scaled-8dce82476d.jpg",
+          "size": 845897
+        }
+      },
+      {
+        "id": "dsc01819-1024x683-7a0af73981-jpg",
+        "slug": "dsc01819-1024x683-7a0af73981-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01819-1024x683-7a0af73981.jpg",
+          "public_path": "/assets/media/DSC01819-1024x683-7a0af73981.jpg",
+          "size": 193151
+        }
+      },
+      {
+        "id": "dsc01819-1536x1024-5e99d4d30d-jpg",
+        "slug": "dsc01819-1536x1024-5e99d4d30d-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01819-1536x1024-5e99d4d30d.jpg",
+          "public_path": "/assets/media/DSC01819-1536x1024-5e99d4d30d.jpg",
+          "size": 373089
+        }
+      },
+      {
+        "id": "dsc01819-2048x1365-497496d315-jpg",
+        "slug": "dsc01819-2048x1365-497496d315-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01819-2048x1365-497496d315.jpg",
+          "public_path": "/assets/media/DSC01819-2048x1365-497496d315.jpg",
+          "size": 608451
+        }
+      },
+      {
+        "id": "dsc01819-300x200-795ef4e23a-jpg",
+        "slug": "dsc01819-300x200-795ef4e23a-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01819-300x200-795ef4e23a.jpg",
+          "public_path": "/assets/media/DSC01819-300x200-795ef4e23a.jpg",
+          "size": 46522
+        }
+      },
+      {
+        "id": "dsc01819-768x512-334b3fe417-jpg",
+        "slug": "dsc01819-768x512-334b3fe417-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01819-768x512-334b3fe417.jpg",
+          "public_path": "/assets/media/DSC01819-768x512-334b3fe417.jpg",
+          "size": 125163
+        }
+      },
+      {
+        "id": "dsc01819-scaled-282aec0ff4-jpg",
+        "slug": "dsc01819-scaled-282aec0ff4-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01819-scaled-282aec0ff4.jpg",
+          "public_path": "/assets/media/DSC01819-scaled-282aec0ff4.jpg",
+          "size": 893780
+        }
+      },
+      {
+        "id": "dsc01820-1024x683-f6214ce390-jpg",
+        "slug": "dsc01820-1024x683-f6214ce390-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01820-1024x683-f6214ce390.jpg",
+          "public_path": "/assets/media/DSC01820-1024x683-f6214ce390.jpg",
+          "size": 163505
+        }
+      },
+      {
+        "id": "dsc01820-1536x1024-4b6ab54a82-jpg",
+        "slug": "dsc01820-1536x1024-4b6ab54a82-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01820-1536x1024-4b6ab54a82.jpg",
+          "public_path": "/assets/media/DSC01820-1536x1024-4b6ab54a82.jpg",
+          "size": 286099
+        }
+      },
+      {
+        "id": "dsc01820-2048x1365-63acc2b180-jpg",
+        "slug": "dsc01820-2048x1365-63acc2b180-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01820-2048x1365-63acc2b180.jpg",
+          "public_path": "/assets/media/DSC01820-2048x1365-63acc2b180.jpg",
+          "size": 437658
+        }
+      },
+      {
+        "id": "dsc01820-300x200-b3ec5c7b04-jpg",
+        "slug": "dsc01820-300x200-b3ec5c7b04-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01820-300x200-b3ec5c7b04.jpg",
+          "public_path": "/assets/media/DSC01820-300x200-b3ec5c7b04.jpg",
+          "size": 47086
+        }
+      },
+      {
+        "id": "dsc01820-768x512-3259ed1775-jpg",
+        "slug": "dsc01820-768x512-3259ed1775-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01820-768x512-3259ed1775.jpg",
+          "public_path": "/assets/media/DSC01820-768x512-3259ed1775.jpg",
+          "size": 112969
+        }
+      },
+      {
+        "id": "dsc01820-scaled-0ac3f36647-jpg",
+        "slug": "dsc01820-scaled-0ac3f36647-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01820-scaled-0ac3f36647.jpg",
+          "public_path": "/assets/media/DSC01820-scaled-0ac3f36647.jpg",
+          "size": 623303
+        }
+      },
+      {
+        "id": "dsc01832-1024x683-90504085ea-jpg",
+        "slug": "dsc01832-1024x683-90504085ea-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01832-1024x683-90504085ea.jpg",
+          "public_path": "/assets/media/DSC01832-1024x683-90504085ea.jpg",
+          "size": 236427
+        }
+      },
+      {
+        "id": "dsc01832-1536x1024-6488a81968-jpg",
+        "slug": "dsc01832-1536x1024-6488a81968-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01832-1536x1024-6488a81968.jpg",
+          "public_path": "/assets/media/DSC01832-1536x1024-6488a81968.jpg",
+          "size": 451679
+        }
+      },
+      {
+        "id": "dsc01832-2048x1365-f862f5b945-jpg",
+        "slug": "dsc01832-2048x1365-f862f5b945-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01832-2048x1365-f862f5b945.jpg",
+          "public_path": "/assets/media/DSC01832-2048x1365-f862f5b945.jpg",
+          "size": 740562
+        }
+      },
+      {
+        "id": "dsc01832-300x200-bbaa7e6f84-jpg",
+        "slug": "dsc01832-300x200-bbaa7e6f84-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01832-300x200-bbaa7e6f84.jpg",
+          "public_path": "/assets/media/DSC01832-300x200-bbaa7e6f84.jpg",
+          "size": 67879
+        }
+      },
+      {
+        "id": "dsc01832-768x512-04e278e103-jpg",
+        "slug": "dsc01832-768x512-04e278e103-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01832-768x512-04e278e103.jpg",
+          "public_path": "/assets/media/DSC01832-768x512-04e278e103.jpg",
+          "size": 156107
+        }
+      },
+      {
+        "id": "dsc01832-scaled-d40435cae5-jpg",
+        "slug": "dsc01832-scaled-d40435cae5-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC01832-scaled-d40435cae5.jpg",
+          "public_path": "/assets/media/DSC01832-scaled-d40435cae5.jpg",
+          "size": 1094980
+        }
+      },
+      {
+        "id": "dsc07786-1024x682-3c52c58e84-jpg",
+        "slug": "dsc07786-1024x682-3c52c58e84-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC07786-1024x682-3c52c58e84.jpg",
+          "public_path": "/assets/media/DSC07786-1024x682-3c52c58e84.jpg",
+          "size": 90624
+        }
+      },
+      {
+        "id": "dsc07786-1536x1023-ee676a873d-jpg",
+        "slug": "dsc07786-1536x1023-ee676a873d-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC07786-1536x1023-ee676a873d.jpg",
+          "public_path": "/assets/media/DSC07786-1536x1023-ee676a873d.jpg",
+          "size": 174539
+        }
+      },
+      {
+        "id": "dsc07786-300x200-e97b33a69e-jpg",
+        "slug": "dsc07786-300x200-e97b33a69e-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC07786-300x200-e97b33a69e.jpg",
+          "public_path": "/assets/media/DSC07786-300x200-e97b33a69e.jpg",
+          "size": 12138
+        }
+      },
+      {
+        "id": "dsc07786-768x512-6839f785fb-jpg",
+        "slug": "dsc07786-768x512-6839f785fb-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC07786-768x512-6839f785fb.jpg",
+          "public_path": "/assets/media/DSC07786-768x512-6839f785fb.jpg",
+          "size": 56203
+        }
+      },
+      {
+        "id": "dsc07786-bb0a29fb21-jpg",
+        "slug": "dsc07786-bb0a29fb21-jpg",
+        "status": "published",
+        "data": {
+          "file": "DSC07786-bb0a29fb21.jpg",
+          "public_path": "/assets/media/DSC07786-bb0a29fb21.jpg",
+          "size": 174580
+        }
+      },
+      {
+        "id": "e8e0fa55c783cc5eeb2f48b009e1e095ac8d6e81-14a6944128-png",
+        "slug": "e8e0fa55c783cc5eeb2f48b009e1e095ac8d6e81-14a6944128-png",
+        "status": "published",
+        "data": {
+          "file": "e8e0fa55c783cc5eeb2f48b009e1e095ac8d6e81-14a6944128.png",
+          "public_path": "/assets/media/e8e0fa55c783cc5eeb2f48b009e1e095ac8d6e81-14a6944128.png",
+          "size": 156140
+        }
+      },
+      {
+        "id": "ear-candles-what-you-need-to-know-955e315d95-jpg",
+        "slug": "ear-candles-what-you-need-to-know-955e315d95-jpg",
+        "status": "published",
+        "data": {
+          "file": "Ear-Candles-What-You-Need-to-Know-955e315d95.jpg",
+          "public_path": "/assets/media/Ear-Candles-What-You-Need-to-Know-955e315d95.jpg",
+          "size": 407358
+        }
+      },
+      {
+        "id": "eicons-4ffe0915a4-ttf",
+        "slug": "eicons-4ffe0915a4-ttf",
+        "status": "published",
+        "data": {
+          "file": "eicons-4ffe0915a4.ttf",
+          "public_path": "/assets/media/eicons-4ffe0915a4.ttf",
+          "size": 236296
+        }
+      },
+      {
+        "id": "eicons-582a55b07a-woff",
+        "slug": "eicons-582a55b07a-woff",
+        "status": "published",
+        "data": {
+          "file": "eicons-582a55b07a.woff",
+          "public_path": "/assets/media/eicons-582a55b07a.woff",
+          "size": 130160
+        }
+      },
+      {
+        "id": "eicons-9b85093f88-svg",
+        "slug": "eicons-9b85093f88-svg",
+        "status": "published",
+        "data": {
+          "file": "eicons-9b85093f88.svg",
+          "public_path": "/assets/media/eicons-9b85093f88.svg",
+          "size": 363985
+        }
+      },
+      {
+        "id": "eicons-a7832011ee-eot",
+        "slug": "eicons-a7832011ee-eot",
+        "status": "published",
+        "data": {
+          "file": "eicons-a7832011ee.eot",
+          "public_path": "/assets/media/eicons-a7832011ee.eot",
+          "size": 236456
+        }
+      },
+      {
+        "id": "eicons-eb8bdbe736-woff2",
+        "slug": "eicons-eb8bdbe736-woff2",
+        "status": "published",
+        "data": {
+          "file": "eicons-eb8bdbe736.woff2",
+          "public_path": "/assets/media/eicons-eb8bdbe736.woff2",
+          "size": 105704
+        }
+      },
+      {
+        "id": "eicons-fe2b6b21a2-eot",
+        "slug": "eicons-fe2b6b21a2-eot",
+        "status": "published",
+        "data": {
+          "file": "eicons-fe2b6b21a2.eot",
+          "public_path": "/assets/media/eicons-fe2b6b21a2.eot",
+          "size": 236456
+        }
+      },
+      {
+        "id": "featured-featured-300x150-ddb23cb6fc-jpg",
+        "slug": "featured-featured-300x150-ddb23cb6fc-jpg",
+        "status": "published",
+        "data": {
+          "file": "featured_featured-300x150-ddb23cb6fc.jpg",
+          "public_path": "/assets/media/featured_featured-300x150-ddb23cb6fc.jpg",
+          "size": 12872
+        }
+      },
+      {
+        "id": "featured-featured-45db71efcf-jpg",
+        "slug": "featured-featured-45db71efcf-jpg",
+        "status": "published",
+        "data": {
+          "file": "featured_featured-45db71efcf.jpg",
+          "public_path": "/assets/media/featured_featured-45db71efcf.jpg",
+          "size": 56329
+        }
+      },
+      {
+        "id": "featured-featured-768x384-1b401f5a7d-jpg",
+        "slug": "featured-featured-768x384-1b401f5a7d-jpg",
+        "status": "published",
+        "data": {
+          "file": "featured_featured-768x384-1b401f5a7d.jpg",
+          "public_path": "/assets/media/featured_featured-768x384-1b401f5a7d.jpg",
+          "size": 38350
+        }
+      },
+      {
+        "id": "frame-721-267x300-0c58b7068f-png",
+        "slug": "frame-721-267x300-0c58b7068f-png",
+        "status": "published",
+        "data": {
+          "file": "Frame-721-267x300-0c58b7068f.png",
+          "public_path": "/assets/media/Frame-721-267x300-0c58b7068f.png",
+          "size": 94833
+        }
+      },
+      {
+        "id": "frame-721-3b058c3295-png",
+        "slug": "frame-721-3b058c3295-png",
+        "status": "published",
+        "data": {
+          "file": "Frame-721-3b058c3295.png",
+          "public_path": "/assets/media/Frame-721-3b058c3295.png",
+          "size": 617933
+        }
+      },
+      {
+        "id": "gf-creditcards-494a8e1ff2-svg",
+        "slug": "gf-creditcards-494a8e1ff2-svg",
+        "status": "published",
+        "data": {
+          "file": "gf-creditcards-494a8e1ff2.svg",
+          "public_path": "/assets/media/gf-creditcards-494a8e1ff2.svg",
+          "size": 12707
+        }
+      },
+      {
+        "id": "gf-creditcards-check-663ccc37b5-svg",
+        "slug": "gf-creditcards-check-663ccc37b5-svg",
+        "status": "published",
+        "data": {
+          "file": "gf-creditcards-check-663ccc37b5.svg",
+          "public_path": "/assets/media/gf-creditcards-check-663ccc37b5.svg",
+          "size": 281
+        }
+      },
+      {
+        "id": "gform-icons-orbital-56ecc7b75e-woff2",
+        "slug": "gform-icons-orbital-56ecc7b75e-woff2",
+        "status": "published",
+        "data": {
+          "file": "gform-icons-orbital-56ecc7b75e.woff2",
+          "public_path": "/assets/media/gform-icons-orbital-56ecc7b75e.woff2",
+          "size": 2752
+        }
+      },
+      {
+        "id": "gform-icons-orbital-65160f91b5-ttf",
+        "slug": "gform-icons-orbital-65160f91b5-ttf",
+        "status": "published",
+        "data": {
+          "file": "gform-icons-orbital-65160f91b5.ttf",
+          "public_path": "/assets/media/gform-icons-orbital-65160f91b5.ttf",
+          "size": 6252
+        }
+      },
+      {
+        "id": "gform-icons-orbital-818c4314c7-woff",
+        "slug": "gform-icons-orbital-818c4314c7-woff",
+        "status": "published",
+        "data": {
+          "file": "gform-icons-orbital-818c4314c7.woff",
+          "public_path": "/assets/media/gform-icons-orbital-818c4314c7.woff",
+          "size": 6328
+        }
+      },
+      {
+        "id": "gform-icons-orbital-b8c91a1b0a-svg",
+        "slug": "gform-icons-orbital-b8c91a1b0a-svg",
+        "status": "published",
+        "data": {
+          "file": "gform-icons-orbital-b8c91a1b0a.svg",
+          "public_path": "/assets/media/gform-icons-orbital-b8c91a1b0a.svg",
+          "size": 19371
+        }
+      },
+      {
+        "id": "headshot-1-150x150-0c51d40477-png",
+        "slug": "headshot-1-150x150-0c51d40477-png",
+        "status": "published",
+        "data": {
+          "file": "Headshot-1-150x150-0c51d40477.png",
+          "public_path": "/assets/media/Headshot-1-150x150-0c51d40477.png",
+          "size": 15946
+        }
+      },
+      {
+        "id": "headshot-1-6854a1c3b0-png",
+        "slug": "headshot-1-6854a1c3b0-png",
+        "status": "published",
+        "data": {
+          "file": "Headshot-1-6854a1c3b0.png",
+          "public_path": "/assets/media/Headshot-1-6854a1c3b0.png",
+          "size": 185393
+        }
+      },
+      {
+        "id": "hearing-aid-1-f67a6869fd-webp",
+        "slug": "hearing-aid-1-f67a6869fd-webp",
+        "status": "published",
+        "data": {
+          "file": "hearing-aid-1-f67a6869fd.webp",
+          "public_path": "/assets/media/hearing-aid-1-f67a6869fd.webp",
+          "size": 48566
+        }
+      },
+      {
+        "id": "hearing-aid-2-798c60cabd-webp",
+        "slug": "hearing-aid-2-798c60cabd-webp",
+        "status": "published",
+        "data": {
+          "file": "hearing-aid-2-798c60cabd.webp",
+          "public_path": "/assets/media/hearing-aid-2-798c60cabd.webp",
+          "size": 137354
+        }
+      },
+      {
+        "id": "hearing-aid-3-bf74f70ffa-webp",
+        "slug": "hearing-aid-3-bf74f70ffa-webp",
+        "status": "published",
+        "data": {
+          "file": "hearing-aid-3-bf74f70ffa.webp",
+          "public_path": "/assets/media/hearing-aid-3-bf74f70ffa.webp",
+          "size": 193854
+        }
+      },
+      {
+        "id": "hearing-aid-4-27e6d10c98-webp",
+        "slug": "hearing-aid-4-27e6d10c98-webp",
+        "status": "published",
+        "data": {
+          "file": "hearing-aid-4-27e6d10c98.webp",
+          "public_path": "/assets/media/hearing-aid-4-27e6d10c98.webp",
+          "size": 56056
+        }
+      },
+      {
+        "id": "hearing-aids-for-tinnitus-how-they-help-you-find-relief-and-hear-better-08101a26",
+        "slug": "hearing-aids-for-tinnitus-how-they-help-you-find-relief-and-hear-better-08101a26",
+        "status": "published",
+        "data": {
+          "file": "Hearing-Aids-for-Tinnitus-How-They-Help-You-Find-Relief-and-Hear-Better-08101a26a3.jpg",
+          "public_path": "/assets/media/Hearing-Aids-for-Tinnitus-How-They-Help-You-Find-Relief-and-Hear-Better-08101a26a3.jpg",
+          "size": 47032
+        }
+      },
+      {
+        "id": "hearing-aids-for-tinnitus-how-they-help-you-find-relief-and-hear-better-300x150-",
+        "slug": "hearing-aids-for-tinnitus-how-they-help-you-find-relief-and-hear-better-300x150-",
+        "status": "published",
+        "data": {
+          "file": "Hearing-Aids-for-Tinnitus-How-They-Help-You-Find-Relief-and-Hear-Better-300x150-110c7403b7.jpg",
+          "public_path": "/assets/media/Hearing-Aids-for-Tinnitus-How-They-Help-You-Find-Relief-and-Hear-Better-300x150-110c7403b7.jpg",
+          "size": 9184
+        }
+      },
+      {
+        "id": "hearing-aids-for-tinnitus-how-they-help-you-find-relief-and-hear-better-768x384-",
+        "slug": "hearing-aids-for-tinnitus-how-they-help-you-find-relief-and-hear-better-768x384-",
+        "status": "published",
+        "data": {
+          "file": "Hearing-Aids-for-Tinnitus-How-They-Help-You-Find-Relief-and-Hear-Better-768x384-331d11c2e6.jpg",
+          "public_path": "/assets/media/Hearing-Aids-for-Tinnitus-How-They-Help-You-Find-Relief-and-Hear-Better-768x384-331d11c2e6.jpg",
+          "size": 27461
+        }
+      },
+      {
+        "id": "hearing-up-provider-network-dr-cliff-webp-53bfeec574-png",
+        "slug": "hearing-up-provider-network-dr-cliff-webp-53bfeec574-png",
+        "status": "published",
+        "data": {
+          "file": "Hearing-Up-Provider-Network-Dr-Cliff.webp-53bfeec574.png",
+          "public_path": "/assets/media/Hearing-Up-Provider-Network-Dr-Cliff.webp-53bfeec574.png",
+          "size": 17260
+        }
+      },
+      {
+        "id": "jtufjig1-i6t8kchkm459wx7xqyxk0vooz6jq0n6wxh0ow-8e9f52e09a-ttf",
+        "slug": "jtufjig1-i6t8kchkm459wx7xqyxk0vooz6jq0n6wxh0ow-8e9f52e09a-ttf",
+        "status": "published",
+        "data": {
+          "file": "JTUFjIg1_i6t8kCHKm459Wx7xQYXK0vOoz6jq0N6WXh0ow-8e9f52e09a.ttf",
+          "public_path": "/assets/media/JTUFjIg1_i6t8kCHKm459Wx7xQYXK0vOoz6jq0N6WXh0ow-8e9f52e09a.ttf",
+          "size": 48940
+        }
+      },
+      {
+        "id": "jtufjig1-i6t8kchkm459wx7xqyxk0vooz6jq3p6wxh0ow-206c6bbb27-ttf",
+        "slug": "jtufjig1-i6t8kchkm459wx7xqyxk0vooz6jq3p6wxh0ow-206c6bbb27-ttf",
+        "status": "published",
+        "data": {
+          "file": "JTUFjIg1_i6t8kCHKm459Wx7xQYXK0vOoz6jq3p6WXh0ow-206c6bbb27.ttf",
+          "public_path": "/assets/media/JTUFjIg1_i6t8kCHKm459Wx7xQYXK0vOoz6jq3p6WXh0ow-206c6bbb27.ttf",
+          "size": 49060
+        }
+      },
+      {
+        "id": "jtufjig1-i6t8kchkm459wx7xqyxk0vooz6jq5z9wxh0ow-85414f2f74-ttf",
+        "slug": "jtufjig1-i6t8kchkm459wx7xqyxk0vooz6jq5z9wxh0ow-85414f2f74-ttf",
+        "status": "published",
+        "data": {
+          "file": "JTUFjIg1_i6t8kCHKm459Wx7xQYXK0vOoz6jq5Z9WXh0ow-85414f2f74.ttf",
+          "public_path": "/assets/media/JTUFjIg1_i6t8kCHKm459Wx7xQYXK0vOoz6jq5Z9WXh0ow-85414f2f74.ttf",
+          "size": 49016
+        }
+      },
+      {
+        "id": "jtufjig1-i6t8kchkm459wx7xqyxk0vooz6jq6r8wxh0ow-398b21f5df-ttf",
+        "slug": "jtufjig1-i6t8kchkm459wx7xqyxk0vooz6jq6r8wxh0ow-398b21f5df-ttf",
+        "status": "published",
+        "data": {
+          "file": "JTUFjIg1_i6t8kCHKm459Wx7xQYXK0vOoz6jq6R8WXh0ow-398b21f5df.ttf",
+          "public_path": "/assets/media/JTUFjIg1_i6t8kCHKm459Wx7xQYXK0vOoz6jq6R8WXh0ow-398b21f5df.ttf",
+          "size": 48904
+        }
+      },
+      {
+        "id": "jtufjig1-i6t8kchkm459wx7xqyxk0vooz6jq6r9wxh0ow-408a42b284-ttf",
+        "slug": "jtufjig1-i6t8kchkm459wx7xqyxk0vooz6jq6r9wxh0ow-408a42b284-ttf",
+        "status": "published",
+        "data": {
+          "file": "JTUFjIg1_i6t8kCHKm459Wx7xQYXK0vOoz6jq6R9WXh0ow-408a42b284.ttf",
+          "public_path": "/assets/media/JTUFjIg1_i6t8kCHKm459Wx7xQYXK0vOoz6jq6R9WXh0ow-408a42b284.ttf",
+          "size": 48904
+        }
+      },
+      {
+        "id": "jtufjig1-i6t8kchkm459wx7xqyxk0vooz6jq-p9wxh0ow-3442ac0ac3-ttf",
+        "slug": "jtufjig1-i6t8kchkm459wx7xqyxk0vooz6jq-p9wxh0ow-3442ac0ac3-ttf",
+        "status": "published",
+        "data": {
+          "file": "JTUFjIg1_i6t8kCHKm459Wx7xQYXK0vOoz6jq_p9WXh0ow-3442ac0ac3.ttf",
+          "public_path": "/assets/media/JTUFjIg1_i6t8kCHKm459Wx7xQYXK0vOoz6jq_p9WXh0ow-3442ac0ac3.ttf",
+          "size": 49012
+        }
+      },
+      {
+        "id": "jtufjig1-i6t8kchkm459wx7xqyxk0vooz6jqw16wxh0ow-9af88502c0-ttf",
+        "slug": "jtufjig1-i6t8kchkm459wx7xqyxk0vooz6jqw16wxh0ow-9af88502c0-ttf",
+        "status": "published",
+        "data": {
+          "file": "JTUFjIg1_i6t8kCHKm459Wx7xQYXK0vOoz6jqw16WXh0ow-9af88502c0.ttf",
+          "public_path": "/assets/media/JTUFjIg1_i6t8kCHKm459Wx7xQYXK0vOoz6jqw16WXh0ow-9af88502c0.ttf",
+          "size": 49452
+        }
+      },
+      {
+        "id": "jtufjig1-i6t8kchkm459wx7xqyxk0vooz6jqyr6wxh0ow-985ea03e4f-ttf",
+        "slug": "jtufjig1-i6t8kchkm459wx7xqyxk0vooz6jqyr6wxh0ow-985ea03e4f-ttf",
+        "status": "published",
+        "data": {
+          "file": "JTUFjIg1_i6t8kCHKm459Wx7xQYXK0vOoz6jqyR6WXh0ow-985ea03e4f.ttf",
+          "public_path": "/assets/media/JTUFjIg1_i6t8kCHKm459Wx7xQYXK0vOoz6jqyR6WXh0ow-985ea03e4f.ttf",
+          "size": 49504
+        }
+      },
+      {
+        "id": "jtufjig1-i6t8kchkm459wx7xqyxk0vooz6jqyr9wxh0ow-d7783175f7-ttf",
+        "slug": "jtufjig1-i6t8kchkm459wx7xqyxk0vooz6jqyr9wxh0ow-d7783175f7-ttf",
+        "status": "published",
+        "data": {
+          "file": "JTUFjIg1_i6t8kCHKm459Wx7xQYXK0vOoz6jqyR9WXh0ow-d7783175f7.ttf",
+          "public_path": "/assets/media/JTUFjIg1_i6t8kCHKm459Wx7xQYXK0vOoz6jqyR9WXh0ow-d7783175f7.ttf",
+          "size": 49044
+        }
+      },
+      {
+        "id": "jtuhjig1-i6t8kchkm4532vjot5-qnfgpcs16hw5ax8-f91234b385-ttf",
+        "slug": "jtuhjig1-i6t8kchkm4532vjot5-qnfgpcs16hw5ax8-f91234b385-ttf",
+        "status": "published",
+        "data": {
+          "file": "JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCs16Hw5aX8-f91234b385.ttf",
+          "public_path": "/assets/media/JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCs16Hw5aX8-f91234b385.ttf",
+          "size": 48532
+        }
+      },
+      {
+        "id": "jtuhjig1-i6t8kchkm4532vjot5-qnfgpctr6hw5ax8-f3504655a7-ttf",
+        "slug": "jtuhjig1-i6t8kchkm4532vjot5-qnfgpctr6hw5ax8-f3504655a7-ttf",
+        "status": "published",
+        "data": {
+          "file": "JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCtr6Hw5aX8-f3504655a7.ttf",
+          "public_path": "/assets/media/JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCtr6Hw5aX8-f3504655a7.ttf",
+          "size": 48532
+        }
+      },
+      {
+        "id": "jtuhjig1-i6t8kchkm4532vjot5-qnfgpctr6xw5ax8-a7a759b95c-ttf",
+        "slug": "jtuhjig1-i6t8kchkm4532vjot5-qnfgpctr6xw5ax8-a7a759b95c-ttf",
+        "status": "published",
+        "data": {
+          "file": "JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCtr6Xw5aX8-a7a759b95c.ttf",
+          "public_path": "/assets/media/JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCtr6Xw5aX8-a7a759b95c.ttf",
+          "size": 48444
+        }
+      },
+      {
+        "id": "jtuhjig1-i6t8kchkm4532vjot5-qnfgpctz6hw5ax8-fe5ab00264-ttf",
+        "slug": "jtuhjig1-i6t8kchkm4532vjot5-qnfgpctz6hw5ax8-fe5ab00264-ttf",
+        "status": "published",
+        "data": {
+          "file": "JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCtZ6Hw5aX8-fe5ab00264.ttf",
+          "public_path": "/assets/media/JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCtZ6Hw5aX8-fe5ab00264.ttf",
+          "size": 48556
+        }
+      },
+      {
+        "id": "jtuhjig1-i6t8kchkm4532vjot5-qnfgpcu173w5ax8-9cae11fa43-ttf",
+        "slug": "jtuhjig1-i6t8kchkm4532vjot5-qnfgpcu173w5ax8-9cae11fa43-ttf",
+        "status": "published",
+        "data": {
+          "file": "JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCu173w5aX8-9cae11fa43.ttf",
+          "public_path": "/assets/media/JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCu173w5aX8-9cae11fa43.ttf",
+          "size": 48644
+        }
+      },
+      {
+        "id": "jtuhjig1-i6t8kchkm4532vjot5-qnfgpcum73w5ax8-acb6d43e88-ttf",
+        "slug": "jtuhjig1-i6t8kchkm4532vjot5-qnfgpcum73w5ax8-acb6d43e88-ttf",
+        "status": "published",
+        "data": {
+          "file": "JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCuM73w5aX8-acb6d43e88.ttf",
+          "public_path": "/assets/media/JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCuM73w5aX8-acb6d43e88.ttf",
+          "size": 48520
+        }
+      },
+      {
+        "id": "jtuhjig1-i6t8kchkm4532vjot5-qnfgpcvc73w5ax8-821bf0cb73-ttf",
+        "slug": "jtuhjig1-i6t8kchkm4532vjot5-qnfgpcvc73w5ax8-821bf0cb73-ttf",
+        "status": "published",
+        "data": {
+          "file": "JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCvC73w5aX8-821bf0cb73.ttf",
+          "public_path": "/assets/media/JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCvC73w5aX8-821bf0cb73.ttf",
+          "size": 48972
+        }
+      },
+      {
+        "id": "jtuhjig1-i6t8kchkm4532vjot5-qnfgpcvr6hw5ax8-4479846863-ttf",
+        "slug": "jtuhjig1-i6t8kchkm4532vjot5-qnfgpcvr6hw5ax8-4479846863-ttf",
+        "status": "published",
+        "data": {
+          "file": "JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCvr6Hw5aX8-4479846863.ttf",
+          "public_path": "/assets/media/JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCvr6Hw5aX8-4479846863.ttf",
+          "size": 48560
+        }
+      },
+      {
+        "id": "jtuhjig1-i6t8kchkm4532vjot5-qnfgpcvr73w5ax8-7b1ffcb0b1-ttf",
+        "slug": "jtuhjig1-i6t8kchkm4532vjot5-qnfgpcvr73w5ax8-7b1ffcb0b1-ttf",
+        "status": "published",
+        "data": {
+          "file": "JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCvr73w5aX8-7b1ffcb0b1.ttf",
+          "public_path": "/assets/media/JTUHjIg1_i6t8kCHKm4532VJOt5-QNFgpCvr73w5aX8-7b1ffcb0b1.ttf",
+          "size": 49024
+        }
+      },
+      {
+        "id": "maico-jenny-e1776711120459-231x300-9a3ba7262a-webp",
+        "slug": "maico-jenny-e1776711120459-231x300-9a3ba7262a-webp",
+        "status": "published",
+        "data": {
+          "file": "Maico-Jenny-e1776711120459-231x300-9a3ba7262a.webp",
+          "public_path": "/assets/media/Maico-Jenny-e1776711120459-231x300-9a3ba7262a.webp",
+          "size": 16242
+        }
+      },
+      {
+        "id": "maico-jenny-e1776711120459-768x998-6da525cda6-webp",
+        "slug": "maico-jenny-e1776711120459-768x998-6da525cda6-webp",
+        "status": "published",
+        "data": {
+          "file": "Maico-Jenny-e1776711120459-768x998-6da525cda6.webp",
+          "public_path": "/assets/media/Maico-Jenny-e1776711120459-768x998-6da525cda6.webp",
+          "size": 128368
+        }
+      },
+      {
+        "id": "maico-jenny-e1776711120459-788x1024-92cce642d5-webp",
+        "slug": "maico-jenny-e1776711120459-788x1024-92cce642d5-webp",
+        "status": "published",
+        "data": {
+          "file": "Maico-Jenny-e1776711120459-788x1024-92cce642d5.webp",
+          "public_path": "/assets/media/Maico-Jenny-e1776711120459-788x1024-92cce642d5.webp",
+          "size": 134766
+        }
+      },
+      {
+        "id": "maico-jenny-e1776711120459-857a0e6330-webp",
+        "slug": "maico-jenny-e1776711120459-857a0e6330-webp",
+        "status": "published",
+        "data": {
+          "file": "Maico-Jenny-e1776711120459-857a0e6330.webp",
+          "public_path": "/assets/media/Maico-Jenny-e1776711120459-857a0e6330.webp",
+          "size": 246978
+        }
+      },
+      {
+        "id": "maico-stephanie-howard-1f95a22d4f-webp",
+        "slug": "maico-stephanie-howard-1f95a22d4f-webp",
+        "status": "published",
+        "data": {
+          "file": "Maico-Stephanie-Howard-1f95a22d4f.webp",
+          "public_path": "/assets/media/Maico-Stephanie-Howard-1f95a22d4f.webp",
+          "size": 320506
+        }
+      },
+      {
+        "id": "maico-stephanie-howard-200x300-37002ab20c-webp",
+        "slug": "maico-stephanie-howard-200x300-37002ab20c-webp",
+        "status": "published",
+        "data": {
+          "file": "Maico-Stephanie-Howard-200x300-37002ab20c.webp",
+          "public_path": "/assets/media/Maico-Stephanie-Howard-200x300-37002ab20c.webp",
+          "size": 15122
+        }
+      },
+      {
+        "id": "maico-stephanie-howard-683x1024-b21a57d890-webp",
+        "slug": "maico-stephanie-howard-683x1024-b21a57d890-webp",
+        "status": "published",
+        "data": {
+          "file": "Maico-Stephanie-Howard-683x1024-b21a57d890.webp",
+          "public_path": "/assets/media/Maico-Stephanie-Howard-683x1024-b21a57d890.webp",
+          "size": 149654
+        }
+      },
+      {
+        "id": "maico-stephanie-howard-768x1152-2dc3af1b26-webp",
+        "slug": "maico-stephanie-howard-768x1152-2dc3af1b26-webp",
+        "status": "published",
+        "data": {
+          "file": "Maico-Stephanie-Howard-768x1152-2dc3af1b26.webp",
+          "public_path": "/assets/media/Maico-Stephanie-Howard-768x1152-2dc3af1b26.webp",
+          "size": 185484
+        }
+      },
+      {
+        "id": "map-chesapeake-png",
+        "slug": "map-chesapeake-png",
+        "status": "published",
+        "data": {
+          "file": "map-chesapeake.png",
+          "public_path": "/assets/media/map-chesapeake.png",
+          "size": 242310
+        }
+      },
+      {
+        "id": "map-newport-news-png",
+        "slug": "map-newport-news-png",
+        "status": "published",
+        "data": {
+          "file": "map-newport-news.png",
+          "public_path": "/assets/media/map-newport-news.png",
+          "size": 247403
+        }
+      },
+      {
+        "id": "map-smithfield-png",
+        "slug": "map-smithfield-png",
+        "status": "published",
+        "data": {
+          "file": "map-smithfield.png",
+          "public_path": "/assets/media/map-smithfield.png",
+          "size": 144740
+        }
+      },
+      {
+        "id": "oticon-zeal-product-e1768818193743-3cbbba1b4e-webp",
+        "slug": "oticon-zeal-product-e1768818193743-3cbbba1b4e-webp",
+        "status": "published",
+        "data": {
+          "file": "oticon-zeal-product-e1768818193743-3cbbba1b4e.webp",
+          "public_path": "/assets/media/oticon-zeal-product-e1768818193743-3cbbba1b4e.webp",
+          "size": 30186
+        }
+      },
+      {
+        "id": "pressure-in-the-ear-6320eb4bcc-jpg",
+        "slug": "pressure-in-the-ear-6320eb4bcc-jpg",
+        "status": "published",
+        "data": {
+          "file": "Pressure-in-the-Ear-6320eb4bcc.jpg",
+          "public_path": "/assets/media/Pressure-in-the-Ear-6320eb4bcc.jpg",
+          "size": 329962
+        }
+      },
+      {
+        "id": "rechargeable-hearing-aids-features-benefits-featured-1af2313fe4-jpg",
+        "slug": "rechargeable-hearing-aids-features-benefits-featured-1af2313fe4-jpg",
+        "status": "published",
+        "data": {
+          "file": "rechargeable_hearing_aids_features_benefits_featured-1af2313fe4.jpg",
+          "public_path": "/assets/media/rechargeable_hearing_aids_features_benefits_featured-1af2313fe4.jpg",
+          "size": 105056
+        }
+      },
+      {
+        "id": "rechargeable-hearing-aids-features-benefits-featured-300x150-65d15be522-jpg",
+        "slug": "rechargeable-hearing-aids-features-benefits-featured-300x150-65d15be522-jpg",
+        "status": "published",
+        "data": {
+          "file": "rechargeable_hearing_aids_features_benefits_featured-300x150-65d15be522.jpg",
+          "public_path": "/assets/media/rechargeable_hearing_aids_features_benefits_featured-300x150-65d15be522.jpg",
+          "size": 14155
+        }
+      },
+      {
+        "id": "rechargeable-hearing-aids-features-benefits-featured-768x384-bac8f365cc-jpg",
+        "slug": "rechargeable-hearing-aids-features-benefits-featured-768x384-bac8f365cc-jpg",
+        "status": "published",
+        "data": {
+          "file": "rechargeable_hearing_aids_features_benefits_featured-768x384-bac8f365cc.jpg",
+          "public_path": "/assets/media/rechargeable_hearing_aids_features_benefits_featured-768x384-bac8f365cc.jpg",
+          "size": 60137
+        }
+      },
+      {
+        "id": "rectangle-168-300x201-a09cbf8483-png",
+        "slug": "rectangle-168-300x201-a09cbf8483-png",
+        "status": "published",
+        "data": {
+          "file": "Rectangle-168-300x201-a09cbf8483.png",
+          "public_path": "/assets/media/Rectangle-168-300x201-a09cbf8483.png",
+          "size": 50690
+        }
+      },
+      {
+        "id": "rectangle-168-b102e873ac-png",
+        "slug": "rectangle-168-b102e873ac-png",
+        "status": "published",
+        "data": {
+          "file": "Rectangle-168-b102e873ac.png",
+          "public_path": "/assets/media/Rectangle-168-b102e873ac.png",
+          "size": 228207
+        }
+      },
+      {
+        "id": "reviews-e6bc9f5ec7-png",
+        "slug": "reviews-e6bc9f5ec7-png",
+        "status": "published",
+        "data": {
+          "file": "Reviews-e6bc9f5ec7.png",
+          "public_path": "/assets/media/Reviews-e6bc9f5ec7.png",
+          "size": 10837
+        }
+      },
+      {
+        "id": "signia-hearing-aids-3d0f08811c-jpg",
+        "slug": "signia-hearing-aids-3d0f08811c-jpg",
+        "status": "published",
+        "data": {
+          "file": "signia-hearing-aids-3d0f08811c.jpg",
+          "public_path": "/assets/media/signia-hearing-aids-3d0f08811c.jpg",
+          "size": 39969
+        }
+      },
+      {
+        "id": "starkey-hearing-aids-3a228a54d1-png",
+        "slug": "starkey-hearing-aids-3a228a54d1-png",
+        "status": "published",
+        "data": {
+          "file": "starkey-hearing-aids-3a228a54d1.png",
+          "public_path": "/assets/media/starkey-hearing-aids-3a228a54d1.png",
+          "size": 55834
+        }
+      },
+      {
+        "id": "the-best-way-to-clean-your-ears-2f4f82a9a7-jpg",
+        "slug": "the-best-way-to-clean-your-ears-2f4f82a9a7-jpg",
+        "status": "published",
+        "data": {
+          "file": "The-Best-Way-to-Clean-Your-Ears-2f4f82a9a7.jpg",
+          "public_path": "/assets/media/The-Best-Way-to-Clean-Your-Ears-2f4f82a9a7.jpg",
+          "size": 376422
+        }
+      },
+      {
+        "id": "tracey-showing-phone-app-dsc01467-1024x683-80a3c0a624-jpg",
+        "slug": "tracey-showing-phone-app-dsc01467-1024x683-80a3c0a624-jpg",
+        "status": "published",
+        "data": {
+          "file": "Tracey-showing-phone-app-DSC01467-1024x683-80a3c0a624.jpg",
+          "public_path": "/assets/media/Tracey-showing-phone-app-DSC01467-1024x683-80a3c0a624.jpg",
+          "size": 186174
+        }
+      },
+      {
+        "id": "tracey-showing-phone-app-dsc01467-1536x1024-9ac98ca88a-jpg",
+        "slug": "tracey-showing-phone-app-dsc01467-1536x1024-9ac98ca88a-jpg",
+        "status": "published",
+        "data": {
+          "file": "Tracey-showing-phone-app-DSC01467-1536x1024-9ac98ca88a.jpg",
+          "public_path": "/assets/media/Tracey-showing-phone-app-DSC01467-1536x1024-9ac98ca88a.jpg",
+          "size": 332395
+        }
+      },
+      {
+        "id": "tracey-showing-phone-app-dsc01467-2048x1365-0621ca6cb1-jpg",
+        "slug": "tracey-showing-phone-app-dsc01467-2048x1365-0621ca6cb1-jpg",
+        "status": "published",
+        "data": {
+          "file": "Tracey-showing-phone-app-DSC01467-2048x1365-0621ca6cb1.jpg",
+          "public_path": "/assets/media/Tracey-showing-phone-app-DSC01467-2048x1365-0621ca6cb1.jpg",
+          "size": 516442
+        }
+      },
+      {
+        "id": "tracey-showing-phone-app-dsc01467-300x200-99d6d2505b-jpg",
+        "slug": "tracey-showing-phone-app-dsc01467-300x200-99d6d2505b-jpg",
+        "status": "published",
+        "data": {
+          "file": "Tracey-showing-phone-app-DSC01467-300x200-99d6d2505b.jpg",
+          "public_path": "/assets/media/Tracey-showing-phone-app-DSC01467-300x200-99d6d2505b.jpg",
+          "size": 51585
+        }
+      },
+      {
+        "id": "tracey-showing-phone-app-dsc01467-768x512-6c056298c1-jpg",
+        "slug": "tracey-showing-phone-app-dsc01467-768x512-6c056298c1-jpg",
+        "status": "published",
+        "data": {
+          "file": "Tracey-showing-phone-app-DSC01467-768x512-6c056298c1.jpg",
+          "public_path": "/assets/media/Tracey-showing-phone-app-DSC01467-768x512-6c056298c1.jpg",
+          "size": 127031
+        }
+      },
+      {
+        "id": "understanding-hyperacusis-when-everyday-sounds-feel-too-loud-300x150-3d640afae6-",
+        "slug": "understanding-hyperacusis-when-everyday-sounds-feel-too-loud-300x150-3d640afae6-",
+        "status": "published",
+        "data": {
+          "file": "Understanding-Hyperacusis-When-Everyday-Sounds-Feel-Too-Loud-300x150-3d640afae6.jpg",
+          "public_path": "/assets/media/Understanding-Hyperacusis-When-Everyday-Sounds-Feel-Too-Loud-300x150-3d640afae6.jpg",
+          "size": 12208
+        }
+      },
+      {
+        "id": "understanding-hyperacusis-when-everyday-sounds-feel-too-loud-768x384-37a648c952-",
+        "slug": "understanding-hyperacusis-when-everyday-sounds-feel-too-loud-768x384-37a648c952-",
+        "status": "published",
+        "data": {
+          "file": "Understanding-Hyperacusis-When-Everyday-Sounds-Feel-Too-Loud-768x384-37a648c952.jpg",
+          "public_path": "/assets/media/Understanding-Hyperacusis-When-Everyday-Sounds-Feel-Too-Loud-768x384-37a648c952.jpg",
+          "size": 40818
+        }
+      },
+      {
+        "id": "understanding-hyperacusis-when-everyday-sounds-feel-too-loud-9336b24ef2-jpg",
+        "slug": "understanding-hyperacusis-when-everyday-sounds-feel-too-loud-9336b24ef2-jpg",
+        "status": "published",
+        "data": {
+          "file": "Understanding-Hyperacusis-When-Everyday-Sounds-Feel-Too-Loud-9336b24ef2.jpg",
+          "public_path": "/assets/media/Understanding-Hyperacusis-When-Everyday-Sounds-Feel-Too-Loud-9336b24ef2.jpg",
+          "size": 76536
+        }
+      },
+      {
+        "id": "understanding-swimmers-ear-causes-symptoms-and-safe-treatment-1bdfec1919-jpg",
+        "slug": "understanding-swimmers-ear-causes-symptoms-and-safe-treatment-1bdfec1919-jpg",
+        "status": "published",
+        "data": {
+          "file": "Understanding-Swimmers-Ear-Causes-Symptoms-and-Safe-Treatment-1bdfec1919.jpg",
+          "public_path": "/assets/media/Understanding-Swimmers-Ear-Causes-Symptoms-and-Safe-Treatment-1bdfec1919.jpg",
+          "size": 91868
+        }
+      },
+      {
+        "id": "widex-hearing-aids-0901556acb-jpg",
+        "slug": "widex-hearing-aids-0901556acb-jpg",
+        "status": "published",
+        "data": {
+          "file": "widex-hearing-aids-0901556acb.jpg",
+          "public_path": "/assets/media/widex-hearing-aids-0901556acb.jpg",
+          "size": 72901
+        }
+      },
+      {
+        "id": "wxkve3uzrok56nvamsujd-qtvxc-071e85d637-ttf",
+        "slug": "wxkve3uzrok56nvamsujd-qtvxc-071e85d637-ttf",
+        "status": "published",
+        "data": {
+          "file": "wXKvE3UZrok56nvamSuJd_QtvXc-071e85d637.ttf",
+          "public_path": "/assets/media/wXKvE3UZrok56nvamSuJd_QtvXc-071e85d637.ttf",
+          "size": 36152
+        }
+      },
+      {
+        "id": "wxkye3uzrok56nvamsujd-ygn2c0ldg-60b48ef1ef-ttf",
+        "slug": "wxkye3uzrok56nvamsujd-ygn2c0ldg-60b48ef1ef-ttf",
+        "status": "published",
+        "data": {
+          "file": "wXKyE3UZrok56nvamSuJd_yGn2c0ldg-60b48ef1ef.ttf",
+          "public_path": "/assets/media/wXKyE3UZrok56nvamSuJd_yGn2c0ldg-60b48ef1ef.ttf",
+          "size": 35664
+        }
+      },
+      {
+        "id": "wxkye3uzrok56nvamsujd-ywmgc0ldg-01d04f379d-ttf",
+        "slug": "wxkye3uzrok56nvamsujd-ywmgc0ldg-01d04f379d-ttf",
+        "status": "published",
+        "data": {
+          "file": "wXKyE3UZrok56nvamSuJd_yWmGc0ldg-01d04f379d.ttf",
+          "public_path": "/assets/media/wXKyE3UZrok56nvamSuJd_yWmGc0ldg-01d04f379d.ttf",
+          "size": 37852
+        }
+      },
+      {
+        "id": "wxkye3uzrok56nvamsujd-zenmc0ldg-9f901693ce-ttf",
+        "slug": "wxkye3uzrok56nvamsujd-zenmc0ldg-9f901693ce-ttf",
+        "status": "published",
+        "data": {
+          "file": "wXKyE3UZrok56nvamSuJd_zenmc0ldg-9f901693ce.ttf",
+          "public_path": "/assets/media/wXKyE3UZrok56nvamSuJd_zenmc0ldg-9f901693ce.ttf",
+          "size": 37420
+        }
+      },
+      {
+        "id": "wxkye3uzrok56nvamsujd-zymwc0ldg-6910e7281f-ttf",
+        "slug": "wxkye3uzrok56nvamsujd-zymwc0ldg-6910e7281f-ttf",
+        "status": "published",
+        "data": {
+          "file": "wXKyE3UZrok56nvamSuJd_zymWc0ldg-6910e7281f.ttf",
+          "public_path": "/assets/media/wXKyE3UZrok56nvamSuJd_zymWc0ldg-6910e7281f.ttf",
+          "size": 37184
+        }
+      }
+    ]
+  }
+}
