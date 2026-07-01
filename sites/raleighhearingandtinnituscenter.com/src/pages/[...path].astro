@@ -7,6 +7,12 @@ import { getStaffTemplatePage, getStaticPage, wireCanonicalHeadUrls } from "../l
 export const prerender = false;
 
 const route = Astro.params.path ?? "";
+
+// Legacy misspelled slug -> canonical (matches live site spelling)
+if (route === "audiology-services-tinntus-evaluation-treatment") {
+	return Astro.redirect("/audiology-services-tinnitus-evaluation-treatment/", 301);
+}
+
 const staticPage = getStaticPage(route) ?? (route.startsWith("audiologist/") ? getStaffTemplatePage(route) : null);
 
 if (!staticPage) {
