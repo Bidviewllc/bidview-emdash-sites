@@ -1,0 +1,113 @@
+---
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+
+interface Props {
+	title?: string;
+	description?: string;
+	canonical?: string;
+	bodyClass?: string;
+}
+
+const {
+	title = "WNC Audiology | Audiologists & Hearing Aids in Asheville, NC",
+	description = "WNC Audiology is an audiology and hearing aid clinic with expert audiologists providing hearing tests and professional hearing services in Asheville, NC.",
+	canonical,
+	bodyClass = "astro-default astro-template-full-width",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en-US">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>{title}</title>
+		{description && <meta name="description" content={description} />}
+		{canonical && <link rel="canonical" href={canonical} />}
+		<link rel="icon" type="image/webp" href="/assets/wp-content/uploads/2025/09/cropped-wnc-audiology-favicon-32x32.webp" />
+		<link rel="apple-touch-icon" href="/assets/wp-content/uploads/2025/09/cropped-wnc-audiology-favicon-180x180.webp" />
+		<link rel="stylesheet" href="/assets/fa-pro/css/pro.min.css" />
+		<slot name="head" />
+		<link rel="stylesheet" href="/assets/wp-content/plugins/wp-live-chat-support/public/css/wplc-plugin-public.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/themes/hello-astro/assets/css/reset.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/themes/hello-astro/assets/css/theme.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/themes/hello-astro/assets/css/header-footer.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/custom-frontend.min.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/post-7.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/custom-widget-icon-list.min.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/plugins/astro-pro/assets/css/modules/sticky.min.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/plugins/astro/assets/css/widget-image.min.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/custom-pro-widget-nav-menu.min.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/plugins/astro/assets/css/widget-heading.min.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/custom-widget-icon-box.min.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/plugins/astro/assets/lib/eicons/css/astro-icons.min.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/custom-widget-image-gallery.min.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/plugins/astro/assets/lib/swiper/v8/css/swiper.min.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/plugins/astro/assets/css/conditionals/e-swiper.min.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/plugins/astro/assets/css/widget-image-carousel.min.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/plugins/astro-pro/assets/css/widget-loop-common.min.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/custom-pro-widget-loop-grid.min.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/plugins/astro/assets/css/widget-nested-accordion.min.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/post-77.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/post-43.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/post-125.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/themes/hello-theme-child-master/style.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/google-fonts/css/roboto.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/google-fonts/css/robotoslab.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/google-fonts/css/hind.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/google-fonts/css/montserrat.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/google-fonts/css/dmsans.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/post-63.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/post-538.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/post-778.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/plugins/astro/assets/css/widget-google_maps.min.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/plugins/astro/assets/css/widget-divider.min.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/plugins/astro-pro/assets/css/widget-post-info.min.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/google-fonts/css/worksans.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/post-1100.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/post-1130.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/post-156.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/post-157.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/post-158.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/post-159.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/post-3.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/post-350.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/post-352.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/post-358.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/post-360.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/post-361.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/post-400.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/post-406.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/post-422.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/post-423.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/post-424.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/post-425.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/post-426.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/post-427.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/post-597.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/post-598.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/post-599.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/post-600.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/post-636.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/post-637.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/post-638.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/post-639.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/post-679.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/post-680.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/post-854.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/post-894.css?v=20260519-wnc-build-v1" />
+		<link rel="stylesheet" href="/assets/wp-content/uploads/astro/css/post-907.css?v=20260519-wnc-build-v1" />
+	</head>
+	<body class={bodyClass}>
+		<noscript>
+<iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-MC7HTCJS" style="display:none;visibility:hidden" width="0"></iframe>
+</noscript>
+<noscript><iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-KS8T7J65" style="display:none;visibility:hidden" width="0"></iframe></noscript>
+<a class="skip-link screen-reader-text" href="#content">Skip to content</a>
+		<Header />
+		<slot />
+		<Footer />
+		<script src="/assets/site.js?v=20260519-wnc-build-v1" is:inline></script>
+	</body>
+</html>

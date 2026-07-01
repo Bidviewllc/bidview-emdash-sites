@@ -1,0 +1,33 @@
+{
+  "name": "wnc-audiology",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "typecheck": "astro check",
+    "deploy": "astro build && wrangler deploy",
+    "deploy:staging": "astro build && node scripts/deploy-staging.mjs",
+    "deploy:production": "astro build && wrangler deploy"
+  },
+  "emdash": {
+    "label": "WNC Audiology",
+    "seed": "seed/seed.json"
+  },
+  "dependencies": {
+    "@astrojs/cloudflare": "^13.5.2",
+    "@astrojs/react": "^5.0.5",
+    "@emdash-cms/cloudflare": "^0.13.0",
+    "astro": "^6.1.2",
+    "emdash": "^0.13.0",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.7",
+    "typescript": "^5.7.2",
+    "wrangler": "^4.93.0"
+  }
+}

@@ -1,0 +1,234 @@
+{
+  "site": {
+    "name": "WNC Audiology",
+    "tagline": "Audiologists & Hearing Aids in Asheville, NC",
+    "phone": "(828) 483-4050",
+    "email": "",
+    "address": "261 Asheland Ave, Suite 100, Asheville, NC 28801"
+  },
+  "collections": [
+    {
+      "name": "blog_articles",
+      "slug": "blog_articles",
+      "label": "Blog Articles",
+      "fields": [
+        { "name": "slug_path",       "slug": "slug_path",       "type": "string", "label": "URL Slug Path" },
+        { "name": "html_file",       "slug": "html_file",       "type": "string", "label": "HTML Fragment File" },
+        { "name": "seo_title",       "slug": "seo_title",       "type": "string", "label": "SEO Title" },
+        { "name": "seo_description", "slug": "seo_description", "type": "text",   "label": "SEO Description" },
+        { "name": "body_class",      "slug": "body_class",      "type": "string", "label": "Body CSS Classes" },
+        { "name": "published_at",    "slug": "published_at",    "type": "string", "label": "Published Date" }
+      ]
+    },
+    {
+      "name": "brands",
+      "slug": "brands",
+      "label": "Hearing Aid Brands",
+      "fields": [
+        { "name": "slug_path",       "slug": "slug_path",       "type": "string", "label": "URL Slug Path" },
+        { "name": "html_file",       "slug": "html_file",       "type": "string", "label": "HTML Fragment File" },
+        { "name": "seo_title",       "slug": "seo_title",       "type": "string", "label": "SEO Title" },
+        { "name": "seo_description", "slug": "seo_description", "type": "text",   "label": "SEO Description" },
+        { "name": "body_class",      "slug": "body_class",      "type": "string", "label": "Body CSS Classes" },
+        { "name": "published_at",    "slug": "published_at",    "type": "string", "label": "Published Date" }
+      ]
+    }
+  ],
+  "entries": [
+    {
+      "collection": "blog_articles",
+      "id": "ear-candling-risks-and-alternatives",
+      "status": "published",
+      "data": {
+        "slug_path": "/ear-candling-risks-and-alternatives/",
+        "html_file": "ear-candling",
+        "seo_title": "Ear Candles: Safety, Risks, and Better Alternatives | WNC Audiology",
+        "seo_description": "Learn about the risks of ear candles and why seeing an audiologist is a better alternative. Talk to an audiologist today!",
+        "body_class": "wp-singular post-template-default single single-post postid-5105 single-format-standard wp-custom-logo wp-embed-responsive wp-theme-hello-astro wp-child-theme-hello-theme-child-master hello-astro-default astro-default astro-kit-7 astro-page-907",
+        "published_at": "2026-02-04"
+      }
+    },
+    {
+      "collection": "blog_articles",
+      "id": "hearing-aids-for-tinnitus-finding-relief-in-asheville",
+      "status": "published",
+      "data": {
+        "slug_path": "/hearing-aids-for-tinnitus-finding-relief-in-asheville/",
+        "html_file": "tinnitus-hearing-aids",
+        "seo_title": "Hearing Aids for Tinnitus | WNC Audiology",
+        "seo_description": "Learn how hearing aids can bring relief from tinnitus and help restore focus, comfort, and peace. Visit WNC Audiology in Asheville today.",
+        "body_class": "wp-singular post-template-default single single-post postid-896 single-format-standard wp-custom-logo wp-embed-responsive wp-theme-hello-astro wp-child-theme-hello-theme-child-master hello-astro-default astro-default astro-kit-7 astro-page-907",
+        "published_at": "2025-11-17"
+      }
+    },
+    {
+      "collection": "blog_articles",
+      "id": "how-long-does-it-take-to-get-used-to-hearing-aids",
+      "status": "published",
+      "data": {
+        "slug_path": "/how-long-does-it-take-to-get-used-to-hearing-aids/",
+        "html_file": "hearing-aids-adaptation",
+        "seo_title": "How Long to Get Used to Hearing Aids? | WNC Audiology",
+        "seo_description": "How long does it take to get used to hearing aids? Learn the adjustment timeline, care habits, follow-up signs, and when to ask for help.",
+        "body_class": "wp-singular post-template-default single single-post postid-5181 single-format-standard wp-custom-logo wp-embed-responsive wp-theme-hello-astro wp-child-theme-hello-theme-child-master hello-astro-default astro-default astro-kit-7 astro-page-907",
+        "published_at": "2026-04-16"
+      }
+    },
+    {
+      "collection": "blog_articles",
+      "id": "hyperacusis-when-sounds-feel-too-loud",
+      "status": "published",
+      "data": {
+        "slug_path": "/hyperacusis-when-sounds-feel-too-loud/",
+        "html_file": "hyperacusis",
+        "seo_title": "Hyperacusis: When Sounds Feel Too Loud and Hard to Handle | WNC Audiology",
+        "seo_description": "Sensitive to everyday sounds? Learn about hyperacusis causes and treatment options. Schedule a consultation with WNC Audiology today.",
+        "body_class": "wp-singular post-template-default single single-post postid-5063 single-format-standard wp-custom-logo wp-embed-responsive wp-theme-hello-astro wp-child-theme-hello-theme-child-master hello-astro-default astro-default astro-kit-7 astro-page-907",
+        "published_at": "2026-01-08"
+      }
+    },
+    {
+      "collection": "blog_articles",
+      "id": "over-the-counter-hearing-aids-what-you-need-to-know",
+      "status": "published",
+      "data": {
+        "slug_path": "/over-the-counter-hearing-aids-what-you-need-to-know/",
+        "html_file": "otc-hearing-aids",
+        "seo_title": "Over the Counter Hearing Aids | WNC Audiology",
+        "seo_description": "Learn what you should know about over-the-counter hearing aids — benefits, limitations & how to choose smart. Understand your options & get expert advice today!",
+        "body_class": "wp-singular post-template-default single single-post postid-895 single-format-standard wp-custom-logo wp-embed-responsive wp-theme-hello-astro wp-child-theme-hello-theme-child-master hello-astro-default astro-default astro-kit-7 astro-page-907",
+        "published_at": "2025-10-03"
+      }
+    },
+    {
+      "collection": "blog_articles",
+      "id": "swimmers-ear-causes-symptoms-treatment-and-prevention-tips",
+      "status": "published",
+      "data": {
+        "slug_path": "/swimmers-ear-causes-symptoms-treatment-and-prevention-tips/",
+        "html_file": "swimmers-ear",
+        "seo_title": "Why Swimmer's Ear Happens and How to Treat It Naturally and Safely | WNC Audiology",
+        "seo_description": "Learn what causes swimmer's ear, what symptoms to watch for, how it is treated, and how good prevention habits can protect your ears",
+        "body_class": "wp-singular post-template-default single single-post postid-4634 single-format-standard wp-custom-logo wp-embed-responsive wp-theme-hello-astro wp-child-theme-hello-theme-child-master hello-astro-default astro-default astro-kit-7 astro-page-907",
+        "published_at": "2025-12-05"
+      }
+    },
+    {
+      "collection": "blog_articles",
+      "id": "understanding-pressure-in-the-ear-causes-symptoms-and-relief-options",
+      "status": "published",
+      "data": {
+        "slug_path": "/understanding-pressure-in-the-ear-causes-symptoms-and-relief-options/",
+        "html_file": "ear-pressure",
+        "seo_title": "Understanding Pressure in the Ear: Causes, Symptoms, and Relief Options | WNC Audiology",
+        "seo_description": "Feeling pressure in the ear? Learn the common causes, symptoms, and relief options. WNC Audiology's Asheville audiologists can help you find lasting comfort.",
+        "body_class": "wp-singular post-template-default single single-post postid-4631 single-format-standard wp-custom-logo wp-embed-responsive wp-theme-hello-astro wp-child-theme-hello-theme-child-master hello-astro-default astro-default astro-kit-7 astro-page-907",
+        "published_at": "2025-11-05"
+      }
+    },
+    {
+      "collection": "blog_articles",
+      "id": "hearing-test-online-what-you-need-to-know",
+      "status": "published",
+      "data": {
+        "slug_path": "/hearing-test-online-what-you-need-to-know/",
+        "html_file": "online-hearing-test",
+        "seo_title": "Hearing Test Online | WNC Audiology",
+        "seo_description": "Learn the truth about online hearing tests and why a professional hearing test at WNC Audiology in Asheville, NC is the best choice.",
+        "body_class": "wp-singular post-template-default single single-post postid-894 single-format-standard wp-custom-logo wp-embed-responsive wp-theme-hello-astro wp-child-theme-hello-theme-child-master hello-astro-default astro-default astro-kit-7 astro-page-907",
+        "published_at": "2025-10-03"
+      }
+    },
+    {
+      "collection": "brands",
+      "id": "phonak",
+      "status": "published",
+      "data": {
+        "slug_path": "/hearing-aids/phonak/",
+        "html_file": "phonak",
+        "seo_title": "Phonak Hearing Aids | WNC Audiology",
+        "seo_description": "WNC Audiology is an authorized provider of Phonak hearing aids in Asheville, NC. Contact us to learn more!",
+        "body_class": "wp-singular hearing-aids-template-default single single-hearing-aids postid-406 wp-custom-logo wp-embed-responsive wp-theme-hello-astro wp-child-theme-hello-theme-child-master hello-astro-default astro-default astro-template-full-width astro-kit-7 astro-page astro-page-406 astro-page-400",
+        "published_at": "2025-01-01"
+      }
+    },
+    {
+      "collection": "brands",
+      "id": "oticon",
+      "status": "published",
+      "data": {
+        "slug_path": "/hearing-aids/oticon/",
+        "html_file": "oticon",
+        "seo_title": "Oticon Hearing Aids | WNC Audiology",
+        "seo_description": "WNC Audiology is an authorized provider of Oticon hearing aids in Asheville, NC. Contact us to learn more!",
+        "body_class": "wp-singular hearing-aids-template-default single single-hearing-aids postid-422 wp-custom-logo wp-embed-responsive wp-theme-hello-astro wp-child-theme-hello-theme-child-master hello-astro-default astro-default astro-template-full-width astro-kit-7 astro-page astro-page-422 astro-page-400",
+        "published_at": "2025-01-01"
+      }
+    },
+    {
+      "collection": "brands",
+      "id": "resound",
+      "status": "published",
+      "data": {
+        "slug_path": "/hearing-aids/resound/",
+        "html_file": "resound",
+        "seo_title": "ReSound Hearing Aids | WNC Audiology",
+        "seo_description": "WNC Audiology is an authorized provider of ReSound hearing aids in Asheville, NC. Contact us to learn more!",
+        "body_class": "wp-singular hearing-aids-template-default single single-hearing-aids postid-423 wp-custom-logo wp-embed-responsive wp-theme-hello-astro wp-child-theme-hello-theme-child-master hello-astro-default astro-default astro-template-full-width astro-kit-7 astro-page astro-page-423 astro-page-400",
+        "published_at": "2025-01-01"
+      }
+    },
+    {
+      "collection": "brands",
+      "id": "unitron",
+      "status": "published",
+      "data": {
+        "slug_path": "/hearing-aids/unitron/",
+        "html_file": "unitron",
+        "seo_title": "Unitron Hearing Aids | WNC Audiology",
+        "seo_description": "WNC Audiology is an authorized provider of Unitron hearing aids in Asheville, NC. Contact us to learn more!",
+        "body_class": "wp-singular hearing-aids-template-default single single-hearing-aids postid-425 wp-custom-logo wp-embed-responsive wp-theme-hello-astro wp-child-theme-hello-theme-child-master hello-astro-default astro-default astro-template-full-width astro-kit-7 astro-page astro-page-425 astro-page-400",
+        "published_at": "2025-01-01"
+      }
+    },
+    {
+      "collection": "brands",
+      "id": "widex",
+      "status": "published",
+      "data": {
+        "slug_path": "/hearing-aids/widex/",
+        "html_file": "widex",
+        "seo_title": "Widex Hearing Aids | WNC Audiology",
+        "seo_description": "WNC Audiology is an authorized provider of Widex hearing aids in Asheville, NC. Contact us to learn more!",
+        "body_class": "wp-singular hearing-aids-template-default single single-hearing-aids postid-426 wp-custom-logo wp-embed-responsive wp-theme-hello-astro wp-child-theme-hello-theme-child-master hello-astro-default astro-default astro-template-full-width astro-kit-7 astro-page astro-page-426 astro-page-400",
+        "published_at": "2025-01-01"
+      }
+    },
+    {
+      "collection": "brands",
+      "id": "starkey",
+      "status": "published",
+      "data": {
+        "slug_path": "/hearing-aids/starkey/",
+        "html_file": "starkey",
+        "seo_title": "Starkey Hearing Aids | WNC Audiology",
+        "seo_description": "WNC Audiology is an authorized provider of Starkey hearing aids in Asheville, NC. Contact us to learn more!",
+        "body_class": "wp-singular hearing-aids-template-default single single-hearing-aids postid-424 wp-custom-logo wp-embed-responsive wp-theme-hello-astro wp-child-theme-hello-theme-child-master hello-astro-default astro-default astro-template-full-width astro-kit-7 astro-page astro-page-424 astro-page-400",
+        "published_at": "2025-01-01"
+      }
+    },
+    {
+      "collection": "brands",
+      "id": "signia",
+      "status": "published",
+      "data": {
+        "slug_path": "/hearing-aids/signia/",
+        "html_file": "signia",
+        "seo_title": "Signia Hearing Aids | WNC Audiology",
+        "seo_description": "WNC Audiology is an authorized provider of Signia hearing aids in Asheville, NC. Contact us to learn more!",
+        "body_class": "wp-singular hearing-aids-template-default single single-hearing-aids postid-427 wp-custom-logo wp-embed-responsive wp-theme-hello-astro wp-child-theme-hello-theme-child-master hello-astro-default astro-default astro-template-full-width astro-kit-7 astro-page astro-page-427 astro-page-400",
+        "published_at": "2025-01-01"
+      }
+    }
+  ]
+}

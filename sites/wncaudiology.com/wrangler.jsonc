@@ -1,0 +1,65 @@
+{
+  "send_email": [{ "name": "SEND_EMAIL", "destination_address": "leads@proheargroup.com" }],
+  "name": "wnc-audiology",
+  "account_id": "239e9d015c7a3a39cdc2e9400312f553",
+  "main": "./src/worker.ts",
+  "compatibility_date": "2026-03-29",
+  "compatibility_flags": ["nodejs_compat"],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "wnc-audiology-db",
+      "database_id": "1f257c28-b218-49cb-aed9-b1bd3fde6649"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "MEDIA",
+      "bucket_name": "wnc-audiology-media"
+    }
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "SESSION",
+      "id": "028dfa4da881449cb1fcfb8ae46b6e2e"
+    }
+  ],
+  "worker_loaders": [
+    {
+      "binding": "LOADER"
+    }
+  ],
+  "observability": { "enabled": true },
+  "placement": { "mode": "smart" },
+  "workers_dev": true,
+  "env": {
+    "staging": {
+      "name": "wnc-audiology-staging",
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "wnc-audiology-staging-db",
+          "database_id": "09862375-89ba-4028-9f0c-555cb0b8d6e8"
+        }
+      ],
+      "r2_buckets": [
+        {
+          "binding": "MEDIA",
+          "bucket_name": "wnc-audiology-staging-media"
+        }
+      ],
+      "kv_namespaces": [
+        {
+          "binding": "SESSION",
+          "id": "028dfa4da881449cb1fcfb8ae46b6e2e"
+        }
+      ],
+      "worker_loaders": [
+        {
+          "binding": "LOADER"
+        }
+      ],
+      "workers_dev": true
+    }
+  }
+}
