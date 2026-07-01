@@ -1,105 +1,127 @@
-import type { APIRoute } from "astro";
-import { env } from "cloudflare:workers";
-
-type D1DatabaseLike = {
-	prepare(query: string): {
-		bind(...values: unknown[]): {
-			run(): Promise<unknown>;
-		};
-		run(): Promise<unknown>;
-	};
-};
-
-type ContactPayload = {
-	name?: unknown;
-	email?: unknown;
-	phone?: unknown;
-	message?: unknown;
-	honeypot?: unknown;
-};
-
-const MAX_FIELD_LENGTH = 500;
-const MAX_MESSAGE_LENGTH = 5000;
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
 export const prerender = false;
 
-export const POST: APIRoute = async ({ request }) => {
+import { env } from "cloudflare:workers";
+// Cloudflare Email Workers — sends via the SEND_EMAIL binding (wrangler.jsonc).
+import { EmailMessage } from "cloudflare:email";
+
+const LEAD_TO = "leads@proheargroup.com";
+const LEAD_FROM = "noreply@bidview.net";
+const SITE = "Raleigh Hearing & Tinnitus Center";
+const THANK_YOU = "/thank-you-for-contacting-us/";
+
+function esc(s: string): string {
+	return (s || "").replace(/[\r\n]+/g, " ").trim();
+}
+function redirectTo(path: string, base: string): Response {
+	return new Response(null, { status: 303, headers: { Location: new URL(path, base).toString() } });
+}
+async function saveToD1(d: Record<string, string>): Promise<void> {
+	const db = (env as any).DB;
+	if (!db) return;
 	try {
-		const payload = await readPayload(request);
-		const honeypot = normalizeText(payload.honeypot, MAX_FIELD_LENGTH);
-		if (honeypot) return json({ ok: true });
-
-		const name = normalizeText(payload.name, MAX_FIELD_LENGTH);
-		const email = normalizeText(payload.email, MAX_FIELD_LENGTH).toLowerCase();
-		const phone = normalizeText(payload.phone, MAX_FIELD_LENGTH);
-		const message = normalizeText(payload.message, MAX_MESSAGE_LENGTH);
-
-		if (!name || !email || !phone || !message) {
-			return json({ ok: false, error: "Please complete all required fields." }, 400);
-		}
-		if (!EMAIL_PATTERN.test(email)) {
-			return json({ ok: false, error: "Please enter a valid email address." }, 400);
-		}
-
-		const db = getDatabase();
-		if (!db) {
-			console.error("Contact form submission failed: DB binding is unavailable.");
-			return json({ ok: false, error: "We couldn't send your message right now. Please try again or call (919) 505-0894." }, 500);
-		}
-
-		await db.prepare(`CREATE TABLE IF NOT EXISTS contact_submissions (
-			id INTEGER PRIMARY KEY AUTOINCREMENT,
-			name TEXT NOT NULL,
-			email TEXT NOT NULL,
-			phone TEXT,
-			pet_name TEXT,
-			message TEXT NOT NULL,
-			created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
-		)`).run();
-
-		await db
-			.prepare(`INSERT INTO contact_submissions (name, email, phone, pet_name, message)
-				VALUES (?, ?, ?, ?, ?)`)
-			.bind(name, email, phone, null, message)
-			.run();
-
-		return json({ ok: true });
-	} catch (error) {
-		console.error("Contact form submission failed:", error);
-		return json({ ok: false, error: "We couldn't send your message right now. Please try again or call (919) 505-0894." }, 500);
+		await db.prepare(`CREATE TABLE IF NOT EXISTS contact_submissions (id TEXT PRIMARY KEY, name TEXT, email TEXT, phone TEXT, extra TEXT, message TEXT, created_at TEXT)`).run();
+		await db.prepare(`INSERT INTO contact_submissions (id, name, email, phone, extra, message, created_at) VALUES (?, ?, ?, ?, ?, ?, datetime('now'))`)
+			.bind(crypto.randomUUID(), d.name, d.email, d.phone, d.extra || "", d.message).run();
+	} catch (err) {
+		console.error("D1 save failed (non-fatal):", err);
 	}
-};
+}
 
-export const GET: APIRoute = async () => json({ ok: false, error: "Method not allowed." }, 405);
-
-async function readPayload(request: Request): Promise<ContactPayload> {
-	const contentType = request.headers.get("content-type") ?? "";
-	if (contentType.includes("application/json")) {
-		return await request.json() as ContactPayload;
+export async function POST({ request }: { request: Request }) {
+	const ct = request.headers.get("content-type") || "";
+	const wantsJson = ct.includes("application/json");
+	const data: Record<string, string> = {};
+	try {
+		if (wantsJson) {
+			Object.assign(data, await request.json());
+		} else {
+			const form = await request.formData();
+			form.forEach((v, k) => {
+				if (typeof v === "string") data[k] = v;
+			});
+		}
+	} catch {
+		return new Response("Bad request", { status: 400 });
 	}
-	const formData = await request.formData();
-	return {
-		name: formData.get("name") ?? formData.get("input_3"),
-		email: formData.get("email") ?? formData.get("input_5"),
-		phone: formData.get("phone") ?? formData.get("input_11"),
-		message: formData.get("message") ?? formData.get("input_14"),
-		honeypot: formData.get("honeypot") ?? formData.get("input_16"),
+
+	const get = (...ks: string[]) => {
+		for (const k of ks) {
+			const v = esc((data[k] as string) || "");
+			if (v) return v;
+		}
+		return "";
 	};
+	const getRaw = (...ks: string[]) => {
+		for (const k of ks) {
+			const v = ((data[k] as string) || "").trim();
+			if (v) return v;
+		}
+		return "";
+	};
+	const ok = () =>
+		wantsJson
+			? new Response(JSON.stringify({ ok: true }), { status: 200, headers: { "content-type": "application/json" } })
+			: redirectTo(THANK_YOU, request.url);
+	const fail = (msg: string, status: number) =>
+		wantsJson
+			? new Response(JSON.stringify({ ok: false, error: msg }), { status, headers: { "content-type": "application/json" } })
+			: new Response(msg, { status });
+
+	// Honeypot — if filled, silently succeed.
+	if (get("honeypot", "input_16")) {
+		return ok();
+	}
+	const name = get("name", "input_3");
+	const email = get("email", "input_5");
+	const phone = get("phone", "input_11");
+	const message = getRaw("message", "input_14");
+	const extra = "";
+	if (!name || !email || !phone || !message) {
+		return fail("Please complete your name, email, phone, and message.", 400);
+	}
+
+	await saveToD1({ name, email, phone, extra, message });
+
+	const lines = [
+		`Name:    ${name}`,
+		`Email:   ${email}`,
+		`Phone:   ${phone}`,
+		extra && !/required/i.test(extra) ? `Details:  ${extra}` : null,
+		"",
+		"Message:",
+		message,
+		"",
+		`— Submitted via ${SITE} contact form`,
+	].filter((l) => l !== null).join("\r\n");
+
+	const raw = [
+		`From: ${SITE} <${LEAD_FROM}>`,
+		`To: ${LEAD_TO}`,
+		`Reply-To: ${name} <${email}>`,
+		`Subject: New Contact Form Lead — ${name}`,
+		`Message-ID: <${Date.now()}.${Math.random().toString(36).slice(2)}@bidview.net>`,
+		`Date: ${new Date().toUTCString()}`,
+		`MIME-Version: 1.0`,
+		`Content-Type: text/plain; charset=utf-8`,
+		``,
+		lines,
+	].join("\r\n");
+
+	try {
+		const sendBinding = (env as any).SEND_EMAIL;
+		if (!sendBinding) {
+			console.error("SEND_EMAIL binding not configured");
+			return fail("Email service not configured", 503);
+		}
+		await sendBinding.send(new EmailMessage(LEAD_FROM, LEAD_TO, raw));
+	} catch (err) {
+		console.error("Contact form send failed:", err);
+		return fail("Could not send your message. Please call us instead.", 502);
+	}
+
+	return ok();
 }
 
-function normalizeText(value: unknown, maxLength: number) {
-	if (typeof value !== "string") return "";
-	return value.replace(/\s+/g, " ").trim().slice(0, maxLength);
-}
-
-function getDatabase() {
-	return (env as { DB?: D1DatabaseLike }).DB ?? null;
-}
-
-function json(body: unknown, status = 200) {
-	return new Response(JSON.stringify(body), {
-		status,
-		headers: { "Content-Type": "application/json; charset=utf-8" },
-	});
+export function GET() {
+	return new Response("Method not allowed", { status: 405 });
 }

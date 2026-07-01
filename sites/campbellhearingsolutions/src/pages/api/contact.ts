@@ -6,8 +6,8 @@ import { EmailMessage } from "cloudflare:email";
 
 const LEAD_TO = "leads@proheargroup.com";
 const LEAD_FROM = "noreply@bidview.net";
-const SITE = "America's Best Hearing";
-const THANK_YOU = "/thank-you/";
+const SITE = "Campbell Hearing Solutions";
+const THANK_YOU = "/thank-you-for-contacting-us/";
 
 function esc(s: string): string {
 	return (s || "").replace(/[\r\n]+/g, " ").trim();
@@ -68,16 +68,14 @@ export async function POST({ request }: { request: Request }) {
 			: new Response(msg, { status });
 
 	// Honeypot — if filled, silently succeed.
-	if (get("input_2")) {
+	if (get("honeypot", "input_16")) {
 		return ok();
 	}
-	const first = get("input_1.3");
-	const last = get("input_1.6");
-	const name = `${first} ${last}`.trim();
-	const email = get("input_3");
-	const phone = get("input_4");
-	const message = getRaw("input_6");
-	const extra = get("input_5");
+	const name = get("name", "input_3");
+	const email = get("email", "input_5");
+	const phone = get("phone", "input_11");
+	const message = getRaw("message", "input_14");
+	const extra = "";
 	if (!name || !email || !phone || !message) {
 		return fail("Please complete your name, email, phone, and message.", 400);
 	}
@@ -88,7 +86,7 @@ export async function POST({ request }: { request: Request }) {
 		`Name:    ${name}`,
 		`Email:   ${email}`,
 		`Phone:   ${phone}`,
-		extra && !/required/i.test(extra) ? `Clinic:  ${extra}` : null,
+		extra && !/required/i.test(extra) ? `Details:  ${extra}` : null,
 		"",
 		"Message:",
 		message,

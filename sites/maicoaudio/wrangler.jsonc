@@ -1,4 +1,5 @@
 {
+  "send_email": [{ "name": "SEND_EMAIL", "destination_address": "leads@proheargroup.com" }],
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "maicoaudio",
 	"account_id": "981338e6544cfe45d9819bf0ea6eb83a",

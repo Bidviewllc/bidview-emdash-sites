@@ -1,4 +1,5 @@
 {
+  "send_email": [{ "name": "SEND_EMAIL", "destination_address": "leads@proheargroup.com" }],
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "campbell-hearing-solutions-emdash",
   "account_id": "239e9d015c7a3a39cdc2e9400312f553",

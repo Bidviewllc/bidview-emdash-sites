@@ -1,132 +1,124 @@
-import type { APIRoute } from "astro";
+export const prerender = false;
+
 import { env } from "cloudflare:workers";
+// Cloudflare Email Workers — sends via the SEND_EMAIL binding (wrangler.jsonc).
+import { EmailMessage } from "cloudflare:email";
 
-type ContactPayload = {
-  name?: unknown;
-  email?: unknown;
-  phone?: unknown;
-  subject?: unknown;
-  message?: unknown;
-};
+const LEAD_TO = "leads@proheargroup.com";
+const LEAD_FROM = "noreply@bidview.net";
+const SITE = "JC Audiology";
+const THANK_YOU = "/thank-you/";
 
-const MAX_LENGTHS = {
-  name: 120,
-  email: 180,
-  phone: 60,
-  subject: 180,
-  message: 4000,
-};
-
-function jsonResponse(body: Record<string, unknown>, status = 200) {
-  return new Response(JSON.stringify(body), {
-    status,
-    headers: { "Content-Type": "application/json" },
-  });
+function esc(s: string): string {
+	return (s || "").replace(/[\r\n]+/g, " ").trim();
+}
+function redirectTo(path: string, base: string): Response {
+	return new Response(null, { status: 303, headers: { Location: new URL(path, base).toString() } });
+}
+async function saveToD1(d: Record<string, string>): Promise<void> {
+	const db = (env as any).DB;
+	if (!db) return;
+	try {
+		await db.prepare(`CREATE TABLE IF NOT EXISTS contact_submissions (id TEXT PRIMARY KEY, name TEXT, email TEXT, phone TEXT, extra TEXT, message TEXT, created_at TEXT)`).run();
+		await db.prepare(`INSERT INTO contact_submissions (id, name, email, phone, extra, message, created_at) VALUES (?, ?, ?, ?, ?, ?, datetime('now'))`)
+			.bind(crypto.randomUUID(), d.name, d.email, d.phone, d.extra || "", d.message).run();
+	} catch (err) {
+		console.error("D1 save failed (non-fatal):", err);
+	}
 }
 
-function clean(value: unknown, maxLength: number) {
-  return String(value ?? "").replace(/\s+/g, " ").trim().slice(0, maxLength);
+export async function POST({ request }: { request: Request }) {
+	const ct = request.headers.get("content-type") || "";
+	const wantsJson = ct.includes("application/json");
+	const data: Record<string, string> = {};
+	try {
+		if (wantsJson) {
+			Object.assign(data, await request.json());
+		} else {
+			const form = await request.formData();
+			form.forEach((v, k) => {
+				if (typeof v === "string") data[k] = v;
+			});
+		}
+	} catch {
+		return new Response("Bad request", { status: 400 });
+	}
+
+	const get = (...ks: string[]) => {
+		for (const k of ks) {
+			const v = esc((data[k] as string) || "");
+			if (v) return v;
+		}
+		return "";
+	};
+	const getRaw = (...ks: string[]) => {
+		for (const k of ks) {
+			const v = ((data[k] as string) || "").trim();
+			if (v) return v;
+		}
+		return "";
+	};
+	const ok = () =>
+		wantsJson
+			? new Response(JSON.stringify({ ok: true }), { status: 200, headers: { "content-type": "application/json" } })
+			: redirectTo(THANK_YOU, request.url);
+	const fail = (msg: string, status: number) =>
+		wantsJson
+			? new Response(JSON.stringify({ ok: false, error: msg }), { status, headers: { "content-type": "application/json" } })
+			: new Response(msg, { status });
+
+	// (no dedicated honeypot field on this form)
+	const name = get("name");
+	const email = get("email");
+	const phone = get("phone");
+	const message = getRaw("message");
+	const extra = get("subject");
+	if (!name || !email || !phone || !message) {
+		return fail("Please complete your name, email, phone, and message.", 400);
+	}
+
+	await saveToD1({ name, email, phone, extra, message });
+
+	const lines = [
+		`Name:    ${name}`,
+		`Email:   ${email}`,
+		`Phone:   ${phone}`,
+		extra && !/required/i.test(extra) ? `Subject:  ${extra}` : null,
+		"",
+		"Message:",
+		message,
+		"",
+		`— Submitted via ${SITE} contact form`,
+	].filter((l) => l !== null).join("\r\n");
+
+	const raw = [
+		`From: ${SITE} <${LEAD_FROM}>`,
+		`To: ${LEAD_TO}`,
+		`Reply-To: ${name} <${email}>`,
+		`Subject: New Contact Form Lead — ${name}`,
+		`Message-ID: <${Date.now()}.${Math.random().toString(36).slice(2)}@bidview.net>`,
+		`Date: ${new Date().toUTCString()}`,
+		`MIME-Version: 1.0`,
+		`Content-Type: text/plain; charset=utf-8`,
+		``,
+		lines,
+	].join("\r\n");
+
+	try {
+		const sendBinding = (env as any).SEND_EMAIL;
+		if (!sendBinding) {
+			console.error("SEND_EMAIL binding not configured");
+			return fail("Email service not configured", 503);
+		}
+		await sendBinding.send(new EmailMessage(LEAD_FROM, LEAD_TO, raw));
+	} catch (err) {
+		console.error("Contact form send failed:", err);
+		return fail("Could not send your message. Please call us instead.", 502);
+	}
+
+	return ok();
 }
 
-function validatePayload(payload: ContactPayload) {
-  const name = clean(payload.name, MAX_LENGTHS.name);
-  const email = clean(payload.email, MAX_LENGTHS.email).toLowerCase();
-  const phone = clean(payload.phone, MAX_LENGTHS.phone);
-  const subject = clean(payload.subject, MAX_LENGTHS.subject);
-  const message = String(payload.message ?? "").trim().slice(0, MAX_LENGTHS.message);
-
-  if (!name || !email || !message) {
-    return { ok: false as const, error: "Please complete all required fields." };
-  }
-
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return { ok: false as const, error: "Please enter a valid email address." };
-  }
-
-  return { ok: true as const, data: { name, email, phone, subject, message } };
+export function GET() {
+	return new Response("Method not allowed", { status: 405 });
 }
-
-async function readPayload(request: Request): Promise<ContactPayload> {
-  const contentType = request.headers.get("content-type") || "";
-  if (contentType.includes("application/json")) return await request.json();
-
-  const form = await request.formData();
-  return {
-    name: form.get("name"),
-    email: form.get("email"),
-    phone: form.get("phone"),
-    subject: form.get("subject"),
-    message: form.get("message"),
-  };
-}
-
-async function saveToD1(db: any, data: { name: string; email: string; phone: string; subject: string; message: string }) {
-  await db
-    .prepare(
-      `CREATE TABLE IF NOT EXISTS contact_submissions (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
-        email TEXT NOT NULL,
-        phone TEXT,
-        subject TEXT,
-        message TEXT NOT NULL,
-        source TEXT NOT NULL DEFAULT 'website_contact_form',
-        created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
-      )`
-    )
-    .run();
-
-  await db
-    .prepare(
-      `INSERT INTO contact_submissions (name, email, phone, subject, message, source)
-       VALUES (?, ?, ?, ?, ?, ?)`
-    )
-    .bind(data.name, data.email, data.phone || null, data.subject || null, data.message, "website_contact_form")
-    .run();
-}
-
-async function saveToLocalSqlite(data: { name: string; email: string; phone: string; subject: string; message: string }) {
-  const { default: Database } = await import("better-sqlite3");
-  const db = new Database("data.db");
-  try {
-    db.exec(`CREATE TABLE IF NOT EXISTS contact_submissions (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name TEXT NOT NULL,
-      email TEXT NOT NULL,
-      phone TEXT,
-      subject TEXT,
-      message TEXT NOT NULL,
-      source TEXT NOT NULL DEFAULT 'website_contact_form',
-      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
-    )`);
-
-    db.prepare(
-      `INSERT INTO contact_submissions (name, email, phone, subject, message, source)
-       VALUES (?, ?, ?, ?, ?, ?)`
-    ).run(data.name, data.email, data.phone || null, data.subject || null, data.message, "website_contact_form");
-  } finally {
-    db.close();
-  }
-}
-
-export const POST: APIRoute = async ({ request }) => {
-  try {
-    const payload = await readPayload(request);
-    const validated = validatePayload(payload);
-
-    if (!validated.ok) return jsonResponse({ ok: false, error: validated.error }, 400);
-
-    const runtimeDb = (env as any)?.DB;
-    if (runtimeDb) await saveToD1(runtimeDb, validated.data);
-    else await saveToLocalSqlite(validated.data);
-
-    return jsonResponse({ ok: true, message: "Message sent. Thank you for reaching out." });
-  } catch (error) {
-    console.error("Contact form submission failed", error);
-    return jsonResponse({ ok: false, error: "We couldn't send your message right now. Please try again or call (813) 851-2311." }, 500);
-  }
-};
-
-export const GET: APIRoute = async () => jsonResponse({ ok: false, error: "Method not allowed" }, 405);
-
-

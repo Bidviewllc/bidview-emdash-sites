@@ -24,5 +24,10 @@
 			"binding": "LOADER",
 		},
 	],
+	// Contact form → emails leads@proheargroup.com via Cloudflare Email Workers.
+	// destination_address must be verified in Cloudflare Email Routing.
+	"send_email": [
+		{ "name": "SEND_EMAIL", "destination_address": "leads@proheargroup.com" },
+	],
 }
 
