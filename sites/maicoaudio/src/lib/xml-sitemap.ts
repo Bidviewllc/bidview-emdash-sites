@@ -16,6 +16,12 @@ const staticPageRoutes = [
 	"/sitemap/",
 	"/thank-you/",
 	"/thank-you-for-contacting-us/",
+	"/insurance-and-billing-faqs/",
+];
+
+// Blog posts served from static shells that have no live blog_post collection entry.
+const staticPostRoutes = [
+	"/microsuction-vs-irrigation-which-ear-wax-removal-method-is-right-for-you/",
 ];
 
 const pageCollections = [
@@ -69,7 +75,7 @@ export async function getPageSitemapRoutes(): Promise<string[]> {
 }
 
 export async function getPostSitemapRoutes(): Promise<string[]> {
-	return uniqueRoutes(await getPublishedCollectionRoutes("blog_post"));
+	return uniqueRoutes([...staticPostRoutes, ...(await getPublishedCollectionRoutes("blog_post"))]);
 }
 
 export async function getLocationSitemapRoutes(): Promise<string[]> {
