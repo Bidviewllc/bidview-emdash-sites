@@ -232,7 +232,7 @@ def main():
         "body_noscript": "\n".join(body_noscript),
     }
     # Bump the site-overrides.css cache-buster so edited overrides (TOC styling, etc.) load.
-    shell["header"] = re.sub(r"site-overrides\.css\?v=[^\"']*", "site-overrides.css?v=20260702box2", shell["header"])
+    shell["header"] = re.sub(r"site-overrides\.css\?v=[^\"']*", "site-overrides.css?v=20260703mob", shell["header"])
     # Bump site.js so edited behaviors (TOC collapse-by-default) load.
     shell["scripts"] = re.sub(r"site\.js\?v=[^\"']*", "site.js?v=20260702box", shell["scripts"])
     json.dump(shell, open(os.path.join(HERE, "src", "_shell.json"), "w", encoding="utf-8"), ensure_ascii=False)

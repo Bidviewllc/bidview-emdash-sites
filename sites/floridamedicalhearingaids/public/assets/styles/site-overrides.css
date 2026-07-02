@@ -206,3 +206,8 @@ header.astro-location-header { position: -webkit-sticky; position: sticky; top: 
 /* Show only the relevant TOC toggle chevron (live hides the inactive one) */
 .astro-toc--collapsed .astro-toc__toggle-button--collapse,
 .astro-widget-table-of-contents:not(.astro-toc--collapsed) .astro-toc__toggle-button--expand { display: none !important; }
+/* Mobile sticky bottom CTA bar — live fixes the "Have Questions?" bar to the viewport
+   bottom on mobile only (relative on tablet/desktop); Elementor's sticky JS does this. */
+@media (max-width: 767px) {
+  .astro-element-7a2203d { position: fixed !important; bottom: 0; left: 0; right: 0; z-index: 99; }
+}
