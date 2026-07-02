@@ -76,8 +76,9 @@ def extract(path):
             continue
         parts.append(str(c))
     body = "\n".join(parts)
+    body_class = " ".join(soup.body.get("class", []))
     return {"title": title, "meta_title": title, "meta_description": md, "og_image": og,
-            "hero_heading": hero, "head_extra": head_extra, "body": body}
+            "hero_heading": hero, "head_extra": head_extra, "body_class": body_class, "body": body}
 
 
 def main():
@@ -100,6 +101,7 @@ def main():
         {"name": "hero_heading", "slug": "hero_heading", "type": "string", "label": "Hero Heading"},
         {"name": "og_image", "slug": "og_image", "type": "string", "label": "OG Image"},
         {"name": "head_extra", "slug": "head_extra", "type": "text", "label": "Page CSS links"},
+        {"name": "body_class", "slug": "body_class", "type": "string", "label": "Body Class"},
         {"name": "body", "slug": "body", "type": "text", "label": "Body HTML"},
     ]
     for name, label in [("pages", "Pages"), ("posts", "Posts"), ("team_members", "Team Members"),
@@ -161,7 +163,34 @@ def main():
             s = re.sub(r'href="((?:\.\./)+|assets/)[^"]*"', lambda m: 'href="' + rootrel(m.group(0)[6:-1]) + '"', s)
             s = re.sub(r'src="((?:\.\./)+|assets/)[^"]*"', lambda m: 'src="' + rootrel(m.group(0)[5:-1]) + '"', s)
             scripts.append(s)
-    shell = {"header": pre + str(header), "footer": str(footer), "scripts": "\n".join(scripts)}
+    # The shell is captured from the HOME page (root depth), so its relative
+    # href/src (about/, assets/x, ../assets/x) break on nested pages. Rewrite every
+    # relative URL to root-relative so header/nav/footer work at any depth.
+    def rr(v):
+        if not v or v.startswith(("http://", "https://", "//", "/", "#", "mailto:", "tel:", "data:", "javascript:")):
+            return v
+        v = re.sub(r"^(\./)+", "", v)
+        v = re.sub(r"^(\.\./)+", "", v)
+        return "/" + v
+
+    def rewrite_shell(h):
+        h = re.sub(r'\b(href|src)="([^"]*)"', lambda m: f'{m.group(1)}="{rr(m.group(2))}"', h)
+        def rs(m):
+            out = []
+            for it in m.group(1).split(","):
+                seg = it.strip().split(" ")
+                if seg and seg[0]:
+                    seg[0] = rr(seg[0])
+                out.append(" ".join(seg))
+            return 'srcset="' + ", ".join(out) + '"'
+        h = re.sub(r'srcset="([^"]*)"', rs, h)
+        return h.replace('href="/index.html"', 'href="/"')
+
+    shell = {
+        "header": rewrite_shell(pre + str(header)),
+        "footer": rewrite_shell(str(footer)),
+        "scripts": rewrite_shell("\n".join(scripts)),
+    }
     json.dump(shell, open(os.path.join(HERE, "src", "_shell.json"), "w", encoding="utf-8"), ensure_ascii=False)
     print("shell written: header", len(shell["header"]), "footer", len(shell["footer"]), "scripts", len(shell["scripts"]))
 

@@ -10,6 +10,6 @@ const e = getEntry(raw);
 if (!e) return new Response("Not found", { status: 404 });
 const d = e.data;
 ---
-<Base title={d.meta_title} description={d.meta_description} image={d.og_image} headExtra={d.head_extra}>
+<Base title={d.meta_title} description={d.meta_description} image={d.og_image} headExtra={d.head_extra} bodyClass={d.body_class}>
 	<Fragment set:html={d.body} />
 </Base>
