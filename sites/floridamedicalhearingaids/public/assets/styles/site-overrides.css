@@ -194,3 +194,8 @@
 .astro-toc__list-item-text { color: #333; font-size: 16px; font-weight: 400; line-height: 1.5; text-decoration: none; cursor: pointer; transition: color .15s; }
 .astro-toc__list-item-text:hover { color: #1056B3; }
 .astro-toc--collapsed .astro-toc__body { display: none !important; }
+/* ── Sticky header (live uses Elementor's sticky JS which we don't run; replicate with CSS) ── */
+header.astro-location-header { position: -webkit-sticky; position: sticky; top: 0; z-index: 999; }
+
+/* ── Recent News / Posts widget grid spacing — matches live (--grid-row-gap:35px, column 30px) ── */
+.astro-posts-container.astro-grid { gap: 35px 30px; }
