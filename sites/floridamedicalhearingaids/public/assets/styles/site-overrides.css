@@ -178,3 +178,19 @@
 
 /* Table of Contents collapse toggle */
 .astro-toc--collapsed .astro-toc__body { display: none !important; }
+
+/* ── Table of Contents widget — matches LIVE (Elementor TOC CSS not in the fallback
+      bundle the blog posts load, so restored here to the live design) ── */
+.astro-toc--min .astro-widget-container { border: 0; background: transparent; box-shadow: none; }
+.astro-toc__header { display: flex; align-items: center; gap: 10px; background: transparent; padding: 8px; border-bottom: 0; }
+.astro-toc__header-title { flex-grow: 1; margin: 0; color: #1056B3 !important; font-size: 27px; font-weight: 700; line-height: 1.2; }
+.astro-toc__toggle-button { cursor: pointer; display: inline-flex; background: transparent; border: 0; color: #333; }
+.astro-toc__toggle-button i, .astro-toc__toggle-button svg { color: #333; fill: #333; height: 1em; width: 1em; }
+.astro-toc__body { padding: 8px; }
+.astro-toc__list-wrapper { list-style: none !important; margin: 0; padding: 0; }
+.astro-toc__list-item { list-style: none !important; margin: 0 0 8px; }
+.astro-toc__list-item::marker { content: ""; }
+.astro-toc__list-item .astro-toc__list-wrapper { margin-top: 8px; margin-inline-start: 0; }
+.astro-toc__list-item-text { color: #333; font-size: 16px; font-weight: 400; line-height: 1.5; text-decoration: none; cursor: pointer; transition: color .15s; }
+.astro-toc__list-item-text:hover { color: #1056B3; }
+.astro-toc--collapsed .astro-toc__body { display: none !important; }

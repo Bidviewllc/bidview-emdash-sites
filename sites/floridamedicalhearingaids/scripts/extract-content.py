@@ -231,6 +231,8 @@ def main():
         "head_scripts": "\n".join(head_scripts),
         "body_noscript": "\n".join(body_noscript),
     }
+    # Bump the site-overrides.css cache-buster so edited overrides (TOC styling, etc.) load.
+    shell["header"] = re.sub(r"site-overrides\.css\?v=[^\"']*", "site-overrides.css?v=20260702toc3", shell["header"])
     json.dump(shell, open(os.path.join(HERE, "src", "_shell.json"), "w", encoding="utf-8"), ensure_ascii=False)
     print("shell written: header", len(shell["header"]), "footer", len(shell["footer"]), "scripts", len(shell["scripts"]))
 
