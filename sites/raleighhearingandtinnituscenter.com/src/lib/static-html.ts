@@ -91,7 +91,10 @@ function rewriteSharedShellUrls(html: string) {
 		.replace(/\b(href|src)="([^"]*)"/g, (_match, attr, value) => {
 			return `${attr}="${rewriteLocalHref(value)}"`;
 		})
-		.replace(/(?:\.\.\/)*assets\//g, "/assets/");
+		.replace(/(?:\.\.\/)*assets\//g, "/assets/")
+		// Collapse any accidental double slash before assets (rewriteLocalHref may already
+		// have absolutized a src="assets/…" to /assets/…, which the line above then doubles).
+		.replace(/(^|[^:])\/{2,}assets\//g, "$1/assets/");
 }
 
 function markCurrentNavItem(html: string, route = "") {
