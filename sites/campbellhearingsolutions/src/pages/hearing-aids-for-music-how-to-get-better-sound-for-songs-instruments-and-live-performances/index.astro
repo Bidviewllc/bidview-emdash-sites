@@ -1,0 +1,16 @@
+---
+import Base from "../../layouts/Base.astro";
+import { getPageByRoute } from "../../lib/pages.js";
+
+export const cacheHint = 3600;
+
+const page = await getPageByRoute("/hearing-aids-for-music-how-to-get-better-sound-for-songs-instruments-and-live-performances/");
+
+if (!page) {
+  throw new Error("Missing dynamic page data for /hearing-aids-for-music-how-to-get-better-sound-for-songs-instruments-and-live-performances/");
+}
+---
+
+<Base {...page}>
+  <Fragment set:html={page.bodyHtml} />
+</Base>
