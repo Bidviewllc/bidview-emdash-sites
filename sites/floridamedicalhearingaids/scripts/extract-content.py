@@ -74,6 +74,15 @@ def extract(path):
             continue
         if c.get("data-astro-type") in ("header", "footer"):
             continue
+        # Drop nested scripts that reference WordPress-runtime globals not present in the
+        # static build (gform -> "gform is not defined"; wp.i18n -> "wp is not defined").
+        for sc in c.find_all("script"):
+            txt = sc.get_text() or ""
+            if "gform" in txt or "wp.i18n" in txt:
+                sc.decompose()
+        # Make Elfsight review widgets eager (drop lazy attr) so they render without scroll.
+        for el in c.select("[data-elfsight-app-lazy]"):
+            del el["data-elfsight-app-lazy"]
         parts.append(str(c))
     body = "\n".join(parts)
     body_class = " ".join(soup.body.get("class", []))

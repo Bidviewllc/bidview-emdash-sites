@@ -47,5 +47,33 @@ const pageCtx = createPublicPageContext({
 		<slot />
 		<Fragment set:html={shell.footer} />
 		<Fragment set:html={shell.scripts} />
+		<style is:inline set:html={`.e-n-tabs-content > .e-con:not(.e-active){display:none;}`} />
+		<script is:inline>
+			// Elementor nested-tabs toggle (the widget's own JS isn't bundled in the static build).
+			document.querySelectorAll(".e-n-tabs").forEach(function (tabs) {
+				var titles = tabs.querySelectorAll(".e-n-tab-title");
+				var panels = tabs.querySelectorAll(".e-n-tabs-content > [aria-labelledby]");
+				function activate(id) {
+					titles.forEach(function (t) {
+						var on = t.id === id;
+						t.setAttribute("aria-selected", on ? "true" : "false");
+						t.classList.toggle("e-active", on);
+					});
+					panels.forEach(function (p) {
+						var on = p.getAttribute("aria-labelledby") === id;
+						p.classList.toggle("e-active", on);
+						p.style.display = on ? "" : "none";
+					});
+				}
+				titles.forEach(function (t) {
+					t.addEventListener("click", function () { activate(t.id); });
+					t.addEventListener("keydown", function (e) {
+						if (e.key === "Enter" || e.key === " ") { e.preventDefault(); activate(t.id); }
+					});
+				});
+				var sel = tabs.querySelector('.e-n-tab-title[aria-selected="true"]') || titles[0];
+				if (sel) activate(sel.id);
+			});
+		</script>
 	</body>
 </html>
