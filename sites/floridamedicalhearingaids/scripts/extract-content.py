@@ -83,6 +83,15 @@ def extract(path):
         # Make Elfsight review widgets eager (drop lazy attr) so they render without scroll.
         for el in c.select("[data-elfsight-app-lazy]"):
             del el["data-elfsight-app-lazy"]
+        # Wire the contact form to the /api/contact email endpoint (native POST;
+        # gform's AJAX JS is stripped above, so we drop the submit onclick too).
+        for frm in c.find_all("form"):
+            frm["action"] = "/api/contact"
+            frm["method"] = "post"
+            for el in frm.find_all(["input", "button", "textarea", "select"]):
+                for attr in list(el.attrs):
+                    if attr.startswith("on"):
+                        del el[attr]
         parts.append(str(c))
     body = "\n".join(parts)
     body_class = " ".join(soup.body.get("class", []))

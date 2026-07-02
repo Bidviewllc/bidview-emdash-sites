@@ -26,6 +26,11 @@
 			"id": "028dfa4da881449cb1fcfb8ae46b6e2e",
 		},
 	],
+	// Contact form -> emails leads@proheargroup.com via Cloudflare Email Workers.
+	// Destination already verified in Cameron's account (shared with audiologyandhearingcenters).
+	"send_email": [
+		{ "name": "SEND_EMAIL", "destination_address": "leads@proheargroup.com" },
+	],
 	"observability": {
 		"enabled": true,
 	},
