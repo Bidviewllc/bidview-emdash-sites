@@ -14,6 +14,10 @@ interface Props {
 
 const { title, description, image, headExtra = "", jsonLd = "", bodyClass = "" } = Astro.props;
 
+// Noindex the workers.dev preview so it isn't indexed as duplicate content; the real
+// domain (floridamedicalhearingaids.com) stays indexable.
+const isPreview = Astro.url.host.endsWith("workers.dev");
+
 const siteName = "Florida Medical Hearing";
 const fullTitle = title || siteName;
 const siteDescription = description || "Expert hearing care, hearing aids, and audiology services in Sebring and Lake Placid, FL.";
@@ -37,6 +41,8 @@ const pageCtx = createPublicPageContext({
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<title>{fullTitle}</title>
+		{isPreview && <meta name="robots" content="noindex, nofollow" />}
+		<Fragment set:html={shell.head_scripts} />
 		<link rel="icon" href="/assets/media/Company-Placeholder-Alt-1-150x100.png" sizes="32x32" />
 		<link rel="icon" href="/assets/media/Company-Placeholder-Alt-1-e1759827728687.png" sizes="192x192" />
 		<link rel="apple-touch-icon" href="/assets/media/Company-Placeholder-Alt-1-e1759827728687.png" />
@@ -45,6 +51,7 @@ const pageCtx = createPublicPageContext({
 		<Fragment set:html={jsonLd} />
 	</head>
 	<body class={bodyClass}>
+		<Fragment set:html={shell.body_noscript} />
 		<Fragment set:html={shell.header} />
 		<slot />
 		<Fragment set:html={shell.footer} />

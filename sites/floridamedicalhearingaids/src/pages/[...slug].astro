@@ -7,9 +7,19 @@ if (raw === "ear-candling") {
 	return Astro.redirect("/ear-candling-risks-why-ear-candles-are-not-a-safe-way-to-remove-wax/", 301);
 }
 const e = getEntry(raw);
-if (!e) return new Response("Not found", { status: 404 });
-const d = e.data;
+const d = e?.data ?? null;
+if (!d) Astro.response.status = 404;
 ---
-<Base title={d.meta_title} description={d.meta_description} image={d.og_image} headExtra={d.head_extra} jsonLd={d.json_ld} bodyClass={d.body_class}>
-	<Fragment set:html={d.body} />
-</Base>
+{d ? (
+	<Base title={d.meta_title} description={d.meta_description} image={d.og_image} headExtra={d.head_extra} jsonLd={d.json_ld} bodyClass={d.body_class}>
+		<Fragment set:html={d.body} />
+	</Base>
+) : (
+	<Base title="Page Not Found | Florida Medical Hearing" description="The page you requested could not be found.">
+		<section style="padding:120px 20px;text-align:center;max-width:680px;margin:0 auto;min-height:40vh;">
+			<h1 style="font-size:48px;margin:0 0 12px;">Page Not Found</h1>
+			<p style="font-size:18px;color:#555;margin:0 0 28px;">Sorry, we couldn't find the page you were looking for.</p>
+			<a href="/" style="display:inline-block;background:#1056B3;color:#fff;padding:14px 28px;border-radius:8px;text-decoration:none;font-weight:600;">Back to Home</a>
+		</section>
+	</Base>
+)}

@@ -203,10 +203,24 @@ def main():
         h = re.sub(r'srcset="([^"]*)"', rs, h)
         return h.replace('href="/index.html"', 'href="/"')
 
+    # Analytics: capture the gtag/GTM/dataLayer scripts from the <head> (they were not in
+    # the after-footer scripts, so tracking was missing on the emdash build).
+    head_scripts = []
+    for s in home.head.find_all("script"):
+        txt = (s.get("src") or "") + (s.get_text() or "")
+        if any(k in txt for k in ["googletagmanager", "gtag(", "dataLayer", "gtm.start"]):
+            head_scripts.append(str(s))
+    # GTM <noscript> iframes (belong right after <body> opens)
+    body_noscript = []
+    for ns in home.body.find_all("noscript", recursive=False):
+        if "googletagmanager" in str(ns):
+            body_noscript.append(str(ns))
     shell = {
         "header": rewrite_shell(pre + str(header)),
         "footer": rewrite_shell(str(footer)),
         "scripts": rewrite_shell("\n".join(scripts)),
+        "head_scripts": "\n".join(head_scripts),
+        "body_noscript": "\n".join(body_noscript),
     }
     json.dump(shell, open(os.path.join(HERE, "src", "_shell.json"), "w", encoding="utf-8"), ensure_ascii=False)
     print("shell written: header", len(shell["header"]), "footer", len(shell["footer"]), "scripts", len(shell["scripts"]))
