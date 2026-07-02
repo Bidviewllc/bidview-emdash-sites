@@ -86,8 +86,15 @@ def extract(path):
         parts.append(str(c))
     body = "\n".join(parts)
     body_class = " ".join(soup.body.get("class", []))
+    # Capture the Rank Math structured data (JSON-LD) from the <head> so schema
+    # (Organization/LocalBusiness/WebPage/Person/BreadcrumbList/FAQPage) is preserved.
+    json_ld = ""
+    if soup.head:
+        blocks = soup.head.find_all("script", attrs={"type": "application/ld+json"})
+        json_ld = "\n".join(str(b) for b in blocks)
     return {"title": title, "meta_title": title, "meta_description": md, "og_image": og,
-            "hero_heading": hero, "head_extra": head_extra, "body_class": body_class, "body": body}
+            "hero_heading": hero, "head_extra": head_extra, "json_ld": json_ld,
+            "body_class": body_class, "body": body}
 
 
 def main():
@@ -110,6 +117,7 @@ def main():
         {"name": "hero_heading", "slug": "hero_heading", "type": "string", "label": "Hero Heading"},
         {"name": "og_image", "slug": "og_image", "type": "string", "label": "OG Image"},
         {"name": "head_extra", "slug": "head_extra", "type": "text", "label": "Page CSS links"},
+        {"name": "json_ld", "slug": "json_ld", "type": "text", "label": "Structured Data (JSON-LD)"},
         {"name": "body_class", "slug": "body_class", "type": "string", "label": "Body Class"},
         {"name": "body", "slug": "body", "type": "text", "label": "Body HTML"},
     ]

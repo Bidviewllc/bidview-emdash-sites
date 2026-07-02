@@ -8,10 +8,11 @@ interface Props {
 	description?: string;
 	image?: string;
 	headExtra?: string;
+	jsonLd?: string;
 	bodyClass?: string;
 }
 
-const { title, description, image, headExtra = "", bodyClass = "" } = Astro.props;
+const { title, description, image, headExtra = "", jsonLd = "", bodyClass = "" } = Astro.props;
 
 const siteName = "Florida Medical Hearing";
 const fullTitle = title || siteName;
@@ -41,6 +42,7 @@ const pageCtx = createPublicPageContext({
 		<link rel="apple-touch-icon" href="/assets/media/Company-Placeholder-Alt-1-e1759827728687.png" />
 		<EmDashHead page={pageCtx} />
 		<Fragment set:html={headExtra} />
+		<Fragment set:html={jsonLd} />
 	</head>
 	<body class={bodyClass}>
 		<Fragment set:html={shell.header} />
