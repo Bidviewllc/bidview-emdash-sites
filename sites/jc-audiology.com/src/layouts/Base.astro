@@ -359,13 +359,23 @@ const appointmentUrl = String(homepageEntry?.data?.appointment_cta_url ?? "/sche
 const faviconHref = "/_emdash/api/media/file/site/jcaudiology-favicon-150x150.webp";
 const canonicalHref = new URL(normalizedRoute(renderedPage.route), Astro.url.origin).toString();
 
+// Social preview images (og:image / twitter:image) must be ABSOLUTE URLs for
+// crawlers; the converted shells store them relative (e.g. "assets/media/…").
+function absolutizeSocialImages(html: string, origin: string): string {
+  const base = origin.replace(/\/+$/, "");
+  return html.replace(
+    /(<meta\b[^>]*\b(?:property|name)="(?:og:image(?::secure_url|:url)?|twitter:image(?::src)?)"[^>]*\bcontent=")([^"]+)(")/gi,
+    (m, pre, url, post) => (/^https?:\/\//i.test(url) ? m : `${pre}${base}/${url.replace(/^\/+/, "")}${post}`),
+  );
+}
+
 const contentSegments = buildContentSegments(renderedPage.contentHtml);
 ---
 
 <!doctype html>
 <html lang="en-US">
   <head>
-    <Fragment set:html={fixConvertedText(stripLegacyHeadLinks(renderedPage.headHtml))} />
+    <Fragment set:html={absolutizeSocialImages(fixConvertedText(stripLegacyHeadLinks(renderedPage.headHtml)), Astro.url.origin)} />
     <link rel="canonical" href={canonicalHref} />
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32" />
