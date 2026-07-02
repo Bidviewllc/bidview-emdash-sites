@@ -199,3 +199,10 @@ header.astro-location-header { position: -webkit-sticky; position: sticky; top: 
 
 /* ── Recent News / Posts widget grid spacing — matches live (--grid-row-gap:35px, column 30px) ── */
 .astro-posts-container.astro-grid { gap: 35px 30px; }
+/* TOC bordered box + collapsed-by-default — match live (container: 1px #3443B3, radius 20px, pad 30px) */
+.astro-widget-table-of-contents { border: 1px solid #3443B3; border-radius: 20px; padding: 30px; }
+.astro-toc--collapsed .astro-toc__body { display: none !important; }
+.astro-toc--minimized-on-desktop.astro-toc--collapsed .astro-toc__body { display: none !important; }
+/* Show only the relevant TOC toggle chevron (live hides the inactive one) */
+.astro-toc--collapsed .astro-toc__toggle-button--collapse,
+.astro-widget-table-of-contents:not(.astro-toc--collapsed) .astro-toc__toggle-button--expand { display: none !important; }
