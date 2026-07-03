@@ -113,11 +113,6 @@
     });
   });
 
-  // Match live: TOCs set to minimize-on-desktop start collapsed (toggle expands)
-  document.querySelectorAll('.astro-toc--minimized-on-desktop').forEach(function (w) {
-    w.classList.add('astro-toc--collapsed');
-  });
-
   // ── Sticky header ────────────────────────────────────────────────────────
   var stickyEl = document.querySelector('[data-settings*="sticky"]');
   if (stickyEl) {
