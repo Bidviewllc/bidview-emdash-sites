@@ -88,6 +88,30 @@ background: var(--secondary);
   border-color: var(--secondary);
 }
 
+.btn-location-arvada-primary {
+  color: var(--light);
+  background: #17632f;
+  border-color: #17632f;
+}
+
+.btn-location-arvada-primary:hover {
+  color: var(--light);
+  background: #0f4a22;
+  border-color: #0f4a22;
+}
+
+.btn-location-arvada-directions {
+  color: #0f4a22;
+  background: transparent;
+  border-color: #0f4a22;
+}
+
+.btn-location-arvada-directions:hover {
+  color: var(--light);
+  background: #0f4a22;
+  border-color: #0f4a22;
+}
+
 .page-preloader {
 position: fixed;
   inset: 0;
