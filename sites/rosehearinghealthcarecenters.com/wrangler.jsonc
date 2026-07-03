@@ -1,6 +1,8 @@
 {
+  "send_email": [{ "name": "SEND_EMAIL", "destination_address": "leads@proheargroup.com" }],
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "rosehearinghealthcarecenters-staging",
+	"account_id": "239e9d015c7a3a39cdc2e9400312f553",
 	"main": "./src/worker.ts",
 	"compatibility_date": "2026-02-24",
 	"compatibility_flags": ["nodejs_compat"],
@@ -8,13 +10,19 @@
 		{
 			"binding": "DB",
 			"database_name": "rosehearinghealthcarecenters-staging-db",
-			"database_id": "0866f644-a6e3-4c1c-928d-e803c802505a",
+			"database_id": "bb250e15-1c27-499c-ba8e-287b2946c172",
 		},
 	],
 	"r2_buckets": [
 		{
 			"binding": "MEDIA",
 			"bucket_name": "rosehearinghealthcarecenters-staging-media",
+		},
+	],
+	"kv_namespaces": [
+		{
+			"binding": "SESSION",
+			"id": "028dfa4da881449cb1fcfb8ae46b6e2e",
 		},
 	],
 	// Worker Loader for plugin sandboxing
