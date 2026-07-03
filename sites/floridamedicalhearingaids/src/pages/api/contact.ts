@@ -6,12 +6,14 @@ import { env } from "cloudflare:workers";
 import { EmailMessage } from "cloudflare:email";
 
 const LEAD_TO = "leads@proheargroup.com";
-// NOTE: Cloudflare Email Workers require the FROM domain to be in the account with
-// Email Routing enabled. That happens when floridamedicalhearingaids.com is cut over
-// to Cameron's Cloudflare account. Until cutover, sends fail on the preview (workers.dev);
-// the form is wired correctly and will send once the domain is added + Email Routing is
-// enabled (leads@proheargroup.com is already a verified destination, shared with audiology).
-const LEAD_FROM = "noreply@floridamedicalhearingaids.com";
+// INTERIM FROM: floridamedicalhearingaids.com runs Google Workspace email (MX -> Google),
+// so we do NOT enable Cloudflare Email Routing on it (would break the client's inbox).
+// Cloudflare Email Workers only send FROM a domain configured for sending in the account,
+// so we send FROM audiologyandhearingcenters.com (a ProHear domain already set up). Leads
+// still go TO leads@proheargroup.com; subject/body note "Submitted via floridamedicalhearingaids.com",
+// and Reply-To is the submitter. Switch to noreply@floridamedicalhearingaids.com once its
+// sending (SPF/DKIM or send-only Email Routing keeping Google MX) is configured.
+const LEAD_FROM = "noreply@audiologyandhearingcenters.com";
 const THANK_YOU = "/thank-you/";
 
 function esc(s: string): string {
