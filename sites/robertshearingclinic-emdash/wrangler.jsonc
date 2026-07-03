@@ -1,0 +1,75 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "robertshearingclinic-emdash",
+	"account_id": "981338e6544cfe45d9819bf0ea6eb83a",
+	"main": "./src/worker.ts",
+	"compatibility_date": "2026-03-29",
+	"compatibility_flags": ["nodejs_compat"],
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "robertshearingclinic-emdash-db",
+			"database_id": "57f7e7fe-220d-4b13-b86f-f391fc806ed8",
+		},
+	],
+	"r2_buckets": [
+		{
+			"binding": "MEDIA",
+			"bucket_name": "robertshearingclinic-emdash-media",
+		},
+	],
+	"kv_namespaces": [
+		{
+			"binding": "SESSION",
+			"id": "b0a88beb034a433788cd9725301d5f5f",
+		},
+	],
+	"images": {
+		"binding": "IMAGES",
+	},
+	// Worker Loader for plugin sandboxing
+	"worker_loaders": [
+		{
+			"binding": "LOADER",
+		},
+	],
+	// Drives scheduled publishing, plugin cron, and maintenance (see src/worker.ts)
+	"triggers": {
+		"crons": ["* * * * *"],
+	},
+	"env": {
+		"staging": {
+			"name": "robertshearingclinic-emdash-staging",
+			"d1_databases": [
+				{
+					"binding": "DB",
+					"database_name": "robertshearingclinic-emdash-staging-db",
+					"database_id": "ce8f868c-aa4a-423a-a747-86e0448fda08",
+				},
+			],
+			"r2_buckets": [
+				{
+					"binding": "MEDIA",
+					"bucket_name": "robertshearingclinic-emdash-staging-media",
+				},
+			],
+			"kv_namespaces": [
+				{
+					"binding": "SESSION",
+					"id": "727ae84db71b4c29b25f5c1af7858418",
+				},
+			],
+			"images": {
+				"binding": "IMAGES",
+			},
+			"worker_loaders": [
+				{
+					"binding": "LOADER",
+				},
+			],
+			"triggers": {
+				"crons": ["* * * * *"],
+			},
+		},
+	},
+}

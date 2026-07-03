@@ -1,0 +1,81 @@
+.astro-2277 .astro-element.astro-element-776eaf61{--display:flex;--gap:0px 0px;--row-gap:0px;--column-gap:0px;--margin-top:0px;--margin-bottom:0px;--margin-left:0px;--margin-right:0px;--padding-top:0px;--padding-bottom:0px;--padding-left:0px;--padding-right:0px;}.astro-2277 .astro-element.astro-element-23dbeee2{--grid-columns:1;}@media(max-width:1024px){.astro-2277 .astro-element.astro-element-23dbeee2{--grid-columns:1;}}@media(max-width:767px){.astro-2277 .astro-element.astro-element-23dbeee2{--grid-columns:1;}}/* Start custom CSS */ {
+    overflow-x: hidden;
+}
+
+.hero-con-home::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: 
+        linear-gradient(to left, #FFFFFF 0%, #FFFFFF 40%, transparent 65%);
+    pointer-events: none;
+}
+
+
+.hero-con-home {
+    position: relative;
+    z-index: 0 !important;
+}
+
+@media (max-width: 1366px) {
+    .hero-con-home::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: 
+        linear-gradient(to left, #FFFFFF 0%, #FFFFFF 55%, transparent 70%);
+    pointer-events: none;
+}
+
+
+.hero-con-home {
+    position: relative;
+    z-index: 0 !important;
+}
+}
+
+@media (max-width: 1024px) {
+    .hero-con-home::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: 
+        linear-gradient(to top, #FFFFFF 0%, #FFFFFF 51%, transparent 60%);
+    pointer-events: none;
+}
+
+
+.hero-con-home {
+    position: relative;
+    z-index: 0 !important;
+}
+}
+
+@media (max-width: 767px) {
+    .hero-con-home::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: 
+        linear-gradient(to top, #FFFFFF 0%, #FFFFFF 60%, transparent 68%);
+    pointer-events: none;
+}
+
+
+.hero-con-home {
+    position: relative;
+    z-index: 0 !important;
+}
+}/* End custom CSS */

@@ -1,0 +1,91 @@
+
+::selection {
+    background-color: #9c0609;
+    color: #FFFFFF;
+}
+
+/* Icon widget no default line height */
+.astro-icon-wrapper {
+	line-height: 0;
+}
+
+
+/* Sub-Heading Design */
+.sub-heading-design {
+        font-family: var(--e-global-typography-577229a-font-family), Sans-serif;
+    font-size: var(--e-global-typography-577229a-font-size);
+    font-weight: var(--e-global-typography-577229a-font-weight);
+    text-transform: var(--e-global-typography-577229a-text-transform);
+    line-height: var(--e-global-typography-577229a-line-height);
+    letter-spacing: var(--e-global-typography-577229a-letter-spacing);
+    color: var(--e-global-color-primary);
+}
+
+/* Custom Accordion */
+.custom-accordion > .astro-widget-container > .e-n-accordion > .e-n-accordion-item > .e-n-accordion-item-title {
+    background-color: var(--e-global-color-secondary) !important;
+    border-style: solid !important;
+    border-width: 2px !important;
+    border-color: #F3F3F3 !important;
+    border-radius: 10px !important;
+}
+
+.custom-accordion summary.e-n-accordion-item-title {
+    --n-accordion-padding: 20px 20px 20px 20px !important;
+}
+
+.custom-accordion .e-n-accordion-item-title-text {
+        font-family: var(--e-global-typography-58d96c6-font-family), Sans-serif !important;
+    font-size: var(--e-global-typography-58d96c6-font-size) !important;
+    font-weight: var(--e-global-typography-58d96c6-font-weight) !important;
+    line-height: var(--e-global-typography-58d96c6-line-height) !important;
+    color: var(--e-global-color-71d10d6) !important;
+}
+
+.custom-accordion .e-con-full.e-flex.e-con.e-child {
+    --display: flex !important;
+    border-style: solid !important;
+    border-width: 0px 2px 2px 2px !important;
+    border-color: #F3F3F3 !important;
+    border-radius: 8px !important;
+    --margin-top: -15px !important;
+    --margin-bottom: 0px !important;
+    --margin-left: 0px !important;
+    --margin-right: 0px !important;
+    --padding-top: 10px !important;
+    --padding-bottom: 20px !important;
+    --padding-left: 20px !important;
+    --padding-right: 20px !important;
+}
+
+.custom-accordion > .astro-widget-container > .e-n-accordion > .e-n-accordion-item[open] > .e-n-accordion-item-title {
+    border-width: 2px 2px 0px 2px !important;
+    border-radius: 8px !important;
+}
+
+.custom-accordion .e-n-accordion-item {
+    margin-top: 20px !important;
+}
+
+.custom-accordion .e-con.e-child {
+  background-color: var(--e-global-color-secondary) !important;
+}
+
+html, body {
+  overflow-x: hidden;
+}
+
+.stb-banner-text a {
+    color: #ef2225 !important;
+}
+
+@media (max-width: 767px) {
+    .stb-banner-text {
+        font-size: 16px;
+    }
+}
+
+#stb-top-banner {
+    position: relative;
+    z-index: 99 !important;
+}

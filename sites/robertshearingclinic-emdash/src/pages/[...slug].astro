@@ -1,0 +1,23 @@
+---
+import { findRouteContent, normalizeRoute } from "../lib/content-routes";
+import { renderShell } from "../lib/render-shell";
+
+export const cacheHint = 3600;
+
+const shells = import.meta.glob("../shells/*.html", {
+	query: "?raw",
+	import: "default",
+});
+
+const route = normalizeRoute(Astro.params.slug);
+const content = await findRouteContent(route);
+if (!content) return Astro.redirect("/404");
+
+const shellKey = String(content.data.shell_key || "default.html");
+const shellLoader = shells[`../shells/${shellKey}`] ?? shells["../shells/default.html"];
+const shell = String(await shellLoader());
+
+return new Response(renderShell(shell, content, Astro.url.origin), {
+	headers: { "content-type": "text/html; charset=utf-8" },
+});
+---

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type="text/xsl" href="/main-sitemap.xsl"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+	<Document>
+		<name>Locations for Roberts Hearing Clinic</name>
+		<open>1</open>
+		<Folder>
+			<atom:link href="/" />
+			<Placemark>
+				<name><![CDATA[Roberts Hearing Clinic]]></name>
+				<description><![CDATA[Roberts Hearing Clinic - Helping You Hear Life's Best Moments]]></description>
+				<address><![CDATA[4007 Parliament Dr, Alexandria, LA, 71303, US]]></address>
+				<phoneNumber><![CDATA[+1-318-217-8639]]></phoneNumber>
+				<atom:link href="/" />
+				<LookAt>
+					<latitude>31.28230300</latitude>
+					<longitude>-92.47903200</longitude>
+					<altitude>0</altitude>
+					<range></range>
+					<tilt>0</tilt>
+				</LookAt>
+				<Point>
+					<coordinates>-92.47903200,31.28230300,0</coordinates>
+				</Point>
+			</Placemark>
+		</Folder>
+	</Document>
+</kml>

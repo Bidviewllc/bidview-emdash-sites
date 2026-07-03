@@ -1,0 +1,36 @@
+{
+  "name": "robertshearingclinic-emdash",
+  "version": "0.0.3",
+  "private": true,
+  "type": "module",
+	"emdash": {
+		"label": "Roberts Hearing Clinic",
+		"seed": "seed/seed.json"
+	},
+	"scripts": {
+		"dev": "astro dev",
+		"emdash:dev": "emdash dev",
+		"build": "astro build",
+		"preview": "astro preview",
+		"deploy": "astro build && wrangler deploy",
+		"deploy:staging": "astro build && node scripts/deploy-staging.mjs",
+		"deploy:production": "astro build && wrangler deploy",
+		"seed": "emdash seed seed/seed.json --on-conflict update",
+		"types": "emdash types",
+		"typecheck": "astro check"
+	},
+  "dependencies": {
+    "@astrojs/cloudflare": "^14.0.0",
+    "@astrojs/react": "^6.0.0",
+    "@emdash-cms/cloudflare": "^0.27.0",
+    "astro": "^7.0.0",
+    "emdash": "^0.27.0",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.7",
+    "@cloudflare/workers-types": "^4.20260305.1",
+    "wrangler": "^4.99.0"
+  }
+}
