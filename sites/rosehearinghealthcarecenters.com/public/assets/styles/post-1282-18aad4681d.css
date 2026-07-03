@@ -1,0 +1,11 @@
+.astro-1282 .astro-element.astro-element-b646d35{--display:flex;}.astro-1282 .astro-element.astro-element-b646d35:not(.astro-motion-effects-element-type-background), .astro-1282 .astro-element.astro-element-b646d35 > .astro-motion-effects-container > .astro-motion-effects-layer{background-color:var( --e-global-color-secondary );}/* Start custom CSS */.site-sitemap-page,
+.site-sitemap-page a {
+  color: #0a0d0d !important;
+  transition: color 0.3s ease;
+}
+
+
+.site-sitemap-page,
+.site-sitemap-page a:hover {
+  color: #0259ab !important;
+}/* End custom CSS */

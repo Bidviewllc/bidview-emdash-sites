@@ -8,4 +8,5 @@ Monorepo for all EmDash CMS websites built by Bidview.
 - `sites/campbellhearingsolutions` — campbellhearingsolutions.com
 - `sites/lakeside-lactation` — lakeside-lactation.com
 - `sites/maicoaudio` — maicoaudio.com
+- `sites/rosehearinghealthcarecenters.com` — rosehearinghealthcarecenters.com
 - `sites/thechicagomarketingagency` — thechicagomarketingagency.com

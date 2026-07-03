@@ -1,0 +1,54 @@
+---
+import Base from "../layouts/Base.astro";
+import pages from "../data/static-pages.json";
+
+export const prerender = false;
+
+const shellModules = import.meta.glob("../shells/pages/*.html", {
+	eager: true,
+	query: "?raw",
+	import: "default",
+});
+
+type StaticPage = {
+	route: string;
+	shell: string;
+	title: string;
+	description?: string | null;
+	bodyClass?: string | null;
+	canonical?: string | null;
+	stylesheets?: string[];
+};
+
+const rawSlug = Astro.params.slug ?? "";
+const route = rawSlug ? `/${rawSlug.replace(/\/$/, "")}/` : "/";
+const page = (pages as StaticPage[]).find((item) => item.route === route);
+
+if (!page) {
+	return new Response("Not found", { status: 404 });
+}
+
+const shell = shellModules[`../shells/pages/${page.shell}`] as string | undefined;
+
+if (!shell) {
+	return new Response("Shell not found", { status: 500 });
+}
+
+const canonical = new URL(route, Astro.url.origin).toString();
+const routePattern = route.replace(/^\/+/, "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const description = page.description
+	?.replace(/^https:\/\/staging\.example\.com\/?/, "")
+	.replace(new RegExp(`^/?${routePattern}`), "")
+	.replace(/^\/+|\/+$/g, "")
+	.trim() || null;
+---
+
+<Base
+	title={page.title}
+	description={description}
+	canonical={canonical}
+	bodyClass={page.bodyClass}
+	stylesheets={page.stylesheets}
+>
+	<Fragment set:html={shell} />
+</Base>
