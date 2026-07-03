@@ -94,6 +94,9 @@ def extract(path):
                         del el[attr]
         parts.append(str(c))
     body = "\n".join(parts)
+    # Home links in body content are relative to the static mirror (../index.html) which
+    # 404 on emdash (home is served at "/", not "/index.html"). Rewrite to root home.
+    body = re.sub(r'href="(?:\.\./)*index\.html', 'href="/', body)
     body_class = " ".join(soup.body.get("class", []))
     # Capture the Rank Math structured data (JSON-LD) from the <head> so schema
     # (Organization/LocalBusiness/WebPage/Person/BreadcrumbList/FAQPage) is preserved.

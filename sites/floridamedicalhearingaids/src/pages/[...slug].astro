@@ -3,6 +3,9 @@ import Base from "../layouts/Base.astro";
 import { getEntry } from "../content";
 export const cacheHint = 3600;
 const raw = (Astro.params.slug ?? "").replace(/\/+$/, "");
+if (raw === "index.html") {
+	return Astro.redirect("/", 301);
+}
 if (raw === "ear-candling") {
 	return Astro.redirect("/ear-candling-risks-why-ear-candles-are-not-a-safe-way-to-remove-wax/", 301);
 }
