@@ -1,0 +1,57 @@
+---
+import { EmDashBodyEnd, EmDashBodyStart, EmDashHead } from "emdash/ui";
+import { createPublicPageContext } from "emdash/page";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+
+interface Props {
+	title: string;
+	description?: string | null;
+	canonical?: string | null;
+	bodyClass?: string | null;
+	stylesheets?: string[] | null;
+}
+
+const {
+	title,
+	description = null,
+	canonical = null,
+	bodyClass = "",
+	stylesheets = [],
+} = Astro.props;
+
+const pageCtx = createPublicPageContext({
+	Astro,
+	kind: "custom",
+	pageType: "website",
+	title,
+	pageTitle: title,
+	description: description ?? undefined,
+	canonical: canonical ?? undefined,
+	siteName: "Rose Hearing Healthcare Centers",
+});
+---
+
+<!doctype html>
+<html lang="en-US">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>{title}</title>
+		{description && <meta name="description" content={description} />}
+		<link rel="icon" href="/assets/media/Rose-Hearing-Healthcare-Favicon-300x300-2ef23990f0.webp" sizes="32x32" />
+		<link rel="icon" href="/assets/media/Rose-Hearing-Healthcare-Favicon-300x300-2ef23990f0.webp" sizes="192x192" />
+		<link rel="apple-touch-icon" href="/assets/media/Rose-Hearing-Healthcare-Favicon-150x150-3703391ded.webp" />
+		{stylesheets.map((href) => <link rel="stylesheet" href={href} />)}
+		<EmDashHead page={pageCtx} />
+	</head>
+	<body class={bodyClass}>
+		<EmDashBodyStart page={pageCtx} />
+		<a class="skip-link screen-reader-text" href="#content">Skip to content</a>
+		<Header />
+		<slot />
+		<Footer />
+		<script is:inline src="/assets/site.js"></script>
+		<EmDashBodyEnd page={pageCtx} />
+	</body>
+</html>
