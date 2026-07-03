@@ -211,3 +211,12 @@ header.astro-location-header { position: -webkit-sticky; position: sticky; top: 
 @media (max-width: 767px) {
   .astro-element-7a2203d { position: fixed !important; bottom: 0; left: 0; right: 0; z-index: 99; }
 }
+/* WordPress [gallery] shortcode grid — the gallery CSS isn't in the bundle, so items
+   render full-width and images stack at full size. Restore the column grid (matches live). */
+.gallery { margin: 12px 0; line-height: 0; }
+.gallery-item { display: inline-block; margin: 0; padding: 5px; box-sizing: border-box; text-align: center; vertical-align: top; width: 100%; }
+.gallery-columns-2 .gallery-item { max-width: 50%; }
+.gallery-columns-3 .gallery-item { max-width: 33.33%; }
+.gallery-columns-4 .gallery-item { max-width: 25%; }
+.gallery-item img, .gallery-icon img { max-width: 100%; height: auto; display: block; margin: 0 auto; }
+.gallery-icon { height: auto; }
