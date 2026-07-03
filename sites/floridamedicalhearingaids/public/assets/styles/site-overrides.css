@@ -200,7 +200,6 @@ header.astro-location-header { position: -webkit-sticky; position: sticky; top: 
 /* ── Recent News / Posts widget grid spacing — matches live (--grid-row-gap:35px, column 30px) ── */
 .astro-posts-container.astro-grid { gap: 35px 30px; }
 /* TOC bordered box + collapsed-by-default — match live (container: 1px #3443B3, radius 20px, pad 30px) */
-.astro-widget-table-of-contents { border: 1px solid #3443B3; border-radius: 20px; padding: 30px; }
 .astro-toc--collapsed .astro-toc__body { display: none !important; }
 .astro-toc--minimized-on-desktop.astro-toc--collapsed .astro-toc__body { display: none !important; }
 /* Show only the relevant TOC toggle chevron (live hides the inactive one) */
@@ -220,3 +219,6 @@ header.astro-location-header { position: -webkit-sticky; position: sticky; top: 
 .gallery-columns-4 .gallery-item { max-width: 25%; }
 .gallery-item img, .gallery-icon img { max-width: 100%; height: auto; display: block; margin: 0 auto; }
 .gallery-icon { height: auto; }
+/* TOC single box: the border belongs on the widget's container (Elementor design).
+   Force the widget itself to have no border so it never doubles the box. */
+.astro-widget-table-of-contents { border: 0 !important; }
