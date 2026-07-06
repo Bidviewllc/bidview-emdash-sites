@@ -67,6 +67,58 @@ export async function POST({ request }: { request: Request }) {
 			? new Response(JSON.stringify({ ok: false, error: msg }), { status, headers: { "content-type": "application/json" } })
 			: new Response(msg, { status });
 
+	// --- Insurance benefit-check form (semantic field names; posts from /insurance/) ---
+	const isInsurance = !!(get("insurance_company") || get("group_number") || get("date_of_birth"));
+	if (isInsurance) {
+		const iName = `${get("first_name")} ${get("last_name")}`.trim();
+		const iEmail = get("email");
+		const iPhone = get("phone");
+		if (!iName || !iEmail || !iPhone) {
+			return fail("Please complete your name, email, and phone.", 400);
+		}
+		const detail = [
+			`Insurance Company: ${get("insurance_company")}`,
+			`Group Number: ${get("group_number")}`,
+			get("group_number_secondary") ? `Group Number (Secondary): ${get("group_number_secondary")}` : null,
+			`Plan Number: ${get("plan_number")}`,
+			get("plan_number_secondary") ? `Plan Number (Secondary): ${get("plan_number_secondary")}` : null,
+			get("date_of_birth") ? `Date of Birth: ${get("date_of_birth")}` : null,
+			get("closest_clinic") ? `Closest Clinic: ${get("closest_clinic")}` : null,
+		].filter((l) => l !== null).join("\n");
+		await saveToD1({ name: iName, email: iEmail, phone: iPhone, extra: "Insurance Verification", message: detail });
+		const iLines = [
+			`Name:    ${iName}`,
+			`Email:   ${iEmail}`,
+			`Phone:   ${iPhone}`,
+			"",
+			"Insurance benefit check:",
+			detail,
+			"",
+			`— Submitted via ${SITE} insurance verification form`,
+		].join("\r\n");
+		const iRaw = [
+			`From: ${SITE} <${LEAD_FROM}>`,
+			`To: ${LEAD_TO}`,
+			`Reply-To: ${iName} <${iEmail}>`,
+			`Subject: New Insurance Verification Request — ${iName}`,
+			`Message-ID: <${Date.now()}.${Math.random().toString(36).slice(2)}@bidview.net>`,
+			`Date: ${new Date().toUTCString()}`,
+			`MIME-Version: 1.0`,
+			`Content-Type: text/plain; charset=utf-8`,
+			``,
+			iLines,
+		].join("\r\n");
+		try {
+			const sendBinding = (env as any).SEND_EMAIL;
+			if (!sendBinding) return fail("Email service not configured", 503);
+			await sendBinding.send(new EmailMessage(LEAD_FROM, LEAD_TO, iRaw));
+		} catch (err) {
+			console.error("Insurance form send failed:", err);
+			return fail("Could not send your request. Please call us instead.", 502);
+		}
+		return ok();
+	}
+
 	// (no dedicated honeypot field on this form)
 	const first = get("input_1");
 	const last = get("input_3");

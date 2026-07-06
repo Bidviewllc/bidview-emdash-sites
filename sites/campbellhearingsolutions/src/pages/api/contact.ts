@@ -71,6 +71,57 @@ export async function POST({ request }: { request: Request }) {
 	if (get("honeypot", "input_16")) {
 		return ok();
 	}
+
+	// --- Insurance benefit-check form (gform_5). Distinguished by insurance-only fields. ---
+	const isInsurance = !!(get("input_10") || get("input_9"));
+	if (isInsurance) {
+		const iName = `${get("input_1")} ${get("input_3")}`.trim();
+		const iEmail = get("input_4");
+		const iPhone = get("input_5");
+		if (!iName || !iEmail || !iPhone) {
+			return fail("Please complete your name, email, and phone.", 400);
+		}
+		const detail = [
+			`Insurance Company: ${get("input_10")}`,
+			`Group Number: ${get("input_11")}`,
+			get("input_13") ? `Group Number (Secondary): ${get("input_13")}` : null,
+			`Plan Number: ${get("input_12")}`,
+			get("input_14") ? `Plan Number (Secondary): ${get("input_14")}` : null,
+			get("input_9") ? `Date of Birth: ${get("input_9")}` : null,
+		].filter((l) => l !== null).join("\n");
+		await saveToD1({ name: iName, email: iEmail, phone: iPhone, extra: "Insurance Verification", message: detail });
+		const iRaw = [
+			`From: ${SITE} <${LEAD_FROM}>`,
+			`To: ${LEAD_TO}`,
+			`Reply-To: ${iName} <${iEmail}>`,
+			`Subject: New Insurance Verification Request — ${iName}`,
+			`Message-ID: <${Date.now()}.${Math.random().toString(36).slice(2)}@bidview.net>`,
+			`Date: ${new Date().toUTCString()}`,
+			`MIME-Version: 1.0`,
+			`Content-Type: text/plain; charset=utf-8`,
+			``,
+			[
+				`Name:    ${iName}`,
+				`Email:   ${iEmail}`,
+				`Phone:   ${iPhone}`,
+				"",
+				"Insurance benefit check:",
+				detail,
+				"",
+				`— Submitted via ${SITE} insurance verification form`,
+			].join("\r\n"),
+		].join("\r\n");
+		try {
+			const sendBinding = (env as any).SEND_EMAIL;
+			if (!sendBinding) return fail("Email service not configured", 503);
+			await sendBinding.send(new EmailMessage(LEAD_FROM, LEAD_TO, iRaw));
+		} catch (err) {
+			console.error("Insurance form send failed:", err);
+			return fail("Could not send your request. Please call us instead.", 502);
+		}
+		return ok();
+	}
+
 	const name = get("name", "input_3");
 	const email = get("email", "input_5");
 	const phone = get("phone", "input_11");

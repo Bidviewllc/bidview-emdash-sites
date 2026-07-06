@@ -34,7 +34,7 @@ const sharedFooterHtml = normalizeSharedPartialHtml(sharedFooterRaw);
 		<title>Insurance - Maico Audiological Services</title>
 		<meta
 			name="description"
-			content="The Maico Audiological team delivers comprehensive, person-focused hearing and balance solutions while providing transparent pricing and peace of mind."
+			content="The Maico Audiological team delivers comprehensive, person-focused hearing solutions that exceeds expectations, while providing patients with peace of mind."
 		/>
 		<link rel="canonical" href="/insurance/" />
 		<link href="/assets/styles/extracted-inline-head.css?v=20260522-inline-cleanup-v3" class="extracted-inline-head-css" media="all" rel="stylesheet" />
@@ -81,11 +81,11 @@ const sharedFooterHtml = normalizeSharedPartialHtml(sharedFooterRaw);
 
 			<section class="intro-section">
 				<div class="content-wrap">
-					<h2>Transparency You Can Trust</h2>
+					<h2>Know Your Benefits Before You Visit</h2>
 					<p>
-						The Maico Audiological team delivers comprehensive, person-focused hearing and
-						balance solutions that exceeds expectations while providing patients with
-						transparent pricing and peace of mind.
+						The Maico Audiological team delivers comprehensive, person-focused hearing
+						solutions that exceeds expectations, while providing patients with peace of
+						mind.
 					</p>
 					<p><strong>Not sure what hearing benefits are included with your insurance coverage?</strong></p>
 					<p>
@@ -105,7 +105,7 @@ const sharedFooterHtml = normalizeSharedPartialHtml(sharedFooterRaw);
 			<section class="benefits-section" id="insuranceform" aria-labelledby="benefits-title">
 				<div class="content-wrap">
 					<h2 id="benefits-title">Check Your Insurance Benefits</h2>
-					<form class="benefits-form" action="/thank-you/" method="post">
+					<form class="benefits-form" action="/api/contact" method="post">
 						<div class="form-grid">
 							<label class="field field-half">
 								<span class="sr-only">First Name</span>
@@ -133,8 +133,16 @@ const sharedFooterHtml = normalizeSharedPartialHtml(sharedFooterRaw);
 								<input name="group_number" type="text" placeholder="Group Number *" />
 							</label>
 							<label class="field">
+								<span class="sr-only">Group Number (Secondary)</span>
+								<input name="group_number_secondary" type="text" placeholder="Group Number (Secondary)" />
+							</label>
+							<label class="field">
 								<span class="sr-only">Plan Number</span>
 								<input name="plan_number" type="text" placeholder="Plan Number *" />
+							</label>
+							<label class="field">
+								<span class="sr-only">Plan Number (Secondary)</span>
+								<input name="plan_number_secondary" type="text" placeholder="Plan Number (Secondary)" />
 							</label>
 							<label class="field">
 								<span class="sr-only">Callback Phone</span>
