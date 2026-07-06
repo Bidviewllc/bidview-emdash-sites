@@ -85,7 +85,7 @@ position: absolute;
   border-radius: 40px;
   object-fit: cover;
   opacity: 0;
-  animation: heroSlide 25s infinite;
+  animation: heroSlide 22.5s infinite;
 }
 
 .hero-slide:nth-child(1) {
