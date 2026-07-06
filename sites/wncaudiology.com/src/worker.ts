@@ -1,7 +1,7 @@
 import handler from "@astrojs/cloudflare/entrypoints/server";
 export { PluginBridge } from "@emdash-cms/cloudflare/sandbox";
 
-const CACHE_VERSION = "v3";
+const CACHE_VERSION = "v4";
 const SKIP_CACHE_PATHS = ["/_emdash", "/contact", "/api"];
 const EDIT_MODE_COOKIES = ["emdash-edit-mode=true", "astro-session=", "emdash-session="];
 

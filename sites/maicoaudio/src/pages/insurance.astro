@@ -162,7 +162,6 @@ const sharedFooterHtml = normalizeSharedPartialHtml(sharedFooterRaw);
 								</select>
 							</label>
 						</div>
-						<div class="captcha-space" aria-hidden="true"></div>
 						<button class="submit-button" type="submit">Submit</button>
 					</form>
 				</div>
@@ -356,11 +355,8 @@ const sharedFooterHtml = normalizeSharedPartialHtml(sharedFooterRaw);
 		opacity: 1;
 	}
 
-	.captcha-space {
-		height: 122px;
-	}
-
 	.submit-button {
+		margin-top: 28px;
 		min-width: 147px;
 		min-height: 48px;
 		border: 1px solid rgba(255, 255, 255, 0.9);
@@ -449,10 +445,6 @@ const sharedFooterHtml = normalizeSharedPartialHtml(sharedFooterRaw);
 
 		.field-date {
 			width: 196px;
-		}
-
-		.captcha-space {
-			height: 122px;
 		}
 
 		.photo-section {
