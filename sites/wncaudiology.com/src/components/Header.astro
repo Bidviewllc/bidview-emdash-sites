@@ -3,3 +3,17 @@ import headerHtml from "../content/partials/header.html?raw";
 ---
 
 <Fragment set:html={headerHtml} />
+
+<style is:global>
+	/* 3rd-level nav flyout (e.g. About > Our Team > team members): open to the right
+	   and align its top with the parent item instead of dropping down a row. */
+	.astro-nav-menu--dropdown .menu-item-has-children {
+		position: relative;
+	}
+	.astro-nav-menu--dropdown .menu-item-has-children > .astro-nav-menu--dropdown,
+	.astro-nav-menu--dropdown .menu-item-has-children > .sub-menu {
+		top: 0 !important;
+		left: 100% !important;
+		margin-top: 0 !important;
+	}
+</style>
