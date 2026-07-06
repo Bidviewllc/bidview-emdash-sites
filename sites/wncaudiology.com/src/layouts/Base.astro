@@ -105,9 +105,30 @@ const {
 </noscript>
 <noscript><iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-KS8T7J65" style="display:none;visibility:hidden" width="0"></iframe></noscript>
 <a class="skip-link screen-reader-text" href="#content">Skip to content</a>
+		<div class="site-announcement" role="region" aria-label="Announcement">
+			<p>Now welcoming new patients displaced by the Hear USA closure.</p>
+		</div>
 		<Header />
 		<slot />
 		<Footer />
 		<script src="/assets/site.js?v=20260519-wnc-build-v1" is:inline></script>
+		<style>
+			.site-announcement {
+				background-color: #1c191a;
+				color: #ffffff;
+				text-align: center;
+				padding: 16px 20px;
+				line-height: 1.4;
+			}
+			.site-announcement p {
+				margin: 0;
+				font-size: 16px;
+				font-weight: 500;
+			}
+			@media (max-width: 767px) {
+				.site-announcement { padding: 10px 20px; }
+				.site-announcement p { font-size: 14px; }
+			}
+		</style>
 	</body>
 </html>
