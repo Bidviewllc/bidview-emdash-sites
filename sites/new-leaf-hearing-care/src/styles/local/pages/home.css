@@ -85,7 +85,7 @@ position: absolute;
   border-radius: 40px;
   object-fit: cover;
   opacity: 0;
-  animation: heroSlide 17.5s infinite;
+  animation: heroSlide 22.5s infinite;
 }
 
 .hero-slide:nth-child(1) {
@@ -117,18 +117,30 @@ animation-delay: 12.5s;
 animation-delay: 15s;
 }
 
+.hero-slide:nth-child(8) {
+animation-delay: 17.5s;
+}
+
+.hero-slide:nth-child(9) {
+animation-delay: 20s;
+}
+
+.hero-slide:nth-child(10) {
+animation-delay: 22.5s;
+}
+
 @keyframes heroSlide {
   0%,
   100% {
     opacity: 0;
   }
 
-  2.857%,
-  14.286% {
+  2%,
+  10% {
     opacity: 1;
   }
 
-  17.143% {
+  12% {
     opacity: 0;
   }
 }
