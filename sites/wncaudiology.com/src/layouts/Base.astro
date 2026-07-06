@@ -112,6 +112,89 @@ const {
 		<slot />
 		<Footer />
 		<script src="/assets/site.js?v=20260519-wnc-build-v1" is:inline></script>
+		<script is:inline>
+			// Build the Elementor "Table of Contents" client-side. The static WP->Astro
+			// conversion captured only the empty TOC shell (a perpetual loading spinner)
+			// because Elementor populates it + assigns heading IDs via JS at runtime.
+			(function () {
+				function slugify(s) {
+					return (s || "").toLowerCase().trim()
+						.replace(/[‘’“”']/g, "")
+						.replace(/&[a-z]+;/g, " ")
+						.replace(/[^a-z0-9\s-]/g, "")
+						.replace(/\s+/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "") || "section";
+				}
+				function headerOffset() {
+					var h = document.querySelector("header");
+					var hh = h && getComputedStyle(h).position === "fixed" ? h.offsetHeight : 0;
+					return hh + 20;
+				}
+				function buildTOC() {
+					var bodies = document.querySelectorAll(".astro-toc__body");
+					if (!bodies.length) return;
+					var scope = document.querySelector(".astro-widget-theme-post-content") || document.body;
+					var heads = [].slice.call(scope.querySelectorAll("h2, h3, h4, h5, h6")).filter(function (h) {
+						// exclude accordion/FAQ titles and any heading inside a TOC widget
+						return !h.closest(".astro-widget-table-of-contents") &&
+							!h.classList.contains("e-n-accordion-item-title-text") &&
+							!h.closest(".e-n-accordion-item-title-header") &&
+							(h.textContent || "").trim().length > 0;
+					});
+					var off = headerOffset();
+					bodies.forEach(function (body) {
+						if (body.getAttribute("data-toc-built")) return;
+						body.setAttribute("data-toc-built", "1");
+						if (!heads.length) {
+							body.innerHTML = '<p class="astro-toc__no-headings">No headings were found on this page.</p>';
+							return;
+						}
+						heads.forEach(function (h) {
+							if (!h.id) {
+								var base = slugify(h.textContent), id = base, n = 2;
+								while (document.getElementById(id)) id = base + "-" + n++;
+								h.id = id;
+							}
+							h.style.scrollMarginTop = off + "px";
+						});
+						var root = document.createElement("ul");
+						root.className = "astro-toc__list";
+						var stack = [{ level: 0, ul: root }];
+						heads.forEach(function (h) {
+							var level = parseInt(h.tagName.charAt(1), 10);
+							while (stack.length > 1 && stack[stack.length - 1].level >= level) stack.pop();
+							var li = document.createElement("li");
+							li.className = "astro-toc__list-item";
+							var a = document.createElement("a");
+							a.className = "astro-toc__list-item-text";
+							a.href = "#" + h.id;
+							a.textContent = (h.textContent || "").trim();
+							li.appendChild(a);
+							stack[stack.length - 1].ul.appendChild(li);
+							var childUl = document.createElement("ul");
+							childUl.className = "astro-toc__list";
+							li.appendChild(childUl);
+							stack.push({ level: level, ul: childUl });
+						});
+						[].slice.call(root.querySelectorAll("ul.astro-toc__list")).forEach(function (u) {
+							if (!u.children.length) u.remove();
+						});
+						body.innerHTML = "";
+						body.appendChild(root);
+					});
+					document.addEventListener("click", function (e) {
+						var a = e.target.closest ? e.target.closest('.astro-toc__list-item-text[href^="#"]') : null;
+						if (!a) return;
+						var t = document.getElementById(decodeURIComponent(a.getAttribute("href").slice(1)));
+						if (!t) return;
+						e.preventDefault();
+						window.scrollTo({ top: t.getBoundingClientRect().top + window.pageYOffset - headerOffset(), behavior: "smooth" });
+						if (history.replaceState) history.replaceState(null, "", a.getAttribute("href"));
+					});
+				}
+				if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", buildTOC);
+				else buildTOC();
+			})();
+		</script>
 		<style>
 			.site-announcement {
 				background-color: #1c191a;
@@ -129,6 +212,12 @@ const {
 				.site-announcement { padding: 10px 20px; }
 				.site-announcement p { font-size: 14px; }
 			}
+			/* Client-built Table of Contents list (see inline TOC script above) */
+			.astro-toc__body ul.astro-toc__list { list-style: disc; margin: 0; padding-left: 1.25em; }
+			.astro-toc__body ul.astro-toc__list ul.astro-toc__list { padding-left: 1.25em; margin: 4px 0; }
+			.astro-toc__body .astro-toc__list-item { margin: 6px 0; }
+			.astro-toc__body .astro-toc__list-item-text { color: inherit; text-decoration: none; cursor: pointer; }
+			.astro-toc__body .astro-toc__list-item-text:hover { text-decoration: underline; }
 		</style>
 	</body>
 </html>
