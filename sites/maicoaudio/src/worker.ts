@@ -20,6 +20,11 @@ const INSURANCE_TOPBAR_ITEM =
 
 export default {
 	async fetch(request: Request, env: unknown, ctx: unknown): Promise<Response> {
+		// 301: old /hearing-tests/ URL -> the real page under /audiology-services/.
+		const url = new URL(request.url);
+		if (url.pathname === "/hearing-tests" || url.pathname === "/hearing-tests/") {
+			return Response.redirect(new URL("/audiology-services/hearing-tests/", url.origin).toString(), 301);
+		}
 		const res = await (handler as any).fetch(request, env, ctx);
 		const ct = res.headers.get("content-type") || "";
 		if (!ct.includes("text/html")) return res;
