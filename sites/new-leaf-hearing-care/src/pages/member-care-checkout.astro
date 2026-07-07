@@ -1,0 +1,63 @@
+---
+import Base from "../layouts/Base.astro";
+
+export const cacheHint = 3600;
+
+// Internal (non-patient-facing) checkout page for the Member Care Program.
+// ThriveCart embeddable button — 5keys account, product 21, opens a modal checkout.
+// Not linked in nav and not included in the sitemap; marked noindex.
+const thriveCartEmbed = `<div class="builder-v2-widget tc-v2-widget-embeddable_button tc-v2-embeddable-trigger" data-widget-layout="embeddable_button" data-thrivecart-account="5keys" data-thrivecart-tpl="v2" data-thrivecart-product="21" data-thrivecart-modal="on" data-thrivecart-modal-opts="{&quot;style_modal_width&quot;:&quot;40&quot;,&quot;style_content_border_radius&quot;:&quot;0.5&quot;,&quot;attr_modal_background&quot;:&quot;on&quot;,&quot;style_modal_background_color&quot;:&quot;#000000&quot;,&quot;style_modal_background_opacity&quot;:&quot;40&quot;,&quot;attr_modal_blur&quot;:&quot;off&quot;,&quot;attr_content_shadow&quot;:&quot;off&quot;}"><div data-size="auto" data-style="rounded" data-align="center" data-block="embeddable_button" class="builder-v2-block builder-v2-block-embeddable_button"><button class="tc-v2-embeddable-trigger-el button" style="background-color: #2ED5A0; border-radius: 0.25em"><span class="builder-v2-block builder-v2-block-plaintext" data-block="plaintext" style="color: #FFFFFF" data-block-opts="{&quot;text_editor_toolbar&quot;:&quot;plain&quot;}">Click here...</span></button></div></div>`;
+---
+<Base title="Member Care Program Checkout | New Leaf Hearing Care" noindex={true}>
+  <section class="member-checkout">
+    <div class="member-checkout__card">
+      <p class="member-checkout__eyebrow">Member Care Program</p>
+      <h1>Member Care Program Checkout</h1>
+      <p class="member-checkout__lead">When you're ready to check the patient out, click the button below to open the secure checkout.</p>
+      <div class="member-checkout__embed" set:html={thriveCartEmbed}></div>
+    </div>
+  </section>
+  <script is:inline async src="https://tinder.thrivecart.com/embed/v2/thrivecart.js"></script>
+</Base>
+
+<style>
+  .member-checkout {
+    display: flex;
+    justify-content: center;
+    padding: 80px 20px 120px;
+  }
+  .member-checkout__card {
+    width: 100%;
+    max-width: 640px;
+    text-align: center;
+    background: #ffffff;
+    border: 1px solid #e3e6e6;
+    border-radius: 16px;
+    padding: 56px 40px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.06);
+  }
+  .member-checkout__eyebrow {
+    margin: 0 0 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 12px;
+    font-weight: 600;
+    color: #6b4fb3;
+  }
+  .member-checkout__card h1 {
+    margin: 0 0 16px;
+    font-size: 34px;
+    line-height: 1.15;
+    color: #17632f;
+  }
+  .member-checkout__lead {
+    margin: 0 0 32px;
+    color: #4a4f4f;
+    font-size: 17px;
+    line-height: 1.6;
+  }
+  .member-checkout__embed {
+    display: flex;
+    justify-content: center;
+  }
+</style>

@@ -16,7 +16,7 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import SiteScripts from "../components/SiteScripts.astro";
 
-const { title = "New Leaf Hearing Care", description = "", canonical, ogType = "website", ogImage } = Astro.props;
+const { title = "New Leaf Hearing Care", description = "", canonical, ogType = "website", ogImage, noindex = false } = Astro.props;
 
 // Canonical + absolute URLs derive from the serving origin, so they auto-adjust
 // after the custom-domain cutover (workers.dev -> newleafhearing.com).
@@ -29,6 +29,7 @@ const ogDescription = description || "Audiology and hearing aid care from truste
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
     <link rel="canonical" href={canonicalUrl} />
