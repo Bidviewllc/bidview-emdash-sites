@@ -476,6 +476,9 @@ const contentSegments = buildContentSegments(renderedPage.contentHtml);
       })();
     </script>
     <Fragment set:html={fixConvertedText(renderedPage.tailHtml)} />
+    {/* 3CX Live Chat widget (was not carried over from WordPress). is:inline keeps Astro from bundling/stripping the loader. */}
+    <call-us-selector phonesystem-url="https://prohear.3cx.us" party="LiveChat924854"></call-us-selector>
+    <script is:inline defer src="https://downloads-global.3cx.com/downloads/livechatandtalk/v1/callus.js" id="tcx-callus-js" charset="utf-8"></script>
   </body>
 </html>
 

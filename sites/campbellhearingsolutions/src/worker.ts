@@ -2,8 +2,31 @@ import handler from "@astrojs/cloudflare/entrypoints/server";
 export { PluginBridge } from "@emdash-cms/cloudflare/sandbox";
 
 // Bump this version string on each Cloudflare deploy to bust Workers Cache.
-const CACHE_VERSION = "v21";
+const CACHE_VERSION = "v22";
 const SKIP_CACHE_PATHS = ["/_emdash", "/api"];
+
+// 3CX Live Chat widget. The WP->static conversion carried over the
+// <call-us-selector> element but dropped the callus.js loader <script>, so the
+// widget never initialized. Re-inject a clean selector + loader before the final
+// </body> of every HTML page (stripping any stale/leftover copy first).
+const CHAT_WIDGET =
+  '<call-us-selector phonesystem-url="https://prohear.3cx.us" party="LiveChat451006"></call-us-selector>' +
+  '<script defer src="https://downloads-global.3cx.com/downloads/livechatandtalk/v1/callus.js" id="tcx-callus-js" charset="utf-8"></script>';
+
+async function withChatWidget(response: Response): Promise<Response> {
+  const ct = response.headers.get("content-type") || "";
+  if (!ct.includes("text/html")) return response;
+  let html = await response.text();
+  html = html
+    .replace(/<call-us-selector\b[^>]*>[\s\S]*?<\/call-us-selector>/gi, "")
+    .replace(/<script\b[^>]*id="tcx-callus-js"[^>]*>[\s\S]*?<\/script>/gi, "");
+  const idx = html.lastIndexOf("</body>");
+  if (idx >= 0) html = html.slice(0, idx) + CHAT_WIDGET + html.slice(idx);
+  const headers = new Headers(response.headers);
+  headers.delete("content-length");
+  headers.delete("content-encoding");
+  return new Response(html, { status: response.status, statusText: response.statusText, headers });
+}
 
 const withStagingRobotsHeader = (requestUrl: URL, response: Response) => {
   if (!requestUrl.hostname.endsWith(".workers.dev")) {
@@ -31,7 +54,7 @@ const worker = {
 
     if (skipCache) {
       const response = await (handler as typeof handler & { fetch: typeof fetch }).fetch(request, env, ctx);
-      return withStagingRobotsHeader(url, response);
+      return withStagingRobotsHeader(url, await withChatWidget(response));
     }
 
     const cache = (caches as any).default;
@@ -48,7 +71,7 @@ const worker = {
       ctx,
     );
 
-    const finalResponse = withStagingRobotsHeader(url, response);
+    const finalResponse = withStagingRobotsHeader(url, await withChatWidget(response));
 
     if (finalResponse.status === 200 && finalResponse.headers.get("content-type")?.includes("text/html")) {
       const toCache = new Response(finalResponse.clone().body, finalResponse);
