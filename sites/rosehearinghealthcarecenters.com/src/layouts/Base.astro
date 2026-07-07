@@ -44,6 +44,7 @@ const pageCtx = createPublicPageContext({
 		<link rel="apple-touch-icon" href="/assets/media/Rose-Hearing-Healthcare-Favicon-150x150-3703391ded.webp" />
 		{stylesheets.map((href) => <link rel="stylesheet" href={href} />)}
 		<EmDashHead page={pageCtx} />
+
 	</head>
 	<body class={bodyClass}>
 		<EmDashBodyStart page={pageCtx} />
@@ -53,5 +54,8 @@ const pageCtx = createPublicPageContext({
 		<Footer />
 		<script is:inline src="/assets/site.js"></script>
 		<EmDashBodyEnd page={pageCtx} />
+
+<script defer src="https://downloads-global.3cx.com/downloads/livechatandtalk/v1/callus.js" id="tcx-callus-js" charset="utf-8"></script>
+<call-us-selector phonesystem-url="https://prohear.3cx.us" party="LiveChat439660"></call-us-selector>
 	</body>
 </html>
