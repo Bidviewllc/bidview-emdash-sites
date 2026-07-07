@@ -1,6 +1,12 @@
 import handler from "@astrojs/cloudflare/entrypoints/server";
 export { PluginBridge } from "@emdash-cms/cloudflare/sandbox";
 
+// 3CX Live Chat widget — injected before the final </body> of every HTML page
+// (pages render nested full-page shells, so the layout body-end is unreliable).
+const CHAT_WIDGET =
+	'<call-us-selector phonesystem-url="https://prohear.3cx.us" party="LiveChat403428"></call-us-selector>' +
+	'<script defer src="https://downloads-global.3cx.com/downloads/livechatandtalk/v1/callus.js" id="tcx-callus-js" charset="utf-8"></script>';
+
 // Bump this version string on each deploy to bust the Workers Cache
 const CACHE_VERSION = "v2";
 const SKIP_CACHE_PATHS = ["/_emdash", "/contact", "/free-seo-audit", "/api"];
