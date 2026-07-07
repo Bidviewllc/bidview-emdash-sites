@@ -2,16 +2,19 @@ import handler from "@astrojs/cloudflare/entrypoints/server";
 export { PluginBridge } from "@emdash-cms/cloudflare/sandbox";
 
 // Bump this version string on each Cloudflare deploy to bust Workers Cache.
-const CACHE_VERSION = "v22";
+const CACHE_VERSION = "v23";
 const SKIP_CACHE_PATHS = ["/_emdash", "/api"];
 
 // 3CX Live Chat widget. The WP->static conversion carried over the
 // <call-us-selector> element but dropped the callus.js loader <script>, so the
-// widget never initialized. Re-inject a clean selector + loader before the final
-// </body> of every HTML page (stripping any stale/leftover copy first).
+// widget never initialized. The loader is self-hosted at /callus.js (a copy of
+// the exact script the working WordPress site serves) instead of the external
+// 3CX CDN, which loads unreliably (and a deferred script that fails to load
+// leaves the icon inert/disabled). Re-inject a clean selector + loader before
+// the final </body> of every HTML page (stripping any stale/leftover copy first).
 const CHAT_WIDGET =
-  '<call-us-selector phonesystem-url="https://prohear.3cx.us" party="LiveChat451006"></call-us-selector>' +
-  '<script defer src="https://downloads-global.3cx.com/downloads/livechatandtalk/v1/callus.js" id="tcx-callus-js" charset="utf-8"></script>';
+  '<call-us-selector phonesystem-url="https://prohear.3cx.us" party="LiveChat451006" enable-poweredby="false"></call-us-selector>' +
+  '<script defer src="/callus.js" id="tcx-callus-js" charset="utf-8"></script>';
 
 async function withChatWidget(response: Response): Promise<Response> {
   const ct = response.headers.get("content-type") || "";
@@ -19,7 +22,9 @@ async function withChatWidget(response: Response): Promise<Response> {
   let html = await response.text();
   html = html
     .replace(/<call-us-selector\b[^>]*>[\s\S]*?<\/call-us-selector>/gi, "")
-    .replace(/<script\b[^>]*id="tcx-callus-js"[^>]*>[\s\S]*?<\/script>/gi, "");
+    .replace(/<script\b[^>]*id="tcx-callus-js"[^>]*>[\s\S]*?<\/script>/gi, "")
+    // also strip any leftover WP-plugin loader (id or callus.js src) to avoid doubles
+    .replace(/<script\b[^>]*(?:id="[^"]*callus[^"]*"|src="[^"]*callus\.js[^"]*")[^>]*>[\s\S]*?<\/script>/gi, "");
   const idx = html.lastIndexOf("</body>");
   if (idx >= 0) html = html.slice(0, idx) + CHAT_WIDGET + html.slice(idx);
   const headers = new Headers(response.headers);

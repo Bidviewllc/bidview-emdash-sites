@@ -2,6 +2,7 @@
   "send_email": [{ "name": "SEND_EMAIL", "destination_address": "leads@proheargroup.com" }],
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "jc-audiology-staging",
+  "main": "./src/worker.ts",
   "account_id": "239e9d015c7a3a39cdc2e9400312f553",
   "compatibility_date": "2026-05-20",
   "compatibility_flags": ["nodejs_compat"],
