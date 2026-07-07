@@ -2,8 +2,30 @@ import handler from "@astrojs/cloudflare/entrypoints/server";
 export { PluginBridge } from "@emdash-cms/cloudflare/sandbox";
 
 // Bump this version string on each deploy to bust the Workers Cache
-const CACHE_VERSION = "v138";
+const CACHE_VERSION = "v139";
 const SKIP_CACHE_PATHS = ["/_emdash", "/contact", "/api"];
+
+// 3CX Live Chat widget — injected before the final </body> of every HTML page
+// (pages render nested full-page shells, so the layout body-end is unreliable).
+const CHAT_WIDGET =
+	'<call-us-selector phonesystem-url="https://prohear.3cx.us" party="LiveChat395871"></call-us-selector>' +
+	'<script defer src="https://downloads-global.3cx.com/downloads/livechatandtalk/v1/callus.js" id="tcx-callus-js" charset="utf-8"></script>';
+
+async function withChatWidget(response: Response): Promise<Response> {
+	const ct = response.headers.get("content-type") || "";
+	if (!ct.includes("text/html")) return response;
+	let html = await response.text();
+	// Remove any pre-existing 3CX widget (avoids duplicates / stale party), then inject one.
+	html = html
+		.replace(/<call-us-selector\b[^>]*>[\s\S]*?<\/call-us-selector>/gi, "")
+		.replace(/<script\b[^>]*id="tcx-callus-js"[^>]*>[\s\S]*?<\/script>/gi, "");
+	const idx = html.lastIndexOf("</body>");
+	if (idx >= 0) html = html.slice(0, idx) + CHAT_WIDGET + html.slice(idx);
+	const headers = new Headers(response.headers);
+	headers.delete("content-length");
+	headers.delete("content-encoding");
+	return new Response(html, { status: response.status, statusText: response.statusText, headers });
+}
 
 // Cookies that indicate a CMS editor session — must bypass the edge cache so the
 // toolbar / inline-edit overlay gets injected. Without this an anonymous response
@@ -33,7 +55,7 @@ const worker = {
 			const cached = await cache.match(cacheKey);
 			if (cached) return cached;
 
-			const response = await (handler as any).fetch(request, env, ctx);
+			const response = await withChatWidget(await (handler as any).fetch(request, env, ctx));
 
 			if (response.status === 200 && response.headers.get("content-type")?.includes("text/html")) {
 				const toCache = new Response(response.clone().body, response);
@@ -44,7 +66,7 @@ const worker = {
 			return response;
 		}
 
-		return (handler as any).fetch(request, env, ctx);
+		return withChatWidget(await (handler as any).fetch(request, env, ctx));
 	},
 };
 
