@@ -29,35 +29,25 @@ const businessHours = [
   { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday"], opens: "09:00", closes: "16:30" },
   { "@type": "OpeningHoursSpecification", dayOfWeek: "Friday", opens: "09:00", closes: "12:00" }
 ];
+const businessLocation = (id, name, path, telephone, faxNumber, streetAddress, city, postalCode, latitude, longitude) => ({
+  "@type": ["MedicalBusiness", "LocalBusiness"],
+  "@id": `${origin}/#${id}`,
+  name,
+  image: `${origin}/assets/og-image.jpg`,
+  url: `${origin}${path}`,
+  telephone,
+  faxNumber,
+  priceRange: "$$",
+  address: { "@type": "PostalAddress", streetAddress, addressLocality: city, addressRegion: "CO", postalCode, addressCountry: "US" },
+  geo: { "@type": "GeoCoordinates", latitude, longitude },
+  areaServed: `${city}, CO`,
+  openingHoursSpecification: businessHours
+});
 const businessSchema = {
   "@context": "https://schema.org",
-  "@type": ["MedicalBusiness", "LocalBusiness"],
-  "@id": `${origin}/#business`,
-  name: "New Leaf Hearing Care",
-  url: origin,
-  image: `${origin}/assets/og-image.jpg`,
-  logo: `${origin}/assets/new-leaf-hearing-care-logo.webp`,
-  priceRange: "$$",
-  areaServed: ["Arvada, CO", "Littleton, CO", "Denver, CO"],
-  department: [
-    {
-      "@type": "MedicalBusiness",
-      name: "New Leaf Hearing Care - Arvada",
-      url: `${origin}/audiologist-hearing-aids-arvada-colorado/`,
-      telephone: "+1-303-639-5323",
-      faxNumber: "+1-303-940-5615",
-      address: { "@type": "PostalAddress", streetAddress: "8721 Wadsworth Blvd, Suite C", addressLocality: "Arvada", addressRegion: "CO", postalCode: "80003", addressCountry: "US" },
-      openingHoursSpecification: businessHours
-    },
-    {
-      "@type": "MedicalBusiness",
-      name: "New Leaf Hearing Care - Littleton",
-      url: `${origin}/audiologist-hearing-aids-littleton-colorado/`,
-      telephone: "+1-720-689-7989",
-      faxNumber: "+1-720-669-8960",
-      address: { "@type": "PostalAddress", streetAddress: "5808 S Rapp St, Suite 102", addressLocality: "Littleton", addressRegion: "CO", postalCode: "80120", addressCountry: "US" },
-      openingHoursSpecification: businessHours
-    }
+  "@graph": [
+    businessLocation("arvada", "New Leaf Hearing Care - Arvada", "/audiologist-hearing-aids-arvada-colorado/", "+1-303-639-5323", "+1-303-940-5615", "8721 Wadsworth Blvd, Suite C", "Arvada", "80003", 39.8549747, -105.0815928),
+    businessLocation("littleton", "New Leaf Hearing Care - Littleton", "/audiologist-hearing-aids-littleton-colorado/", "+1-720-689-7989", "+1-720-669-8960", "5808 S Rapp St, Suite 102", "Littleton", "80120", 39.611988, -105.019759)
   ]
 };
 ---
