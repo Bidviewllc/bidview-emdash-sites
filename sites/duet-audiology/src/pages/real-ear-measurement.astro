@@ -1,0 +1,33 @@
+---
+import ServicePage from '../layouts/ServicePage.astro';
+
+const description = "Real Ear Measurement (REM) at DUET is a verification process used to objectively assess how hearing devices perform within each patient's individual ear canal anatomy.";
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'MedicalProcedure',
+  name: 'Real Ear Measurement',
+  procedureType: 'Diagnostic',
+  description,
+  url: 'https://duethearing.com/real-ear-measurement/',
+};
+---
+<ServicePage
+  pageTitle="Real Ear Measurement | Duet Hearing"
+  description={description}
+  parentLabel="Hearing &amp; Tinnitus"
+  currentLabel="Real Ear Measurement"
+  pageHeading="Real Ear Measurement at DUET"
+  sidebarImage="/s9-card-4.jpg"
+  schema={schema}
+>
+
+  <p class="service-intro">Real Ear Measurement (REM) is a verification process that DUET uses to objectively assess how hearing devices perform within each patient's individual ear canal anatomy. According to the content, "A small measurement microphone is placed gently in the ear canal to evaluate" factors like speech audibility, sound clarity, and amplification accuracy.</p>
+
+  <section class="service-block">
+    <p>The clinic emphasizes that this approach yields measurable benefits. Research shows devices programmed with REM "provide superior outcomes compared to settings based only on software predictions," potentially resulting in improved speech understanding, better noise performance, and greater patient satisfaction.</p>
+    <p>DUET positions REM as central to their philosophy because every ear canal differs significantly. Rather than relying exclusively on manufacturer presets, the clinic uses this individualized measurement strategy to ensure optimal hearing preservation and real-world listening performance, particularly for complex cases, first-time users, and those with specialized needs like tinnitus management.</p>
+    <p>The practice frames this verification method as essential to their evidence-based approach, integrating "Scientific validation," "Precision technology," and "Objective outcome measures" into their patient care model.</p>
+  </section>
+
+</ServicePage>

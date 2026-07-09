@@ -1,0 +1,236 @@
+---
+import Interior from '../layouts/Interior.astro';
+
+const SITE = 'https://duethearing.com';
+const description = "Ear to Brain Evaluation at Duet Hearing: biologic testing, cellular testing (DPOAEs), pure tone detection, speech-in-noise, timing & rhythm screening, and the Brain Pie™ Assessment.";
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'MedicalProcedure',
+  name: 'Ear to Brain Evaluation',
+  procedureType: 'Diagnostic',
+  description,
+  bodyLocation: 'Auditory system',
+  provider: {
+    '@type': 'MedicalBusiness',
+    '@id': `${SITE}/#organization`,
+    name: 'Duet Hearing',
+  },
+  url: `${SITE}/ear-to-brain-evaluation/`,
+};
+---
+<Interior
+  title="Ear to Brain Evaluation | Duet Hearing"
+  description={description}
+  schema={serviceSchema}
+>
+
+<section class="page-hero page-hero--no-media">
+  <div class="page-hero-inner">
+  <div class="page-hero-text">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span class="sep">/</span>
+      <span class="current">Ear to Brain Evaluation</span>
+    </nav>
+
+    <h1 class="page-title">Ear to Brain Evaluation</h1>
+    <div class="page-underline"></div>
+  </div>
+  </div>
+</section>
+
+<div class="hero-curve curve-arch" aria-hidden="true"></div>
+
+<main class="interior-main">
+  <div class="interior-main-inner">
+
+    <article class="article-col service-article">
+
+      <section class="service-block">
+        <h2>Biologic Testing</h2>
+        <p>Biologic testing provides objective information about the health of the auditory system and does not rely on patient responses. At Duet, this may include:</p>
+        <ul>
+          <li>Tympanometry evaluates the health and movement of the eardrum and the three tiny bones of the middle ear (malleus, incus, and stapes). This objective test helps identify problems such as fluid in the middle ear, eardrum abnormalities, Eustachian tube dysfunction, or reduced mobility of the middle ear system that may affect hearing.</li>
+          <li>Acoustic Reflex Testing measures the function of the tiny stapedius muscle in the middle ear. This muscle automatically contracts loud sounds to help protect the inner ear. Evaluating these reflexes provides important information about the integrity of the hearing pathway, including the middle ear muscles, auditory nerve, and brainstem connections.</li>
+          <li>Reflex Decay evaluates how well the acoustic reflex can be sustained over time. During this test, a continuous sound is presented while the response of the middle ear muscle is monitored. Abnormal reflex decay may indicate dysfunction along the auditory nerve or brainstem pathways. This objective assessment provides additional information about the integrity of the auditory system and can help identify neurologic conditions affecting hearing.</li>
+        </ul>
+        <p>These tests help identify the underlying biologic causes of hearing difficulties and provide valuable information for diagnosis and treatment planning.</p>
+      </section>
+
+      <section class="service-block">
+        <h2>Cellular Testing</h2>
+        <p>Distortion Product Otoacoustic Emissions (DPOAEs) provide a non-invasive assessment of cochlear outer hair cell function. These specialized sensory cells play a critical role in amplifying sound and supporting clear hearing. DPOAE testing measures the ear's natural acoustic response to sound stimuli, allowing your DUET doctors to evaluate cellular health within the cochlea before hearing loss is detectable on a standard hearing test. This objective test helps identify early cochlear damage, monitor auditory health, and guide personalized treatment recommendations.</p>
+      </section>
+
+      <section class="service-block">
+        <h2>Pure Tone Detection Testing</h2>
+        <p>Pure Tone Detection Testing measures the softest sound you can detect across different pitches and frequencies. This test measures only the detection of sound; the softest level you can hear sounds from a low bassy sound to a high shrill whistle. Additional testing is needed to assess how the brain processes and understands speech.</p>
+      </section>
+
+      <section class="service-block">
+        <h2>Speech-in-Noise Testing</h2>
+        <p>Speech-in-Noise Testing evaluates how well you can understand speech in the presence of background noise. While traditional hearing tests measure the detection of sound, speech-in-noise testing assesses functional listening ability in real-world environments such as restaurants, meetings, and social gatherings. Difficulty understanding speech in noise may occur even when hearing sensitivity is normal and can indicate the need for further evaluation of auditory processing and communication function.</p>
+      </section>
+
+      <section class="service-block">
+        <h2>Timing &amp; Rhythm Screening</h2>
+        <p>Timing and Rhythm Screening evaluates the brain's ability to process timing, rhythm, and auditory patterns—skills that are important for listening, speech understanding, attention, and communication. This screening is conducted by a member of our team with a Master's degree from the Royal School of Music, bringing specialized expertise in the relationship between music, auditory processing, and brain function. Results can help identify timing and rhythm deficits that may contribute to listening and communication difficulties and guide recommendations for further evaluation or intervention.</p>
+      </section>
+
+      <section class="service-block">
+        <h2>Brain Pie<sup class="tm">&trade;</sup> Assessment</h2>
+        <p>The Brain Pie<sup class="tm">&trade;</sup> Assessment is based on the concept that the brain is organized like a pie, with different regions responsible for processing different types of information. Each function, such as hearing, memory, executive function, processing speed, reaction time, balance, and cognition requires a portion of the brain's resources to operate efficiently.</p>
+        <p>When hearing is reduced or the auditory system is not functioning optimally, the brain may need to devote a larger "piece of the pie" to listening, leaving fewer resources available for other important functions. The Brain Pie<sup class="tm">&trade;</sup> Assessment helps individuals understand the relationship between hearing and overall brain performance and provides a framework for identifying areas that may benefit from further evaluation or intervention.</p>
+      </section>
+
+    </article>
+
+    <aside class="sidebar service-sidebar">
+      <div class="side-cta">
+        <div class="side-cta-image" aria-hidden="true">
+          <img src="/s9-card-4.jpg" alt="" />
+        </div>
+        <div class="side-cta-body">
+          <h3>Schedule your first visit</h3>
+          <p>Begin with a one-on-one consult to discuss your hearing health goals.</p>
+          <a class="btn-schedule" href="#">
+            <span class="btn-schedule-text">Schedule</span>
+            <span class="btn-arrow" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M5 12H19" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+                <path d="M14 7L19 12L14 17" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </a>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+</main>
+
+<style is:global>
+  /* When the hero has no media (right column), let the text span full width */
+  .page-hero--no-media .page-hero-inner {
+    grid-template-columns: 1fr !important;
+  }
+  .service-article :where(.service-block) {
+    padding: 28px 0;
+    border-bottom: 1px solid rgba(33, 39, 63, 0.08);
+  }
+  .service-article :where(.service-block):last-of-type { border-bottom: none; }
+  .service-article :where(.service-block h2) {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-size: 28px !important;
+    font-weight: 600 !important;
+    color: #21273F !important;
+    margin: 0 0 16px !important;
+    line-height: 1.2 !important;
+  }
+  .service-article :where(.service-block p) {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-size: 17px !important;
+    line-height: 1.7 !important;
+    color: #4E5779 !important;
+    margin: 0 0 16px !important;
+  }
+  .service-article :where(.service-block p:last-of-type) { margin-bottom: 0 !important; }
+  .service-article :where(.service-block ul) {
+    list-style: none;
+    padding: 0;
+    margin: 16px 0;
+  }
+  .service-article :where(.service-block ul li) {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-size: 16px !important;
+    line-height: 1.7 !important;
+    color: #4E5779 !important;
+    padding-left: 28px;
+    position: relative;
+    margin-bottom: 16px;
+  }
+  .service-article :where(.service-block ul li)::before {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 11px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #00B2E4;
+  }
+  .service-sidebar .side-cta {
+    background: #00B2E4;
+    color: #ffffff;
+    border-radius: 24px;
+    overflow: hidden;
+    position: sticky;
+    top: 100px;
+  }
+  .service-sidebar .side-cta-image {
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+    position: relative;
+  }
+  .service-sidebar .side-cta-image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0,178,228,0) 60%, rgba(0,178,228,0.65) 100%);
+  }
+  .service-sidebar .side-cta-image img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block;
+  }
+  .service-sidebar .side-cta-body { padding: 24px 28px 28px; }
+  .service-sidebar h3 {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-size: 24px !important;
+    font-weight: 600 !important;
+    color: #ffffff !important;
+    margin: 0 0 12px !important;
+    line-height: 1.2 !important;
+  }
+  .service-sidebar p {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-size: 15px !important;
+    line-height: 1.5 !important;
+    color: rgba(255,255,255,0.92) !important;
+    margin: 0 0 20px !important;
+  }
+  .service-sidebar .btn-schedule {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    background: #21273F !important;
+    color: #ffffff !important;
+    padding: 12px 8px 12px 18px !important;
+    border-radius: 100px !important;
+    text-decoration: none !important;
+  }
+  .service-sidebar .btn-schedule-text {
+    font-family: 'Alternate Gothic', 'Barlow Condensed', sans-serif !important;
+    font-size: 18px !important;
+    color: #ffffff !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+  }
+  .service-sidebar .btn-arrow {
+    width: 36px;
+    height: 36px;
+    background: #FEA153;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  @media (max-width: 1024px) {
+    .service-sidebar .side-cta { position: static; }
+  }
+</style>
+
+</Interior>

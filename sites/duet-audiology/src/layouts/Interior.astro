@@ -1,0 +1,320 @@
+---
+import Base from './Base.astro';
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  ogType?: string;
+  noIndex?: boolean;
+  schema?: object | object[];
+  canonical?: string;
+}
+const { title = "Duet Hearing — Healthy Hearing. Healthy Brain.", description, ogImage, ogType, noIndex, schema, canonical } = Astro.props;
+---
+<Base
+  title={title}
+  description={description}
+  extraCss="/interior.css"
+  ogImage={ogImage}
+  ogType={ogType}
+  noIndex={noIndex}
+  schema={schema}
+  canonical={canonical}
+>
+  <slot />
+</Base>
+
+<style is:global>
+  /* Interior: announce bar scrolls with page (not fixed), header sticks */
+  .announce-bar {
+    position: relative !important;
+    top: auto !important;
+  }
+  .site-header {
+    position: sticky !important;
+    top: 0 !important;
+  }
+  /* No extra body padding needed — elements are in normal flow.
+     overflow-x: clip (not hidden) — "hidden" creates a scroll container that
+     breaks position:sticky on the header; clip does the same visual clipping
+     without creating a scroll container. */
+  body {
+    padding-top: 0 !important;
+    width: 100% !important;
+    overflow-x: clip !important;
+  }
+  /* Hero curve — full width white strip */
+  .hero-curve,
+  .hero-curve.curve-arch {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  /* Interior main — full-width white background, content in 1440px container */
+  .interior-main {
+    width: 100% !important;
+    max-width: 100% !important;
+    display: block !important;
+    margin: 0 !important;
+    padding: 60px 0 110px !important;
+  }
+  .interior-main-inner {
+    width: 100% !important;
+    max-width: 1440px !important;
+    margin: 0 auto !important;
+    padding: 0 80px !important;
+    display: grid !important;
+    grid-template-columns: 1fr 360px !important;
+    gap: 68px !important;
+    box-sizing: border-box !important;
+  }
+  @media (max-width: 1024px) {
+    .interior-main { padding: 48px 0 80px !important; }
+    .interior-main-inner {
+      grid-template-columns: 1fr !important;
+      gap: 48px !important;
+      padding: 0 32px !important;
+    }
+  }
+  @media (max-width: 768px) {
+    .interior-main-inner { padding: 0 20px !important; }
+  }
+  /* Page hero: full-width background, content constrained to 1440px */
+  .page-hero {
+    width: 100% !important;
+    max-width: 100% !important;
+    display: block !important;
+    padding: 120px 0 56px !important;
+  }
+  .page-hero-inner {
+    width: 100% !important;
+    max-width: 1440px !important;
+    margin: 0 auto !important;
+    padding: 0 80px !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 540px !important;
+    gap: 68px !important;
+    align-items: center !important;
+    box-sizing: border-box !important;
+  }
+  @media (max-width: 1024px) {
+    .page-hero-inner {
+      grid-template-columns: 1fr !important;
+      gap: 32px !important;
+      padding: 0 32px !important;
+    }
+  }
+  @media (max-width: 768px) {
+    .page-hero-inner { padding: 0 20px !important; }
+  }
+
+  /* ── Article meta — redesigned ─────────────────────────────────────
+     Author block with circular initials avatar + role label,
+     icon + label/value pairs for read-time and date, category pill. */
+  .page-hero .article-meta {
+    grid-column: 1 / -1 !important;
+    display: flex !important;
+    align-items: center !important;
+    flex-wrap: nowrap !important;
+    gap: 20px !important;
+    padding: 16px 24px !important;
+    background: rgba(255, 255, 255, 0.6) !important;
+    border: 1px solid rgba(0, 178, 228, 0.12) !important;
+    border-radius: 16px !important;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    margin-top: 28px !important;
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    width: 100% !important;
+  }
+  .page-hero .article-meta .meta-author {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+  }
+  .page-hero .article-meta .meta-avatar {
+    width: 44px !important;
+    height: 44px !important;
+    border-radius: 50% !important;
+    background: linear-gradient(135deg, #00B2E4 0%, #0096C2 100%) !important;
+    color: #ffffff !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-family: 'Alternate Gothic', 'Barlow Condensed', sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    letter-spacing: 1px !important;
+    border: none !important;
+    box-shadow: 0 4px 12px rgba(0, 178, 228, 0.18);
+    flex-shrink: 0;
+  }
+  .page-hero .article-meta .meta-author-block,
+  .page-hero .article-meta .meta-stat-block {
+    display: inline-flex !important;
+    flex-direction: column !important;
+    line-height: 1.25 !important;
+    gap: 2px !important;
+  }
+  .page-hero .article-meta .meta-label {
+    font-family: 'Alternate Gothic', 'Barlow Condensed', sans-serif !important;
+    font-size: 11px !important;
+    font-weight: 500 !important;
+    letter-spacing: 1.2px !important;
+    text-transform: uppercase !important;
+    color: #9CA1C7 !important;
+  }
+  .page-hero .article-meta .meta-name {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    color: #21273F !important;
+  }
+  .page-hero .article-meta .meta-value {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    color: #21273F !important;
+  }
+  .page-hero .article-meta .meta-stat {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+  }
+  .page-hero .article-meta .meta-stat-icon {
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 50% !important;
+    background: #F3FAFF !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: #00B2E4 !important;
+    flex-shrink: 0;
+  }
+  .page-hero .article-meta .meta-divider {
+    width: 1px !important;
+    height: 32px !important;
+    background: rgba(33, 39, 63, 0.08) !important;
+  }
+  .page-hero .article-meta .meta-pill {
+    margin-left: auto !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    background: #00B2E4 !important;
+    color: #ffffff !important;
+    padding: 8px 16px !important;
+    border-radius: 100px !important;
+    font-family: 'Alternate Gothic', 'Barlow Condensed', sans-serif !important;
+    font-size: 13px !important;
+    letter-spacing: 1.2px !important;
+    text-transform: uppercase !important;
+    font-weight: 500 !important;
+  }
+  .page-hero .article-meta .meta-pill::before {
+    content: '' !important;
+    width: 6px !important;
+    height: 6px !important;
+    border-radius: 50% !important;
+    background: #ffffff !important;
+  }
+  @media (max-width: 768px) {
+    .page-hero .article-meta {
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      gap: 14px !important;
+    }
+    .page-hero .article-meta .meta-divider { display: none !important; }
+    .page-hero .article-meta .meta-pill { margin-left: 0 !important; }
+  }
+  /* ── Override interior.css footer conflicts ──────────────────────────────
+     interior.css defines its own .footer-top (4-col grid), .footer-newsletter
+     form/input/button, and .footer-legal rules that clash with styles.css /
+     SiteFooter.astro. Reset them to match the homepage footer exactly. */
+  .footer-top {
+    display: flex !important;
+    justify-content: space-between !important;
+    gap: 60px !important;
+    padding-bottom: 0 !important;
+    margin-bottom: 60px !important;
+    grid-template-columns: none !important;
+  }
+  .footer-newsletter form,
+  .footer-nl-form {
+    border: 1.5px solid #00B2E4 !important;
+    border-radius: 100px !important;
+    overflow: hidden !important;
+    max-width: 480px !important;
+    margin-bottom: 16px !important;
+    gap: 0 !important;
+  }
+  .footer-newsletter input,
+  .footer-nl-input {
+    border-radius: 0 !important;
+    border: none !important;
+    border-right: none !important;
+    background: none !important;
+    padding: 14px 24px !important;
+    font-size: 16px !important;
+    color: #21273F !important;
+    flex: 1 !important;
+    outline: none !important;
+  }
+  .footer-newsletter button,
+  .footer-nl-btn {
+    background: none !important;
+    color: #00B2E4 !important;
+    border-radius: 0 !important;
+    font-family: 'Alternate Gothic', 'Barlow Condensed', sans-serif !important;
+    font-size: 20px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    padding: 12px 28px !important;
+    border: none !important;
+    cursor: pointer !important;
+    white-space: nowrap !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+  }
+  .footer-legal {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    gap: 12px !important;
+  }
+
+  /* Match homepage contact-info layout — interior.css uses a 2-col grid which
+     stacks the rows side-by-side instead of vertically */
+  .contact-info {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 24px !important;
+  }
+  .contact-info-row {
+    display: flex !important;
+    width: 100% !important;
+  }
+  @media (min-width: 769px) {
+    .contact-info-row {
+      flex-direction: row !important;
+      gap: 32px !important;
+    }
+    .contact-info-item {
+      flex: 1 !important;
+    }
+  }
+  @media (max-width: 768px) {
+    .contact-info-row {
+      flex-direction: column !important;
+      gap: 16px !important;
+    }
+    .contact-info-item {
+      width: 100% !important;
+    }
+  }
+</style>

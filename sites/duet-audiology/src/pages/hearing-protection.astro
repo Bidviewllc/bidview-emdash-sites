@@ -1,0 +1,50 @@
+---
+import ServicePage from '../layouts/ServicePage.astro';
+
+const description = "DUET emphasizes that hearing protection involves preserving the long-term health, timing, and performance of the auditory system, with custom solid plugs, filtered options, musician-grade fidelity, and in-ear monitors.";
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'MedicalProcedure',
+  name: 'Hearing Protection',
+  procedureType: 'Preventive',
+  description,
+  url: 'https://duethearing.com/hearing-protection/',
+};
+---
+<ServicePage
+  pageTitle="Hearing Protection | Duet Hearing"
+  description={description}
+  parentLabel="Hearing &amp; Tinnitus"
+  currentLabel="Hearing Protection"
+  pageHeading="DUET Hearing Protection &amp; Precision Listening Solutions"
+  sidebarImage="/s9-card-5.jpg"
+  schema={schema}
+>
+
+  <section class="service-block">
+    <h2>Core Philosophy</h2>
+    <p>DUET emphasizes that hearing protection involves "preserving the long-term health, timing, and performance of the auditory system" while maintaining sound clarity. Their approach recognizes that excessive noise exposure can damage hearing cells and contribute to tinnitus.</p>
+  </section>
+
+  <section class="service-block">
+    <h2>Custom Solutions Offered</h2>
+    <p>The company provides personalized protection including solid ear plugs, filtered options, musician-grade high fidelity plugs, motorsport solutions, industrial protection, sleep aids, and custom in-ear monitor systems for various professionals and enthusiasts.</p>
+  </section>
+
+  <section class="service-block">
+    <h2>Acoustic Filter Technology</h2>
+    <p>Rather than using traditional foam plugs that distort sound, DUET employs engineered passive filters designed to "preserve speech clarity" and "maintain music fidelity" while reducing harmful exposure evenly across frequencies. This supports natural listening perception and decreases auditory fatigue.</p>
+  </section>
+
+  <section class="service-block">
+    <h2>Performance Applications</h2>
+    <p>Beyond occupational safety, DUET serves musicians, vocalists, DJs, race car drivers, and broadcast professionals. Their in-ear monitors deliver improved clarity, reduced stage volume exposure, and better timing perception during performances.</p>
+  </section>
+
+  <section class="service-block">
+    <h2>Key Differentiators</h2>
+    <p>The clinic distinguishes itself through research-based care, precision custom fitting, advanced acoustic technology, and a philosophy prioritizing acoustic fidelity alongside hearing preservation rather than simple sound suppression.</p>
+  </section>
+
+</ServicePage>

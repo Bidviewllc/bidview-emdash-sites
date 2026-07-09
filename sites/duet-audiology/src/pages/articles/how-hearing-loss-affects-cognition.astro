@@ -1,0 +1,315 @@
+---
+import Interior from '../../layouts/Interior.astro';
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: 'How Untreated Hearing Loss Quietly Reshapes the Brain',
+  description: 'The science behind cognitive load, brain shrinkage, and why preventive hearing care matters decades before you would notice anything is wrong.',
+  image: 'https://duethearing.com/og-default.jpg',
+  datePublished: '2026-03-12',
+  dateModified: '2026-03-12',
+  author: {
+    '@type': 'Person',
+    name: 'Dr. Lori Ann Halvorson, Au.D.',
+    url: 'https://duethearing.com/audiologist/lori-halvorson/'
+  },
+  publisher: {
+    '@type': 'MedicalBusiness',
+    '@id': 'https://duethearing.com/#organization',
+    name: 'Duet Hearing',
+    logo: { '@type': 'ImageObject', url: 'https://duethearing.com/footer-logo.svg' }
+  },
+  mainEntityOfPage: { '@type': 'WebPage', '@id': 'https://duethearing.com/articles/how-hearing-loss-affects-cognition/' },
+  articleSection: 'Hearing & Brain',
+  wordCount: 1800
+};
+---
+<Interior
+  title="How Untreated Hearing Loss Quietly Reshapes the Brain | Duet Hearing"
+  description="The science behind cognitive load, brain shrinkage, and why preventive hearing care matters decades before you would notice anything is wrong."
+  ogType="article"
+  noIndex={true}
+>
+
+<!-- ============ PAGE TITLE / HERO ============ -->
+<section class="page-hero" data-screen-label="Page title" data-comment-anchor="d1bbf6c514-section">
+  <div class="page-hero-inner">
+  <div class="page-hero-text">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span class="sep">/</span>
+      <a href="#">News</a>
+      <span class="sep">/</span>
+      <span class="current">How Hearing Loss Affects Cognition</span>
+    </nav>
+
+    <h1 class="page-title">How untreated hearing loss <em>quietly reshapes</em> the brain.</h1>
+    <div class="page-underline"></div>
+    <p class="page-dek">A look at the science behind cognitive load, brain shrinkage, and why preventive hearing care matters decades before you'd notice anything is wrong.</p>
+  </div>
+
+  <div class="page-hero-media" aria-hidden="true">
+    <div class="article-hero-img">
+      <p class="caption">Image: editor placeholder — featured image</p>
+    </div>
+  </div>
+
+  <div class="article-meta">
+    <div class="meta-author">
+      <span class="meta-avatar" aria-hidden="true">LH</span>
+      <span class="meta-author-block">
+        <span class="meta-label">Written by</span>
+        <span class="meta-name">Dr. Lori Ann Halvorson, Au.D.</span>
+      </span>
+    </div>
+    <div class="meta-divider" aria-hidden="true"></div>
+    <div class="meta-stat">
+      <span class="meta-stat-icon" aria-hidden="true">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/>
+          <path d="M12 7v5l3 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span class="meta-stat-block">
+        <span class="meta-label">Read time</span>
+        <span class="meta-value">8 min</span>
+      </span>
+    </div>
+    <div class="meta-divider" aria-hidden="true"></div>
+    <div class="meta-stat">
+      <span class="meta-stat-icon" aria-hidden="true">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/>
+          <path d="M3 9h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <span class="meta-stat-block">
+        <span class="meta-label">Published</span>
+        <span class="meta-value">March 12, 2026</span>
+      </span>
+    </div>
+    <span class="meta-pill">Hearing &amp; Brain</span>
+  </div>
+  </div><!-- /.page-hero-inner -->
+</section>
+
+<!-- Curved transition strip (white) between hero and content -->
+<div class="hero-curve curve-arch" aria-hidden="true"></div>
+
+<!-- ============ MAIN — sidebar layout ============ -->
+<main class="interior-main" data-screen-label="Interior content">
+  <div class="interior-main-inner">
+
+  <!-- ARTICLE COLUMN -->
+  <article class="article-col">
+    <!-- TABLE OF CONTENTS (collapsed by default) -->
+    <details class="toc" data-screen-label="Table of contents">
+      <summary class="toc-summary">
+        <span class="toc-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="8" y1="6" x2="20" y2="6"></line>
+            <line x1="8" y1="12" x2="20" y2="12"></line>
+            <line x1="8" y1="18" x2="20" y2="18"></line>
+            <circle cx="4" cy="6" r="1.4" fill="currentColor"></circle>
+            <circle cx="4" cy="12" r="1.4" fill="currentColor"></circle>
+            <circle cx="4" cy="18" r="1.4" fill="currentColor"></circle>
+          </svg>
+        </span>
+        <div style="flex:1">
+          <span class="toc-label">In this article</span>
+          <span class="toc-title">Table of contents</span>
+        </div>
+        <span class="toc-count">6 sections</span>
+        <span class="toc-chevron" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </span>
+      </summary>
+      <ol class="toc-list">
+        <li><a href="#section-1">Hearing is a whole-brain activity<span class="toc-sub">2 min</span></a></li>
+        <li><a href="#section-2">The hidden cost of "getting by"<span class="toc-sub">2 min</span></a></li>
+        <li><a href="#section-3">What the research actually says<span class="toc-sub">3 min</span></a></li>
+        <li><a href="#section-4">Why amplification alone isn't enough<span class="toc-sub">2 min</span></a></li>
+        <li><a href="#section-5">The DUET<sup class="tm">&trade;</sup> Method, in brief<span class="toc-sub">2 min</span></a></li>
+        <li><a href="#section-6">What you can do this week<span class="toc-sub">1 min</span></a></li>
+      </ol>
+    </details>
+
+    <!-- ARTICLE BODY -->
+    <div class="article-body">
+      <p class="lede">If you've ever left a noisy restaurant feeling drained — like you'd just run a half marathon for your ears — you've already met the central character of this article. Hearing is the most metabolically intensive task your brain performs, and the way you treat it in your fifties may shape how clearly you think in your seventies.</p>
+
+      <p>For decades, hearing loss was treated as a problem you "got around" — turn the TV up, ask people to repeat themselves, smile and nod. We now know the cost of that compensation isn't acoustic. It's cognitive. Every time the auditory cortex strains to fill in a missing sound, it borrows resources from the parts of your brain that handle memory, focus, and emotional regulation.</p>
+
+      <h2 id="section-1">Hearing is a <em>whole-brain</em> activity.</h2>
+      <div class="h-underline"></div>
+      <p>Your ear is the antenna; your brain is the radio. The hair cells in your cochlea — about 15,000 of them per ear — translate vibration into electrical signal. Those signals then ride the auditory nerve into a network that touches nearly every region of the cortex: language, attention, memory, even the limbic system that handles emotion. Speech processing happens at extraordinary speed: up to <strong>30 phonemes per second</strong>, roughly 1000× faster than vision.</p>
+
+      <p>When that signal gets noisy or partial, your brain doesn't just hear less — it works harder to hear the same amount. Neuroscientists call this <em>listening effort</em>, and it shows up on fMRI as elevated activity in the prefrontal cortex. The conversation you're having in a coffee shop is, neurologically, also a working-memory task.</p>
+
+      <div class="callout">
+        <h4>The 30-second test</h4>
+        <p>If you can hear the words but you can't remember what someone said five minutes after a conversation, that's not a memory problem. That's listening effort eating into encoding. Your brain is too busy decoding to file the meeting away.</p>
+      </div>
+
+      <h2 id="section-2">The hidden cost of "getting by".</h2>
+      <div class="h-underline"></div>
+      <p>Most adults will wait an average of <strong>seven to ten years</strong> between first noticing hearing changes and doing anything about them. During that window, two things happen, and both are quiet enough to miss:</p>
+
+      <ul>
+        <li>The auditory cortex begins to atrophy from underuse — the brain prunes circuits it isn't getting good signal from.</li>
+        <li>Neighboring cognitive systems get recruited to compensate, which is fine in the short term and exhausting over years.</li>
+      </ul>
+
+      <p>The result is a slow, almost invisible trade: you keep functioning, but the cost is paid downstream in the form of <em>cognitive fatigue</em>, social withdrawal, and — over decades — measurable acceleration of age-related cognitive decline.</p>
+
+      <blockquote>
+        "The brain is plastic, but it's not free. Every system you let go silent is a system you'll have to fight to get back. Hearing care isn't vanity — it's neurological hygiene."
+        <cite>Dr. Lori Halvorson, Founder — DUET<sup class="tm">&trade;</sup> Hearing</cite>
+      </blockquote>
+
+      <h2 id="section-3">What the research actually says.</h2>
+      <div class="h-underline"></div>
+      <p>A 2020 <em>Lancet</em> commission identified hearing loss as the <strong>single largest modifiable risk factor for dementia</strong> — larger than smoking, depression, or physical inactivity. Subsequent work has been remarkably consistent:</p>
+
+      <ol>
+        <li>Mild untreated hearing loss is associated with roughly <strong>2× the risk</strong> of cognitive impairment over 12 years.</li>
+        <li>Moderate untreated loss raises that to <strong>3×</strong>. Severe untreated loss, to roughly <strong>5×</strong>.</li>
+        <li>Adults who treat their hearing loss with appropriate, well-fitted intervention show cognitive decline rates indistinguishable from the general population.</li>
+      </ol>
+
+      <p>The mechanism is still being debated — some of it is the direct cortical pruning above, some of it is the social withdrawal that compounds it — but the policy implication is settled: hearing intervention is one of the highest-leverage things adults can do for their long-term brain health.</p>
+
+      <figure>
+        <div class="figure-img" style="background-color: #d6e8f0; background-image: none;"></div>
+        <figcaption>Image: editor placeholder — diagnostic suite, captioned in-line.</figcaption>
+      </figure>
+
+      <h2 id="section-4">Why amplification alone isn't enough.</h2>
+      <div class="h-underline"></div>
+      <p>Hearing aids are a triumph of engineering. They are also, by themselves, an incomplete treatment. Putting clearer signal into a brain that has spent a decade learning to ignore certain frequencies doesn't automatically retrain the brain to use them again. Patients often report that things sound <em>louder</em> but no <em>clearer</em> — and that mismatch is why so many hearing aids end up in a drawer.</p>
+
+      <p>What's missing is the neural side of the equation: rebuilding the timing, rhythm, and pattern-recognition circuits that your auditory cortex stopped exercising. This is the heart of what we call <strong>Ear-to-Brain Fitness™</strong>.</p>
+
+      <h2 id="section-5">The DUET<sup class="tm">&trade;</sup> Method, in brief.</h2>
+      <div class="h-underline"></div>
+      <p>Our approach pairs precision amplification with structured neuroplasticity training. Three components matter:</p>
+
+      <h3>1. Diagnostic depth</h3>
+      <p>A full evaluation that goes well beyond the standard hearing test — including cellular health, neural timing, and speech-in-noise performance — gives us a real baseline.</p>
+
+      <h3>2. Personalized neuroplasticity training</h3>
+      <p>Doctor-curated exercises rebuild the patterns your auditory cortex stopped using: rhythm, timing, melodic contour, and speech-in-competing-noise.</p>
+
+      <h3>3. Lifetime preservation</h3>
+      <p>Hearing is a long game. We re-test, re-fit, and re-train at intervals — because the goal isn't a working hearing aid, it's a working brain at 85.</p>
+
+      <h2 id="section-6">What you can do this week.</h2>
+      <div class="h-underline"></div>
+      <p>You don't need a diagnosis to start protecting your hearing. Three habits, none of them dramatic, are worth building:</p>
+
+      <ul>
+        <li>Wear hearing protection at concerts, sporting events, and around power tools. The damage is permanent and cumulative.</li>
+        <li>If you've noticed <em>any</em> change — even occasionally asking people to repeat themselves — get a real diagnostic exam. Earlier is better, and the test is painless.</li>
+        <li>Treat noisy social settings as a workout, not a failure. Your brain is getting tired because it's doing hard work, not because something is wrong with you.</li>
+      </ul>
+
+      <p>The future of hearing health starts before you lose it. We'd love to show you what that looks like for you.</p>
+
+      <!-- share row -->
+      <div class="article-share">
+        <span class="share-label">Share this article</span>
+        <div class="share-btns">
+          <a href="#" aria-label="Share on Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.6 9.9V14.9H8v-2.9h2.4V9.8c0-2.4 1.4-3.7 3.6-3.7l2 .2v2.4h-1.1c-1.1 0-1.4.7-1.4 1.4V12H16l-.4 2.9h-2.1V22A10 10 0 0 0 22 12z"></path></svg></a>
+          <a href="#" aria-label="Share on LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h4v16H4zM12 8h4v2c.6-1.2 2-2.2 4-2.2C23.4 7.8 24 10 24 13v7h-4v-6c0-1.6-.5-2.6-2-2.6s-2 1-2 2.6v6h-4V8zM4 6a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"></path></svg></a>
+          <a href="#" aria-label="Share by email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"></rect><polyline points="2 6 12 13 22 6"></polyline></svg></a>
+          <a href="#" aria-label="Copy link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"></path><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"></path></svg></a>
+        </div>
+        <span class="updated">Last reviewed Mar 12, 2026</span>
+      </div>
+    </div>
+  </article>
+
+  <!-- RIGHT SIDEBAR -->
+  <aside class="sidebar" data-screen-label="Sidebar">
+
+    <!-- CTA CARD -->
+    <div class="side-cta">
+      <h3>Hearing care that <em>thinks</em> ahead.</h3>
+      <p>Spend an hour with a hearing doctor. Get a real diagnostic, a real plan, and a clearer sense of where your brain stands.</p>
+      <a href="#" class="btn-primary">
+        Schedule an appointment
+        <span class="arrow-circle">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><line x1="2" y1="7" x2="12" y2="7"></line><polyline points="8 3 12 7 8 11"></polyline></svg>
+        </span>
+      </a>
+    </div>
+
+    <!-- RECENT NEWS -->
+    <div class="side-news">
+      <div class="news-header">
+        <h4>Recent News &amp; Articles</h4>
+      </div>
+      <ul class="news-list">
+        <li>
+          <a href="#">
+            <span class="news-thumb" style="background-color: #d6e8f0; background-image: none;"></span>
+            <div>
+              <span class="news-cat">Research</span>
+              <span class="news-title">The Lancet's modifiable risk: what the 2024 update changes for adults over 50</span>
+              <span class="news-date">May 18, 2026</span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <span class="news-thumb" style="background-color: #d6e8f0; background-image: none;"></span>
+            <div>
+              <span class="news-cat">Tinnitus</span>
+              <span class="news-title">Why ringing in the ears is rarely "just" ringing in the ears</span>
+              <span class="news-date">May 02, 2026</span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <span class="news-thumb" style="background-color: #d6e8f0; background-image: none;"></span>
+            <div>
+              <span class="news-cat">Missions</span>
+              <span class="news-title">Notes from Jamaica: 600 children, 48 hours, and a lot of earwax</span>
+              <span class="news-date">Apr 21, 2026</span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <span class="news-thumb" style="background-color: #d6e8f0; background-image: none;"></span>
+            <div>
+              <span class="news-cat">Patient stories</span>
+              <span class="news-title">"I forgot what my grandkids sounded like." Carol's first six months on the DUET<sup class="tm">&trade;</sup> Method.</span>
+              <span class="news-date">Apr 09, 2026</span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <span class="news-thumb" style="background-color: #d6e8f0; background-image: none;"></span>
+            <div>
+              <span class="news-cat">Inside DUET<sup class="tm">&trade;</sup></span>
+              <span class="news-title">A walk through the Mango Room — and what it does for the nervous system</span>
+              <span class="news-date">Mar 28, 2026</span>
+            </div>
+          </a>
+        </li>
+      </ul>
+      <a href="#" class="news-view-all" data-comment-anchor="98fc99bb42-a">
+        View all articles
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><line x1="2" y1="7" x2="12" y2="7"></line><polyline points="8 3 12 7 8 11"></polyline></svg>
+      </a>
+    </div>
+
+  </aside>
+  </div><!-- /.interior-main-inner -->
+</main>
+
+</Interior>

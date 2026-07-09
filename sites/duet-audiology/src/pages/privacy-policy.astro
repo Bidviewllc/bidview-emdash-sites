@@ -1,0 +1,150 @@
+---
+import Interior from '../layouts/Interior.astro';
+---
+<Interior
+  title="Privacy Policy | Duet Hearing"
+  description="How Duet Hearing collects, uses, and protects your personal and health information."
+>
+
+<section class="page-hero">
+  <div class="page-hero-inner">
+  <div class="page-hero-text">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span class="sep">/</span>
+      <span class="current">Privacy Policy</span>
+    </nav>
+    <h1 class="page-title">Privacy Policy</h1>
+    <div class="page-underline"></div>
+    <p class="page-dek">How Duet Hearing collects, uses, and protects your information.</p>
+  </div>
+  <div class="page-hero-media" aria-hidden="true"></div>
+  </div>
+</section>
+
+<div class="hero-curve curve-arch" aria-hidden="true"></div>
+
+<main class="interior-main">
+  <div class="interior-main-inner">
+    <article class="article-col legal-article">
+      <p class="legal-effective">Effective: June 2, 2026</p>
+
+      <h2>1. Introduction</h2>
+      <p>
+        Duet Hearing ("we," "us," or "our") respects your privacy and is committed to protecting the personal information you share with us. This Privacy Policy explains how we collect, use, and safeguard information when you visit our website, contact us, or receive care from our practice.
+      </p>
+
+      <h2>2. Information We Collect</h2>
+      <p>We may collect the following categories of information:</p>
+      <ul>
+        <li><strong>Contact information</strong> you provide directly, such as name, email address, phone number, and preferred appointment date when you submit a form.</li>
+        <li><strong>Health information</strong> shared during clinical evaluations or appointments. This information is protected under HIPAA and applicable state and federal laws.</li>
+        <li><strong>Website usage data</strong> such as pages viewed, time on site, browser type, device type, and referral source. This is collected through standard analytics tools.</li>
+        <li><strong>Cookies and similar technologies</strong> used to improve website function and remember your preferences.</li>
+      </ul>
+
+      <h2>3. How We Use Your Information</h2>
+      <p>We use your information to:</p>
+      <ul>
+        <li>Respond to your inquiries and schedule appointments.</li>
+        <li>Provide and improve clinical services.</li>
+        <li>Send service-related communications, updates, and educational resources you have opted in to receive.</li>
+        <li>Maintain the security, integrity, and performance of our website.</li>
+        <li>Comply with applicable laws and regulations, including HIPAA where relevant.</li>
+      </ul>
+
+      <h2>4. Sharing of Information</h2>
+      <p>
+        We do not sell your personal information. We may share information with trusted service providers who help us operate our website and practice (for example, email providers, scheduling software, or analytics platforms), under contracts that require them to safeguard your data. We may also share information when required by law or to protect the safety of patients and staff.
+      </p>
+
+      <h2>5. HIPAA & Protected Health Information</h2>
+      <p>
+        Any health information collected during clinical care is treated as Protected Health Information (PHI) under the Health Insurance Portability and Accountability Act (HIPAA). PHI is handled according to our Notice of Privacy Practices, which is available at our office and on request.
+      </p>
+
+      <h2>6. Your Choices</h2>
+      <ul>
+        <li>You may opt out of marketing emails at any time by clicking the unsubscribe link in any message we send.</li>
+        <li>You may request access to, correction of, or deletion of personal information we hold about you by contacting us using the details below.</li>
+        <li>You may adjust your browser settings to refuse cookies, although some site features may not function as expected.</li>
+      </ul>
+
+      <h2>7. Data Security</h2>
+      <p>
+        We implement reasonable administrative, technical, and physical safeguards to protect your information against unauthorized access, use, or disclosure. No method of transmission over the internet is 100% secure, so we cannot guarantee absolute security.
+      </p>
+
+      <h2>8. Children's Privacy</h2>
+      <p>
+        Our website is not directed to children under 13. We do not knowingly collect personal information from children. If you believe a child has provided us with personal information, please contact us so we can take appropriate action.
+      </p>
+
+      <h2>9. Changes to This Policy</h2>
+      <p>
+        We may update this Privacy Policy from time to time. The most recent version will always be posted on this page with an updated effective date.
+      </p>
+
+      <h2>10. Contact Us</h2>
+      <p>
+        If you have any questions about this Privacy Policy or your information, please contact us at:
+      </p>
+      <p>
+        <strong>Duet Hearing</strong><br>
+        267 E Westminster Avenue, Lake Forest, IL 60045<br>
+        (847) 295-1185<br>
+        info@duethearing.com
+      </p>
+    </article>
+  </div>
+</main>
+
+<style is:global>
+  .legal-article :where(h2) {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-size: 24px !important;
+    font-weight: 600 !important;
+    color: #21273F !important;
+    margin: 32px 0 12px !important;
+    line-height: 1.25 !important;
+  }
+  .legal-article :where(h2):first-of-type { margin-top: 8px !important; }
+  .legal-article :where(p) {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-size: 16px !important;
+    line-height: 1.7 !important;
+    color: #4E5779 !important;
+    margin: 0 0 14px !important;
+  }
+  .legal-article :where(ul) { list-style: none; padding: 0; margin: 8px 0 20px; }
+  .legal-article :where(ul li) {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-size: 16px !important;
+    line-height: 1.6 !important;
+    color: #4E5779 !important;
+    padding-left: 24px;
+    position: relative;
+    margin-bottom: 8px;
+  }
+  .legal-article :where(ul li)::before {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 10px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #00B2E4;
+  }
+  .legal-article :where(strong) { color: #21273F !important; font-weight: 600 !important; }
+  .legal-effective {
+    font-family: 'Alternate Gothic', 'Barlow Condensed', sans-serif !important;
+    font-size: 13px !important;
+    letter-spacing: 1.5px !important;
+    text-transform: uppercase !important;
+    color: #00B2E4 !important;
+    margin: 0 0 24px !important;
+  }
+</style>
+
+</Interior>

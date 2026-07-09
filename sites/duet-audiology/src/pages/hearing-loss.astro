@@ -1,0 +1,47 @@
+---
+import ServicePage from '../layouts/ServicePage.astro';
+
+const description = "DUET Hearing Preservation presents hearing loss as a complex biological matter involving cellular mechanisms, acoustic exposure, systemic health, autoimmune and metabolic factors, and brain-based processing.";
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'MedicalCondition',
+  name: 'Hearing Loss (biological and mechanical)',
+  description,
+  url: 'https://duethearing.com/hearing-loss/',
+};
+---
+<ServicePage
+  pageTitle="Hearing Loss | Duet Hearing"
+  description={description}
+  parentLabel="Hearing &amp; Tinnitus"
+  currentLabel="Hearing Loss"
+  pageHeading="DUET Hearing Preservation: Biological Causes of Hearing Loss"
+  sidebarImage="/s9-card-4.jpg"
+  schema={schema}
+>
+
+  <p class="service-intro">DUET Hearing Preservation presents hearing loss as a complex biological matter involving multiple interconnected systems rather than simple age-related loudness reduction.</p>
+
+  <section class="service-block">
+    <h2>Core Philosophy</h2>
+    <p>The organization emphasizes that "hearing is a complex biological system that depends on healthy sensory cells, neural timing, vascular support, metabolic function, immune regulation, and precise communication between the ears and brain."</p>
+  </section>
+
+  <section class="service-block">
+    <h2>Key Biological Contributors</h2>
+    <p>DUET identifies numerous factors affecting auditory health:</p>
+    <p><strong>Cellular mechanisms</strong> involve oxidative stress on inner ear hair cells, which lack natural regenerative capacity in humans.</p>
+    <p><strong>Acoustic exposure</strong> causes documented effects including "tinnitus" and "difficulty understanding speech in noise" before standard hearing tests show measurable decline.</p>
+    <p><strong>Systemic health connections</strong> extend to gut microbiome balance, which influences "immune regulation, inflammation control, metabolic balance, and neural signaling."</p>
+    <p><strong>Autoimmune conditions</strong> like rheumatoid arthritis may produce auditory symptoms through inflammatory pathways.</p>
+    <p><strong>Metabolic disorders</strong> such as diabetes affect microvascular cochlear function and neural energy processing.</p>
+    <p><strong>Brain-based processing</strong> receives particular emphasis, as "hearing is ultimately a brain-based process" requiring accurate synchronization and interpretation.</p>
+  </section>
+
+  <section class="service-block">
+    <h2>Treatment Approach</h2>
+    <p>The clinic prioritizes "binaural timing, listening effort, and auditory processing efficiency" through personalized, biology-informed care rather than volume amplification alone.</p>
+  </section>
+
+</ServicePage>

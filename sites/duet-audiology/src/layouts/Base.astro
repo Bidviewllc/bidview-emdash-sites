@@ -1,0 +1,117 @@
+---
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+
+export interface Props {
+  title?: string;
+  description?: string;
+  extraCss?: string;
+  ogImage?: string;
+  ogType?: string;
+  noIndex?: boolean;
+  schema?: object | object[];
+  canonical?: string;
+}
+
+const SITE_URL = 'https://duethearing.com';
+const SITE_NAME = 'Duet Hearing';
+const DEFAULT_TITLE = 'Duet Hearing — Healthy Hearing. Healthy Brain.';
+const DEFAULT_DESC = 'Duet Hearing is a prevention-first audiology practice in Lake Forest, IL. The DUET Method™ and Ear to Brain Fitness™ strengthen hearing, memory, and cognitive vitality for life.';
+// Until a dedicated 1200×630 OG image is added, fall back to the brand hero.
+const DEFAULT_OG = '/hero-head.png';
+
+const {
+  title = DEFAULT_TITLE,
+  description = DEFAULT_DESC,
+  extraCss,
+  ogImage = DEFAULT_OG,
+  ogType = 'website',
+  noIndex = false,
+  schema,
+  canonical,
+} = Astro.props;
+
+const canonicalUrl = canonical || new URL(Astro.url.pathname, SITE_URL).toString();
+const ogImageUrl = ogImage.startsWith('http') ? ogImage : new URL(ogImage, SITE_URL).toString();
+
+// Always-on Organization schema, plus optional page-specific schema(s) appended
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'MedicalBusiness',
+  '@id': `${SITE_URL}/#organization`,
+  name: SITE_NAME,
+  legalName: 'Duet Hearing Preservation',
+  url: SITE_URL,
+  logo: `${SITE_URL}/footer-logo.svg`,
+  image: `${SITE_URL}/hero-head.png`,
+  telephone: '+1-847-295-1185',
+  email: 'info@duethearing.com',
+  priceRange: '$$$',
+  description: DEFAULT_DESC,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: '267 E Westminster Avenue',
+    addressLocality: 'Lake Forest',
+    addressRegion: 'IL',
+    postalCode: '60045',
+    addressCountry: 'US',
+  },
+  openingHoursSpecification: [
+    { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday','Tuesday','Wednesday','Thursday'], opens: '07:30', closes: '18:00' },
+    { '@type': 'OpeningHoursSpecification', dayOfWeek: 'Friday', opens: '07:30', closes: '16:30' },
+  ],
+  sameAs: [
+    'https://www.facebook.com/p/Duet-Hearing-Preservation-61564174265769/',
+    'https://www.instagram.com/duethearing/',
+    'https://www.youtube.com/@DuetPreservationHearing',
+  ],
+  medicalSpecialty: 'Audiology',
+};
+const schemaList = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
+const allSchemas = [organizationSchema, ...schemaList];
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonicalUrl} />
+  {noIndex && <meta name="robots" content="noindex,nofollow" />}
+  <meta name="theme-color" content="#00B2E4" />
+  <meta name="format-detection" content="telephone=no" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content={ogType} />
+  <meta property="og:url" content={canonicalUrl} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={ogImageUrl} />
+  <meta property="og:site_name" content={SITE_NAME} />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImageUrl} />
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Barlow+Condensed:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+  {extraCss && <link rel="stylesheet" href={extraCss} />}
+
+  {allSchemas.map((s) => (
+    <script type="application/ld+json" set:html={JSON.stringify(s)} />
+  ))}
+</head>
+<body>
+  <SiteHeader />
+  <slot />
+  <SiteFooter />
+</body>
+</html>

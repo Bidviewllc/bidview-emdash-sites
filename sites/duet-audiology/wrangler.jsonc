@@ -1,0 +1,17 @@
+{
+	"name": "duet-audiology",
+	"account_id": "239e9d015c7a3a39cdc2e9400312f553",
+	"compatibility_date": "2025-04-01",
+	"compatibility_flags": ["nodejs_compat"],
+	"observability": {
+		"enabled": true
+	},
+	"placement": {
+		"mode": "smart"
+	},
+	"workers_dev": true
+	// Custom domain (duethearing.com + www) is managed via the Cloudflare
+	// dashboard ("Workers > duet-audiology > Settings > Domains & Routes").
+	// Do NOT add `routes` here with `custom_domain: true` — wrangler will fail
+	// with "Hostname 'duethearing.com' already has externally managed DNS records".
+}

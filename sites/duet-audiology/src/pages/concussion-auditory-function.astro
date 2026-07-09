@@ -1,0 +1,44 @@
+---
+import ServicePage from '../layouts/ServicePage.astro';
+
+const description = "Concussion can affect the auditory system even when standard hearing tests appear normal. DUET recognizes concussion-related auditory changes as a timing and processing issue within the auditory system.";
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'MedicalCondition',
+  name: 'Concussion-Related Auditory Dysfunction',
+  description,
+  url: 'https://duethearing.com/concussion-auditory-function/',
+};
+---
+<ServicePage
+  pageTitle="Concussion &amp; Auditory Function | Duet Hearing"
+  description={description}
+  parentLabel="Hearing &amp; Tinnitus"
+  currentLabel="Concussion &amp; Auditory Function"
+  pageHeading="Concussion &amp; Auditory Function"
+  sidebarImage="/s9-card-3.jpg"
+  schema={schema}
+>
+
+  <p class="service-intro">Concussion can affect the auditory system even when standard hearing tests appear normal. Because hearing is ultimately processed in the brain, head injury may disrupt the neural timing, synchronization, and processing pathways that allow sound to be interpreted clearly.</p>
+
+  <section class="service-block">
+    <h2>Following a concussion, some individuals experience:</h2>
+    <ul>
+      <li>Difficulty understanding speech, especially in noise</li>
+      <li>Slowed or delayed auditory processing</li>
+      <li>Sound sensitivity (hyperacusis)</li>
+      <li>Tinnitus</li>
+      <li>Listening fatigue</li>
+      <li>Trouble localizing sound</li>
+      <li>"Normal hearing test, but can't understand speech" symptoms</li>
+    </ul>
+    <p>These challenges are often related to changes in how the brain integrates and times auditory information rather than a loss of hearing sensitivity alone.</p>
+  </section>
+
+  <section class="service-block">
+    <p>At DUET Hearing Preservation, we recognize concussion-related auditory changes as a timing and processing issue within the auditory system. Our approach emphasizes careful evaluation of binaural timing, listening effort, and auditory processing efficiency as part of a comprehensive, biology-informed hearing care model.</p>
+  </section>
+
+</ServicePage>

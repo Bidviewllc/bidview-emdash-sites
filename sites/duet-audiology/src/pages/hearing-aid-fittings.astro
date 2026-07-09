@@ -1,0 +1,40 @@
+---
+import ServicePage from '../layouts/ServicePage.astro';
+
+const description = "DUET presents a distinctive approach to hearing aid fittings centered on biological preservation rather than simple volume amplification, with timing synchronization, safe sound prescription, and objective verification.";
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'MedicalProcedure',
+  name: 'Hearing Aid Fittings',
+  procedureType: 'Therapeutic',
+  description,
+  url: 'https://duethearing.com/hearing-aid-fittings/',
+};
+---
+<ServicePage
+  pageTitle="Hearing Aid Fittings | Duet Hearing"
+  description={description}
+  parentLabel="Hearing &amp; Tinnitus"
+  currentLabel="Hearing Aid Fittings"
+  pageHeading="DUET Hearing Aid Fittings: Key Principles"
+  sidebarImage="/s9-card-3.jpg"
+  schema={schema}
+>
+
+  <p class="service-intro">DUET presents a distinctive approach to hearing aid fittings centered on biological preservation rather than simple volume amplification. Their philosophy emphasizes that "hearing technology should support the auditory system without overwhelming it."</p>
+
+  <section class="service-block">
+    <h2>Core Focus Areas</h2>
+    <p><strong>Timing Synchronization</strong>: The practice prioritizes coordination between ears, recognizing that misalignment causes speech comprehension difficulties, listening fatigue, and tinnitus aggravation. Restoring balance across frequencies helps the brain process sound more naturally.</p>
+    <p><strong>Safe Sound Prescription</strong>: Rather than maximizing amplification immediately, DUET concentrates on "frequency-specific precision programming" and avoiding overstimulation of vulnerable hearing cells. They employ an orchestra analogy—addressing tuning and harmony before increasing volume.</p>
+    <p><strong>Objective Verification</strong>: Real Ear Measurement technology allows practitioners to measure actual sound delivery within each patient's ear canal, moving beyond manufacturer defaults toward individualized calibration.</p>
+  </section>
+
+  <section class="service-block">
+    <h2>Treatment Elements</h2>
+    <p>Their comprehensive process incorporates diagnostic auditory evaluation, binaural timing analysis, precision programming, tinnitus management, and progressive adaptation strategies—all calibrated to each patient's auditory biology and communication requirements.</p>
+    <p>The underlying philosophy aims to improve how brains and ears collaborate, addressing hearing loss, listening fatigue, clarity issues, and previous fitting dissatisfaction through research-informed, personalized rehabilitation.</p>
+  </section>
+
+</ServicePage>

@@ -1,0 +1,799 @@
+---
+import Base from '../layouts/Base.astro';
+
+const homeDescription = 'Ears and brain - two organs, one system. Most practices only treat one. At DUET, we treat the whole thing. Contact Duet Hearing in Lake Forest, IL, today.';
+const homeSchemas = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': 'https://duethearing.com/#website',
+    url: 'https://duethearing.com/',
+    name: 'Duet Hearing',
+    publisher: { '@id': 'https://duethearing.com/#organization' },
+    inLanguage: 'en-US',
+  },
+];
+---
+<Base
+  title="Duet Hearing | Ear to Brain Fitness™ | Lake Forest, IL"
+  noIndex={true}
+  description={homeDescription}
+  schema={homeSchemas}
+>
+<div class="snap-section">  <section class="hero" aria-label="Hero"> <!-- Full-width background: brain/head from Figma --> <div class="hero-bg" aria-hidden="true"> <img src="/hero-head.png" alt="Illustration of a human head and brain with auditory soundwaves"> </div> <!-- Soundwave: @(0,142) 761×340 within 1440px canvas --> <div class="hero-soundwave" aria-hidden="true"> <canvas id="heroWaveCanvas"></canvas> </div> <!-- 1440px centered canvas for Figma-positioned elements --> <div class="hero-canvas"> <!-- Pills --> <div class="pill pill-1" aria-hidden="true"> <span class="pill-dot" style="background:#6B7DEB;"></span>
+Neural timing &amp; rhythm training
+</div> <div class="pill pill-2" aria-hidden="true"> <span class="pill-dot" style="background:#FC6887;"></span>
+All 3 regions of the ear
+</div> <div class="pill pill-3" aria-hidden="true"> <span class="pill-dot" style="background:#6B7DEB;"></span>
+Ear to Brain Fitness<sup class="tm">&trade;</sup>
+</div> <div class="pill pill-4" aria-hidden="true"> <span class="pill-dot" style="background:#FEA153;"></span>
+Biology-first diagnostics
+</div> <!-- Text content --> <div class="hero-content"> <span class="hero-eyebrow">Hearing &amp; the Brain: A Harmonious Duet</span> <h1 class="hero-heading">
+The future of hearing health<br>
+starts <em>before</em> you lose it.
+</h1> <p class="hero-body">
+Duet introduces a new standard in prevention-first hearing care, designed
+          to preserve clarity, connection, and cognitive vitality for life.
+</p>
+<p class="hero-body hero-body-extra">Hearing care has been stuck at the ear for decades. DUET goes beyond the ears and includes the brain as a comprehensive approach to advanced hearing care.</p>
+<p class="hero-body hero-body-extra">We go beyond a "beep, beep" test and hearing aid sales to treat your entire auditory system and strengthen cognitive health for life.</p> </div> <!-- Scroll indicator pinned to bottom center --> <div class="hero-scroll"> <div class="hero-scroll-dot"></div> <span class="hero-scroll-label">Scroll to continue</span> </div> </div> </section>  </div> </div>
+
+<div class="snap-section"> <div class="s2-outer"> <!-- Circle: always wider than viewport, positioned in outer --> <div class="s2-bg-circle"></div> <!-- Photos: positioned relative to outer (100vw), vw-sized — bleed off edges --> <div class="s2-photo s2-photo-tl"> <img src="/s2-photo-top.png" alt="People dancing joyfully"> </div> <div class="s2-photo s2-photo-tr"> <img src="/s2-circle.png" alt="Child with headphones"> </div> <div class="s2-photo s2-photo-bl"> <img src="/s2-photo-left.png" alt="Patient pointing at hearing device"> </div> <div class="s2-photo s2-photo-br"> <img src="/s2-photo-right.png" alt="Grandparent and child"> </div> <!-- Canvas: 1554px centered — center content at Figma coords --> <div class="s2-canvas"> <!-- Eyebrow --> <p class="s2-eyebrow">Treating Hearing From the Inside Out</p> <!-- Heading --> <h2 class="s2-heading">
+Hearing is the
+<em>most</em> complex task
+      your brain performs.
+</h2> <!-- Decorative horizontal line below heading --> <div class="s2-h-line" aria-hidden="true"></div> <!-- Brain + orange concentric rings (Figma export) + CSS pulse rings --> <div class="s2-brain" aria-hidden="true"> <img src="/s2-brain.png" alt="Brain illustration with orange concentric rings showing neural processing"> <div class="s2-brain-rings"> <span class="s2-brain-ring"></span> <span class="s2-brain-ring"></span> <span class="s2-brain-ring"></span> <span class="s2-brain-ring"></span> </div> </div> <!-- Vertical dashed lines --> <div class="s2-vline-top" aria-hidden="true"></div> <div class="s2-vline-bottom" aria-hidden="true"></div> <!-- Body text --> <p class="s2-body">
+Hearing directly impacts cognitive function, memory, and emotional well-being,
+      your auditory system is one of the most complex networks in your body,
+      processing up to 30 speech sounds per second.
+<span class="highlight">1000x faster than vision.</span> </p> </div> </div> </div>
+
+   <div class="duet-story" aria-label="Hearing preservation story"><div class="duet-story-stage"> <div class="story-bg-layer" aria-hidden="true"> <div class="story-bg-light"></div> <div class="story-bg-dark"></div> </div> <div class="story-bubble-layer" aria-hidden="true"> <span class="story-bubble story-bubble-a story-b1" data-group="a" data-fade-start="2.88" data-fade-end="7.92"></span> <span class="story-bubble story-bubble-a story-b2" data-group="a" data-fade-start="4.22" data-fade-end="8.18"></span> <span class="story-bubble story-bubble-a story-b3" data-group="a" data-fade-start="3.04" data-fade-end="6.76"></span> <span class="story-bubble story-bubble-a story-b4" data-group="a" data-fade-start="3.31" data-fade-end="5.42"></span> <span class="story-bubble story-bubble-a story-b5" data-group="a" data-fade-start="4.97" data-fade-end="8.07"></span> <span class="story-bubble story-bubble-a story-b6" data-group="a" data-fade-start="3.15" data-fade-end="7.64"></span> <span class="story-bubble story-bubble-a story-b7" data-group="a" data-fade-start="2.81" data-fade-end="6.31"></span> <span class="story-bubble story-bubble-a story-b8" data-group="a" data-fade-start="3.09" data-fade-end="5.88"></span> <span class="story-bubble story-bubble-a story-b9" data-group="a" data-fade-start="4.38" data-fade-end="8.55"></span> <span class="story-bubble story-bubble-a story-b18" data-group="a" data-fade-start="2.74" data-fade-end="7.71"></span> <span class="story-bubble story-bubble-a story-b19" data-group="a" data-fade-start="3.27" data-fade-end="5.02"></span> <span class="story-bubble story-bubble-a story-b20" data-group="a" data-fade-start="2.93" data-fade-end="6.26"></span> <span class="story-bubble story-bubble-a story-b21" data-group="a" data-fade-start="3.13" data-fade-end="7.83"></span> <span class="story-bubble story-bubble-a story-b22" data-group="a" data-fade-start="4.66" data-fade-end="8.11"></span> <span class="story-bubble story-bubble-a story-b23" data-group="a" data-fade-start="6.44" data-fade-end="10.37"></span> <span class="story-bubble story-bubble-a story-b24" data-group="a" data-fade-start="6.99" data-fade-end="10.69"></span> <span class="story-bubble story-bubble-a story-b25" data-group="a" data-fade-start="6.18" data-fade-end="10.63"></span> </div> <div class="story-content-layer"> <div class="story-copy-slot story-ghost-slot"> <div class="story-copy story-ghost story-ghost-count" data-frame="0"><span id="s3Counter">32k</span></div> <div class="story-copy story-ghost" data-frame="1">The Problem</div> <div class="story-copy story-ghost" data-frame="2">The Problem</div> <div class="story-copy story-ghost story-ghost-compact" data-frame="3">When hearing fades</div> </div> <div class="story-copy-slot story-headline-slot"> <p class="story-copy story-headline s4-headline" data-frame="1">They <em>never</em> regrow...</p> <p class="story-copy story-headline s5-headline" data-frame="2">They <em>never</em> regrow...</p> <p class="story-copy story-headline s6-headline" data-frame="3">Your brain <em>compensates</em></p> </div> <div class="story-visual-slot" aria-hidden="true"> <div class="story-visual story-visual-ear" data-visual="ear"> <div class="s3-center"> <img src="/s3-ear.png" alt="Inner ear illustration with concentric teal rings representing hearing cells"> </div> </div> <div class="story-visual story-visual-brain" data-visual="brain"> <div class="story-waves s4-waves"><canvas class="wave-canvas" width="2000" height="200"></canvas></div> <div class="s4-brain-circle"><img src="/s4-brain-circle.png" alt="Brain illustration inside a circle with concentric teal rings"></div> </div> </div> <div class="story-copy-slot story-subtext-slot"> <p class="story-copy story-subtext s3-text" id="s3Text" data-frame="0">Your 32,000 hearing cells<br>were <em>designed</em> to last<br>a lifetime...</p> <p class="story-copy story-subtext s5-subtext" data-frame="2">That's why hearing loss <em>doesn't</em> stay in your ears.</p> <p class="story-copy story-subtext s6-subtext" data-frame="3">stealing from <em>memory, processing,</em> and <em>cognition</em> to keep up.</p> </div> </div> </div></div>  <div class="snap-section s6-stats-scroll-section"> <div class="s6-stats-outer" aria-label="Research impact of untreated hearing loss"> <div class="s6-stats s6-stats-standalone"> <p class="s6-stats-header">In fact, untreated hearing loss can increase the risk of dementia up to 5x.</p> <div class="s6-stats-divider"></div> <div class="s6-stats-items"> <p class="s6-stats-item">Accelerate cognitive decline by up to <strong>40%</strong></p> <p class="s6-stats-item">Increases the risk of dementia by <strong>5x</strong></p> </div> </div> </div> </div>  <div class="snap-section"> <div class="s7-outer" id="s7"> <div class="s7-frame"> <div class="s7-intro"> <h2 class="s7-heading">That's why Duet goes <em>beyond</em> hearing aids.</h2> <div class="s7-divider"></div> <p class="s7-body">We use evidence-based <strong>Ear to Brain Fitness™</strong> interventions to preserve not just your hearing, but your brain health for decades to come. More than amplification.</p> </div> <div class="s7-stats"> <div class="s7-stat"> <div class="s7-stat-number">96%</div> <p class="s7-stat-label">of patients show measurable cognitive improvement</p> </div> <div class="s7-stat"> <div class="s7-stat-number">96%</div> <p class="s7-stat-label">reported improvement in speech processing speed, and confidence after ongoing treatment</p> </div> <div class="s7-stat"> <div class="s7-stat-number">25+</div> <p class="s7-stat-label">years of clinical expertise pioneering preventive hearing care</p> </div> </div> <div class="s7-carousel-wrap" id="s7Wrap"> <div class="s7-carousel" id="s7Carousel"> <div class="s7-photo"><img src="/s7-img-1.jpg" alt="Colorful brain training tools"></div> <div class="s7-photo"><img src="/s7-img-2.jpg" alt="Patient consultation"></div> <div class="s7-photo"><img src="/s7-img-3.jpg" alt="Hearing assessment"></div> <div class="s7-photo"><img src="/s7-img-4.jpg" alt="Team fitting session"></div> <div class="s7-photo"><img src="/s7-img-5.jpg" alt="Ear impression taking"></div> </div> </div> </div> </div> </div>  <div class="snap-section"> <div class="s8-outer" id="s8"> <div class="s8-frame"> <div class="s8-eyebrow"> <span class="s8-eyebrow-pill">We Grow Hearing Here™</span> </div> <h2 class="s8-heading">Experience the <em class="underline">Duet Method,</em>™ a biologic approach to auditory health.</h2> <div class="s8-video" id="s8Video"> <img class="s8-thumb" src="/s8-video-raw.jpg" alt="Video: Experience the Duet Method"> <div class="s8-play"></div> <div class="s8-quote"> <p class="s8-quote-text">"I wanted them<br>to feel alive."</p> <p class="s8-quote-author">Dr. Lori Halvorson<br>Founder</p> </div> </div> <div class="s8-body-copy"> <p>Brain adaptation is personal.</p> <p>Like going to the gym, some people build strength quickly while others need more time and coaching. The same is true for hearing. Some brains adapt rapidly, while others require a more gradual process. Success comes from supporting healthy biological change, not just making sound louder.</p> <p>That's why we never simply fit devices. We treat a living hearing system, calibrated to how your brain learns.</p> <p>The goal isn't just louder sounds. It's a stronger and more intelligent hearing, where ears and brain work together to support clearer thinking, sharper memory, and a more connected life.</p> </div> </div> </div> </div>  <div class="snap-section"> <div class="s9-outer" id="s9"> <div class="s9-frame"> <div class="s9-ghost">The Space</div> <div class="s9-hero"><img src="/s9-hero.jpg" alt="Duet Hearing clinic interior"></div> <div class="s9-blue-box"> <h2 class="s9-blue-heading">Where innovation creates fascination.</h2> <p class="s9-blue-body">DUET<sup class="tm">&trade;</sup> isn't what you'd expect from a hearing clinic. We've created a private, boutique practice focused on elevated care and a deeper understanding of hearing and brain processing. Feel fitter and stronger, not louder and older.</p> </div> <div class="s9-cards-wrap" id="s9Wrap"> <div class="s9-cards" id="s9Cards"> <div class="s9-card"> <div class="s9-card-img"><img src="/s9-card-1.jpg" alt="A welcoming space"><div class="s9-card-plus">+</div></div> <div class="s9-card-label"><span class="s9-card-dot"></span><span class="s9-card-label-text">A welcoming space</span></div> <div class="s9-card-content"><p class="s9-card-desc">Designed to feel alive, not clinical, because hearing care should never make you feel old.</p></div> </div> <div class="s9-card"> <div class="s9-card-img"><img src="/s9-card-2.jpg" alt="Your Consultation"><div class="s9-card-plus">+</div></div> <div class="s9-card-label"><span class="s9-card-dot"></span><span class="s9-card-label-text">Your Consultation</span></div> <div class="s9-card-content"><p class="s9-card-desc">Devoted time with a hearing doctor trained on the DUET Method<sup class="tm">&trade;</sup> to evaluate your full auditory system - from hearing cell health to brain processing speed. This is where your biological treatment plan begins.</p></div> </div> <div class="s9-card"> <div class="s9-card-img"><img src="/s9-card-3.jpg" alt="The Mango Room"><div class="s9-card-plus">+</div></div> <div class="s9-card-label"><span class="s9-card-dot"></span><span class="s9-card-label-text">The Mango Room</span></div> <div class="s9-card-content"><p class="s9-card-desc">Where Ear to Brain Fitness<sup class="tm">&trade;</sup> happens. We train your hearing neurons through rhythm, timing, and music, supporting the neuroplasticity that helps your brain process sound more clearly over time.</p></div> </div> <div class="s9-card"> <div class="s9-card-img"><img src="/s9-card-4.jpg" alt="Diagnostic Suite"><div class="s9-card-plus">+</div></div> <div class="s9-card-label"><span class="s9-card-dot"></span><span class="s9-card-label-text">Diagnostic Suite</span></div> <div class="s9-card-content"><p class="s9-card-desc">What we measure, we can treat. We have a controlled environment where we measure how sound moves through all three regions of your ear and how quickly it reaches your brain.</p></div> </div> <div class="s9-card"> <div class="s9-card-img"><img src="/s9-card-5.jpg" alt="Myofascial Trigger Point Therapy"><div class="s9-card-plus">+</div></div> <div class="s9-card-label"><span class="s9-card-dot"></span><span class="s9-card-label-text">Myofascial Trigger Point Therapy</span></div> <div class="s9-card-content"><p class="s9-card-desc">Targeted bodywork to increase blood flow to your hearing cells and support nervous system regulation.</p></div> </div> <div class="s9-card"> <div class="s9-card-img"><img src="/s9-card-6.jpg" alt="The Listening Room"><div class="s9-card-plus">+</div></div> <div class="s9-card-label"><span class="s9-card-dot"></span><span class="s9-card-label-text">The Listening Room</span></div> <div class="s9-card-content"><p class="s9-card-desc">Where Ear to Brain Fitness<sup class="tm">&trade;</sup> happens. Training your hearing neurons through rhythm, timing, and music with DUET<sup class="tm">&trade;</sup>'s team.</p></div> </div> <div class="s9-card"> <div class="s9-card-img"><img src="/s9-card-1.jpg" alt="A welcoming space"><div class="s9-card-plus">+</div></div> <div class="s9-card-label"><span class="s9-card-dot"></span><span class="s9-card-label-text">A welcoming space</span></div> <div class="s9-card-content"><p class="s9-card-desc">Designed to feel alive, not clinical, because hearing care should never make you feel old.</p></div> </div> <div class="s9-card"> <div class="s9-card-img"><img src="/s9-card-2.jpg" alt="Your Consultation"><div class="s9-card-plus">+</div></div> <div class="s9-card-label"><span class="s9-card-dot"></span><span class="s9-card-label-text">Your Consultation</span></div> <div class="s9-card-content"><p class="s9-card-desc">Devoted time with a hearing doctor trained on the DUET Method<sup class="tm">&trade;</sup> to evaluate your full auditory system - from hearing cell health to brain processing speed. This is where your biological treatment plan begins.</p></div> </div> <div class="s9-card"> <div class="s9-card-img"><img src="/s9-card-3.jpg" alt="The Mango Room"><div class="s9-card-plus">+</div></div> <div class="s9-card-label"><span class="s9-card-dot"></span><span class="s9-card-label-text">The Mango Room</span></div> <div class="s9-card-content"><p class="s9-card-desc">Where Ear to Brain Fitness<sup class="tm">&trade;</sup> happens. We train your hearing neurons through rhythm, timing, and music, supporting the neuroplasticity that helps your brain process sound more clearly over time.</p></div> </div> <div class="s9-card"> <div class="s9-card-img"><img src="/s9-card-4.jpg" alt="Diagnostic Suite"><div class="s9-card-plus">+</div></div> <div class="s9-card-label"><span class="s9-card-dot"></span><span class="s9-card-label-text">Diagnostic Suite</span></div> <div class="s9-card-content"><p class="s9-card-desc">What we measure, we can treat. We have a controlled environment where we measure how sound moves through all three regions of your ear and how quickly it reaches your brain.</p></div> </div> <div class="s9-card"> <div class="s9-card-img"><img src="/s9-card-5.jpg" alt="Myofascial Trigger Point Therapy"><div class="s9-card-plus">+</div></div> <div class="s9-card-label"><span class="s9-card-dot"></span><span class="s9-card-label-text">Myofascial Trigger Point Therapy</span></div> <div class="s9-card-content"><p class="s9-card-desc">Targeted bodywork to increase blood flow to your hearing cells and support nervous system regulation.</p></div> </div> <div class="s9-card"> <div class="s9-card-img"><img src="/s9-card-6.jpg" alt="The Listening Room"><div class="s9-card-plus">+</div></div> <div class="s9-card-label"><span class="s9-card-dot"></span><span class="s9-card-label-text">The Listening Room</span></div> <div class="s9-card-content"><p class="s9-card-desc">Where Ear to Brain Fitness<sup class="tm">&trade;</sup> happens. Training your hearing neurons through rhythm, timing, and music with DUET<sup class="tm">&trade;</sup>'s team.</p></div> </div> </div> </div> <div class="s9-nav"> <div class="s9-arrows"> <button class="s9-arrow s9-prev"><svg viewBox="0 0 16 16"><path d="M10 2 L4 8 L10 14"></path></svg></button> <button class="s9-arrow s9-next"><svg viewBox="0 0 16 16"><path d="M6 2 L12 8 L6 14"></path></svg></button> </div> <div class="s9-dots" id="s9Dots"></div> </div> </div> </div> </div>  <div class="s9-lightbox" id="s9Lightbox"> <button class="s9-lightbox-close" id="s9LbClose">&times;</button> <button class="s9-lightbox-prev" id="s9LbPrev"><svg viewBox="0 0 16 16"><path d="M10 2 L4 8 L10 14"></path></svg></button> <button class="s9-lightbox-next" id="s9LbNext"><svg viewBox="0 0 16 16"><path d="M6 2 L12 8 L6 14"></path></svg></button> <img class="s9-lightbox-img" id="s9LbImg" src="" alt=""> <div class="s9-lightbox-caption"> <p class="s9-lightbox-title" id="s9LbTitle"></p> <p class="s9-lightbox-desc" id="s9LbDesc"></p> </div> </div>  <div class="snap-section"> <div class="s10-outer" id="s10"> <div class="s10-arch-wrap"> <div class="s10-bio-inner"> <div class="s10-bio-content"> <div class="s10-bio-left"> <div class="s10-eyebrow">About our founder</div> <h2 class="s10-name">Dr. Lori Ann Halvorson</h2> <p class="s10-creds">AuD, FAAA, ABAC, CH-TM</p> <p class="s10-bio-text">With over 25 years of clinical expertise, Dr. Halvorson has pioneered the field of hearing preservation, developing the first inside-out approach to hearing care that strengthens auditory neural patterns, supports a healthier brain, and delivers functionally better outcomes. She is an Adjunct Lecturer at Northwestern University and leads humanitarian hearing missions around the world.</p> <div class="s10-achievements"> <div class="s10-ach"><span class="s10-ach-icon"><img src="/s10-icon-1.svg" alt="" aria-hidden="true"></span><span class="s10-ach-text-wrap"><span class="s10-ach-title">Adjunct Lecturer</span><span class="s10-ach-sub">Northwestern University</span></span></div> <div class="s10-ach"><span class="s10-ach-icon"><img src="/s10-icon-2.svg" alt="" aria-hidden="true"></span><span class="s10-ach-text-wrap"><span class="s10-ach-title">Notable Healthcare Hero 2021</span><span class="s10-ach-sub">Crain's Chicago Business</span></span></div> <div class="s10-ach"><span class="s10-ach-icon"><img src="/s10-icon-3.svg" alt="" aria-hidden="true"></span><span class="s10-ach-text-wrap"><span class="s10-ach-title">25+ Years Clinical Expertise</span><span class="s10-ach-sub">Specializing in preventive audiology</span></span></div> </div> <a class="s10-cta" href="#">meet the full team <span class="s10-cta-arrow"><svg viewBox="0 0 16 16"><path d="M4 12 L12 4 M12 4 L12 10 M12 4 L6 4"></path></svg></span></a> </div> </div> <div class="s10-bio-right"><img src="/drlogiann.png" alt="Dr. Lori Ann Halvorson"></div> </div> </div> <div class="s10-mission-card"> <div class="s10-mission-photos"> <div class="s10-mp-bg"><img src="/s10-mission-main.jpg" alt="Mission work"></div> <div class="s10-mp-1"><img src="/s10-mission-1.jpg" alt="Mission classroom"></div> <div class="s10-mp-2"><img src="/s10-mission-2.jpg" alt="Mission care"></div> </div> <div class="s10-mission-content"> <div class="s10-m-eyebrow">hearing the call</div> <h3 class="s10-m-heading">Hearing keeps people safe.</h3> <p class="s10-m-body">In partnership with Hearing the Call, DUET<sup class="tm">&trade;</sup> brings essential hearing care to underserved communities around the world, from removing earwax that left children misdiagnosed as deaf in Jamaica, to fitting life-saving hearing aids for albino orphans in Tanzania.</p> <div class="s10-m-btns"> <a class="s10-btn" href="#">more about our missions <span class="s10-btn-arrow"><svg viewBox="0 0 16 16"><path d="M4 12 L12 4 M12 4 L12 10 M12 4 L6 4"></path></svg></span></a> <a class="s10-btn" href="#">JOIN US <span class="s10-btn-arrow"><svg viewBox="0 0 16 16"><path d="M4 12 L12 4 M12 4 L12 10 M12 4 L6 4"></path></svg></span></a> </div> <div class="s10-stats"> <div class="s10-stat"><div class="s10-stat-num">19k+</div><p class="s10-stat-label">People impacted through humanitarian hearing missions</p></div> <div class="s10-stat"><div class="s10-stat-num">16</div><p class="s10-stat-label">Countries served worldwide</p></div> </div> </div> </div> </div> </div>  <div class="snap-section"> <div class="s11-outer" id="s11"> <div class="s11-waves"><canvas id="s11WaveCanvas"></canvas></div> <div class="s11-frame"> <div class="s11-header"> <div class="s11-eyebrow">patients sound off</div> <div class="s11-divider"></div> <p class="s11-subtitle">Real experiences from people who've transformed their hearing health with DUET<sup class="tm">&trade;</sup></p> </div> <div class="s11-content"> <div class="s11-featured" id="s11Featured"> <img src="/s11-featured.jpg" alt="Patient testimonial video"> <div class="s11-featured-play"></div> </div> <div class="s11-cards-section"> <div class="s11-cards-wrap" id="s11Wrap"> <div class="s11-cards" id="s11Cards"> <div class="s11-card" data-anim="fade-up" data-delay="300"> <div class="s11-stars">★★★★★</div> <div class="s11-card-header"> <div class="s11-card-avatar"></div> <div><div class="s11-card-name">Robert Thornton</div><div class="s11-card-role">Musician & Educator</div></div> </div> <p class="s11-card-quote">"Great experience and personal attention to detail. Protecting your hearing IS protecting your brain!"</p> </div> <div class="s11-card" data-anim="fade-up" data-delay="400"> <div class="s11-stars">★★★★★</div> <div class="s11-card-header"> <div class="s11-card-avatar"></div> <div><div class="s11-card-name">Jennifer Walsh</div><div class="s11-card-role">patient for 3 years</div></div> </div> <p class="s11-card-quote">"I never realized how much I was missing until I started with DUET<sup class="tm">&trade;</sup>. The whole team is incredible and truly cares about your long-term brain health."</p> </div> <div class="s11-card" data-anim="fade-up" data-delay="100"> <div class="s11-stars">★★★★★</div> <div class="s11-card-header"> <div class="s11-card-avatar"><img src="/s11-avatar-1.jpg" alt="Carol Zare"></div> <div><div class="s11-card-name">Carol Zare</div><div class="s11-card-role">patient for 2 years</div></div> </div> <p class="s11-card-quote">"Dr. Halvorson educated me on how my memory and cognition could be affected if I didn't take care of my hearing. After wearing my hearing aids I realized how much I was missing."</p> </div> <div class="s11-card" data-anim="fade-up" data-delay="200"> <div class="s11-stars">★★★★★</div> <div class="s11-card-header"> <div class="s11-card-avatar"><img src="/s11-avatar-2.jpg" alt="Howard Kravets"></div> <div><div class="s11-card-name">Howard Kravets</div><div class="s11-card-role">patient for 4 years</div></div> </div> <p class="s11-card-quote">"Lake Forest Hearing changed my life and brought me back into the social world. Thank you!"</p> </div> <div class="s11-card" data-anim="fade-up" data-delay="500"> <div class="s11-stars">★★★★★</div> <div class="s11-card-header"> <div class="s11-card-avatar"></div> <div><div class="s11-card-name">Michael Chen</div><div class="s11-card-role">patient for 1 year</div></div> </div> <p class="s11-card-quote">"The Ear to Brain Fitness approach is unlike anything I've experienced. My focus and memory have improved dramatically since starting treatment."</p> </div> </div> </div> <div class="s11-nav"> <div class="s11-arrows"> <button class="s11-arrow s11-prev"><svg viewBox="0 0 16 16"><path d="M10 2 L4 8 L10 14"></path></svg></button> <button class="s11-arrow s11-next"><svg viewBox="0 0 16 16"><path d="M6 2 L12 8 L6 14"></path></svg></button> </div> <div class="s11-dots" id="s11Dots"></div> </div> </div> </div> </div> </div> </div>
+
+<section class="faq-outer" aria-label="Frequently asked questions">
+  <div class="faq-frame">
+    <div class="faq-header">
+      <span class="faq-eyebrow">FAQ</span>
+      <h2 class="faq-heading">Frequently Asked Questions</h2>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item" open>
+        <summary class="faq-q">What makes Duet Hearing different from a traditional audiologist?</summary>
+        <div class="faq-a">
+          <p>Most audiology practices administer a tone-based hearing test and recommend a hearing aid. At DUET, we evaluate the full ear-to-brain pathway, measuring hearing cell health, neural processing speed, and how your brain adapts to sound. Treatment is built around your biology, not a device.</p>
+          <p>We are not simply fitting devices. We are treating a living hearing system and helping your ears and brain work together to support cognitive health.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">How does a hearing aid relate to brain health?</summary>
+        <div class="faq-a">
+          <p>Hearing aids deliver sound, but the brain is what processes it. Too little sound input deprives the brain of information it needs to stay cognitively sharp. Too much sound, or the wrong kind, can damage hearing structures. Precise sound dosing, calibrated to your specific auditory system, is what protects brain health long term.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">Is Duet Hearing right for me if I don't yet have hearing loss?</summary>
+        <div class="faq-a">
+          <p>Yes. DUET's prevention-first approach is designed for patients who want to protect their hearing and cognitive health before significant loss occurs. Early biological evaluation gives us a baseline to monitor over time and address cellular changes before they become clinical hearing loss.</p>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq-outer { background: #ffffff; padding: 100px 24px 120px; }
+  .faq-frame { max-width: 900px; margin: 0 auto; }
+  .faq-header { text-align: center; margin-bottom: 56px; }
+  .faq-eyebrow { display: inline-block; background: #fff; color: #00B2E4; font-family: 'Alternate Gothic', 'Barlow Condensed', sans-serif; font-size: 18px; letter-spacing: 1.5px; text-transform: uppercase; padding: 8px 22px; border-radius: 100px; margin-bottom: 20px; }
+  .faq-heading { font-family: 'Suisse BP Intl', sans-serif; font-size: 48px; font-weight: 300; color: #21273F; line-height: 1.15; margin: 0; }
+  .faq-list { display: flex; flex-direction: column; gap: 12px; }
+  .faq-item { background: #fff; border-radius: 20px; padding: 0; overflow: hidden; box-shadow: 0 4px 20px rgba(33,39,63,0.06); transition: box-shadow 0.25s ease; }
+  .faq-item[open] { box-shadow: 0 6px 32px rgba(0,178,228,0.14); }
+  .faq-q { list-style: none; cursor: pointer; font-family: 'Suisse BP Intl', sans-serif; font-size: 20px; font-weight: 500; color: #21273F; padding: 26px 32px; position: relative; padding-right: 60px; }
+  .faq-q::-webkit-details-marker { display: none; }
+  .faq-q::after { content: '+'; position: absolute; right: 32px; top: 50%; transform: translateY(-50%); width: 32px; height: 32px; background: #00B2E4; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 300; line-height: 1; transition: transform 0.25s ease, background 0.25s ease; }
+  .faq-item[open] .faq-q::after { content: '−'; transform: translateY(-50%) rotate(180deg); }
+  .faq-a { padding: 0 32px 28px; }
+  .faq-a p { font-family: 'Plus Jakarta Sans', 'Suisse BP Intl', sans-serif; font-size: 16px; line-height: 1.7; color: #4E5779; margin: 0 0 12px; }
+  .faq-a p:last-child { margin-bottom: 0; }
+  @media (max-width: 768px) {
+    .faq-outer { padding: 60px 20px 80px; }
+    .faq-heading { font-size: 34px; }
+    .faq-q { font-size: 17px; padding: 22px 26px; padding-right: 56px; }
+    .faq-q::after { right: 22px; width: 28px; height: 28px; font-size: 20px; }
+    .faq-a { padding: 0 26px 24px; }
+  }
+
+  /* S8 body copy for revised video section */
+  .s8-body-copy { max-width: 780px; margin: 40px auto 0; text-align: center; padding: 0 24px; }
+  .s8-body-copy p { font-family: 'Plus Jakarta Sans', 'Suisse BP Intl', sans-serif; font-size: 17px; line-height: 1.7; color: #4E5779; margin: 0 0 16px; }
+  .s8-body-copy p:first-child { font-size: 22px; font-weight: 500; color: #21273F; margin-bottom: 20px; }
+
+  /* Extra hero body paragraphs (under main hero body) */
+  .hero-body-extra { margin-top: 16px !important; font-size: 16px !important; line-height: 1.6 !important; }
+
+  /* The DUET Difference (Sound Dosing) */
+  .hp2-difference { background: #ffffff; padding: 100px 24px 120px; }
+  .hp2-difference-frame { max-width: 900px; margin: 0 auto; text-align: center; }
+  .hp2-difference-eyebrow { display: inline-block; background: #F3FAFF; color: #00B2E4; font-family: 'Alternate Gothic', 'Barlow Condensed', sans-serif; font-size: 18px; letter-spacing: 1.5px; text-transform: uppercase; padding: 8px 22px; border-radius: 100px; margin-bottom: 24px; }
+  .hp2-difference-heading { font-family: 'Suisse BP Intl', sans-serif; font-size: 44px; font-weight: 300; color: #21273F; line-height: 1.2; margin: 0 0 40px; }
+  .hp2-difference-body p { font-family: 'Plus Jakarta Sans', 'Suisse BP Intl', sans-serif; font-size: 17px; line-height: 1.7; color: #4E5779; margin: 0 0 16px; }
+  .hp2-difference-body p:last-child { margin-bottom: 0; }
+  @media (max-width: 768px) {
+    .hp2-intro { padding: 40px 20px; }
+    .hp2-intro p { font-size: 17px; }
+    .hp2-difference { padding: 60px 20px 80px; }
+    .hp2-difference-heading { font-size: 30px; }
+    .hp2-difference-body p { font-size: 16px; }
+  }
+</style>
+
+<script is:inline>
+  // Override Contact 3-step copy (shared SiteFooter component — only for /home-2/)
+  document.addEventListener('DOMContentLoaded', function () {
+    const heading = document.querySelector('.contact-heading');
+    if (heading) heading.textContent = 'Better Hearing and a Healthier Brain Made Easy';
+
+    const eyebrow = document.querySelector('.contact-eyebrow');
+    if (eyebrow) eyebrow.textContent = 'your first visit';
+
+    const steps = document.querySelectorAll('.contact-step');
+    const stepData = [
+      {
+        title: 'Book Your Diagnostic Auditory Exam',
+        desc: 'This is not an ordinary "beep" test. We measure everything - hearing cell health, neural speed, brain processing - and hand you a treatment plan built around your biology before you leave the room.'
+      },
+      {
+        title: 'Ear to Brain Fitness™',
+        desc: 'This is not volume adjustment. This is your brain getting stronger. Brain tuning by certified auditory experts. We train the neural pathways that make speech clear, cut through noise, and keep your mind sharp.'
+      },
+      {
+        title: 'Lifetime Preservation',
+        desc: 'Your hearing system changes over time. So does your treatment plan. We stay ahead of both by strengthening your hearing with cellular monitoring and Ear to Brain Fitness™.'
+      }
+    ];
+    steps.forEach((step, i) => {
+      if (i >= stepData.length) return;
+      const title = step.querySelector('.contact-step-title');
+      const desc = step.querySelector('.contact-step-desc');
+      if (title) {
+        if (i === 1) {
+          title.innerHTML = 'Ear to Brain Fitness<sup class="tm">&trade;</sup>';
+        } else {
+          title.textContent = stepData[i].title;
+        }
+      }
+      if (desc) desc.textContent = stepData[i].desc;
+    });
+
+    // Move FAQ section to sit between Contact ("Your First Visit") and site footer
+    const faq = document.querySelector('.faq-outer');
+    const contactOuter = document.querySelector('#contact');
+    if (faq && contactOuter && contactOuter.parentNode) {
+      contactOuter.parentNode.insertBefore(faq, contactOuter.nextSibling);
+    }
+  });
+</script>
+
+ <script is:inline>
+  // Sections 3-6 use one layered sticky story: background, bubbles, then content.
+  (function initDuetStoryFade() {
+    const story = document.querySelector('.duet-story');
+    const stage = story ? story.querySelector('.duet-story-stage') : null;
+    const copyEls = stage ? Array.from(stage.querySelectorAll('[data-frame]')) : [];
+    const bubbleEls = stage ? Array.from(stage.querySelectorAll('.story-bubble')) : [];
+    const visuals = stage ? {
+      ear: stage.querySelector('[data-visual="ear"]'),
+      brain: stage.querySelector('[data-visual="brain"]')
+    } : {};
+    const STORY_UNITS = 10;
+    const panelRanges = [
+      [-0.4, 2.95],
+      [2.05, 4.05],
+      [3.55, 8.35],
+      [7.65, 10.8]
+    ];
+    const textRanges = [
+      [-0.25, 2.35],
+      [2.55, 4.24],
+      [4.05, 6.95],
+      [7.05, 10.1]
+    ];
+    const textFades = [0.35, 0.25, 0.15, 0.25];
+    const DARK_BG_FADE_START = 3.55;
+    const DARK_BG_FADE_END = 4.1;
+
+    if (!story || !stage || !copyEls.length) return;
+
+    const clamp01 = (value) => Math.max(0, Math.min(1, value));
+    const smoothstep = (t) => t * t * (3 - 2 * t);
+    const smoothIn = (value, start, end) => smoothstep(clamp01((value - start) / (end - start)));
+    function rangeOpacity(value, start, end, fade = 0.35) {
+      if (value <= start || value >= end) return 0;
+      if (value < start + fade) return smoothstep((value - start) / fade);
+      if (value > end - fade) return 1 - smoothstep((value - (end - fade)) / fade);
+      return 1;
+    }
+
+    function tick() {
+      const rect = story.getBoundingClientRect();
+      const total = story.offsetHeight - innerHeight;
+      const isPinned = rect.top <= 0 && rect.bottom > innerHeight;
+      const isAfter = rect.bottom <= innerHeight;
+      const introFade = rect.top > 0
+        ? clamp01((innerHeight - rect.top) / (innerHeight * 0.6))
+        : 1;
+      const progress = total > 0
+        ? clamp01(-rect.top / total)
+        : 0;
+      const storyPosition = progress * STORY_UNITS;
+      const panelOpacities = panelRanges.map(([start, end]) => rangeOpacity(storyPosition, start, end, 0.55));
+      const firstPanelOpacity = panelOpacities[0] || 0;
+      const brainOpacity = Math.max(panelOpacities[1] || 0, panelOpacities[2] || 0, panelOpacities[3] || 0);
+      const darkOpacity = smoothIn(storyPosition, DARK_BG_FADE_START, DARK_BG_FADE_END);
+
+      story.classList.toggle('is-pinned', isPinned);
+      story.classList.toggle('is-after', isAfter);
+      stage.style.opacity = introFade;
+      stage.style.setProperty('--story-connector-opacity', firstPanelOpacity * introFade);
+      stage.style.setProperty('--story-dark-opacity', darkOpacity);
+
+      copyEls.forEach((el) => {
+        const i = Number(el.dataset.frame);
+        const textRange = textRanges[i] || panelRanges[i] || [0, 0];
+        const textOpacity = rangeOpacity(storyPosition, textRange[0], textRange[1], textFades[i] || 0.35);
+        el.style.setProperty('opacity', textOpacity, 'important');
+        el.setAttribute('aria-hidden', textOpacity > 0.02 ? 'false' : 'true');
+      });
+
+      if (visuals.ear) visuals.ear.style.opacity = firstPanelOpacity;
+      if (visuals.brain) visuals.brain.style.opacity = brainOpacity;
+
+      bubbleEls.forEach((bubble) => {
+        const start = Number(bubble.dataset.fadeStart || 3);
+        const end = Number(bubble.dataset.fadeEnd || 4);
+        const group = bubble.dataset.group;
+        const opacity = group === 'a'
+          ? 1 - smoothIn(storyPosition, start, end)
+          : smoothIn(storyPosition, start, end);
+        bubble.style.opacity = clamp01(opacity) * introFade;
+      });
+
+      window.duetStoryDark = isPinned && darkOpacity > 0.48;
+      if (window.duetSyncDarkTheme) window.duetSyncDarkTheme();
+      requestAnimationFrame(tick);
+    }
+
+    requestAnimationFrame(tick);
+  })();
+
+  // Section 2 scroll-triggered animations
+  const s2Observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('s2-in-view');
+      } else if (entry.boundingClientRect.top < 0) {
+        entry.target.classList.remove('s2-in-view');
+      }
+    });
+  }, { threshold: 0.15 });
+
+  // Observe photos (slide in from edges)
+  document.querySelectorAll('.s2-photo').forEach(el => s2Observer.observe(el));
+
+  // Observe canvas (fade up)
+  const s2Canvas = document.querySelector('.s2-canvas');
+  if (s2Canvas) s2Observer.observe(s2Canvas);
+
+  // Section 3 scroll-triggered animations + countdown
+  const s3El = document.getElementById('s3');
+  const s3Counter = document.getElementById('s3Counter');
+  const s3Text = document.getElementById('s3Text');
+  const s3Bubbles = document.querySelectorAll('.s3-bubble');
+  let s3Started = false;
+
+  if (s3El) {
+    const s3Obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting && !s3Started) {
+        s3El.classList.add('s3-in-view');
+        s3Started = true;
+        setTimeout(() => {
+          const start = 32000, duration = 5000, t0 = performance.now();
+          s3Counter.style.opacity = '1';
+          function tick(now) {
+            const t = Math.min((now - t0) / duration, 1);
+            const eased = 1 - Math.pow(1 - t, 2.5);
+            const current = Math.round(start * (1 - eased));
+            s3Counter.textContent = current.toLocaleString();
+            s3Counter.style.opacity = String(0.9 * (1 - eased * 0.85));
+            s3Bubbles.forEach(b => { b.style.opacity = String(1 - eased * 0.9); b.style.transition = 'none'; });
+            if (t < 1) { requestAnimationFrame(tick); }
+            else {
+              s3Counter.textContent = '32k';
+              s3Counter.style.opacity = '1';
+              s3Counter.style.transition = 'none';
+              s3Bubbles.forEach(b => { b.style.transition = 'opacity 1s ease'; b.style.opacity = '0.15'; });
+              setTimeout(() => s3Text.classList.add('s3-text-show'), 300);
+            }
+          }
+          requestAnimationFrame(tick);
+        }, 1200);
+      } else if (!e.isIntersecting && e.boundingClientRect.top < 0) {
+        s3El.classList.remove('s3-in-view');
+      }
+    }, { threshold: 0.1 });
+    s3Obs.observe(s3El);
+  }
+
+  // Section 4 scroll-triggered animations
+  const s4El = document.getElementById('s4');
+  if (s4El) {
+    new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) {
+        s4El.classList.add('s4-in-view');
+      } else if (e.boundingClientRect.top < 0) {
+        s4El.classList.remove('s4-in-view');
+      }
+    }, { threshold: 0.1 }).observe(s4El);
+  }
+
+  // Section 5 scroll-triggered animations
+  const s5El = document.getElementById('s5');
+  if (s5El) {
+    new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) {
+        s5El.classList.add('s5-in-view');
+      } else if (e.boundingClientRect.top < 0) {
+        s5El.classList.remove('s5-in-view');
+      }
+    }, { threshold: 0.1 }).observe(s5El);
+  }
+
+  // Section 6 scroll-triggered animations
+  const s6El = document.getElementById('s6');
+  if (s6El) {
+    new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) {
+        s6El.classList.add('s6-in-view');
+      } else if (e.boundingClientRect.top < 0) {
+        s6El.classList.remove('s6-in-view');
+      }
+    }, { threshold: 0.1 }).observe(s6El);
+  }
+
+  // ── Animated wave lines: flat line morphs into flowing waves ──
+  document.querySelectorAll('.wave-canvas').forEach(canvas => {
+    const ctx = canvas.getContext('2d');
+    const dpr = window.devicePixelRatio || 1;
+    const startTime = performance.now();
+
+    function resize() {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      canvas.style.width = rect.width + 'px';
+      canvas.style.height = rect.height + 'px';
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    function draw(time) {
+      const w = canvas.width / dpr;
+      const h = canvas.height / dpr;
+      const cy = h / 2;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, w, h);
+
+      // Morph from flat to wavy over 2.5s
+      const elapsed = time - startTime;
+      const morph = Math.min(elapsed / 2500, 1);
+      const eased = 1 - Math.pow(1 - morph, 3);
+      const phase = time * 0.0008;
+
+      // Cyan wave
+      ctx.beginPath();
+      ctx.strokeStyle = '#00B2E4';
+      ctx.lineWidth = 2;
+      ctx.globalAlpha = 0.8;
+      for (let x = 0; x <= w; x += 2) {
+        const y = cy + eased * 55 * Math.sin((x / w) * Math.PI * 3 + phase);
+        x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+
+      // Orange wave
+      ctx.beginPath();
+      ctx.strokeStyle = '#FEA153';
+      ctx.lineWidth = 1.5;
+      ctx.globalAlpha = 0.28;
+      for (let x = 0; x <= w; x += 2) {
+        const y = cy + eased * 40 * Math.sin((x / w) * Math.PI * 2.5 + phase * 0.7 + 1.5);
+        x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+
+      requestAnimationFrame(draw);
+    }
+    requestAnimationFrame(draw);
+  });
+
+  // Section 7 scroll + carousel
+  const s7El = document.getElementById('s7');
+  if (s7El) {
+    new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) {
+        s7El.classList.add('s7-in-view');
+      } else if (e.boundingClientRect.top < 0) {
+        s7El.classList.remove('s7-in-view');
+      }
+    }, { threshold: 0.1 }).observe(s7El);
+  }
+  const s7Wrap = document.getElementById('s7Wrap');
+  const s7Carousel = document.getElementById('s7Carousel');
+  if (s7Wrap && s7Carousel) {
+    let s7Drag = false, s7StartX = 0, s7ScrollStart = 0;
+    s7Carousel.addEventListener('mousedown', (e) => {
+      s7Drag = true; s7StartX = e.clientX; s7ScrollStart = s7Wrap.scrollLeft;
+      s7Carousel.classList.add('dragging');
+    });
+    window.addEventListener('mousemove', (e) => { if (s7Drag) s7Wrap.scrollLeft = s7ScrollStart - (e.clientX - s7StartX); });
+    window.addEventListener('mouseup', () => { s7Drag = false; s7Carousel.classList.remove('dragging'); });
+    let s7Dir = 1;
+    setInterval(() => {
+      if (s7Drag) return;
+      s7Wrap.scrollLeft += s7Dir;
+      if (s7Wrap.scrollLeft >= s7Wrap.scrollWidth - s7Wrap.clientWidth) s7Dir = -1;
+      if (s7Wrap.scrollLeft <= 0) s7Dir = 1;
+    }, 30);
+  }
+
+  // Section 8 scroll + video
+  const s8El = document.getElementById('s8');
+  if (s8El) {
+    new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) {
+        s8El.classList.add('s8-in-view');
+      } else if (e.boundingClientRect.top < 0) {
+        s8El.classList.remove('s8-in-view');
+      }
+    }, { threshold: 0.1 }).observe(s8El);
+  }
+  const s8Video = document.getElementById('s8Video');
+  if (s8Video) {
+    let s8Playing = false;
+    s8Video.addEventListener('click', () => {
+      if (s8Playing) return;
+      s8Playing = true;
+      const thumb = s8Video.querySelector('.s8-thumb');
+      const quote = s8Video.querySelector('.s8-quote');
+      const playBtn = s8Video.querySelector('.s8-play');
+      thumb.style.display = 'none';
+      if (quote) quote.style.display = 'none';
+      if (playBtn) playBtn.style.display = 'none';
+      const iframe = document.createElement('iframe');
+      iframe.src = 'https://www.youtube.com/embed/BAh55muTMPY?autoplay=1&start=10';
+      iframe.style.cssText = 'width:100%;height:100%;position:absolute;top:0;left:0;border:none;border-radius:32px;';
+      iframe.allow = 'autoplay; encrypted-media';
+      iframe.allowFullscreen = true;
+      s8Video.style.aspectRatio = '16/9';
+      s8Video.appendChild(iframe);
+    });
+  }
+
+  // Section 9 scroll + carousel + lightbox
+  const s9El = document.getElementById('s9');
+  if (s9El) {
+    new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) {
+        s9El.classList.add('s9-in-view');
+      } else if (e.boundingClientRect.top < 0) {
+        s9El.classList.remove('s9-in-view');
+      }
+    }, { threshold: 0.05 }).observe(s9El);
+  }
+  const s9Wrap = document.getElementById('s9Wrap');
+  const s9Cards = document.getElementById('s9Cards');
+  const s9DotsC = document.getElementById('s9Dots');
+  if (s9Wrap && s9Cards) {
+    const s9CardW = 389 + 24;
+    const s9Visible = Math.floor(s9Wrap.clientWidth / s9CardW) || 3;
+    const s9Total = s9Cards.querySelectorAll('.s9-card').length;
+    const s9Slides = Math.max(1, s9Total - s9Visible + 1);
+    let s9Current = 0;
+    for (let i = 0; i < s9Slides; i++) {
+      const d = document.createElement('button');
+      d.className = 's9-dot' + (i === 0 ? ' active' : '');
+      d.addEventListener('click', () => s9GoTo(i));
+      s9DotsC.appendChild(d);
+    }
+    function s9GoTo(i) {
+      s9Current = Math.max(0, Math.min(i, s9Slides - 1));
+      s9Wrap.scrollTo({ left: s9Current * s9CardW, behavior: 'smooth' });
+      s9DotsC.querySelectorAll('.s9-dot').forEach((d, idx) => d.classList.toggle('active', idx === s9Current));
+    }
+    document.querySelector('.s9-prev')?.addEventListener('click', () => s9GoTo(s9Current - 1));
+    document.querySelector('.s9-next')?.addEventListener('click', () => s9GoTo(s9Current + 1));
+    let s9Drag = false, s9StartX = 0, s9ScrollS = 0;
+    s9Cards.addEventListener('mousedown', e => { s9Drag = true; s9StartX = e.clientX; s9ScrollS = s9Wrap.scrollLeft; s9Cards.classList.add('dragging'); });
+    window.addEventListener('mousemove', e => { if (s9Drag) s9Wrap.scrollLeft = s9ScrollS - (e.clientX - s9StartX); });
+    window.addEventListener('mouseup', () => { s9Drag = false; s9Cards.classList.remove('dragging'); });
+  }
+  // Lightbox
+  const s9Lb = document.getElementById('s9Lightbox');
+  const s9LbImg = document.getElementById('s9LbImg');
+  const s9LbTitle = document.getElementById('s9LbTitle');
+  const s9LbDesc = document.getElementById('s9LbDesc');
+  const s9CardEls = document.querySelectorAll('.s9-card');
+  let s9LbIdx = 0;
+  const s9Data = [];
+  s9CardEls.forEach(c => {
+    s9Data.push({
+      src: c.querySelector('.s9-card-img img')?.src || '',
+      title: c.querySelector('.s9-card-label-text')?.textContent || '',
+      desc: c.querySelector('.s9-card-desc')?.textContent || ''
+    });
+  });
+  function s9OpenLb(i) {
+    s9LbIdx = i;
+    s9LbImg.src = s9Data[i].src;
+    s9LbTitle.textContent = s9Data[i].title;
+    s9LbDesc.textContent = s9Data[i].desc;
+    s9Lb.classList.add('open');
+  }
+  s9CardEls.forEach((c, i) => c.addEventListener('click', () => s9OpenLb(i)));
+  document.getElementById('s9LbClose')?.addEventListener('click', () => s9Lb.classList.remove('open'));
+  s9Lb?.addEventListener('click', e => { if (e.target === s9Lb) s9Lb.classList.remove('open'); });
+  document.getElementById('s9LbPrev')?.addEventListener('click', e => { e.stopPropagation(); s9OpenLb((s9LbIdx - 1 + s9Data.length) % s9Data.length); });
+  document.getElementById('s9LbNext')?.addEventListener('click', e => { e.stopPropagation(); s9OpenLb((s9LbIdx + 1) % s9Data.length); });
+  document.addEventListener('keydown', e => {
+    if (!s9Lb?.classList.contains('open')) return;
+    if (e.key === 'Escape') s9Lb.classList.remove('open');
+    if (e.key === 'ArrowLeft') s9OpenLb((s9LbIdx - 1 + s9Data.length) % s9Data.length);
+    if (e.key === 'ArrowRight') s9OpenLb((s9LbIdx + 1) % s9Data.length);
+  });
+
+  // Section 10
+  const s10El = document.getElementById('s10');
+  if (s10El) {
+    new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) {
+        s10El.classList.add('s10-in-view');
+      } else if (e.boundingClientRect.top < 0) {
+        s10El.classList.remove('s10-in-view');
+      }
+    }, { threshold: 0.05 }).observe(s10El);
+  }
+
+  // Section 11 — testimonials
+  const s11El = document.getElementById('s11');
+  if (s11El) {
+    new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) {
+        s11El.classList.add('s11-in-view');
+      } else if (e.boundingClientRect.top < 0) {
+        s11El.classList.remove('s11-in-view');
+      }
+    }, { threshold: 0.05 }).observe(s11El);
+  }
+  // S11 wave bg
+  const s11wc = document.getElementById('s11WaveCanvas');
+  if (s11wc) {
+    const s11ctx = s11wc.getContext('2d');
+    const s11dpr = window.devicePixelRatio || 1;
+    function s11Resize() { const r = s11wc.parentElement.getBoundingClientRect(); s11wc.width = r.width * s11dpr; s11wc.height = r.height * s11dpr; }
+    s11Resize(); window.addEventListener('resize', s11Resize);
+    const s11t0 = performance.now();
+    function s11Draw(t) {
+      const w = s11wc.width / s11dpr, h = s11wc.height / s11dpr;
+      s11ctx.setTransform(s11dpr,0,0,s11dpr,0,0); s11ctx.clearRect(0,0,w,h);
+      const p = (t - s11t0) * 0.0008;
+      s11ctx.beginPath(); s11ctx.strokeStyle='#00B2E4'; s11ctx.lineWidth=2; s11ctx.globalAlpha=0.15;
+      for(let x=0;x<=w;x+=2){const y=h*0.55+40*Math.sin((x/w)*Math.PI*3+p);x===0?s11ctx.moveTo(x,y):s11ctx.lineTo(x,y);} s11ctx.stroke();
+      s11ctx.beginPath(); s11ctx.globalAlpha=0.1;
+      for(let x=0;x<=w;x+=2){const y=h*0.45+35*Math.sin((x/w)*Math.PI*2.5+p*0.8+1);x===0?s11ctx.moveTo(x,y):s11ctx.lineTo(x,y);} s11ctx.stroke();
+      s11ctx.beginPath(); s11ctx.strokeStyle='#FEA153'; s11ctx.lineWidth=1.5; s11ctx.globalAlpha=0.12;
+      for(let x=0;x<=w;x+=2){const y=h*0.5+45*Math.sin((x/w)*Math.PI*2.5+p*0.6+1.5);x===0?s11ctx.moveTo(x,y):s11ctx.lineTo(x,y);} s11ctx.stroke(); s11ctx.globalAlpha=1;
+      requestAnimationFrame(s11Draw);
+    }
+    requestAnimationFrame(s11Draw);
+  }
+  // S11 video popup — DISABLED (testimonial section shows photo only, no video).
+  // Hide the play overlay + remove pointer cursor so the area renders as a static photo.
+  const s11Featured = document.getElementById('s11Featured');
+  if (s11Featured) {
+    const playEl = s11Featured.querySelector('.s11-featured-play');
+    if (playEl) playEl.style.display = 'none';
+    s11Featured.style.cursor = 'default';
+  }
+  // S11 card carousel
+  const s11Wrap = document.getElementById('s11Wrap');
+  const s11Cards = document.getElementById('s11Cards');
+  const s11DotsC = document.getElementById('s11Dots');
+  if (s11Wrap && s11Cards) {
+    const s11cw = 376 + 20, s11total = s11Cards.querySelectorAll('.s11-card').length;
+    const s11vis = 2, s11slides = Math.max(1, s11total - s11vis + 1);
+    let s11cur = 0;
+    for (let i = 0; i < s11slides; i++) {
+      const d = document.createElement('button');
+      d.className = 's11-dot' + (i === 0 ? ' active' : '');
+      d.addEventListener('click', () => s11Go(i));
+      s11DotsC.appendChild(d);
+    }
+    function s11Go(i) {
+      s11cur = Math.max(0, Math.min(i, s11slides - 1));
+      s11Wrap.scrollTo({ left: s11cur * s11cw, behavior: 'smooth' });
+      s11DotsC.querySelectorAll('.s11-dot').forEach((d, idx) => d.classList.toggle('active', idx === s11cur));
+    }
+    document.querySelector('.s11-prev')?.addEventListener('click', () => s11Go(s11cur - 1));
+    document.querySelector('.s11-next')?.addEventListener('click', () => s11Go(s11cur + 1));
+    let s11drag = false, s11sx = 0, s11ss = 0;
+    s11Cards.addEventListener('mousedown', e => { s11drag = true; s11sx = e.clientX; s11ss = s11Wrap.scrollLeft; s11Cards.classList.add('dragging'); });
+    window.addEventListener('mousemove', e => { if (s11drag) s11Wrap.scrollLeft = s11ss - (e.clientX - s11sx); });
+    window.addEventListener('mouseup', () => { s11drag = false; s11Cards.classList.remove('dragging'); });
+  }
+
+  // Hero soundwave animation
+  const hwc = document.getElementById('heroWaveCanvas');
+  if (hwc) {
+    const hctx = hwc.getContext('2d');
+    const hdpr = window.devicePixelRatio || 1;
+    function hResize() {
+      const r = hwc.parentElement.getBoundingClientRect();
+      hwc.width = r.width * hdpr;
+      hwc.height = r.height * hdpr;
+    }
+    hResize();
+    window.addEventListener('resize', hResize);
+
+    // Generate random bar heights for waveform pattern
+    const barCount = 120;
+    const bars = [];
+    for (let i = 0; i < barCount; i++) {
+      const envelope = Math.sin((i / barCount) * Math.PI);
+      bars.push(envelope * (0.3 + Math.random() * 0.7));
+    }
+
+    const ht0 = performance.now();
+    function hDraw(t) {
+      const w = hwc.width / hdpr;
+      const h = hwc.height / hdpr;
+      const cy = h * 0.5;
+      hctx.setTransform(hdpr, 0, 0, hdpr, 0, 0);
+      hctx.clearRect(0, 0, w, h);
+
+      const elapsed = (t - ht0) * 0.00008;
+      const barW = 7;
+      const gap = 3;
+      const step = barW + gap;
+      const totalW = barCount * step;
+      const offset = (elapsed * totalW) % totalW;
+
+      // Wave 1 — #007799 teal (80% transparent)
+      hctx.fillStyle = 'rgba(0, 119, 153, 0.10)';
+      for (let i = 0; i < barCount + Math.ceil(w / step); i++) {
+        const x = i * step - offset;
+        if (x < -step || x > w + step) continue;
+        const idx = i % barCount;
+        const barH = bars[idx] * h * 0.7;
+        const osc = Math.sin(t * 0.002 + i * 0.3) * 8;
+        const finalH = Math.max(4, barH + osc);
+        hctx.fillRect(x, cy - finalH / 2, barW, finalH);
+      }
+
+      // Wave 2 — #F5B839 gold
+      const offset2 = (elapsed * totalW * 0.7 + totalW * 0.4) % totalW;
+      // Wave 2 — #F5B839 gold (80% transparent)
+      hctx.fillStyle = 'rgba(245, 184, 57, 0.10)';
+      for (let i = 0; i < barCount + Math.ceil(w / step); i++) {
+        const x = i * step - offset2;
+        if (x < -step || x > w + step) continue;
+        const idx = (i + 40) % barCount;
+        const barH = bars[idx] * h * 0.55;
+        const osc = Math.sin(t * 0.0018 + i * 0.35 + 2) * 6;
+        const finalH = Math.max(3, barH + osc);
+        hctx.fillRect(x, cy - finalH / 2, barW, finalH);
+      }
+
+      requestAnimationFrame(hDraw);
+    }
+    requestAnimationFrame(hDraw);
+  }
+
+  // Regular-page helpers for index4
+  const backToTopBtn = document.getElementById('backToTop');
+  if (backToTopBtn) {
+    backToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    window.addEventListener('scroll', () => {
+      backToTopBtn.classList.toggle('visible', window.scrollY > 500);
+    }, { passive: true });
+  }
+
+  // Query selectors at call time — SiteFooter renders #contact AFTER this
+  // inline script, so capturing element refs at load time produces []
+  const darkSectionSelectors = ['.s6-stats-scroll-section', '#contact'];
+  const updateDarkTheme = () => {
+    const midpoint = window.innerHeight * 0.45;
+    const els = darkSectionSelectors.map(s => document.querySelector(s)).filter(Boolean);
+    const hasDark = Boolean(window.duetStoryDark) || els.some(el => {
+      const rect = el.getBoundingClientRect();
+      const storyPart = el.closest('.duet-story-stage > .snap-section');
+      const storyPartOpacity = storyPart ? Number(getComputedStyle(storyPart).opacity) : 1;
+      return rect.top <= midpoint && rect.bottom >= midpoint && storyPartOpacity > 0.5;
+    });
+    document.documentElement.classList.toggle('dark-slide', hasDark);
+  };
+  window.duetSyncDarkTheme = updateDarkTheme;
+  window.addEventListener('scroll', updateDarkTheme, { passive: true });
+  window.addEventListener('resize', updateDarkTheme);
+  updateDarkTheme();
+
+  // Top chrome lives at body level so sections can't bury it.
+  const announceBar = document.querySelector('.announce-bar');
+  const siteHeaderEl = document.querySelector('.site-header');
+  if (announceBar && announceBar.parentElement !== document.body) {
+    document.body.appendChild(announceBar);
+  }
+  if (siteHeaderEl && siteHeaderEl.parentElement !== document.body) {
+    document.body.appendChild(siteHeaderEl);
+  }
+  const syncHeaderOffset = () => {
+    const announceHeight = announceBar &&
+      announceBar.style.display !== 'none' &&
+      !announceBar.classList.contains('hero-hidden')
+      ? `${announceBar.offsetHeight}px`
+      : '0px';
+    document.documentElement.style.setProperty('--header-top-offset', announceHeight);
+  };
+  syncHeaderOffset();
+
+  // Sticky header — toggle scrolled class when hero leaves viewport
+  const siteHeader = document.querySelector('.site-header');
+  const heroSection = document.querySelector('.hero');
+  if (siteHeader && heroSection) {
+    const heroObs = new IntersectionObserver(([e]) => {
+      const showAnnounce = e.isIntersecting && e.intersectionRatio >= 0.45;
+      announceBar?.classList.toggle('hero-hidden', !showAnnounce);
+      siteHeader.classList.toggle('scrolled', !e.isIntersecting || e.intersectionRatio < 0.5);
+      syncHeaderOffset();
+    }, { threshold: [0, 0.5, 1] });
+    heroObs.observe(heroSection);
+  } else if (siteHeader) {
+    window.addEventListener('scroll', () => {
+      siteHeader.classList.toggle('scrolled', window.scrollY > 100);
+    });
+  }
+
+  // Announce bar dismiss
+  if (announceBar) {
+    announceBar.querySelector('.announce-close')?.addEventListener('click', () => {
+      announceBar.style.display = 'none';
+      syncHeaderOffset();
+    });
+  }
+
+  // Universal scroll animation observer
+  (function() {
+    const animEls = document.querySelectorAll('[data-anim]');
+    if (!animEls.length) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.remove('anim-exit');
+          entry.target.classList.add('anim-visible');
+        } else if (entry.boundingClientRect.top < 0) {
+          // Scrolled past — exit upward
+          entry.target.classList.remove('anim-visible');
+          entry.target.classList.add('anim-exit');
+        } else {
+          // Below viewport — reset so it can re-enter
+          entry.target.classList.remove('anim-visible', 'anim-exit');
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+
+    animEls.forEach(el => observer.observe(el));
+  })();
+</script>
+</Base>

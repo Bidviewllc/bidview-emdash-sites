@@ -1,0 +1,362 @@
+---
+import Interior from './Interior.astro';
+
+export interface Props {
+  name: string;
+  title?: string;
+  credentials?: string;
+  initials: string;
+  breadcrumbCategory: 'Audiologists' | 'Team';
+  breadcrumbHref: '/audiologist/' | '/team/';
+  category: string;
+  pageTitle: string;
+  description?: string;
+  schoolLabel?: string;
+  schoolValue?: string;
+  yearsLabel?: string;
+  yearsValue?: string;
+  photo?: string;
+  sidebarImage?: string;
+  jobTitle?: string;          // used in Person schema
+  worksFor?: string;          // legal employer name in Person schema
+}
+const {
+  name, title, credentials, initials, breadcrumbCategory, breadcrumbHref, category, pageTitle,
+  description, schoolLabel = 'Education', schoolValue, yearsLabel = 'Experience', yearsValue,
+  photo, sidebarImage = '/s9-card-1.jpg', jobTitle, worksFor = 'Duet Hearing'
+} = Astro.props;
+
+const SITE_URL = 'https://duethearing.com';
+const isDoctor = breadcrumbCategory === 'Audiologists';
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': isDoctor ? 'Physician' : 'Person',
+  name,
+  ...(jobTitle || title ? { jobTitle: jobTitle || title } : {}),
+  ...(photo ? { image: new URL(photo, SITE_URL).toString() } : {}),
+  worksFor: {
+    '@type': 'MedicalBusiness',
+    '@id': `${SITE_URL}/#organization`,
+    name: worksFor,
+  },
+  ...(isDoctor && credentials ? { hasCredential: credentials.split(',').map((c) => c.trim()).filter(Boolean) } : {}),
+  ...(isDoctor ? { medicalSpecialty: 'Audiology' } : {}),
+  url: new URL(Astro.url.pathname, SITE_URL).toString(),
+};
+
+const pageDescription = description ||
+  `${name}${title ? `, ${title}` : ''} at Duet Hearing in Lake Forest, IL. ${isDoctor ? 'Schedule an audiology consultation today.' : 'Part of the Duet Hearing leadership team.'}`;
+---
+<Interior
+  title={pageTitle}
+  description={pageDescription}
+  ogType="profile"
+  ogImage={photo}
+  schema={personSchema}
+>
+
+<section class="page-hero person-hero" data-screen-label="Profile hero">
+  <div class="page-hero-inner">
+  <div class="page-hero-text">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span class="sep">/</span>
+      <a href={breadcrumbHref}>{breadcrumbCategory}</a>
+      <span class="sep">/</span>
+      <span class="current">{name}</span>
+    </nav>
+
+    {credentials && <p class="person-credentials">{credentials}</p>}
+    <h1 class="page-title person-name">{name}</h1>
+    <div class="page-underline"></div>
+    {title && <p class="page-dek person-title">{title}</p>}
+  </div>
+
+  <div class="page-hero-media" aria-hidden="true">
+    <div class={photo ? 'person-photo person-photo--has-image' : 'person-photo'}>
+      {photo ? (
+        <img src={photo} alt={name} />
+      ) : (
+        <span class="person-photo-initials">{initials}</span>
+      )}
+    </div>
+  </div>
+
+  <div class="article-meta">
+    <div class="meta-author">
+      <span class="meta-avatar" aria-hidden="true">{initials}</span>
+      <span class="meta-author-block">
+        <span class="meta-label">Role</span>
+        <span class="meta-name">{title || category}</span>
+      </span>
+    </div>
+    {schoolValue && (
+      <>
+        <div class="meta-divider" aria-hidden="true"></div>
+        <div class="meta-stat">
+          <span class="meta-stat-icon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <path d="M12 3 L2 9 L12 15 L22 9 Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+              <path d="M6 11 V17 C6 17 8 19 12 19 C16 19 18 17 18 17 V11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="meta-stat-block">
+            <span class="meta-label">{schoolLabel}</span>
+            <span class="meta-value">{schoolValue}</span>
+          </span>
+        </div>
+      </>
+    )}
+    {yearsValue && (
+      <>
+        <div class="meta-divider" aria-hidden="true"></div>
+        <div class="meta-stat">
+          <span class="meta-stat-icon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/>
+              <path d="M12 7v5l3 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="meta-stat-block">
+            <span class="meta-label">{yearsLabel}</span>
+            <span class="meta-value">{yearsValue}</span>
+          </span>
+        </div>
+      </>
+    )}
+    <span class="meta-pill">{category}</span>
+  </div>
+  </div>
+</section>
+
+<div class="hero-curve curve-arch" aria-hidden="true"></div>
+
+<main class="interior-main">
+  <div class="interior-main-inner">
+
+    <article class="article-col person-article">
+      <slot />
+    </article>
+
+    <aside class="sidebar person-sidebar">
+      <div class="side-cta">
+        <div class="side-cta-image" aria-hidden="true">
+          <img src={sidebarImage} alt="" />
+        </div>
+        <div class="side-cta-body">
+          <h3>Schedule your first visit</h3>
+          <p>Begin with a one-on-one consult to discuss your hearing health goals.</p>
+          <a class="btn-schedule" href="#">
+            <span class="btn-schedule-text">Schedule</span>
+            <span class="btn-arrow" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M5 12H19" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+                <path d="M14 7L19 12L14 17" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </a>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+</main>
+
+</Interior>
+
+<style is:global>
+  .person-credentials {
+    font-family: 'Alternate Gothic', 'Barlow Condensed', sans-serif !important;
+    font-size: 14px !important;
+    letter-spacing: 1.8px !important;
+    text-transform: uppercase !important;
+    color: #00B2E4 !important;
+    margin: 0 0 10px !important;
+  }
+  .person-name { margin: 0 0 8px !important; }
+  .person-title {
+    font-size: 18px !important;
+    color: #4E5779 !important;
+    font-style: italic;
+  }
+  .person-photo {
+    width: 100%;
+    height: 100%;
+    min-height: 360px;
+    aspect-ratio: 4 / 5;
+    border-radius: 24px;
+    background: linear-gradient(135deg, #00B2E4 0%, #0096C2 60%, #007799 100%);
+    box-shadow: 0 12px 40px rgba(0, 178, 228, 0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .person-photo:not(.person-photo--has-image)::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 30% 25%, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 60%);
+    pointer-events: none;
+  }
+  .person-photo--has-image {
+    background: #F3FAFF;
+    box-shadow: 0 12px 40px rgba(33, 39, 63, 0.08);
+  }
+  .person-photo--has-image img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center top !important;
+    display: block;
+  }
+  .person-photo-initials {
+    font-family: 'Alternate Gothic', 'Barlow Condensed', sans-serif !important;
+    font-size: 120px !important;
+    color: #ffffff !important;
+    letter-spacing: 2px !important;
+    line-height: 1 !important;
+    text-shadow: 0 4px 24px rgba(0,0,0,0.15);
+  }
+  .person-article :where(h2) {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-size: 28px !important;
+    font-weight: 600 !important;
+    color: #21273F !important;
+    margin: 32px 0 16px !important;
+    line-height: 1.2 !important;
+  }
+  .person-article :where(h2):first-child { margin-top: 0 !important; }
+  .person-article :where(h3) {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-size: 20px !important;
+    font-weight: 600 !important;
+    color: #21273F !important;
+    margin: 24px 0 12px !important;
+  }
+  .person-article :where(p) {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-size: 17px !important;
+    line-height: 1.7 !important;
+    color: #4E5779 !important;
+    margin: 0 0 16px !important;
+  }
+  .person-article :where(ul) {
+    list-style: none;
+    padding: 0;
+    margin: 16px 0 24px;
+  }
+  .person-article :where(ul li) {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-size: 17px !important;
+    line-height: 1.6 !important;
+    color: #4E5779 !important;
+    padding-left: 28px;
+    position: relative;
+    margin-bottom: 10px;
+  }
+  .person-article :where(ul li)::before {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 11px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #00B2E4;
+  }
+  .person-article :where(blockquote) {
+    margin: 28px 0;
+    padding: 24px 28px;
+    border-left: 4px solid #00B2E4;
+    background: #F3FAFF;
+    border-radius: 0 16px 16px 0;
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-size: 19px !important;
+    font-style: italic;
+    color: #21273F !important;
+    line-height: 1.5 !important;
+  }
+  .person-sidebar .side-cta {
+    background: #00B2E4;
+    color: #ffffff;
+    border-radius: 24px;
+    overflow: hidden;
+    position: sticky;
+    top: 100px;
+  }
+  .person-sidebar .side-cta-image {
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+    position: relative;
+  }
+  .person-sidebar .side-cta-image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0,178,228,0) 60%, rgba(0,178,228,0.65) 100%);
+  }
+  .person-sidebar .side-cta-image img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block;
+  }
+  .person-sidebar .side-cta-body { padding: 24px 28px 28px; }
+  .person-sidebar .cta-eyebrow {
+    font-family: 'Alternate Gothic', 'Barlow Condensed', sans-serif !important;
+    font-size: 13px !important;
+    letter-spacing: 1.5px !important;
+    text-transform: uppercase !important;
+    color: rgba(255,255,255,0.85) !important;
+    margin: 0 0 8px !important;
+  }
+  .person-sidebar h3 {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-size: 24px !important;
+    font-weight: 600 !important;
+    color: #ffffff !important;
+    margin: 0 0 12px !important;
+    line-height: 1.2 !important;
+  }
+  .person-sidebar p {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-size: 15px !important;
+    line-height: 1.5 !important;
+    color: rgba(255,255,255,0.92) !important;
+    margin: 0 0 20px !important;
+  }
+  .person-sidebar .btn-schedule {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    background: #21273F !important;
+    color: #ffffff !important;
+    padding: 12px 8px 12px 18px !important;
+    border-radius: 100px !important;
+    text-decoration: none !important;
+  }
+  .person-sidebar .btn-schedule-text {
+    font-family: 'Alternate Gothic', 'Barlow Condensed', sans-serif !important;
+    font-size: 18px !important;
+    color: #ffffff !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+  }
+  .person-sidebar .btn-arrow {
+    width: 36px;
+    height: 36px;
+    background: #FEA153;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  @media (max-width: 1024px) {
+    .person-photo { min-height: 280px; }
+    .person-photo-initials { font-size: 92px !important; }
+    .person-sidebar .side-cta { position: static; }
+  }
+</style>

@@ -1,0 +1,81 @@
+---
+import ServicePage from '../layouts/ServicePage.astro';
+
+const description = "The inner ear contains the vestibular system that maintains balance and spatial orientation. DUET views balance as another essential Ear to Brain system, requiring precise integration of vestibular, visual, sensory, and neurologic information.";
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'MedicalCondition',
+  name: 'Balance & Vestibular Disorders',
+  description,
+  url: 'https://duethearing.com/balance-vestibular-disorders/',
+};
+---
+<ServicePage
+  pageTitle="Balance &amp; Vestibular Disorders | Duet Hearing"
+  description={description}
+  parentLabel="Hearing &amp; Tinnitus"
+  currentLabel="Balance &amp; Vestibular Disorders"
+  pageHeading="Balance &amp; Vestibular Function"
+  sidebarImage="/s9-card-5.jpg"
+  schema={schema}
+>
+
+  <p class="service-intro">The inner ear contains not only the organs responsible for hearing, but also a sophisticated balance system known as the vestibular system.</p>
+
+  <section class="service-block">
+    <h2>This remarkable sensory system continuously provides information to the brain regarding:</h2>
+    <ul>
+      <li>Head position</li>
+      <li>Movement</li>
+      <li>Spatial orientation</li>
+      <li>Postural stability</li>
+      <li>Motion detection</li>
+    </ul>
+    <p>The vestibular system works closely with the:</p>
+    <ul>
+      <li>Eyes</li>
+      <li>Brain</li>
+      <li>Muscles and joints</li>
+      <li>Nervous system</li>
+    </ul>
+    <p>to help maintain balance, coordination, and safe movement through the environment.</p>
+  </section>
+
+  <section class="service-block">
+    <h2>When vestibular function is disrupted, individuals may experience:</h2>
+    <ul>
+      <li>Dizziness</li>
+      <li>Vertigo</li>
+      <li>Imbalance</li>
+      <li>Motion sensitivity</li>
+      <li>Difficulty walking in busy environments</li>
+      <li>Unsteadiness</li>
+      <li>Falls or fear of falling</li>
+      <li>Visual motion intolerance</li>
+      <li>Cognitive fatigue or "brain fog"</li>
+    </ul>
+    <p>Because hearing and balance structures share the same inner ear environment, conditions affecting one system may sometimes influence the other.</p>
+  </section>
+
+  <section class="service-block">
+    <h2>Biologic contributors to vestibular dysfunction may include:</h2>
+    <ul>
+      <li>Aging-related sensory decline</li>
+      <li>Inflammation</li>
+      <li>Autoimmune disorders</li>
+      <li>Migraine-related vestibular changes</li>
+      <li>Concussion</li>
+      <li>Viral illness</li>
+      <li>Circulatory dysfunction</li>
+      <li>Inner ear disorders</li>
+    </ul>
+    <p>Emerging research suggests that vestibular function may also influence cognitive performance, spatial memory, attention, and overall brain health.</p>
+  </section>
+
+  <section class="service-block">
+    <p>At DUET Hearing Preservation, we view balance as another essential Ear to Brain system. Just as hearing requires accurate communication between the ear and the brain, balance depends on precise integration of vestibular, visual, sensory, and neurologic information.</p>
+    <p>Our biologic approach recognizes that balance, hearing, cognition, and quality of life are deeply interconnected components of lifelong sensory wellness.</p>
+  </section>
+
+</ServicePage>

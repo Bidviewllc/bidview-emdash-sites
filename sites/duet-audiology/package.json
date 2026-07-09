@@ -1,0 +1,19 @@
+{
+  "name": "duet-audiology",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "deploy": "wrangler deploy"
+  },
+  "dependencies": {
+    "@astrojs/cloudflare": "^13.1.6",
+    "astro": "^6.1.2"
+  },
+  "devDependencies": {
+    "wrangler": "^4.79.0"
+  }
+}

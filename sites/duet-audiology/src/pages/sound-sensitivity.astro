@@ -1,0 +1,60 @@
+---
+import ServicePage from '../layouts/ServicePage.astro';
+
+const description = "Sound sensitivity (hyperacusis) occurs when everyday sounds are perceived as unusually loud, uncomfortable, overwhelming, or even painful. DUET views it as an Ear to Brain issue involving auditory perception, neural regulation, and listening comfort.";
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'MedicalCondition',
+  name: 'Sound Sensitivity (Hyperacusis)',
+  description,
+  url: 'https://duethearing.com/sound-sensitivity/',
+};
+---
+<ServicePage
+  pageTitle="Sound Sensitivity (Hyperacusis) | Duet Hearing"
+  description={description}
+  parentLabel="Hearing &amp; Tinnitus"
+  currentLabel="Sound Sensitivity"
+  pageHeading="Sound Sensitivity (Hyperacusis) &amp; Auditory Overload"
+  sidebarImage="/s9-card-2.jpg"
+  schema={schema}
+>
+
+  <p class="service-intro">Sound sensitivity, sometimes referred to as hyperacusis, occurs when everyday sounds are perceived as unusually loud, uncomfortable, overwhelming, or even painful.</p>
+
+  <p class="service-intro">While often associated with hearing disorders, sound sensitivity is increasingly understood as a complex neurologic and auditory processing condition involving both the ear and the brain.</p>
+
+  <section class="service-block">
+    <h2>Individuals with sound sensitivity may experience:</h2>
+    <ul>
+      <li>Discomfort from everyday environmental sounds</li>
+      <li>Difficulty tolerating crowded or noisy environments</li>
+      <li>Increased listening fatigue</li>
+      <li>Startle responses to sudden sounds</li>
+      <li>Difficulty concentrating in sound-rich environments</li>
+      <li>Anxiety or avoidance of social situations</li>
+      <li>Coexisting tinnitus</li>
+    </ul>
+  </section>
+
+  <section class="service-block">
+    <h2>Sound sensitivity may be associated with:</h2>
+    <ul>
+      <li>Noise exposure</li>
+      <li>Concussion or traumatic brain injury</li>
+      <li>Migraine disorders</li>
+      <li>Auditory processing dysfunction</li>
+      <li>Vestibular disorders</li>
+      <li>Tinnitus</li>
+      <li>Neurologic stress responses</li>
+      <li>Changes in auditory gain regulation within the central nervous system</li>
+    </ul>
+    <p>Research suggests that in some individuals, the brain may amplify sound signals differently, causing normal environmental sounds to feel excessive or overwhelming.</p>
+  </section>
+
+  <section class="service-block">
+    <p>At DUET Hearing Preservation, we view sound sensitivity as an Ear to Brain issue involving auditory perception, neural regulation, and listening comfort. Our goal is to better understand the biologic and neurologic contributors to sound sensitivity and develop individualized strategies that support comfortable listening and improved quality of life.</p>
+  </section>
+
+</ServicePage>

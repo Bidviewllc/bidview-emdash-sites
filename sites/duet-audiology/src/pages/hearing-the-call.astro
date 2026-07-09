@@ -1,0 +1,32 @@
+---
+import ServicePage from '../layouts/ServicePage.astro';
+
+const description = "DUET's commitment to hearing health extends beyond the clinic through Hearing the Call, a global humanitarian initiative expanding access to audiological services in underserved communities worldwide.";
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: 'Hearing The Call — Global Impact',
+  description,
+  url: 'https://duethearing.com/hearing-the-call/',
+};
+---
+<ServicePage
+  pageTitle="Hearing The Call | Duet Hearing"
+  description={description}
+  currentLabel="Hearing The Call"
+  pageHeading="Hearing The Call — Global Impact"
+  sidebarImage="/s9-card-3.jpg"
+  schema={schema}
+>
+
+  <p class="service-intro">A separate pillar of DUET's mission extending beyond the clinic into global hearing health access and community partnership.</p>
+
+  <section class="service-block">
+    <p>DUET's commitment to hearing health extends beyond the clinic through its involvement with Hearing the Call, a global humanitarian initiative supported by the national cooperative Entheos. This network brings together hearing care professionals dedicated to expanding access to audiological services in underserved communities worldwide.</p>
+    <p>Through Hearing the Call: Change North, Dr. Lori Halvorson and Kristen Halvorson have traveled internationally to serve children and adults with limited access to hearing care. These mission efforts reflect DUET's belief that hearing health is a global human need, and that meaningful care extends beyond geographic and clinical boundaries.</p>
+    <p>In connection with these initiatives, DUET also partners with community-based artisans in Nepal, sharing handmade wool products created by local mothers. These items are offered within DUET to the surrounding community, creating a sustainable cycle of support that helps generate income for families while strengthening the connection between global outreach and local engagement.</p>
+    <p>Together, these efforts reflect DUET's broader philosophy: "that hearing care is not only clinical, but human, rooted in access, dignity, and connection across every community it touches."</p>
+  </section>
+
+</ServicePage>
