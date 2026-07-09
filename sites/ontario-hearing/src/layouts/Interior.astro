@@ -1,0 +1,112 @@
+---
+import Base from "./Base.astro";
+
+export const cacheHint = 3600;
+
+interface Crumb { label: string; href: string }
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonical?: string;
+  currentPage?: string;
+  pageTitle: string;
+  breadcrumbLabel?: string;
+  pageSubtitle?: string;
+  breadcrumbs?: Array<Crumb>;
+  ogImage?: string;
+  ogType?: "website" | "article" | "profile";
+  schemaJsonLd?: any | any[];
+  noindex?: boolean;
+}
+
+const SITE = "https://ontariohearing.com";
+
+const {
+  title,
+  description,
+  canonical,
+  currentPage = "",
+  pageTitle,
+  breadcrumbLabel,
+  pageSubtitle,
+  breadcrumbs = [],
+  ogImage,
+  ogType,
+  schemaJsonLd,
+  noindex = false,
+} = Astro.props;
+
+const canonicalUrl = canonical || SITE + Astro.url.pathname;
+
+// Build BreadcrumbList JSON-LD from the breadcrumbs prop
+const breadcrumbSchema = breadcrumbs.length > 0 ? {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    ...breadcrumbs.map((c, i) => ({
+      "@type": "ListItem",
+      "position": i + 1,
+      "name": c.label,
+      "item": c.href.startsWith("http") ? c.href : SITE + c.href,
+    })),
+    {
+      "@type": "ListItem",
+      "position": breadcrumbs.length + 1,
+      "name": breadcrumbLabel ?? pageTitle,
+      "item": canonicalUrl,
+    },
+  ],
+} : null;
+
+// WebPage JSON-LD
+const webPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": `${canonicalUrl}#webpage`,
+  "url": canonicalUrl,
+  "name": title ?? pageTitle,
+  "description": description,
+  "inLanguage": "en-US",
+  "isPartOf": { "@id": `${SITE}/#website` },
+  "about": { "@id": `${SITE}/#organization` },
+  ...(ogImage ? { "primaryImageOfPage": { "@type": "ImageObject", "url": ogImage } } : {}),
+};
+
+const allSchemas = [
+  webPageSchema,
+  ...(breadcrumbSchema ? [breadcrumbSchema] : []),
+  ...(schemaJsonLd ? (Array.isArray(schemaJsonLd) ? schemaJsonLd : [schemaJsonLd]) : []),
+];
+---
+<Base
+  title={title}
+  description={description}
+  canonical={canonical}
+  currentPage={currentPage}
+  ogImage={ogImage}
+  ogType={ogType}
+  schemaJsonLd={allSchemas}
+  noindex={noindex}
+>
+  <section class="pagetitle">
+    <div class="pagetitle__inner">
+      {breadcrumbs.length > 0 && (
+        <p class="crumbs">
+          {breadcrumbs.map((crumb, i) => (
+            <>
+              <a href={crumb.href}>{crumb.label}</a>
+              {i < breadcrumbs.length - 1 && <span class="crumbs__sep">/</span>}
+            </>
+          ))}
+          <span class="crumbs__sep">/</span>
+          <span class="crumbs__current">{breadcrumbLabel ?? pageTitle}</span>
+        </p>
+      )}
+      <h1>{pageTitle}</h1>
+      {pageSubtitle && <p class="pagetitle__lead">{pageSubtitle}</p>}
+    </div>
+  </section>
+  <div class="divider"></div>
+  <slot />
+</Base>

@@ -1,0 +1,22 @@
+---
+interface Props {
+  eyebrow?: string;
+  heading?: string;
+}
+const {
+  eyebrow = "Take the next step",
+  heading = "Ready to hear what you've been\nmissing? We're here to help.",
+} = Astro.props;
+---
+<section class="cta">
+  <div>
+    <p class="eyebrow" style="margin-bottom:18px;">{eyebrow}</p>
+    <h2>{heading}</h2>
+  </div>
+  <div class="cta__col">
+    <a href="/contact-us/" class="btn btn--white-lg">
+      <span>Schedule An Appointment</span><span class="arrow">→</span>
+    </a>
+    <p class="cta__or">or call (585) 442-4180</p>
+  </div>
+</section>

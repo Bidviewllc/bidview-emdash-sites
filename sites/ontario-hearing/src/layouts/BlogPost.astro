@@ -1,0 +1,174 @@
+---
+import Base from "./Base.astro";
+import CtaStrip from "../components/CtaStrip.astro";
+
+export const cacheHint = 3600;
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonical?: string;
+  pageTitle: string;
+  category: string;
+  date: string;
+  dateDisplay: string;
+  author: string;
+  readTime: string;
+  prevPost?: { title: string; href: string };
+  nextPost?: { title: string; href: string };
+}
+
+const {
+  title,
+  description,
+  canonical,
+  pageTitle,
+  category,
+  date,
+  dateDisplay,
+  author,
+  readTime,
+  prevPost,
+  nextPost,
+} = Astro.props;
+---
+<Base title={title} description={description} canonical={canonical} currentPage="">
+
+  <!-- POST TITLE -->
+  <section class="posttitle">
+    <div class="posttitle__grid">
+      <div class="posttitle__text">
+        <p class="crumbs">
+          <a href="/">Home</a>
+          <span class="crumbs__sep">/</span>
+          <a href="/blog/">Blog</a>
+          <span class="crumbs__sep">/</span>
+          <span class="crumbs__current">{category}</span>
+        </p>
+        <h1>{pageTitle}</h1>
+        <div class="postmeta">
+          <span class="postmeta__cat">{category}</span>
+          <span class="postmeta__item">
+            <svg class="postmeta__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+              <rect x="3" y="5" width="18" height="16"></rect>
+              <path d="M3 9H21 M8 3V7 M16 3V7"></path>
+            </svg>
+            <time datetime={date}>{dateDisplay}</time>
+          </span>
+          <span class="postmeta__sep" aria-hidden="true"></span>
+          <span class="postmeta__item">
+            <svg class="postmeta__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+              <circle cx="12" cy="8" r="4"></circle>
+              <path d="M4 21C4 16.5 7.5 14 12 14C16.5 14 20 16.5 20 21"></path>
+            </svg>
+            By <strong>{author}</strong>
+          </span>
+          <span class="postmeta__sep" aria-hidden="true"></span>
+          <span class="postmeta__item">
+            <svg class="postmeta__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18"></rect>
+              <path d="M3 12H21 M12 3V21"></path>
+            </svg>
+            {readTime}
+          </span>
+        </div>
+      </div>
+      <div class="posttitle__media">
+        <span class="ph__label">Featured image</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- CONTENT + SIDEBAR -->
+  <section class="layout">
+    <div class="layout__main">
+      <slot />
+    </div>
+
+    <aside class="layout__sidebar">
+      <div class="aside-card">
+        <div class="aside-card__media">
+          <span class="ph__label">Image · audiologist with patient</span>
+        </div>
+        <div class="aside-card__body">
+          <p class="aside-card__eyebrow">Take the next step</p>
+          <h3 class="aside-card__title">Schedule a hearing evaluation.</h3>
+          <p class="aside-card__text">Ninety minutes with a doctoral-level audiologist. Diagnostic testing, honest guidance, no pressure.</p>
+          <a href="/contact/" class="btn btn--mint-on-navy">
+            <span>Schedule An Appointment</span><span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
+      <div class="recent">
+        <p class="recent__label">Recent Articles</p>
+        <ul class="recent__list">
+          <li class="recent__item">
+            <a href="/blog/" class="recent__thumb" aria-hidden="true"></a>
+            <a href="/blog/">
+              <p class="recent__meta">Article · 4 min read</p>
+              <h4 class="recent__title">What to expect at your first hearing evaluation</h4>
+            </a>
+          </li>
+          <li class="recent__item">
+            <a href="/blog/" class="recent__thumb recent__thumb--alt" aria-hidden="true"></a>
+            <a href="/blog/">
+              <p class="recent__meta">Article · 3 min read</p>
+              <h4 class="recent__title">When tinnitus feels louder than the room</h4>
+            </a>
+          </li>
+          <li class="recent__item">
+            <a href="/blog/" class="recent__thumb recent__thumb--three" aria-hidden="true"></a>
+            <a href="/blog/">
+              <p class="recent__meta">Article · 4 min read</p>
+              <h4 class="recent__title">Why doctoral training matters in audiology</h4>
+            </a>
+          </li>
+        </ul>
+        <a class="recent__more" href="/blog/">Read the full blog <span class="arrow">→</span></a>
+      </div>
+    </aside>
+  </section>
+
+  <!-- POST NAVIGATION -->
+  {(prevPost || nextPost) && (
+    <nav class="postnav" aria-label="Post navigation">
+      <div class="postnav__grid">
+        {prevPost && (
+          <a href={prevPost.href} class="postnav__card postnav__card--prev">
+            <span class="postnav__thumb" aria-hidden="true"></span>
+            <span class="postnav__body">
+              <span class="postnav__label"><span class="postnav__arrow" aria-hidden="true">←</span> Previous Post</span>
+              <h3 class="postnav__title">{prevPost.title}</h3>
+            </span>
+          </a>
+        )}
+        {!prevPost && <div></div>}
+        {nextPost && (
+          <a href={nextPost.href} class="postnav__card postnav__card--next">
+            <span class="postnav__body">
+              <span class="postnav__label">Next Post <span class="postnav__arrow" aria-hidden="true">→</span></span>
+              <h3 class="postnav__title">{nextPost.title}</h3>
+            </span>
+            <span class="postnav__thumb" aria-hidden="true"></span>
+          </a>
+        )}
+      </div>
+    </nav>
+  )}
+
+  <CtaStrip />
+
+</Base>
+
+<script>
+  const toc = document.getElementById('toc');
+  const btn = document.getElementById('toc-toggle');
+  if (toc && btn) {
+    btn.addEventListener('click', () => {
+      const open = toc.classList.toggle('is-open');
+      btn.setAttribute('aria-expanded', String(open));
+    });
+  }
+</script>

@@ -1,0 +1,125 @@
+---
+import Interior from "../layouts/Interior.astro";
+import CtaStrip from "../components/CtaStrip.astro";
+import { getEmDashEntry } from "emdash";
+import { team } from "../data/team";
+
+const mediaUrl = (img: any): string | null => {
+  const key = img?.meta?.storageKey;
+  if (typeof key === "string" && key) return `/_emdash/api/media/file/${key}`;
+  if (typeof img?.src === "string" && img.src) return img.src;
+  return null;
+};
+
+let ap: any = null;
+try { const r = await getEmDashEntry("about_page", "about"); ap = r?.entry ?? null; } catch {}
+
+const d = ap?.data ?? {};
+const e = ap?.edit ?? {};
+
+const storyImageUrl = mediaUrl(d.story_image) ?? "/assets/team.webp";
+const philosophyImageUrl = mediaUrl(d.philosophy_image) ?? "/assets/img/OntarioHearing13-scaled-971b69dc.webp";
+
+// Team — current audiologists (single source of truth: src/data/team.ts). Each links to a bio page.
+const renderTeam = team;
+---
+<Interior
+  title={d.meta_title ?? "About Us - Ontario Hearing Center | Rochester, NY"}
+  description={d.meta_description ?? "Ontario Hearing Center is an audiology and hearing aid clinic with expert audiologists that provides comprehensive hearing care services in Brighton, Rochester, NY."}
+  pageTitle="About Ontario Hearing Center."
+  breadcrumbLabel="About Us"
+  breadcrumbs={[{ label: "Home", href: "/" }]}
+  canonical="https://ontariohearing.com/about-us/"
+>
+
+  <section>
+    <div class="twocol">
+      <div class="twocol__copy">
+        <p class="eyebrow eyebrow--green" {...e.story_eyebrow}>{d.story_eyebrow ?? "Our story"}</p>
+        <h2 class="display" {...e.story_heading}>{d.story_heading ?? "Nearly seventy years on Monroe Avenue."}</h2>
+        <p {...e.story_body1}>{d.story_body1 ?? "Ontario Hearing Center is an audiology and hearing aid clinic with expert audiologists that provides comprehensive hearing care services, hearing tests, cochlear implants, and advanced hearing solutions in Brighton, Rochester, NY."}</p>
+        <p {...e.story_body2}>{d.story_body2 ?? "We are your guide to better hearing. Our team at Ontario Hearing Center is dedicated to providing quality hearing services so you can enjoy life. We offer the world's most advanced hearing technology and solutions for those who need it. Our team has been serving the area since 1956, and we want to give our customers an experience that they'll never forget — a positive one from start to finish."}</p>
+        <div class="twocol__stats">
+          <div class="twocol__stat">
+            <div class="twocol__stat-num" {...e.story_stat1_num}>{d.story_stat1_num ?? "1956"}</div>
+            <div class="twocol__stat-lbl" {...e.story_stat1_label}>{d.story_stat1_label ?? "founded"}</div>
+          </div>
+          <div class="twocol__stat">
+            <div class="twocol__stat-num" {...e.story_stat2_num}>{d.story_stat2_num ?? "70+"}</div>
+            <div class="twocol__stat-lbl" {...e.story_stat2_label}>{d.story_stat2_label ?? "years in Rochester"}</div>
+          </div>
+          <div class="twocol__stat">
+            <div class="twocol__stat-num" {...e.story_stat3_num}>{d.story_stat3_num ?? "3"}</div>
+            <div class="twocol__stat-lbl" {...e.story_stat3_label}>{d.story_stat3_label ?? "doctoral audiologists"}</div>
+          </div>
+        </div>
+      </div>
+      <div class="twocol__media">
+        <img src={storyImageUrl} alt="Ontario Hearing Center team — three audiologists" {...e.story_image} />
+        <div class="twocol__caption">
+          <p class="eyebrow">Brighton, NY</p>
+          <p class="ttl" {...e.story_image_caption}>{d.story_image_caption ?? "2210 Monroe Avenue, since 1956"}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section>
+    <div class="twocol twocol--reverse">
+      <div class="twocol__media">
+        <img src={philosophyImageUrl} alt="Front desk and patient care staff at Ontario Hearing Center" {...e.philosophy_image} />
+        <div class="twocol__caption">
+          <p class="eyebrow">Our approach</p>
+          <p class="ttl" {...e.philosophy_image_caption}>{d.philosophy_image_caption ?? "Traditional values, modern technology."}</p>
+        </div>
+      </div>
+      <div class="twocol__copy">
+        <p class="eyebrow eyebrow--green" {...e.philosophy_eyebrow}>{d.philosophy_eyebrow ?? "Our philosophy"}</p>
+        <h2 class="display" {...e.philosophy_heading}>{d.philosophy_heading ?? "Doctoral care, at a human pace."}</h2>
+        <p {...e.philosophy_body1}>{d.philosophy_body1 ?? "With a team of dedicated audiology professionals, we are committed to providing quality hearing services and innovative solutions for our client's needs. Ontario Hearing Center is rooted in traditional values while offering the world's most advanced hearing technologies and hearing solutions to support your every need."}</p>
+        <p {...e.philosophy_body2}>{d.philosophy_body2 ?? "We offer expert answers to all your audiology questions. We also carry the best hearing aid brands to give our patients a wide selection of hearing solutions. With hearing aid technology being a continually growing aspect of hearing healthcare, we aim to provide high-quality aids in Rochester, NY."}</p>
+        <p {...e.philosophy_body3}>{d.philosophy_body3 ?? "At Ontario Hearing Center, we understand that choosing among a multitude of hearing aid solutions can be overwhelming for our patients. We are committed to making our patients experience the best customer service while providing the best hearing healthcare in Rochester, NY."}</p>
+        <p {...e.philosophy_body4}>{d.philosophy_body4 ?? "Your journey to better hearing starts with YOU. We are committed to providing all the resources and support you need every step of the way."}</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section class="section--cream">
+    <div class="section__head section__head--wide">
+      <p class="eyebrow eyebrow--green" {...e.team_eyebrow}>{d.team_eyebrow ?? "Our team"}</p>
+      <h2 class="display" {...e.team_heading}>{d.team_heading ?? "Meet your audiologists."}</h2>
+      <p style="margin: 6px 0 0; color: var(--body); font-size: 20px;" {...e.team_subhead}>{d.team_subhead ?? "Three doctoral-level audiologists. One office. Every appointment with someone who's trained for years to be in the room with you."}</p>
+    </div>
+    <div class="team team--3">
+      {renderTeam.map((m) => (
+        <a class="person" href={`/${m.slug}/`}>
+          <div class="person__photo">
+            <img src={m.photo} alt={m.name} loading="lazy" />
+          </div>
+          <div class="person__body">
+            <p class="person__role">{m.role}</p>
+            <p class="person__name">{m.name}</p>
+            <p class="person__creds">{m.credentials}</p>
+            <p class="person__bio">View profile →</p>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <CtaStrip />
+
+</Interior>
+
+<style>
+  .team--3 { grid-template-columns: repeat(3, 1fr); }
+  .person { text-decoration: none; color: inherit; transition: transform 0.2s ease, box-shadow 0.2s ease; border-radius: 8px; overflow: hidden; }
+  .person:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.08); }
+  .person__bio { color: var(--green); font-weight: 600; }
+  @media (max-width: 900px) { .team--3 { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 640px) { .team--3 { grid-template-columns: 1fr; } }
+</style>

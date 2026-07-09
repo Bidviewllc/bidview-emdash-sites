@@ -1,0 +1,56 @@
+{
+  "name": "ontario-hearing",
+  "account_id": "239e9d015c7a3a39cdc2e9400312f553",
+  "main": "./src/worker.ts",
+  "compatibility_date": "2026-03-29",
+  "compatibility_flags": ["nodejs_compat"],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "ontario-hearing-db",
+      "database_id": "3e408b59-75b2-4b13-aa9e-a41e17ff678c"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "MEDIA",
+      "bucket_name": "ontario-hearing-media"
+    }
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "SESSION",
+      "id": "028dfa4da881449cb1fcfb8ae46b6e2e"
+    }
+  ],
+  "worker_loaders": [{ "binding": "LOADER" }],
+  "observability": { "enabled": true },
+  "placement": { "mode": "smart" },
+  "workers_dev": true,
+  "env": {
+    "staging": {
+      "name": "ontario-hearing-staging",
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "ontario-hearing-staging-db",
+          "database_id": "9ee3e7e6-b9ee-44f4-aa94-49895e151d8c"
+        }
+      ],
+      "r2_buckets": [
+        {
+          "binding": "MEDIA",
+          "bucket_name": "ontario-hearing-staging-media"
+        }
+      ],
+      "kv_namespaces": [
+        {
+          "binding": "SESSION",
+          "id": "028dfa4da881449cb1fcfb8ae46b6e2e"
+        }
+      ],
+      "worker_loaders": [{ "binding": "LOADER" }],
+      "workers_dev": true
+    }
+  }
+}

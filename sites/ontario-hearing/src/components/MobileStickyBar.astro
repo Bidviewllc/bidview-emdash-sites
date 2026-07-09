@@ -1,0 +1,63 @@
+---
+// Sticky bottom action bar — phone + Schedule CTA. Mobile only (≤640px).
+---
+<div class="mobile-sticky-bar" role="navigation" aria-label="Quick contact">
+  <a href="tel:5854424180" class="msb__phone">
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M3 3H9L11 9L8 11L13 16L15 13L21 15V21H15L3 9V3Z"></path>
+    </svg>
+    <span>(585) 442-4180</span>
+  </a>
+  <a href="/contact-us/" class="msb__cta">
+    <span>Schedule</span>
+    <span class="arrow">→</span>
+  </a>
+</div>
+
+<style>
+  .mobile-sticky-bar {
+    display: none;
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--navy);
+    padding: 10px 14px;
+    z-index: 60;
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.15);
+    gap: 10px;
+    align-items: center;
+    padding-bottom: max(10px, env(safe-area-inset-bottom));
+  }
+  .msb__phone {
+    flex: 1;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    color: #fff;
+    text-decoration: none;
+    font-family: var(--font-sans);
+    font-size: 16px;
+    font-weight: 600;
+    padding: 12px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 6px;
+    background: transparent;
+  }
+  .msb__phone svg { width: 18px; height: 18px; flex: none; }
+  .msb__cta {
+    flex: 1;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    color: var(--navy);
+    text-decoration: none;
+    font-family: var(--font-sans);
+    font-size: 16px;
+    font-weight: 700;
+    padding: 12px 10px;
+    background: var(--mint);
+    border-radius: 6px;
+  }
+  .msb__cta:active { transform: scale(0.98); }
+
+  @media (max-width: 640px) {
+    .mobile-sticky-bar { display: flex; }
+    /* Pad the page bottom so footer doesn't get hidden under the sticky bar */
+    body { padding-bottom: 68px; }
+  }
+</style>

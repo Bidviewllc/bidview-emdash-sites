@@ -1,0 +1,394 @@
+---
+import Base from "../layouts/Base.astro";
+import CtaStrip from "../components/CtaStrip.astro";
+import { altFor } from "../lib/imageAlts";
+
+const heroImage = "/assets/hero-forest.webp";
+const aboutImage = "/assets/team.webp";
+
+const testimonials = [
+  { quote: "Ontario Hearing Center has been fabulous to work with. We have been managing hearing aids and the associated professionals for over 25 years now. This has been the best experience to date. Thanks to the entire team for the outstanding service.", author: "Monty Wright", city: "Rochester, NY" },
+  { quote: "A very welcoming and pleasant office—I'm so glad I was referred! The audiologist was incredibly patient and took the time to explain everything about my hearing test and the results in a way that was easy to understand. I ended up purchasing new hearing aids and feel confident in my decision. Pam the office manager at the front desk was also so helpful and kind throughout the entire process. Highly recommend!", author: "Liz Scagliozzi", city: "Brighton, NY" },
+  { quote: "Excellent, courteous service today for checking and cleaning my hearing aids after purchasing them 6 months ago. The bluetooth iPhone connection, the TV streaming and the rechargeable hearing aid dock enhanced my hearing immensely. The upgrades were worth every penny.", author: "Everett Charette", city: "Pittsford, NY" },
+];
+
+const faqs = [
+  { q: "Can you self-refer to an audiologist?", a: "In Rochester, a referral is not necessary to see an audiologist unless Medicare is your primary insurer. Otherwise, almost all insurances cover testing minus a possible co-pay. Please check with your insurance provider for more information about what your specific healthcare plan covers." },
+  { q: "Do you need a doctor's referral for a hearing test?", a: "The majority of healthcare plans do not require you have a doctor's referral for a hearing test in the state of New York. Medicare is one known exception. If you have any questions or concerns about healthcare coverage, please give us a call." },
+  { q: "Is a hearing aid dispenser the same as an audiologist?", a: "An audiologist is a doctorate-level specialist in hearing anatomy. To work as a hearing aid dispenser, you must be qualified, apply for a license, and have substantial experience with hearing aids. An audiologist must have a doctorate degree in the study of audiology. An audiologist may be better suited for more medically related services, including balance problems, impacted ear wax, and noise-induced hearing loss." },
+  { q: "How do hearing aids work?", a: "Unlike traditional analog hearing aids of the past, digital hearing aids have the capabilities and flexibility of sophisticated computer systems. They are customized for each individual's hearing loss with the end result creating sound that is crisp and clear regardless of the environment." },
+  { q: "Which hearing aid is the best?", a: "We recognize that the options can be overwhelming, so we take our time to go over your options and what will work best for your lifestyle. It's important that the hearing devices you choose fit your needs, as well as your comfort and hearing loss. We ensure that you are hearing the best you can with the best available devices." },
+  { q: "How much do hearing aids cost?", a: "Prices of hearing aids vary depending on the brand, technology, and features of the device. Insurance coverage and level of hearing loss are also big determining factors for the cost of a hearing aid." },
+  { q: "What is tinnitus?", a: "Tinnitus refers to hearing sounds that come from inside the body, rather than from an external source. While it is often described as ringing in the ears, tinnitus can also manifest as a buzzing, grinding, or humming sound." },
+  { q: "Where is your office located?", a: "We are conveniently located in Brighton, NY, at 2210 Monroe Avenue. Our patients travel to see us from Spencerport, Westgate, North Gates, Pittsford, and East Rochester, NY." },
+];
+
+const blogPosts = [
+  { slug: "what-is-a-hearing-aid-clinic-what-to-expect-before-your-first-visit", title: "What Is a Hearing Aid Clinic? What to Expect Before Your First Visit", read_time: "5 min read", excerpt: "A walk-through of what happens at your first appointment with a hearing aid clinic — what we test, what we discuss, and how we plan your care.", image: "/assets/img/featured_featured-086b8d8e.webp" },
+  { slug: "importance-of-hearing-tests", title: "The Importance of Hearing Tests", read_time: "4 min read", excerpt: "Why a diagnostic hearing evaluation is the first step in determining the type, degree, configuration, and symmetry of your hearing loss.", image: "/assets/img/importance_of_hearing_tests_featured-5cd1afb0.webp" },
+  { slug: "hearing-aids-for-tinnitus", title: "Hearing Aids for Tinnitus", read_time: "4 min read", excerpt: "Tinnitus can be experienced in either a single ear or both ears. Most often, the person experiencing tinnitus is the only one who can hear it.", image: "/assets/img/smiling-focused-bearded-dark-haired-male-audiologist-putting-6ca923f9.webp" },
+  { slug: "how-to-service-hearing-aids", title: "How to Service Hearing Aids", read_time: "5 min read", excerpt: "Hearing aid technology is a continually growing aspect of hearing healthcare, providing people with high-quality, personalized hearing devices.", image: "/assets/img/acoustician-working-hearing-aid-fd5323bb.webp" },
+];
+
+// Homepage-specific schemas (sitewide schemas are in Base.astro)
+const faqPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map(f => ({
+    "@type": "Question",
+    "name": f.q,
+    "acceptedAnswer": { "@type": "Answer", "text": f.a },
+  })),
+};
+
+const homepageWebPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://ontariohearing.com/#webpage",
+  "url": "https://ontariohearing.com/",
+  "name": "Audiologists and Hearing Aids in Rochester NY | Ontario Hearing Center",
+  "description": "Ontario Hearing Center has expert audiologists providing hearing aids in Rochester NY. Contact us today to schedule an appointment!",
+  "inLanguage": "en-US",
+  "isPartOf": { "@id": "https://ontariohearing.com/#website" },
+  "about": { "@id": "https://ontariohearing.com/#organization" },
+};
+---
+<Base
+  title="Audiologists and Hearing Aids in Rochester NY | Ontario Hearing Center"
+  description="Ontario Hearing Center has expert audiologists providing hearing aids in Rochester NY. Contact us today to schedule an appointment!"
+  canonical="https://ontariohearing.com/"
+  ogImage="https://ontario-hearing.cameron-239.workers.dev/assets/og-image.webp"
+  schemaJsonLd={[homepageWebPageSchema, faqPageSchema]}
+>
+
+  <!-- =========================================================== HERO -->
+  <section class="hero" style="padding:0;">
+    <div class="hero__image" style={`background-image: url('${heroImage}')`}></div>
+    <div class="hero__overlay"></div>
+    <div class="hero__inner">
+      <div class="hero__content">
+        <p class="eyebrow hero__eyebrow">Rochester · Brighton · Since 1956</p>
+        <h1 class="u-sr-only">Audiologists and Hearing Aids in Rochester, NY</h1>
+        <p class="hero__display" aria-hidden="true">Your guide to<em>better hearing.</em></p>
+        <p class="hero__lead">Doctoral-level audiologists providing trusted hearing health care in Brighton for nearly seventy years — because a life fully heard is worth the care it takes to get there.</p>
+        <div class="hero__cta">
+          <a href="/contact-us/" class="btn btn--white-on-image">
+            <span>Schedule An Appointment</span><span class="arrow">→</span>
+          </a>
+          <a href="/services/" class="btn btn--ghost-white">Explore our services</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================== STATS STRIP -->
+  <div class="stats">
+    <div class="stats__row">
+      <div class="stat">
+        <h3 class="stat__num">70+ Years<br />of Exceptional Care</h3>
+        <p class="stat__sub">Serving Rochester families since 1956</p>
+      </div>
+      <div class="stat">
+        <div class="stat__seal" aria-label="Member, American Academy of Audiology">
+          <img src="/assets/aaa-seal.webp" alt="American Academy of Audiology" />
+        </div>
+      </div>
+      <div class="stat">
+        <p class="stat__stars" aria-label="5 out of 5 stars">★★★★★</p>
+        <h3 class="stat__num">98+ Google Reviews</h3>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================== ABOUT -->
+  <section>
+    <div class="about">
+      <div class="about__copy">
+        <p class="eyebrow eyebrow--green">AUDIOLOGISTS &amp; HEARING AIDS IN ROCHESTER, NY</p>
+        <h2 class="display">Ontario Hearing <span style="color: var(--green);">Center.</span></h2>
+        <p>Ontario Hearing Center has been the trusted source for advanced hearing care in Rochester, NY for over 70 years. Our doctoral-level audiologists provide comprehensive hearing evaluations, tinnitus and hyperacusis management, hearing aid fittings, and cochlear implant services — all from our Brighton office at 2210 Monroe Avenue.</p>
+        <div class="about__stats">
+          <div class="about__stat">
+            <div class="about__stat-num">70+</div>
+            <div class="about__stat-label">years in Rochester</div>
+          </div>
+          <div class="about__stat">
+            <div class="about__stat-num">3</div>
+            <div class="about__stat-label">doctoral audiologists</div>
+          </div>
+          <div class="about__stat">
+            <div class="about__stat-num">7</div>
+            <div class="about__stat-label">hearing-aid brands</div>
+          </div>
+        </div>
+      </div>
+      <div class="about__media">
+        <img src={aboutImage} alt="Ontario Hearing Center team" />
+        <div class="badge badge--bottom-right">
+          <p class="badge__eyebrow">The team</p>
+          <p class="badge__title">Adam, Andrea, Beth,<br />Danielle &amp; Pam.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- =========================================================== VISIT US -->
+  <section>
+    <div class="visit">
+      <div class="visit__left">
+        <p class="eyebrow eyebrow--green">Visit us</p>
+        <h2 class="display">Ontario Hearing Center<br />— Rochester, NY.</h2>
+        <div class="visit__info">
+          <div>
+            <p class="info-list__label">Address</p>
+            <p class="info-list__text">2210 Monroe Avenue<br />Rochester, NY 14618</p>
+            <p class="info-list__label">Phone</p>
+            <p class="info-list__text" style="font-weight: 600; font-size: 25px">(585) 442-4180</p>
+            <p class="info-list__label">Email</p>
+            <p class="info-list__text">info@ontariohearing.com</p>
+          </div>
+          <div>
+            <p class="info-list__label">Office hours</p>
+            <div class="hours">
+              <div class="hours__row"><span class="hours__day">Monday</span><span class="hours__time">8 AM – 5 PM</span></div>
+              <div class="hours__row"><span class="hours__day">Tuesday</span><span class="hours__time">8 AM – 5 PM</span></div>
+              <div class="hours__row"><span class="hours__day">Wednesday</span><span class="hours__time">8 AM – 5 PM</span></div>
+              <div class="hours__row"><span class="hours__day">Thursday</span><span class="hours__time">8 AM – 5 PM</span></div>
+              <div class="hours__row"><span class="hours__day">Friday</span><span class="hours__time">8 AM – 4 PM</span></div>
+              <div class="hours__row hours__row--closed"><span class="hours__day">Saturday</span><span class="hours__time">Closed</span></div>
+              <div class="hours__row hours__row--closed"><span class="hours__day">Sunday</span><span class="hours__time">Closed</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="visit__cta">
+          <a href="/contact-us/" class="btn btn--navy">
+            <span>Schedule An Appointment</span><span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
+      <div class="map" aria-label="Map of Ontario Hearing Center office location">
+        <iframe
+          src="https://maps.google.com/maps?q=Ontario%20Hearing%20Center%2C%202210%20Monroe%20Avenue%2C%20Rochester%2C%20NY%2014618&t=&z=15&ie=UTF8&iwloc=&output=embed"
+          width="100%"
+          height="100%"
+          style="border:0;"
+          allowfullscreen
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Ontario Hearing Center — 2210 Monroe Avenue, Rochester, NY 14618"
+        ></iframe>
+        <div class="map__chip">
+          <span class="map__chip-dot" aria-hidden="true"></span>
+          <span>2210 Monroe Ave · Brighton</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- =========================================================== PRACTICE LEAD -->
+  <section>
+    <div class="adam">
+      <div class="adam__media">
+        <img src="/assets/dr-adam.webp" alt="Dr. Adam Sheppard, Au.D., Ph.D., F-AAA" />
+        <div class="badge badge--bottom-left" style="min-width:360px;">
+          <p class="badge__eyebrow">Practice Lead</p>
+          <p class="badge__title">Dr. Adam Sheppard, Au.D.,<br />Ph.D., F-AAA</p>
+        </div>
+      </div>
+      <div class="adam__copy">
+        <p class="eyebrow eyebrow--green">Our practice</p>
+        <h2 class="display">Advanced hearing technology. Traditional, timeless patient care.</h2>
+        <p>At Ontario Hearing Center, every patient is seen by a doctoral-level audiologist. No rushed appointments. No one-size-fits-all recommendations. Just careful diagnosis, honest guidance, and treatment plans built around the sounds and experiences that matter most in your life.</p>
+        <p>That standard starts at the top. Our practice is led by Dr. Adam Sheppard — Au.D., Ph.D., F-AAA — whose background bridges research, teaching, and clinical practice in ways most audiologists never experience. He holds both a Doctor of Audiology and a Ph.D. in auditory neuroscience from the University at Buffalo, served on the faculty of UB's Doctor of Audiology program, and has authored more than 20 peer-reviewed publications on how the brain processes sound. He has also spent years supporting surgeons and audiologists on cochlear implant procedures throughout Upstate New York.</p>
+        <p>We've watched hearing technology evolve for decades, and we've evolved with it. What hasn't changed is our commitment to unhurried, personalized care — from a team with the credentials and experience to deliver the best possible outcomes.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================== DIAGNOSTIC SERVICES -->
+  <section class="section--cream">
+    <div class="section__head">
+      <p class="eyebrow eyebrow--green">Audiology services</p>
+      <h2 class="display">Evaluating, managing, and restoring the way you hear.</h2>
+      <p style="margin:6px 0 0; color: var(--body); font-size:20px;">Our audiologists provide the full continuum of diagnostic and therapeutic hearing care, from first evaluation through long-term management.</p>
+    </div>
+    <div class="cards-3">
+      <article class="card">
+        <h3>Hearing Evaluations</h3>
+        <p>A diagnostic hearing evaluation is the first step in determining the type, degree, configuration, and symmetry of your hearing loss. We perform comprehensive adult evaluations using the latest diagnostic equipment.</p>
+        <a class="card__link" href="/hearing-test/">Learn more →</a>
+      </article>
+      <article class="card">
+        <h3>Tinnitus Evaluations</h3>
+        <p>Tinnitus — ringing, buzzing, or humming with no external source — affects millions of people. Our audiologists provide specialized evaluations and management strategies tailored to your specific experience of the condition.</p>
+        <a class="card__link" href="/tinnitus/">Learn more →</a>
+      </article>
+      <article class="card">
+        <h3>Hyperacusis</h3>
+        <p>Reduced tolerance to everyday sound can be isolating and distressing. We evaluate sound sensitivity carefully and build a plan that restores comfort in the environments that matter to you.</p>
+        <a class="card__link" href="/hyperacusis/">Learn more →</a>
+      </article>
+    </div>
+  </section>
+
+  <!-- =========================================================== HEARING AID SERVICES -->
+  <section class="section--navy">
+    <div class="section__head">
+      <p class="eyebrow">Hearing aid services</p>
+      <h2 class="display">Care doesn't end at the fitting. It begins there.</h2>
+    </div>
+    <div class="cards-3">
+      <article class="card card--dark">
+        <h3>Hearing Aid Fittings</h3>
+        <p>A careful, iterative fitting is where hearing aids become genuinely useful. We program to your real-world listening needs and follow through until it sounds right.</p>
+        <a class="card__link" href="/hearing-aid-fittings-in-rochester-ny/">Learn more →</a>
+      </article>
+      <article class="card card--dark">
+        <h3>Aural Rehabilitation</h3>
+        <p>Learning to hear again is a process. Counselling, listening exercises, and check-ins so your brain and your devices meet in the middle.</p>
+        <a class="card__link" href="/aural-rehabilitation/">Learn more →</a>
+      </article>
+      <article class="card card--dark">
+        <h3>Batteries &amp; Accessories</h3>
+        <p>From modern smart chargers to replacement domes and wax guards, we keep patients supplied with everything they need between appointments.</p>
+        <a class="card__link" href="/hearing-aid-batteries/">Learn more →</a>
+      </article>
+    </div>
+  </section>
+
+  <!-- =========================================================== HEARING AIDS -->
+  <section>
+    <div class="section__head">
+      <p class="eyebrow eyebrow--green">Hearing aids</p>
+      <h2 class="display">The right device for your life.</h2>
+      <p style="margin:6px 0 0; color: var(--body); font-size:20px;">Seven manufacturers, countless configurations — and one audiologist sitting with you to make sense of it all.</p>
+    </div>
+    <div class="cards-3">
+      <article class="card" style="background-color: var(--cream);">
+        <h3>Custom Ear Protection</h3>
+        <p>Ear molds and pieces customized to your ear's shape and your activities — from musicians' protection to sleep plugs to swim molds.</p>
+        <a class="card__link" href="/custom-ear-molds/">Learn more →</a>
+      </article>
+      <article class="card" style="background-color: var(--cream);">
+        <h3>Hearing Aids</h3>
+        <p>A wide selection from Oticon, Widex, Unitron, ReSound, Phonak, Starkey, and Cochlear — today's digital aids are customized to your loss to deliver crisp, clear sound anywhere.</p>
+        <a class="card__link" href="/hearing-aids/">Learn more →</a>
+      </article>
+      <article class="card" style="background-color: var(--cream);">
+        <h3>Cochlear Implants</h3>
+        <p>Proud member of the Cochlear Provider Network. When hearing aids aren't enough, Dr. Sheppard's specialized expertise in CI evaluation and mapping is here.</p>
+        <a class="card__link" href="/cochlear-implant/">Learn more →</a>
+      </article>
+    </div>
+    <div class="partners">
+      <p class="partners__label">WE PARTNER WITH THE INDUSTRY'S LEADING MANUFACTURERS</p>
+      <div class="partners__row">
+        <a class="partner" href="/oticon-hearing-aids/"><img src="/assets/brand-oticon.webp" alt="Oticon" /></a>
+        <a class="partner" href="/unitron-hearing-aids/"><img src="/assets/brand-unitron.webp" alt="Unitron" /></a>
+        <a class="partner" href="/starkey-hearing-aids/"><img src="/assets/brand-starkey.webp" alt="Starkey" /></a>
+        <a class="partner" href="/widex-hearing-aids/"><img src="/assets/brand-widex.webp" alt="Widex" /></a>
+        <a class="partner" href="/resound-hearing-aids/"><img src="/assets/brand-resound.webp" alt="ReSound" /></a>
+        <a class="partner" href="/phonak-hearing-aids/"><img src="/assets/brand-phonak.webp" alt="Phonak" /></a>
+        <a class="partner" href="/cochlear-implant/"><img src="/assets/brand-cochlear.webp" alt="Cochlear" /></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================== TESTIMONIALS -->
+  <section class="section--cream">
+    <div class="testimonials__head">
+      <div class="section__head section__head--wide">
+        <p class="eyebrow eyebrow--green">Client testimonials</p>
+        <h2 class="display">A practice measured in patients,<br />not patients in a practice.</h2>
+      </div>
+    </div>
+    <div class="testimonials__grid">
+      {testimonials.map((t) => (
+        <article class="quote-card">
+          <div class="quote-card__mark">“</div>
+          <p class="quote-card__text">{t.quote}</p>
+          <div class="quote-card__foot">
+            <div>
+              <p class="quote-card__author">— {t.author}</p>
+              <p class="quote-card__city">{t.city}</p>
+            </div>
+            <div class="quote-card__rating">★★★★★</div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- =========================================================== FAQ -->
+  <section>
+    <div class="faq">
+      <div class="faq__intro">
+        <p class="eyebrow eyebrow--green">FREQUENTLY ASKED QUESTIONS</p>
+        <h2>Answers to the questions patients actually ask.</h2>
+        <p>Still have a question? Call us at (585) 442-4180.</p>
+      </div>
+      <div class="faq__list">
+        {faqs.map((f, i) => (
+          <div class={`faq__item${i === 0 ? " is-open" : ""}`}>
+            <button class="faq__q">
+              <p class="faq__q-text">{f.q}</p>
+              <span class="faq__toggle">{i === 0 ? "–" : "+"}</span>
+            </button>
+            <p class="faq__a">{f.a}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================== BLOG PREVIEW -->
+  <section class="section--cream">
+    <div class="blog__head">
+      <div class="section__head">
+        <p class="eyebrow eyebrow--green">From the experts</p>
+        <h2 class="display">Writing from our audiologists.</h2>
+      </div>
+      <a class="blog__link" href="/blog/" style="font-weight: 600">Read the full blog →</a>
+    </div>
+    <div class="blog__grid">
+      {blogPosts.map((post) => (
+        <a class="article" href={`/${post.slug}/`}>
+          <div class="article__thumb">
+            {post.image && <img src={post.image} alt={altFor(post.image, post.title)} loading="lazy" />}
+          </div>
+          <p class="article__meta">Article · {post.read_time}</p>
+          <h3 class="article__title">{post.title}</h3>
+          <p class="article__excerpt">{post.excerpt}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- =========================================================== CTA -->
+  <CtaStrip />
+
+</Base>
+
+<script>
+  document.querySelectorAll('.faq__item').forEach(item => {
+    const btn = item.querySelector('.faq__q');
+    if (!btn) return;
+    btn.addEventListener('click', () => {
+      const wasOpen = item.classList.contains('is-open');
+      document.querySelectorAll('.faq__item').forEach(it => {
+        it.classList.remove('is-open');
+        const tog = it.querySelector('.faq__toggle');
+        if (tog) tog.textContent = '+';
+      });
+      if (!wasOpen) {
+        item.classList.add('is-open');
+        const tog = item.querySelector('.faq__toggle');
+        if (tog) tog.textContent = '–';
+      }
+    });
+  });
+</script>

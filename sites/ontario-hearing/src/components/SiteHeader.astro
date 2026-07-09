@@ -1,0 +1,254 @@
+---
+interface Props {
+  currentPage?: string;
+}
+const { currentPage = "" } = Astro.props;
+
+interface NavItem {
+  label: string;
+  href: string;
+  children?: NavItem[];
+}
+
+const navItems: NavItem[] = [
+  { label: "Home", href: "/" },
+  {
+    label: "Services",
+    href: "/services/",
+    children: [
+      { label: "Ear Molds", href: "/custom-ear-molds/" },
+      { label: "Hearing Test", href: "/hearing-test/" },
+      { label: "Tinnitus", href: "/tinnitus/" },
+      { label: "Cochlear Implant", href: "/cochlear-implant/" },
+      { label: "Hearing Aid Fittings", href: "/hearing-aid-fittings-in-rochester-ny/" },
+      {
+        label: "Hearing Aids",
+        href: "/hearing-aids/",
+        children: [
+          { label: "Oticon Hearing Aids", href: "/oticon-hearing-aids/" },
+          { label: "Widex Hearing Aids", href: "/widex-hearing-aids/" },
+          { label: "Unitron Hearing Aids", href: "/unitron-hearing-aids/" },
+          { label: "Resound Hearing Aids", href: "/resound-hearing-aids/" },
+          { label: "Phonak Hearing Aids", href: "/phonak-hearing-aids/" },
+          { label: "Starkey Hearing Aids", href: "/starkey-hearing-aids/" },
+        ],
+      },
+    ],
+  },
+  {
+    label: "Resources",
+    href: "/resources/",
+    children: [
+      { label: "Audiology", href: "/audiology/" },
+      { label: "Hearing Loss", href: "/hearing-loss/" },
+      { label: "What to Expect", href: "/what-to-expect/" },
+      { label: "Insurance", href: "/insurance/" },
+      { label: "Hearing Aid Batteries", href: "/hearing-aid-batteries/" },
+      { label: "Blog", href: "/blog/" },
+    ],
+  },
+  {
+    label: "Our Team",
+    href: "/about-us/",
+    children: [
+      { label: "About Us", href: "/about-us/" },
+      { label: "Dr. Adam Sheppard", href: "/dr-adam-sheppard/" },
+      { label: "Dr. Andrea Segmond", href: "/dr-andrea-segmond/" },
+      { label: "Dr. Elizabeth Orlando", href: "/dr-elizabeth-orlando/" },
+      { label: "Giving Back", href: "/giving-back/" },
+    ],
+  },
+  { label: "Contact Us", href: "/contact-us/" },
+];
+---
+<header class="siteheader">
+  <div class="siteheader__inner">
+    <a href="/" class="siteheader__logo" aria-label="Ontario Hearing Center home">
+      <img src="/assets/logo-header.webp" alt="Ontario Hearing Center" />
+    </a>
+    <nav class="nav" aria-label="Main navigation">
+      {navItems.map(item => (
+        item.children && item.children.length > 0 ? (
+          <div class="nav__has-sub">
+            <a
+              href={item.href}
+              class={currentPage === item.label ? "is-current" : ""}
+            >
+              {item.label}
+              <span class="nav__caret" aria-hidden="true"></span>
+            </a>
+            <div class="nav__menu" role="menu">
+              {item.children.map(child => (
+                child.children && child.children.length > 0 ? (
+                  <div class="nav__has-sub nav__has-sub--lv2">
+                    <a href={child.href} class="nav__menu-item nav__menu-item--has-children" role="menuitem">
+                      <span>{child.label}</span>
+                      <span class="nav__caret nav__caret--right" aria-hidden="true"></span>
+                    </a>
+                    <div class="nav__menu nav__menu--lv2" role="menu">
+                      {child.children.map(grand => (
+                        <a href={grand.href} class="nav__menu-item" role="menuitem">{grand.label}</a>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <a href={child.href} class="nav__menu-item" role="menuitem">{child.label}</a>
+                )
+              ))}
+            </div>
+          </div>
+        ) : (
+          <a
+            href={item.href}
+            class={currentPage === item.label ? "is-current" : ""}
+          >{item.label}</a>
+        )
+      ))}
+    </nav>
+    <button class="navtoggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
+      <span class="navtoggle__bars" aria-hidden="true"><span></span></span>
+    </button>
+  </div>
+</header>
+
+<nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation">
+  {navItems.map(item => (
+    <>
+      <a href={item.href} class={`mnav__lv1${currentPage === item.label ? " is-current" : ""}`}>{item.label}</a>
+      {item.children && item.children.map(child => (
+        <>
+          <a href={child.href} class="mnav__lv2">— {child.label}</a>
+          {child.children && child.children.map(grand => (
+            <a href={grand.href} class="mnav__lv3">— — {grand.label}</a>
+          ))}
+        </>
+      ))}
+    </>
+  ))}
+</nav>
+
+<style>
+  /* Top-level nav items keep the original .nav a styling from global.css.
+     This component only adds positioning + dropdown behavior. */
+  .nav__has-sub {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+  }
+  /* Hover bridge so dropdown stays open between trigger and menu */
+  .nav__has-sub::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 0; right: 0;
+    height: 18px;
+  }
+
+  .nav__menu {
+    position: absolute;
+    top: calc(100% + 18px);
+    left: -18px;
+    min-width: 300px;
+    background: #fff;
+    border: 1px solid #E1DCC8;
+    border-radius: 8px;
+    padding: 10px 0;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.10);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-6px);
+    transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
+    z-index: 100;
+  }
+  .nav__has-sub:hover > .nav__menu,
+  .nav__has-sub:focus-within > .nav__menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .nav__menu-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 24px;
+    color: var(--ink, #0A2540);
+    text-decoration: none;
+    font-size: 20px;
+    line-height: 1.4;
+    font-weight: 500;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .nav__menu-item:hover {
+    background: var(--cream);
+    color: var(--green);
+    text-decoration: none;
+  }
+
+  /* Level 2 dropdowns fly out to the right */
+  .nav__has-sub--lv2 { display: block; }
+  .nav__menu--lv2 {
+    top: -10px;
+    left: calc(100% + 4px);
+    min-width: 280px;
+  }
+  .nav__caret--right {
+    transform: rotate(-45deg);
+    width: 8px;
+    height: 8px;
+    opacity: 0.5;
+  }
+
+  /* Mobile nav */
+  .mnav__lv1 {
+    display: block;
+    padding: 14px 24px;
+    color: var(--ink, #0A2540);
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  }
+  .mnav__lv2 {
+    display: block;
+    padding: 10px 24px 10px 40px;
+    color: var(--body);
+    text-decoration: none;
+    font-size: 15px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  }
+  .mnav__lv3 {
+    display: block;
+    padding: 9px 24px 9px 64px;
+    color: var(--body);
+    text-decoration: none;
+    font-size: 14px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  }
+  .mnav__lv1:hover,
+  .mnav__lv2:hover,
+  .mnav__lv3:hover { background: var(--cream); }
+</style>
+
+<script>
+  const toggle = document.querySelector('.navtoggle') as HTMLButtonElement | null;
+  const mobileNav = document.getElementById('mobile-nav');
+  if (toggle && mobileNav) {
+    toggle.addEventListener('click', () => {
+      const isOpen = mobileNav.classList.toggle('is-open');
+      toggle.setAttribute('aria-expanded', String(isOpen));
+    });
+  }
+
+  const header = document.querySelector('.siteheader') as HTMLElement | null;
+  if (header) {
+    const SCROLL_TRIGGER = 40;
+    const update = () => {
+      if (window.scrollY > SCROLL_TRIGGER) header.classList.add('is-scrolled');
+      else header.classList.remove('is-scrolled');
+    };
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+  }
+</script>

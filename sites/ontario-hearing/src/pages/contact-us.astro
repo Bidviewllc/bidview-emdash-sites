@@ -1,0 +1,189 @@
+---
+import Interior from "../layouts/Interior.astro";
+import CtaStrip from "../components/CtaStrip.astro";
+import { getEmDashEntry } from "emdash";
+
+let cp: any = null;
+let cfg: any = null;
+try { const r = await getEmDashEntry("contact_page", "contact"); cp = r?.entry ?? null; } catch {}
+try { const r = await getEmDashEntry("site_settings", "main"); cfg = r?.entry ?? null; } catch {}
+
+const d = cp?.data ?? {};
+const e = cp?.edit ?? {};
+const s = cfg?.data ?? {};
+const se = cfg?.edit ?? {};
+---
+<Interior
+  title={d.meta_title ?? "Contact Us - Ontario Hearing Center | Rochester, NY"}
+  description={d.meta_description ?? "Contact Ontario Hearing Center in Rochester, NY. Speak with our audiologists, schedule a hearing test, or get help with hearing aid selection & billing."}
+  pageTitle="Get in touch — we'd love to hear from you."
+  breadcrumbLabel="Contact Us"
+  breadcrumbs={[{ label: "Home", href: "/" }]}
+  canonical="https://ontariohearing.com/contact-us/"
+>
+
+  <section>
+    <div class="contact">
+      <div class="contact__copy">
+        <p class="eyebrow eyebrow--green" {...e.intro_eyebrow}>{d.intro_eyebrow ?? "Send us a message"}</p>
+        <h2 class="display" {...e.intro_heading}>{d.intro_heading ?? "A real person will reply."}</h2>
+        <p {...e.intro_body1}>{d.intro_body1 ?? "Whether you're looking to schedule your first hearing evaluation, have a question about an existing pair of hearing aids, or need to discuss insurance coverage, the form on the right reaches our front desk directly."}</p>
+        <p {...e.intro_body2}>{d.intro_body2 ?? "Most messages receive a response the same business day. If your matter is urgent, please give us a call instead."}</p>
+        <div class="contact__methods">
+          <div class="contact__method">
+            <div class="contact__method-icon">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M3 3H9L11 9L8 11L13 16L15 13L21 15V21H15L3 9V3Z"></path>
+              </svg>
+            </div>
+            <div class="contact__method-body">
+              <p class="contact__method-label">Phone</p>
+              <p class="contact__method-value"><a href={`tel:${(s.phone ?? "(585) 442-4180").replace(/\D/g, "")}`} {...se.phone}>{s.phone ?? "(585) 442-4180"}</a></p>
+              <p class="contact__method-note">Mon–Thu {s.hours_mon_thu ?? "9 AM – 5 PM"} · Fri {s.hours_fri ?? "9 AM – 4 PM"}</p>
+            </div>
+          </div>
+          <div class="contact__method">
+            <div class="contact__method-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+                <rect x="3" y="4" width="18" height="16"></rect>
+                <path d="M3 4L12 13L21 4"></path>
+              </svg>
+            </div>
+            <div class="contact__method-body">
+              <p class="contact__method-label">Email</p>
+              <p class="contact__method-value"><a href={`mailto:${s.email ?? "info@ontariohearing.com"}`} {...se.email}>{s.email ?? "info@ontariohearing.com"}</a></p>
+              <p class="contact__method-note">We typically reply within one business day</p>
+            </div>
+          </div>
+          <div class="contact__method">
+            <div class="contact__method-icon">
+              <svg viewBox="0 0 24 24" fill="currentColor" fill-rule="evenodd" aria-hidden="true">
+                <path d="M12 2L4 9V11L12 22L20 11V9L12 2ZM10 8H14V12H10V8Z"></path>
+              </svg>
+            </div>
+            <div class="contact__method-body">
+              <p class="contact__method-label">Address</p>
+              <p class="contact__method-value">
+                <span {...se.address_street}>{s.address_street ?? "2210 Monroe Avenue"}</span><br />
+                <span {...se.address_city_state}>{s.address_city_state ?? "Rochester, NY 14618"}</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <form class="contact__form" novalidate>
+        <div class="form__intro">
+          <h3>Send us a message</h3>
+          <p>Required fields are marked with <span style="color: var(--green); font-weight: 700;">*</span>.</p>
+        </div>
+        <div class="form__grid">
+          <div class="field">
+            <label for="f-first">First name<span class="req">*</span></label>
+            <input id="f-first" name="firstName" type="text" autocomplete="given-name" placeholder="Jane" required />
+          </div>
+          <div class="field">
+            <label for="f-last">Last name<span class="req">*</span></label>
+            <input id="f-last" name="lastName" type="text" autocomplete="family-name" placeholder="Doe" required />
+          </div>
+          <div class="field">
+            <label for="f-email">Email<span class="req">*</span></label>
+            <input id="f-email" name="email" type="email" autocomplete="email" placeholder="jane@example.com" required />
+          </div>
+          <div class="field">
+            <label for="f-phone">Phone</label>
+            <input id="f-phone" name="phone" type="tel" autocomplete="tel" placeholder="(585) 000-0000" />
+          </div>
+          <div class="field field--full">
+            <label for="f-reason">How can we help?<span class="req">*</span></label>
+            <select id="f-reason" name="reason" required>
+              <option value="" disabled selected>Choose a topic…</option>
+              <option>Schedule a hearing test</option>
+              <option>Hearing aid fitting or follow-up</option>
+              <option>Tinnitus evaluation</option>
+              <option>Cochlear implant services</option>
+              <option>Insurance &amp; billing question</option>
+              <option>Order batteries or accessories</option>
+              <option>General question</option>
+            </select>
+          </div>
+          <div class="field field--full">
+            <label for="f-msg">Message<span class="req">*</span></label>
+            <textarea id="f-msg" name="message" placeholder="Tell us a little about what you're looking for, and the best time of day to reach you." required></textarea>
+          </div>
+          <label class="consent">
+            <input type="checkbox" name="consent" />
+            <span>I agree that Ontario Hearing Center may contact me at the information provided. Submissions are handled in accordance with our <a href="/privacy-policy/">Privacy Policy</a>. Please do not include sensitive health information in this form.</span>
+          </label>
+          <div class="form__actions">
+            <p class="form__small">For urgent matters, please call us at <strong style="color: var(--navy);" {...se.phone}>{s.phone ?? "(585) 442-4180"}</strong>.</p>
+            <button class="btn btn--navy" type="submit">
+              <span>Send Message</span><span class="arrow">→</span>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- VISIT US -->
+  <section class="section--cream">
+    <div class="visit">
+      <div class="visit__left">
+        <p class="eyebrow eyebrow--green">Visit us</p>
+        <h2 class="display">Ontario Hearing Center<br />— Rochester, NY.</h2>
+        <div class="visit__info">
+          <div>
+            <p class="info-list__label">Address</p>
+            <p class="info-list__text">
+              <span {...se.address_street}>{s.address_street ?? "2210 Monroe Avenue"}</span><br />
+              <span {...se.address_city_state}>{s.address_city_state ?? "Rochester, NY 14618"}</span>
+            </p>
+            <p class="info-list__label">Phone</p>
+            <p class="info-list__text" style="font-weight: 600; font-size: 25px" {...se.phone}>{s.phone ?? "(585) 442-4180"}</p>
+            <p class="info-list__label">Email</p>
+            <p class="info-list__text" {...se.email}>{s.email ?? "info@ontariohearing.com"}</p>
+          </div>
+          <div>
+            <p class="info-list__label">Office hours</p>
+            <div class="hours">
+              <div class="hours__row"><span class="hours__day">Monday</span><span class="hours__time" {...se.hours_mon_thu}>{s.hours_mon_thu ?? "9 AM – 5 PM"}</span></div>
+              <div class="hours__row"><span class="hours__day">Tuesday</span><span class="hours__time" {...se.hours_mon_thu}>{s.hours_mon_thu ?? "9 AM – 5 PM"}</span></div>
+              <div class="hours__row"><span class="hours__day">Wednesday</span><span class="hours__time" {...se.hours_mon_thu}>{s.hours_mon_thu ?? "9 AM – 5 PM"}</span></div>
+              <div class="hours__row"><span class="hours__day">Thursday</span><span class="hours__time" {...se.hours_mon_thu}>{s.hours_mon_thu ?? "9 AM – 5 PM"}</span></div>
+              <div class="hours__row"><span class="hours__day">Friday</span><span class="hours__time" {...se.hours_fri}>{s.hours_fri ?? "9 AM – 4 PM"}</span></div>
+              <div class="hours__row hours__row--closed"><span class="hours__day">Saturday</span><span class="hours__time">Closed</span></div>
+              <div class="hours__row hours__row--closed"><span class="hours__day">Sunday</span><span class="hours__time">Closed</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="visit__cta">
+          <a href="#contact-form" class="btn btn--navy">
+            <span>Schedule An Appointment</span><span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
+      <div class="map" aria-label="Map of Ontario Hearing Center office location">
+        <iframe
+          src="https://maps.google.com/maps?q=Ontario%20Hearing%20Center%2C%202210%20Monroe%20Avenue%2C%20Rochester%2C%20NY%2014618&t=&z=15&ie=UTF8&iwloc=&output=embed"
+          width="100%"
+          height="100%"
+          style="border:0;"
+          allowfullscreen
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Ontario Hearing Center — 2210 Monroe Avenue, Rochester, NY 14618"
+        ></iframe>
+        <div class="map__chip">
+          <span class="map__chip-dot" aria-hidden="true"></span>
+          <span>2210 Monroe Ave · Brighton</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaStrip />
+
+</Interior>

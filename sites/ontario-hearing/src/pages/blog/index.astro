@@ -1,0 +1,114 @@
+---
+import Interior from "../../layouts/Interior.astro";
+import CtaStrip from "../../components/CtaStrip.astro";
+import pagesData from "../../data/pages.json";
+import { getEmDashCollection } from "emdash";
+import { altFor } from "../../lib/imageAlts";
+
+const mediaUrl = (img: any): string | null => {
+  const key = img?.meta?.storageKey;
+  if (typeof key === "string" && key) return `/_emdash/api/media/file/${key}`;
+  if (typeof img?.src === "string" && img.src) return img.src;
+  return null;
+};
+
+// Try CMS
+let entries: any[] = [];
+try { const r = await getEmDashCollection("blog_posts", { orderBy: { sort_order: "asc" }, limit: 100 }); entries = r?.entries ?? []; } catch {}
+
+// Build list — prefer CMS rows, fall back to static pages.json
+const blogPosts = entries.length > 0
+  ? entries.map(en => ({
+      slug: en.data?.slug ?? "",
+      title: (en.data?.title ?? "").replace(/\s*[\|—-]\s*Ontario.*$/i, "").trim(),
+      excerpt: en.data?.excerpt ?? "",
+      image: mediaUrl(en.data?.featured_image) ?? en.data?.featured_image_url ?? "",
+      read_time: en.data?.read_time ?? "4 min read",
+    }))
+  : (pagesData as any[])
+      .filter(p => p.type === "blog")
+      .map(p => ({
+        slug: p.slug,
+        title: (p.title ?? p.h1 ?? "").replace(/\s*[\|—-]\s*Ontario.*$/i, "").trim(),
+        excerpt: p.meta_description ?? "",
+        image: p.featured_image,
+        read_time: Math.max(3, Math.round((p.content_markdown?.length ?? 1000) / 1500)) + " min read",
+      }));
+
+const featured = blogPosts[0];
+const rest = blogPosts.slice(1);
+---
+<Interior
+  title="Blog | Ontario Hearing Center - Rochester, NY"
+  description="Stay informed with expert hearing tips, news, and advice from Ontario Hearing Center. Read our latest blog posts and take care of your hearing health."
+  pageTitle="News, notes, and quiet thinking on hearing."
+  breadcrumbLabel="Blog"
+  pageSubtitle="Written by the doctoral team at Ontario Hearing Center — for patients, families, and anyone curious about how hearing works."
+  breadcrumbs={[{ label: "Home", href: "/" }]}
+  canonical="https://ontariohearing.com/blog/"
+>
+
+  {featured && (
+    <section class="featured">
+      <div class="featured__grid">
+        <a class="featured__media" href={`/${featured.slug}/`} aria-label={featured.title}>
+          {featured.image ? <img src={featured.image} alt={altFor(featured.image, featured.title)} loading="eager" /> : <div class="featured__media-placeholder"></div>}
+        </a>
+        <div class="featured__copy">
+          <p class="featured__meta">Featured · {featured.read_time}</p>
+          <h2 class="featured__title">{featured.title}</h2>
+          <p class="featured__excerpt">{featured.excerpt}</p>
+          <a class="btn btn--navy" href={`/${featured.slug}/`}>
+            <span>Read article</span><span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="grid">
+    <div class="grid__head">
+      <h2 class="grid__title">All articles</h2>
+      <p style="color: var(--body); font-size: 16px;">{blogPosts.length} articles</p>
+    </div>
+    <div class="cards-3 blog-grid">
+      {rest.map((p) => (
+        <a class="pcard" href={`/${p.slug}/`}>
+          <div class="pcard__media">
+            {p.image ? <img src={p.image} alt={altFor(p.image, p.title)} loading="lazy" /> : <div class="pcard__media-placeholder"></div>}
+          </div>
+          <div class="pcard__body">
+            <p class="pcard__meta">Article · {p.read_time}</p>
+            <h3 class="pcard__title">{p.title}</h3>
+            <p class="pcard__excerpt">{p.excerpt}</p>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <CtaStrip />
+
+</Interior>
+
+<style>
+  .featured__media { display: block; overflow: hidden; border-radius: 8px; aspect-ratio: 16 / 10; }
+  .featured__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .featured__media-placeholder { background: linear-gradient(135deg, #BFE0CF 0%, #2F7D5B 100%); width: 100%; height: 100%; }
+  .blog-grid { gap: 32px; margin-top: 32px; }
+  .pcard {
+    display: flex; flex-direction: column;
+    background: #fff; border-radius: 8px; overflow: hidden;
+    text-decoration: none; color: inherit;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid #E1DCC8;
+  }
+  .pcard:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08); }
+  .pcard__media { aspect-ratio: 16 / 10; overflow: hidden; background: #f5f2e8; }
+  .pcard__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .pcard__media-placeholder { width: 100%; height: 100%; background: linear-gradient(135deg, #BFE0CF 0%, #2F7D5B 100%); }
+  .pcard__body { padding: 24px; flex: 1; display: flex; flex-direction: column; }
+  .pcard__meta { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: var(--tracking-eyebrow); color: var(--green); margin: 0 0 8px; }
+  .pcard__title { font-family: var(--font-serif); font-size: 22px; line-height: 1.3; color: var(--ink, #0A2540); margin: 0 0 12px; font-weight: 400; }
+  .pcard__excerpt { font-size: 15px; line-height: 1.55; color: var(--body); margin: 0; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+</style>

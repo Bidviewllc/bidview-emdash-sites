@@ -1,0 +1,584 @@
+---
+import Interior from "../layouts/Interior.astro";
+import CtaStrip from "../components/CtaStrip.astro";
+import pagesData from "../data/pages.json";
+import { getEmDashEntry, getEmDashCollection } from "emdash";
+import { marked } from "marked";
+import { altFor, enforceAltInHtml } from "../lib/imageAlts";
+
+const mediaUrl = (img: any): string | null => {
+  const key = img?.meta?.storageKey;
+  if (typeof key === "string" && key) return `/_emdash/api/media/file/${key}`;
+  if (typeof img?.src === "string" && img.src) return img.src;
+  return null;
+};
+
+const { slug } = Astro.params;
+const slugStr = Array.isArray(slug) ? slug.join("/") : (slug ?? "");
+
+const all = pagesData as any[];
+
+// 301 redirects — departed staff, renamed URLs, and pruned/duplicate pages (per technical SEO audit)
+const REDIRECTS: Record<string, string> = {
+  "dr-john-mcnamara": "/about-us/",                                  // left the practice
+  "4220-2": "/can-i-buy-hearing-aids-over-the-counter/",             // URL structure fix
+  "rechargeable-hearing-aids-2": "/rechargeable-hearing-aids/",      // duplicate
+  "audiologist": "/about-us/",                                       // archive page
+  "signia-hearing-aids": "/hearing-aids/",                           // duplicate of /hearing-aids/
+  "hearing-aids-for-tinnitus": "/tinnitus/",                         // cannibalization
+  "audiologists-in-pittsford-ny/hearing-aid-fittings": "/hearing-aid-fittings-in-rochester-ny/", // location is Rochester only
+  // pruned nested location+service pages -> matching service page
+  "audiologists-in-pittsford-ny/cochlear-implants": "/cochlear-implant/",
+  "audiologists-in-pittsford-ny/custom-ear-molds": "/custom-ear-molds/",
+  "audiologists-in-pittsford-ny/hearing-tests": "/hearing-test/",
+  "audiologists-in-pittsford-ny/tinnitus-evaluation-treatment": "/tinnitus/",
+  "understanding-the-impact-of-diet-on-ear-health": "/understanding-ear-wax-causes-care-when-to-see-an-audiologist/", // renamed (ear wax topic)
+};
+if (REDIRECTS[slugStr]) {
+  return Astro.redirect(REDIRECTS[slugStr], 301);
+}
+
+// Find the static fallback record (used for type + fallback content + nested URL)
+const fallback = all.find(p => {
+  if (p.slug === "_home") return false;
+  const norm = p.url_path.replace(/^\/|\/$/g, "");
+  return norm === slugStr;
+});
+
+if (!fallback) {
+  return Astro.redirect("/404");
+}
+
+const UNIQUE = new Set(["about-us", "contact-us", "blog", "dr-adam-sheppard", "dr-andrea-segmond", "dr-elizabeth-orlando"]);
+if (UNIQUE.has(fallback.slug)) {
+  return Astro.redirect("/404");
+}
+
+// 1. Try CMS — look up in the collection matching this page's type
+//    (slug in CMS uses the same value as pages.json: "__" for nested paths)
+const COLLECTION_BY_TYPE: Record<string, string> = {
+  service: "service_pages",
+  brand: "brand_pages",
+  location: "location_pages",
+  resource: "resource_pages",
+  condition: "condition_pages",
+  legal: "legal_pages",
+  blog: "blog_posts",
+};
+const legalSlugs = new Set(["disclaimer", "privacy-policy", "terms-conditions", "sitemap", "thank-you", "thank-you-for-contacting-us"]);
+const resourceSlugs = new Set(["audiology", "audiologist", "hearing-loss", "resources"]);
+const conditionSlugs = new Set(["sensorineural-hearing-loss", "menieres-disease", "vertigo"]);
+
+let resolvedType: string = fallback.type;
+if (legalSlugs.has(fallback.slug)) resolvedType = "legal";
+else if (resourceSlugs.has(fallback.slug)) resolvedType = "resource";
+else if (conditionSlugs.has(fallback.slug)) resolvedType = "condition";
+
+// noindex utility/legal pages (per technical SEO audit)
+const noindex = legalSlugs.has(fallback.slug);
+
+const collectionName = COLLECTION_BY_TYPE[resolvedType];
+let entry: any = null;
+if (collectionName) {
+  try { const r = await getEmDashEntry(collectionName, fallback.slug); entry = r?.entry ?? null; } catch {}
+}
+const d = entry?.data ?? {};
+const e = entry?.edit ?? {};
+
+// 2. Resolve fields with CMS-first / fallback pattern
+const title = d.title ?? (fallback.h1 || fallback.title || fallback.slug);
+const metaTitle = d.meta_title ?? fallback.meta_title ?? fallback.title;
+const metaDescription = d.meta_description ?? fallback.meta_description;
+const heroImage = mediaUrl(d.hero_image) ?? d.hero_image_url ?? fallback.featured_image ?? null;
+
+// Blog-specific
+const blogByline = resolvedType === "blog" ? {
+  author: d.author ?? null,
+  date: d.date ?? null,
+  category: d.category ?? null,
+} : null;
+
+const cleanTitle = (title ?? "")
+  .replace(/\s*[\|—-]\s*Ontario.*$/i, "")
+  .replace(/\s*Au\.D\s*[\|—-]\s*Ontario.*$/i, "")
+  .trim();
+
+// Hero/featured image alt: use the sitewide curated alt (SEO-recommended), else page title.
+const heroAlt = altFor(heroImage, cleanTitle);
+
+// 3. Build content — use CMS lead/content if present, else fall back to static markdown
+marked.setOptions({ gfm: true, breaks: false });
+let bodyMd = d.content ?? (() => {
+  let md = fallback.content_markdown || "";
+  md = md.replace(/^# .+$/m, "");
+  md = md.replace(/!\[[^\]]*\]\([^)]+Path-419\.svg\)/g, "");
+  md = md.replace(/^\[Schedule An Appointment\]\([^)]+\)\s*$/m, "");
+  md = md.replace(/^Read more$/gm, "");
+  md = md.replace(/##\s+(Ready to Get Started\??|Recent Posts|Recent Articles|Categories|Tags|Archives|Related Posts|Related Articles|More Posts)\b[\s\S]*$/i, "");
+  md = md.replace(/^\[(Book Appointment|Contact Us Today|Get Started)\]\([^)]+\)\s*$/gim, "");
+  // Strip blog byline from fallback markdown (we render structured byline above)
+  if (fallback.type === "blog") {
+    const m = md.match(/^(?:- ([^\n]+)\n){2,4}/m);
+    if (m) md = md.replace(m[0], "");
+  }
+  // Strip Elementor TOC
+  md = md.replace(/####?\s*Table of Contents\s*\n([\s\S]*?)(?=\n##\s|\n[A-Z][a-z])/gi, (match: string) => {
+    const linkCount = (match.match(/\[.*?\]\(.*?#.*?\)/g) || []).length;
+    return linkCount >= 2 ? "" : match;
+  });
+  // Strip featured image from inline content
+  if (fallback.featured_image) {
+    const base = fallback.featured_image.split("/").pop()?.split("?")[0]?.replace(/-\d+x\d+/, "");
+    if (base) {
+      const stem = base.replace(/\.(jpe?g|png|webp)$/i, "");
+      const re = new RegExp(`!\\[[^\\]]*\\]\\([^)]*${stem.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}[^)]*\\)`, "i");
+      md = md.replace(re, "");
+    }
+  }
+  md = md.replace(/https?:\/\/ontariohearing\.com\/([^\s)"]+)/g, "/$1");
+  md = md.replace(/https?:\/\/ontariohearing\.com\/?(?=[\s)"])/g, "/");
+  md = md.replace(/!\[([^\]]*)\]\(\/wp-content\//g, "![$1](https://ontariohearing.com/wp-content/");
+  md = md.replace(/\n{3,}/g, "\n\n");
+  return md.trim();
+})();
+
+// Strip Elementor "Table of Contents" (heading + its anchor-link bullets) from the
+// body (CMS or fallback) — it renders as raw "Table of Contents" + jump links otherwise.
+bodyMd = bodyMd
+  .replace(/####?\s*Table of Contents\s*\n(?:\s*-?\s*\[[^\]]*\]\([^)]*#[^)]*\)\s*\n?)+/gi, "")
+  .replace(/\n{3,}/g, "\n\n")
+  .trim();
+
+// Strip the hero/featured image from the body (CMS or fallback) so it never renders twice
+if (heroImage) {
+  const heroBase = (heroImage.split("/").pop() || "").split("?")[0];
+  if (heroBase) {
+    const esc = heroBase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    // linked image: [![alt](...heroBase...)](href)
+    bodyMd = bodyMd.replace(new RegExp(`\\[!\\[[^\\]]*\\]\\([^)]*${esc}[^)]*\\)\\]\\([^)]*\\)`, "gi"), "");
+    // plain image: ![alt](...heroBase...)
+    bodyMd = bodyMd.replace(new RegExp(`!\\[[^\\]]*\\]\\([^)]*${esc}[^)]*\\)`, "gi"), "");
+    bodyMd = bodyMd.replace(/\n{3,}/g, "\n\n").trim();
+  }
+}
+
+// Strip markdown (links, emphasis) to plain text — the lead box renders as text,
+// so raw "[hearing loss](/hearing-loss/)" must not show literal brackets.
+const stripMd = (s: string) => (s || "")
+  .replace(/!?\[([^\]]*)\]\([^)]*\)/g, "$1")
+  .replace(/[*_`]+/g, "")
+  .replace(/\s+/g, " ")
+  .trim();
+
+// Lead — prefer CMS, else first real paragraph. Legal/utility pages render no lead box.
+const leadRaw = legalSlugs.has(fallback.slug) ? null : (d.lead ?? (() => {
+  const lines = (bodyMd || "").split("\n").filter((l: string) => l.trim());
+  for (const line of lines) {
+    const t = line.trim();
+    if (t.startsWith("#") || t.startsWith("!") || t.startsWith("[") || t.startsWith("-")) continue;
+    const c = t.replace(/^[_*]+|[_*]+$/g, "").trim();
+    if (c.length > 30 && c.length < 280) return c;
+  }
+  return null;
+})());
+const lead = leadRaw ? stripMd(leadRaw) : null;
+
+// Remove the lead paragraph from the body so it isn't duplicated under the hero image.
+if (lead) {
+  const paras = bodyMd.split(/\n{2,}/);
+  const idx = paras.findIndex((p: string) => stripMd(p) === lead);
+  if (idx !== -1) { paras.splice(idx, 1); bodyMd = paras.join("\n\n").trim(); }
+}
+
+const htmlContent = enforceAltInHtml(await marked.parse(bodyMd));
+
+const breadcrumbs: Array<{ label: string; href: string }> = [{ label: "Home", href: "/" }];
+if (resolvedType === "blog") breadcrumbs.push({ label: "Blog", href: "/blog/" });
+
+const BRAND_LOGOS: Record<string, { name: string, alt: string }> = {
+  "oticon-hearing-aids": { name: "/assets/brand-oticon.webp", alt: "Oticon" },
+  "phonak-hearing-aids": { name: "/assets/brand-phonak.webp", alt: "Phonak" },
+  "widex-hearing-aids": { name: "/assets/brand-widex.webp", alt: "Widex" },
+  "resound-hearing-aids": { name: "/assets/brand-resound.webp", alt: "ReSound" },
+  "starkey-hearing-aids": { name: "/assets/brand-starkey.webp", alt: "Starkey" },
+  "unitron-hearing-aids": { name: "/assets/brand-unitron.webp", alt: "Unitron" },
+};
+const brandLogo = BRAND_LOGOS[fallback.slug];
+
+
+// Related pages from CMS or fallback
+let related: any[] = [];
+if (collectionName && resolvedType !== "blog") {
+  try {
+    const r = await getEmDashCollection(collectionName, { orderBy: { sort_order: "asc" }, limit: 10 });
+    related = (r?.entries ?? [])
+      .filter((en: any) => en.data?.slug !== fallback.slug)
+      .slice(0, 6)
+      .map((en: any) => ({
+        slug: en.data?.slug,
+        url_path: all.find(p => p.slug === en.data?.slug)?.url_path ?? `/${en.data?.slug}/`,
+        title: (en.data?.title ?? "").replace(/\s*[\|—-]\s*Ontario.*$/i, "").trim(),
+      }));
+  } catch {}
+}
+if (related.length === 0) {
+  related = all
+    .filter(p => p.type === fallback.type && p.slug !== fallback.slug && !UNIQUE.has(p.slug))
+    .slice(0, 6)
+    .map(p => ({
+      slug: p.slug,
+      url_path: p.url_path,
+      title: (p.title ?? "").replace(/\s*[\|—-]\s*Ontario.*$/i, "").trim(),
+    }));
+}
+
+// Recent blog posts for blog sidebar
+let recentPosts: any[] = [];
+if (resolvedType === "blog") {
+  try {
+    const r = await getEmDashCollection("blog_posts", { orderBy: { sort_order: "asc" }, limit: 5 });
+    recentPosts = (r?.entries ?? [])
+      .filter((en: any) => en.data?.slug !== fallback.slug)
+      .slice(0, 4)
+      .map((en: any) => ({
+        slug: en.data?.slug,
+        title: (en.data?.title ?? "").replace(/\s*[\|—-]\s*Ontario.*$/i, "").trim(),
+        featured_image: mediaUrl(en.data?.featured_image) ?? en.data?.featured_image_url,
+      }));
+  } catch {}
+  if (recentPosts.length === 0) {
+    recentPosts = all
+      .filter(p => p.type === "blog" && p.slug !== fallback.slug)
+      .slice(0, 4)
+      .map(p => ({
+        slug: p.slug,
+        title: (p.title ?? "").replace(/\s*[\|—-]\s*Ontario.*$/i, "").trim(),
+        featured_image: p.featured_image,
+      }));
+  }
+}
+
+const typeLabel = {
+  blog: "Article",
+  service: "Service",
+  brand: "Hearing Aid Brand",
+  location: "Service Area",
+  resource: "Resource",
+  condition: "Condition",
+  legal: "",
+}[resolvedType] || "";
+
+// Type-specific JSON-LD schema
+const SITE = "https://ontariohearing.com";
+const pageUrl = `${SITE}${fallback.url_path}`;
+const extraSchemas: any[] = [];
+
+if (resolvedType === "blog") {
+  extraSchemas.push({
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "@id": `${pageUrl}#article`,
+    "headline": cleanTitle,
+    "description": metaDescription,
+    "image": heroImage || undefined,
+    "datePublished": blogByline?.date ? new Date(blogByline.date).toISOString() : undefined,
+    "author": blogByline?.author ? {
+      "@type": "Person",
+      "name": blogByline.author,
+    } : { "@id": `${SITE}/#organization` },
+    "publisher": { "@id": `${SITE}/#organization` },
+    "mainEntityOfPage": pageUrl,
+    "articleSection": blogByline?.category || undefined,
+    "inLanguage": "en-US",
+  });
+}
+
+// Reusable areaServed + service-location blocks (per technical SEO audit)
+const AREA_SERVED = ["Rochester", "Brighton", "Pittsford", "Fairport", "Greece"].map(n => ({ "@type": "City", name: n }));
+const SERVICE_LOCATION = {
+  "@type": "Place",
+  name: "Ontario Hearing Center",
+  address: { "@type": "PostalAddress", streetAddress: "2210 Monroe Avenue", addressLocality: "Rochester", addressRegion: "NY", postalCode: "14618", addressCountry: "US" },
+};
+
+if (resolvedType === "brand") {
+  const brandName = d.brand_name || (BRAND_LOGOS[fallback.slug]?.alt) || cleanTitle.replace(/\s*Hearing Aids.*/i, "").trim();
+  // Product schema (with brand + offer) — per audit
+  extraSchemas.push({
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": cleanTitle,
+    "description": metaDescription,
+    "url": pageUrl,
+    ...(heroImage ? { image: heroImage } : {}),
+    "brand": { "@type": "Brand", name: brandName },
+    "offers": {
+      "@type": "Offer",
+      "priceCurrency": "USD",
+      "price": "0",
+      "availability": "https://schema.org/InStock",
+      "itemCondition": "https://schema.org/NewCondition",
+      "seller": { "@id": `${SITE}/#organization` },
+      "url": pageUrl,
+    },
+  });
+  // Service schema (hearing-aid fitting) — per audit
+  extraSchemas.push({
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": `${pageUrl}#service`,
+    "name": `${brandName} Hearing Aid Fitting in Rochester, NY`,
+    "description": `Ontario Hearing Center are an authorized provider of ${brandName} hearing aids in Rochester, NY. Our doctoral-level audiologists provide professional fittings, follow-up care, and ongoing support for all ${brandName} hearing aid models.`,
+    "url": pageUrl,
+    ...(heroImage ? { image: heroImage } : {}),
+    "serviceType": "Hearing Aid Fitting",
+    "category": "Audiology",
+    "provider": { "@id": `${SITE}/#organization` },
+    "areaServed": AREA_SERVED,
+    "availableChannel": {
+      "@type": "ServiceChannel",
+      "serviceLocation": SERVICE_LOCATION,
+      "servicePhone": { "@type": "ContactPoint", telephone: "+1-585-442-4180", contactType: "customer service" },
+    },
+  });
+} else if (resolvedType === "service" || fallback.slug === "hearing-loss") {
+  extraSchemas.push({
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": `${pageUrl}#service`,
+    "name": cleanTitle,
+    "description": metaDescription,
+    "url": pageUrl,
+    ...(heroImage ? { image: heroImage } : {}),
+    "category": "Audiology",
+    "provider": { "@id": `${SITE}/#organization` },
+    "areaServed": AREA_SERVED,
+  });
+}
+---
+<Interior
+  title={metaTitle}
+  description={metaDescription}
+  pageTitle={cleanTitle}
+  breadcrumbLabel={cleanTitle}
+  breadcrumbs={breadcrumbs}
+  canonical={pageUrl}
+  ogImage={heroImage || undefined}
+  ogType={resolvedType === "blog" ? "article" : "website"}
+  schemaJsonLd={extraSchemas.length > 0 ? extraSchemas : undefined}
+  noindex={noindex}
+>
+  <section class="article-page">
+    <div class="article-layout">
+      <main class="article-main">
+        {typeLabel && !blogByline && <p class="article-meta">{typeLabel}</p>}
+
+        {blogByline && (blogByline.author || blogByline.date) && (
+          <div class="article-byline">
+            {blogByline.author && <span class="article-byline__author" {...e.author}>By {blogByline.author}</span>}
+            {blogByline.date && <span class="article-byline__sep">·</span>}
+            {blogByline.date && <span class="article-byline__date" {...e.date}>{blogByline.date}</span>}
+            {blogByline.category && <span class="article-byline__sep">·</span>}
+            {blogByline.category && <span class="article-byline__category" {...e.category}>{blogByline.category}</span>}
+          </div>
+        )}
+
+        {lead && (
+          <p class="article-lead" {...e.lead}>{lead}</p>
+        )}
+
+        {heroImage && (
+          <figure class="article-hero">
+            {brandLogo ? (
+              <div class="article-hero__brand">
+                <img src={brandLogo.name} alt={brandLogo.alt} />
+              </div>
+            ) : (
+              <img src={heroImage} alt={heroAlt} loading="eager" {...e.hero_image} />
+            )}
+          </figure>
+        )}
+
+        <div class="article-body" {...e.content} set:html={htmlContent}></div>
+
+        <div class="article-cta">
+          <h3>Ready to take the next step?</h3>
+          <p>Schedule a consultation with our doctoral-level audiologists in Brighton, NY.</p>
+          <div class="article-cta__actions">
+            <a href="/contact-us/" class="btn btn--navy">
+              <span>Schedule An Appointment</span><span class="arrow">→</span>
+            </a>
+            <a href="tel:5854424180" class="btn btn--ghost-navy">
+              <span>Call (585) 442-4180</span>
+            </a>
+          </div>
+        </div>
+      </main>
+
+      <aside class="article-sidebar">
+        <div class="aside-card aside-card--navy">
+          <p class="aside-card__eyebrow">Take the next step</p>
+          <h3 class="aside-card__title">Schedule a hearing test today.</h3>
+          <p class="aside-card__text">An appointment with one of our doctoral-level audiologists. No referral required for most insurance plans.</p>
+          <a href="/contact-us/" class="btn btn--mint-on-navy">
+            <span>Schedule An Appointment</span><span class="arrow">→</span>
+          </a>
+          <p class="aside-card__phone">or call <a href="tel:5854424180">(585) 442-4180</a></p>
+        </div>
+
+        <div class="aside-block">
+          <p class="aside-block__label">Visit us</p>
+          <p class="aside-block__address">2210 Monroe Avenue<br />Rochester, NY 14618</p>
+          <p class="aside-block__hours">Mon–Thu 9 AM – 5 PM<br />Fri 9 AM – 4 PM</p>
+        </div>
+
+        {resolvedType === "blog" && recentPosts.length > 0 && (
+          <div class="aside-block">
+            <p class="aside-block__label">Recent articles</p>
+            <ul class="aside-list">
+              {recentPosts.map((p: any) => (
+                <li>
+                  <a href={`/${p.slug}/`}>
+                    {p.featured_image && <img src={p.featured_image} alt={altFor(p.featured_image, p.title)} loading="lazy" />}
+                    <span>{p.title}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <a class="aside-block__more" href="/blog/">All articles →</a>
+          </div>
+        )}
+
+        {resolvedType !== "blog" && related.length > 0 && (
+          <div class="aside-block">
+            <p class="aside-block__label">
+              {resolvedType === "brand" ? "Other hearing aid brands"
+                : resolvedType === "service" ? "More services"
+                : resolvedType === "location" ? "Service areas"
+                : resolvedType === "resource" ? "More resources"
+                : resolvedType === "condition" ? "Related conditions"
+                : "Related pages"}
+            </p>
+            <ul class="aside-list aside-list--simple">
+              {related.map((p: any) => (
+                <li><a href={p.url_path}>{p.title}</a></li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </aside>
+    </div>
+  </section>
+
+  <CtaStrip />
+</Interior>
+
+<style>
+  .article-page { padding: 0; }
+  .article-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 340px;
+    gap: 64px;
+    padding: 56px var(--page-gutter) 80px;
+    align-items: start;
+  }
+  .article-main { min-width: 0; }
+  .article-meta {
+    font-family: var(--font-sans);
+    font-size: 13px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: var(--tracking-eyebrow); color: var(--green);
+    margin: 0 0 16px;
+  }
+  .article-byline {
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    margin: 0 0 24px;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    color: var(--body);
+  }
+  .article-byline__author { color: var(--ink); font-weight: 600; }
+  .article-byline__sep { color: rgba(0, 0, 0, 0.25); }
+  .article-byline__category { color: var(--green); text-transform: uppercase; letter-spacing: var(--tracking-eyebrow); font-size: 12px; font-weight: 700; }
+  .article-lead {
+    font-family: var(--font-serif);
+    font-size: 24px; line-height: 1.4;
+    color: var(--ink, #0A2540);
+    margin: 0 0 32px;
+    font-weight: 400;
+    font-style: italic;
+    border-left: 4px solid var(--green);
+    padding-left: 20px;
+  }
+  .article-hero { margin: 0 0 40px; border-radius: 8px; overflow: hidden; background: var(--cream); }
+  .article-hero img { width: 100%; height: auto; display: block; }
+  .article-hero__brand { display: flex; align-items: center; justify-content: center; background: #fff; padding: 60px; min-height: 220px; }
+  .article-hero__brand img { max-width: 320px; max-height: 120px; width: auto; height: auto; }
+
+  .article-body :global(h2) { font-family: var(--font-serif); font-size: 32px; line-height: 1.25; color: var(--ink, #0A2540); margin: 48px 0 16px; font-weight: 400; }
+  .article-body :global(h3) { font-family: var(--font-serif); font-size: 24px; line-height: 1.3; color: var(--ink, #0A2540); margin: 36px 0 12px; font-weight: 400; }
+  .article-body :global(h4) { font-family: var(--font-sans); font-size: 16px; line-height: 1.3; color: var(--green); margin: 28px 0 10px; font-weight: 700; text-transform: uppercase; letter-spacing: var(--tracking-eyebrow); }
+  .article-body :global(p) { font-size: 18px; line-height: 1.7; color: var(--body, #495a6c); margin: 0 0 18px; }
+  .article-body :global(ul), .article-body :global(ol) { margin: 0 0 24px; padding-left: 22px; }
+  .article-body :global(li) { font-size: 18px; line-height: 1.7; color: var(--body, #495a6c); margin-bottom: 8px; }
+  .article-body :global(a) { color: var(--green); text-decoration: underline; text-underline-offset: 3px; }
+  .article-body :global(a:hover) { text-decoration: none; }
+  .article-body :global(img) { max-width: 100%; height: auto; border-radius: 8px; margin: 24px 0; display: block; }
+  .article-body :global(strong) { font-weight: 700; color: var(--ink, #0A2540); }
+  .article-body :global(em) { font-style: italic; }
+  .article-body :global(blockquote) { border-left: 4px solid var(--green); padding: 8px 0 8px 24px; margin: 32px 0; font-style: italic; font-size: 20px; color: var(--ink, #0A2540); }
+  .article-body :global(hr) { border: 0; border-top: 1px solid #E1DCC8; margin: 40px 0; }
+  .article-body :global(table) { width: 100%; border-collapse: collapse; margin: 24px 0; font-size: 16px; }
+  .article-body :global(th), .article-body :global(td) { border-bottom: 1px solid #E1DCC8; padding: 12px 14px; text-align: left; }
+  .article-body :global(th) { background: var(--cream); font-weight: 700; color: var(--ink); }
+  /* Uniform, centered brand-logo row (e.g. /hearing-aids/) */
+  .article-body :global(.brand-logos) { display: flex; flex-wrap: wrap; gap: 28px 44px; align-items: center; justify-content: center; margin: 32px 0; }
+  .article-body :global(.brand-logos img) { height: 48px; width: auto; max-width: 160px; object-fit: contain; margin: 0; border-radius: 0; }
+
+  .article-cta { margin-top: 56px; padding: 40px; background: var(--cream); border-radius: 8px; }
+  .article-cta h3 { font-family: var(--font-serif); font-size: 28px; line-height: 1.2; color: var(--ink); margin: 0 0 10px; font-weight: 400; }
+  .article-cta p { font-size: 17px; line-height: 1.55; color: var(--body); margin: 0 0 20px; }
+  .article-cta__actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .article-cta__actions .btn { white-space: nowrap; }
+  @media (max-width: 640px) {
+    .article-cta__actions { flex-direction: column; align-items: stretch; }
+    .article-cta__actions .btn { justify-content: center; width: 100%; }
+  }
+
+  .article-sidebar { position: sticky; top: 120px; display: flex; flex-direction: column; gap: 28px; }
+  .aside-card { padding: 28px; border-radius: 8px; background: #fff; border: 1px solid #E1DCC8; }
+  .aside-card--navy { background: var(--navy); color: #fff; border: 0; }
+  .aside-card__eyebrow { font-family: var(--font-sans); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: var(--tracking-eyebrow); color: var(--mint); margin: 0 0 12px; }
+  .aside-card__title { font-family: var(--font-serif); font-size: 26px; line-height: 1.25; color: #fff; margin: 0 0 14px; font-weight: 400; }
+  .aside-card__text { font-size: 15px; line-height: 1.55; color: rgba(255, 255, 255, 0.85); margin: 0 0 20px; }
+  .aside-card__phone { margin: 14px 0 0; text-align: center; color: rgba(255, 255, 255, 0.7); font-size: 14px; }
+  .aside-card__phone a { color: var(--mint); text-decoration: none; font-weight: 600; }
+  .aside-card .btn { width: 100%; justify-content: center; }
+
+  .aside-block { padding: 24px; border-radius: 8px; background: var(--cream); }
+  .aside-block__label { font-family: var(--font-sans); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: var(--tracking-eyebrow); color: var(--green); margin: 0 0 14px; }
+  .aside-block__address, .aside-block__hours { font-size: 15px; line-height: 1.6; color: var(--body); margin: 0 0 12px; }
+  .aside-block__hours { margin-bottom: 0; }
+  .aside-block__more { display: inline-block; margin-top: 14px; font-size: 14px; font-weight: 700; color: var(--green); text-decoration: none; }
+  .aside-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
+  .aside-list li a { display: flex; gap: 12px; align-items: flex-start; color: var(--ink); text-decoration: none; font-size: 14px; line-height: 1.4; font-weight: 500; }
+  .aside-list li a:hover { color: var(--green); }
+  .aside-list li img { width: 56px; height: 56px; flex: none; object-fit: cover; border-radius: 4px; }
+  .aside-list--simple li { border-bottom: 1px solid rgba(0, 0, 0, 0.06); padding-bottom: 12px; }
+  .aside-list--simple li:last-child { border-bottom: 0; padding-bottom: 0; }
+  .aside-list--simple li a { font-size: 15px; line-height: 1.4; text-decoration: none; }
+
+  @media (max-width: 1024px) {
+    .article-layout { grid-template-columns: 1fr; gap: 48px; }
+    .article-sidebar { position: static; }
+  }
+  @media (max-width: 640px) {
+    .article-layout { padding: 36px var(--page-gutter) 56px; gap: 32px; }
+    .article-lead { font-size: 19px; padding-left: 16px; }
+    .article-body :global(h2) { font-size: 26px; margin-top: 36px; }
+    .article-body :global(h3) { font-size: 20px; }
+    .article-body :global(p) { font-size: 17px; }
+    .article-body :global(li) { font-size: 17px; }
+    .article-cta { padding: 28px; }
+    .article-cta h3 { font-size: 23px; }
+  }
+</style>

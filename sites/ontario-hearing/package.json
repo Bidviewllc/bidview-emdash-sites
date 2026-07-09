@@ -1,0 +1,26 @@
+{
+  "name": "ontario-hearing",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "deploy": "astro build && wrangler deploy",
+    "deploy:staging": "astro build && wrangler deploy --env staging"
+  },
+  "dependencies": {
+    "@astrojs/cloudflare": "^13.1.6",
+    "@astrojs/react": "^5.0.5",
+    "@emdash-cms/cloudflare": "^0.1.1",
+    "astro": "^6.1.2",
+    "emdash": "^0.1.1",
+    "marked": "^18.0.4",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6"
+  },
+  "devDependencies": {
+    "wrangler": "^4.79.0"
+  }
+}
