@@ -1,0 +1,16 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;600;700&display=swap");
+*{box-sizing:border-box}body{margin:0;font-family:"Roboto",sans-serif;background:#fff;color:#41515f}
+.page-article{width:100%;margin:0 auto;padding:0}
+.internal-hero{display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:20px;min-height:500px;background-image:linear-gradient(90deg,#fafcffd9 40%,#f8fbff0d 75%),url("./Assets/bidview-marketing-internal-hero-image.webp");background-position:center center;background-repeat:no-repeat;background-size:cover}
+.internal-hero__content{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;row-gap:18px;position:relative;z-index:1;width:1280px}
+.internal-hero__eyebrow{display:inline-flex;align-items:center;justify-content:center;padding:10px 20px;border-radius:999px;background-image:linear-gradient(200deg,#4a3aff 25%,#582399 125%);color:#fff;font-size:14px;font-weight:600;line-height:1.1em;letter-spacing:.05em;text-transform:uppercase}
+.internal-hero__title{width:60%;margin:0;color:#080808;font-size:52px;font-weight:600;line-height:1.2em;letter-spacing:0}
+.hero-breadcrumb{padding:20px;border-top:1px solid #d8dbe980;border-bottom:1px solid #d8dbe980;background:#fff}
+.hero-breadcrumb__inner{display:flex;align-items:center;justify-content:flex-start;flex-wrap:wrap;column-gap:8px;row-gap:4px;width:1280px;margin:0 auto}
+.hero-breadcrumb a,.hero-breadcrumb__current,.hero-breadcrumb span{font-size:14px;font-weight:600;line-height:1.1em;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;transition:color .3s ease}
+.hero-breadcrumb a{color:#4a3aff80}.hero-breadcrumb a:hover,.hero-breadcrumb a:focus-visible{color:#4a3aff}.hero-breadcrumb__current,.hero-breadcrumb span{color:#080808}
+.page-header{width:1280px;margin:0 auto;padding:40px 0 0}.page-title{font-size:20px;font-weight:600;line-height:1.2em;margin:0;color:#080808}
+.page-content{width:1280px;margin:0 auto;padding:24px 0 100px}.page-content p{margin-bottom:1.5em}.page-content h2{font-size:1.5rem;margin-top:2em;margin-bottom:.75em;color:#080808}.page-content h3{font-size:1.25rem;margin-top:1.75em;margin-bottom:.5em;color:#080808}
+@media (max-width:1366px){.internal-hero{padding:20px;min-height:0}.internal-hero__content,.hero-breadcrumb__inner,.page-header,.page-content{width:100%}.internal-hero__title{font-size:48px}}
+@media (max-width:1024px){.hero-breadcrumb{padding:40px 20px}.internal-hero{padding:20px;min-height:420px;background-image:linear-gradient(90deg,#fafcffd9 60%,#f8fbff0d 90%),url("./Assets/bidview-marketing-internal-hero-image.webp")}.internal-hero__title{width:70%;font-size:48px}}
+@media (max-width:767px){.hero-breadcrumb{padding:20px}.internal-hero{padding:20px;min-height:0;background-image:linear-gradient(0deg,#fafcffd9 70%,#f8fbff0d 85%),url("./Assets/bidview-marketing-internal-hero-image.webp")}.internal-hero__content{align-items:center;text-align:center;row-gap:14px}.internal-hero__title{width:100%;font-size:34px}.page-header,.page-content{padding-left:20px;padding-right:20px}.hero-breadcrumb__inner{justify-content:center}}

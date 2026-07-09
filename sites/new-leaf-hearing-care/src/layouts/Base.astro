@@ -23,6 +23,43 @@ const { title = "New Leaf Hearing Care", description = "", canonical, ogType = "
 const canonicalUrl = canonical || new URL(Astro.url.pathname, Astro.url.origin).href;
 const ogImageUrl = new URL(ogImage || "/assets/og-image.jpg", Astro.url.origin).href;
 const ogDescription = description || "Audiology and hearing aid care from trusted audiologists in Arvada and Littleton, Colorado.";
+
+const origin = Astro.url.origin;
+const businessHours = [
+  { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday"], opens: "09:00", closes: "16:30" },
+  { "@type": "OpeningHoursSpecification", dayOfWeek: "Friday", opens: "09:00", closes: "12:00" }
+];
+const businessSchema = {
+  "@context": "https://schema.org",
+  "@type": ["MedicalBusiness", "LocalBusiness"],
+  "@id": `${origin}/#business`,
+  name: "New Leaf Hearing Care",
+  url: origin,
+  image: `${origin}/assets/og-image.jpg`,
+  logo: `${origin}/assets/new-leaf-hearing-care-logo.webp`,
+  priceRange: "$$",
+  areaServed: ["Arvada, CO", "Littleton, CO", "Denver, CO"],
+  department: [
+    {
+      "@type": "MedicalBusiness",
+      name: "New Leaf Hearing Care - Arvada",
+      url: `${origin}/audiologist-hearing-aids-arvada-colorado/`,
+      telephone: "+1-303-639-5323",
+      faxNumber: "+1-303-940-5615",
+      address: { "@type": "PostalAddress", streetAddress: "8721 Wadsworth Blvd, Suite C", addressLocality: "Arvada", addressRegion: "CO", postalCode: "80003", addressCountry: "US" },
+      openingHoursSpecification: businessHours
+    },
+    {
+      "@type": "MedicalBusiness",
+      name: "New Leaf Hearing Care - Littleton",
+      url: `${origin}/audiologist-hearing-aids-littleton-colorado/`,
+      telephone: "+1-720-689-7989",
+      faxNumber: "+1-720-669-8960",
+      address: { "@type": "PostalAddress", streetAddress: "5808 S Rapp St, Suite 102", addressLocality: "Littleton", addressRegion: "CO", postalCode: "80120", addressCountry: "US" },
+      openingHoursSpecification: businessHours
+    }
+  ]
+};
 ---
 <!doctype html>
 <html lang="en">
@@ -46,6 +83,7 @@ const ogDescription = description || "Audiology and hearing aid care from truste
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={ogDescription} />
     <meta name="twitter:image" content={ogImageUrl} />
+    <script type="application/ld+json" set:html={JSON.stringify(businessSchema)} />
     <link rel="icon" type="image/webp" href="/assets/new-leaf-hearing-care-favicon.webp" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
