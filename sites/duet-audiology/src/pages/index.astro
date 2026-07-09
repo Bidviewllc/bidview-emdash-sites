@@ -391,6 +391,7 @@ Hearing directly impacts cognitive function, memory, and emotional well-being. Y
   s9CardEls.forEach(c => {
     s9Data.push({
       src: c.querySelector('.s9-card-img img')?.src || '',
+      alt: c.querySelector('.s9-card-img img')?.alt || '',
       title: c.querySelector('.s9-card-label-text')?.textContent || '',
       desc: c.querySelector('.s9-card-desc')?.textContent || ''
     });
@@ -398,6 +399,7 @@ Hearing directly impacts cognitive function, memory, and emotional well-being. Y
   function s9OpenLb(i) {
     s9LbIdx = i;
     s9LbImg.src = s9Data[i].src;
+    s9LbImg.alt = s9Data[i].alt;
     s9LbTitle.textContent = s9Data[i].title;
     s9LbDesc.textContent = s9Data[i].desc;
     s9Lb.classList.add('open');
