@@ -1,0 +1,19 @@
+name: Notify Slack on new PR
+on:
+  pull_request:
+    types: [opened, reopened, ready_for_review]
+jobs:
+  slack:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Post to Slack
+        env:
+          HOOK: ${{ secrets.SLACK_ALERTS_WEBHOOK }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          PR_NUM: ${{ github.event.pull_request.number }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_USER: ${{ github.event.pull_request.user.login }}
+          REPO: ${{ github.repository }}
+        run: |
+          TEXT=":git: *New PR to review* — <$PR_URL|#$PR_NUM $PR_TITLE> on \`$REPO\` by $PR_USER"
+          jq -n --arg t "$TEXT" '{text:$t}' | curl -s -X POST -H 'Content-type: application/json' -d @- "$HOOK"
