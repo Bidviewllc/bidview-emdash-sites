@@ -16,19 +16,47 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import SiteScripts from "../components/SiteScripts.astro";
 
-const { title = "New Leaf Hearing Care", description = "", canonical, ogType = "website", ogImage } = Astro.props;
+const { title = "New Leaf Hearing Care", description = "", canonical, ogType = "website", ogImage, noindex = false } = Astro.props;
 
 // Canonical + absolute URLs derive from the serving origin, so they auto-adjust
 // after the custom-domain cutover (workers.dev -> newleafhearing.com).
 const canonicalUrl = canonical || new URL(Astro.url.pathname, Astro.url.origin).href;
 const ogImageUrl = new URL(ogImage || "/assets/og-image.jpg", Astro.url.origin).href;
 const ogDescription = description || "Audiology and hearing aid care from trusted audiologists in Arvada and Littleton, Colorado.";
+
+const origin = Astro.url.origin;
+const businessHours = [
+  { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday"], opens: "09:00", closes: "16:30" },
+  { "@type": "OpeningHoursSpecification", dayOfWeek: "Friday", opens: "09:00", closes: "12:00" }
+];
+const businessLocation = (id, name, path, telephone, faxNumber, streetAddress, city, postalCode, latitude, longitude) => ({
+  "@type": ["MedicalBusiness", "LocalBusiness"],
+  "@id": `${origin}/#${id}`,
+  name,
+  image: `${origin}/assets/og-image.jpg`,
+  url: `${origin}${path}`,
+  telephone,
+  faxNumber,
+  priceRange: "$$",
+  address: { "@type": "PostalAddress", streetAddress, addressLocality: city, addressRegion: "CO", postalCode, addressCountry: "US" },
+  geo: { "@type": "GeoCoordinates", latitude, longitude },
+  areaServed: `${city}, CO`,
+  openingHoursSpecification: businessHours
+});
+const businessSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    businessLocation("arvada", "New Leaf Hearing Care - Arvada", "/audiologist-hearing-aids-arvada-colorado/", "+1-303-639-5323", "+1-303-940-5615", "8721 Wadsworth Blvd, Suite C", "Arvada", "80003", 39.8549747, -105.0815928),
+    businessLocation("littleton", "New Leaf Hearing Care - Littleton", "/audiologist-hearing-aids-littleton-colorado/", "+1-720-689-7989", "+1-720-669-8960", "5808 S Rapp St, Suite 102", "Littleton", "80120", 39.611988, -105.019759)
+  ]
+};
 ---
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
     <link rel="canonical" href={canonicalUrl} />
@@ -45,6 +73,7 @@ const ogDescription = description || "Audiology and hearing aid care from truste
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={ogDescription} />
     <meta name="twitter:image" content={ogImageUrl} />
+    <script type="application/ld+json" set:html={JSON.stringify(businessSchema)} />
     <link rel="icon" type="image/webp" href="/assets/new-leaf-hearing-care-favicon.webp" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
