@@ -1,0 +1,42 @@
+---
+interface Props {
+  ctaHref?: string;
+  ctaLabel?: string;
+}
+
+const {
+  ctaHref = '/contact-us',
+  ctaLabel = 'Start my project',
+} = Astro.props;
+---
+<header class="site-header" role="banner">
+  <div class="container site-header__row">
+    <a class="site-logo" href="/" aria-label="Bidview Marketing home">
+      <img
+        src="/Assets/bidview-marketing-logo.webp"
+        alt="Bidview Marketing"
+        width="760"
+        height="220"
+      />
+    </a>
+
+    <a class="btn-primary" href={ctaHref}>
+      <img
+        class="btn-icon"
+        src="/Assets/bidview-marketing-icon-01.svg"
+        alt=""
+        aria-hidden="true"
+        width="20"
+        height="20"
+      />
+      <span>{ctaLabel}</span>
+    </a>
+  </div>
+</header>
+
+<style>
+  .btn-icon {
+    width: 20px;
+    height: 20px;
+  }
+</style>
