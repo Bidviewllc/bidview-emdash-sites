@@ -14,6 +14,11 @@ jobs:
           PR_TITLE: ${{ github.event.pull_request.title }}
           PR_USER: ${{ github.event.pull_request.user.login }}
           REPO: ${{ github.repository }}
+          BRANCH: ${{ github.event.pull_request.head.ref }}
         run: |
-          TEXT=":git: *New PR to review* — <$PR_URL|#$PR_NUM $PR_TITLE> on \`$REPO\` by $PR_USER"
+          CU=""
+          case "$BRANCH" in
+            dev-agent/*) TID="${BRANCH#dev-agent/}"; CU=" · :clipboard: <https://app.clickup.com/t/$TID|Review the ClickUp task>";;
+          esac
+          TEXT=":git: *New PR to review* — <$PR_URL|#$PR_NUM $PR_TITLE> on \`$REPO\` by $PR_USER$CU"
           jq -n --arg t "$TEXT" '{text:$t}' | curl -s -X POST -H 'Content-type: application/json' -d @- "$HOOK"
