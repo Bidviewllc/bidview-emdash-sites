@@ -74,6 +74,32 @@ function normalizeInternalLinks(html: string, currentRoute: string): string {
 	});
 }
 
+// Seeded body_html is a static scrape of the old WordPress/Gravity Forms markup: the <form> tags
+// still carry novalidate + onsubmit="return false" (leftover AJAX-postback wiring with no WP backend
+// behind it), which disables both browser validation and submission entirely. Point them at the
+// real Worker endpoint and let native validation run.
+function fixGravityFormMarkup(html: string): string {
+	html = html.replace(/<form\b([^>]*\bid=["']gform_\d+["'][^>]*)>/gi, (_match, attrs: string) => {
+		const cleaned = attrs
+			.replace(/\s*novalidate\s*=\s*["'][^"']*["']/i, "")
+			.replace(/\s*onsubmit\s*=\s*["'][^"']*["']/i, "")
+			.replace(/\s*action\s*=\s*["'][^"']*["']/i, "");
+		return `<form${cleaned} action="/api/contact">`;
+	});
+
+	// Gravity Forms marks required fields with aria-required="true" only; add the native `required`
+	// attribute so the browser actually blocks submission on empty/invalid fields.
+	html = html.replace(
+		/<(input|select|textarea)\b([^>]*?\baria-required=["']true["'][^>]*?)\s*(\/?)>/gi,
+		(match, tagName: string, attrs: string, slash: string) => {
+			if (/(?:^|\s)required(?=[\s>=]|$)/i.test(attrs)) return match;
+			return `<${tagName}${attrs} required${slash ? " /" : ""}>`;
+		},
+	);
+
+	return html;
+}
+
 function renderMarks(text: string, marks: unknown): string {
 	if (!Array.isArray(marks) || marks.length === 0) return text;
 	let output = text;
@@ -162,5 +188,6 @@ export function renderShell(shell: string, content: RouteContent, origin: string
 	html = upsertMeta(html, "property", "og:url", canonical);
 	html = replaceSchema(html, schemaToString(data.schema_json));
 	html = normalizeInternalLinks(html, route);
+	html = fixGravityFormMarkup(html);
 	return html;
 }
