@@ -41,7 +41,8 @@ const businessLocation = (id, name, path, telephone, faxNumber, streetAddress, c
   address: { "@type": "PostalAddress", streetAddress, addressLocality: city, addressRegion: "CO", postalCode, addressCountry: "US" },
   geo: { "@type": "GeoCoordinates", latitude, longitude },
   areaServed: `${city}, CO`,
-  openingHoursSpecification: businessHours
+  openingHoursSpecification: businessHours,
+  sameAs: ["https://youtube.com/@NewLeafHearing", "https://facebook.com/NewLeafHearingCare", "https://instagram.com/newleafhearwell"]
 });
 const businessSchema = {
   "@context": "https://schema.org",
