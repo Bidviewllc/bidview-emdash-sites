@@ -1,19 +1,87 @@
 export const prerender = false;
 
 import { env } from "cloudflare:workers";
-// Cloudflare Email Workers — sends via the SEND_EMAIL binding (wrangler.jsonc).
-import { EmailMessage } from "cloudflare:email";
 
 const LEAD_TO = "leads@proheargroup.com";
+const LEAD_BCC = "local@bidviewmarketing.com"; // BidView monitoring copy (hidden from primary recipient)
 const LEAD_FROM = "noreply@bidview.net";
+const LEAD_FROM_NAME = "America's Best Hearing";
 const SITE = "America's Best Hearing";
 const THANK_YOU = "/thank-you/";
+
+// Gravity Forms submits the clinic <select> option VALUE (a numeric ID), not its
+// label. Map ID → location name so the email/lead shows the real clinic.
+const CLINIC_MAP: Record<string, string> = {
+	"10049": "Lansing",
+	"10069": "Winter Haven",
+	"10071": "Lake Wales",
+	"10072": "Sebring",
+	"10082": "Portage",
+	"10083": "Anoka",
+	"10084": "Maple Grove",
+	"10085": "Eden Prairie",
+	"10086": "Edina",
+	"10087": "Mendota Heights",
+	"10088": "Roseville",
+	"10089": "Willmar",
+	"10090": "New Ulm",
+};
 
 function esc(s: string): string {
 	return (s || "").replace(/[\r\n]+/g, " ").trim();
 }
 function redirectTo(path: string, base: string): Response {
 	return new Response(null, { status: 303, headers: { Location: new URL(path, base).toString() } });
+}
+function hasNonAscii(s: string): boolean {
+	for (let i = 0; i < s.length; i++) if (s.charCodeAt(i) > 127) return true;
+	return false;
+}
+function looksLikeSpam(name: string, email: string, message: string): boolean {
+	if (hasNonAscii(name) || hasNonAscii(message)) return true;
+	const dom = (email.split("@")[1] || "").toLowerCase();
+	if (/(\.ru$|\.top$|\.xyz$|mail\.ru|inbox\.ru|bk\.ru|rambler\.ru|web-library\.net|legenmail\.com|fuhrenmail\.com)/.test(dom)) return true;
+	if (/https?:\/\/|\[url|<a\s/i.test(message)) return true;
+	if (/\b(btc|bitcoin|crypto|casino|viagra|porn|horny|darknet|escort)\b/i.test(name + " " + message)) return true;
+	return false;
+}
+async function turnstileOk(data: Record<string, string>, request: Request): Promise<boolean> {
+	const secret = (env as any).TURNSTILE_SECRET_KEY as string | undefined;
+	if (!secret) return true;
+	const token = data["cf-turnstile-response"] || data["cf_turnstile_response"] || "";
+	if (!token) return true;
+	try {
+		const ip = request.headers.get("CF-Connecting-IP") || "";
+		const body = new URLSearchParams({ secret, response: token });
+		if (ip) body.set("remoteip", ip);
+		const r = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", { method: "POST", body });
+		const j = (await r.json()) as { success?: boolean };
+		return !!j.success;
+	} catch {
+		return false;
+	}
+}
+async function sendViaResend(subject: string, text: string, replyTo: string): Promise<boolean> {
+	const key = (env as any).RESEND_API_KEY as string | undefined;
+	if (!key) {
+		console.error("RESEND_API_KEY not configured");
+		return false;
+	}
+	try {
+		const r = await fetch("https://api.resend.com/emails", {
+			method: "POST",
+			headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
+			body: JSON.stringify({ from: `${LEAD_FROM_NAME} <${LEAD_FROM}>`, to: [LEAD_TO], bcc: [LEAD_BCC], reply_to: replyTo, subject, text }),
+		});
+		if (!r.ok) {
+			console.error("Resend send failed:", r.status, (await r.text()).slice(0, 200));
+			return false;
+		}
+		return true;
+	} catch (err) {
+		console.error("Resend send error:", err);
+		return false;
+	}
 }
 async function saveToD1(d: Record<string, string>): Promise<void> {
 	const db = (env as any).DB;
@@ -29,10 +97,11 @@ async function saveToD1(d: Record<string, string>): Promise<void> {
 
 export async function POST({ request }: { request: Request }) {
 	const ct = request.headers.get("content-type") || "";
-	const wantsJson = ct.includes("application/json");
+	const accept = request.headers.get("accept") || "";
+	const wantsJson = ct.includes("application/json") || accept.includes("application/json");
 	const data: Record<string, string> = {};
 	try {
-		if (wantsJson) {
+		if (ct.includes("application/json")) {
 			Object.assign(data, await request.json());
 		} else {
 			const form = await request.formData();
@@ -67,60 +136,40 @@ export async function POST({ request }: { request: Request }) {
 			? new Response(JSON.stringify({ ok: false, error: msg }), { status, headers: { "content-type": "application/json" } })
 			: new Response(msg, { status });
 
-	// Honeypot — if filled, silently succeed.
-	if (get("input_2")) {
-		return ok();
-	}
+	// Honeypot — input_2 must stay empty. Silently succeed if filled.
+	if (get("input_2")) return ok();
+	if (!(await turnstileOk(data, request))) return ok();
+
 	const first = get("input_1.3");
 	const last = get("input_1.6");
 	const name = `${first} ${last}`.trim();
 	const email = get("input_3");
 	const phone = get("input_4");
 	const message = getRaw("input_6");
-	const extra = get("input_5");
+	const clinicRaw = get("input_5"); // location the visitor chose (multi-location practice)
+	const clinic = CLINIC_MAP[clinicRaw] || clinicRaw; // resolve numeric option ID → location name
 	if (!name || !email || !phone || !message) {
 		return fail("Please complete your name, email, phone, and message.", 400);
 	}
+	if (looksLikeSpam(name, email, message)) return ok();
 
-	await saveToD1({ name, email, phone, extra, message });
+	const loc = clinic && !/required/i.test(clinic) && !/^clinic$/i.test(clinic) ? clinic : "";
+	await saveToD1({ name, email, phone, extra: loc, message });
 
-	const lines = [
+	const text = [
 		`Name:    ${name}`,
 		`Email:   ${email}`,
 		`Phone:   ${phone}`,
-		extra && !/required/i.test(extra) ? `Clinic:  ${extra}` : null,
+		loc ? `Location: ${loc}` : null,
 		"",
 		"Message:",
 		message,
 		"",
 		`— Submitted via ${SITE} contact form`,
-	].filter((l) => l !== null).join("\r\n");
-
-	const raw = [
-		`From: ${SITE} <${LEAD_FROM}>`,
-		`To: ${LEAD_TO}`,
-		`Reply-To: ${name} <${email}>`,
-		`Subject: New Contact Form Lead — ${name}`,
-		`Message-ID: <${Date.now()}.${Math.random().toString(36).slice(2)}@bidview.net>`,
-		`Date: ${new Date().toUTCString()}`,
-		`MIME-Version: 1.0`,
-		`Content-Type: text/plain; charset=utf-8`,
-		``,
-		lines,
-	].join("\r\n");
-
-	try {
-		const sendBinding = (env as any).SEND_EMAIL;
-		if (!sendBinding) {
-			console.error("SEND_EMAIL binding not configured");
-			return fail("Email service not configured", 503);
-		}
-		await sendBinding.send(new EmailMessage(LEAD_FROM, LEAD_TO, raw));
-	} catch (err) {
-		console.error("Contact form send failed:", err);
+	].filter((l) => l !== null).join("\n");
+	if (!(await sendViaResend(`New Contact Form Lead — ${name}`, text, email))) {
 		return fail("Could not send your message. Please call us instead.", 502);
 	}
-
 	return ok();
 }
 

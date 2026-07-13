@@ -220,6 +220,43 @@
     var form = event.target;
     if (form && form.matches('form[data-local-static-form="true"]')) {
       event.preventDefault();
+      // Enforce required-field validation (form has novalidate, so check explicitly).
+      // Shows the native "Please fill out this field" prompt and blocks empty submits.
+      if (typeof form.checkValidity === "function" && !form.checkValidity()) {
+        if (typeof form.reportValidity === "function") form.reportValidity();
+        return false;
+      }
+      var submit = form.querySelector('[type="submit"], button[type="submit"], button');
+      if (submit) submit.disabled = true;
+      var msg = form.querySelector(".local-form-msg");
+      if (!msg) {
+        msg = document.createElement("div");
+        msg.className = "local-form-msg";
+        msg.setAttribute("role", "status");
+        msg.style.marginTop = "12px";
+        form.appendChild(msg);
+      }
+      msg.textContent = "";
+      fetch(form.getAttribute("action") || "/api/contact", {
+        method: "POST",
+        body: new FormData(form),
+        headers: { Accept: "application/json" }
+      })
+        .then(function (r) {
+          return r.json().catch(function () { return {}; });
+        })
+        .then(function (res) {
+          if (res && res.ok) {
+            window.location.href = "/thank-you-for-contacting-us/";
+          } else {
+            throw new Error((res && res.error) || "Please check the form and try again.");
+          }
+        })
+        .catch(function (err) {
+          if (submit) submit.disabled = false;
+          msg.style.color = "#c00";
+          msg.textContent = err && err.message ? err.message : "Something went wrong. Please call us instead.";
+        });
       return false;
     }
   });
