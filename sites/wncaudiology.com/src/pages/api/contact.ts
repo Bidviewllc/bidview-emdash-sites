@@ -1,11 +1,11 @@
 export const prerender = false;
 
 import { env } from "cloudflare:workers";
-// Cloudflare Email Workers — sends via the SEND_EMAIL binding (wrangler.jsonc).
-import { EmailMessage } from "cloudflare:email";
 
 const LEAD_TO = "leads@proheargroup.com";
+const LEAD_BCC = "local@bidviewmarketing.com"; // BidView monitoring copy (hidden from primary recipient)
 const LEAD_FROM = "noreply@bidview.net";
+const LEAD_FROM_NAME = "WNC Audiology";
 const SITE = "WNC Audiology";
 const THANK_YOU = "/thank-you-for-contacting-us/";
 
@@ -14,6 +14,56 @@ function esc(s: string): string {
 }
 function redirectTo(path: string, base: string): Response {
 	return new Response(null, { status: 303, headers: { Location: new URL(path, base).toString() } });
+}
+function hasNonAscii(s: string): boolean {
+	for (let i = 0; i < s.length; i++) if (s.charCodeAt(i) > 127) return true;
+	return false;
+}
+function looksLikeSpam(name: string, email: string, message: string): boolean {
+	if (hasNonAscii(name) || hasNonAscii(message)) return true;
+	const dom = (email.split("@")[1] || "").toLowerCase();
+	if (/(\.ru$|\.top$|\.xyz$|mail\.ru|inbox\.ru|bk\.ru|rambler\.ru|web-library\.net|legenmail\.com|fuhrenmail\.com)/.test(dom)) return true;
+	if (/https?:\/\/|\[url|<a\s/i.test(message)) return true;
+	if (/\b(btc|bitcoin|crypto|casino|viagra|porn|horny|darknet|escort)\b/i.test(name + " " + message)) return true;
+	return false;
+}
+async function turnstileOk(data: Record<string, string>, request: Request): Promise<boolean> {
+	const secret = (env as any).TURNSTILE_SECRET_KEY as string | undefined;
+	if (!secret) return true;
+	const token = data["cf-turnstile-response"] || data["cf_turnstile_response"] || "";
+	if (!token) return true;
+	try {
+		const ip = request.headers.get("CF-Connecting-IP") || "";
+		const body = new URLSearchParams({ secret, response: token });
+		if (ip) body.set("remoteip", ip);
+		const r = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", { method: "POST", body });
+		const j = (await r.json()) as { success?: boolean };
+		return !!j.success;
+	} catch {
+		return false;
+	}
+}
+async function sendViaResend(subject: string, text: string, replyTo: string): Promise<boolean> {
+	const key = (env as any).RESEND_API_KEY as string | undefined;
+	if (!key) {
+		console.error("RESEND_API_KEY not configured");
+		return false;
+	}
+	try {
+		const r = await fetch("https://api.resend.com/emails", {
+			method: "POST",
+			headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
+			body: JSON.stringify({ from: `${LEAD_FROM_NAME} <${LEAD_FROM}>`, to: [LEAD_TO], bcc: [LEAD_BCC], reply_to: replyTo, subject, text }),
+		});
+		if (!r.ok) {
+			console.error("Resend send failed:", r.status, (await r.text()).slice(0, 200));
+			return false;
+		}
+		return true;
+	} catch (err) {
+		console.error("Resend send error:", err);
+		return false;
+	}
 }
 async function saveToD1(d: Record<string, string>): Promise<void> {
 	const db = (env as any).DB;
@@ -29,10 +79,11 @@ async function saveToD1(d: Record<string, string>): Promise<void> {
 
 export async function POST({ request }: { request: Request }) {
 	const ct = request.headers.get("content-type") || "";
-	const wantsJson = ct.includes("application/json");
+	const accept = request.headers.get("accept") || "";
+	const wantsJson = ct.includes("application/json") || accept.includes("application/json");
 	const data: Record<string, string> = {};
 	try {
-		if (wantsJson) {
+		if (ct.includes("application/json")) {
 			Object.assign(data, await request.json());
 		} else {
 			const form = await request.formData();
@@ -67,10 +118,9 @@ export async function POST({ request }: { request: Request }) {
 			? new Response(JSON.stringify({ ok: false, error: msg }), { status, headers: { "content-type": "application/json" } })
 			: new Response(msg, { status });
 
-	// Honeypot — if filled, silently succeed.
-	if (get("input_3")) {
-		return ok();
-	}
+	// Honeypot — input_3 must stay empty. Silently succeed if filled.
+	if (get("input_3")) return ok();
+	if (!(await turnstileOk(data, request))) return ok();
 
 	const name = get("name", "input_4");
 	const email = get("email", "input_7");
@@ -80,46 +130,24 @@ export async function POST({ request }: { request: Request }) {
 	if (!name || !email || !phone || !message) {
 		return fail("Please complete your name, email, phone, and message.", 400);
 	}
+	if (looksLikeSpam(name, email, message)) return ok();
 
 	await saveToD1({ name, email, phone, extra, message });
 
-	const lines = [
+	const text = [
 		`Name:    ${name}`,
 		`Email:   ${email}`,
 		`Phone:   ${phone}`,
-		extra && !/required/i.test(extra) ? `Subject: ${extra}` : null,
+		extra && !/required/i.test(extra) ? `Details: ${extra}` : null,
 		"",
 		"Message:",
 		message,
 		"",
 		`— Submitted via ${SITE} contact form`,
-	].filter((l) => l !== null).join("\r\n");
-
-	const raw = [
-		`From: ${SITE} <${LEAD_FROM}>`,
-		`To: ${LEAD_TO}`,
-		`Reply-To: ${name} <${email}>`,
-		`Subject: New Contact Form Lead — ${name}`,
-		`Message-ID: <${Date.now()}.${Math.random().toString(36).slice(2)}@bidview.net>`,
-		`Date: ${new Date().toUTCString()}`,
-		`MIME-Version: 1.0`,
-		`Content-Type: text/plain; charset=utf-8`,
-		``,
-		lines,
-	].join("\r\n");
-
-	try {
-		const sendBinding = (env as any).SEND_EMAIL;
-		if (!sendBinding) {
-			console.error("SEND_EMAIL binding not configured");
-			return fail("Email service not configured", 503);
-		}
-		await sendBinding.send(new EmailMessage(LEAD_FROM, LEAD_TO, raw));
-	} catch (err) {
-		console.error("Contact form send failed:", err);
+	].filter((l) => l !== null).join("\n");
+	if (!(await sendViaResend(`New Contact Form Lead — ${name}`, text, email))) {
 		return fail("Could not send your message. Please call us instead.", 502);
 	}
-
 	return ok();
 }
 

@@ -1,10 +1,11 @@
 export const prerender = false;
 
 import { env } from "cloudflare:workers";
-import { EmailMessage } from "cloudflare:email";
 
 const LEAD_TO = "leads@proheargroup.com";
+const LEAD_BCC = "local@bidviewmarketing.com"; // BidView monitoring copy (hidden from primary recipient)
 const LEAD_FROM = "noreply@bidview.net";
+const LEAD_FROM_NAME = "Roberts Hearing Clinic";
 const SITE = "Roberts Hearing Clinic";
 const THANK_YOU = "/thank-you-for-contacting-us/";
 
@@ -14,92 +15,139 @@ function esc(s: string): string {
 function redirectTo(path: string, base: string): Response {
 	return new Response(null, { status: 303, headers: { Location: new URL(path, base).toString() } });
 }
+function hasNonAscii(s: string): boolean {
+	for (let i = 0; i < s.length; i++) if (s.charCodeAt(i) > 127) return true;
+	return false;
+}
+function looksLikeSpam(name: string, email: string, message: string): boolean {
+	if (hasNonAscii(name) || hasNonAscii(message)) return true;
+	const dom = (email.split("@")[1] || "").toLowerCase();
+	if (/(\.ru$|\.top$|\.xyz$|mail\.ru|inbox\.ru|bk\.ru|rambler\.ru|web-library\.net|legenmail\.com|fuhrenmail\.com)/.test(dom)) return true;
+	if (/https?:\/\/|\[url|<a\s/i.test(message)) return true;
+	if (/\b(btc|bitcoin|crypto|casino|viagra|porn|horny|darknet|escort)\b/i.test(name + " " + message)) return true;
+	return false;
+}
+async function turnstileOk(data: Record<string, string>, request: Request): Promise<boolean> {
+	const secret = (env as any).TURNSTILE_SECRET_KEY as string | undefined;
+	if (!secret) return true;
+	const token = data["cf-turnstile-response"] || data["cf_turnstile_response"] || "";
+	if (!token) return true;
+	try {
+		const ip = request.headers.get("CF-Connecting-IP") || "";
+		const body = new URLSearchParams({ secret, response: token });
+		if (ip) body.set("remoteip", ip);
+		const r = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", { method: "POST", body });
+		const j = (await r.json()) as { success?: boolean };
+		return !!j.success;
+	} catch {
+		return false;
+	}
+}
+async function sendViaResend(subject: string, text: string, replyTo: string): Promise<boolean> {
+	const key = (env as any).RESEND_API_KEY as string | undefined;
+	if (!key) {
+		console.error("RESEND_API_KEY not configured");
+		return false;
+	}
+	try {
+		const r = await fetch("https://api.resend.com/emails", {
+			method: "POST",
+			headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
+			body: JSON.stringify({ from: `${LEAD_FROM_NAME} <${LEAD_FROM}>`, to: [LEAD_TO], bcc: [LEAD_BCC], reply_to: replyTo, subject, text }),
+		});
+		if (!r.ok) {
+			console.error("Resend send failed:", r.status, (await r.text()).slice(0, 200));
+			return false;
+		}
+		return true;
+	} catch (err) {
+		console.error("Resend send error:", err);
+		return false;
+	}
+}
 async function saveToD1(d: Record<string, string>): Promise<void> {
 	const db = (env as any).DB;
 	if (!db) return;
 	try {
-		await db.prepare(`CREATE TABLE IF NOT EXISTS contact_submissions (id TEXT PRIMARY KEY, name TEXT, email TEXT, phone TEXT, clinic TEXT, message TEXT, created_at TEXT)`).run();
-		await db.prepare(`INSERT INTO contact_submissions (id, name, email, phone, clinic, message, created_at) VALUES (?, ?, ?, ?, ?, ?, datetime('now'))`)
-			.bind(crypto.randomUUID(), d.name, d.email, d.phone, d.clinic || "", d.message).run();
+		await db.prepare(`CREATE TABLE IF NOT EXISTS contact_submissions (id TEXT PRIMARY KEY, name TEXT, email TEXT, phone TEXT, extra TEXT, message TEXT, created_at TEXT)`).run();
+		await db.prepare(`INSERT INTO contact_submissions (id, name, email, phone, extra, message, created_at) VALUES (?, ?, ?, ?, ?, ?, datetime('now'))`)
+			.bind(crypto.randomUUID(), d.name, d.email, d.phone, d.extra || "", d.message).run();
 	} catch (err) {
 		console.error("D1 save failed (non-fatal):", err);
 	}
 }
 
-async function send(subject: string, replyName: string, replyEmail: string, lines: string): Promise<Response | null> {
-	const raw = [
-		`From: ${SITE} <${LEAD_FROM}>`,
-		`To: ${LEAD_TO}`,
-		replyEmail ? `Reply-To: ${replyName} <${replyEmail}>` : null,
-		`Subject: ${subject}`,
-		`Message-ID: <${Date.now()}.${Math.random().toString(36).slice(2)}@bidview.net>`,
-		`Date: ${new Date().toUTCString()}`,
-		`MIME-Version: 1.0`,
-		`Content-Type: text/plain; charset=utf-8`,
-		``,
-		lines,
-	].filter((l) => l !== null).join("\r\n");
-	try {
-		const sendBinding = (env as any).SEND_EMAIL;
-		if (!sendBinding) { console.error("SEND_EMAIL not configured"); return new Response("Email service not configured", { status: 503 }); }
-		await sendBinding.send(new EmailMessage(LEAD_FROM, LEAD_TO, raw));
-	} catch (err) {
-		console.error("Contact send failed:", err);
-		return new Response("Could not send your message. Please call us instead.", { status: 502 });
-	}
-	return null;
-}
-
 export async function POST({ request }: { request: Request }) {
-	let form: FormData;
-	try { form = await request.formData(); } catch { return new Response("Bad request", { status: 400 }); }
+	const ct = request.headers.get("content-type") || "";
+	const accept = request.headers.get("accept") || "";
+	const wantsJson = ct.includes("application/json") || accept.includes("application/json");
+	const data: Record<string, string> = {};
+	try {
+		if (ct.includes("application/json")) {
+			Object.assign(data, await request.json());
+		} else {
+			const form = await request.formData();
+			form.forEach((v, k) => {
+				if (typeof v === "string") data[k] = v;
+			});
+		}
+	} catch {
+		return new Response("Bad request", { status: 400 });
+	}
 
-	const get = (...ks: string[]) => { for (const k of ks) { const v = esc((form.get(k) as string) || ""); if (v) return v; } return ""; };
-	const getRaw = (...ks: string[]) => { for (const k of ks) { const v = ((form.get(k) as string) || "").trim(); if (v) return v; } return ""; };
+	const get = (...ks: string[]) => {
+		for (const k of ks) {
+			const v = esc((data[k] as string) || "");
+			if (v) return v;
+		}
+		return "";
+	};
+	const getRaw = (...ks: string[]) => {
+		for (const k of ks) {
+			const v = ((data[k] as string) || "").trim();
+			if (v) return v;
+		}
+		return "";
+	};
+	const ok = () =>
+		wantsJson
+			? new Response(JSON.stringify({ ok: true }), { status: 200, headers: { "content-type": "application/json" } })
+			: redirectTo(THANK_YOU, request.url);
+	const fail = (msg: string, status: number) =>
+		wantsJson
+			? new Response(JSON.stringify({ ok: false, error: msg }), { status, headers: { "content-type": "application/json" } })
+			: new Response(msg, { status });
+
+	if (!(await turnstileOk(data, request))) return ok();
 
 	// Insurance verification form (gform_3): distinguished by insurance-only fields.
 	const isInsurance = !!(get("input_10") || get("input_11") || get("input_12") || get("input_13") || get("input_14"));
-
 	if (isInsurance) {
-		const first = get("input_1");
-		const last = get("input_3");
-		const name = [first, last].filter(Boolean).join(" ");
+		const name = [get("input_1"), get("input_3")].filter(Boolean).join(" ");
 		const email = get("input_4");
 		const phone = get("input_5");
-		const dob = get("input_9");
-		const insCo = get("input_10");
-		const grp = get("input_11");
-		const plan = get("input_12");
-		const grp2 = get("input_13");
-		const plan2 = get("input_14");
 		if (!name || !email || !phone) {
-			return new Response("Please complete your name, email, and phone.", { status: 400 });
+			return fail("Please complete your name, email, and phone.", 400);
 		}
 		const detail = [
-			`Insurance Company: ${insCo}`,
-			`Group Number: ${grp}`,
-			`Plan Number: ${plan}`,
-			grp2 ? `Group Number (Secondary): ${grp2}` : null,
-			plan2 ? `Plan Number (Secondary): ${plan2}` : null,
-			dob ? `Date of Birth: ${dob}` : null,
+			`Insurance Company: ${get("input_10")}`,
+			`Group Number: ${get("input_11")}`,
+			`Plan Number: ${get("input_12")}`,
+			get("input_13") ? `Group Number (Secondary): ${get("input_13")}` : null,
+			get("input_14") ? `Plan Number (Secondary): ${get("input_14")}` : null,
+			get("input_9") ? `Date of Birth: ${get("input_9")}` : null,
 		].filter((l) => l !== null).join("\n");
-		await saveToD1({ name, email, phone, clinic: "Insurance Verification", message: detail });
-		const lines = [
-			`Name:    ${name}`,
-			`Email:   ${email}`,
-			`Phone:   ${phone}`,
-			"",
-			"Insurance details:",
-			detail,
-			"",
-			`— Submitted via ${SITE} insurance verification form`,
-		].join("\r\n");
-		const fail = await send(`New Insurance Verification Request — ${name}`, name, email, lines);
-		return fail || redirectTo(THANK_YOU, request.url);
+		if (looksLikeSpam(name, email, detail)) return ok();
+		await saveToD1({ name, email, phone, extra: "Insurance Verification", message: detail });
+		const text = [`Name:    ${name}`, `Email:   ${email}`, `Phone:   ${phone}`, "", "Insurance details:", detail, "", `— Submitted via ${SITE} insurance verification form`].join("\n");
+		if (!(await sendViaResend(`New Insurance Verification Request — ${name}`, text, email))) {
+			return fail("Could not send your request. Please call us instead.", 502);
+		}
+		return ok();
 	}
 
 	// Contact form (gform_1). Honeypot = input_6 (GF honeypot, must stay empty).
-	if (get("input_6")) return redirectTo(THANK_YOU, request.url);
+	if (get("input_6")) return ok();
 
 	const first = get("first_name", "input_1.3", "input_1_3");
 	const last = get("last_name", "input_1.6", "input_1_6");
@@ -108,21 +156,17 @@ export async function POST({ request }: { request: Request }) {
 	const phone = get("phone", "input_4");
 	const message = getRaw("message", "input_3");
 	if (!name || !email || !phone || !message) {
-		return new Response("Please complete your name, email, phone, and message.", { status: 400 });
+		return fail("Please complete your name, email, phone, and message.", 400);
 	}
-	await saveToD1({ name, email, phone, clinic: "", message });
-	const lines = [
-		`Name:    ${name}`,
-		`Email:   ${email}`,
-		`Phone:   ${phone}`,
-		"",
-		"Message:",
-		message,
-		"",
-		`— Submitted via ${SITE} contact form`,
-	].join("\r\n");
-	const fail = await send(`New Contact Form Lead — ${name}`, name, email, lines);
-	return fail || redirectTo(THANK_YOU, request.url);
+	if (looksLikeSpam(name, email, message)) return ok();
+
+	await saveToD1({ name, email, phone, extra: "", message });
+
+	const text = [`Name:    ${name}`, `Email:   ${email}`, `Phone:   ${phone}`, "", "Message:", message, "", `— Submitted via ${SITE} contact form`].join("\n");
+	if (!(await sendViaResend(`New Contact Form Lead — ${name}`, text, email))) {
+		return fail("Could not send your message. Please call us instead.", 502);
+	}
+	return ok();
 }
 
 export function GET() {
