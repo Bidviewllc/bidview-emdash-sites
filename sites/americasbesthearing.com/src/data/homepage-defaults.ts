@@ -99,6 +99,8 @@ export const staffMembers = [
 	["pam-birch", "Pam Birch", "Patient Care Coordinator", "Sebring, FL", "/patient-care-coordinator/pam-birch/", "/assets/media/pam-birch-e1760786111551-a89b4eaf6d.webp", "Woman with blonde hair wearing glasses and black top smiling"],
 	["marla-leger", "Marla Leger, HAS", "Hearing Aid Specialist", "Winter Haven, FL", "/hearing-instrument-specialist/marla-leger/", "/assets/media/Marla-Leger-26f9c0f66e.webp", "Woman with reddish-blonde hair wearing glasses and black blazer smiling"],
 	["carol-vollmar", "Carol Vollmar", "Patient Care Coordinator", "Winter Haven, FL", "/patient-care-coordinator/carol-vollmar/", "/assets/media/americas-best-hearing-carol-vollmar-ac5ede78dd.webp", "Headshot of Carol Vollmar smiling, wearing glasses and a blue and white patterned shirt"],
+	["chelsea-mcnair", "Chelsea McNair, HIS", "Hearing Instrument Specialist", "Mendota Heights, MN", "/hearing-instrument-specialist/chelsea-mcnair/", "/assets/media/staff-headshot-placeholder-9c1f6a2b3d.svg", "Placeholder silhouette, headshot coming soon"],
+	["amanda-ling", "Amanda Ling, HIS", "Hearing Instrument Specialist", "Lansing, MI", "/hearing-instrument-specialist/amanda-ling/", "/assets/media/staff-headshot-placeholder-9c1f6a2b3d.svg", "Placeholder silhouette, headshot coming soon"],
 ].map(([id, name, role, locations, profileUrl, imageSrc, imageAlt], index) => ({
 	id,
 	name,

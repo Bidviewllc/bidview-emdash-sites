@@ -17198,6 +17198,44 @@
           },
           "sort_order": 23
         }
+      },
+      {
+        "id": "chelsea-mcnair",
+        "slug": "chelsea-mcnair",
+        "status": "published",
+        "data": {
+          "name": "Chelsea McNair, HIS",
+          "role": "Hearing Instrument Specialist",
+          "locations": "Mendota Heights, MN",
+          "location_slugs": [
+            "mendota-heights-mn"
+          ],
+          "profile_url": "http://localhost:4321/hearing-instrument-specialist/chelsea-mcnair/",
+          "image": {
+            "src": "/assets/media/staff-headshot-placeholder-9c1f6a2b3d.svg",
+            "alt": "Placeholder silhouette, headshot coming soon"
+          },
+          "sort_order": 24
+        }
+      },
+      {
+        "id": "amanda-ling",
+        "slug": "amanda-ling",
+        "status": "published",
+        "data": {
+          "name": "Amanda Ling, HIS",
+          "role": "Hearing Instrument Specialist",
+          "locations": "Lansing, MI",
+          "location_slugs": [
+            "lansing-mi"
+          ],
+          "profile_url": "http://localhost:4321/hearing-instrument-specialist/amanda-ling/",
+          "image": {
+            "src": "/assets/media/staff-headshot-placeholder-9c1f6a2b3d.svg",
+            "alt": "Placeholder silhouette, headshot coming soon"
+          },
+          "sort_order": 25
+        }
       }
     ],
     "audiology_services": [
@@ -19742,6 +19780,126 @@
           "hearing_aid_services_heading": "Our Hearing Aids & Protection Solutions Offered at America's Best Hearing",
           "hearing_aid_services_heading_continuation": "in Michigan, Minnesota, and Florida",
           "sort_order": 23
+        }
+      },
+      {
+        "id": "chelsea-mcnair",
+        "slug": "chelsea-mcnair",
+        "status": "published",
+        "data": {
+          "title": "Chelsea McNair, HIS Staff Page",
+          "staff_slug": "chelsea-mcnair",
+          "page_title": "Chelsea McNair, HIS | America's Best Hearing",
+          "meta_description": "Chelsea McNair, HIS is a Hearing Instrument Specialist at America's Best Hearing serving Mendota Heights, MN.",
+          "intro_body": [
+            {
+              "_type": "block",
+              "style": "normal",
+              "_key": "BE2D39CD253B4A4781F06F54B2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Chelsea McNair is a third-generation hearing healthcare professional with more than 13 years of experience in the industry. She began her career as an office manager before obtaining her hearing instrument dispensing license and becoming a Hearing Instrument Specialist.",
+                  "_key": "239AEB1AE36A442AB30D36494A"
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "_key": "0302E4C5491C42C5A339FB26CF",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Chelsea is passionate about customer care and strives to treat every patient like family, creating a welcoming and personalized experience.",
+                  "_key": "CBDF33A851D8468FBAE90C7F92"
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "_key": "DE608D016CAD4424A3305DC75B",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Outside of work, Chelsea enjoys hiking and reading.",
+                  "_key": "08303B67999D4E0B8FED7BF691"
+                }
+              ]
+            }
+          ],
+          "audiology_services_heading": "Audiology Services Offered at America's Best Hearing",
+          "audiology_services_heading_continuation": "in Michigan, Minnesota, and Florida",
+          "hearing_aid_services_heading": "Our Hearing Aids & Protection Solutions Offered at America's Best Hearing",
+          "hearing_aid_services_heading_continuation": "in Michigan, Minnesota, and Florida",
+          "sort_order": 24
+        }
+      },
+      {
+        "id": "amanda-ling",
+        "slug": "amanda-ling",
+        "status": "published",
+        "data": {
+          "title": "Amanda Ling, HIS Staff Page",
+          "staff_slug": "amanda-ling",
+          "page_title": "Amanda Ling, HIS | America's Best Hearing",
+          "meta_description": "Amanda Ling, HIS is a Hearing Instrument Specialist at America's Best Hearing serving Lansing, MI.",
+          "intro_body": [
+            {
+              "_type": "block",
+              "style": "normal",
+              "_key": "6D29B014185E4FB7B88BF3D812",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Amanda Ling is a licensed Hearing Instrument Specialist with a strong background in patient care and hearing healthcare.",
+                  "_key": "4E79AB1E0FBD4D859DCF8F448F"
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "_key": "50342B19F4CF40CDB1E08F7D84",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Growing up with two deaf parents gave Amanda a unique perspective on the importance of communication and the impact hearing loss can have on individuals and their families. This personal experience inspired her to pursue a career helping others reconnect with the people and moments that matter most.",
+                  "_key": "B7DB5A4719AC45128672B83B6C"
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "_key": "3F1A2C6E4D9B48F0A5C7E82910",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Amanda takes the time to truly listen to each patient's concerns and understand their unique communication needs. By providing personalized solutions, education, and ongoing support, she strives to create a welcoming environment where patients feel heard, respected, and confident throughout their hearing journey.",
+                  "_key": "8A4E1D7C2B9F406E9C3D5A1F76"
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "_key": "1C9F4E7A2D8B40639C1E5F7A32",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Outside of work, Amanda enjoys spending time with her family, gardening, cooking, and reading. She especially enjoys exchanging book recommendations with her patients.",
+                  "_key": "7B3E9C1F4A8D42609F5C2E1B84"
+                }
+              ]
+            }
+          ],
+          "audiology_services_heading": "Audiology Services Offered at America's Best Hearing",
+          "audiology_services_heading_continuation": "in Michigan, Minnesota, and Florida",
+          "hearing_aid_services_heading": "Our Hearing Aids & Protection Solutions Offered at America's Best Hearing",
+          "hearing_aid_services_heading_continuation": "in Michigan, Minnesota, and Florida",
+          "sort_order": 25
         }
       }
     ],
