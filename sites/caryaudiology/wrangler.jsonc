@@ -1,0 +1,65 @@
+{
+  "send_email": [{ "name": "SEND_EMAIL", "destination_address": "leads@proheargroup.com" }],
+  "name": "cary-audiology",
+  "account_id": "239e9d015c7a3a39cdc2e9400312f553",
+  "main": "./src/worker.ts",
+  "compatibility_date": "2026-03-29",
+  "compatibility_flags": ["nodejs_compat"],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "cary-audiology-db",
+      "database_id": "a1c21e4e-1aad-4b76-91a1-e28fff1faccd"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "MEDIA",
+      "bucket_name": "cary-audiology-media"
+    }
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "SESSION",
+      "id": "028dfa4da881449cb1fcfb8ae46b6e2e"
+    }
+  ],
+  "worker_loaders": [
+    {
+      "binding": "LOADER"
+    }
+  ],
+  "observability": { "enabled": true },
+  "placement": { "mode": "smart" },
+  "workers_dev": true,
+  "env": {
+    "staging": {
+      "name": "cary-audiology-staging",
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "cary-audiology-staging-db",
+          "database_id": "d5e16e80-19f5-4e94-a35b-6adf4fbd5aaa"
+        }
+      ],
+      "r2_buckets": [
+        {
+          "binding": "MEDIA",
+          "bucket_name": "cary-audiology-staging-media"
+        }
+      ],
+      "kv_namespaces": [
+        {
+          "binding": "SESSION",
+          "id": "028dfa4da881449cb1fcfb8ae46b6e2e"
+        }
+      ],
+      "worker_loaders": [
+        {
+          "binding": "LOADER"
+        }
+      ],
+      "workers_dev": true
+    }
+  }
+}
