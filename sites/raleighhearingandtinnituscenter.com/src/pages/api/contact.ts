@@ -2,7 +2,7 @@ export const prerender = false;
 
 import { env } from "cloudflare:workers";
 
-const LEAD_TO = "leads@proheargroup.com";
+const LEAD_TO = "RaleighOffice@proheargroup.com"; // clinic inbox (not the shared leads@ box)
 const LEAD_BCC = "local@bidviewmarketing.com"; // BidView monitoring copy (hidden from primary recipient)
 const LEAD_FROM = "noreply@bidview.net";
 const LEAD_FROM_NAME = "Raleigh Hearing & Tinnitus Center";
