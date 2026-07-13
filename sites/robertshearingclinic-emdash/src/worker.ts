@@ -5,6 +5,18 @@ import emdashWorker, { PluginBridge } from "@emdash-cms/cloudflare/worker";
 
 export { PluginBridge };
 
+// Permanent redirects for duplicate URLs. /tinnitus-management/ and
+// /audiology-services/tinnitus-support/ served byte-identical bodies; the
+// /audiology-services/ URL is the one we keep.
+const REDIRECTS: Record<string, string> = {
+	"/tinnitus-management/": "/audiology-services/tinnitus-support/",
+};
+
+function redirectTarget(url: URL): string | null {
+	const path = url.pathname.endsWith("/") ? url.pathname : `${url.pathname}/`;
+	return REDIRECTS[path] ?? null;
+}
+
 const CHAT_WIDGET =
 	'<call-us-selector phonesystem-url="https://prohear.3cx.us" party="LiveChat776977"></call-us-selector>' +
 	'<script defer src="https://downloads-global.3cx.com/downloads/livechatandtalk/v1/callus.js" id="tcx-callus-js" charset="utf-8"></script>';
@@ -25,6 +37,10 @@ const FORM_VALIDATE_INJECT =
 
 const wrapped: Record<string, unknown> = {
 	async fetch(request: Request, env: unknown, ctx: unknown): Promise<Response> {
+		const url = new URL(request.url);
+		const target = redirectTarget(url);
+		if (target) return Response.redirect(`${url.origin}${target}${url.search}`, 301);
+
 		const res = await (emdashWorker as any).fetch(request, env, ctx);
 		const ct = res.headers.get("content-type") || "";
 		if (!ct.includes("text/html")) return res;
