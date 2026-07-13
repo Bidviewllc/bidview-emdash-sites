@@ -8,4 +8,8 @@ export default defineConfig({
 	devToolbar: { enabled: false },
 	trailingSlash: "always",
 	build: { format: "directory" },
+	redirects: {
+		"/team/": "/",
+		"/audiologist/": "/",
+	},
 });

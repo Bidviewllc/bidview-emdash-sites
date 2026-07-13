@@ -31,15 +31,6 @@ function isEmail(s: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
 }
 
-function verifyMath(question: string, answer: string): boolean {
-  if (!question || !answer) return false;
-  const m = question.match(/^\s*(\d+)\s*\+\s*(\d+)\s*=?\s*$/);
-  if (!m) return false;
-  const expected = parseInt(m[1], 10) + parseInt(m[2], 10);
-  const given = parseInt(String(answer).trim(), 10);
-  return Number.isFinite(given) && given === expected;
-}
-
 export const POST: APIRoute = async ({ request, locals }) => {
   try {
   let body: Record<string, any>;
@@ -69,8 +60,6 @@ export const POST: APIRoute = async ({ request, locals }) => {
   const preferredDate = (body.preferredDate || '').toString().trim();
   const reason = (body.reason || '').toString().trim();
   const message = (body.message || '').toString().trim();
-  const mathQuestion = (body.mathQuestion || '').toString();
-  const mathAnswer = (body.mathAnswer || '').toString();
 
   if (!firstName || !lastName || !email || !phone) {
     return new Response(JSON.stringify({ ok: false, error: 'missing_required_field' }), {
@@ -84,11 +73,41 @@ export const POST: APIRoute = async ({ request, locals }) => {
       headers: { 'Content-Type': 'application/json' },
     });
   }
-  if (!verifyMath(mathQuestion, mathAnswer)) {
-    return new Response(JSON.stringify({ ok: false, error: 'math_failed' }), {
-      status: 400,
-      headers: { 'Content-Type': 'application/json' },
-    });
+  // Cloudflare Turnstile — verify token server-side.
+  const turnstileToken = (body.turnstileToken || '').toString();
+  const turnstileSecret: string = (cfEnv as any)?.TURNSTILE_SECRET || '';
+  if (turnstileSecret) {
+    if (!turnstileToken) {
+      return new Response(JSON.stringify({ ok: false, error: 'turnstile_failed' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+    try {
+      const clientIp = request.headers.get('CF-Connecting-IP') || '';
+      const verifyBody = new URLSearchParams({
+        secret: turnstileSecret,
+        response: turnstileToken,
+        ...(clientIp ? { remoteip: clientIp } : {}),
+      });
+      const verifyRes = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: verifyBody,
+      });
+      const verifyJson: any = await verifyRes.json().catch(() => ({}));
+      if (!verifyJson || !verifyJson.success) {
+        return new Response(JSON.stringify({ ok: false, error: 'turnstile_failed' }), {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+    } catch {
+      return new Response(JSON.stringify({ ok: false, error: 'turnstile_failed' }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
   }
 
   const apiKey: string = (cfEnv as any)?.RESEND_API_KEY || '';

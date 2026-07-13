@@ -19,28 +19,69 @@ export interface Props {
   sidebarImage?: string;
   jobTitle?: string;          // used in Person schema
   worksFor?: string;          // legal employer name in Person schema
+  npi?: string;               // 10-digit National Provider Identifier
+  stateLicense?: string;      // Illinois DFPR audiology license number
 }
 const {
   name, title, credentials, initials, breadcrumbCategory, breadcrumbHref, category, pageTitle,
   description, schoolLabel = 'Education', schoolValue, yearsLabel = 'Experience', yearsValue,
-  photo, sidebarImage = '/s9-card-1.jpg', jobTitle, worksFor = 'Duet Hearing'
+  photo, sidebarImage = '/s9-card-1.jpg', jobTitle, worksFor = 'Duet Hearing', npi, stateLicense
 } = Astro.props;
 
 const SITE_URL = 'https://duethearing.com';
 const isDoctor = breadcrumbCategory === 'Audiologists';
+
+// Map informal credential abbreviations to the organization that grants them
+const CRED_ISSUERS: Record<string, string> = {
+  'FAAA': 'American Academy of Audiology',
+  'ABAC': 'American Board of Audiology',
+  'CH-TM': 'American Board of Audiology',
+};
+
+const structuredCredentials: any[] = [];
+if (isDoctor && credentials) {
+  for (const c of credentials.split(',').map((s) => s.trim()).filter(Boolean)) {
+    const issuer = CRED_ISSUERS[c];
+    structuredCredentials.push({
+      '@type': 'EducationalOccupationalCredential',
+      name: c,
+      credentialCategory: c === 'AuD' ? 'degree' : 'certification',
+      ...(issuer ? { recognizedBy: { '@type': 'Organization', name: issuer } } : {}),
+    });
+  }
+}
+if (isDoctor && npi) {
+  structuredCredentials.push({
+    '@type': 'EducationalOccupationalCredential',
+    name: `NPI ${npi}`,
+    credentialCategory: 'license',
+    identifier: npi,
+    recognizedBy: { '@type': 'Organization', name: 'National Plan and Provider Enumeration System (NPPES)' },
+  });
+}
+if (isDoctor && stateLicense) {
+  structuredCredentials.push({
+    '@type': 'EducationalOccupationalCredential',
+    name: `Illinois Audiology License ${stateLicense}`,
+    credentialCategory: 'license',
+    identifier: stateLicense,
+    recognizedBy: { '@type': 'GovernmentOrganization', name: 'Illinois Department of Financial and Professional Regulation' },
+  });
+}
+
 const personSchema = {
   '@context': 'https://schema.org',
-  '@type': isDoctor ? 'Physician' : 'Person',
+  '@type': 'Person',
   name,
   ...(jobTitle || title ? { jobTitle: jobTitle || title } : {}),
   ...(photo ? { image: new URL(photo, SITE_URL).toString() } : {}),
   worksFor: {
-    '@type': 'MedicalBusiness',
+    '@type': ['MedicalBusiness', 'MedicalOrganization'],
     '@id': `${SITE_URL}/#organization`,
     name: worksFor,
   },
-  ...(isDoctor && credentials ? { hasCredential: credentials.split(',').map((c) => c.trim()).filter(Boolean) } : {}),
-  ...(isDoctor ? { medicalSpecialty: 'Audiology' } : {}),
+  ...(structuredCredentials.length ? { hasCredential: structuredCredentials } : {}),
+  ...(isDoctor ? { hasOccupation: { '@type': 'Occupation', name: 'Audiologist', occupationalCategory: '29-1181' } } : {}),
   url: new URL(Astro.url.pathname, SITE_URL).toString(),
 };
 
@@ -61,7 +102,7 @@ const pageDescription = description ||
     <nav class="crumbs" aria-label="Breadcrumb">
       <a href="/">Home</a>
       <span class="sep">/</span>
-      <a href={breadcrumbHref}>{breadcrumbCategory}</a>
+      <span>{breadcrumbCategory}</span>
       <span class="sep">/</span>
       <span class="current">{name}</span>
     </nav>
