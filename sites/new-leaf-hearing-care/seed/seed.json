@@ -1048,6 +1048,36 @@
           "content": [
             {
               "_type": "block",
+              "_key": "blockquote_choosing_hearing_aid_noncommodity",
+              "style": "blockquote",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "blockquote_choosing_hearing_aid_noncommodity_title",
+                  "text": "Behind the appointment: the switch that made the difference",
+                  "marks": [
+                    "strong"
+                  ]
+                },
+                {
+                  "_type": "span",
+                  "_key": "blockquote_choosing_hearing_aid_noncommodity_body",
+                  "text": "\n\nA patient came in near the end of his trial period with hearing aids he had chosen himself, over my initial recommendation. He noticed some improvement over his old devices but didn't feel it was worth the investment. His words were that he wasn't seeing a \"$6,000 improvement.\" I told him I wasn't comfortable with that, and encouraged him to try a different manufacturer before making a final decision. He was hesitant; we'd already spent considerable time on these devices and he'd been convinced they were the right ones. He agreed to try. I fit him with the aids I'd originally recommended. In the office, he immediately said they were more comfortable and that he noticed more benefit. He was a little sheepish. One of the advantages of being an independently owned practice is the flexibility to work across six manufacturers, so when a patient needs a change, we can make one.\n\n",
+                  "marks": []
+                },
+                {
+                  "_type": "span",
+                  "_key": "blockquote_choosing_hearing_aid_noncommodity_author",
+                  "text": "— Dusty Jessen, Audiologist, New Leaf Hearing Care",
+                  "marks": [
+                    "strong"
+                  ]
+                }
+              ]
+            },
+            {
+              "_type": "block",
               "_key": "k2x",
               "style": "h2",
               "markDefs": [],
@@ -9209,6 +9239,36 @@
             }
           ],
           "content": [
+            {
+              "_type": "block",
+              "_key": "blockquote_hearing_aid_repairs_noncommodity",
+              "style": "blockquote",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "blockquote_hearing_aid_repairs_noncommodity_title",
+                  "text": "From a recent visit: Bluetooth down on a holiday, important call waiting",
+                  "marks": [
+                    "strong"
+                  ]
+                },
+                {
+                  "_type": "span",
+                  "_key": "blockquote_hearing_aid_repairs_noncommodity_body",
+                  "text": "\n\nAn 85-year-old patient left a voicemail on a Saturday — the Fourth of July — saying his Bluetooth had stopped working. For some patients, streaming directly into their hearing aids is the only way they can hear on the phone at all. Dusty could tell from the tone of his message that this wasn't a minor inconvenience. She called him back that day, and they worked through the reconnection using his wife's phone to stay in communication — reconnecting Bluetooth while actively on the same phone you're troubleshooting doesn't work. His hearing aids were reconnected in time for a call he had scheduled with his son who lives out of state. He told us he couldn't believe we'd called back on a weekend and a holiday, and that we're always so nice to him.\n\n",
+                  "marks": []
+                },
+                {
+                  "_type": "span",
+                  "_key": "blockquote_hearing_aid_repairs_noncommodity_author",
+                  "text": "— Dusty Jessen, Audiologist, New Leaf Hearing Care",
+                  "marks": [
+                    "strong"
+                  ]
+                }
+              ]
+            },
             {
               "_type": "block",
               "_key": "ky3",
