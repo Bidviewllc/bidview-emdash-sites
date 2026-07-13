@@ -50,7 +50,7 @@ for (const block of value || []) {
   closeList();
   const style = block.style || "normal";
   if (/^h[1-6]$/.test(style)) html.push('<' + style + ' id="' + slugify(inner.replace(/<[^>]+>/g, "")) + '">' + inner + '</' + style + '>');
-  else if (style === "blockquote") html.push('<blockquote>' + inner + '</blockquote>');
+  else if (style === "blockquote") html.push('<blockquote class="blockquote">' + inner + '</blockquote>');
   else html.push('<p>' + inner + '</p>');
 }
 closeList();
