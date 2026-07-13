@@ -37,7 +37,7 @@ const ogImageUrl = ogImage.startsWith('http') ? ogImage : new URL(ogImage, SITE_
 // Always-on Organization schema, plus optional page-specific schema(s) appended
 const organizationSchema = {
   '@context': 'https://schema.org',
-  '@type': 'MedicalBusiness',
+  '@type': ['MedicalBusiness', 'MedicalOrganization'],
   '@id': `${SITE_URL}/#organization`,
   name: SITE_NAME,
   legalName: 'Duet Hearing Preservation',
@@ -65,7 +65,7 @@ const organizationSchema = {
     'https://www.instagram.com/duethearing/',
     'https://www.youtube.com/@DuetPreservationHearing',
   ],
-  medicalSpecialty: 'Audiology',
+  medicalSpecialty: 'Otolaryngologic',
 };
 const schemaList = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
 const allSchemas = [organizationSchema, ...schemaList];

@@ -8,14 +8,8 @@ const serviceSchema = {
   '@context': 'https://schema.org',
   '@type': 'MedicalProcedure',
   name: 'Ear to Brain Fitness',
-  procedureType: 'Therapeutic',
+  procedureType: 'NoninvasiveProcedure',
   description,
-  bodyLocation: 'Auditory system',
-  provider: {
-    '@type': 'MedicalBusiness',
-    '@id': `${SITE}/#organization`,
-    name: 'Duet Hearing',
-  },
   url: `${SITE}/ear-to-brain-fitness/`,
 };
 ---
