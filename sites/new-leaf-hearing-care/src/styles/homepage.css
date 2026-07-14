@@ -2277,7 +2277,7 @@ p {
   width: 34px;
   height: 34px;
   border-radius: 999px;
-  color: var(--gray);
+  color: var(--accent);
   background: var(--light);
   display: inline-flex;
   align-items: center;
