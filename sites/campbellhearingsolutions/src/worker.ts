@@ -2,7 +2,7 @@ import handler from "@astrojs/cloudflare/entrypoints/server";
 export { PluginBridge } from "@emdash-cms/cloudflare/sandbox";
 
 // Bump this version string on each Cloudflare deploy to bust Workers Cache.
-const CACHE_VERSION = "v27";
+const CACHE_VERSION = "v28";
 const SKIP_CACHE_PATHS = ["/_emdash", "/api"];
 
 // 3CX Live Chat widget. The WP->static conversion carried over the
