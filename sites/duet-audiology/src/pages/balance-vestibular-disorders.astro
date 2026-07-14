@@ -10,6 +10,20 @@ const schema = {
   description,
   url: 'https://duethearing.com/balance-vestibular-disorders/',
 };
+const businessService = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Balance & Vestibular Care',
+  serviceType: 'MedicalService',
+  provider: { '@id': 'https://duethearing.com/#organization' },
+  areaServed: { '@type': 'City', name: 'Lake Forest, Illinois' },
+  audience: { '@type': 'MedicalAudience', audienceType: 'Patient' },
+  description,
+  url: 'https://duethearing.com/balance-vestibular-disorders/',
+};
+
+const allSchemas = [schema, businessService];
+
 ---
 <ServicePage
   pageTitle="Balance &amp; Vestibular Disorders | Duet Hearing"
@@ -18,7 +32,7 @@ const schema = {
   currentLabel="Balance &amp; Vestibular Disorders"
   pageHeading="Balance &amp; Vestibular Function"
   sidebarImage="/s9-card-5.jpg"
-  schema={schema}
+  schema={allSchemas}
 >
 
   <p class="service-intro">The inner ear contains not only the organs responsible for hearing, but also a sophisticated balance system known as the vestibular system.</p>

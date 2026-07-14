@@ -10,6 +10,20 @@ const schema = {
   description,
   url: 'https://duethearing.com/sound-sensitivity/',
 };
+const businessService = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Sound Sensitivity Care',
+  serviceType: 'MedicalService',
+  provider: { '@id': 'https://duethearing.com/#organization' },
+  areaServed: { '@type': 'City', name: 'Lake Forest, Illinois' },
+  audience: { '@type': 'MedicalAudience', audienceType: 'Patient' },
+  description,
+  url: 'https://duethearing.com/sound-sensitivity/',
+};
+
+const allSchemas = [schema, businessService];
+
 ---
 <ServicePage
   pageTitle="Sound Sensitivity (Hyperacusis) | Duet Hearing"
@@ -18,7 +32,7 @@ const schema = {
   currentLabel="Sound Sensitivity"
   pageHeading="Sound Sensitivity (Hyperacusis) &amp; Auditory Overload"
   sidebarImage="/s9-card-2.jpg"
-  schema={schema}
+  schema={allSchemas}
 >
 
   <p class="service-intro">Sound sensitivity, sometimes referred to as hyperacusis, occurs when everyday sounds are perceived as unusually loud, uncomfortable, overwhelming, or even painful.</p>

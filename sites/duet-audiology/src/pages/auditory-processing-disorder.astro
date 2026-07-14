@@ -10,6 +10,20 @@ const schema = {
   description,
   url: 'https://duethearing.com/auditory-processing-disorder/',
 };
+const businessService = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Auditory Processing Disorder Care',
+  serviceType: 'MedicalService',
+  provider: { '@id': 'https://duethearing.com/#organization' },
+  areaServed: { '@type': 'City', name: 'Lake Forest, Illinois' },
+  audience: { '@type': 'MedicalAudience', audienceType: 'Patient' },
+  description,
+  url: 'https://duethearing.com/auditory-processing-disorder/',
+};
+
+const allSchemas = [schema, businessService];
+
 ---
 <ServicePage
   pageTitle="Auditory Processing Disorder | Duet Hearing"
@@ -18,7 +32,7 @@ const schema = {
   currentLabel="Auditory Processing Disorder"
   pageHeading="Auditory Processing Disorder (APD) Care at DUET"
   sidebarImage="/s9-card-2.jpg"
-  schema={schema}
+  schema={allSchemas}
 >
 
   <p class="service-intro">A New Approach to Auditory Processing Care</p>

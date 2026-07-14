@@ -11,6 +11,20 @@ const schema = {
   description,
   url: 'https://duethearing.com/ear-wax-removal/',
 };
+const businessService = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Ear Wax Removal',
+  serviceType: 'MedicalService',
+  provider: { '@id': 'https://duethearing.com/#organization' },
+  areaServed: { '@type': 'City', name: 'Lake Forest, Illinois' },
+  audience: { '@type': 'MedicalAudience', audienceType: 'Patient' },
+  description,
+  url: 'https://duethearing.com/ear-wax-removal/',
+};
+
+const allSchemas = [schema, businessService];
+
 ---
 <ServicePage
   pageTitle="Ear Wax Removal | Duet Hearing"
@@ -19,7 +33,7 @@ const schema = {
   currentLabel="Ear Wax Removal"
   pageHeading="Ear Wax Removal"
   sidebarImage="/s9-card-1.jpg"
-  schema={schema}
+  schema={allSchemas}
 >
 
   <p class="service-intro">Modern, Research-Based Ear Wax Removal</p>

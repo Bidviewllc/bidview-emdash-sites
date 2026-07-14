@@ -16,11 +16,25 @@ const courseSchema = {
   },
   url: `${SITE}/duet-method-courses/`,
 };
+const businessService = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'DUET Method Courses',
+  serviceType: 'MedicalService',
+  provider: { '@id': 'https://duethearing.com/#organization' },
+  areaServed: { '@type': 'City', name: 'Lake Forest, Illinois' },
+  audience: { '@type': 'MedicalAudience', audienceType: 'Patient' },
+  description,
+  url: 'https://duethearing.com/duet-method-courses/',
+};
+
+const allSchemas = [courseSchema, businessService];
+
 ---
 <Interior
   title="DUET Method™ Courses | Duet Hearing"
   description={description}
-  schema={courseSchema}
+  schema={allSchemas}
 >
 
 <section class="page-hero page-hero--no-media">

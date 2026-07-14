@@ -10,6 +10,20 @@ const schema = {
   description,
   url: 'https://duethearing.com/hearing-loss/',
 };
+const businessService = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Hearing Loss',
+  serviceType: 'MedicalService',
+  provider: { '@id': 'https://duethearing.com/#organization' },
+  areaServed: { '@type': 'City', name: 'Lake Forest, Illinois' },
+  audience: { '@type': 'MedicalAudience', audienceType: 'Patient' },
+  description,
+  url: 'https://duethearing.com/hearing-loss/',
+};
+
+const allSchemas = [schema, businessService];
+
 ---
 <ServicePage
   pageTitle="Hearing Loss | Duet Hearing"
@@ -18,7 +32,7 @@ const schema = {
   currentLabel="Hearing Loss"
   pageHeading="DUET Hearing Preservation: Biological Causes of Hearing Loss"
   sidebarImage="/s9-card-4.jpg"
-  schema={schema}
+  schema={allSchemas}
 >
 
   <p class="service-intro">DUET Hearing Preservation presents hearing loss as a complex biological matter involving multiple interconnected systems rather than simple age-related loudness reduction.</p>
