@@ -10,6 +10,20 @@ const schema = {
   description,
   url: 'https://duethearing.com/concussion-auditory-function/',
 };
+const businessService = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Concussion & Auditory Function Care',
+  serviceType: 'MedicalService',
+  provider: { '@id': 'https://duethearing.com/#organization' },
+  areaServed: { '@type': 'City', name: 'Lake Forest, Illinois' },
+  audience: { '@type': 'MedicalAudience', audienceType: 'Patient' },
+  description,
+  url: 'https://duethearing.com/concussion-auditory-function/',
+};
+
+const allSchemas = [schema, businessService];
+
 ---
 <ServicePage
   pageTitle="Concussion &amp; Auditory Function | Duet Hearing"
@@ -18,7 +32,7 @@ const schema = {
   currentLabel="Concussion &amp; Auditory Function"
   pageHeading="Concussion &amp; Auditory Function"
   sidebarImage="/s9-card-3.jpg"
-  schema={schema}
+  schema={allSchemas}
 >
 
   <p class="service-intro">Concussion can affect the auditory system even when standard hearing tests appear normal. Because hearing is ultimately processed in the brain, head injury may disrupt the neural timing, synchronization, and processing pathways that allow sound to be interpreted clearly.</p>

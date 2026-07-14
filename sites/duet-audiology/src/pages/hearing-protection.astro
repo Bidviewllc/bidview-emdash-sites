@@ -11,6 +11,20 @@ const schema = {
   description,
   url: 'https://duethearing.com/hearing-protection/',
 };
+const businessService = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Hearing Protection',
+  serviceType: 'MedicalService',
+  provider: { '@id': 'https://duethearing.com/#organization' },
+  areaServed: { '@type': 'City', name: 'Lake Forest, Illinois' },
+  audience: { '@type': 'MedicalAudience', audienceType: 'Patient' },
+  description,
+  url: 'https://duethearing.com/hearing-protection/',
+};
+
+const allSchemas = [schema, businessService];
+
 ---
 <ServicePage
   pageTitle="Hearing Protection | Duet Hearing"
@@ -19,7 +33,7 @@ const schema = {
   currentLabel="Hearing Protection"
   pageHeading="DUET Hearing Protection &amp; Precision Listening Solutions"
   sidebarImage="/s9-card-5.jpg"
-  schema={schema}
+  schema={allSchemas}
 >
 
   <section class="service-block">

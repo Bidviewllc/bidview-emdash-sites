@@ -12,11 +12,25 @@ const serviceSchema = {
   description,
   url: `${SITE}/ear-to-brain-evaluation/`,
 };
+const businessService = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Ear to Brain Evaluation',
+  serviceType: 'MedicalService',
+  provider: { '@id': 'https://duethearing.com/#organization' },
+  areaServed: { '@type': 'City', name: 'Lake Forest, Illinois' },
+  audience: { '@type': 'MedicalAudience', audienceType: 'Patient' },
+  description,
+  url: 'https://duethearing.com/ear-to-brain-evaluation/',
+};
+
+const allSchemas = [serviceSchema, businessService];
+
 ---
 <Interior
   title="Ear to Brain Evaluation | Duet Hearing"
   description={description}
-  schema={serviceSchema}
+  schema={allSchemas}
 >
 
 <section class="page-hero page-hero--no-media">

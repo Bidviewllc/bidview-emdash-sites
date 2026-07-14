@@ -11,6 +11,20 @@ const schema = {
   description,
   url: 'https://duethearing.com/real-ear-measurement/',
 };
+const businessService = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Real Ear Measurement',
+  serviceType: 'MedicalService',
+  provider: { '@id': 'https://duethearing.com/#organization' },
+  areaServed: { '@type': 'City', name: 'Lake Forest, Illinois' },
+  audience: { '@type': 'MedicalAudience', audienceType: 'Patient' },
+  description,
+  url: 'https://duethearing.com/real-ear-measurement/',
+};
+
+const allSchemas = [schema, businessService];
+
 ---
 <ServicePage
   pageTitle="Real Ear Measurement | Duet Hearing"
@@ -19,7 +33,7 @@ const schema = {
   currentLabel="Real Ear Measurement"
   pageHeading="Real Ear Measurement at DUET"
   sidebarImage="/s9-card-4.jpg"
-  schema={schema}
+  schema={allSchemas}
 >
 
   <p class="service-intro">Real Ear Measurement (REM) is a verification process that DUET uses to objectively assess how hearing devices perform within each patient's individual ear canal anatomy. According to the content, "A small measurement microphone is placed gently in the ear canal to evaluate" factors like speech audibility, sound clarity, and amplification accuracy.</p>

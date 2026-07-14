@@ -11,6 +11,20 @@ const schema = {
   description,
   url: 'https://duethearing.com/tinnitus/',
 };
+const businessService = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Tinnitus Evaluation',
+  serviceType: 'MedicalService',
+  provider: { '@id': 'https://duethearing.com/#organization' },
+  areaServed: { '@type': 'City', name: 'Lake Forest, Illinois' },
+  audience: { '@type': 'MedicalAudience', audienceType: 'Patient' },
+  description,
+  url: 'https://duethearing.com/tinnitus/',
+};
+
+const allSchemas = [schema, businessService];
+
 ---
 <ServicePage
   pageTitle="Tinnitus Evaluation | Duet Hearing"
@@ -19,7 +33,7 @@ const schema = {
   currentLabel="Tinnitus"
   pageHeading="DUET Method – Tinnitus Evaluation"
   sidebarImage="/s9-card-2.jpg"
-  schema={schema}
+  schema={allSchemas}
 >
 
   <p class="service-intro">Stop guessing what the ringing means. Get a clear clinical understanding of your tinnitus and what's driving it.</p>
