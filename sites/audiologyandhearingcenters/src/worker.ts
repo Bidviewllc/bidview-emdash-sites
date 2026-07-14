@@ -2,7 +2,7 @@ import handler from "@astrojs/cloudflare/entrypoints/server";
 export { PluginBridge } from "@emdash-cms/cloudflare/sandbox";
 
 // Bump this version string on each deploy to bust the Workers Cache
-const CACHE_VERSION = "v140";
+const CACHE_VERSION = "v141";
 const SKIP_CACHE_PATHS = ["/_emdash", "/contact", "/api"];
 
 // 3CX Live Chat widget — injected before the final </body> of every HTML page
