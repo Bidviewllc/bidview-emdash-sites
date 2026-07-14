@@ -1,0 +1,172 @@
+---
+// Harness one-pager — static homepage, bypasses the CMS block renderer on purpose.
+// Content source: prd-drafts/harness-venture/harness-site.html (deck-altitude copy only).
+// The rest of the EmDash template (admin, contact page, blocks) remains available.
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Harness | Business Operating Systems, Forward-Deployed</title>
+<meta name="description" content="Harness builds business operating systems around human nature. The 10/80/10 model: humans keep judgment and final say, AI does the production, nobody changes how they work.">
+<style>
+  :root{
+    --bg:#0B1520; --bg-2:#0A2138; --panel:#0F2D4A;
+    --ink:#E9EEF2; --ink-2:#A8BDD0; --ink-3:#6E89A3;
+    --accent:#E06A2E; --accent-2:#F0925B; --cool:#4E9AD4; --cool-2:#8CBCE4;
+    --display:"Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif;
+    --serif:Georgia,"Iowan Old Style","Times New Roman",serif;
+    --mono:Consolas,"Cascadia Mono","SF Mono",Menlo,monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--ink);font-family:var(--display);line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:var(--cool-2);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:62rem;margin:0 auto;padding:0 1.5rem}
+  .eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3)}
+  .accent{color:var(--accent)}
+
+  header.site{padding:1.4rem 0;border-bottom:1px solid rgba(168,189,208,.12)}
+  header.site .wrap{display:flex;justify-content:space-between;align-items:baseline}
+  .wordmark{font-weight:700;letter-spacing:.14em;font-size:1.05rem;color:var(--ink)}
+  .wordmark b{color:var(--accent)}
+  header.site nav a{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);margin-left:1.6rem}
+
+  .hero{padding:6rem 0 4.5rem}
+  .hero h1{font-size:clamp(2.6rem,6vw,4.6rem);letter-spacing:.06em;font-weight:700;margin:.9rem 0 1.4rem}
+  .hero .lede{font-family:var(--serif);font-size:clamp(1.1rem,1.9vw,1.45rem);color:var(--ink-2);max-width:36em}
+  .hero .lede strong{color:var(--ink)}
+  .cta{display:inline-block;margin-top:2.2rem;background:var(--accent);color:#12100C;font-weight:600;padding:.85rem 1.7rem;border-radius:4px}
+  .cta:hover{background:var(--accent-2);text-decoration:none}
+  .cta.ghost{background:transparent;color:var(--cool-2);border:1px solid rgba(140,188,228,.4);margin-left:.8rem}
+  .cta.ghost:hover{border-color:var(--cool-2)}
+
+  .stats{border-top:1px solid rgba(168,189,208,.12);border-bottom:1px solid rgba(168,189,208,.12);background:var(--bg-2)}
+  .stats .wrap{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;padding:2.6rem 1.5rem}
+  .stat .n{font-family:var(--mono);font-size:2.2rem;color:var(--accent-2);display:block}
+  .stat p{color:var(--ink-2);font-size:.92rem;margin:.3rem 0}
+  .stat .src{font-family:var(--mono);font-size:.66rem;letter-spacing:.06em;color:var(--ink-3)}
+  @media(max-width:44rem){.stats .wrap{grid-template-columns:1fr}}
+
+  section.block{padding:4.5rem 0}
+  section.block h2{font-size:clamp(1.6rem,3.4vw,2.4rem);line-height:1.25;margin:.8rem 0 1.2rem;max-width:26em}
+  .statement{font-family:var(--serif);font-size:clamp(1.5rem,3.4vw,2.3rem);line-height:1.35;max-width:26em}
+  .note{color:var(--ink-3);font-size:.9rem;margin-top:1.2rem}
+
+  .tenband{display:flex;height:4.4rem;margin:2rem 0 1rem;border-radius:4px;overflow:hidden;font-family:var(--mono);font-weight:700}
+  .tenband div{display:flex;align-items:center;justify-content:center}
+  .tb-h{background:var(--panel);color:var(--cool-2);flex:0 0 10%}
+  .tb-a{background:var(--accent);color:#12100C;flex:1}
+  .tenlabels{display:grid;grid-template-columns:1fr 2fr 1fr;gap:1.4rem;font-size:.88rem;color:var(--ink-2)}
+  .tenlabels .k{font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);display:block;margin-bottom:.3rem}
+  @media(max-width:44rem){.tenlabels{grid-template-columns:1fr}}
+
+  .operator{background:var(--bg-2);border-top:1px solid rgba(168,189,208,.12);border-bottom:1px solid rgba(168,189,208,.12)}
+  .operator .wrap{display:grid;grid-template-columns:1fr 1.6fr;gap:3rem;padding:4.5rem 1.5rem;align-items:start}
+  .operator .quote{font-family:var(--serif);font-style:italic;color:var(--ink-2);font-size:1.15rem;line-height:1.5}
+  .operator .who{display:block;font-family:var(--mono);font-style:normal;font-size:.7rem;letter-spacing:.1em;color:var(--ink-3);margin-top:1rem}
+  @media(max-width:44rem){.operator .wrap{grid-template-columns:1fr}}
+
+  footer.site{padding:3rem 0 4rem;color:var(--ink-3);font-size:.85rem}
+  footer.site .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <span class="wordmark">HARNESS<b>.</b></span>
+    <nav>
+      <a href="#model">The model</a>
+      <a href="#operator">The operator</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Business operating systems · forward-deployed</p>
+    <h1>HARNESS<span class="accent">.</span></h1>
+    <p class="lede">AI failed inside most companies because it was built for how nobody actually works.
+      We build <strong>business operating systems</strong> that fix that — forward-deployed, one company at a time.</p>
+    <a class="cta" href="#contact">Get in touch</a>
+    <a class="cta ghost" href="https://www.youtube.com/channel/UCJv8QFzoJyVGk5B04mXhWNw">Watch how it works</a>
+  </div>
+</section>
+
+<section class="stats" aria-label="The wreckage, verified">
+  <div class="wrap">
+    <div class="stat"><span class="n">22×</span>
+      <p>growth in enterprise generative-AI spend in two years: $1.7B to $37B</p>
+      <span class="src">Menlo Ventures · Dec 2025</span></div>
+    <div class="stat"><span class="n">56%</span>
+      <p>of CEOs report <strong>zero</strong> revenue or cost benefit from AI in the last 12 months</p>
+      <span class="src">PwC Global CEO Survey · n=4,454 · Jan 2026</span></div>
+    <div class="stat"><span class="n">42%</span>
+      <p>of companies abandoned most of their AI initiatives in 2025, up from 17% a year earlier</p>
+      <span class="src">S&amp;P Global Market Intelligence · 2025</span></div>
+  </div>
+</section>
+
+<section class="block" id="thesis">
+  <div class="wrap">
+    <p class="eyebrow">The thesis</p>
+    <p class="statement">"If the AI needs humans to behave differently to function, <span class="accent">the AI is designed wrong.</span>"</p>
+    <p class="note">Build the system around human nature. Not the other way around. — from "My business went agentic," Cameron LiButti, July 2026</p>
+  </div>
+</section>
+
+<section class="block" id="model" style="padding-top:0">
+  <div class="wrap">
+    <p class="eyebrow">The operating model</p>
+    <h2>10 / 80 / 10</h2>
+    <div class="tenband" role="img" aria-label="A bar divided 10, 80, 10: human setup, AI production, human review.">
+      <div class="tb-h">10</div><div class="tb-a">80</div><div class="tb-h">10</div>
+    </div>
+    <div class="tenlabels">
+      <div><span class="k">Human</span>The setup. The context. The judgment calls about what matters.</div>
+      <div><span class="k">AI</span>The production. The volume. The middle of every deliverable — running inside a system designed so nobody has to change how they work.</div>
+      <div><span class="k">Human</span>Review. Correction. Final say.</div>
+    </div>
+    <p class="note" style="max-width:44em"><strong style="color:var(--ink)">Humans keep the parts that were always the real job.</strong>
+      And the last 10% is where it compounds: every correction is captured and folded back into the system.
+      Most companies treat human corrections as friction to engineer away. We treat them as the asset.</p>
+  </div>
+</section>
+
+<section class="operator" id="operator">
+  <div class="wrap">
+    <div>
+      <p class="eyebrow">The operator</p>
+      <p class="quote" style="margin-top:1rem">"I used to design the invisible systems that make buildings work. Now I design the invisible systems that make businesses work."
+        <span class="who">Cameron LiButti · Founder</span></p>
+    </div>
+    <div>
+      <p style="color:var(--ink-2)">Cameron LiButti is the founder of Bidview Marketing, a 13-person agency rebuilt around agent-first operations — by the founder himself, without the team changing how they work. A former MEP engineer who designed systems for Chicago high-rises and universities, he brings calculation, clarity, and blunt practicality to AI adoption for non-technical owners.</p>
+      <p style="color:var(--ink-2);margin-top:1rem">Harness is that running system, generalized: the proof that the 10/80/10 model operates a real company, offered forward-deployed to small and medium businesses — the companies the $10M-per-client enterprise AI wave will never reach.</p>
+      <p class="note" style="margin-top:1.2rem">Every week, one mechanism from the running system, on video: <a href="https://www.youtube.com/channel/UCJv8QFzoJyVGk5B04mXhWNw">the Harness series</a>. Also: <a href="https://aibusinesslabpod.com/">the AI Business Lab podcast</a>.</p>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="contact">
+  <div class="wrap">
+    <p class="eyebrow">Contact</p>
+    <h2>Staring at this problem in your own business?</h2>
+    <p style="color:var(--ink-2);max-width:36em">Tell us about the company, the team, and where AI has already disappointed you. Useful details: goals, systems, team size, timeline. Typical reply: within 1–2 business days.</p>
+    <a class="cta" href="mailto:cameron@bidviewmarketing.com?subject=Harness%20inquiry">Email Cameron</a>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="wrap">
+    <span>HARNESS<span class="accent">.</span> — business operating systems, forward-deployed.</span>
+    <span>© 2026 · <a href="https://aibusinesslabpod.com/">AI Business Lab</a></span>
+  </div>
+</footer>
+
+</body>
+</html>
