@@ -61,7 +61,7 @@ export const homepageImages = [
 		title: "Lansing Team",
 		image: {
 			src: "/assets/media/americas-best-hearing-lansing-mi-team-a7db79b29a.webp",
-			alt: "Man and woman team members outside Americas Best Hearing storefront",
+			alt: "Americas Best Hearing Lansing storefront exterior with Hearing Aids signage",
 		},
 		sortOrder: 2,
 	},
@@ -76,8 +76,6 @@ export const homepageImages = [
 ];
 
 export const staffMembers = [
-	["darren-duso", "Darren Duso, HIS", "Hearing Instrument Specialist", "Lansing, MI", "/hearing-instrument-specialist/darren-duso/", "/assets/media/Darren-Duso-e1760786321370-a131b43810.webp", "Man with gray hair in white dress shirt with pen smiling"],
-	["tammy-mckay", "Tammy McKay", "Patient Care Coordinator", "Lansing, MI", "/patient-care-coordinator/tammy-mckay/", "/assets/media/tammy-mckay-a0b6b6670e.webp", "Woman with dark brown hair in pink patterned top and cream cardigan"],
 	["amelia-schuring", "Amelia Schuring, Au.D.", "Doctor of Audiology", "Portage, MI", "/audiologist/amelia-schuring/", "/assets/media/amelia-schuring-headshot-e1760786347434-067e7cecaf.webp", "Woman with wavy brown hair in white blazer smiling, professional headshot"],
 	["kimberly-russel", "Kimberly Russel", "Audiology Assistant", "Portage, MI", "/audiology-assistant/kimberly-russel/", "/assets/media/kimberly-russel-429cddc1c8.webp", "Woman with long brown hair wearing glasses and cream floral blouse"],
 	["melissa-miller", "Melissa Miller, HIS", "Hearing Instrument Specialist", "Anoka, MN | Roseville, MN", "/hearing-instrument-specialist/melissa-miller/", "/assets/media/Melissa-Miller-639af5fa8f.webp", "Woman with reddish-brown hair in white lab coat smiling, professional headshot"],
