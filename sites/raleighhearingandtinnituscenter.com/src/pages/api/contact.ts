@@ -2,7 +2,7 @@ export const prerender = false;
 
 import { env } from "cloudflare:workers";
 
-const LEAD_TO = "leads@proheargroup.com";
+const LEAD_TO = "leads@proheargroup.com"; // clinic inbox RaleighOffice@proheargroup.com bounces (mailbox not provisioned) — revert when onePHG creates it
 const LEAD_BCC = "local@bidviewmarketing.com"; // BidView monitoring copy (hidden from primary recipient)
 const LEAD_FROM = "noreply@bidview.net";
 const LEAD_FROM_NAME = "Raleigh Hearing & Tinnitus Center";
