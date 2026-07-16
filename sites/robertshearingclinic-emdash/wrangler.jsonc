@@ -1,7 +1,7 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "robertshearingclinic-emdash",
-	"account_id": "981338e6544cfe45d9819bf0ea6eb83a",
+	"account_id": "239e9d015c7a3a39cdc2e9400312f553",
 	"send_email": [{ "name": "SEND_EMAIL", "destination_address": "leads@proheargroup.com" }],
 	"main": "./src/worker.ts",
 	"compatibility_date": "2026-03-29",
