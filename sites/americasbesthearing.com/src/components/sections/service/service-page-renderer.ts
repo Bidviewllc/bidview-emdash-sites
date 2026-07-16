@@ -73,17 +73,41 @@ function portableTextToHtml(blocks: unknown) {
 		}
 		return html;
 	};
-	return parsed
-		.map((block: any) => {
-			const children = Array.isArray(block?.children) ? block.children : [];
-			const markDefs = Array.isArray(block?.markDefs) ? block.markDefs : [];
-			const text = children.map((child: any) => renderSpan(child, markDefs)).join("");
-			if (!text.trim()) return "";
-			const style = /^h[2-4]$/.test(block?.style) ? block.style : "p";
-			return style === "p" ? `<p>${text}</p>` : `<${style}>${text}</${style}>`;
-		})
-		.filter(Boolean)
-		.join("");
+	// Render blocks, grouping consecutive listItem blocks into a single <ul>/<ol>.
+	// Without this, a bulleted list in the CMS collapsed into one run-together <p>
+	// (e.g. the ear wax removal locations rendered as "Lansing, MIPortage, MI...").
+	const html: string[] = [];
+	let listTag: "ul" | "ol" | null = null;
+	const closeList = () => {
+		if (listTag) {
+			html.push(`</${listTag}>`);
+			listTag = null;
+		}
+	};
+
+	for (const block of parsed as any[]) {
+		const children = Array.isArray(block?.children) ? block.children : [];
+		const markDefs = Array.isArray(block?.markDefs) ? block.markDefs : [];
+		const text = children.map((child: any) => renderSpan(child, markDefs)).join("");
+		if (!text.trim()) continue;
+
+		if (block?.listItem) {
+			const tag = block.listItem === "number" ? "ol" : "ul";
+			if (listTag && listTag !== tag) closeList();
+			if (!listTag) {
+				listTag = tag;
+				html.push(`<${tag}>`);
+			}
+			html.push(`<li>${text}</li>`);
+			continue;
+		}
+
+		closeList();
+		const style = /^h[2-4]$/.test(block?.style) ? block.style : "p";
+		html.push(style === "p" ? `<p>${text}</p>` : `<${style}>${text}</${style}>`);
+	}
+	closeList();
+	return html.join("");
 }
 
 function cloneTextWidget($: CheerioAPI, template: Cheerio<any>, html: string, index: number) {
