@@ -8,9 +8,18 @@ export interface Props {
   currentLabel: string;  // breadcrumb final, e.g. "Tinnitus"
   pageHeading: string;   // h1 text (HTML allowed via Fragment)
   sidebarImage?: string;
+  sidebarImageAlt?: string;
   schema?: object | object[];
 }
-const { pageTitle, description, parentLabel, currentLabel, pageHeading, sidebarImage = '/s9-card-4.jpg', schema } = Astro.props;
+const { pageTitle, description, parentLabel, currentLabel, pageHeading, sidebarImage = '/s9-card-4.jpg', sidebarImageAlt, schema } = Astro.props;
+const SIDEBAR_IMAGE_ALT = {
+  '/s9-card-1.jpg': 'Bright hearing clinic waiting area with stools, plants, and window graphics',
+  '/s9-card-2.jpg': 'Audiologist reviewing hearing test results with a patient in an exam room',
+  '/s9-card-3.jpg': 'Orange-tinted music room with keyboard, computers, and seating',
+  '/s9-card-4.jpg': 'Patient completing a hearing test inside a sound booth',
+  '/s9-card-5.jpg': 'Hearing care provider preparing a patient for vestibular testing with video goggles',
+};
+
 ---
 <Interior title={pageTitle} description={description} schema={schema}>
 
@@ -46,7 +55,7 @@ const { pageTitle, description, parentLabel, currentLabel, pageHeading, sidebarI
     <aside class="sidebar service-sidebar">
       <div class="side-cta">
         <div class="side-cta-image" aria-hidden="true">
-          <img src={sidebarImage} alt="" />
+          <img src={sidebarImage} alt={sidebarImageAlt ?? SIDEBAR_IMAGE_ALT[sidebarImage] ?? ''} />
         </div>
         <div class="side-cta-body">
           <h3>Schedule your first visit</h3>
