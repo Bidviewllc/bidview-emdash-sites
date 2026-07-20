@@ -74,7 +74,7 @@ function getRecs(grade: number) {
 
 // ── ActiveCampaign integration ────────────────────────────────────────────────
 const AC_URL = 'https://5keyscommunication.api-us1.com/api/3';
-const AC_KEY = 'c38210b21984bbfe38779cf18e528f7259612f77964fe437ee46c0d2c96e71e0e28e05dd';
+const AC_KEY = '946392ffad2a5819b200a98c3df72b6a61bdc5d97e721488435f09fabb683a32bc206e5e';
 const AC_FIELDS = { total: 69, e: 70, s: 71, grade: 72, handicap: 73 };
 const TAG_WELLNESS_PAGE = 113;
 const TAG_NEW_LEAF = 108;
