@@ -72,11 +72,13 @@ const se = cfg?.edit ?? {};
         </div>
       </div>
 
-      <form class="contact__form" novalidate>
+      <form class="contact__form" action="/api/contact" method="POST">
         <div class="form__intro">
           <h3>Send us a message</h3>
           <p>Required fields are marked with <span style="color: var(--green); font-weight: 700;">*</span>.</p>
         </div>
+        {/* Honeypot: hidden from real users, catches bots */}
+        <input type="text" name="website" tabindex="-1" autocomplete="off" style="display:none;position:absolute;left:-9999px" aria-hidden="true" />
         <div class="form__grid">
           <div class="field">
             <label for="f-first">First name<span class="req">*</span></label>
@@ -115,6 +117,7 @@ const se = cfg?.edit ?? {};
             <input type="checkbox" name="consent" />
             <span>I agree that Ontario Hearing Center may contact me at the information provided. Submissions are handled in accordance with our <a href="/privacy-policy/">Privacy Policy</a>. Please do not include sensitive health information in this form.</span>
           </label>
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAADyoU6TDMeVTGFsC" data-theme="light"></div>
           <div class="form__actions">
             <p class="form__small">For urgent matters, please call us at <strong style="color: var(--navy);" {...se.phone}>{s.phone ?? "(585) 442-4180"}</strong>.</p>
             <button class="btn btn--navy" type="submit">
@@ -185,5 +188,7 @@ const se = cfg?.edit ?? {};
   </section>
 
   <CtaStrip />
+
+  <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
 </Interior>
