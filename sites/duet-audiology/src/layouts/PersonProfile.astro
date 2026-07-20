@@ -17,6 +17,7 @@ export interface Props {
   yearsValue?: string;
   photo?: string;
   sidebarImage?: string;
+  sidebarImageAlt?: string;
   jobTitle?: string;          // used in Person schema
   worksFor?: string;          // legal employer name in Person schema
   npi?: string;               // 10-digit National Provider Identifier
@@ -25,8 +26,16 @@ export interface Props {
 const {
   name, title, credentials, initials, breadcrumbCategory, breadcrumbHref, category, pageTitle,
   description, schoolLabel = 'Education', schoolValue, yearsLabel = 'Experience', yearsValue,
-  photo, sidebarImage = '/s9-card-1.jpg', jobTitle, worksFor = 'Duet Hearing', npi, stateLicense
+  photo, sidebarImage = '/s9-card-1.jpg', sidebarImageAlt, jobTitle, worksFor = 'Duet Hearing', npi, stateLicense
 } = Astro.props;
+
+const SIDEBAR_IMAGE_ALT = {
+  '/s9-card-1.jpg': 'Bright hearing clinic waiting area with stools, plants, and window graphics',
+  '/s9-card-2.jpg': 'Audiologist reviewing hearing test results with a patient in an exam room',
+  '/s9-card-3.jpg': 'Orange-tinted music room with keyboard, computers, and seating',
+  '/s9-card-4.jpg': 'Patient completing a hearing test inside a sound booth',
+  '/s9-card-5.jpg': 'Hearing care provider preparing a patient for vestibular testing with video goggles',
+};
 
 const SITE_URL = 'https://duethearing.com';
 const isDoctor = breadcrumbCategory === 'Audiologists';
@@ -182,7 +191,7 @@ const pageDescription = description ||
     <aside class="sidebar person-sidebar">
       <div class="side-cta">
         <div class="side-cta-image" aria-hidden="true">
-          <img src={sidebarImage} alt="" />
+          <img src={sidebarImage} alt={sidebarImageAlt ?? SIDEBAR_IMAGE_ALT[sidebarImage] ?? ''} />
         </div>
         <div class="side-cta-body">
           <h3>Schedule your first visit</h3>
