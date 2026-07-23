@@ -36143,6 +36143,70 @@
             "filename": "new-leaf-hearing-care-rose.webp"
           }
         }
+      },
+      {
+        "id": "team-audiology-assistant-brittany",
+        "slug": "audiology-assistant/brittany",
+        "status": "published",
+        "data": {
+          "page_title": "Brittany",
+          "page_slug": "/audiology-assistant/brittany/",
+          "meta_title": "Brittany, Audiology Assistant | New Leaf Hearing Care",
+          "meta_description": "Meet Brittany, Audiology Assistant at New Leaf Hearing Care in Arvada & Littleton, CO.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "brittanybio0",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "brittanybios0",
+                  "text": "Brittany is an Audiology Assistant and Certified Occupational Hearing Conservationist that recently moved back to Colorado after working with a private audiology clinic in Butte, Montana. She also has experience working as a medical assistant for ENT and Neurology at a hospital outpatient clinic.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "brittanybio1",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "brittanybios1",
+                  "text": "Brittany earned her Bachelor of Science in Communication Sciences and Disorders from the University of Montana with a minor in Spanish. She also participated in various graduate research projects before Covid that focused on assisting those with chronic vestibular and balance related issues.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "brittanybio2",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "brittanybios2",
+                  "text": "Raised in Anchorage, Alaska for most of her childhood, and a brief time living in Broomfield for high school, she is happy to return to Colorado and explore the state with her husband and son. She enjoys sports of all kinds (but especially coaching soccer), camping, and exploring new cities.",
+                  "marks": []
+                }
+              ]
+            }
+          ],
+          "title": "Brittany",
+          "job_title": "Audiology Assistant",
+          "featured_image": {
+            "provider": "external",
+            "id": "audiology-assistant-brittany",
+            "src": "/assets/brittany.jpg",
+            "alt": "Brittany",
+            "filename": "brittany.jpg"
+          }
+        }
       }
     ],
     "blog_posts": []

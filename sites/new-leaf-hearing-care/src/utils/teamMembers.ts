@@ -84,7 +84,7 @@ export const renderTeamLinks = (members: TeamMember[]) =>
 export const renderTeamSection = (members: TeamMember[]) => {
   if (!members.length) return "";
 
-  const hasCarousel = members.length > 4;
+  const hasCarousel = members.length > 5;
   const hasMobileCarousel = members.length > 1;
   const cards = members
     .map(
