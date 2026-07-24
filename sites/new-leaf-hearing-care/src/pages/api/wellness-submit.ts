@@ -114,7 +114,7 @@ async function pushToAC({ firstName, lastName, email, total, e, s, grade, label,
 }
 
 // ── API Route ─────────────────────────────────────────────────────────────────
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, locals }) => {
   let body: { answers?: Record<number, string>; firstName?: string; lastName?: string; email?: string };
   try { body = await request.json(); }
   catch { return Response.json({ error: 'Invalid JSON' }, { status: 400 }); }
@@ -132,12 +132,18 @@ export const POST: APIRoute = async ({ request }) => {
   const handicap = getHandicap(total);
   const recs = getRecs(wellness.grade);
 
-  // Fire-and-forget to ActiveCampaign
-  const acPromise = pushToAC({ firstName, lastName, email, total, e, s, grade: wellness.grade, label: wellness.label, handicap });
-  if (typeof (request as unknown as { cf?: unknown }).cf !== 'undefined') {
-    // In Cloudflare Workers, use waitUntil via the runtime context if available
+  // Push to ActiveCampaign. Workers cancels in-flight work once the response
+  // is sent, so the promise must go through ctx.waitUntil — a bare
+  // fire-and-forget silently drops every sync. AC failure must never block
+  // the visitor's report, hence the swallowed rejection.
+  const acPromise = pushToAC({ firstName, lastName, email, total, e, s, grade: wellness.grade, label: wellness.label, handicap })
+    .catch(() => {/* silent */});
+  const ctx = (locals as { runtime?: { ctx?: { waitUntil?: (p: Promise<unknown>) => void } } }).runtime?.ctx;
+  if (ctx?.waitUntil) {
+    ctx.waitUntil(acPromise);
+  } else {
+    await acPromise;
   }
-  acPromise.catch(() => {/* silent */});
 
   return Response.json({ total, e, s, grade: wellness.grade, label: wellness.label, color: wellness.color, desc: wellness.desc, handicap, recs });
 };
