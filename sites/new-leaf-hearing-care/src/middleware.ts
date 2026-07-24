@@ -6,7 +6,7 @@ const PUBLIC_HTML_CACHE_CONTROL = "public, max-age=300, s-maxage=3600, stale-whi
 const EDGE_HTML_CACHE_CONTROL = "public, max-age=3600, stale-while-revalidate=86400";
 const PUBLIC_MEDIA_CACHE_CONTROL = "public, max-age=31536000, immutable";
 const PRIVATE_CACHE_CONTROL = "no-store, max-age=0";
-const HTML_CACHE_VERSION = "2026-07-07-wellness-styles-v24";
+const HTML_CACHE_VERSION = "2026-07-24-wellness-api-fix-v25";
 const PUBLIC_MEDIA_PREFIX = "/_emdash/api/media/file/";
 const CACHEABLE_MEDIA_TYPES = ["image/", "video/", "audio/"];
 const STATIC_PATHS = [
@@ -151,6 +151,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
     pathname !== "/" &&
     !pathname.endsWith("/") &&
     !pathname.startsWith("/_emdash/") &&
+    !pathname.startsWith("/api/") &&
     !FILE_EXTENSION_PATTERN.test(pathname)
   ) {
     const url = new URL(context.url);
