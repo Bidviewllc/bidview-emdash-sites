@@ -75,7 +75,8 @@ function getRecs(grade: number) {
 // ── ActiveCampaign integration ────────────────────────────────────────────────
 const AC_URL = 'https://5keyscommunication.api-us1.com/api/3';
 const AC_KEY = '946392ffad2a5819b200a98c3df72b6a61bdc5d97e721488435f09fabb683a32bc206e5e';
-const AC_FIELDS = { total: 69, e: 70, s: 71, grade: 72, handicap: 73 };
+// HWA* fields (75-79) replaced the original HHIE* fields (69-73) in July 2026.
+const AC_FIELDS = { total: 75, e: 76, s: 77, grade: 78, handicap: 79 };
 const TAG_WELLNESS_PAGE = 113;
 const TAG_NEW_LEAF = 108;
 
