@@ -133,12 +133,14 @@ export const POST: APIRoute = async ({ request, locals }) => {
   const recs = getRecs(wellness.grade);
 
   // Push to ActiveCampaign. Workers cancels in-flight work once the response
-  // is sent, so the promise must go through ctx.waitUntil — a bare
-  // fire-and-forget silently drops every sync. AC failure must never block
-  // the visitor's report, hence the swallowed rejection.
+  // is sent, so the promise must go through waitUntil — a bare fire-and-forget
+  // silently drops every sync. Astro v6 exposes the execution context as
+  // locals.cfContext (locals.runtime.ctx is a removed-API trap that throws).
+  // AC failure must never block the visitor's report, hence the swallowed
+  // rejection.
   const acPromise = pushToAC({ firstName, lastName, email, total, e, s, grade: wellness.grade, label: wellness.label, handicap })
     .catch(() => {/* silent */});
-  const ctx = (locals as { runtime?: { ctx?: { waitUntil?: (p: Promise<unknown>) => void } } }).runtime?.ctx;
+  const ctx = (locals as { cfContext?: { waitUntil?: (p: Promise<unknown>) => void } }).cfContext;
   if (ctx?.waitUntil) {
     ctx.waitUntil(acPromise);
   } else {
