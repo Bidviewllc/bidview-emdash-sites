@@ -351,7 +351,7 @@ async function submitForm() {
   document.getElementById('loading-msg').textContent = 'Processing your assessment…';
 
   try {
-    var resp = await fetch('/api/wellness-submit', {
+    var resp = await fetch('/api/wellness-submit/', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify({ answers: answers, firstName: fn, lastName: ln, email: em })
