@@ -11,33 +11,33 @@
 -- Collection: site_settings
 -- ============================================================
 INSERT OR REPLACE INTO _emdash_collections (id, slug, label, label_singular, supports, source, search_config, has_seo, comments_enabled, comments_moderation, comments_closed_after_days, comments_auto_approve_users) VALUES (
-  '0101JU04O9RC00T0K0CS00T0K0', 'site_settings', 'Site Settings', 'Site Setting',
+  '0101JU4T4QHH00T0K0CS00T0K0', 'site_settings', 'Site Settings', 'Site Setting',
   '["drafts","revisions","search"]', 'seed', '{"enabled":true}', 0, 0, 'first_time', 90, 1
 );
 
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9RD01SQT03F01SQT0', '0101JU04O9RC00T0K0CS00T0K0', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
+  '0101JU4T4QHI01SQT03F01SQT0', '0101JU4T4QHH00T0K0CS00T0K0', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9RE01SNB6S501SNB6', '0101JU04O9RC00T0K0CS00T0K0', 'phone', 'Phone', 'string', 'TEXT', 0, 1, 0, 1
+  '0101JU4T4QHJ01SNB6S501SNB6', '0101JU4T4QHH00T0K0CS00T0K0', 'phone', 'Phone', 'string', 'TEXT', 0, 1, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9RF01SDPADJ01SDPA', '0101JU04O9RC00T0K0CS00T0K0', 'email', 'Email', 'string', 'TEXT', 0, 2, 0, 1
+  '0101JU4T4QHK01SDPADJ01SDPA', '0101JU4T4QHH00T0K0CS00T0K0', 'email', 'Email', 'string', 'TEXT', 0, 2, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9RG01QU18JN01QU18', '0101JU04O9RC00T0K0CS00T0K0', 'address_street', 'Address Street', 'string', 'TEXT', 0, 3, 0, 1
+  '0101JU4T4QHL01QU18JN01QU18', '0101JU4T4QHH00T0K0CS00T0K0', 'address_street', 'Address Street', 'string', 'TEXT', 0, 3, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9RH01292GMF01292G', '0101JU04O9RC00T0K0CS00T0K0', 'address_city_state', 'Address City State', 'string', 'TEXT', 0, 4, 0, 1
+  '0101JU4T4QHM01292GMF01292G', '0101JU4T4QHH00T0K0CS00T0K0', 'address_city_state', 'Address City State', 'string', 'TEXT', 0, 4, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9RI0198H2AB0198H2', '0101JU04O9RC00T0K0CS00T0K0', 'hours_mon_thu', 'Hours Mon Thu', 'string', 'TEXT', 0, 5, 0, 1
+  '0101JU4T4QHN0198H2AB0198H2', '0101JU4T4QHH00T0K0CS00T0K0', 'hours_mon_thu', 'Hours Mon Thu', 'string', 'TEXT', 0, 5, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9RJ00VKS8BS00VKS8', '0101JU04O9RC00T0K0CS00T0K0', 'hours_fri', 'Hours Fri', 'string', 'TEXT', 0, 6, 0, 1
+  '0101JU4T4QHO00VKS8BS00VKS8', '0101JU4T4QHH00T0K0CS00T0K0', 'hours_fri', 'Hours Fri', 'string', 'TEXT', 0, 6, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9RK008HN234008HN2', '0101JU04O9RC00T0K0CS00T0K0', 'google_maps_url', 'Google Maps Url', 'string', 'TEXT', 0, 7, 0, 1
+  '0101JU4T4QHP008HN234008HN2', '0101JU4T4QHH00T0K0CS00T0K0', 'google_maps_url', 'Google Maps Url', 'string', 'TEXT', 0, 7, 0, 1
 );
 
 CREATE TABLE IF NOT EXISTS "ec_site_settings" (
@@ -72,123 +72,123 @@ CREATE TABLE IF NOT EXISTS "ec_site_settings" (
 -- Collection: homepage
 -- ============================================================
 INSERT OR REPLACE INTO _emdash_collections (id, slug, label, label_singular, supports, source, search_config, has_seo, comments_enabled, comments_moderation, comments_closed_after_days, comments_auto_approve_users) VALUES (
-  '0101JU04O9RL01VR1K1J01VR1K', 'homepage', 'Homepage', 'Homepage',
+  '0101JU4T4QHQ01VR1K1J01VR1K', 'homepage', 'Homepage', 'Homepage',
   '["drafts","revisions","search"]', 'seed', '{"enabled":true}', 0, 0, 'first_time', 90, 1
 );
 
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9RM011F595C011F59', '0101JU04O9RL01VR1K1J01VR1K', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
+  '0101JU4T4QHR011F595C011F59', '0101JU4T4QHQ01VR1K1J01VR1K', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9RN01EF28UG01EF28', '0101JU04O9RL01VR1K1J01VR1K', 'hero_eyebrow', 'Hero Eyebrow', 'string', 'TEXT', 0, 1, 0, 1
+  '0101JU4T4QHS01EF28UG01EF28', '0101JU4T4QHQ01VR1K1J01VR1K', 'hero_eyebrow', 'Hero Eyebrow', 'string', 'TEXT', 0, 1, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9RO00JB9BGN00JB9B', '0101JU04O9RL01VR1K1J01VR1K', 'hero_heading', 'Hero Heading', 'string', 'TEXT', 0, 2, 0, 1
+  '0101JU4T4QHT00JB9BGN00JB9B', '0101JU4T4QHQ01VR1K1J01VR1K', 'hero_heading', 'Hero Heading', 'string', 'TEXT', 0, 2, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9RP01MH2KPB01MH2K', '0101JU04O9RL01VR1K1J01VR1K', 'hero_lead', 'Hero Lead', 'text', 'TEXT', 0, 3, 0, 1
+  '0101JU4T4QHU01MH2KPB01MH2K', '0101JU4T4QHQ01VR1K1J01VR1K', 'hero_lead', 'Hero Lead', 'text', 'TEXT', 0, 3, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9RQ01GV9RNL01GV9R', '0101JU04O9RL01VR1K1J01VR1K', 'hero_cta_text', 'Hero Cta Text', 'string', 'TEXT', 0, 4, 0, 1
+  '0101JU4T4QHV01GV9RNL01GV9R', '0101JU4T4QHQ01VR1K1J01VR1K', 'hero_cta_text', 'Hero Cta Text', 'string', 'TEXT', 0, 4, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9RR019VKAE1019VKA', '0101JU04O9RL01VR1K1J01VR1K', 'reviews_count', 'Reviews Count', 'string', 'TEXT', 0, 5, 0, 1
+  '0101JU4T4QI0019VKAE1019VKA', '0101JU4T4QHQ01VR1K1J01VR1K', 'reviews_count', 'Reviews Count', 'string', 'TEXT', 0, 5, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9RS01D32ASB01D32A', '0101JU04O9RL01VR1K1J01VR1K', 'about_eyebrow', 'About Eyebrow', 'string', 'TEXT', 0, 6, 0, 1
+  '0101JU4T4QI101D32ASB01D32A', '0101JU4T4QHQ01VR1K1J01VR1K', 'about_eyebrow', 'About Eyebrow', 'string', 'TEXT', 0, 6, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9RT00KN99IS00KN99', '0101JU04O9RL01VR1K1J01VR1K', 'about_heading', 'About Heading', 'string', 'TEXT', 0, 7, 0, 1
+  '0101JU4T4QI200KN99IS00KN99', '0101JU4T4QHQ01VR1K1J01VR1K', 'about_heading', 'About Heading', 'string', 'TEXT', 0, 7, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9RU01RGIBM001RGIB', '0101JU04O9RL01VR1K1J01VR1K', 'about_body', 'About Body', 'text', 'TEXT', 0, 8, 0, 1
+  '0101JU4T4QI301RGIBM001RGIB', '0101JU4T4QHQ01VR1K1J01VR1K', 'about_body', 'About Body', 'text', 'TEXT', 0, 8, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9RV01L1PA8E01L1PA', '0101JU04O9RL01VR1K1J01VR1K', 'about_body2', 'About Body2', 'text', 'TEXT', 0, 9, 0, 1
+  '0101JU4T4QI401L1PA8E01L1PA', '0101JU4T4QHQ01VR1K1J01VR1K', 'about_body2', 'About Body2', 'text', 'TEXT', 0, 9, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9S0010U7LAU010U7L', '0101JU04O9RL01VR1K1J01VR1K', 'about_badge_title', 'About Badge Title', 'string', 'TEXT', 0, 10, 0, 1
+  '0101JU4T4QI5010U7LAU010U7L', '0101JU4T4QHQ01VR1K1J01VR1K', 'about_badge_title', 'About Badge Title', 'string', 'TEXT', 0, 10, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9S101911ULV01911U', '0101JU04O9RL01VR1K1J01VR1K', 'about_years_num', 'About Years Num', 'string', 'TEXT', 0, 11, 0, 1
+  '0101JU4T4QI601911ULV01911U', '0101JU4T4QHQ01VR1K1J01VR1K', 'about_years_num', 'About Years Num', 'string', 'TEXT', 0, 11, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9S2008PFOVD008PFO', '0101JU04O9RL01VR1K1J01VR1K', 'about_years_label', 'About Years Label', 'string', 'TEXT', 0, 12, 0, 1
+  '0101JU4T4QI7008PFOVD008PFO', '0101JU4T4QHQ01VR1K1J01VR1K', 'about_years_label', 'About Years Label', 'string', 'TEXT', 0, 12, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9S301ACO4B301ACO4', '0101JU04O9RL01VR1K1J01VR1K', 'about_doctors_num', 'About Doctors Num', 'string', 'TEXT', 0, 13, 0, 1
+  '0101JU4T4QI801ACO4B301ACO4', '0101JU4T4QHQ01VR1K1J01VR1K', 'about_doctors_num', 'About Doctors Num', 'string', 'TEXT', 0, 13, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9S4019359TL019359', '0101JU04O9RL01VR1K1J01VR1K', 'about_doctors_label', 'About Doctors Label', 'string', 'TEXT', 0, 14, 0, 1
+  '0101JU4T4QI9019359TL019359', '0101JU4T4QHQ01VR1K1J01VR1K', 'about_doctors_label', 'About Doctors Label', 'string', 'TEXT', 0, 14, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9S501JIVN2F01JIVN', '0101JU04O9RL01VR1K1J01VR1K', 'about_brands_num', 'About Brands Num', 'string', 'TEXT', 0, 15, 0, 1
+  '0101JU4T4QIA01JIVN2F01JIVN', '0101JU4T4QHQ01VR1K1J01VR1K', 'about_brands_num', 'About Brands Num', 'string', 'TEXT', 0, 15, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9S601DCUPT101DCUP', '0101JU04O9RL01VR1K1J01VR1K', 'about_brands_label', 'About Brands Label', 'string', 'TEXT', 0, 16, 0, 1
+  '0101JU4T4QIB01DCUPT101DCUP', '0101JU4T4QHQ01VR1K1J01VR1K', 'about_brands_label', 'About Brands Label', 'string', 'TEXT', 0, 16, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9S701BTN0PJ01BTN0', '0101JU04O9RL01VR1K1J01VR1K', 'team_eyebrow', 'Team Eyebrow', 'string', 'TEXT', 0, 17, 0, 1
+  '0101JU4T4QIC01BTN0PJ01BTN0', '0101JU4T4QHQ01VR1K1J01VR1K', 'team_eyebrow', 'Team Eyebrow', 'string', 'TEXT', 0, 17, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9S800LSKJLK00LSKJ', '0101JU04O9RL01VR1K1J01VR1K', 'team_heading', 'Team Heading', 'string', 'TEXT', 0, 18, 0, 1
+  '0101JU4T4QID00LSKJLK00LSKJ', '0101JU4T4QHQ01VR1K1J01VR1K', 'team_heading', 'Team Heading', 'string', 'TEXT', 0, 18, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9S900QNF7RA00QNF7', '0101JU04O9RL01VR1K1J01VR1K', 'team_subhead', 'Team Subhead', 'text', 'TEXT', 0, 19, 0, 1
+  '0101JU4T4QIE00QNF7RA00QNF7', '0101JU4T4QHQ01VR1K1J01VR1K', 'team_subhead', 'Team Subhead', 'text', 'TEXT', 0, 19, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9SA0023ETJF0023ET', '0101JU04O9RL01VR1K1J01VR1K', 'cochlear_eyebrow', 'Cochlear Eyebrow', 'string', 'TEXT', 0, 20, 0, 1
+  '0101JU4T4QIF0023ETJF0023ET', '0101JU4T4QHQ01VR1K1J01VR1K', 'cochlear_eyebrow', 'Cochlear Eyebrow', 'string', 'TEXT', 0, 20, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9SB01S25DTA01S25D', '0101JU04O9RL01VR1K1J01VR1K', 'cochlear_heading', 'Cochlear Heading', 'string', 'TEXT', 0, 21, 0, 1
+  '0101JU4T4QIG01S25DTA01S25D', '0101JU4T4QHQ01VR1K1J01VR1K', 'cochlear_heading', 'Cochlear Heading', 'string', 'TEXT', 0, 21, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9SC00J0R87Q00J0R8', '0101JU04O9RL01VR1K1J01VR1K', 'cochlear_body', 'Cochlear Body', 'text', 'TEXT', 0, 22, 0, 1
+  '0101JU4T4QIH00J0R87Q00J0R8', '0101JU4T4QHQ01VR1K1J01VR1K', 'cochlear_body', 'Cochlear Body', 'text', 'TEXT', 0, 22, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9SD014KD8DV014KD8', '0101JU04O9RL01VR1K1J01VR1K', 'diag_eyebrow', 'Diag Eyebrow', 'string', 'TEXT', 0, 23, 0, 1
+  '0101JU4T4QII014KD8DV014KD8', '0101JU4T4QHQ01VR1K1J01VR1K', 'diag_eyebrow', 'Diag Eyebrow', 'string', 'TEXT', 0, 23, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9SE00PH732Q00PH73', '0101JU04O9RL01VR1K1J01VR1K', 'diag_heading', 'Diag Heading', 'string', 'TEXT', 0, 24, 0, 1
+  '0101JU4T4QIJ00PH732Q00PH73', '0101JU4T4QHQ01VR1K1J01VR1K', 'diag_heading', 'Diag Heading', 'string', 'TEXT', 0, 24, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9SF01LQL1C801LQL1', '0101JU04O9RL01VR1K1J01VR1K', 'diag_subhead', 'Diag Subhead', 'text', 'TEXT', 0, 25, 0, 1
+  '0101JU4T4QIK01LQL1C801LQL1', '0101JU4T4QHQ01VR1K1J01VR1K', 'diag_subhead', 'Diag Subhead', 'text', 'TEXT', 0, 25, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9SG00GEACPH00GEAC', '0101JU04O9RL01VR1K1J01VR1K', 'ha_eyebrow', 'Ha Eyebrow', 'string', 'TEXT', 0, 26, 0, 1
+  '0101JU4T4QIL00GEACPH00GEAC', '0101JU4T4QHQ01VR1K1J01VR1K', 'ha_eyebrow', 'Ha Eyebrow', 'string', 'TEXT', 0, 26, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9SH01DN9UN801DN9U', '0101JU04O9RL01VR1K1J01VR1K', 'ha_heading', 'Ha Heading', 'string', 'TEXT', 0, 27, 0, 1
+  '0101JU4T4QIM01DN9UN801DN9U', '0101JU4T4QHQ01VR1K1J01VR1K', 'ha_heading', 'Ha Heading', 'string', 'TEXT', 0, 27, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9SI00CSOR5200CSOR', '0101JU04O9RL01VR1K1J01VR1K', 'brands_eyebrow', 'Brands Eyebrow', 'string', 'TEXT', 0, 28, 0, 1
+  '0101JU4T4QIN00CSOR5200CSOR', '0101JU4T4QHQ01VR1K1J01VR1K', 'brands_eyebrow', 'Brands Eyebrow', 'string', 'TEXT', 0, 28, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9SJ01KTIPA501KTIP', '0101JU04O9RL01VR1K1J01VR1K', 'brands_heading', 'Brands Heading', 'string', 'TEXT', 0, 29, 0, 1
+  '0101JU4T4QIO01KTIPA501KTIP', '0101JU4T4QHQ01VR1K1J01VR1K', 'brands_heading', 'Brands Heading', 'string', 'TEXT', 0, 29, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9SK0049ETP70049ET', '0101JU04O9RL01VR1K1J01VR1K', 'brands_subhead', 'Brands Subhead', 'text', 'TEXT', 0, 30, 0, 1
+  '0101JU4T4QIP0049ETP70049ET', '0101JU4T4QHQ01VR1K1J01VR1K', 'brands_subhead', 'Brands Subhead', 'text', 'TEXT', 0, 30, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9SL01QGMVCA01QGMV', '0101JU04O9RL01VR1K1J01VR1K', 'testimonials_eyebrow', 'Testimonials Eyebrow', 'string', 'TEXT', 0, 31, 0, 1
+  '0101JU4T4QIQ01QGMVCA01QGMV', '0101JU4T4QHQ01VR1K1J01VR1K', 'testimonials_eyebrow', 'Testimonials Eyebrow', 'string', 'TEXT', 0, 31, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9SM0079KL2T0079KL', '0101JU04O9RL01VR1K1J01VR1K', 'testimonials_heading', 'Testimonials Heading', 'string', 'TEXT', 0, 32, 0, 1
+  '0101JU4T4QIR0079KL2T0079KL', '0101JU4T4QHQ01VR1K1J01VR1K', 'testimonials_heading', 'Testimonials Heading', 'string', 'TEXT', 0, 32, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9SN00JRL07C00JRL0', '0101JU04O9RL01VR1K1J01VR1K', 'faq_eyebrow', 'Faq Eyebrow', 'string', 'TEXT', 0, 33, 0, 1
+  '0101JU4T4QIS00JRL07C00JRL0', '0101JU4T4QHQ01VR1K1J01VR1K', 'faq_eyebrow', 'Faq Eyebrow', 'string', 'TEXT', 0, 33, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9SO01A9VB9D01A9VB', '0101JU04O9RL01VR1K1J01VR1K', 'faq_heading', 'Faq Heading', 'string', 'TEXT', 0, 34, 0, 1
+  '0101JU4T4QIT01A9VB9D01A9VB', '0101JU4T4QHQ01VR1K1J01VR1K', 'faq_heading', 'Faq Heading', 'string', 'TEXT', 0, 34, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9SP0151SP5L0151SP', '0101JU04O9RL01VR1K1J01VR1K', 'faq_subhead', 'Faq Subhead', 'text', 'TEXT', 0, 35, 0, 1
+  '0101JU4T4QIU0151SP5L0151SP', '0101JU4T4QHQ01VR1K1J01VR1K', 'faq_subhead', 'Faq Subhead', 'text', 'TEXT', 0, 35, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9SQ00UVF94800UVF9', '0101JU04O9RL01VR1K1J01VR1K', 'blog_eyebrow', 'Blog Eyebrow', 'string', 'TEXT', 0, 36, 0, 1
+  '0101JU4T4QIV00UVF94800UVF9', '0101JU4T4QHQ01VR1K1J01VR1K', 'blog_eyebrow', 'Blog Eyebrow', 'string', 'TEXT', 0, 36, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9SR00V652CH00V652', '0101JU04O9RL01VR1K1J01VR1K', 'blog_heading', 'Blog Heading', 'string', 'TEXT', 0, 37, 0, 1
+  '0101JU4T4QJ000V652CH00V652', '0101JU4T4QHQ01VR1K1J01VR1K', 'blog_heading', 'Blog Heading', 'string', 'TEXT', 0, 37, 0, 1
 );
 
 CREATE TABLE IF NOT EXISTS "ec_homepage" (
@@ -253,81 +253,81 @@ CREATE TABLE IF NOT EXISTS "ec_homepage" (
 -- Collection: about_page
 -- ============================================================
 INSERT OR REPLACE INTO _emdash_collections (id, slug, label, label_singular, supports, source, search_config, has_seo, comments_enabled, comments_moderation, comments_closed_after_days, comments_auto_approve_users) VALUES (
-  '0101JU04O9SS01JLFSV001JLFS', 'about_page', 'About Page', 'About Page',
+  '0101JU4T4QJ101JLFSV001JLFS', 'about_page', 'About Page', 'About Page',
   '["drafts","revisions","search"]', 'seed', '{"enabled":true}', 0, 0, 'first_time', 90, 1
 );
 
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9ST01NLT0M101NLT0', '0101JU04O9SS01JLFSV001JLFS', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
+  '0101JU4T4QJ201NLT0M101NLT0', '0101JU4T4QJ101JLFSV001JLFS', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9SU019G3BK6019G3B', '0101JU04O9SS01JLFSV001JLFS', 'story_eyebrow', 'Story Eyebrow', 'string', 'TEXT', 0, 1, 0, 1
+  '0101JU4T4QJ3019G3BK6019G3B', '0101JU4T4QJ101JLFSV001JLFS', 'story_eyebrow', 'Story Eyebrow', 'string', 'TEXT', 0, 1, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9SV00OA88R100OA88', '0101JU04O9SS01JLFSV001JLFS', 'story_heading', 'Story Heading', 'string', 'TEXT', 0, 2, 0, 1
+  '0101JU4T4QJ400OA88R100OA88', '0101JU4T4QJ101JLFSV001JLFS', 'story_heading', 'Story Heading', 'string', 'TEXT', 0, 2, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9T001VA38QK01VA38', '0101JU04O9SS01JLFSV001JLFS', 'story_body1', 'Story Body1', 'text', 'TEXT', 0, 3, 0, 1
+  '0101JU4T4QJ501VA38QK01VA38', '0101JU4T4QJ101JLFSV001JLFS', 'story_body1', 'Story Body1', 'text', 'TEXT', 0, 3, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9T101VA38QJ01VA38', '0101JU04O9SS01JLFSV001JLFS', 'story_body2', 'Story Body2', 'text', 'TEXT', 0, 4, 0, 1
+  '0101JU4T4QJ601VA38QJ01VA38', '0101JU4T4QJ101JLFSV001JLFS', 'story_body2', 'Story Body2', 'text', 'TEXT', 0, 4, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9T200OG6R1100OG6R', '0101JU04O9SS01JLFSV001JLFS', 'story_image_caption', 'Story Image Caption', 'string', 'TEXT', 0, 5, 0, 1
+  '0101JU4T4QJ700OG6R1100OG6R', '0101JU4T4QJ101JLFSV001JLFS', 'story_image_caption', 'Story Image Caption', 'string', 'TEXT', 0, 5, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9T3005D9AVV005D9A', '0101JU04O9SS01JLFSV001JLFS', 'story_stat1_num', 'Story Stat1 Num', 'string', 'TEXT', 0, 6, 0, 1
+  '0101JU4T4QJ8005D9AVV005D9A', '0101JU4T4QJ101JLFSV001JLFS', 'story_stat1_num', 'Story Stat1 Num', 'string', 'TEXT', 0, 6, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9T401BO1T5F01BO1T', '0101JU04O9SS01JLFSV001JLFS', 'story_stat1_label', 'Story Stat1 Label', 'string', 'TEXT', 0, 7, 0, 1
+  '0101JU4T4QJ901BO1T5F01BO1T', '0101JU4T4QJ101JLFSV001JLFS', 'story_stat1_label', 'Story Stat1 Label', 'string', 'TEXT', 0, 7, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9T5005CD53U005CD5', '0101JU04O9SS01JLFSV001JLFS', 'story_stat2_num', 'Story Stat2 Num', 'string', 'TEXT', 0, 8, 0, 1
+  '0101JU4T4QJA005CD53U005CD5', '0101JU4T4QJ101JLFSV001JLFS', 'story_stat2_num', 'Story Stat2 Num', 'string', 'TEXT', 0, 8, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9T601PPHK0G01PPHK', '0101JU04O9SS01JLFSV001JLFS', 'story_stat2_label', 'Story Stat2 Label', 'string', 'TEXT', 0, 9, 0, 1
+  '0101JU4T4QJB01PPHK0G01PPHK', '0101JU4T4QJ101JLFSV001JLFS', 'story_stat2_label', 'Story Stat2 Label', 'string', 'TEXT', 0, 9, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9T7005BGV7T005BGV', '0101JU04O9SS01JLFSV001JLFS', 'story_stat3_num', 'Story Stat3 Num', 'string', 'TEXT', 0, 10, 0, 1
+  '0101JU4T4QJC005BGV7T005BGV', '0101JU4T4QJ101JLFSV001JLFS', 'story_stat3_num', 'Story Stat3 Num', 'string', 'TEXT', 0, 10, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9T800VB556F00VB55', '0101JU04O9SS01JLFSV001JLFS', 'story_stat3_label', 'Story Stat3 Label', 'string', 'TEXT', 0, 11, 0, 1
+  '0101JU4T4QJD00VB556F00VB55', '0101JU4T4QJ101JLFSV001JLFS', 'story_stat3_label', 'Story Stat3 Label', 'string', 'TEXT', 0, 11, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9T9006JCQCK006JCQ', '0101JU04O9SS01JLFSV001JLFS', 'philosophy_eyebrow', 'Philosophy Eyebrow', 'string', 'TEXT', 0, 12, 0, 1
+  '0101JU4T4QJE006JCQCK006JCQ', '0101JU4T4QJ101JLFSV001JLFS', 'philosophy_eyebrow', 'Philosophy Eyebrow', 'string', 'TEXT', 0, 12, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9TA01R6UQ2J01R6UQ', '0101JU04O9SS01JLFSV001JLFS', 'philosophy_heading', 'Philosophy Heading', 'string', 'TEXT', 0, 13, 0, 1
+  '0101JU4T4QJF01R6UQ2J01R6UQ', '0101JU4T4QJ101JLFSV001JLFS', 'philosophy_heading', 'Philosophy Heading', 'string', 'TEXT', 0, 13, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9TB01A050PQ01A050', '0101JU04O9SS01JLFSV001JLFS', 'philosophy_body1', 'Philosophy Body1', 'text', 'TEXT', 0, 14, 0, 1
+  '0101JU4T4QJG01A050PQ01A050', '0101JU4T4QJ101JLFSV001JLFS', 'philosophy_body1', 'Philosophy Body1', 'text', 'TEXT', 0, 14, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9TC01A050PR01A050', '0101JU04O9SS01JLFSV001JLFS', 'philosophy_body2', 'Philosophy Body2', 'text', 'TEXT', 0, 15, 0, 1
+  '0101JU4T4QJH01A050PR01A050', '0101JU4T4QJ101JLFSV001JLFS', 'philosophy_body2', 'Philosophy Body2', 'text', 'TEXT', 0, 15, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9TD01A050PS01A050', '0101JU04O9SS01JLFSV001JLFS', 'philosophy_body3', 'Philosophy Body3', 'text', 'TEXT', 0, 16, 0, 1
+  '0101JU4T4QJI01A050PS01A050', '0101JU4T4QJ101JLFSV001JLFS', 'philosophy_body3', 'Philosophy Body3', 'text', 'TEXT', 0, 16, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9TE01A050PT01A050', '0101JU04O9SS01JLFSV001JLFS', 'philosophy_body4', 'Philosophy Body4', 'text', 'TEXT', 0, 17, 0, 1
+  '0101JU4T4QJJ01A050PT01A050', '0101JU4T4QJ101JLFSV001JLFS', 'philosophy_body4', 'Philosophy Body4', 'text', 'TEXT', 0, 17, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9TF00I10J3D00I10J', '0101JU04O9SS01JLFSV001JLFS', 'philosophy_image_caption', 'Philosophy Image Caption', 'string', 'TEXT', 0, 18, 0, 1
+  '0101JU4T4QJK00I10J3D00I10J', '0101JU4T4QJ101JLFSV001JLFS', 'philosophy_image_caption', 'Philosophy Image Caption', 'string', 'TEXT', 0, 18, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9TG01OMJ46001OMJ4', '0101JU04O9SS01JLFSV001JLFS', 'team_eyebrow', 'Team Eyebrow', 'string', 'TEXT', 0, 19, 0, 1
+  '0101JU4T4QJL01OMJ46001OMJ4', '0101JU4T4QJ101JLFSV001JLFS', 'team_eyebrow', 'Team Eyebrow', 'string', 'TEXT', 0, 19, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9TH005F17AP005F17', '0101JU04O9SS01JLFSV001JLFS', 'team_heading', 'Team Heading', 'string', 'TEXT', 0, 20, 0, 1
+  '0101JU4T4QJM005F17AP005F17', '0101JU4T4QJ101JLFSV001JLFS', 'team_heading', 'Team Heading', 'string', 'TEXT', 0, 20, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9TI01M352RN01M352', '0101JU04O9SS01JLFSV001JLFS', 'team_subhead', 'Team Subhead', 'text', 'TEXT', 0, 21, 0, 1
+  '0101JU4T4QJN01M352RN01M352', '0101JU4T4QJ101JLFSV001JLFS', 'team_subhead', 'Team Subhead', 'text', 'TEXT', 0, 21, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9TJ00EA988N00EA98', '0101JU04O9SS01JLFSV001JLFS', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 22, 0, 1
+  '0101JU4T4QJO00EA988N00EA98', '0101JU4T4QJ101JLFSV001JLFS', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 22, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9TK019SKI45019SKI', '0101JU04O9SS01JLFSV001JLFS', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 23, 0, 1
+  '0101JU4T4QJP019SKI45019SKI', '0101JU4T4QJ101JLFSV001JLFS', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 23, 0, 1
 );
 
 CREATE TABLE IF NOT EXISTS "ec_about_page" (
@@ -378,30 +378,30 @@ CREATE TABLE IF NOT EXISTS "ec_about_page" (
 -- Collection: contact_page
 -- ============================================================
 INSERT OR REPLACE INTO _emdash_collections (id, slug, label, label_singular, supports, source, search_config, has_seo, comments_enabled, comments_moderation, comments_closed_after_days, comments_auto_approve_users) VALUES (
-  '0101JU04O9TL014UBOTD014UBO', 'contact_page', 'Contact Page', 'Contact Page',
+  '0101JU4T4QJQ014UBOTD014UBO', 'contact_page', 'Contact Page', 'Contact Page',
   '["drafts","revisions","search"]', 'seed', '{"enabled":true}', 0, 0, 'first_time', 90, 1
 );
 
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9TM01IU28JK01IU28', '0101JU04O9TL014UBOTD014UBO', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
+  '0101JU4T4QJR01IU28JK01IU28', '0101JU4T4QJQ014UBOTD014UBO', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9TN01O3EU2A01O3EU', '0101JU04O9TL014UBOTD014UBO', 'intro_eyebrow', 'Intro Eyebrow', 'string', 'TEXT', 0, 1, 0, 1
+  '0101JU4T4QJS01O3EU2A01O3EU', '0101JU4T4QJQ014UBOTD014UBO', 'intro_eyebrow', 'Intro Eyebrow', 'string', 'TEXT', 0, 1, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9TO009MSMCT009MSM', '0101JU04O9TL014UBOTD014UBO', 'intro_heading', 'Intro Heading', 'string', 'TEXT', 0, 2, 0, 1
+  '0101JU4T4QJT009MSMCT009MSM', '0101JU4T4QJQ014UBOTD014UBO', 'intro_heading', 'Intro Heading', 'string', 'TEXT', 0, 2, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9TP01147HRG01147H', '0101JU04O9TL014UBOTD014UBO', 'intro_body1', 'Intro Body1', 'text', 'TEXT', 0, 3, 0, 1
+  '0101JU4T4QJU01147HRG01147H', '0101JU4T4QJQ014UBOTD014UBO', 'intro_body1', 'Intro Body1', 'text', 'TEXT', 0, 3, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9TQ01147HRH01147H', '0101JU04O9TL014UBOTD014UBO', 'intro_body2', 'Intro Body2', 'text', 'TEXT', 0, 4, 0, 1
+  '0101JU4T4QJV01147HRH01147H', '0101JU4T4QJQ014UBOTD014UBO', 'intro_body2', 'Intro Body2', 'text', 'TEXT', 0, 4, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9TR00P1F5OM00P1F5', '0101JU04O9TL014UBOTD014UBO', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 5, 0, 1
+  '0101JU4T4QK000P1F5OM00P1F5', '0101JU4T4QJQ014UBOTD014UBO', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 5, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9TS017F9QNI017F9Q', '0101JU04O9TL014UBOTD014UBO', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 6, 0, 1
+  '0101JU4T4QK1017F9QNI017F9Q', '0101JU4T4QJQ014UBOTD014UBO', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 6, 0, 1
 );
 
 CREATE TABLE IF NOT EXISTS "ec_contact_page" (
@@ -435,36 +435,36 @@ CREATE TABLE IF NOT EXISTS "ec_contact_page" (
 -- Collection: team_members
 -- ============================================================
 INSERT OR REPLACE INTO _emdash_collections (id, slug, label, label_singular, supports, source, search_config, has_seo, comments_enabled, comments_moderation, comments_closed_after_days, comments_auto_approve_users) VALUES (
-  '0101JU04O9TT018N98JA018N98', 'team_members', 'Team Members', 'Team Member',
+  '0101JU4T4QK2018N98JA018N98', 'team_members', 'Team Members', 'Team Member',
   '["drafts","revisions","search"]', 'seed', '{"enabled":true}', 0, 0, 'first_time', 90, 1
 );
 
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9TU00J9315L00J931', '0101JU04O9TT018N98JA018N98', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
+  '0101JU4T4QK300J9315L00J931', '0101JU4T4QK2018N98JA018N98', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9TV00D03M4E00D03M', '0101JU04O9TT018N98JA018N98', 'name', 'Name', 'string', 'TEXT', 0, 1, 0, 1
+  '0101JU4T4QK400D03M4E00D03M', '0101JU4T4QK2018N98JA018N98', 'name', 'Name', 'string', 'TEXT', 0, 1, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9U000D07NJP00D07N', '0101JU04O9TT018N98JA018N98', 'role', 'Role', 'string', 'TEXT', 0, 2, 0, 1
+  '0101JU4T4QK500D07NJP00D07N', '0101JU4T4QK2018N98JA018N98', 'role', 'Role', 'string', 'TEXT', 0, 2, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9U100J3ET3700J3ET', '0101JU04O9TT018N98JA018N98', 'credentials', 'Credentials', 'string', 'TEXT', 0, 3, 0, 1
+  '0101JU4T4QK600J3ET3700J3ET', '0101JU4T4QK2018N98JA018N98', 'credentials', 'Credentials', 'string', 'TEXT', 0, 3, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9U200BF060N00BF06', '0101JU04O9TT018N98JA018N98', 'bio_full', 'Bio Full', 'portableText', 'TEXT', 0, 4, 0, 1
+  '0101JU4T4QK700BF060N00BF06', '0101JU4T4QK2018N98JA018N98', 'bio_full', 'Bio Full', 'portableText', 'TEXT', 0, 4, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9U301663TPN01663T', '0101JU04O9TT018N98JA018N98', 'hero_image_url', 'Hero Image Url', 'string', 'TEXT', 0, 5, 0, 1
+  '0101JU4T4QK801663TPN01663T', '0101JU4T4QK2018N98JA018N98', 'hero_image_url', 'Hero Image Url', 'string', 'TEXT', 0, 5, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9U401RVPKR101RVPK', '0101JU04O9TT018N98JA018N98', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 6, 0, 1
+  '0101JU4T4QK901RVPKR101RVPK', '0101JU4T4QK2018N98JA018N98', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 6, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9U501JQR2I501JQR2', '0101JU04O9TT018N98JA018N98', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 7, 0, 1
+  '0101JU4T4QKA01JQR2I501JQR2', '0101JU4T4QK2018N98JA018N98', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 7, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9U600CN6G9G00CN6G', '0101JU04O9TT018N98JA018N98', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 8, 0, 1
+  '0101JU4T4QKB00CN6G9G00CN6G', '0101JU4T4QK2018N98JA018N98', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 8, 0, 1
 );
 
 CREATE TABLE IF NOT EXISTS "ec_team_members" (
@@ -500,42 +500,42 @@ CREATE TABLE IF NOT EXISTS "ec_team_members" (
 -- Collection: blog_posts
 -- ============================================================
 INSERT OR REPLACE INTO _emdash_collections (id, slug, label, label_singular, supports, source, search_config, has_seo, comments_enabled, comments_moderation, comments_closed_after_days, comments_auto_approve_users) VALUES (
-  '0101JU04O9U701820C8L01820C', 'blog_posts', 'Blog Posts', 'Blog Post',
+  '0101JU4T4QKC01820C8L01820C', 'blog_posts', 'Blog Posts', 'Blog Post',
   '["drafts","revisions","search"]', 'seed', '{"enabled":true}', 0, 0, 'first_time', 90, 1
 );
 
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9U800OJLACC00OJLA', '0101JU04O9U701820C8L01820C', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
+  '0101JU4T4QKD00OJLACC00OJLA', '0101JU4T4QKC01820C8L01820C', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9U900OV4GKT00OV4G', '0101JU04O9U701820C8L01820C', 'excerpt', 'Excerpt', 'text', 'TEXT', 0, 1, 0, 1
+  '0101JU4T4QKE00OV4GKT00OV4G', '0101JU4T4QKC01820C8L01820C', 'excerpt', 'Excerpt', 'text', 'TEXT', 0, 1, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9UA01398BJB01398B', '0101JU04O9U701820C8L01820C', 'content', 'Content', 'portableText', 'TEXT', 0, 2, 0, 1
+  '0101JU4T4QKF01398BJB01398B', '0101JU4T4QKC01820C8L01820C', 'content', 'Content', 'portableText', 'TEXT', 0, 2, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9UB00278C7200278C', '0101JU04O9U701820C8L01820C', 'featured_image_url', 'Featured Image Url', 'string', 'TEXT', 0, 3, 0, 1
+  '0101JU4T4QKG00278C7200278C', '0101JU4T4QKC01820C8L01820C', 'featured_image_url', 'Featured Image Url', 'string', 'TEXT', 0, 3, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9UC00ATR3OH00ATR3', '0101JU04O9U701820C8L01820C', 'author', 'Author', 'string', 'TEXT', 0, 4, 0, 1
+  '0101JU4T4QKH00ATR3OH00ATR3', '0101JU4T4QKC01820C8L01820C', 'author', 'Author', 'string', 'TEXT', 0, 4, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9UD01CJHI0I01CJHI', '0101JU04O9U701820C8L01820C', 'date', 'Date', 'string', 'TEXT', 0, 5, 0, 1
+  '0101JU4T4QKI01CJHI0I01CJHI', '0101JU4T4QKC01820C8L01820C', 'date', 'Date', 'string', 'TEXT', 0, 5, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9UE01JHSF4U01JHSF', '0101JU04O9U701820C8L01820C', 'category', 'Category', 'string', 'TEXT', 0, 6, 0, 1
+  '0101JU4T4QKJ01JHSF4U01JHSF', '0101JU4T4QKC01820C8L01820C', 'category', 'Category', 'string', 'TEXT', 0, 6, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9UF00E5NUGE00E5NU', '0101JU04O9U701820C8L01820C', 'read_time', 'Read Time', 'string', 'TEXT', 0, 7, 0, 1
+  '0101JU4T4QKK00E5NUGE00E5NU', '0101JU4T4QKC01820C8L01820C', 'read_time', 'Read Time', 'string', 'TEXT', 0, 7, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9UG00EOTFNU00EOTF', '0101JU04O9U701820C8L01820C', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 8, 0, 1
+  '0101JU4T4QKL00EOTFNU00EOTF', '0101JU4T4QKC01820C8L01820C', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 8, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9UH01RIEUP601RIEU', '0101JU04O9U701820C8L01820C', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 9, 0, 1
+  '0101JU4T4QKM01RIEUP601RIEU', '0101JU4T4QKC01820C8L01820C', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 9, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9UI01U1GK9F01U1GK', '0101JU04O9U701820C8L01820C', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 10, 0, 1
+  '0101JU4T4QKN01U1GK9F01U1GK', '0101JU4T4QKC01820C8L01820C', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 10, 0, 1
 );
 
 CREATE TABLE IF NOT EXISTS "ec_blog_posts" (
@@ -573,27 +573,27 @@ CREATE TABLE IF NOT EXISTS "ec_blog_posts" (
 -- Collection: testimonials
 -- ============================================================
 INSERT OR REPLACE INTO _emdash_collections (id, slug, label, label_singular, supports, source, search_config, has_seo, comments_enabled, comments_moderation, comments_closed_after_days, comments_auto_approve_users) VALUES (
-  '0101JU04O9UJ004O3I0J004O3I', 'testimonials', 'Testimonials', 'Testimonial',
+  '0101JU4T4QKO004O3I0J004O3I', 'testimonials', 'Testimonials', 'Testimonial',
   '["drafts","revisions","search"]', 'seed', '{"enabled":true}', 0, 0, 'first_time', 90, 1
 );
 
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9UK00CVMNBI00CVMN', '0101JU04O9UJ004O3I0J004O3I', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
+  '0101JU4T4QKP00CVMNBI00CVMN', '0101JU4T4QKO004O3I0J004O3I', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9UL00CTCUCM00CTCU', '0101JU04O9UJ004O3I0J004O3I', 'quote', 'Quote', 'text', 'TEXT', 0, 1, 0, 1
+  '0101JU4T4QKQ00CTCUCM00CTCU', '0101JU4T4QKO004O3I0J004O3I', 'quote', 'Quote', 'text', 'TEXT', 0, 1, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9UM002QQIDH002QQI', '0101JU04O9UJ004O3I0J004O3I', 'author', 'Author', 'string', 'TEXT', 0, 2, 0, 1
+  '0101JU4T4QKR002QQIDH002QQI', '0101JU4T4QKO004O3I0J004O3I', 'author', 'Author', 'string', 'TEXT', 0, 2, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9UN00G3IR7F00G3IR', '0101JU04O9UJ004O3I0J004O3I', 'city', 'City', 'string', 'TEXT', 0, 3, 0, 1
+  '0101JU4T4QKS00G3IR7F00G3IR', '0101JU4T4QKO004O3I0J004O3I', 'city', 'City', 'string', 'TEXT', 0, 3, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9UO00GPBME300GPBM', '0101JU04O9UJ004O3I0J004O3I', 'rating', 'Rating', 'integer', 'INTEGER', 0, 4, 0, 1
+  '0101JU4T4QKT00GPBME300GPBM', '0101JU4T4QKO004O3I0J004O3I', 'rating', 'Rating', 'integer', 'INTEGER', 0, 4, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9UP013GNABD013GNA', '0101JU04O9UJ004O3I0J004O3I', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 5, 0, 1
+  '0101JU4T4QKU013GNABD013GNA', '0101JU4T4QKO004O3I0J004O3I', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 5, 0, 1
 );
 
 CREATE TABLE IF NOT EXISTS "ec_testimonials" (
@@ -626,21 +626,21 @@ CREATE TABLE IF NOT EXISTS "ec_testimonials" (
 -- Collection: faqs
 -- ============================================================
 INSERT OR REPLACE INTO _emdash_collections (id, slug, label, label_singular, supports, source, search_config, has_seo, comments_enabled, comments_moderation, comments_closed_after_days, comments_auto_approve_users) VALUES (
-  '0101JU04O9UQ00J6404400J640', 'faqs', 'FAQs', 'FAQ',
+  '0101JU4T4QKV00J6404400J640', 'faqs', 'FAQs', 'FAQ',
   '["drafts","revisions","search"]', 'seed', '{"enabled":true}', 0, 0, 'first_time', 90, 1
 );
 
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9UR01UIBDV501UIBD', '0101JU04O9UQ00J6404400J640', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
+  '0101JU4T4QL001UIBDV501UIBD', '0101JU4T4QKV00J6404400J640', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9US01F5IP5T01F5IP', '0101JU04O9UQ00J6404400J640', 'question', 'Question', 'string', 'TEXT', 0, 1, 0, 1
+  '0101JU4T4QL101F5IP5T01F5IP', '0101JU4T4QKV00J6404400J640', 'question', 'Question', 'string', 'TEXT', 0, 1, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9UT013REBD5013REB', '0101JU04O9UQ00J6404400J640', 'answer', 'Answer', 'text', 'TEXT', 0, 2, 0, 1
+  '0101JU4T4QL2013REBD5013REB', '0101JU4T4QKV00J6404400J640', 'answer', 'Answer', 'text', 'TEXT', 0, 2, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9UU01JCAKJM01JCAK', '0101JU04O9UQ00J6404400J640', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 3, 0, 1
+  '0101JU4T4QL301JCAKJM01JCAK', '0101JU4T4QKV00J6404400J640', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 3, 0, 1
 );
 
 CREATE TABLE IF NOT EXISTS "ec_faqs" (
@@ -671,30 +671,30 @@ CREATE TABLE IF NOT EXISTS "ec_faqs" (
 -- Collection: service_pages
 -- ============================================================
 INSERT OR REPLACE INTO _emdash_collections (id, slug, label, label_singular, supports, source, search_config, has_seo, comments_enabled, comments_moderation, comments_closed_after_days, comments_auto_approve_users) VALUES (
-  '0101JU04O9UV019E4C9R019E4C', 'service_pages', 'Service Pages', 'Service Page',
+  '0101JU4T4QL4019E4C9R019E4C', 'service_pages', 'Service Pages', 'Service Page',
   '["drafts","revisions","search"]', 'seed', '{"enabled":true}', 0, 0, 'first_time', 90, 1
 );
 
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9V0017PJGPI017PJG', '0101JU04O9UV019E4C9R019E4C', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
+  '0101JU4T4QL5017PJGPI017PJG', '0101JU4T4QL4019E4C9R019E4C', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9V100CG8GN800CG8G', '0101JU04O9UV019E4C9R019E4C', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 1, 0, 1
+  '0101JU4T4QL600CG8GN800CG8G', '0101JU4T4QL4019E4C9R019E4C', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 1, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9V201FN21RK01FN21', '0101JU04O9UV019E4C9R019E4C', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 2, 0, 1
+  '0101JU4T4QL701FN21RK01FN21', '0101JU4T4QL4019E4C9R019E4C', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 2, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9V3016EF8EQ016EF8', '0101JU04O9UV019E4C9R019E4C', 'lead', 'Lead', 'text', 'TEXT', 0, 3, 0, 1
+  '0101JU4T4QL8016EF8EQ016EF8', '0101JU4T4QL4019E4C9R019E4C', 'lead', 'Lead', 'text', 'TEXT', 0, 3, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9V4014P6TKH014P6T', '0101JU04O9UV019E4C9R019E4C', 'content', 'Content', 'portableText', 'TEXT', 0, 4, 0, 1
+  '0101JU4T4QL9014P6TKH014P6T', '0101JU4T4QL4019E4C9R019E4C', 'content', 'Content', 'portableText', 'TEXT', 0, 4, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9V501HJN8PG01HJN8', '0101JU04O9UV019E4C9R019E4C', 'hero_image_url', 'Hero Image Url', 'string', 'TEXT', 0, 5, 0, 1
+  '0101JU4T4QLA01HJN8PG01HJN8', '0101JU4T4QL4019E4C9R019E4C', 'hero_image_url', 'Hero Image Url', 'string', 'TEXT', 0, 5, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9V6012OAJQ9012OAJ', '0101JU04O9UV019E4C9R019E4C', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 6, 0, 1
+  '0101JU4T4QLB012OAJQ9012OAJ', '0101JU4T4QL4019E4C9R019E4C', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 6, 0, 1
 );
 
 CREATE TABLE IF NOT EXISTS "ec_service_pages" (
@@ -728,33 +728,33 @@ CREATE TABLE IF NOT EXISTS "ec_service_pages" (
 -- Collection: brand_pages
 -- ============================================================
 INSERT OR REPLACE INTO _emdash_collections (id, slug, label, label_singular, supports, source, search_config, has_seo, comments_enabled, comments_moderation, comments_closed_after_days, comments_auto_approve_users) VALUES (
-  '0101JU04O9V700A8MF6D00A8MF', 'brand_pages', 'Brand Pages', 'Brand Page',
+  '0101JU4T4QLC00A8MF6D00A8MF', 'brand_pages', 'Brand Pages', 'Brand Page',
   '["drafts","revisions","search"]', 'seed', '{"enabled":true}', 0, 0, 'first_time', 90, 1
 );
 
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9V8009IRLL0009IRL', '0101JU04O9V700A8MF6D00A8MF', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
+  '0101JU4T4QLD009IRLL0009IRL', '0101JU4T4QLC00A8MF6D00A8MF', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9V901JR17JA01JR17', '0101JU04O9V700A8MF6D00A8MF', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 1, 0, 1
+  '0101JU4T4QLE01JR17JA01JR17', '0101JU4T4QLC00A8MF6D00A8MF', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 1, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9VA00LGFN5Q00LGFN', '0101JU04O9V700A8MF6D00A8MF', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 2, 0, 1
+  '0101JU4T4QLF00LGFN5Q00LGFN', '0101JU4T4QLC00A8MF6D00A8MF', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 2, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9VB00KUOQ5C00KUOQ', '0101JU04O9V700A8MF6D00A8MF', 'lead', 'Lead', 'text', 'TEXT', 0, 3, 0, 1
+  '0101JU4T4QLG00KUOQ5C00KUOQ', '0101JU4T4QLC00A8MF6D00A8MF', 'lead', 'Lead', 'text', 'TEXT', 0, 3, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9VC01S70PJV01S70P', '0101JU04O9V700A8MF6D00A8MF', 'content', 'Content', 'portableText', 'TEXT', 0, 4, 0, 1
+  '0101JU4T4QLH01S70PJV01S70P', '0101JU4T4QLC00A8MF6D00A8MF', 'content', 'Content', 'portableText', 'TEXT', 0, 4, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9VD00NE8T3U00NE8T', '0101JU04O9V700A8MF6D00A8MF', 'hero_image_url', 'Hero Image Url', 'string', 'TEXT', 0, 5, 0, 1
+  '0101JU4T4QLI00NE8T3U00NE8T', '0101JU4T4QLC00A8MF6D00A8MF', 'hero_image_url', 'Hero Image Url', 'string', 'TEXT', 0, 5, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9VE01F03NE501F03N', '0101JU04O9V700A8MF6D00A8MF', 'brand_name', 'Brand Name', 'string', 'TEXT', 0, 6, 0, 1
+  '0101JU4T4QLJ01F03NE501F03N', '0101JU4T4QLC00A8MF6D00A8MF', 'brand_name', 'Brand Name', 'string', 'TEXT', 0, 6, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9VF00SSBJR500SSBJ', '0101JU04O9V700A8MF6D00A8MF', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 7, 0, 1
+  '0101JU4T4QLK00SSBJR500SSBJ', '0101JU4T4QLC00A8MF6D00A8MF', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 7, 0, 1
 );
 
 CREATE TABLE IF NOT EXISTS "ec_brand_pages" (
@@ -789,33 +789,33 @@ CREATE TABLE IF NOT EXISTS "ec_brand_pages" (
 -- Collection: location_pages
 -- ============================================================
 INSERT OR REPLACE INTO _emdash_collections (id, slug, label, label_singular, supports, source, search_config, has_seo, comments_enabled, comments_moderation, comments_closed_after_days, comments_auto_approve_users) VALUES (
-  '0101JU04O9VG01RTVB5701RTVB', 'location_pages', 'Location Pages', 'Location Page',
+  '0101JU4T4QLL01RTVB5701RTVB', 'location_pages', 'Location Pages', 'Location Page',
   '["drafts","revisions","search"]', 'seed', '{"enabled":true}', 0, 0, 'first_time', 90, 1
 );
 
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9VH01TRGOLO01TRGO', '0101JU04O9VG01RTVB5701RTVB', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
+  '0101JU4T4QLM01TRGOLO01TRGO', '0101JU4T4QLL01RTVB5701RTVB', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9VI011OUFPU011OUF', '0101JU04O9VG01RTVB5701RTVB', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 1, 0, 1
+  '0101JU4T4QLN011OUFPU011OUF', '0101JU4T4QLL01RTVB5701RTVB', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 1, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9VJ01EBM8SU01EBM8', '0101JU04O9VG01RTVB5701RTVB', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 2, 0, 1
+  '0101JU4T4QLO01EBM8SU01EBM8', '0101JU4T4QLL01RTVB5701RTVB', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 2, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9VK01NL9KNS01NL9K', '0101JU04O9VG01RTVB5701RTVB', 'lead', 'Lead', 'text', 'TEXT', 0, 3, 0, 1
+  '0101JU4T4QLP01NL9KNS01NL9K', '0101JU4T4QLL01RTVB5701RTVB', 'lead', 'Lead', 'text', 'TEXT', 0, 3, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9VL005368P7005368', '0101JU04O9VG01RTVB5701RTVB', 'content', 'Content', 'portableText', 'TEXT', 0, 4, 0, 1
+  '0101JU4T4QLQ005368P7005368', '0101JU4T4QLL01RTVB5701RTVB', 'content', 'Content', 'portableText', 'TEXT', 0, 4, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9VM01B2QFH601B2QF', '0101JU04O9VG01RTVB5701RTVB', 'hero_image_url', 'Hero Image Url', 'string', 'TEXT', 0, 5, 0, 1
+  '0101JU4T4QLR01B2QFH601B2QF', '0101JU4T4QLL01RTVB5701RTVB', 'hero_image_url', 'Hero Image Url', 'string', 'TEXT', 0, 5, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9VN01DN9V9L01DN9V', '0101JU04O9VG01RTVB5701RTVB', 'location_name', 'Location Name', 'string', 'TEXT', 0, 6, 0, 1
+  '0101JU4T4QLS01DN9V9L01DN9V', '0101JU4T4QLL01RTVB5701RTVB', 'location_name', 'Location Name', 'string', 'TEXT', 0, 6, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9VO00DFKKNJ00DFKK', '0101JU04O9VG01RTVB5701RTVB', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 7, 0, 1
+  '0101JU4T4QLT00DFKKNJ00DFKK', '0101JU4T4QLL01RTVB5701RTVB', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 7, 0, 1
 );
 
 CREATE TABLE IF NOT EXISTS "ec_location_pages" (
@@ -850,30 +850,30 @@ CREATE TABLE IF NOT EXISTS "ec_location_pages" (
 -- Collection: resource_pages
 -- ============================================================
 INSERT OR REPLACE INTO _emdash_collections (id, slug, label, label_singular, supports, source, search_config, has_seo, comments_enabled, comments_moderation, comments_closed_after_days, comments_auto_approve_users) VALUES (
-  '0101JU04O9VP01N27ROE01N27R', 'resource_pages', 'Resource Pages', 'Resource Page',
+  '0101JU4T4QLU01N27ROE01N27R', 'resource_pages', 'Resource Pages', 'Resource Page',
   '["drafts","revisions","search"]', 'seed', '{"enabled":true}', 0, 0, 'first_time', 90, 1
 );
 
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9VQ01DN8DJF01DN8D', '0101JU04O9VP01N27ROE01N27R', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
+  '0101JU4T4QLV01DN8DJF01DN8D', '0101JU4T4QLU01N27ROE01N27R', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9VR00JJEE0500JJEE', '0101JU04O9VP01N27ROE01N27R', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 1, 0, 1
+  '0101JU4T4QM000JJEE0500JJEE', '0101JU4T4QLU01N27ROE01N27R', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 1, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9VS00B0LOV900B0LO', '0101JU04O9VP01N27ROE01N27R', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 2, 0, 1
+  '0101JU4T4QM100B0LOV900B0LO', '0101JU4T4QLU01N27ROE01N27R', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 2, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9VT00Q86KNT00Q86K', '0101JU04O9VP01N27ROE01N27R', 'lead', 'Lead', 'text', 'TEXT', 0, 3, 0, 1
+  '0101JU4T4QM200Q86KNT00Q86K', '0101JU4T4QLU01N27ROE01N27R', 'lead', 'Lead', 'text', 'TEXT', 0, 3, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9VU00RM3SBI00RM3S', '0101JU04O9VP01N27ROE01N27R', 'content', 'Content', 'portableText', 'TEXT', 0, 4, 0, 1
+  '0101JU4T4QM300RM3SBI00RM3S', '0101JU4T4QLU01N27ROE01N27R', 'content', 'Content', 'portableText', 'TEXT', 0, 4, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04O9VV00VV514J00VV51', '0101JU04O9VP01N27ROE01N27R', 'hero_image_url', 'Hero Image Url', 'string', 'TEXT', 0, 5, 0, 1
+  '0101JU4T4QM400VV514J00VV51', '0101JU4T4QLU01N27ROE01N27R', 'hero_image_url', 'Hero Image Url', 'string', 'TEXT', 0, 5, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04OA0000RL4MHC00RL4M', '0101JU04O9VP01N27ROE01N27R', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 6, 0, 1
+  '0101JU4T4QM500RL4MHC00RL4M', '0101JU4T4QLU01N27ROE01N27R', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 6, 0, 1
 );
 
 CREATE TABLE IF NOT EXISTS "ec_resource_pages" (
@@ -907,30 +907,30 @@ CREATE TABLE IF NOT EXISTS "ec_resource_pages" (
 -- Collection: condition_pages
 -- ============================================================
 INSERT OR REPLACE INTO _emdash_collections (id, slug, label, label_singular, supports, source, search_config, has_seo, comments_enabled, comments_moderation, comments_closed_after_days, comments_auto_approve_users) VALUES (
-  '0101JU04OA01018IVQ8V018IVQ', 'condition_pages', 'Condition Pages', 'Condition Page',
+  '0101JU4T4QM6018IVQ8V018IVQ', 'condition_pages', 'Condition Pages', 'Condition Page',
   '["drafts","revisions","search"]', 'seed', '{"enabled":true}', 0, 0, 'first_time', 90, 1
 );
 
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04OA0201GSTQ4C01GSTQ', '0101JU04OA01018IVQ8V018IVQ', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
+  '0101JU4T4QM701GSTQ4C01GSTQ', '0101JU4T4QM6018IVQ8V018IVQ', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04OA0301AJC80201AJC8', '0101JU04OA01018IVQ8V018IVQ', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 1, 0, 1
+  '0101JU4T4QM801AJC80201AJC8', '0101JU4T4QM6018IVQ8V018IVQ', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 1, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04OA0401A8I6H601A8I6', '0101JU04OA01018IVQ8V018IVQ', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 2, 0, 1
+  '0101JU4T4QM901A8I6H601A8I6', '0101JU4T4QM6018IVQ8V018IVQ', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 2, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04OA05001IMQA0001IMQ', '0101JU04OA01018IVQ8V018IVQ', 'lead', 'Lead', 'text', 'TEXT', 0, 3, 0, 1
+  '0101JU4T4QMA001IMQA0001IMQ', '0101JU4T4QM6018IVQ8V018IVQ', 'lead', 'Lead', 'text', 'TEXT', 0, 3, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04OA0601EEMKKL01EEMK', '0101JU04OA01018IVQ8V018IVQ', 'content', 'Content', 'portableText', 'TEXT', 0, 4, 0, 1
+  '0101JU4T4QMB01EEMKKL01EEMK', '0101JU4T4QM6018IVQ8V018IVQ', 'content', 'Content', 'portableText', 'TEXT', 0, 4, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04OA0701TT3OOM01TT3O', '0101JU04OA01018IVQ8V018IVQ', 'hero_image_url', 'Hero Image Url', 'string', 'TEXT', 0, 5, 0, 1
+  '0101JU4T4QMC01TT3OOM01TT3O', '0101JU4T4QM6018IVQ8V018IVQ', 'hero_image_url', 'Hero Image Url', 'string', 'TEXT', 0, 5, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04OA08004L6SHF004L6S', '0101JU04OA01018IVQ8V018IVQ', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 6, 0, 1
+  '0101JU4T4QMD004L6SHF004L6S', '0101JU4T4QM6018IVQ8V018IVQ', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 6, 0, 1
 );
 
 CREATE TABLE IF NOT EXISTS "ec_condition_pages" (
@@ -964,21 +964,21 @@ CREATE TABLE IF NOT EXISTS "ec_condition_pages" (
 -- Collection: legal_pages
 -- ============================================================
 INSERT OR REPLACE INTO _emdash_collections (id, slug, label, label_singular, supports, source, search_config, has_seo, comments_enabled, comments_moderation, comments_closed_after_days, comments_auto_approve_users) VALUES (
-  '0101JU04OA0901C1P9JV01C1P9', 'legal_pages', 'Legal Pages', 'Legal Page',
+  '0101JU4T4QME01C1P9JV01C1P9', 'legal_pages', 'Legal Pages', 'Legal Page',
   '["drafts","revisions","search"]', 'seed', '{"enabled":true}', 0, 0, 'first_time', 90, 1
 );
 
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04OA0A014VJUJE014VJU', '0101JU04OA0901C1P9JV01C1P9', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
+  '0101JU4T4QMF014VJUJE014VJU', '0101JU4T4QME01C1P9JV01C1P9', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04OA0B01B7EL5401B7EL', '0101JU04OA0901C1P9JV01C1P9', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 1, 0, 1
+  '0101JU4T4QMG01B7EL5401B7EL', '0101JU4T4QME01C1P9JV01C1P9', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 1, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04OA0C00GJMCLO00GJMC', '0101JU04OA0901C1P9JV01C1P9', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 2, 0, 1
+  '0101JU4T4QMH00GJMCLO00GJMC', '0101JU4T4QME01C1P9JV01C1P9', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 2, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU04OA0D00MC5JMD00MC5J', '0101JU04OA0901C1P9JV01C1P9', 'content', 'Content', 'portableText', 'TEXT', 0, 3, 0, 1
+  '0101JU4T4QMI00MC5JMD00MC5J', '0101JU4T4QME01C1P9JV01C1P9', 'content', 'Content', 'portableText', 'TEXT', 0, 3, 0, 1
 );
 
 CREATE TABLE IF NOT EXISTS "ec_legal_pages" (
@@ -2170,126 +2170,63 @@ Our trusted audiologists in Rochester, NY can assess your hearing, determine if 
 
 [Contact Us Today](https://ontariohearing.com/contact-us/)', '/assets/img/The-Importance-of-Safe-and-Effective-Ear-Wax-Removal-1-09ec1af1.webp', 'Ontario Hearing Center', 'November 25, 2025', 'Resources', '9 min read', 'The Importance of Safe and Effective Ear Wax Removal | Ontario Hearing Center', 'Learn the importance of effective ear wax removal and how it can protect your hearing health. Connect with a Rochester, NY audiologist today!', 12);
 
-INSERT OR REPLACE INTO "ec_blog_posts" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "excerpt", "content", "featured_image_url", "author", "date", "category", "read_time", "meta_title", "meta_description", "sort_order") VALUES ('helping-loved-ones-adjust-to-new-hearing-aids', 'helping-loved-ones-adjust-to-new-hearing-aids', 'published', 'en', 1, 'Helping Loved Ones Adjust to New Hearing Aids', datetime('now'), datetime('now'), datetime('now'), 'Discover expert tips from audiologists in Rochester, NY, on supporting loved ones as they adjust to new hearing aids', '![a group of people smiling at the camera in a table full with cakes and donuts.](/assets/img/Helping-Loved-Ones-Adjust-to-New-Hearing-Aids-a371e69c.webp)
+INSERT OR REPLACE INTO "ec_blog_posts" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "excerpt", "content", "featured_image_url", "author", "date", "category", "read_time", "meta_title", "meta_description", "sort_order") VALUES ('helping-loved-ones-adjust-to-new-hearing-aids', 'helping-loved-ones-adjust-to-new-hearing-aids', 'published', 'en', 1, 'Helping Loved Ones Adjust to New Hearing Aids', datetime('now'), datetime('now'), datetime('now'), 'Discover expert tips from audiologists in Rochester, NY, on supporting loved ones as they adjust to new hearing aids. Ontario Hearing Center is here to help.', 'Adjusting to new hearing aids can be a big change for both the wearer and their loved ones. At Ontario Hearing Center, we understand how important it is to support patients and their families during this transition.
 
-#### Table of Contents
+## Understanding the Change
 
-- [The Connection Between Diet and Tinnitus](https://ontariohearing.com/helping-loved-ones-adjust-to-new-hearing-aids/#elementor-toc__heading-anchor-0)
+Firstly, it''s important to recognize that wearing hearing aids is a positive step towards better hearing and improved communication. Encourage your loved one by reminding them that these devices will enhance their ability to hear conversations, music, and the sounds of daily life.
 
-  - [Foods That May Worsen Tinnitus Symptoms](https://ontariohearing.com/helping-loved-ones-adjust-to-new-hearing-aids/#elementor-toc__heading-anchor-1)
+## Patience is Key
 
-    - [1\. Salt](https://ontariohearing.com/helping-loved-ones-adjust-to-new-hearing-aids/#elementor-toc__heading-anchor-2)
+Getting used to hearing aids can take time and patience. At first, your loved one might feel a bit overwhelmed or frustrated. It''s helpful to encourage them to wear their hearing aids every day, starting with short periods and slowly making them longer. This way, they can get more comfortable with their new hearing aids over time.
 
-    - [2\. Caffeine](https://ontariohearing.com/helping-loved-ones-adjust-to-new-hearing-aids/#elementor-toc__heading-anchor-3)
+## Learning Together
 
-    - [3\. Alcohol](https://ontariohearing.com/helping-loved-ones-adjust-to-new-hearing-aids/#elementor-toc__heading-anchor-4)
+Go to appointments with your loved one to learn how to take care of their hearing aids. Knowing how to change batteries, clean the devices, and adjust settings will help both of you feel more sure about using them.
 
-    - [4\. Sugary Foods](https://ontariohearing.com/helping-loved-ones-adjust-to-new-hearing-aids/#elementor-toc__heading-anchor-5)
-  - [Foods That May Support Ear Health](https://ontariohearing.com/helping-loved-ones-adjust-to-new-hearing-aids/#elementor-toc__heading-anchor-6)
+## Communication Tips
 
-    - [1\. Fruits and Vegetables](https://ontariohearing.com/helping-loved-ones-adjust-to-new-hearing-aids/#elementor-toc__heading-anchor-7)
+Talk clearly and look at your loved one when you speak to them. Don''t yell because it can make the sound fuzzy. If it''s noisy, find a quiet place where it''s easier to hear each other.
 
-    - [2\. Omega-3 Fatty Acids](https://ontariohearing.com/helping-loved-ones-adjust-to-new-hearing-aids/#elementor-toc__heading-anchor-8)
+## Provide Encouragement and Support
 
-    - [3\. Magnesium](https://ontariohearing.com/helping-loved-ones-adjust-to-new-hearing-aids/#elementor-toc__heading-anchor-9)
+Give kind words and support. Tell your loved one you understand their challenges and are here to help them get used to their hearing aids. Celebrate their victories, like hearing new sounds or having better talks together.
 
-    - [4\. Zinc](https://ontariohearing.com/helping-loved-ones-adjust-to-new-hearing-aids/#elementor-toc__heading-anchor-10)
+## Gradual Adjustment
 
-    - [5\. Hydration](https://ontariohearing.com/helping-loved-ones-adjust-to-new-hearing-aids/#elementor-toc__heading-anchor-11)
-  - [The Role of Diet in Managing Underlying Conditions](https://ontariohearing.com/helping-loved-ones-adjust-to-new-hearing-aids/#elementor-toc__heading-anchor-12)
+It''s okay if your loved one feels different when they start using hearing aids. They might hear sounds they haven''t heard in a while, which might surprise them. Tell them it''s okay to take time to get used to these new sounds.
 
-  - [Practical Tips for a Tinnitus-Friendly Diet](https://ontariohearing.com/helping-loved-ones-adjust-to-new-hearing-aids/#elementor-toc__heading-anchor-13)
+## Troubleshooting Together
 
-  - [When to Seek Professional Help](https://ontariohearing.com/helping-loved-ones-adjust-to-new-hearing-aids/#elementor-toc__heading-anchor-14)
-- [Tinnitus Evaluation and Management in Rochester, NY](https://ontariohearing.com/helping-loved-ones-adjust-to-new-hearing-aids/#elementor-toc__heading-anchor-15)
+If your loved one experiences discomfort or difficulty with their hearing aids, encourage them to contact their audiologist. Simple adjustments or troubleshooting tips can often resolve issues and improve comfort.
 
-Tinnitus, often described as a ringing, buzzing, or hissing sound in the ears, affects millions of people worldwide. While its causes vary, research suggests that lifestyle factors, including diet, can influence ear health and potentially exacerbate or alleviate tinnitus symptoms. By understanding how certain foods and nutrients impact your body, you can make dietary choices that promote better ear health.
+## Setting Realistic Expectations
 
-## The Connection Between Diet and Tinnitus
+Help your loved one know that hearing aids won''t make their hearing like it used to be, but they will help them hear better and talk easier. It''s important to understand this so they don''t feel upset if things aren''t perfect right away.
 
-Tinnitus often results from issues within the auditory system, but it can also be linked to overall health, including circulation, inflammation, and stress levels. Since diet plays a crucial role in maintaining these bodily functions, what you eat may affect your experience with tinnitus.
+## Positive Reinforcement
 
-While diet is not a direct cause or cure for tinnitus, certain foods and nutrients have been shown to either aggravate or ease symptoms. Let’s explore these in detail.
+Focus on the benefits of wearing hearing aids. Improved communication, enhanced social interactions, and better quality of life are all reasons to celebrate the decision to use hearing aids.
 
-### Foods That May Worsen Tinnitus Symptoms
+## Celebrate Milestones
 
-Certain foods and beverages can trigger or intensify tinnitus for some individuals. These include:
+Celebrate milestones and achievements along the way. Whether it''s mastering the use of a new feature on the hearing aids or comfortably participating in a noisy family gathering, each success is a step forward in the adjustment process.
 
-#### **1\. Salt**
+## Creating a Supportive Environment
 
-High sodium intake can lead to increased blood pressure, which may reduce blood flow to the ears. This can worsen tinnitus symptoms for some people. Reducing salt in your diet by avoiding processed foods and limiting table salt can help.
+Encourage family members and friends to be patient and supportive. Help them understand the challenges your loved one may face and how they can assist in communication and social situations.
 
-#### **2\. Caffeine**
+## Continuing Care
 
-Caffeinated drinks like coffee, tea, and soda are known to stimulate the central nervous system. For some, this can make tinnitus more noticeable. However, reactions to caffeine vary, and not everyone will experience a worsening of symptoms.
+Regular follow-up appointments with the audiologist are important for monitoring the effectiveness of the hearing aids and making adjustments as needed. Encourage your loved one to attend these appointments to ensure their hearing aids are functioning optimally.
 
-#### **3\. Alcohol**
+## Audiologists and Hearing Aids in Rochester, NY
 
-Alcohol can affect circulation and blood pressure, which may contribute to tinnitus symptoms. It also acts as a diuretic, potentially leading to dehydration, another factor that may worsen tinnitus.
+Helping a loved one adjust to new hearing aids requires patience, understanding, and support. Our team at Ontario Hearing Center in Rochester, NY, is here to assist both you and your loved one throughout this journey. Together, we can ensure that wearing hearing aids becomes a positive and empowering experience, enhancing communication and quality of life.
 
-#### **4\. Sugary Foods**
+If you have any questions or concerns about adjusting to hearing aids, don''t hesitate to [reach out to our team](/contact-us/).
 
-High sugar intake can spike blood sugar levels, potentially causing inflammation and circulatory issues. This may exacerbate tinnitus symptoms for some individuals.
-
-### Foods That May Support Ear Health
-
-While no specific diet can cure tinnitus, certain foods and nutrients can promote overall ear health and potentially reduce symptom severity:
-
-#### **1\. Fruits and Vegetables**
-
-Rich in antioxidants, fruits and vegetables help reduce inflammation and support healthy blood flow. Foods like berries, oranges, spinach, and kale are particularly beneficial.
-
-#### **2\. Omega-3 Fatty Acids**
-
-Found in fish like salmon, mackerel, and tuna, omega-3 fatty acids support heart health and circulation, which can improve blood flow to the ears.
-
-#### **3\. Magnesium**
-
-Magnesium may help protect against noise-induced hearing loss and alleviate tinnitus in some cases. Foods rich in magnesium include bananas, avocados, nuts, and dark chocolate.
-
-#### **4\. Zinc**
-
-Zinc plays a role in immune function and cell repair. Studies suggest it may help reduce tinnitus symptoms for some individuals. Foods like shellfish, pumpkin seeds, and fortified cereals are excellent sources of zinc.
-
-#### **5\. Hydration**
-
-Staying hydrated is essential for overall health, including ear health. Drinking plenty of water can help maintain proper blood flow and prevent dehydration-related tinnitus.
-
-### The Role of Diet in Managing Underlying Conditions
-
-In many cases, tinnitus is associated with underlying conditions like high blood pressure, diabetes, or cardiovascular disease. Adopting a diet that supports overall health can indirectly improve tinnitus symptoms. For example:
-
-- A **heart-healthy diet**, such as the Mediterranean diet, can improve circulation and reduce inflammation.
-- A **low-sodium diet** can help manage high blood pressure, a common contributor to tinnitus.
-- A **low-glycemic diet** may stabilize blood sugar levels, especially for individuals with diabetes.
-
-### Practical Tips for a Tinnitus-Friendly Diet
-
-1. **Track Your Triggers:** Keep a food diary to identify specific foods or drinks that worsen your tinnitus symptoms.
-2. **Choose Whole Foods:** Focus on fresh, unprocessed foods like fruits, vegetables, lean proteins, and whole grains.
-3. **Limit Processed Foods:** Avoid canned soups, fast food, and other items high in sodium and artificial additives.
-4. **Balance Your Meals:** Incorporate a variety of nutrients to support overall health, which can benefit your ears.
-5. **Stay Hydrated:** Drink water consistently throughout the day to prevent dehydration.
-
-### When to Seek Professional Help
-
-If dietary changes don’t seem to help your tinnitus, or if your symptoms worsen, consult an audiologist.
-
-Ontario Hearing Center’s [Rochester, NY audiologists](https://ontariohearing.com/) can assess your condition, identify potential underlying causes, and recommend treatment options. For some individuals, tinnitus may require medical management beyond lifestyle changes.
-
-## Tinnitus Evaluation and Management in Rochester, NY
-
-While tinnitus has no definitive cure, your diet can play a significant role in managing symptoms and supporting ear health. Avoiding triggers like excessive salt, caffeine, and sugar, while incorporating nutrient-rich foods, can positively influence your overall well-being.
-
-If you’re looking for personalized advice, consider speaking with an audiologist to develop a plan tailored to your needs.
-
-Ontario Hearing Center connects you to expert [audiologists in Rochester, NY](https://ontariohearing.com/).
-
-Contact us today to [schedule an appointment](https://ontariohearing.com/contact-us/)!
-
-[Contact Us Today](https://ontariohearing.com/contact-us/)
-
-[Contact Us Today](https://ontariohearing.com/contact-us/)', '/assets/img/Helping-Loved-Ones-Adjust-to-New-Hearing-Aids-a371e69c.webp', 'Ontario Hearing Center', 'December 26, 2024', 'Resources', '5 min read', 'Helping Loved Ones Adjust to New Hearing Aids | Ontario Hearing Center', 'Discover expert tips from audiologists in Rochester, NY, on supporting loved ones as they adjust to new hearing aids', 13);
+We are your partner in better hearing, providing guidance and expertise every step of the way. Our clinic is located at 2210 Monroe Avenue, Rochester, NY 14618.', '/assets/img/Helping-Loved-Ones-Adjust-to-New-Hearing-Aids-a371e69c.webp', 'Ontario Hearing Center', 'December 26, 2024', 'Resources', '3 min read', 'Helping Loved Ones Adjust to New Hearing Aids | Ontario Hearing Center', 'Discover expert tips from audiologists in Rochester, NY, on supporting loved ones as they adjust to new hearing aids. Ontario Hearing Center is here to help.', 13);
 
 INSERT OR REPLACE INTO "ec_blog_posts" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "excerpt", "content", "featured_image_url", "author", "date", "category", "read_time", "meta_title", "meta_description", "sort_order") VALUES ('how-can-you-improve-your-hearing', 'how-can-you-improve-your-hearing', 'published', 'en', 1, 'How can you improve your hearing?', datetime('now'), datetime('now'), datetime('now'), 'Discover simple, effective ways to improve and protect your hearing. Learn about volume control, custom hearing protection, and regular audiology care.', '![Improve your hearing](/assets/img/How-can-you-improve-your-hearing-4-7266c0eb.webp)
 
@@ -3435,24 +3372,35 @@ INSERT OR REPLACE INTO "ec_blog_posts" (id, slug, status, locale, version, title
 
 Hearing loss is considered a disability when it significantly affects an individual’s ability to perform daily activities, communicate effectively, or work in their usual capacity. The classification can vary based on the following contexts:
 
-1. **Medical Context:**
-   - Medically, hearing loss is categorized based on its severity:
-     - **Mild:** Difficulty hearing soft sounds or understanding speech in noisy environments.
-     - **Moderate:** Struggles with hearing conversations at normal levels.
-     - **Severe or Profound:** Little to no hearing, even with amplification.
-   - Severe and profound hearing loss often qualifies as a disability in medical terms.
-2. **Legal Context:**
-   - In many countries, hearing loss is recognized as a disability under legal frameworks like the **Americans with Disabilities Act (ADA)** in the United States. This ensures people with hearing impairments have access to accommodations such as:
+### Medical Context
 
-     - Sign language interpreters
-     - Assistive listening devices
-     - Captioning for videos and meetings
-3. **Social Security and Benefits Context:**
-   - Hearing loss can qualify as a disability for social security benefits if it meets specific criteria. For example:
-     - Documented hearing thresholds showing significant loss.
-     - An inability to perform work-related tasks due to hearing impairment.
-4. **Workplace and Educational Context:**
-   - Hearing loss can be considered a disability in situations where it impairs communication, participation in meetings, or learning. Employers and educational institutions are often required to provide reasonable accommodations.
+Medically, hearing loss is categorized based on its severity:
+
+- **Mild:** Difficulty hearing soft sounds or understanding speech in noisy environments.
+- **Moderate:** Struggles with hearing conversations at normal levels.
+- **Severe or Profound:** Little to no hearing, even with amplification.
+
+Severe and profound hearing loss often qualifies as a disability in medical terms.
+
+### Legal Context
+
+In many countries, hearing loss is recognized as a disability under legal frameworks like the **Americans with Disabilities Act (ADA)** in the United States. This ensures people with hearing impairments have access to accommodations such as:
+
+- Sign language interpreters
+- Assistive listening devices
+- Captioning for videos and meetings
+
+### Social Security and Benefits
+
+Hearing loss can qualify as a disability for social security benefits if it meets specific criteria. For example:
+
+- Documented hearing thresholds showing significant loss.
+- An inability to perform work-related tasks due to hearing impairment.
+
+### Workplace and Educational Context
+
+Hearing loss can be considered a disability in situations where it impairs communication, participation in meetings, or learning. Employers and educational institutions are often required to provide reasonable accommodations.
+
 
 ## How Does Hearing Loss Impact Daily Life?
 
@@ -3490,9 +3438,7 @@ Hearing loss can be considered a disability when it significantly affects an ind
 
 If you or a loved one are dealing with hearing challenges, reach out to a hearing care professional to explore your options and ensure you have access to necessary resources.
 
-Ontario Hearing Center connects you to expert audiologists in Rochester, NY. Contact us today to [schedule an appointment](https://ontariohearing.com/contact-us/)!
-
-[Contact Us Today](https://ontariohearing.com/contact-us/)', '/assets/img/Is-Hearing-Loss-A-Disability-2-718292eb.webp', 'Ontario Hearing Center', 'February 28, 2025', 'Resources', '3 min read', 'Is Hearing Loss A Disability? | Ontario Hearing Center', 'Whether mild or profound, hearing loss can impact quality of life, but with the right support and accommodations, individuals can continue to thrive.', 22);
+Ontario Hearing Center connects you to expert audiologists in Rochester, NY. Contact us today to [schedule an appointment](https://ontariohearing.com/contact-us/)!', '/assets/img/Is-Hearing-Loss-A-Disability-2-718292eb.webp', 'Ontario Hearing Center', 'February 28, 2025', 'Resources', '3 min read', 'Is Hearing Loss A Disability? | Ontario Hearing Center', 'Whether mild or profound, hearing loss can impact quality of life, but with the right support and accommodations, individuals can continue to thrive.', 22);
 
 INSERT OR REPLACE INTO "ec_blog_posts" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "excerpt", "content", "featured_image_url", "author", "date", "category", "read_time", "meta_title", "meta_description", "sort_order") VALUES ('is-it-better-to-get-a-hearing-aid-from-an-audiologist', 'is-it-better-to-get-a-hearing-aid-from-an-audiologist', 'published', 'en', 1, 'Is It Better to Get a Hearing Aid from an Audiologist?', datetime('now'), datetime('now'), datetime('now'), 'Discover why getting a hearing aid from an audiologist at Ontario Hearing Center in Rochester, NY, ensures personalized care, proper fitting, and ongoing support for your hearing health.', '![A picture of an otoscope being held by a person on a white coat](/assets/img/Is-it-Better-to-Get-a-Hearing-Aid-from-an-Audiologist-2-06f7a487.webp)
 
@@ -5742,6 +5688,224 @@ Ontario Hearing Center connects you to the [best audiologists in Rochester, NY](
 
 [Contact Us Today](https://ontariohearing.com/contact-us/)', '/assets/img/Why-do-ears-produce-so-much-wax-58b1c9cc.webp', 'Ontario Hearing Center', 'October 15, 2024', 'Resources', '3 min read', 'Why Do Ears Produce So Much Wax? | Ontario Hearing Center', 'Ear wax helps maintain a healthy ear environment. However, if ear wax buildup causes discomfort or affects hearing, seek professional advice from an audiologist.', 46);
 
+INSERT OR REPLACE INTO "ec_blog_posts" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "excerpt", "content", "featured_image_url", "author", "date", "category", "read_time", "meta_title", "meta_description", "sort_order") VALUES ('is-speech-audiometry-painful', 'is-speech-audiometry-painful', 'published', 'en', 1, 'Is Speech Audiometry Painful?', datetime('now'), datetime('now'), datetime('now'), 'Learn whether speech audiometry is painful, what happens during the test, what you will hear, and how to speak up if sounds feel uncomfortable.', '![Couple sitting at a table, representing a speech audiometry discussion](/assets/img/Is-Speech-Audiometry-Painful-2a596017.webp)
+
+- Speech audiometry is a hearing test that measures how well you hear and understand spoken words at different loudness levels.
+
+- The test should not be painful, and the audiologist can adjust instructions, pause, or respond if sounds feel uncomfortable.
+
+- Ontario Hearing Centers provides speech audiometry, hearing tests, and hearing care guidance in Rochester, NY.
+
+
+
+## What Is Speech Audiometry?
+
+Speech audiometry is a part of a hearing evaluation that checks how clearly you understand speech. Instead of listening only for beeps or tones, you listen to words and repeat them back.
+
+This helps the audiologist understand how hearing loss affects real communication. Two people can have similar hearing thresholds but very different speech understanding, especially in background noise or when speech is soft.
+
+Speech audiometry may include:
+
+- Repeating words presented through headphones.
+
+- Listening for the softest speech you can detect.
+
+- Repeating words at a comfortable listening level.
+
+- Comparing how each ear understands speech.
+
+- Reviewing how the results fit with the rest of your hearing test.
+
+
+
+## Is Speech Audiometry Painful?
+
+Speech audiometry is not supposed to be painful. Most people describe it as simple, quiet, and noninvasive. You sit in a test room or sound booth, wear headphones or insert earphones, listen to recorded or live speech, and repeat what you hear.
+
+You do not receive needles, pressure, medication, or anything that should hurt the ear. The test is based on listening and responding.
+
+That said, tell the audiologist if any sound feels too loud, sharp, or uncomfortable. Hearing tests are designed to gather accurate information, not to force you through discomfort.
+
+## Why Some People Worry About Pain During a Hearing Test
+
+Some patients worry because they already have ear pain, sound sensitivity, tinnitus, pressure, or a history of uncomfortable ear problems. Others may worry because they do not know what will happen during the appointment.
+
+Common concerns include:
+
+- Will the words be too loud?
+
+- Will headphones hurt my ears?
+
+- Will the test make tinnitus worse?
+
+- Will I be embarrassed if I cannot repeat the words?
+
+- Will I have to guess?
+
+- Can I stop if I feel uncomfortable?
+
+
+
+These are reasonable questions. A good hearing test should include clear instructions and the chance to ask questions before the test begins.
+
+## What Speech Audiometry Feels Like
+
+For most people, speech audiometry feels like a listening task. You may hear words such as simple one-syllable or two-syllable words. Your job is to repeat what you think you heard.
+
+You may notice:
+
+- Some words are easy to understand.
+
+- Some words sound soft or unclear.
+
+- One ear may perform better than the other.
+
+- You may need to guess when a word is unclear.
+
+- The audiologist may test each ear separately.
+
+- The test may feel mentally tiring if you have hearing loss.
+
+
+
+## Can the Words Be Too Loud?
+
+Speech testing may include words presented at different loudness levels. The audiologist chooses levels based on your hearing test results and the information needed.
+
+If speech sounds too loud or uncomfortable, say so. The audiologist can pause and decide what to do next. This is especially important if you have loudness sensitivity, hyperacusis, tinnitus, ear pain, or a history of noise discomfort.
+
+You should tell the audiologist before testing if:
+
+- Loud sounds bother you.
+
+- You have ear pain.
+
+- You have sudden hearing changes.
+
+- You have tinnitus that reacts to sound.
+
+- You feel anxious about the test.
+
+- You have had uncomfortable hearing tests before.
+
+
+
+## What Happens During Speech Audiometry?
+
+The exact steps can vary, but the process is usually straightforward.
+
+A speech audiometry appointment may include:
+
+- Instructions from the audiologist.
+
+- Headphones or insert earphones placed on or in the ears.
+
+- Words or sentences presented to one ear or both ears.
+
+- Repeating each word as clearly as you can.
+
+- Testing at soft, comfortable, or measured loudness levels.
+
+- A review of the results after the full hearing evaluation.
+
+
+
+The test does not require you to prepare or memorize anything. You simply listen and respond.
+
+## Speech Audiometry vs Pure Tone Testing
+
+Pure tone testing checks the softest tones you can hear across different pitches. This is the part of the test where you may press a button or raise your hand when you hear a beep.
+
+Speech audiometry is different because it checks how well you understand spoken words. Both tests are useful.
+
+Together, they help show:
+
+- How soft a sound can be before you stop hearing it.
+
+- How clearly you understand speech.
+
+- Whether one ear performs differently from the other.
+
+- Whether hearing aids or other treatment options may help.
+
+- Whether more testing or referral may be needed.
+
+
+
+## Can Speech Audiometry Make Tinnitus Worse?
+
+Speech audiometry should not make tinnitus worse for most people. The test uses controlled sound levels and speech signals, not sudden loud noise.
+
+However, tinnitus can feel more noticeable when you are focusing on listening in a quiet room. If you are worried about tinnitus, tell the audiologist before testing begins. The audiologist can explain what to expect and watch for discomfort.
+
+## What If You Cannot Repeat the Words?
+
+It is okay if you cannot repeat every word. Missed words are part of the test result. They help show how hearing loss affects speech clarity.
+
+You should not feel embarrassed if you guess, mishear, or say the wrong word. The test is not measuring intelligence, effort, or attention. It measures speech understanding under controlled conditions.
+
+## When Speech Audiometry May Need Extra Care
+
+Speech audiometry is usually comfortable, but some people may need extra attention during testing.
+
+Tell the audiologist if you have:
+
+- Ear pain or active ear infection symptoms.
+
+- Sound sensitivity or hyperacusis.
+
+- Severe tinnitus.
+
+- Recent sudden hearing loss.
+
+- Dizziness or balance symptoms.
+
+- Ear surgery history.
+
+- Trouble understanding spoken instructions.
+
+- Anxiety about medical or hearing tests.
+
+
+
+The audiologist can adjust communication, explain each step, and decide whether any medical referral is needed.
+
+## Common Questions About Speech Audiometry
+
+### Does speech audiometry hurt?
+
+No. Speech audiometry should not hurt. You listen to words through headphones or earphones and repeat what you hear. Tell the audiologist if anything feels too loud or uncomfortable.
+
+### Do I have to wear headphones?
+
+Most speech testing uses headphones or insert earphones so each ear can be tested accurately. If headphones are uncomfortable, tell the audiologist before the test starts.
+
+### Will I hear loud sounds?
+
+You may hear speech at different loudness levels, but the test should stay controlled. If a sound feels too loud, speak up right away.
+
+### What if I guess the wrong word?
+
+That is normal. Guessing helps the audiologist understand what speech sounds like to you. There is no penalty and no pass-or-fail score.
+
+### Is Speech Audiometry the same as a hearing test?
+
+Speech audiometry is one part of a hearing test. A full evaluation may also include pure tone testing, ear examination, middle ear testing, and a review of your symptoms.
+
+### How long does speech audiometry take?
+
+Speech audiometry is usually a short part of the full appointment. The total visit length depends on the full test plan and your hearing concerns.
+
+## Ready to Learn More About Your Hearing?
+
+Speech audiometry should not be painful. It is a listening test that helps measure how clearly you understand words, not a procedure that should hurt the ear.
+
+If you have ear pain, sound sensitivity, tinnitus, or anxiety about testing, tell the audiologist before the test begins. Clear communication helps make the appointment more comfortable and gives the audiologist better information about your hearing.
+
+Ontario Hearing Centers provides speech audiometry, hearing tests, and hearing care guidance in Rochester, NY.
+
+Contact us to schedule an appointment!', '/assets/img/Is-Speech-Audiometry-Painful-2a596017.webp', 'Ontario Hearing Center', 'June 25, 2026', 'Resources', '5 min read', 'Is Speech Audiometry Painful? | Ontario Hearing Center', 'Learn whether speech audiometry is painful, what happens during the test, what you will hear, and how to speak up if sounds feel uncomfortable.', 47);
+
 -- service_pages
 INSERT OR REPLACE INTO "ec_service_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "sort_order") VALUES ('audiologist-in-pittsford-ny', 'audiologist-in-pittsford-ny', 'published', 'en', 1, 'Audiologist in Pittsford, NY', datetime('now'), datetime('now'), datetime('now'), 'Audiologist in Pittsford, NY | Ontario Hearing Center', 'Experience expert hearing care in Pittsford, NY. Our trusted audiologists provide personalized solutions to improve your hearing. Book a consultation today.', '', '## Pittsford, NY
 
@@ -6534,119 +6698,106 @@ Enjoy the convenience of hearing services at home.  If you can’t make it to o
 
 Regular hearing aid checks are a critical part of ensuring proper functioning hearing aids.', '', 12);
 
-INSERT OR REPLACE INTO "ec_service_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "sort_order") VALUES ('tinnitus', 'tinnitus', 'published', 'en', 1, 'Tinnitus', datetime('now'), datetime('now'), datetime('now'), 'Hearing Aids For Tinnitus | Ontario Hearing Center', 'Ontario Hearing Center has been helping people find relief for their tinnitus symptoms for more than three decades. Our audiologists will be happy to help you choose the correct one that suits your lifestyle.', 'Tinnitus is a ringing in the ears that can be caused by many different things. It’s not just an annoyance, it can lead to serious health problems like depression and anxiety.', '## Hearing Aids For Tinnitus
+INSERT OR REPLACE INTO "ec_service_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "sort_order") VALUES ('tinnitus', 'tinnitus', 'published', 'en', 1, 'Tinnitus', datetime('now'), datetime('now'), datetime('now'), 'Tinnitus Evaluation & Management in Rochester, NY | Ontario Hearing Center', 'Ontario Hearing Center provides tinnitus evaluation and management in Rochester, NY. Our audiologists identify the cause of your tinnitus and build a personalized plan for lasting relief.', 'Ontario Hearing Center provides tinnitus evaluation and management in Rochester, NY.', '_**Ontario Hearing Center provides tinnitus evaluation and management in Rochester, NY.**_
 
-Tinnitus is a ringing in the ears that can be caused by many different things. It’s not just an annoyance, it can lead to serious health problems like depression and anxiety.
+Tinnitus is the perception of sound — ringing, buzzing, hissing, clicking, or roaring — when no external sound is present. It is not a disease itself but a symptom that can arise from a wide range of underlying conditions. Tinnitus affects an estimated 15% of adults and, for many, it significantly disrupts sleep, concentration, and quality of life.
 
-Tinnitus is a common symptom of underlying medical conditions, and for many people it can clear up if the condition that caused it in the first place is dealt with. The American Tinnitus Association notes, “While tinnitus is most often triggered by hearing loss, there are roughly 200 different health disorders that can generate tinnitus as a symptom.”
+If you are experiencing tinnitus, you are not alone — and there are effective strategies to help you manage it.
 
-Hearing aids for tinnitus allow people with hearing loss to hear sounds they might be missing, which can effectively cover and remove the focus from the tinnitus ringing. Ontario Hearing Center is an authorized provider of hearing solutions, including [hearing aids for tinnitus in Rochester NY.](https://ontariohearing.com/)
+![ Audiologist pointing at hearing test data on monitor](/assets/img/OntarioHearing26-2ba68ee2.webp)
 
-If you’re looking for relief from your symptoms of tinnitus, we have a solution that will help you get back on track with your life.
+## What Causes Tinnitus?
 
-![Audiologist pointing at hearing test data on monitor](/assets/img/OntarioHearing26-2ba68ee2.webp)
+Tinnitus can be triggered by many different factors. The most common cause is noise-induced hearing loss, but other contributing conditions include:
 
-## Can hearing aids treat tinnitus?
+- **Hearing loss** — age-related or noise-induced damage to the inner ear is the most frequent cause
+- **Loud noise exposure** — a single loud blast or years of exposure to high-decibel environments
+- **Ear infections or blockages** — earwax buildup, fluid, or infection can produce tinnitus
+- **Medications** — certain antibiotics, diuretics, aspirin in high doses, and chemotherapy drugs are known to cause or worsen tinnitus
+- **Cardiovascular conditions** — high blood pressure or changes in blood flow can produce pulsatile tinnitus
+- **Head or neck injuries** — trauma affecting the auditory nerve or related structures
+- **TMJ disorders** — jaw joint problems can refer sound to the ear
+- **Stress and anxiety** — while not a cause, stress can amplify the perception of tinnitus
 
-Hearing aids can **help manage tinnitus**, but they don’t cure it. They are highly effective in providing relief and improving your quality of life if you have tinnitus.
+The American Tinnitus Association notes that roughly 200 different health disorders can generate tinnitus as a symptom.
 
-Here’s how hearing aids can make a difference:
+## Types of Tinnitus
 
-## How Hearing Aids Help with Tinnitus
+Understanding the type of tinnitus you experience helps guide evaluation and treatment.
 
-#### Amplify Background Sounds
+### Subjective Tinnitus
+The most common form — only you can hear it. Usually caused by problems in the outer, middle, or inner ear, or the auditory nerve.
 
-Hearing aids amplify environmental sounds, which can mask the ringing or buzzing noises caused by tinnitus. This makes the tinnitus less noticeable.
+### Objective Tinnitus
+A rare form where a clinician can also hear the sound using a stethoscope. Often related to blood vessel problems, muscle contractions, or middle ear bone conditions.
 
-#### Tinnitus Masking Features
+### Pulsatile Tinnitus
+A rhythmic sound that pulses in sync with your heartbeat. This type warrants prompt medical evaluation as it can indicate vascular issues.
 
-Many modern hearing aids include built-in tinnitus masking features, such as white noise, ocean waves, or other soothing sounds, to distract your brain from focusing on the tinnitus.
+## How Tinnitus Affects Daily Life
 
-#### Improved Hearing Clarity
+Tinnitus does more than create unwanted noise. For many people it leads to:
 
-By addressing hearing loss, hearing aids reduce the strain on your brain to process sounds, which can lessen the perception of tinnitus.
+- Difficulty falling or staying asleep
+- Trouble concentrating at work or during conversations
+- Increased stress, anxiety, or depression
+- Avoidance of quiet environments where tinnitus feels most prominent
+- Withdrawal from social situations
 
-#### Sound Therapy Programs
+Recognizing these effects is an important step toward seeking evaluation and management.
 
-Some hearing aids connect to apps that provide sound therapy, relaxation exercises, and other resources to help you manage tinnitus symptoms.
+## When to See an Audiologist
 
-## What hearing aids are best for tinnitus?
+You should schedule an evaluation if:
 
-If you experience tinnitus, choosing the right hearing aid can make a big difference. Many top hearing aid brands offer advanced features specifically designed to help manage tinnitus symptoms. Here are some of the best options:
+- Your tinnitus started suddenly or is getting worse
+- You hear tinnitus in only one ear
+- Your tinnitus is pulsing in rhythm with your heartbeat
+- You are experiencing dizziness or hearing loss alongside tinnitus
+- Tinnitus is affecting your sleep, concentration, or wellbeing
 
-Widex
+Early evaluation helps identify treatable causes and allows your audiologist to develop a management plan before the condition becomes more disruptive.
 
-Widex hearing aids are renowned for their **Zen Therapy**, which uses soothing soundscapes to mask tinnitus. Features include:
+## Tinnitus Evaluation at Ontario Hearing Center
 
-- Personalized sound programs.
-- Background noise reduction.
-- High-quality sound for improved hearing clarity.
+Our audiologists conduct a thorough evaluation that includes:
 
-Phonak
+- A full case history covering medical background, noise exposure, and medications
+- A comprehensive hearing test to assess whether hearing loss is present
+- An assessment of tinnitus characteristics — pitch, loudness, and pattern
+- Review of factors that may be worsening your symptoms
 
-Phonak hearing aids offer **Tinnitus Balance**, a feature that uses custom sound therapy to ease tinnitus. Key features:
+This evaluation gives us the information needed to recommend the right management approach for your specific situation.
 
-- Compatibility with smartphone apps for easy control.
-- Broad frequency amplification to manage hearing loss and tinnitus.
-- Rechargeable models for convenience.
+## Tinnitus Management Options
 
-ReSound
+There is currently no single cure for tinnitus, but many effective management strategies exist. Our audiologists will recommend options based on your evaluation results.
 
-ReSound hearing aids provide the **ReSound Relief App**, offering:
+### Sound Therapy
+Sound therapy uses background sound to reduce the contrast between tinnitus and silence, making the tinnitus less noticeable. Options include dedicated sound machines, smartphone apps, and hearing aids with built-in tinnitus programs.
 
-- Tinnitus masking sounds.
-- Sound therapy programs.
-- Relaxation techniques and exercises for tinnitus management.
+### Hearing Aids
+When tinnitus is accompanied by hearing loss — which is common — properly fitted hearing aids can provide significant relief. Amplifying ambient sound reduces the prominence of tinnitus, and many modern hearing aids include dedicated tinnitus sound programs from brands like Oticon, Widex, Phonak, and ReSound.
 
-Oticon
+### Tinnitus Retraining Therapy (TRT)
+TRT combines low-level sound therapy with counseling to help the brain reclassify tinnitus as a neutral signal — one that no longer demands attention. Over time, many people experience a significant reduction in awareness and distress.
 
-Oticon hearing aids include **Tinnitus SoundSupport**, which provides:
+### Cognitive Behavioral Therapy (CBT)
+CBT helps change the way you think about and respond to tinnitus. It does not reduce the sound itself but is one of the most evidence-backed approaches for reducing the emotional impact of tinnitus.
 
-- A library of soothing sounds, like white noise or ocean waves.
-- Customizable options to match your preferences.
-- Advanced speech clarity alongside tinnitus relief.
+### Lifestyle and Self-Management
+Practical strategies can reduce tinnitus flare-ups:
 
-Starkey
+- Protect your hearing in loud environments
+- Reduce caffeine and sodium intake
+- Practice stress management and regular sleep habits
+- Avoid complete silence — keep ambient sound in the background
 
-Starkey hearing aids feature **Multiflex Tinnitus Technology**, allowing:
+## Tinnitus Relief in Rochester, NY
 
-- Personalized tinnitus relief through sound masking.
-- Smartphone app integration for control over tinnitus settings.
-- Automatic adjustments based on your environment.
+Ontario Hearing Center has been helping people manage tinnitus in Rochester, NY for more than three decades. Our audiologists will evaluate your symptoms, identify contributing factors, and build a personalized management plan — whether that means sound therapy, hearing aids, counseling referrals, or a combination of approaches.
 
-Signia
-
-Signia hearing aids include **Notch Therapy**, designed to treat tonal tinnitus by:
-
-- Targeting the tinnitus frequency to retrain the brain.
-- Offering long-term relief without added masking sounds.
-- Combining tinnitus therapy with superior hearing aid features.
-
-Unitron
-
-Unitron hearing aids offer sound therapy tools to manage tinnitus while providing:
-
-- Natural sound quality.
-- User-friendly controls for tinnitus and hearing aid settings.
-- Connectivity to apps for managing tinnitus relief.
-
-Lyric (by Phonak)
-
-Lyric is the only **completely invisible hearing aid** that also offers continuous tinnitus relief:
-
-- Worn 24/7 for uninterrupted sound therapy.
-- No daily maintenance or adjustments needed.
-- Ideal for individuals seeking a discreet solution
-
-![Personalized tinnitus treatment in Rochester, NY for lasting relief.](/assets/img/firstappointment-4d7d1818.webp)An image of a patient at their first appointment for tinnitus treatment at Ontario Hearing Center in Rochester, NY. Specialists at Ontario Hearing Center provide customized treatment plans to help manage tinnitus symptoms, including ringing and buzzing sounds, improving patient quality of life. Located in Rochester, Ontario Hearing Center offers effective tinnitus relief options tailored to individual needs.
-
-## Hearing Aids in Rochester, NY
-
-Ontario Hearing Center has been helping people find relief for their tinnitus symptoms for more than three decades. Thanks to technology,  there is already an upgraded selection of hearing aids for tinnitus. Each set of hearing aids are crafted specifically for the patient’s needs and budget, and our staff will be happy to help you choose the correct one that suits your lifestyle.
-
-Contact us today to [schedule an appointment](https://ontariohearing.com/contact-us/) with an expert [audiologist in Rochester, NY](https://ontariohearing.com/).
-
-Your perfect hearing aid for tinnitus is waiting for you!', '/assets/img/OntarioHearing26-2ba68ee2.webp', 13);
+Contact us to [schedule a tinnitus evaluation](/contact-us/) and take the first step toward relief.', '/assets/img/OntarioHearing26-2ba68ee2.webp', 13);
 
 INSERT OR REPLACE INTO "ec_service_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "sort_order") VALUES ('types-of-hearing-aids', 'types-of-hearing-aids', 'published', 'en', 1, 'Types Of Hearing Aids', datetime('now'), datetime('now'), datetime('now'), 'Types Of Hearing Aids - Ontario', 'Explore the different types of hearing aids available and find the right fit for your lifestyle. Learn more and schedule a hearing aid consultation today!', 'Ontario Hearing Center carries a wide selection of hearing aids in Rochester, NY.', '## Do you have trouble hearing?
 
@@ -7332,7 +7483,7 @@ Truly, there’s nothing to hide when you have the Phonak Virto M as your hearin
 
 Connect the Phonak Virto M-312 directly to either Android or iOS smartphones and other Bluetooth-enabled devices. The Biometric Calibration of Phonak Virto M provides precise calibration based on your unique ear anatomy.
 
-## **Phonak Naída Marvel**
+## Phonak Naída Marvel
 
 Enjoy luxurious and reliable hearing with the Phonak Naida Marvel with its rich, powerful sound and hands-free support.
 
@@ -7350,7 +7501,7 @@ Phonak Bolero is designed for mild to severe hearing loss, combining maximum rel
 
 Bolero Marvel is also available as a rechargeable model.
 
-## **Phonak Sky Marvel**
+## Phonak Sky Marvel
 
 Phonak Sky Marvel offers various designs to support various hearing needs of children of all ages. Carrying the world’s first technological innovations and child-specific designs, children can enjoy building meaningful relationships with the Phonak Sky Marvel.
 
@@ -7366,7 +7517,7 @@ Enjoy enhanced speech understanding and environmental awareness with Phonak CROS
 
 The Phonak CROS system features universal connectivity with devices such as smartphones, TVs, tablets and laptops to make listening on-the-go easy and accessible.
 
-## **Phonak Vitus / Vitus+**
+## Phonak Vitus / Vitus+
 
 Experience solid sound performance in a multitude of listening situations. With the Phonak Vitus, you can confidently go through the day knowing that you are using a reliable and robust hearing device.
 
@@ -7967,17 +8118,6 @@ In this blog, we will delve into the world of audiologists, exploring what they 
 
 Ontario Hearing Center has audiologists in Brighton, NY, ready to address your hearing needs and concerns.
 
-Ontario Hearing Center - YouTube
-
-Tap to unmute
-
-[Ontario Hearing Center](https://www.youtube.com/watch?v=7sKwQ1dxauY) [Ontario Hearing Center](https://www.youtube.com/channel/UCNg4z_FBhU4yIP5xhHc75ig)
-
-![thumbnail-image](/assets/img/AIdro_kf9VCFIScktbekrhdtHPEwJua5y1Ssjo0U7_AuPHL6FA-s68-c-k-c-cea6fecd.webp)
-
-Ontario Hearing Center3 subscribers
-
-[Watch on](https://www.youtube.com/watch?v=7sKwQ1dxauY)
 
 ## Who are audiologists?
 
@@ -8047,22 +8187,6 @@ Well, I just turned 60 and decided to have my hearing tested. The good news is I
 Andrea is wonderful! I have been a client of Ontario Hearing for about 15 years. The staff are friendly and efficient. I have purchased 3 or 4 pairs of hearing aids here. Each time, Andrea makes sure my devices are working properly and fit well. I will continue to recommend Ontario Hearing.
 
 [Meghan](https://goo.gl/maps/xm8bjxKmVYv4QbPe9)
-
-“Our experience has been incredible…”
-
-My entire family (3 generations) have been going to Ontario Hearing Instruments for almost 20 years. Every aspect of our experience has been incredible. The staff is amazing. Dr. Segmund is almost like a family member to us. She truly understands our challenges and is ALWAYS looking for the best possible solutions for our hearing loss. I can''t even count the number of times she has said something to the effect of: "I was at this conference and saw this and thought specifically of you and your dad - I think this would really help". My hearing loss has been in the "profound" range for years. I do not know how I could have managed this more effectively than I have with the help of Ontario Hearing. I have recommended their services many times for many people and will continue to do so. Definitely worth looking into. They truly provide amazing service to all their patients.
-
-[Matt](https://goo.gl/maps/diVvEsthapL9dr2X8)
-
-“I can’t believe how much better I can hear now…”
-
-Well, I just turned 60 and decided to have my hearing tested. The good news is I needed hearing aids. I say good news because I can’t believe how much better I can hear now. our audiologist was so knowledgeable and helped me select the proper hearing aids for my hearing loss. No more saying “What?”, and I can finally hear the TV at a normal volume. Fantastic service and support from a well run office.
-
-[Dave](https://goo.gl/maps/G9wDNqBsqBmuYLeM6)
-
-5.0
-
-100 reviews on
 
 [Monty Wright](https://www.google.com/maps/reviews/data=!4m8!14m7!1m6!2m5!1sCi9DQUlRQUNvZENodHljRjlvT2pBMWR6bDFPVk14WVdWa2RIUjVNREZ5YWtsNWRWRRAB!2m1!1s0x0:0x7fde11d4c772408e!3m1!1s2@1:CAIQACodChtycF9oOjA1dzl1OVMxYWVkdHR5MDFyakl5dVE%7C%7C)
 
