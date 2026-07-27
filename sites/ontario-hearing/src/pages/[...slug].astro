@@ -49,7 +49,7 @@ if (!fallback) {
   return Astro.redirect("/404");
 }
 
-const UNIQUE = new Set(["about-us", "contact-us", "blog", "dr-adam-sheppard", "dr-andrea-segmond", "dr-elizabeth-orlando"]);
+const UNIQUE = new Set(["about-us", "contact-us", "blog", "resources", "dr-adam-sheppard", "dr-andrea-segmond", "dr-elizabeth-orlando"]);
 if (UNIQUE.has(fallback.slug)) {
   return Astro.redirect("/404");
 }
@@ -141,6 +141,17 @@ let bodyMd = d.content ?? (() => {
   md = md.replace(/\n{3,}/g, "\n\n");
   return md.trim();
 })();
+
+// Strip any leading H1 — the Interior layout renders the page title as <h1>,
+// so an # H1 in the body (from CMS or fallback) would create a duplicate.
+bodyMd = bodyMd.replace(/^# .+$/m, "").trim();
+
+// Strip the first ## H2 if it duplicates the page title (scrape artifact).
+// Normalise both to lowercase alphanum so punctuation/case differences don't matter.
+const _normH = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+bodyMd = bodyMd.replace(/^## (.+)$/m, (m: string, h2: string) =>
+  _normH(h2) === _normH(cleanTitle) ? "" : m
+).trim();
 
 // Strip Elementor "Table of Contents" (heading + its anchor-link bullets) from the
 // body (CMS or fallback) — it renders as raw "Table of Contents" + jump links otherwise.
