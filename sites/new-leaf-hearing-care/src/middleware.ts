@@ -15,6 +15,7 @@ const STATIC_PATHS = [
   "/audiologist-hearing-aids-arvada-colorado/",
   "/audiologist-hearing-aids-littleton-colorado/",
   "/contact-us/",
+  "/patient-resources/",
   "/schedule-appointment/",
   "/sitemap/"
 ];
