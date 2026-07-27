@@ -553,12 +553,29 @@ flex: 1 1 0;
   flex: 0 0 calc((100% - 80px) / 3);
 }
 
+/* With only 1-2 posts the section gets no .has-carousel class, so the base
+   `flex: 1 1 0` stretched a single card across the whole 1280px container
+   (media became 1280x1067 and object-fit:cover savagely cropped its 16:9
+   image). Hold cards at the intended 3-up column width instead. */
+@media (min-width: 1025px) {
+  .blog-post-section:not(.has-carousel) .blog-post-list {
+    justify-content: flex-start;
+  }
+
+  .blog-post-section:not(.has-carousel) .blog-post-card {
+    flex: 0 1 calc((100% - 80px) / 3);
+    max-width: calc((100% - 80px) / 3);
+  }
+}
+
 .blog-post-card__media {
 position: relative;
   margin: 0;
   overflow: hidden;
   border-radius: 20px;
-  aspect-ratio: 1.2 / 1;
+  /* 16:9 matches the source artwork (980x551), so featured images show in
+     full instead of being cropped through baked-in text/address bars. */
+  aspect-ratio: 16 / 9;
   background: var(--light-secondary);
 }
 
@@ -793,7 +810,7 @@ font-size: 16px;
 
 @media (max-width: 1366px) {
   .blog-post-card__media {
-  aspect-ratio: 1.4 / 1;
+  aspect-ratio: 16 / 9;
   }
 }
 
@@ -1107,7 +1124,7 @@ font-size: 16px;
 
 @media (min-width: 768px) and (max-width: 1024px) {
   .blog-post-card__media {
-  aspect-ratio: 5 / 3;
+  aspect-ratio: 16 / 9;
   }
 }
 

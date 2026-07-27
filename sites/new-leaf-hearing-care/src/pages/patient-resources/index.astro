@@ -1,0 +1,223 @@
+---
+import { getEmDashCollection } from "emdash";
+import Base from "../../layouts/Base.astro";
+
+export const prerender = false;
+export const cacheHint = 3600;
+
+const TITLE = "Patient Resources | New Leaf Hearing Care";
+const DESCRIPTION =
+  "Hearing health articles and patient resources from the audiologists at New Leaf Hearing Care in Arvada and Littleton, CO.";
+const HEADING = "Patient Resources";
+
+const { entries: posts = [] } = await getEmDashCollection("blog_posts", {
+  status: "published",
+  orderBy: { published_at: "desc" }
+});
+
+// Featured images are stored as emdash media refs; these three were exported to
+// /assets during the static conversion, so map them back the same way
+// BlogPostSection does.
+const STATIC_MEDIA_BY_STORAGE_KEY: Record<string, string> = {
+  "01KTYPVRB0HJCQRFWMFXDNN6PM.webp": "/assets/blog-pressure-in-ears.webp",
+  "01KTYPTC3D6583FVY68STYF63Z.webp": "/assets/blog-hearing-aids-for-tinnitus.webp",
+  "01KTYPS6MBHAMKS36TES1N6VF7.webp": "/assets/blog-hearing-doctor-audiologist.webp"
+};
+
+const stripHtml = (value) => String(value ?? "").replace(/<[^>]*>/g, " ");
+
+const staticMediaSrc = (src = "") => {
+  const match = String(src).match(/\/_emdash\/api\/media\/file\/([^/?#]+)/);
+  return match ? STATIC_MEDIA_BY_STORAGE_KEY[match[1]] || src : src;
+};
+
+const plainTextFromPortableText = (blocks = []) =>
+  blocks
+    .flatMap((block) => (Array.isArray(block?.children) ? block.children : []))
+    .map((child) => child?.text || "")
+    .join(" ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+const excerpt = (post) => {
+  const source =
+    post.data.meta_description || plainTextFromPortableText(post.data.content || []);
+  if (!source) return "";
+  return source.length > 160 ? `${source.slice(0, 157).trim()}...` : source;
+};
+
+const normalizeSlug = (post) => {
+  const raw = post.slug || post.data.slug || post.data.page_slug || post.id || "";
+  return String(raw).replace(/^\/+|\/+$/g, "").replace(/^blog\//, "");
+};
+
+const hrefFor = (post) => `/${normalizeSlug(post)}/`;
+
+const imageFor = (post) => {
+  const image = post.data.featured_image;
+  if (!image)
+    return {
+      src: "/assets/new-leaf-hearing-care-logo.webp",
+      alt: post.data.title || post.data.page_title || "New Leaf Hearing Care"
+    };
+
+  if (typeof image === "string")
+    return {
+      src: staticMediaSrc(image),
+      alt: post.data.title || post.data.page_title || ""
+    };
+
+  const storageKey = image.meta?.storageKey || image.storageKey || image.storage_key;
+  const staticSrc = storageKey ? STATIC_MEDIA_BY_STORAGE_KEY[storageKey] : "";
+
+  return {
+    src:
+      staticSrc ||
+      staticMediaSrc(image.src) ||
+      image.src ||
+      image.url ||
+      (image.provider === "local" && storageKey
+        ? `/_emdash/api/media/file/${storageKey}`
+        : "") ||
+      (image.filename ? `/assets/${image.filename}` : ""),
+    alt: image.alt || post.data.title || post.data.page_title || ""
+  };
+};
+
+const parseDate = (post) => {
+  const raw =
+    post.data.displayed_publish_date || post.data.publishedAt || post.data.createdAt;
+  const date = raw instanceof Date ? raw : new Date(raw);
+  if (Number.isNaN(date.getTime())) return null;
+  return date;
+};
+
+const monthFor = (date) => date.toLocaleString("en-US", { month: "short" });
+const isoDate = (date) => date.toISOString().slice(0, 10);
+---
+
+<Base title={TITLE} description={DESCRIPTION}>
+  <main>
+    <section
+      class="internal-hero-section new-leaf-texture-overlay"
+      aria-labelledby="internal-page-heading"
+    >
+      <div class="internal-hero-container">
+        <nav class="eyebrow internal-hero-breadcrumb" aria-label="Breadcrumb">
+          <a href="/">Home</a>
+          <span aria-hidden="true">&gt;</span>
+          <span>{HEADING}</span>
+        </nav>
+        <h1 id="internal-page-heading" class="internal-hero-title">{HEADING}</h1>
+      </div>
+    </section>
+
+    <section class="internal-content-section">
+      <div class="resource-archive">
+        <div class="resource-archive__intro heading-group">
+          <p class="eyebrow">News &amp; Articles</p>
+          <h2 class="section-title">Hearing health articles from our audiologists</h2>
+          <p>
+            Practical guidance on hearing loss, hearing aids, and hearing care from the
+            team at New Leaf Hearing Care in Arvada and Littleton, CO.
+          </p>
+        </div>
+
+        {posts.length > 0 ? (
+          <div class="resource-archive__grid">
+            {posts.map((post) => {
+              const image = imageFor(post);
+              const date = parseDate(post);
+              const tags = String(post.data.displayed_tags || "News")
+                .split(",")
+                .map((tag) => tag.trim())
+                .filter(Boolean);
+              const title =
+                post.data.title ||
+                post.data.page_title ||
+                post.data.meta_title ||
+                "Article";
+              return (
+                <article class="blog-post-card">
+                  <figure class="blog-post-card__media">
+                    {image.src && (
+                      <img src={image.src} alt={image.alt} loading="lazy" decoding="async" />
+                    )}
+                    <span class="blog-post-card__tag">{tags[0]}</span>
+                    {date && (
+                      <time class="blog-post-card__date" datetime={isoDate(date)}>
+                        <strong>{date.getDate()}</strong>
+                        <span>{monthFor(date)}</span>
+                      </time>
+                    )}
+                  </figure>
+                  <div class="blog-post-card__content">
+                    <h3>{title}</h3>
+                    {excerpt(post) && <p>{stripHtml(excerpt(post))}</p>}
+                    <a class="btn btn-outline-purple" href={hrefFor(post)}>Read More</a>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        ) : (
+          <p class="resource-archive__empty">
+            New articles are on the way. In the meantime, <a href="/contact-us/">contact us</a>
+            {" "}with any hearing questions.
+          </p>
+        )}
+      </div>
+    </section>
+  </main>
+</Base>
+
+<style is:global>
+  .resource-archive {
+    width: 1280px;
+    max-width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+  }
+
+  .resource-archive__intro {
+    max-width: 760px;
+  }
+
+  .resource-archive__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    align-items: start;
+  }
+
+  /* The grid owns sizing here, so neutralise the homepage carousel flex rules. */
+  .resource-archive__grid .blog-post-card {
+    flex: none;
+    max-width: none;
+    width: 100%;
+  }
+
+  .resource-archive__empty {
+    font-size: 18px;
+  }
+
+  @media (max-width: 1024px) {
+    .resource-archive__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 30px;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .resource-archive {
+      gap: 32px;
+    }
+
+    .resource-archive__grid {
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+  }
+</style>
