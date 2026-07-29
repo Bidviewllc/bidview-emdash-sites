@@ -19,6 +19,17 @@ const STATIC_PATHS = [
   "/schedule-appointment/",
   "/sitemap/"
 ];
+// Old WordPress blog-category archives that 404'd after the rebuild.
+// Keys are lowercase and WITHOUT a trailing slash (normalised at lookup time),
+// so both /category/hearing and /category/hearing/ resolve.
+const LEGACY_CATEGORY_REDIRECTS: Record<string, string> = {
+  "/category/audiologist": "/about/",
+  "/category/education": "/patient-resources/",
+  "/category/hearing": "/hearing-loss/",
+  "/category/hearing-aid": "/hearing-aids-products/",
+  "/category/newsletter": "/patient-resources/"
+};
+
 const CONTENT_PATHS = Object.entries(shells).flatMap(([collection, entries]) =>
   Object.keys(entries).map((slug) => `/${slug}/`)
 );
@@ -135,6 +146,19 @@ export const onRequest = defineMiddleware(async (context, next) => {
     if (cachedResponse) {
       return withWorkerCacheStatus(cachedResponse, "HIT");
     }
+  }
+
+  // Legacy WordPress category archives -> the closest page on the new site.
+  const legacyTarget = LEGACY_CATEGORY_REDIRECTS[pathname.replace(/\/+$/, "").toLowerCase()];
+  if (legacyTarget) {
+    const url = new URL(context.url);
+    url.pathname = legacyTarget;
+    url.search = "";
+    const response = context.redirect(url, 301);
+    response.headers.set("Cache-Control", PUBLIC_HTML_CACHE_CONTROL);
+    response.headers.set("CDN-Cache-Control", EDGE_HTML_CACHE_CONTROL);
+    response.headers.set("Cloudflare-CDN-Cache-Control", EDGE_HTML_CACHE_CONTROL);
+    return response;
   }
 
   if (pathname === "/sitemap.xml") {
