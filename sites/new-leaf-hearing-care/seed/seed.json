@@ -23558,6 +23558,36 @@
           "content": [
             {
               "_type": "block",
+              "_key": "blockquote_tinnitus_ai_misdiagnosis",
+              "style": "blockquote",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "blockquote_tinnitus_ai_misdiagnosis_title",
+                  "text": "A case worth sharing: AI misdiagnosis, pulsatile tinnitus, two-hour wax removal",
+                  "marks": [
+                    "strong"
+                  ]
+                },
+                {
+                  "_type": "span",
+                  "_key": "blockquote_tinnitus_ai_misdiagnosis_body",
+                  "text": "\n\nA 30-year-old patient came in for what was scheduled as a routine earwax removal. He had a unilateral conductive hearing loss and pulsatile tinnitus — I had referred him to ENT previously, the MRI came back normal, and he'd been sent home with no further direction. With nowhere else to turn, he'd spent weeks consulting what he called \"Dr. Claude,\" which had led him down several rabbit holes and ultimately suggested Superior Canal Dehiscence. He was stressed and convinced something serious had been missed. The wax removal took minutes. The appointment took two hours. I ran a comprehensive hearing test, walked him through the range of more likely causes — SCD was not high on that list — and got him set up with a neuro-otologist for a proper second opinion. He left with a pathway forward instead of a spiral.\n\n",
+                  "marks": []
+                },
+                {
+                  "_type": "span",
+                  "_key": "blockquote_tinnitus_ai_misdiagnosis_author",
+                  "text": "— Dusty Jessen, Audiologist, New Leaf Hearing Care",
+                  "marks": [
+                    "strong"
+                  ]
+                }
+              ]
+            },
+            {
+              "_type": "block",
               "_key": "k2i2",
               "style": "h2",
               "markDefs": [],
