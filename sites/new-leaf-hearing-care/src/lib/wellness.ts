@@ -1,4 +1,9 @@
-import type { APIRoute } from 'astro';
+// Hearing Wellness (HHIE-S) scoring engine + ActiveCampaign push.
+//
+// Handled by the /hearing-wellness/ PAGE (not an /api/ endpoint): in this
+// emdash + Cloudflare setup the root [...slug] catch-all intercepts POSTs to
+// /api/* before the endpoint route is reached, so the submission is processed
+// in the page frontmatter instead (Astro SSR pages run for POST reliably).
 
 // ── Scoring engine (server-side only — never sent to client) ─────────────────
 const QUESTIONS = [
@@ -74,8 +79,9 @@ function getRecs(grade: number) {
 
 // ── ActiveCampaign integration ────────────────────────────────────────────────
 const AC_URL = 'https://5keyscommunication.api-us1.com/api/3';
-const AC_KEY = '946392ffad2a5819b200a98c3df72b6a61bdc5d97e721488435f09fabb683a32bc206e5e';
-// HWA* fields (75-79) replaced the original HHIE* fields (69-73) in July 2026.
+const AC_KEY = 'ca2187cceeb7dda7c4b9cd624ecb94bb2c5a7ebed39428b2eccfc2a3714173f345d81688';
+// New (no-space) HWA fields — replaced old HHIE fields 69-73 whose spaced
+// personalization tags did not resolve in AC templates (2026-07-13).
 const AC_FIELDS = { total: 75, e: 76, s: 77, grade: 78, handicap: 79 };
 const TAG_WELLNESS_PAGE = 113;
 const TAG_NEW_LEAF = 108;
@@ -114,39 +120,47 @@ async function pushToAC({ firstName, lastName, email, total, e, s, grade, label,
   ));
 }
 
-// ── API Route ─────────────────────────────────────────────────────────────────
-export const POST: APIRoute = async ({ request, locals }) => {
-  let body: { answers?: Record<number, string>; firstName?: string; lastName?: string; email?: string };
-  try { body = await request.json(); }
-  catch { return Response.json({ error: 'Invalid JSON' }, { status: 400 }); }
+// ── Submission handler ────────────────────────────────────────────────────────
+// Called from the /hearing-wellness/ page frontmatter on POST. Returns a JSON
+// Response with the scored report. AC push runs via waitUntil so it completes
+// after the response is sent (Cloudflare cancels un-awaited promises).
+const json = (o: unknown, status = 200): Response =>
+  new Response(JSON.stringify(o), { status, headers: { 'content-type': 'application/json' } });
 
-  const { answers, firstName, lastName, email } = body;
-  if (!answers || !firstName || !lastName || !email) {
-    return Response.json({ error: 'Missing fields' }, { status: 400 });
-  }
-  if (Object.keys(answers).length < 10) {
-    return Response.json({ error: 'Incomplete answers' }, { status: 400 });
-  }
+type WellnessBody = { answers?: Record<number, string>; firstName?: string; lastName?: string; email?: string };
 
+// Score only — no side effects. Returns the report object or an { error } object.
+export function scoreWellness(body: WellnessBody) {
+  if (!body || typeof body !== 'object') return { error: 'Invalid JSON' as const, status: 400 };
+  const { answers } = body;
+  if (!answers || !body.firstName || !body.lastName || !body.email) return { error: 'Missing fields' as const, status: 400 };
+  if (Object.keys(answers).length < 10) return { error: 'Incomplete answers' as const, status: 400 };
   const { total, e, s } = calcScore(answers);
   const wellness = getGrade(total);
   const handicap = getHandicap(total);
   const recs = getRecs(wellness.grade);
+  return { total, e, s, grade: wellness.grade, label: wellness.label, color: wellness.color, desc: wellness.desc, handicap, recs };
+}
 
-  // Push to ActiveCampaign. Workers cancels in-flight work once the response
-  // is sent, so the promise must go through waitUntil — a bare fire-and-forget
-  // silently drops every sync. Astro v6 exposes the execution context as
-  // locals.cfContext (locals.runtime.ctx is a removed-API trap that throws).
-  // AC failure must never block the visitor's report, hence the swallowed
-  // rejection.
-  const acPromise = pushToAC({ firstName, lastName, email, total, e, s, grade: wellness.grade, label: wellness.label, handicap })
-    .catch(() => {/* silent */});
-  const ctx = (locals as { cfContext?: { waitUntil?: (p: Promise<unknown>) => void } }).cfContext;
-  if (ctx?.waitUntil) {
-    ctx.waitUntil(acPromise);
-  } else {
-    await acPromise;
+export async function handleWellnessSubmit(
+  body: WellnessBody,
+  waitUntil?: (p: Promise<unknown>) => void,
+  skipAc = false
+): Promise<Response> {
+  const report = scoreWellness(body);
+  if ('error' in report) return json({ error: report.error }, report.status);
+
+  // AC push is best-effort and must never affect the response.
+  if (!skipAc) {
+    try {
+      const acPromise = pushToAC({
+        firstName: body.firstName!, lastName: body.lastName!, email: body.email!,
+        total: report.total, e: report.e, s: report.s, grade: report.grade, label: report.label, handicap: report.handicap,
+      }).catch(() => {/* silent */});
+      if (waitUntil) waitUntil(acPromise);
+      else await acPromise;
+    } catch { /* ignore */ }
   }
 
-  return Response.json({ total, e, s, grade: wellness.grade, label: wellness.label, color: wellness.color, desc: wellness.desc, handicap, recs });
-};
+  return json(report);
+}

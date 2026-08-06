@@ -6,7 +6,7 @@ const PUBLIC_HTML_CACHE_CONTROL = "public, max-age=300, s-maxage=3600, stale-whi
 const EDGE_HTML_CACHE_CONTROL = "public, max-age=3600, stale-while-revalidate=86400";
 const PUBLIC_MEDIA_CACHE_CONTROL = "public, max-age=31536000, immutable";
 const PRIVATE_CACHE_CONTROL = "no-store, max-age=0";
-const HTML_CACHE_VERSION = "2026-07-24-wellness-api-fix-v25";
+const HTML_CACHE_VERSION = "2026-08-05-tseo-audit-v49";
 const PUBLIC_MEDIA_PREFIX = "/_emdash/api/media/file/";
 const CACHEABLE_MEDIA_TYPES = ["image/", "video/", "audio/"];
 const STATIC_PATHS = [
@@ -27,7 +27,11 @@ const LEGACY_CATEGORY_REDIRECTS: Record<string, string> = {
   "/category/education": "/patient-resources/",
   "/category/hearing": "/hearing-loss/",
   "/category/hearing-aid": "/hearing-aids-products/",
-  "/category/newsletter": "/patient-resources/"
+  "/category/newsletter": "/patient-resources/",
+  // TSEO audit (Aug 2026): flat hearing-loss URLs 404'd -> nested pages.
+  "/hearing-loss-facts": "/hearing-loss/hearing-loss-facts/",
+  "/how-we-hear": "/hearing-loss/how-we-hear/",
+  "/protecting-your-hearing": "/hearing-loss/protecting-your-hearing/"
 };
 
 const CONTENT_PATHS = Object.entries(shells).flatMap(([collection, entries]) =>
@@ -149,6 +153,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
   }
 
   // Legacy WordPress category archives -> the closest page on the new site.
+  // These 404'd after the rebuild; mapping confirmed by Vince (ClickUp 868hkfpxe).
   const legacyTarget = LEGACY_CATEGORY_REDIRECTS[pathname.replace(/\/+$/, "").toLowerCase()];
   if (legacyTarget) {
     const url = new URL(context.url);
