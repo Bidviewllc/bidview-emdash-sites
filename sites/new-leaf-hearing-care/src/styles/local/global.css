@@ -60,24 +60,6 @@ margin: 0;
   line-height: 1.5;
 }
 
-blockquote,
-.blockquote {
-background: #6fa9431a;
-  margin: 0;
-  padding: 30px;
-  border-radius: 5px;
-  border-left: 5px solid var(--primary);
-  color: var(--text);
-  font-size: 18px;
-  line-height: 1.5;
-  white-space: pre-line;
-}
-
-blockquote strong,
-.blockquote strong {
-font-weight: 700;
-}
-
 .eyebrow {
 color: var(--accent);
   font-size: 16px;

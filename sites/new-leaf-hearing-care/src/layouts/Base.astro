@@ -26,8 +26,7 @@ const ogDescription = description || "Audiology and hearing aid care from truste
 
 const origin = Astro.url.origin;
 const businessHours = [
-  { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday"], opens: "09:00", closes: "16:30" },
-  { "@type": "OpeningHoursSpecification", dayOfWeek: "Friday", opens: "09:00", closes: "12:00" }
+  { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], opens: "09:00", closes: "17:00" }
 ];
 const businessLocation = (id, name, path, telephone, faxNumber, streetAddress, city, postalCode, latitude, longitude) => ({
   "@type": ["MedicalBusiness", "LocalBusiness"],
@@ -78,7 +77,6 @@ const businessSchema = {
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Outfit:wght@500;600&family=Source+Serif+4:opsz,wght@8..60,600&display=swap" rel="stylesheet" />
-    <script type="text/javascript" src="https://www.bugherd.com/sidebarv2.js?apikey=npluy9pybrbkeqylzbokpq" async="true" is:inline></script>
   </head>
   <body>
     <Preloader />

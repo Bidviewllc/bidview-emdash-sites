@@ -1,5 +1,30 @@
 ---
-// Standalone wellness assessment page — no site layout, self-contained
+// Standalone wellness assessment page — no site layout, self-contained.
+// Handles its own POST (the form submits here) because /api/* endpoints are
+// shadowed by the root [...slug] catch-all in this emdash+Cloudflare setup.
+import { handleWellnessSubmit } from '../../lib/wellness';
+
+if (Astro.request.method === 'POST') {
+  const json = (o: unknown, status = 200) =>
+    new Response(JSON.stringify(o), { status, headers: { 'content-type': 'application/json' } });
+  let body: any = null;
+  try { body = JSON.parse(await Astro.request.text()); }
+  catch { return json({ error: 'Invalid JSON' }, 400); }
+  try {
+    // Grab Cloudflare's waitUntil defensively — accessing locals.runtime.ctx can
+    // throw depending on adapter/runtime, and an uncaught throw here would surface
+    // as a 302 -> /404/ from the catch-all instead of a real response.
+    let waitUntil: ((p: Promise<unknown>) => void) | undefined;
+    try {
+      const ctx = (Astro.locals as any)?.runtime?.ctx;
+      if (ctx && typeof ctx.waitUntil === 'function') waitUntil = ctx.waitUntil.bind(ctx);
+    } catch { /* no ctx.waitUntil available — AC push will be awaited inline */ }
+    return await handleWellnessSubmit(body, waitUntil);
+  } catch {
+    return json({ error: 'Server error' }, 500);
+  }
+}
+
 const logoSrc = '/assets/new-leaf-hearing-care-logo.webp';
 ---
 <!DOCTYPE html>
@@ -351,7 +376,7 @@ async function submitForm() {
   document.getElementById('loading-msg').textContent = 'Processing your assessment…';
 
   try {
-    var resp = await fetch('/api/wellness-submit/', {
+    var resp = await fetch('/hearing-wellness/', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify({ answers: answers, firstName: fn, lastName: ln, email: em })
