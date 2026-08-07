@@ -3330,6 +3330,12 @@ padding: 0 70px 30px 0;
   width: 100%;
 }
 
+/* .testimonial-card sets display:flex, which beats the [hidden] attribute's
+   UA display:none - without this the show-more pagination has no effect. */
+.reviews-grid .testimonial-card[hidden] {
+  display: none;
+}
+
 .reviews-card__norating {
   color: var(--gray);
   font-style: italic;
