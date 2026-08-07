@@ -1,0 +1,168 @@
+---
+/**
+ * Google reviews for one location, rendered server-side.
+ *
+ * Reviews come from src/reviews/reviews.json (synced from Google via
+ * DataForSEO by scripts/sync-reviews.mjs), so every review is in the HTML at
+ * request time — readable by search engines and AI assistants, with no
+ * third-party widget or client-side fetch.
+ */
+import reviewsData from "../reviews/reviews.json";
+
+const { location } = Astro.props;
+const data = reviewsData[location];
+
+const LOCATIONS = {
+  arvada: {
+    name: "Arvada",
+    address: "8721 Wadsworth Blvd, Suite C, Arvada, CO 80003",
+    phone: "(303) 639-5323",
+    page: "/audiologist-hearing-aids-arvada-colorado/",
+    other: { name: "Littleton", href: "/littleton-reviews/" }
+  },
+  littleton: {
+    name: "Littleton",
+    address: "5808 S Rapp St Ste 102, Littleton, CO 80120",
+    phone: "(720) 689-7989",
+    page: "/audiologist-hearing-aids-littleton-colorado/",
+    other: { name: "Arvada", href: "/arvada-reviews/" }
+  }
+};
+
+const info = LOCATIONS[location];
+const reviews = data?.reviews ?? [];
+const rating = data?.rating ?? null;
+const votes = data?.votesCount ?? reviews.length;
+
+const heading = `${info.name} Reviews`;
+const mapsUrl = `https://search.google.com/local/reviews?placeid=${data?.placeId ?? ""}`;
+const writeUrl = `https://search.google.com/local/writereview?placeid=${data?.placeId ?? ""}`;
+
+const stars = (n) => "★★★★★".slice(0, Math.round(n || 0)).padEnd(Math.round(n || 0), "★");
+const initial = (name) => (name || "?").trim().charAt(0).toUpperCase();
+// Alternate the avatar accent so the wall of cards doesn't read as one block.
+const avatarClass = (i) => (i % 2 === 1 ? "testimonial-avatar testimonial-avatar--accent" : "testimonial-avatar");
+
+// Rich results: aggregate + the individual reviews that carry text.
+const withText = reviews.filter((r) => r.text && r.text.trim());
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  name: `New Leaf Hearing Care - ${info.name}`,
+  address: { "@type": "PostalAddress", streetAddress: info.address.split(",")[0], addressLocality: info.name, addressRegion: "CO", addressCountry: "US" },
+  telephone: info.phone,
+  url: new URL(Astro.url.pathname, Astro.url.origin).href,
+  ...(rating && votes
+    ? { aggregateRating: { "@type": "AggregateRating", ratingValue: String(rating), reviewCount: String(votes), bestRating: "5", worstRating: "1" } }
+    : {}),
+  review: withText.slice(0, 50).map((r) => ({
+    "@type": "Review",
+    author: { "@type": "Person", name: r.author },
+    reviewRating: { "@type": "Rating", ratingValue: String(r.rating), bestRating: "5", worstRating: "1" },
+    ...(r.publishedAt ? { datePublished: r.publishedAt.slice(0, 10) } : {}),
+    reviewBody: r.text
+  }))
+};
+---
+
+<section class="internal-hero-section new-leaf-texture-overlay" aria-labelledby="internal-page-heading">
+  <div class="internal-hero-container">
+    <nav class="eyebrow internal-hero-breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span aria-hidden="true">&gt;</span>
+      <span>{heading}</span>
+    </nav>
+    <h1 id="internal-page-heading" class="internal-hero-title">{heading}</h1>
+  </div>
+</section>
+
+<section class="internal-content-section">
+  <div class="reviews-page">
+    <!-- Rating summary -->
+    <div class="reviews-summary">
+      <div class="reviews-summary__score">
+        <p class="reviews-summary__number">{rating}</p>
+        <div class="reviews-summary__stars" aria-label={`${rating} out of 5 stars`}>
+          <span aria-hidden="true">{stars(rating)}</span>
+        </div>
+        <p class="reviews-summary__count">{votes} Google reviews</p>
+      </div>
+      <div class="reviews-summary__body">
+        <p class="eyebrow">Patient Reviews</p>
+        <h2 class="section-title">What our {info.name} patients say</h2>
+        <p>
+          Verified Google reviews for New Leaf Hearing Care in {info.name}, CO.
+          {info.address}
+        </p>
+        <div class="reviews-summary__actions">
+          <a class="btn btn-primary" href={writeUrl} target="_blank" rel="nofollow noopener noreferrer">Leave a Review</a>
+          <a class="btn btn-outline-purple" href="/schedule-appointment/">Schedule an Appointment</a>
+        </div>
+        <p class="reviews-summary__switch">
+          Looking for our other location? <a href={info.other.href}>Read {info.other.name} reviews</a>.
+        </p>
+      </div>
+    </div>
+
+    <!-- Review cards -->
+    {reviews.length > 0 ? (
+      <>
+        <div class="reviews-grid" id="reviews-grid">
+          {reviews.map((r, i) => (
+            <article class="testimonial-card reviews-card" data-review-index={i}>
+              <div class="testimonial-card__head">
+                <span class={avatarClass(i)} aria-hidden="true">{initial(r.author)}</span>
+                <div>
+                  <h3>{r.author}</h3>
+                  <p>{r.timeAgo}</p>
+                </div>
+              </div>
+              <div class="testimonial-rating" aria-label={`${r.rating} out of 5 stars`}>
+                <span aria-hidden="true">{stars(r.rating)}</span>
+              </div>
+              {r.text && r.text.trim() ? <p>{r.text}</p> : <p class="reviews-card__norating">Rated {r.rating} out of 5.</p>}
+              <a class="reviews-card__source" href={r.url || mapsUrl} target="_blank" rel="nofollow noopener noreferrer">
+                Posted on Google
+              </a>
+            </article>
+          ))}
+        </div>
+        <div class="reviews-more">
+          <button type="button" class="btn btn-outline-purple" id="reviews-more-btn">Show more reviews</button>
+        </div>
+      </>
+    ) : (
+      <p>Reviews are being updated. Please check back shortly.</p>
+    )}
+  </div>
+</section>
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />
+
+<script is:inline>
+  (function () {
+    var STEP = 12;
+    var grid = document.getElementById("reviews-grid");
+    var btn = document.getElementById("reviews-more-btn");
+    if (!grid || !btn) return;
+    var cards = Array.prototype.slice.call(grid.querySelectorAll(".reviews-card"));
+    var shown = STEP;
+    function apply() {
+      cards.forEach(function (c, i) {
+        c.hidden = i >= shown;
+      });
+      if (shown >= cards.length) {
+        btn.parentNode.hidden = true;
+      }
+    }
+    // Only collapse once JS is available, so non-JS/crawler requests keep every
+    // review visible in the HTML.
+    apply();
+    btn.addEventListener("click", function () {
+      shown += STEP;
+      apply();
+      var next = cards[shown - STEP];
+      if (next) next.setAttribute("tabindex", "-1"), next.focus();
+    });
+  })();
+</script>

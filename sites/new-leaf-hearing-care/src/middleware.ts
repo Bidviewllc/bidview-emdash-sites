@@ -12,9 +12,11 @@ const CACHEABLE_MEDIA_TYPES = ["image/", "video/", "audio/"];
 const STATIC_PATHS = [
   "/",
   "/about/",
+  "/arvada-reviews/",
   "/audiologist-hearing-aids-arvada-colorado/",
   "/audiologist-hearing-aids-littleton-colorado/",
   "/contact-us/",
+  "/littleton-reviews/",
   "/patient-resources/",
   "/schedule-appointment/",
   "/sitemap/"
