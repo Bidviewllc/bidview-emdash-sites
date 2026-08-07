@@ -1,0 +1,17 @@
+---
+import Base from "../layouts/Base.astro";
+import ReviewsPage from "../components/ReviewsPage.astro";
+
+export const prerender = false;
+export const cacheHint = 3600;
+
+const TITLE = "Arvada Reviews | New Leaf Hearing Care";
+const DESCRIPTION =
+  "Read verified Google reviews for New Leaf Hearing Care in Arvada, CO. See what patients say about our audiologists, hearing tests, and hearing aid care.";
+---
+
+<Base title={TITLE} description={DESCRIPTION}>
+  <main>
+    <ReviewsPage location="arvada" />
+  </main>
+</Base>

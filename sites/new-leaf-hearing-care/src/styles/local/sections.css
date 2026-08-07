@@ -3250,3 +3250,145 @@ padding: 0 70px 30px 0;
     font-size: 22px;
   }
 }
+
+/* Reviews pages (/arvada-reviews/, /littleton-reviews/) */
+.reviews-page {
+  width: min(1280px, 100%);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+.reviews-summary {
+  display: flex;
+  align-items: center;
+  gap: 48px;
+  padding: 36px;
+  border-radius: 20px;
+  background: var(--light-secondary);
+}
+
+.reviews-summary__score {
+  flex: 0 0 200px;
+  text-align: center;
+  padding: 24px 16px;
+  border-radius: 16px;
+  background: var(--light);
+}
+
+.reviews-summary__number {
+  color: var(--primary);
+  font-family: var(--font-heading, inherit);
+  font-size: 56px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.reviews-summary__stars {
+  color: var(--primary);
+  font-size: 22px;
+  letter-spacing: 0.06em;
+  margin-top: 8px;
+}
+
+.reviews-summary__count {
+  color: var(--gray);
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+.reviews-summary__body {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.reviews-summary__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 8px;
+}
+
+.reviews-summary__switch {
+  color: var(--gray);
+  font-size: 14px;
+}
+
+/* Masonry columns rather than grid: review cards vary a lot in height, and a
+   grid row is as tall as its tallest card, which left 100-260px holes under
+   the short ones. Columns pack them with an even 24px gutter. */
+.reviews-grid {
+  columns: 3;
+  column-gap: 24px;
+}
+
+/* The homepage testimonial card is a flex row item; in this grid it owns its cell. */
+.reviews-grid .testimonial-card {
+  flex: none;
+  width: 100%;
+  margin: 0 0 24px;
+  break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+}
+
+/* .testimonial-card sets display:flex, which beats the [hidden] attribute's
+   UA display:none - without this the show-more pagination has no effect. */
+.reviews-grid .testimonial-card[hidden] {
+  display: none;
+}
+
+.reviews-card__norating {
+  color: var(--gray);
+  font-style: italic;
+}
+
+.reviews-card__source {
+  margin-top: auto;
+  padding-top: 6px;
+  color: var(--gray);
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.reviews-card__source:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.reviews-more {
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 1024px) {
+  .reviews-summary {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 28px;
+  }
+
+  .reviews-summary__score {
+    flex: none;
+  }
+
+  .reviews-grid {
+    columns: 2;
+  }
+}
+
+@media (max-width: 767px) {
+  .reviews-page {
+    gap: 32px;
+  }
+
+  .reviews-summary {
+    padding: 24px;
+  }
+
+  .reviews-grid {
+    columns: 1;
+  }
+}
