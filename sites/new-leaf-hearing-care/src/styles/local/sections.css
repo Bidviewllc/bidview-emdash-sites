@@ -3317,17 +3317,21 @@ padding: 0 70px 30px 0;
   font-size: 14px;
 }
 
+/* Masonry columns rather than grid: review cards vary a lot in height, and a
+   grid row is as tall as its tallest card, which left 100-260px holes under
+   the short ones. Columns pack them with an even 24px gutter. */
 .reviews-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  align-items: start;
-  gap: 24px;
+  columns: 3;
+  column-gap: 24px;
 }
 
 /* The homepage testimonial card is a flex row item; in this grid it owns its cell. */
 .reviews-grid .testimonial-card {
   flex: none;
   width: 100%;
+  margin: 0 0 24px;
+  break-inside: avoid;
+  -webkit-column-break-inside: avoid;
 }
 
 /* .testimonial-card sets display:flex, which beats the [hidden] attribute's
@@ -3371,7 +3375,7 @@ padding: 0 70px 30px 0;
   }
 
   .reviews-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    columns: 2;
   }
 }
 
@@ -3385,6 +3389,6 @@ padding: 0 70px 30px 0;
   }
 
   .reviews-grid {
-    grid-template-columns: minmax(0, 1fr);
+    columns: 1;
   }
 }
