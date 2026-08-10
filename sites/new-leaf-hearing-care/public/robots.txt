@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+Disallow: /_emdash/
+Disallow: /404
+Disallow: /api/
+
+Sitemap: https://newleafhearing.com/sitemap.xml
