@@ -323,8 +323,8 @@ sql += insertRow("site_settings", "main", "Site Settings", {
   email: "info@ontariohearing.com",
   address_street: "2210 Monroe Avenue",
   address_city_state: "Rochester, NY 14618",
-  hours_mon_thu: "9 AM – 5 PM",
-  hours_fri: "9 AM – 4 PM",
+  hours_mon_thu: "8 AM – 5 PM",
+  hours_fri: "8 AM – 4 PM",
   google_maps_url: "https://www.google.com/maps?cid=9213821493223506062",
 });
 
@@ -479,7 +479,6 @@ const serviceSlugs = new Set([
   "hearing-test","cochlear-implant","tinnitus","custom-ear-molds","real-ear-measurement",
   "hearing-aids","hearing-aid-fittings-in-rochester-ny","hearing-aid-batteries","types-of-hearing-aids",
   "aural-rehabilitation",
-  "audiologist-in-pittsford-ny",
   "services","what-to-expect","insurance","giving-back",
 ]);
 const services = data.filter((p) => serviceSlugs.has(p.slug));

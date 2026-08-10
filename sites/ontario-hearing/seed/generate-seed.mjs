@@ -53,8 +53,8 @@ sql += insert("site_settings", "main", "Site Settings", {
   email: "info@ontariohearing.com",
   address_street: "2210 Monroe Avenue",
   address_city_state: "Rochester, NY 14618",
-  hours_mon_thu: "9 AM – 5 PM",
-  hours_fri: "9 AM – 4 PM",
+  hours_mon_thu: "8 AM – 5 PM",
+  hours_fri: "8 AM – 4 PM",
   google_maps_url: "https://www.google.com/maps?cid=9213821493223506062",
 });
 
