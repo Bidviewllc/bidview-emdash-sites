@@ -11,33 +11,33 @@
 -- Collection: site_settings
 -- ============================================================
 INSERT OR REPLACE INTO _emdash_collections (id, slug, label, label_singular, supports, source, search_config, has_seo, comments_enabled, comments_moderation, comments_closed_after_days, comments_auto_approve_users) VALUES (
-  '0101JU4T4QHH00T0K0CS00T0K0', 'site_settings', 'Site Settings', 'Site Setting',
+  '0101JVM6INM400T0K0CS00T0K0', 'site_settings', 'Site Settings', 'Site Setting',
   '["drafts","revisions","search"]', 'seed', '{"enabled":true}', 0, 0, 'first_time', 90, 1
 );
 
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QHI01SQT03F01SQT0', '0101JU4T4QHH00T0K0CS00T0K0', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
+  '0101JVM6INM501SQT03F01SQT0', '0101JVM6INM400T0K0CS00T0K0', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QHJ01SNB6S501SNB6', '0101JU4T4QHH00T0K0CS00T0K0', 'phone', 'Phone', 'string', 'TEXT', 0, 1, 0, 1
+  '0101JVM6INM601SNB6S501SNB6', '0101JVM6INM400T0K0CS00T0K0', 'phone', 'Phone', 'string', 'TEXT', 0, 1, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QHK01SDPADJ01SDPA', '0101JU4T4QHH00T0K0CS00T0K0', 'email', 'Email', 'string', 'TEXT', 0, 2, 0, 1
+  '0101JVM6INM701SDPADJ01SDPA', '0101JVM6INM400T0K0CS00T0K0', 'email', 'Email', 'string', 'TEXT', 0, 2, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QHL01QU18JN01QU18', '0101JU4T4QHH00T0K0CS00T0K0', 'address_street', 'Address Street', 'string', 'TEXT', 0, 3, 0, 1
+  '0101JVM6INM801QU18JN01QU18', '0101JVM6INM400T0K0CS00T0K0', 'address_street', 'Address Street', 'string', 'TEXT', 0, 3, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QHM01292GMF01292G', '0101JU4T4QHH00T0K0CS00T0K0', 'address_city_state', 'Address City State', 'string', 'TEXT', 0, 4, 0, 1
+  '0101JVM6INM901292GMF01292G', '0101JVM6INM400T0K0CS00T0K0', 'address_city_state', 'Address City State', 'string', 'TEXT', 0, 4, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QHN0198H2AB0198H2', '0101JU4T4QHH00T0K0CS00T0K0', 'hours_mon_thu', 'Hours Mon Thu', 'string', 'TEXT', 0, 5, 0, 1
+  '0101JVM6INMA0198H2AB0198H2', '0101JVM6INM400T0K0CS00T0K0', 'hours_mon_thu', 'Hours Mon Thu', 'string', 'TEXT', 0, 5, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QHO00VKS8BS00VKS8', '0101JU4T4QHH00T0K0CS00T0K0', 'hours_fri', 'Hours Fri', 'string', 'TEXT', 0, 6, 0, 1
+  '0101JVM6INMB00VKS8BS00VKS8', '0101JVM6INM400T0K0CS00T0K0', 'hours_fri', 'Hours Fri', 'string', 'TEXT', 0, 6, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QHP008HN234008HN2', '0101JU4T4QHH00T0K0CS00T0K0', 'google_maps_url', 'Google Maps Url', 'string', 'TEXT', 0, 7, 0, 1
+  '0101JVM6INMC008HN234008HN2', '0101JVM6INM400T0K0CS00T0K0', 'google_maps_url', 'Google Maps Url', 'string', 'TEXT', 0, 7, 0, 1
 );
 
 CREATE TABLE IF NOT EXISTS "ec_site_settings" (
@@ -72,123 +72,123 @@ CREATE TABLE IF NOT EXISTS "ec_site_settings" (
 -- Collection: homepage
 -- ============================================================
 INSERT OR REPLACE INTO _emdash_collections (id, slug, label, label_singular, supports, source, search_config, has_seo, comments_enabled, comments_moderation, comments_closed_after_days, comments_auto_approve_users) VALUES (
-  '0101JU4T4QHQ01VR1K1J01VR1K', 'homepage', 'Homepage', 'Homepage',
+  '0101JVM6INMD01VR1K1J01VR1K', 'homepage', 'Homepage', 'Homepage',
   '["drafts","revisions","search"]', 'seed', '{"enabled":true}', 0, 0, 'first_time', 90, 1
 );
 
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QHR011F595C011F59', '0101JU4T4QHQ01VR1K1J01VR1K', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
+  '0101JVM6INME011F595C011F59', '0101JVM6INMD01VR1K1J01VR1K', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QHS01EF28UG01EF28', '0101JU4T4QHQ01VR1K1J01VR1K', 'hero_eyebrow', 'Hero Eyebrow', 'string', 'TEXT', 0, 1, 0, 1
+  '0101JVM6INMF01EF28UG01EF28', '0101JVM6INMD01VR1K1J01VR1K', 'hero_eyebrow', 'Hero Eyebrow', 'string', 'TEXT', 0, 1, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QHT00JB9BGN00JB9B', '0101JU4T4QHQ01VR1K1J01VR1K', 'hero_heading', 'Hero Heading', 'string', 'TEXT', 0, 2, 0, 1
+  '0101JVM6INMG00JB9BGN00JB9B', '0101JVM6INMD01VR1K1J01VR1K', 'hero_heading', 'Hero Heading', 'string', 'TEXT', 0, 2, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QHU01MH2KPB01MH2K', '0101JU4T4QHQ01VR1K1J01VR1K', 'hero_lead', 'Hero Lead', 'text', 'TEXT', 0, 3, 0, 1
+  '0101JVM6INMH01MH2KPB01MH2K', '0101JVM6INMD01VR1K1J01VR1K', 'hero_lead', 'Hero Lead', 'text', 'TEXT', 0, 3, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QHV01GV9RNL01GV9R', '0101JU4T4QHQ01VR1K1J01VR1K', 'hero_cta_text', 'Hero Cta Text', 'string', 'TEXT', 0, 4, 0, 1
+  '0101JVM6INMI01GV9RNL01GV9R', '0101JVM6INMD01VR1K1J01VR1K', 'hero_cta_text', 'Hero Cta Text', 'string', 'TEXT', 0, 4, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QI0019VKAE1019VKA', '0101JU4T4QHQ01VR1K1J01VR1K', 'reviews_count', 'Reviews Count', 'string', 'TEXT', 0, 5, 0, 1
+  '0101JVM6INMJ019VKAE1019VKA', '0101JVM6INMD01VR1K1J01VR1K', 'reviews_count', 'Reviews Count', 'string', 'TEXT', 0, 5, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QI101D32ASB01D32A', '0101JU4T4QHQ01VR1K1J01VR1K', 'about_eyebrow', 'About Eyebrow', 'string', 'TEXT', 0, 6, 0, 1
+  '0101JVM6INMK01D32ASB01D32A', '0101JVM6INMD01VR1K1J01VR1K', 'about_eyebrow', 'About Eyebrow', 'string', 'TEXT', 0, 6, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QI200KN99IS00KN99', '0101JU4T4QHQ01VR1K1J01VR1K', 'about_heading', 'About Heading', 'string', 'TEXT', 0, 7, 0, 1
+  '0101JVM6INML00KN99IS00KN99', '0101JVM6INMD01VR1K1J01VR1K', 'about_heading', 'About Heading', 'string', 'TEXT', 0, 7, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QI301RGIBM001RGIB', '0101JU4T4QHQ01VR1K1J01VR1K', 'about_body', 'About Body', 'text', 'TEXT', 0, 8, 0, 1
+  '0101JVM6INMM01RGIBM001RGIB', '0101JVM6INMD01VR1K1J01VR1K', 'about_body', 'About Body', 'text', 'TEXT', 0, 8, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QI401L1PA8E01L1PA', '0101JU4T4QHQ01VR1K1J01VR1K', 'about_body2', 'About Body2', 'text', 'TEXT', 0, 9, 0, 1
+  '0101JVM6INMN01L1PA8E01L1PA', '0101JVM6INMD01VR1K1J01VR1K', 'about_body2', 'About Body2', 'text', 'TEXT', 0, 9, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QI5010U7LAU010U7L', '0101JU4T4QHQ01VR1K1J01VR1K', 'about_badge_title', 'About Badge Title', 'string', 'TEXT', 0, 10, 0, 1
+  '0101JVM6INMO010U7LAU010U7L', '0101JVM6INMD01VR1K1J01VR1K', 'about_badge_title', 'About Badge Title', 'string', 'TEXT', 0, 10, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QI601911ULV01911U', '0101JU4T4QHQ01VR1K1J01VR1K', 'about_years_num', 'About Years Num', 'string', 'TEXT', 0, 11, 0, 1
+  '0101JVM6INMP01911ULV01911U', '0101JVM6INMD01VR1K1J01VR1K', 'about_years_num', 'About Years Num', 'string', 'TEXT', 0, 11, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QI7008PFOVD008PFO', '0101JU4T4QHQ01VR1K1J01VR1K', 'about_years_label', 'About Years Label', 'string', 'TEXT', 0, 12, 0, 1
+  '0101JVM6INMQ008PFOVD008PFO', '0101JVM6INMD01VR1K1J01VR1K', 'about_years_label', 'About Years Label', 'string', 'TEXT', 0, 12, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QI801ACO4B301ACO4', '0101JU4T4QHQ01VR1K1J01VR1K', 'about_doctors_num', 'About Doctors Num', 'string', 'TEXT', 0, 13, 0, 1
+  '0101JVM6INMR01ACO4B301ACO4', '0101JVM6INMD01VR1K1J01VR1K', 'about_doctors_num', 'About Doctors Num', 'string', 'TEXT', 0, 13, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QI9019359TL019359', '0101JU4T4QHQ01VR1K1J01VR1K', 'about_doctors_label', 'About Doctors Label', 'string', 'TEXT', 0, 14, 0, 1
+  '0101JVM6INMS019359TL019359', '0101JVM6INMD01VR1K1J01VR1K', 'about_doctors_label', 'About Doctors Label', 'string', 'TEXT', 0, 14, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QIA01JIVN2F01JIVN', '0101JU4T4QHQ01VR1K1J01VR1K', 'about_brands_num', 'About Brands Num', 'string', 'TEXT', 0, 15, 0, 1
+  '0101JVM6INMT01JIVN2F01JIVN', '0101JVM6INMD01VR1K1J01VR1K', 'about_brands_num', 'About Brands Num', 'string', 'TEXT', 0, 15, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QIB01DCUPT101DCUP', '0101JU4T4QHQ01VR1K1J01VR1K', 'about_brands_label', 'About Brands Label', 'string', 'TEXT', 0, 16, 0, 1
+  '0101JVM6INMU01DCUPT101DCUP', '0101JVM6INMD01VR1K1J01VR1K', 'about_brands_label', 'About Brands Label', 'string', 'TEXT', 0, 16, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QIC01BTN0PJ01BTN0', '0101JU4T4QHQ01VR1K1J01VR1K', 'team_eyebrow', 'Team Eyebrow', 'string', 'TEXT', 0, 17, 0, 1
+  '0101JVM6INMV01BTN0PJ01BTN0', '0101JVM6INMD01VR1K1J01VR1K', 'team_eyebrow', 'Team Eyebrow', 'string', 'TEXT', 0, 17, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QID00LSKJLK00LSKJ', '0101JU4T4QHQ01VR1K1J01VR1K', 'team_heading', 'Team Heading', 'string', 'TEXT', 0, 18, 0, 1
+  '0101JVM6INN000LSKJLK00LSKJ', '0101JVM6INMD01VR1K1J01VR1K', 'team_heading', 'Team Heading', 'string', 'TEXT', 0, 18, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QIE00QNF7RA00QNF7', '0101JU4T4QHQ01VR1K1J01VR1K', 'team_subhead', 'Team Subhead', 'text', 'TEXT', 0, 19, 0, 1
+  '0101JVM6INN100QNF7RA00QNF7', '0101JVM6INMD01VR1K1J01VR1K', 'team_subhead', 'Team Subhead', 'text', 'TEXT', 0, 19, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QIF0023ETJF0023ET', '0101JU4T4QHQ01VR1K1J01VR1K', 'cochlear_eyebrow', 'Cochlear Eyebrow', 'string', 'TEXT', 0, 20, 0, 1
+  '0101JVM6INN20023ETJF0023ET', '0101JVM6INMD01VR1K1J01VR1K', 'cochlear_eyebrow', 'Cochlear Eyebrow', 'string', 'TEXT', 0, 20, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QIG01S25DTA01S25D', '0101JU4T4QHQ01VR1K1J01VR1K', 'cochlear_heading', 'Cochlear Heading', 'string', 'TEXT', 0, 21, 0, 1
+  '0101JVM6INN301S25DTA01S25D', '0101JVM6INMD01VR1K1J01VR1K', 'cochlear_heading', 'Cochlear Heading', 'string', 'TEXT', 0, 21, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QIH00J0R87Q00J0R8', '0101JU4T4QHQ01VR1K1J01VR1K', 'cochlear_body', 'Cochlear Body', 'text', 'TEXT', 0, 22, 0, 1
+  '0101JVM6INN400J0R87Q00J0R8', '0101JVM6INMD01VR1K1J01VR1K', 'cochlear_body', 'Cochlear Body', 'text', 'TEXT', 0, 22, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QII014KD8DV014KD8', '0101JU4T4QHQ01VR1K1J01VR1K', 'diag_eyebrow', 'Diag Eyebrow', 'string', 'TEXT', 0, 23, 0, 1
+  '0101JVM6INN5014KD8DV014KD8', '0101JVM6INMD01VR1K1J01VR1K', 'diag_eyebrow', 'Diag Eyebrow', 'string', 'TEXT', 0, 23, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QIJ00PH732Q00PH73', '0101JU4T4QHQ01VR1K1J01VR1K', 'diag_heading', 'Diag Heading', 'string', 'TEXT', 0, 24, 0, 1
+  '0101JVM6INN600PH732Q00PH73', '0101JVM6INMD01VR1K1J01VR1K', 'diag_heading', 'Diag Heading', 'string', 'TEXT', 0, 24, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QIK01LQL1C801LQL1', '0101JU4T4QHQ01VR1K1J01VR1K', 'diag_subhead', 'Diag Subhead', 'text', 'TEXT', 0, 25, 0, 1
+  '0101JVM6INN701LQL1C801LQL1', '0101JVM6INMD01VR1K1J01VR1K', 'diag_subhead', 'Diag Subhead', 'text', 'TEXT', 0, 25, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QIL00GEACPH00GEAC', '0101JU4T4QHQ01VR1K1J01VR1K', 'ha_eyebrow', 'Ha Eyebrow', 'string', 'TEXT', 0, 26, 0, 1
+  '0101JVM6INN800GEACPH00GEAC', '0101JVM6INMD01VR1K1J01VR1K', 'ha_eyebrow', 'Ha Eyebrow', 'string', 'TEXT', 0, 26, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QIM01DN9UN801DN9U', '0101JU4T4QHQ01VR1K1J01VR1K', 'ha_heading', 'Ha Heading', 'string', 'TEXT', 0, 27, 0, 1
+  '0101JVM6INN901DN9UN801DN9U', '0101JVM6INMD01VR1K1J01VR1K', 'ha_heading', 'Ha Heading', 'string', 'TEXT', 0, 27, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QIN00CSOR5200CSOR', '0101JU4T4QHQ01VR1K1J01VR1K', 'brands_eyebrow', 'Brands Eyebrow', 'string', 'TEXT', 0, 28, 0, 1
+  '0101JVM6INNA00CSOR5200CSOR', '0101JVM6INMD01VR1K1J01VR1K', 'brands_eyebrow', 'Brands Eyebrow', 'string', 'TEXT', 0, 28, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QIO01KTIPA501KTIP', '0101JU4T4QHQ01VR1K1J01VR1K', 'brands_heading', 'Brands Heading', 'string', 'TEXT', 0, 29, 0, 1
+  '0101JVM6INNB01KTIPA501KTIP', '0101JVM6INMD01VR1K1J01VR1K', 'brands_heading', 'Brands Heading', 'string', 'TEXT', 0, 29, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QIP0049ETP70049ET', '0101JU4T4QHQ01VR1K1J01VR1K', 'brands_subhead', 'Brands Subhead', 'text', 'TEXT', 0, 30, 0, 1
+  '0101JVM6INNC0049ETP70049ET', '0101JVM6INMD01VR1K1J01VR1K', 'brands_subhead', 'Brands Subhead', 'text', 'TEXT', 0, 30, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QIQ01QGMVCA01QGMV', '0101JU4T4QHQ01VR1K1J01VR1K', 'testimonials_eyebrow', 'Testimonials Eyebrow', 'string', 'TEXT', 0, 31, 0, 1
+  '0101JVM6INND01QGMVCA01QGMV', '0101JVM6INMD01VR1K1J01VR1K', 'testimonials_eyebrow', 'Testimonials Eyebrow', 'string', 'TEXT', 0, 31, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QIR0079KL2T0079KL', '0101JU4T4QHQ01VR1K1J01VR1K', 'testimonials_heading', 'Testimonials Heading', 'string', 'TEXT', 0, 32, 0, 1
+  '0101JVM6INNE0079KL2T0079KL', '0101JVM6INMD01VR1K1J01VR1K', 'testimonials_heading', 'Testimonials Heading', 'string', 'TEXT', 0, 32, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QIS00JRL07C00JRL0', '0101JU4T4QHQ01VR1K1J01VR1K', 'faq_eyebrow', 'Faq Eyebrow', 'string', 'TEXT', 0, 33, 0, 1
+  '0101JVM6INNF00JRL07C00JRL0', '0101JVM6INMD01VR1K1J01VR1K', 'faq_eyebrow', 'Faq Eyebrow', 'string', 'TEXT', 0, 33, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QIT01A9VB9D01A9VB', '0101JU4T4QHQ01VR1K1J01VR1K', 'faq_heading', 'Faq Heading', 'string', 'TEXT', 0, 34, 0, 1
+  '0101JVM6INNG01A9VB9D01A9VB', '0101JVM6INMD01VR1K1J01VR1K', 'faq_heading', 'Faq Heading', 'string', 'TEXT', 0, 34, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QIU0151SP5L0151SP', '0101JU4T4QHQ01VR1K1J01VR1K', 'faq_subhead', 'Faq Subhead', 'text', 'TEXT', 0, 35, 0, 1
+  '0101JVM6INNH0151SP5L0151SP', '0101JVM6INMD01VR1K1J01VR1K', 'faq_subhead', 'Faq Subhead', 'text', 'TEXT', 0, 35, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QIV00UVF94800UVF9', '0101JU4T4QHQ01VR1K1J01VR1K', 'blog_eyebrow', 'Blog Eyebrow', 'string', 'TEXT', 0, 36, 0, 1
+  '0101JVM6INNI00UVF94800UVF9', '0101JVM6INMD01VR1K1J01VR1K', 'blog_eyebrow', 'Blog Eyebrow', 'string', 'TEXT', 0, 36, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QJ000V652CH00V652', '0101JU4T4QHQ01VR1K1J01VR1K', 'blog_heading', 'Blog Heading', 'string', 'TEXT', 0, 37, 0, 1
+  '0101JVM6INNJ00V652CH00V652', '0101JVM6INMD01VR1K1J01VR1K', 'blog_heading', 'Blog Heading', 'string', 'TEXT', 0, 37, 0, 1
 );
 
 CREATE TABLE IF NOT EXISTS "ec_homepage" (
@@ -253,81 +253,81 @@ CREATE TABLE IF NOT EXISTS "ec_homepage" (
 -- Collection: about_page
 -- ============================================================
 INSERT OR REPLACE INTO _emdash_collections (id, slug, label, label_singular, supports, source, search_config, has_seo, comments_enabled, comments_moderation, comments_closed_after_days, comments_auto_approve_users) VALUES (
-  '0101JU4T4QJ101JLFSV001JLFS', 'about_page', 'About Page', 'About Page',
+  '0101JVM6INNK01JLFSV001JLFS', 'about_page', 'About Page', 'About Page',
   '["drafts","revisions","search"]', 'seed', '{"enabled":true}', 0, 0, 'first_time', 90, 1
 );
 
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QJ201NLT0M101NLT0', '0101JU4T4QJ101JLFSV001JLFS', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
+  '0101JVM6INNL01NLT0M101NLT0', '0101JVM6INNK01JLFSV001JLFS', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QJ3019G3BK6019G3B', '0101JU4T4QJ101JLFSV001JLFS', 'story_eyebrow', 'Story Eyebrow', 'string', 'TEXT', 0, 1, 0, 1
+  '0101JVM6INNM019G3BK6019G3B', '0101JVM6INNK01JLFSV001JLFS', 'story_eyebrow', 'Story Eyebrow', 'string', 'TEXT', 0, 1, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QJ400OA88R100OA88', '0101JU4T4QJ101JLFSV001JLFS', 'story_heading', 'Story Heading', 'string', 'TEXT', 0, 2, 0, 1
+  '0101JVM6INNN00OA88R100OA88', '0101JVM6INNK01JLFSV001JLFS', 'story_heading', 'Story Heading', 'string', 'TEXT', 0, 2, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QJ501VA38QK01VA38', '0101JU4T4QJ101JLFSV001JLFS', 'story_body1', 'Story Body1', 'text', 'TEXT', 0, 3, 0, 1
+  '0101JVM6INNO01VA38QK01VA38', '0101JVM6INNK01JLFSV001JLFS', 'story_body1', 'Story Body1', 'text', 'TEXT', 0, 3, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QJ601VA38QJ01VA38', '0101JU4T4QJ101JLFSV001JLFS', 'story_body2', 'Story Body2', 'text', 'TEXT', 0, 4, 0, 1
+  '0101JVM6INNP01VA38QJ01VA38', '0101JVM6INNK01JLFSV001JLFS', 'story_body2', 'Story Body2', 'text', 'TEXT', 0, 4, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QJ700OG6R1100OG6R', '0101JU4T4QJ101JLFSV001JLFS', 'story_image_caption', 'Story Image Caption', 'string', 'TEXT', 0, 5, 0, 1
+  '0101JVM6INNQ00OG6R1100OG6R', '0101JVM6INNK01JLFSV001JLFS', 'story_image_caption', 'Story Image Caption', 'string', 'TEXT', 0, 5, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QJ8005D9AVV005D9A', '0101JU4T4QJ101JLFSV001JLFS', 'story_stat1_num', 'Story Stat1 Num', 'string', 'TEXT', 0, 6, 0, 1
+  '0101JVM6INNR005D9AVV005D9A', '0101JVM6INNK01JLFSV001JLFS', 'story_stat1_num', 'Story Stat1 Num', 'string', 'TEXT', 0, 6, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QJ901BO1T5F01BO1T', '0101JU4T4QJ101JLFSV001JLFS', 'story_stat1_label', 'Story Stat1 Label', 'string', 'TEXT', 0, 7, 0, 1
+  '0101JVM6INNS01BO1T5F01BO1T', '0101JVM6INNK01JLFSV001JLFS', 'story_stat1_label', 'Story Stat1 Label', 'string', 'TEXT', 0, 7, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QJA005CD53U005CD5', '0101JU4T4QJ101JLFSV001JLFS', 'story_stat2_num', 'Story Stat2 Num', 'string', 'TEXT', 0, 8, 0, 1
+  '0101JVM6INNT005CD53U005CD5', '0101JVM6INNK01JLFSV001JLFS', 'story_stat2_num', 'Story Stat2 Num', 'string', 'TEXT', 0, 8, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QJB01PPHK0G01PPHK', '0101JU4T4QJ101JLFSV001JLFS', 'story_stat2_label', 'Story Stat2 Label', 'string', 'TEXT', 0, 9, 0, 1
+  '0101JVM6INNU01PPHK0G01PPHK', '0101JVM6INNK01JLFSV001JLFS', 'story_stat2_label', 'Story Stat2 Label', 'string', 'TEXT', 0, 9, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QJC005BGV7T005BGV', '0101JU4T4QJ101JLFSV001JLFS', 'story_stat3_num', 'Story Stat3 Num', 'string', 'TEXT', 0, 10, 0, 1
+  '0101JVM6INNV005BGV7T005BGV', '0101JVM6INNK01JLFSV001JLFS', 'story_stat3_num', 'Story Stat3 Num', 'string', 'TEXT', 0, 10, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QJD00VB556F00VB55', '0101JU4T4QJ101JLFSV001JLFS', 'story_stat3_label', 'Story Stat3 Label', 'string', 'TEXT', 0, 11, 0, 1
+  '0101JVM6INO000VB556F00VB55', '0101JVM6INNK01JLFSV001JLFS', 'story_stat3_label', 'Story Stat3 Label', 'string', 'TEXT', 0, 11, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QJE006JCQCK006JCQ', '0101JU4T4QJ101JLFSV001JLFS', 'philosophy_eyebrow', 'Philosophy Eyebrow', 'string', 'TEXT', 0, 12, 0, 1
+  '0101JVM6INO1006JCQCK006JCQ', '0101JVM6INNK01JLFSV001JLFS', 'philosophy_eyebrow', 'Philosophy Eyebrow', 'string', 'TEXT', 0, 12, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QJF01R6UQ2J01R6UQ', '0101JU4T4QJ101JLFSV001JLFS', 'philosophy_heading', 'Philosophy Heading', 'string', 'TEXT', 0, 13, 0, 1
+  '0101JVM6INO201R6UQ2J01R6UQ', '0101JVM6INNK01JLFSV001JLFS', 'philosophy_heading', 'Philosophy Heading', 'string', 'TEXT', 0, 13, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QJG01A050PQ01A050', '0101JU4T4QJ101JLFSV001JLFS', 'philosophy_body1', 'Philosophy Body1', 'text', 'TEXT', 0, 14, 0, 1
+  '0101JVM6INO301A050PQ01A050', '0101JVM6INNK01JLFSV001JLFS', 'philosophy_body1', 'Philosophy Body1', 'text', 'TEXT', 0, 14, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QJH01A050PR01A050', '0101JU4T4QJ101JLFSV001JLFS', 'philosophy_body2', 'Philosophy Body2', 'text', 'TEXT', 0, 15, 0, 1
+  '0101JVM6INO401A050PR01A050', '0101JVM6INNK01JLFSV001JLFS', 'philosophy_body2', 'Philosophy Body2', 'text', 'TEXT', 0, 15, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QJI01A050PS01A050', '0101JU4T4QJ101JLFSV001JLFS', 'philosophy_body3', 'Philosophy Body3', 'text', 'TEXT', 0, 16, 0, 1
+  '0101JVM6INO501A050PS01A050', '0101JVM6INNK01JLFSV001JLFS', 'philosophy_body3', 'Philosophy Body3', 'text', 'TEXT', 0, 16, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QJJ01A050PT01A050', '0101JU4T4QJ101JLFSV001JLFS', 'philosophy_body4', 'Philosophy Body4', 'text', 'TEXT', 0, 17, 0, 1
+  '0101JVM6INO601A050PT01A050', '0101JVM6INNK01JLFSV001JLFS', 'philosophy_body4', 'Philosophy Body4', 'text', 'TEXT', 0, 17, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QJK00I10J3D00I10J', '0101JU4T4QJ101JLFSV001JLFS', 'philosophy_image_caption', 'Philosophy Image Caption', 'string', 'TEXT', 0, 18, 0, 1
+  '0101JVM6INO700I10J3D00I10J', '0101JVM6INNK01JLFSV001JLFS', 'philosophy_image_caption', 'Philosophy Image Caption', 'string', 'TEXT', 0, 18, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QJL01OMJ46001OMJ4', '0101JU4T4QJ101JLFSV001JLFS', 'team_eyebrow', 'Team Eyebrow', 'string', 'TEXT', 0, 19, 0, 1
+  '0101JVM6INO801OMJ46001OMJ4', '0101JVM6INNK01JLFSV001JLFS', 'team_eyebrow', 'Team Eyebrow', 'string', 'TEXT', 0, 19, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QJM005F17AP005F17', '0101JU4T4QJ101JLFSV001JLFS', 'team_heading', 'Team Heading', 'string', 'TEXT', 0, 20, 0, 1
+  '0101JVM6INO9005F17AP005F17', '0101JVM6INNK01JLFSV001JLFS', 'team_heading', 'Team Heading', 'string', 'TEXT', 0, 20, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QJN01M352RN01M352', '0101JU4T4QJ101JLFSV001JLFS', 'team_subhead', 'Team Subhead', 'text', 'TEXT', 0, 21, 0, 1
+  '0101JVM6INOA01M352RN01M352', '0101JVM6INNK01JLFSV001JLFS', 'team_subhead', 'Team Subhead', 'text', 'TEXT', 0, 21, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QJO00EA988N00EA98', '0101JU4T4QJ101JLFSV001JLFS', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 22, 0, 1
+  '0101JVM6INOB00EA988N00EA98', '0101JVM6INNK01JLFSV001JLFS', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 22, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QJP019SKI45019SKI', '0101JU4T4QJ101JLFSV001JLFS', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 23, 0, 1
+  '0101JVM6INOC019SKI45019SKI', '0101JVM6INNK01JLFSV001JLFS', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 23, 0, 1
 );
 
 CREATE TABLE IF NOT EXISTS "ec_about_page" (
@@ -378,30 +378,30 @@ CREATE TABLE IF NOT EXISTS "ec_about_page" (
 -- Collection: contact_page
 -- ============================================================
 INSERT OR REPLACE INTO _emdash_collections (id, slug, label, label_singular, supports, source, search_config, has_seo, comments_enabled, comments_moderation, comments_closed_after_days, comments_auto_approve_users) VALUES (
-  '0101JU4T4QJQ014UBOTD014UBO', 'contact_page', 'Contact Page', 'Contact Page',
+  '0101JVM6INOD014UBOTD014UBO', 'contact_page', 'Contact Page', 'Contact Page',
   '["drafts","revisions","search"]', 'seed', '{"enabled":true}', 0, 0, 'first_time', 90, 1
 );
 
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QJR01IU28JK01IU28', '0101JU4T4QJQ014UBOTD014UBO', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
+  '0101JVM6INOE01IU28JK01IU28', '0101JVM6INOD014UBOTD014UBO', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QJS01O3EU2A01O3EU', '0101JU4T4QJQ014UBOTD014UBO', 'intro_eyebrow', 'Intro Eyebrow', 'string', 'TEXT', 0, 1, 0, 1
+  '0101JVM6INOF01O3EU2A01O3EU', '0101JVM6INOD014UBOTD014UBO', 'intro_eyebrow', 'Intro Eyebrow', 'string', 'TEXT', 0, 1, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QJT009MSMCT009MSM', '0101JU4T4QJQ014UBOTD014UBO', 'intro_heading', 'Intro Heading', 'string', 'TEXT', 0, 2, 0, 1
+  '0101JVM6INOG009MSMCT009MSM', '0101JVM6INOD014UBOTD014UBO', 'intro_heading', 'Intro Heading', 'string', 'TEXT', 0, 2, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QJU01147HRG01147H', '0101JU4T4QJQ014UBOTD014UBO', 'intro_body1', 'Intro Body1', 'text', 'TEXT', 0, 3, 0, 1
+  '0101JVM6INOH01147HRG01147H', '0101JVM6INOD014UBOTD014UBO', 'intro_body1', 'Intro Body1', 'text', 'TEXT', 0, 3, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QJV01147HRH01147H', '0101JU4T4QJQ014UBOTD014UBO', 'intro_body2', 'Intro Body2', 'text', 'TEXT', 0, 4, 0, 1
+  '0101JVM6INOI01147HRH01147H', '0101JVM6INOD014UBOTD014UBO', 'intro_body2', 'Intro Body2', 'text', 'TEXT', 0, 4, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QK000P1F5OM00P1F5', '0101JU4T4QJQ014UBOTD014UBO', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 5, 0, 1
+  '0101JVM6INOJ00P1F5OM00P1F5', '0101JVM6INOD014UBOTD014UBO', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 5, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QK1017F9QNI017F9Q', '0101JU4T4QJQ014UBOTD014UBO', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 6, 0, 1
+  '0101JVM6INOK017F9QNI017F9Q', '0101JVM6INOD014UBOTD014UBO', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 6, 0, 1
 );
 
 CREATE TABLE IF NOT EXISTS "ec_contact_page" (
@@ -435,36 +435,36 @@ CREATE TABLE IF NOT EXISTS "ec_contact_page" (
 -- Collection: team_members
 -- ============================================================
 INSERT OR REPLACE INTO _emdash_collections (id, slug, label, label_singular, supports, source, search_config, has_seo, comments_enabled, comments_moderation, comments_closed_after_days, comments_auto_approve_users) VALUES (
-  '0101JU4T4QK2018N98JA018N98', 'team_members', 'Team Members', 'Team Member',
+  '0101JVM6INOL018N98JA018N98', 'team_members', 'Team Members', 'Team Member',
   '["drafts","revisions","search"]', 'seed', '{"enabled":true}', 0, 0, 'first_time', 90, 1
 );
 
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QK300J9315L00J931', '0101JU4T4QK2018N98JA018N98', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
+  '0101JVM6INOM00J9315L00J931', '0101JVM6INOL018N98JA018N98', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QK400D03M4E00D03M', '0101JU4T4QK2018N98JA018N98', 'name', 'Name', 'string', 'TEXT', 0, 1, 0, 1
+  '0101JVM6INON00D03M4E00D03M', '0101JVM6INOL018N98JA018N98', 'name', 'Name', 'string', 'TEXT', 0, 1, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QK500D07NJP00D07N', '0101JU4T4QK2018N98JA018N98', 'role', 'Role', 'string', 'TEXT', 0, 2, 0, 1
+  '0101JVM6INOO00D07NJP00D07N', '0101JVM6INOL018N98JA018N98', 'role', 'Role', 'string', 'TEXT', 0, 2, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QK600J3ET3700J3ET', '0101JU4T4QK2018N98JA018N98', 'credentials', 'Credentials', 'string', 'TEXT', 0, 3, 0, 1
+  '0101JVM6INOP00J3ET3700J3ET', '0101JVM6INOL018N98JA018N98', 'credentials', 'Credentials', 'string', 'TEXT', 0, 3, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QK700BF060N00BF06', '0101JU4T4QK2018N98JA018N98', 'bio_full', 'Bio Full', 'portableText', 'TEXT', 0, 4, 0, 1
+  '0101JVM6INOQ00BF060N00BF06', '0101JVM6INOL018N98JA018N98', 'bio_full', 'Bio Full', 'portableText', 'TEXT', 0, 4, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QK801663TPN01663T', '0101JU4T4QK2018N98JA018N98', 'hero_image_url', 'Hero Image Url', 'string', 'TEXT', 0, 5, 0, 1
+  '0101JVM6INOR01663TPN01663T', '0101JVM6INOL018N98JA018N98', 'hero_image_url', 'Hero Image Url', 'string', 'TEXT', 0, 5, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QK901RVPKR101RVPK', '0101JU4T4QK2018N98JA018N98', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 6, 0, 1
+  '0101JVM6INOS01RVPKR101RVPK', '0101JVM6INOL018N98JA018N98', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 6, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QKA01JQR2I501JQR2', '0101JU4T4QK2018N98JA018N98', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 7, 0, 1
+  '0101JVM6INOT01JQR2I501JQR2', '0101JVM6INOL018N98JA018N98', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 7, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QKB00CN6G9G00CN6G', '0101JU4T4QK2018N98JA018N98', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 8, 0, 1
+  '0101JVM6INOU00CN6G9G00CN6G', '0101JVM6INOL018N98JA018N98', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 8, 0, 1
 );
 
 CREATE TABLE IF NOT EXISTS "ec_team_members" (
@@ -500,42 +500,42 @@ CREATE TABLE IF NOT EXISTS "ec_team_members" (
 -- Collection: blog_posts
 -- ============================================================
 INSERT OR REPLACE INTO _emdash_collections (id, slug, label, label_singular, supports, source, search_config, has_seo, comments_enabled, comments_moderation, comments_closed_after_days, comments_auto_approve_users) VALUES (
-  '0101JU4T4QKC01820C8L01820C', 'blog_posts', 'Blog Posts', 'Blog Post',
+  '0101JVM6INOV01820C8L01820C', 'blog_posts', 'Blog Posts', 'Blog Post',
   '["drafts","revisions","search"]', 'seed', '{"enabled":true}', 0, 0, 'first_time', 90, 1
 );
 
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QKD00OJLACC00OJLA', '0101JU4T4QKC01820C8L01820C', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
+  '0101JVM6INP000OJLACC00OJLA', '0101JVM6INOV01820C8L01820C', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QKE00OV4GKT00OV4G', '0101JU4T4QKC01820C8L01820C', 'excerpt', 'Excerpt', 'text', 'TEXT', 0, 1, 0, 1
+  '0101JVM6INP100OV4GKT00OV4G', '0101JVM6INOV01820C8L01820C', 'excerpt', 'Excerpt', 'text', 'TEXT', 0, 1, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QKF01398BJB01398B', '0101JU4T4QKC01820C8L01820C', 'content', 'Content', 'portableText', 'TEXT', 0, 2, 0, 1
+  '0101JVM6INP201398BJB01398B', '0101JVM6INOV01820C8L01820C', 'content', 'Content', 'portableText', 'TEXT', 0, 2, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QKG00278C7200278C', '0101JU4T4QKC01820C8L01820C', 'featured_image_url', 'Featured Image Url', 'string', 'TEXT', 0, 3, 0, 1
+  '0101JVM6INP300278C7200278C', '0101JVM6INOV01820C8L01820C', 'featured_image_url', 'Featured Image Url', 'string', 'TEXT', 0, 3, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QKH00ATR3OH00ATR3', '0101JU4T4QKC01820C8L01820C', 'author', 'Author', 'string', 'TEXT', 0, 4, 0, 1
+  '0101JVM6INP400ATR3OH00ATR3', '0101JVM6INOV01820C8L01820C', 'author', 'Author', 'string', 'TEXT', 0, 4, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QKI01CJHI0I01CJHI', '0101JU4T4QKC01820C8L01820C', 'date', 'Date', 'string', 'TEXT', 0, 5, 0, 1
+  '0101JVM6INP501CJHI0I01CJHI', '0101JVM6INOV01820C8L01820C', 'date', 'Date', 'string', 'TEXT', 0, 5, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QKJ01JHSF4U01JHSF', '0101JU4T4QKC01820C8L01820C', 'category', 'Category', 'string', 'TEXT', 0, 6, 0, 1
+  '0101JVM6INP601JHSF4U01JHSF', '0101JVM6INOV01820C8L01820C', 'category', 'Category', 'string', 'TEXT', 0, 6, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QKK00E5NUGE00E5NU', '0101JU4T4QKC01820C8L01820C', 'read_time', 'Read Time', 'string', 'TEXT', 0, 7, 0, 1
+  '0101JVM6INP700E5NUGE00E5NU', '0101JVM6INOV01820C8L01820C', 'read_time', 'Read Time', 'string', 'TEXT', 0, 7, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QKL00EOTFNU00EOTF', '0101JU4T4QKC01820C8L01820C', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 8, 0, 1
+  '0101JVM6INP800EOTFNU00EOTF', '0101JVM6INOV01820C8L01820C', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 8, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QKM01RIEUP601RIEU', '0101JU4T4QKC01820C8L01820C', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 9, 0, 1
+  '0101JVM6INP901RIEUP601RIEU', '0101JVM6INOV01820C8L01820C', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 9, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QKN01U1GK9F01U1GK', '0101JU4T4QKC01820C8L01820C', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 10, 0, 1
+  '0101JVM6INPA01U1GK9F01U1GK', '0101JVM6INOV01820C8L01820C', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 10, 0, 1
 );
 
 CREATE TABLE IF NOT EXISTS "ec_blog_posts" (
@@ -573,27 +573,27 @@ CREATE TABLE IF NOT EXISTS "ec_blog_posts" (
 -- Collection: testimonials
 -- ============================================================
 INSERT OR REPLACE INTO _emdash_collections (id, slug, label, label_singular, supports, source, search_config, has_seo, comments_enabled, comments_moderation, comments_closed_after_days, comments_auto_approve_users) VALUES (
-  '0101JU4T4QKO004O3I0J004O3I', 'testimonials', 'Testimonials', 'Testimonial',
+  '0101JVM6INPB004O3I0J004O3I', 'testimonials', 'Testimonials', 'Testimonial',
   '["drafts","revisions","search"]', 'seed', '{"enabled":true}', 0, 0, 'first_time', 90, 1
 );
 
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QKP00CVMNBI00CVMN', '0101JU4T4QKO004O3I0J004O3I', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
+  '0101JVM6INPC00CVMNBI00CVMN', '0101JVM6INPB004O3I0J004O3I', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QKQ00CTCUCM00CTCU', '0101JU4T4QKO004O3I0J004O3I', 'quote', 'Quote', 'text', 'TEXT', 0, 1, 0, 1
+  '0101JVM6INPD00CTCUCM00CTCU', '0101JVM6INPB004O3I0J004O3I', 'quote', 'Quote', 'text', 'TEXT', 0, 1, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QKR002QQIDH002QQI', '0101JU4T4QKO004O3I0J004O3I', 'author', 'Author', 'string', 'TEXT', 0, 2, 0, 1
+  '0101JVM6INPE002QQIDH002QQI', '0101JVM6INPB004O3I0J004O3I', 'author', 'Author', 'string', 'TEXT', 0, 2, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QKS00G3IR7F00G3IR', '0101JU4T4QKO004O3I0J004O3I', 'city', 'City', 'string', 'TEXT', 0, 3, 0, 1
+  '0101JVM6INPF00G3IR7F00G3IR', '0101JVM6INPB004O3I0J004O3I', 'city', 'City', 'string', 'TEXT', 0, 3, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QKT00GPBME300GPBM', '0101JU4T4QKO004O3I0J004O3I', 'rating', 'Rating', 'integer', 'INTEGER', 0, 4, 0, 1
+  '0101JVM6INPG00GPBME300GPBM', '0101JVM6INPB004O3I0J004O3I', 'rating', 'Rating', 'integer', 'INTEGER', 0, 4, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QKU013GNABD013GNA', '0101JU4T4QKO004O3I0J004O3I', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 5, 0, 1
+  '0101JVM6INPH013GNABD013GNA', '0101JVM6INPB004O3I0J004O3I', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 5, 0, 1
 );
 
 CREATE TABLE IF NOT EXISTS "ec_testimonials" (
@@ -626,21 +626,21 @@ CREATE TABLE IF NOT EXISTS "ec_testimonials" (
 -- Collection: faqs
 -- ============================================================
 INSERT OR REPLACE INTO _emdash_collections (id, slug, label, label_singular, supports, source, search_config, has_seo, comments_enabled, comments_moderation, comments_closed_after_days, comments_auto_approve_users) VALUES (
-  '0101JU4T4QKV00J6404400J640', 'faqs', 'FAQs', 'FAQ',
+  '0101JVM6INPI00J6404400J640', 'faqs', 'FAQs', 'FAQ',
   '["drafts","revisions","search"]', 'seed', '{"enabled":true}', 0, 0, 'first_time', 90, 1
 );
 
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QL001UIBDV501UIBD', '0101JU4T4QKV00J6404400J640', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
+  '0101JVM6INPJ01UIBDV501UIBD', '0101JVM6INPI00J6404400J640', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QL101F5IP5T01F5IP', '0101JU4T4QKV00J6404400J640', 'question', 'Question', 'string', 'TEXT', 0, 1, 0, 1
+  '0101JVM6INPK01F5IP5T01F5IP', '0101JVM6INPI00J6404400J640', 'question', 'Question', 'string', 'TEXT', 0, 1, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QL2013REBD5013REB', '0101JU4T4QKV00J6404400J640', 'answer', 'Answer', 'text', 'TEXT', 0, 2, 0, 1
+  '0101JVM6INPL013REBD5013REB', '0101JVM6INPI00J6404400J640', 'answer', 'Answer', 'text', 'TEXT', 0, 2, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QL301JCAKJM01JCAK', '0101JU4T4QKV00J6404400J640', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 3, 0, 1
+  '0101JVM6INPM01JCAKJM01JCAK', '0101JVM6INPI00J6404400J640', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 3, 0, 1
 );
 
 CREATE TABLE IF NOT EXISTS "ec_faqs" (
@@ -671,30 +671,30 @@ CREATE TABLE IF NOT EXISTS "ec_faqs" (
 -- Collection: service_pages
 -- ============================================================
 INSERT OR REPLACE INTO _emdash_collections (id, slug, label, label_singular, supports, source, search_config, has_seo, comments_enabled, comments_moderation, comments_closed_after_days, comments_auto_approve_users) VALUES (
-  '0101JU4T4QL4019E4C9R019E4C', 'service_pages', 'Service Pages', 'Service Page',
+  '0101JVM6INPN019E4C9R019E4C', 'service_pages', 'Service Pages', 'Service Page',
   '["drafts","revisions","search"]', 'seed', '{"enabled":true}', 0, 0, 'first_time', 90, 1
 );
 
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QL5017PJGPI017PJG', '0101JU4T4QL4019E4C9R019E4C', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
+  '0101JVM6INPO017PJGPI017PJG', '0101JVM6INPN019E4C9R019E4C', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QL600CG8GN800CG8G', '0101JU4T4QL4019E4C9R019E4C', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 1, 0, 1
+  '0101JVM6INPP00CG8GN800CG8G', '0101JVM6INPN019E4C9R019E4C', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 1, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QL701FN21RK01FN21', '0101JU4T4QL4019E4C9R019E4C', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 2, 0, 1
+  '0101JVM6INPQ01FN21RK01FN21', '0101JVM6INPN019E4C9R019E4C', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 2, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QL8016EF8EQ016EF8', '0101JU4T4QL4019E4C9R019E4C', 'lead', 'Lead', 'text', 'TEXT', 0, 3, 0, 1
+  '0101JVM6INPR016EF8EQ016EF8', '0101JVM6INPN019E4C9R019E4C', 'lead', 'Lead', 'text', 'TEXT', 0, 3, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QL9014P6TKH014P6T', '0101JU4T4QL4019E4C9R019E4C', 'content', 'Content', 'portableText', 'TEXT', 0, 4, 0, 1
+  '0101JVM6INPS014P6TKH014P6T', '0101JVM6INPN019E4C9R019E4C', 'content', 'Content', 'portableText', 'TEXT', 0, 4, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QLA01HJN8PG01HJN8', '0101JU4T4QL4019E4C9R019E4C', 'hero_image_url', 'Hero Image Url', 'string', 'TEXT', 0, 5, 0, 1
+  '0101JVM6INPT01HJN8PG01HJN8', '0101JVM6INPN019E4C9R019E4C', 'hero_image_url', 'Hero Image Url', 'string', 'TEXT', 0, 5, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QLB012OAJQ9012OAJ', '0101JU4T4QL4019E4C9R019E4C', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 6, 0, 1
+  '0101JVM6INPU012OAJQ9012OAJ', '0101JVM6INPN019E4C9R019E4C', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 6, 0, 1
 );
 
 CREATE TABLE IF NOT EXISTS "ec_service_pages" (
@@ -728,33 +728,33 @@ CREATE TABLE IF NOT EXISTS "ec_service_pages" (
 -- Collection: brand_pages
 -- ============================================================
 INSERT OR REPLACE INTO _emdash_collections (id, slug, label, label_singular, supports, source, search_config, has_seo, comments_enabled, comments_moderation, comments_closed_after_days, comments_auto_approve_users) VALUES (
-  '0101JU4T4QLC00A8MF6D00A8MF', 'brand_pages', 'Brand Pages', 'Brand Page',
+  '0101JVM6INPV00A8MF6D00A8MF', 'brand_pages', 'Brand Pages', 'Brand Page',
   '["drafts","revisions","search"]', 'seed', '{"enabled":true}', 0, 0, 'first_time', 90, 1
 );
 
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QLD009IRLL0009IRL', '0101JU4T4QLC00A8MF6D00A8MF', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
+  '0101JVM6INQ0009IRLL0009IRL', '0101JVM6INPV00A8MF6D00A8MF', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QLE01JR17JA01JR17', '0101JU4T4QLC00A8MF6D00A8MF', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 1, 0, 1
+  '0101JVM6INQ101JR17JA01JR17', '0101JVM6INPV00A8MF6D00A8MF', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 1, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QLF00LGFN5Q00LGFN', '0101JU4T4QLC00A8MF6D00A8MF', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 2, 0, 1
+  '0101JVM6INQ200LGFN5Q00LGFN', '0101JVM6INPV00A8MF6D00A8MF', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 2, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QLG00KUOQ5C00KUOQ', '0101JU4T4QLC00A8MF6D00A8MF', 'lead', 'Lead', 'text', 'TEXT', 0, 3, 0, 1
+  '0101JVM6INQ300KUOQ5C00KUOQ', '0101JVM6INPV00A8MF6D00A8MF', 'lead', 'Lead', 'text', 'TEXT', 0, 3, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QLH01S70PJV01S70P', '0101JU4T4QLC00A8MF6D00A8MF', 'content', 'Content', 'portableText', 'TEXT', 0, 4, 0, 1
+  '0101JVM6INQ401S70PJV01S70P', '0101JVM6INPV00A8MF6D00A8MF', 'content', 'Content', 'portableText', 'TEXT', 0, 4, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QLI00NE8T3U00NE8T', '0101JU4T4QLC00A8MF6D00A8MF', 'hero_image_url', 'Hero Image Url', 'string', 'TEXT', 0, 5, 0, 1
+  '0101JVM6INQ500NE8T3U00NE8T', '0101JVM6INPV00A8MF6D00A8MF', 'hero_image_url', 'Hero Image Url', 'string', 'TEXT', 0, 5, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QLJ01F03NE501F03N', '0101JU4T4QLC00A8MF6D00A8MF', 'brand_name', 'Brand Name', 'string', 'TEXT', 0, 6, 0, 1
+  '0101JVM6INQ601F03NE501F03N', '0101JVM6INPV00A8MF6D00A8MF', 'brand_name', 'Brand Name', 'string', 'TEXT', 0, 6, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QLK00SSBJR500SSBJ', '0101JU4T4QLC00A8MF6D00A8MF', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 7, 0, 1
+  '0101JVM6INQ700SSBJR500SSBJ', '0101JVM6INPV00A8MF6D00A8MF', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 7, 0, 1
 );
 
 CREATE TABLE IF NOT EXISTS "ec_brand_pages" (
@@ -789,33 +789,33 @@ CREATE TABLE IF NOT EXISTS "ec_brand_pages" (
 -- Collection: location_pages
 -- ============================================================
 INSERT OR REPLACE INTO _emdash_collections (id, slug, label, label_singular, supports, source, search_config, has_seo, comments_enabled, comments_moderation, comments_closed_after_days, comments_auto_approve_users) VALUES (
-  '0101JU4T4QLL01RTVB5701RTVB', 'location_pages', 'Location Pages', 'Location Page',
+  '0101JVM6INQ801RTVB5701RTVB', 'location_pages', 'Location Pages', 'Location Page',
   '["drafts","revisions","search"]', 'seed', '{"enabled":true}', 0, 0, 'first_time', 90, 1
 );
 
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QLM01TRGOLO01TRGO', '0101JU4T4QLL01RTVB5701RTVB', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
+  '0101JVM6INQ901TRGOLO01TRGO', '0101JVM6INQ801RTVB5701RTVB', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QLN011OUFPU011OUF', '0101JU4T4QLL01RTVB5701RTVB', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 1, 0, 1
+  '0101JVM6INQA011OUFPU011OUF', '0101JVM6INQ801RTVB5701RTVB', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 1, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QLO01EBM8SU01EBM8', '0101JU4T4QLL01RTVB5701RTVB', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 2, 0, 1
+  '0101JVM6INQB01EBM8SU01EBM8', '0101JVM6INQ801RTVB5701RTVB', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 2, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QLP01NL9KNS01NL9K', '0101JU4T4QLL01RTVB5701RTVB', 'lead', 'Lead', 'text', 'TEXT', 0, 3, 0, 1
+  '0101JVM6INQC01NL9KNS01NL9K', '0101JVM6INQ801RTVB5701RTVB', 'lead', 'Lead', 'text', 'TEXT', 0, 3, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QLQ005368P7005368', '0101JU4T4QLL01RTVB5701RTVB', 'content', 'Content', 'portableText', 'TEXT', 0, 4, 0, 1
+  '0101JVM6INQD005368P7005368', '0101JVM6INQ801RTVB5701RTVB', 'content', 'Content', 'portableText', 'TEXT', 0, 4, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QLR01B2QFH601B2QF', '0101JU4T4QLL01RTVB5701RTVB', 'hero_image_url', 'Hero Image Url', 'string', 'TEXT', 0, 5, 0, 1
+  '0101JVM6INQE01B2QFH601B2QF', '0101JVM6INQ801RTVB5701RTVB', 'hero_image_url', 'Hero Image Url', 'string', 'TEXT', 0, 5, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QLS01DN9V9L01DN9V', '0101JU4T4QLL01RTVB5701RTVB', 'location_name', 'Location Name', 'string', 'TEXT', 0, 6, 0, 1
+  '0101JVM6INQF01DN9V9L01DN9V', '0101JVM6INQ801RTVB5701RTVB', 'location_name', 'Location Name', 'string', 'TEXT', 0, 6, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QLT00DFKKNJ00DFKK', '0101JU4T4QLL01RTVB5701RTVB', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 7, 0, 1
+  '0101JVM6INQG00DFKKNJ00DFKK', '0101JVM6INQ801RTVB5701RTVB', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 7, 0, 1
 );
 
 CREATE TABLE IF NOT EXISTS "ec_location_pages" (
@@ -850,30 +850,30 @@ CREATE TABLE IF NOT EXISTS "ec_location_pages" (
 -- Collection: resource_pages
 -- ============================================================
 INSERT OR REPLACE INTO _emdash_collections (id, slug, label, label_singular, supports, source, search_config, has_seo, comments_enabled, comments_moderation, comments_closed_after_days, comments_auto_approve_users) VALUES (
-  '0101JU4T4QLU01N27ROE01N27R', 'resource_pages', 'Resource Pages', 'Resource Page',
+  '0101JVM6INQH01N27ROE01N27R', 'resource_pages', 'Resource Pages', 'Resource Page',
   '["drafts","revisions","search"]', 'seed', '{"enabled":true}', 0, 0, 'first_time', 90, 1
 );
 
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QLV01DN8DJF01DN8D', '0101JU4T4QLU01N27ROE01N27R', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
+  '0101JVM6INQI01DN8DJF01DN8D', '0101JVM6INQH01N27ROE01N27R', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QM000JJEE0500JJEE', '0101JU4T4QLU01N27ROE01N27R', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 1, 0, 1
+  '0101JVM6INQJ00JJEE0500JJEE', '0101JVM6INQH01N27ROE01N27R', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 1, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QM100B0LOV900B0LO', '0101JU4T4QLU01N27ROE01N27R', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 2, 0, 1
+  '0101JVM6INQK00B0LOV900B0LO', '0101JVM6INQH01N27ROE01N27R', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 2, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QM200Q86KNT00Q86K', '0101JU4T4QLU01N27ROE01N27R', 'lead', 'Lead', 'text', 'TEXT', 0, 3, 0, 1
+  '0101JVM6INQL00Q86KNT00Q86K', '0101JVM6INQH01N27ROE01N27R', 'lead', 'Lead', 'text', 'TEXT', 0, 3, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QM300RM3SBI00RM3S', '0101JU4T4QLU01N27ROE01N27R', 'content', 'Content', 'portableText', 'TEXT', 0, 4, 0, 1
+  '0101JVM6INQM00RM3SBI00RM3S', '0101JVM6INQH01N27ROE01N27R', 'content', 'Content', 'portableText', 'TEXT', 0, 4, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QM400VV514J00VV51', '0101JU4T4QLU01N27ROE01N27R', 'hero_image_url', 'Hero Image Url', 'string', 'TEXT', 0, 5, 0, 1
+  '0101JVM6INQN00VV514J00VV51', '0101JVM6INQH01N27ROE01N27R', 'hero_image_url', 'Hero Image Url', 'string', 'TEXT', 0, 5, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QM500RL4MHC00RL4M', '0101JU4T4QLU01N27ROE01N27R', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 6, 0, 1
+  '0101JVM6INQO00RL4MHC00RL4M', '0101JVM6INQH01N27ROE01N27R', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 6, 0, 1
 );
 
 CREATE TABLE IF NOT EXISTS "ec_resource_pages" (
@@ -907,30 +907,30 @@ CREATE TABLE IF NOT EXISTS "ec_resource_pages" (
 -- Collection: condition_pages
 -- ============================================================
 INSERT OR REPLACE INTO _emdash_collections (id, slug, label, label_singular, supports, source, search_config, has_seo, comments_enabled, comments_moderation, comments_closed_after_days, comments_auto_approve_users) VALUES (
-  '0101JU4T4QM6018IVQ8V018IVQ', 'condition_pages', 'Condition Pages', 'Condition Page',
+  '0101JVM6INQP018IVQ8V018IVQ', 'condition_pages', 'Condition Pages', 'Condition Page',
   '["drafts","revisions","search"]', 'seed', '{"enabled":true}', 0, 0, 'first_time', 90, 1
 );
 
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QM701GSTQ4C01GSTQ', '0101JU4T4QM6018IVQ8V018IVQ', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
+  '0101JVM6INQQ01GSTQ4C01GSTQ', '0101JVM6INQP018IVQ8V018IVQ', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QM801AJC80201AJC8', '0101JU4T4QM6018IVQ8V018IVQ', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 1, 0, 1
+  '0101JVM6INQR01AJC80201AJC8', '0101JVM6INQP018IVQ8V018IVQ', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 1, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QM901A8I6H601A8I6', '0101JU4T4QM6018IVQ8V018IVQ', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 2, 0, 1
+  '0101JVM6INQS01A8I6H601A8I6', '0101JVM6INQP018IVQ8V018IVQ', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 2, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QMA001IMQA0001IMQ', '0101JU4T4QM6018IVQ8V018IVQ', 'lead', 'Lead', 'text', 'TEXT', 0, 3, 0, 1
+  '0101JVM6INQT001IMQA0001IMQ', '0101JVM6INQP018IVQ8V018IVQ', 'lead', 'Lead', 'text', 'TEXT', 0, 3, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QMB01EEMKKL01EEMK', '0101JU4T4QM6018IVQ8V018IVQ', 'content', 'Content', 'portableText', 'TEXT', 0, 4, 0, 1
+  '0101JVM6INQU01EEMKKL01EEMK', '0101JVM6INQP018IVQ8V018IVQ', 'content', 'Content', 'portableText', 'TEXT', 0, 4, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QMC01TT3OOM01TT3O', '0101JU4T4QM6018IVQ8V018IVQ', 'hero_image_url', 'Hero Image Url', 'string', 'TEXT', 0, 5, 0, 1
+  '0101JVM6INQV01TT3OOM01TT3O', '0101JVM6INQP018IVQ8V018IVQ', 'hero_image_url', 'Hero Image Url', 'string', 'TEXT', 0, 5, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QMD004L6SHF004L6S', '0101JU4T4QM6018IVQ8V018IVQ', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 6, 0, 1
+  '0101JVM6INR0004L6SHF004L6S', '0101JVM6INQP018IVQ8V018IVQ', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 6, 0, 1
 );
 
 CREATE TABLE IF NOT EXISTS "ec_condition_pages" (
@@ -964,21 +964,21 @@ CREATE TABLE IF NOT EXISTS "ec_condition_pages" (
 -- Collection: legal_pages
 -- ============================================================
 INSERT OR REPLACE INTO _emdash_collections (id, slug, label, label_singular, supports, source, search_config, has_seo, comments_enabled, comments_moderation, comments_closed_after_days, comments_auto_approve_users) VALUES (
-  '0101JU4T4QME01C1P9JV01C1P9', 'legal_pages', 'Legal Pages', 'Legal Page',
+  '0101JVM6INR101C1P9JV01C1P9', 'legal_pages', 'Legal Pages', 'Legal Page',
   '["drafts","revisions","search"]', 'seed', '{"enabled":true}', 0, 0, 'first_time', 90, 1
 );
 
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QMF014VJUJE014VJU', '0101JU4T4QME01C1P9JV01C1P9', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
+  '0101JVM6INR2014VJUJE014VJU', '0101JVM6INR101C1P9JV01C1P9', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QMG01B7EL5401B7EL', '0101JU4T4QME01C1P9JV01C1P9', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 1, 0, 1
+  '0101JVM6INR301B7EL5401B7EL', '0101JVM6INR101C1P9JV01C1P9', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 1, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QMH00GJMCLO00GJMC', '0101JU4T4QME01C1P9JV01C1P9', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 2, 0, 1
+  '0101JVM6INR400GJMCLO00GJMC', '0101JVM6INR101C1P9JV01C1P9', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 2, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101JU4T4QMI00MC5JMD00MC5J', '0101JU4T4QME01C1P9JV01C1P9', 'content', 'Content', 'portableText', 'TEXT', 0, 3, 0, 1
+  '0101JVM6INR500MC5JMD00MC5J', '0101JVM6INR101C1P9JV01C1P9', 'content', 'Content', 'portableText', 'TEXT', 0, 3, 0, 1
 );
 
 CREATE TABLE IF NOT EXISTS "ec_legal_pages" (
@@ -1011,7 +1011,7 @@ CREATE TABLE IF NOT EXISTS "ec_legal_pages" (
 -- ============================================================
 
 -- site_settings
-INSERT OR REPLACE INTO "ec_site_settings" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "phone", "email", "address_street", "address_city_state", "hours_mon_thu", "hours_fri", "google_maps_url") VALUES ('main', 'main', 'published', 'en', 1, 'Site Settings', datetime('now'), datetime('now'), datetime('now'), '(585) 442-4180', 'info@ontariohearing.com', '2210 Monroe Avenue', 'Rochester, NY 14618', '9 AM – 5 PM', '9 AM – 4 PM', 'https://www.google.com/maps?cid=9213821493223506062');
+INSERT OR REPLACE INTO "ec_site_settings" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "phone", "email", "address_street", "address_city_state", "hours_mon_thu", "hours_fri", "google_maps_url") VALUES ('main', 'main', 'published', 'en', 1, 'Site Settings', datetime('now'), datetime('now'), datetime('now'), '(585) 442-4180', 'info@ontariohearing.com', '2210 Monroe Avenue', 'Rochester, NY 14618', '8 AM – 5 PM', '8 AM – 4 PM', 'https://www.google.com/maps?cid=9213821493223506062');
 
 -- homepage
 INSERT OR REPLACE INTO "ec_homepage" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "hero_eyebrow", "hero_heading", "hero_lead", "hero_cta_text", "reviews_count", "about_eyebrow", "about_heading", "about_body", "about_body2", "about_badge_title", "about_years_num", "about_years_label", "about_doctors_num", "about_doctors_label", "about_brands_num", "about_brands_label", "team_eyebrow", "team_heading", "team_subhead", "cochlear_eyebrow", "cochlear_heading", "cochlear_body", "diag_eyebrow", "diag_heading", "diag_subhead", "ha_eyebrow", "ha_heading", "brands_eyebrow", "brands_heading", "brands_subhead", "testimonials_eyebrow", "testimonials_heading", "faq_eyebrow", "faq_heading", "faq_subhead", "blog_eyebrow", "blog_heading") VALUES ('homepage', 'homepage', 'published', 'en', 1, 'Homepage', datetime('now'), datetime('now'), datetime('now'), 'Rochester · Brighton · Since 1956', 'Your guide to better hearing.', 'Trusted hearing health solutions so you can enjoy life. Doctoral-level audiologists serving Rochester families for nearly seventy years.', 'Schedule An Appointment', '100+', 'AUDIOLOGISTS & HEARING AIDS IN ROCHESTER, NY', 'Ontario Hearing Center.', 'Ontario Hearing Center connects you to the best audiologists and hearing aids in Rochester, NY. Our audiology team has been providing quality hearing services since 1956. We provide advanced hearing technologies and solutions while staying rooted in our traditional values.', 'We are conveniently located in Brighton, NY, at 2210 Monroe Avenue. Our patients travel to see us from Spencerport, Westgate, North Gates, Pittsford, and East Rochester, NY.', 'Elizabeth, John, & Andrea.', '70+', 'years in Rochester', '3', 'doctoral audiologists', '7', 'hearing-aid brands', 'Meet your audiologists', 'Doctoral-level audiologists in Rochester, NY.', 'Every patient is seen by a doctoral-level audiologist. No rushed appointments. No one-size-fits-all recommendations.', 'Cochlear Implants', 'Cochlear Implant in Rochester, NY.', 'Ontario Hearing Center is a proud member of the Cochlear Provider Network. If hearing aids don''t provide enough help for your hearing loss, we offer cochlear options so you can hear your very best.', 'Audiology services', 'Evaluating, managing, and restoring the way you hear.', 'We provide the full continuum of diagnostic and therapeutic hearing care, from first evaluation through long-term management.', 'Hearing aid services', 'Care doesn''t end at the fitting. It begins there.', 'Hearing aids', 'The right device for your life.', 'Seven manufacturers, countless configurations — and one audiologist sitting with you to make sense of it all.', 'Patient reviews', 'From Rochester, NY.', 'FREQUENTLY ASKED QUESTIONS', 'Answers to the questions patients actually ask.', 'Still have a question? Call us at (585) 442-4180.', 'From the experts', 'Writing from our audiologists.');
@@ -5688,7 +5688,7 @@ Ontario Hearing Center connects you to the [best audiologists in Rochester, NY](
 
 [Contact Us Today](https://ontariohearing.com/contact-us/)', '/assets/img/Why-do-ears-produce-so-much-wax-58b1c9cc.webp', 'Ontario Hearing Center', 'October 15, 2024', 'Resources', '3 min read', 'Why Do Ears Produce So Much Wax? | Ontario Hearing Center', 'Ear wax helps maintain a healthy ear environment. However, if ear wax buildup causes discomfort or affects hearing, seek professional advice from an audiologist.', 46);
 
-INSERT OR REPLACE INTO "ec_blog_posts" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "excerpt", "content", "featured_image_url", "author", "date", "category", "read_time", "meta_title", "meta_description", "sort_order") VALUES ('is-speech-audiometry-painful', 'is-speech-audiometry-painful', 'published', 'en', 1, 'Is Speech Audiometry Painful?', datetime('now'), datetime('now'), datetime('now'), 'Learn whether speech audiometry is painful, what happens during the test, what you will hear, and how to speak up if sounds feel uncomfortable.', '![Couple sitting at a table, representing a speech audiometry discussion](/assets/img/Is-Speech-Audiometry-Painful-2a596017.webp)
+INSERT OR REPLACE INTO "ec_blog_posts" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "excerpt", "content", "featured_image_url", "author", "date", "category", "read_time", "meta_title", "meta_description", "sort_order") VALUES ('is-speech-audiometry-painful', 'is-speech-audiometry-painful', 'published', 'en', 1, 'Is Speech Audiometry Painful?', datetime('now'), datetime('now'), datetime('now'), 'Learn whether speech audiometry is painful, what happens during the test, what you will hear, and how to speak up if sounds feel uncomfortable.', '![Couple sitting at a table, representing a speech audiometry discussion](/assets/img/is-speech-audiometry-painful-what-to-expect-during-the-test.webp)
 
 - Speech audiometry is a hearing test that measures how well you hear and understand spoken words at different loudness levels.
 
@@ -5904,17 +5904,9 @@ If you have ear pain, sound sensitivity, tinnitus, or anxiety about testing, tel
 
 Ontario Hearing Centers provides speech audiometry, hearing tests, and hearing care guidance in Rochester, NY.
 
-Contact us to schedule an appointment!', '/assets/img/Is-Speech-Audiometry-Painful-2a596017.webp', 'Ontario Hearing Center', 'June 25, 2026', 'Resources', '5 min read', 'Is Speech Audiometry Painful? | Ontario Hearing Center', 'Learn whether speech audiometry is painful, what happens during the test, what you will hear, and how to speak up if sounds feel uncomfortable.', 47);
+Contact us to schedule an appointment!', '/assets/img/is-speech-audiometry-painful-what-to-expect-during-the-test.webp', 'Ontario Hearing Center', 'June 25, 2026', 'Resources', '5 min read', 'Is Speech Audiometry Painful? | Ontario Hearing Center', 'Learn whether speech audiometry is painful, what happens during the test, what you will hear, and how to speak up if sounds feel uncomfortable.', 47);
 
 -- service_pages
-INSERT OR REPLACE INTO "ec_service_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "sort_order") VALUES ('audiologist-in-pittsford-ny', 'audiologist-in-pittsford-ny', 'published', 'en', 1, 'Audiologist in Pittsford, NY', datetime('now'), datetime('now'), datetime('now'), 'Audiologist in Pittsford, NY | Ontario Hearing Center', 'Experience expert hearing care in Pittsford, NY. Our trusted audiologists provide personalized solutions to improve your hearing. Book a consultation today.', '', '## Pittsford, NY
-
-- [Custom Ear Molds in Pittsford, NY](https://ontariohearing.com/custom-ear-molds/)
-- [Hearing Tests in Pittsford, NY](https://ontariohearing.com/hearing-test/)
-- [Tinnitus Evaluation & Treatment in Pittsford, NY](https://ontariohearing.com/tinnitus/)
-- [Cochlear Implants in Pittsford, NY](https://ontariohearing.com/cochlear-implant/)
-- [Hearing Aid Fittings in Pittsford, NY](https://ontariohearing.com/hearing-aid-fittings-in-rochester-ny/)', '/assets/img/Audiologists-in-Pittsford-NY-7dc9f43b.webp', 1);
-
 INSERT OR REPLACE INTO "ec_service_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "sort_order") VALUES ('cochlear-implant', 'cochlear-implant', 'published', 'en', 1, 'Cochlear Implant', datetime('now'), datetime('now'), datetime('now'), 'Cochlear Implant | Ontario Hearing Center', 'If hearing aids aren''t enough, a cochlear implant may be your best hearing option. We have Cochlear information to help you.', 'It can help regain their ability to hear sounds and understand speech in an easier way than might be obtained with a hearing aid. Hearing loss is a common condition that affects millions of people. While [hearing aids](/hearing-aids/) can help, they don’t restore normal hearing.', 'Not all hearing-impaired people have the same hearing loss. Some may have a profound impairment, while others may just suffer from mild to moderate hearing impairments. A cochlear implant is not a cure for hearing loss, but it may be an option for those who are not experiencing sufficient benefit from their hearing aids.
 
 It can help regain their ability to hear sounds and understand speech in an easier way than might be obtained with a hearing aid. Hearing loss is a common condition that affects millions of people. While [hearing aids](/hearing-aids/) can help, they don’t restore normal hearing.
@@ -5974,7 +5966,7 @@ Step 5: **Aural rehabilitation and Care**: Your brain will need to be retrained 
 
 Your cochlear implant candidacy is determined by many factors, in addition to the degree of your hearing loss.  Our audiologist will review all you test results and counsel you regarding your eligibility.
 
-[Schedule An Evaluation](https://ontariohearing.com/contact-us/)', '/assets/img/Cochlear-Implant-1-7c55443b.webp', 2);
+[Schedule An Evaluation](https://ontariohearing.com/contact-us/)', '/assets/img/Cochlear-Implant-1-7c55443b.webp', 1);
 
 INSERT OR REPLACE INTO "ec_service_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "sort_order") VALUES ('custom-ear-molds', 'custom-ear-molds', 'published', 'en', 1, 'Custom Ear Molds', datetime('now'), datetime('now'), datetime('now'), 'Custom Ear Molds - Ontario Hearing Center, Rochester, NY', 'Ontario Hearing Center provides custom ear molds in Rochester, NY. Contact us today to schedule an appointment!', 'Ontario Hearing Center provides custom ear molds in Rochester, NY.', '## Custom Ear Molds for Hearing Loss
 
@@ -6031,7 +6023,7 @@ Ear molds often help to keep the amplified sounds from traveling back outside of
 
 During an ear mold fitting, an audiologist first examines your ear canal for safety. They insert a small foam dam, then gently inject a soft silicone material to create a precise impression. After it hardens for a few minutes, the mold is removed. This custom shape is then sent to a lab to create your final earpiece.
 
-[We’re Here To Help](https://ontariohearing.com/contact-us/)', '/assets/img/woman-holding-two-hearing-aids-hands-464e3da9.webp', 3);
+[We’re Here To Help](https://ontariohearing.com/contact-us/)', '/assets/img/woman-holding-two-hearing-aids-hands-464e3da9.webp', 2);
 
 INSERT OR REPLACE INTO "ec_service_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "sort_order") VALUES ('giving-back', 'giving-back', 'published', 'en', 1, 'Giving Back', datetime('now'), datetime('now'), datetime('now'), 'Giving Back - Ontario Hearing Center | Rochester, NY', 'At Ontario Hearing Center, we''re more than just a hearing aid company. We''re committed to giving back to our local and global communities. That''s why we offer free hearing screenings and support missions trips around the world.', 'Ontario Hearing Center shares the passion to provide the Gift of Hearing to people in Rochester, NY and around the world.', '## SUSTAINABLE & IMPACTFUL HEARING MISSIONS AND LOCAL PROJECTS
 
@@ -6101,7 +6093,7 @@ Patients with access to hearing healthcare connect with others and lives are for
 
 ![Older man and young woman smiling in humanitarian clinic setting](/assets/img/Screen-Shot-2017-09-27-at-1-34-47-PM-11-1-47f5e099.webp)
 
-![Medical professional with stethoscope speaking to child](/assets/img/Screen-Shot-2017-09-27-at-1-54-21-PM1-d862125a.webp)', '/assets/img/Hearing-Tests-in-Pittsford-NY-160186c3.webp', 4);
+![Medical professional with stethoscope speaking to child](/assets/img/Screen-Shot-2017-09-27-at-1-54-21-PM1-d862125a.webp)', '/assets/img/Hearing-Tests-in-Pittsford-NY-160186c3.webp', 3);
 
 INSERT OR REPLACE INTO "ec_service_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "sort_order") VALUES ('hearing-aid-batteries', 'hearing-aid-batteries', 'published', 'en', 1, 'Hearing Aid Batteries', datetime('now'), datetime('now'), datetime('now'), 'Hearing Aid Batteries - Ontario Hearing Center, Rochester NY', 'Ontario Hearing Center provides hearing aid batteries in Rochester, NY. Contact us today at (585) 442-4180 or (585) 247-4810!', 'Ontario Hearing Center provides hearing aid batteries in Rochester, NY.', '**_Ontario Hearing Center provides hearing aid batteries in Rochester, NY._**
 
@@ -6156,7 +6148,7 @@ Regularly check your battery levels to ensure your hearing aids are always ready
 
 Ontario Hearing Center provides hearing aid batteries in Rochester, NY.
 
-[Call us](https://ontariohearing.com/contact-us/) today to schedule an appointment!', '/assets/img/habex-sprite-batteries-1024x410-939d9c55.webp', 5);
+[Call us](https://ontariohearing.com/contact-us/) today to schedule an appointment!', '/assets/img/habex-sprite-batteries-1024x410-939d9c55.webp', 4);
 
 INSERT OR REPLACE INTO "ec_service_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "sort_order") VALUES ('hearing-aid-fittings-in-rochester-ny', 'hearing-aid-fittings-in-rochester-ny', 'published', 'en', 1, 'Hearing Aid Fittings in Rochester, NY', datetime('now'), datetime('now'), datetime('now'), 'Hearing Aid Fittings | Ontario Hearing Center', 'Ontario Hearing Center has audiologists providing expert hearing aid fittings in Rochester, NY.', 'Ontario Hearing Center has audiologists providing expert hearing aid fittings in Rochester, NY', '_**Ontario Hearing Center has audiologists providing expert hearing aid fittings in Rochester, NY**_
 
@@ -6277,7 +6269,7 @@ At Ontario Hearing Center, we’re dedicated to helping you achieve the best hea
 
 Don’t let hearing loss hold you back—take the first step toward better hearing today.
 
-[Schedule your hearing aid fitting in Rochester, NY](https://ontariohearing.com/contact-us/), with us now and start enjoying the sounds of life again.', '/assets/img/woman-holding-two-hearing-aids-hands-464e3da9.webp', 6);
+[Schedule your hearing aid fitting in Rochester, NY](https://ontariohearing.com/contact-us/), with us now and start enjoying the sounds of life again.', '/assets/img/woman-holding-two-hearing-aids-hands-464e3da9.webp', 5);
 
 INSERT OR REPLACE INTO "ec_service_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "sort_order") VALUES ('aural-rehabilitation', 'aural-rehabilitation', 'published', 'en', 1, 'Aural Rehabilitation', datetime('now'), datetime('now'), datetime('now'), 'Aural Rehabilitation - Ontario Hearing Center, Rochester, NY', 'Ontario Hearing Center provides aural rehabilitation in Rochester, NY — auditory training, communication strategies, and counseling to help you hear with confidence. Schedule today!', 'Ontario Hearing Center provides aural rehabilitation in Rochester, NY.', '_**Ontario Hearing Center provides aural rehabilitation in Rochester, NY.**_
 
@@ -6304,7 +6296,7 @@ Aural rehabilitation can help if you:
 
 ## Aural Rehabilitation in Rochester, NY
 
-At Ontario Hearing Center, aural rehabilitation is a partnership. We meet you where you are, set goals together, and check in regularly so you keep improving long after your fitting. If you or a loved one would like to hear and communicate with more confidence, schedule an appointment with our audiologists today.', '/assets/img/OntarioHearingCenter-332-2-a7c21541.webp', 7);
+At Ontario Hearing Center, aural rehabilitation is a partnership. We meet you where you are, set goals together, and check in regularly so you keep improving long after your fitting. If you or a loved one would like to hear and communicate with more confidence, schedule an appointment with our audiologists today.', '/assets/img/OntarioHearingCenter-332-2-a7c21541.webp', 6);
 
 INSERT OR REPLACE INTO "ec_service_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "sort_order") VALUES ('hearing-aids', 'hearing-aids', 'published', 'en', 1, 'Hearing Aids in Rochester NY', datetime('now'), datetime('now'), datetime('now'), 'Hearing Aids in Rochester NY | Ontario Hearing Center', 'Find the latest digital hearing aids in Rochester, NY. Ontario Hearing Center offers personalized consultation, fittings, and styles from top brands.', 'Ontario Hearing Center has expert audiologists providing hearing aids in Rochester, NY.', '## Hearing Aids
 
@@ -6460,7 +6452,7 @@ These devices are situated behind the ear, routing sound through a tube and an e
 <span class="partner"><img src="/assets/img/resound1-a0a8c546.webp" alt="ReSound hearing aids" /></span>
 <span class="partner"><img src="/assets/img/phank-2c3365ca.webp" alt="Phonak hearing aids" /></span>
 <span class="partner"><img src="/assets/img/starkey-12b75f42.webp" alt="Starkey hearing aids" /></span>
-</div>', '/assets/img/Oticon_More-76ffaf40.webp', 8);
+</div>', '/assets/img/Oticon_More-76ffaf40.webp', 7);
 
 INSERT OR REPLACE INTO "ec_service_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "sort_order") VALUES ('hearing-test', 'hearing-test', 'published', 'en', 1, 'Hearing Tests', datetime('now'), datetime('now'), datetime('now'), 'Hearing Tests | Ontario Hearing Center, Rochester NY', 'Hearing tests can help you determine if a professional evaluation is needed. Find out how it works and where to find an audiologist near you. Ontario Hearing Center provides hearing tests in Rochester, NY.', 'Are you worried that your hearing is not as good as it used to be?', 'Are you worried that your hearing is not as good as it used to be?
 
@@ -6526,7 +6518,7 @@ Our philosophy is to educate patients about their options, and not pressure them
 
 ### Where is a hearing test performed?
 
-All our hearing tests are performed by licensed [Doctors of Audiology](https://ontariohearing.com/about-us/) in sound treated booths so consistent and accurate results can be obtained.', '/assets/img/OntarioHearingCenter-332-2-a7c21541.webp', 9);
+All our hearing tests are performed by licensed [Doctors of Audiology](https://ontariohearing.com/about-us/) in sound treated booths so consistent and accurate results can be obtained.', '/assets/img/OntarioHearingCenter-332-2-a7c21541.webp', 8);
 
 INSERT OR REPLACE INTO "ec_service_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "sort_order") VALUES ('insurance', 'insurance', 'published', 'en', 1, 'Insurance', datetime('now'), datetime('now'), datetime('now'), 'Insurance | Ontario Hearing Center', 'Wondering about your insurance coverage for hearing aids? We''re here to help. Get all of your questions answered about insurance and hearing aids today!', 'We keep up on the latest insurance programs and their changes so you don’t have to.', '## Questions About Insurance?
 
@@ -6544,7 +6536,7 @@ The process, procedure, and scheduling of appointments required to obtain the di
 
 ![Woman on phone at office desk with computer](/assets/img/OntarioHearing30-e597bb0a.webp)
 
-[Schedule Your Hearing Test](/contact-us/)', '/assets/img/OntarioHearing30-e597bb0a.webp', 10);
+[Schedule Your Hearing Test](/contact-us/)', '/assets/img/OntarioHearing30-e597bb0a.webp', 9);
 
 INSERT OR REPLACE INTO "ec_service_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "sort_order") VALUES ('real-ear-measurement', 'real-ear-measurement', 'published', 'en', 1, 'Real Ear Measurement', datetime('now'), datetime('now'), datetime('now'), 'Real Ear Measurement - Ontario Hearing Center, Rochester NY', 'Ontario Hearing Center use real ear measurement as part of our best practices in providing the best audiology services in Rochester, NY.', 'Ontario Hearing Center has audiologists practicing real ear measurements for the most accurate hearing aid fittings in Rochester, NY.', '_**Ontario Hearing Center has audiologists practicing real ear measurements for the most accurate hearing aid fittings in Rochester, NY.**_
 
@@ -6650,7 +6642,7 @@ Based on years of experience, we can say that verifying hearing aids using real 
 
 Real ear measurement is backed up by numerous research studies, one of which is from Washington University that came up with this result: users preferred to wear hearing aids that were fit using real ear measurement versus hearing devices that weren’t.  When an individual uses hearing aids adjusted via real ear measurement to meet prescriptive targets, that is when hearing is experienced best.  Audiologists at Ontario Hearing Center do not simply rely on Manufacture First-Fit settings. We make sure to use real ear measurement techniques to make sure that the best amplification is delivered.
 
-[Contact us](https://ontariohearing.com/contact-us/) today to schedule an appointment!', '/assets/img/ear-measer-be34fabb.webp', 11);
+[Contact us](https://ontariohearing.com/contact-us/) today to schedule an appointment!', '/assets/img/ear-measer-be34fabb.webp', 10);
 
 INSERT OR REPLACE INTO "ec_service_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "sort_order") VALUES ('services', 'services', 'published', 'en', 1, 'Services', datetime('now'), datetime('now'), datetime('now'), 'Services | Ontario Hearing Center', 'Our audiology experts provide tailored hearing care services to help you hear better and live life to the fullest.', 'For over 60 years, Ontario Hearing Center in Rochester, NY, have been helping patients and families understand and treat [hearing loss](/hearing-loss/).', '## You''re Ready to Hear Better.
 
@@ -6696,7 +6688,7 @@ Enjoy the convenience of hearing services at home.  If you can’t make it to o
 
 #### Hearing Aid Repairs
 
-Regular hearing aid checks are a critical part of ensuring proper functioning hearing aids.', '', 12);
+Regular hearing aid checks are a critical part of ensuring proper functioning hearing aids.', '', 11);
 
 INSERT OR REPLACE INTO "ec_service_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "sort_order") VALUES ('tinnitus', 'tinnitus', 'published', 'en', 1, 'Tinnitus', datetime('now'), datetime('now'), datetime('now'), 'Tinnitus Evaluation & Management in Rochester, NY | Ontario Hearing Center', 'Ontario Hearing Center provides tinnitus evaluation and management in Rochester, NY. Our audiologists identify the cause of your tinnitus and build a personalized plan for lasting relief.', 'Ontario Hearing Center provides tinnitus evaluation and management in Rochester, NY.', '_**Ontario Hearing Center provides tinnitus evaluation and management in Rochester, NY.**_
 
@@ -6797,7 +6789,7 @@ Practical strategies can reduce tinnitus flare-ups:
 
 Ontario Hearing Center has been helping people manage tinnitus in Rochester, NY for more than three decades. Our audiologists will evaluate your symptoms, identify contributing factors, and build a personalized management plan — whether that means sound therapy, hearing aids, counseling referrals, or a combination of approaches.
 
-Contact us to [schedule a tinnitus evaluation](/contact-us/) and take the first step toward relief.', '/assets/img/OntarioHearing26-2ba68ee2.webp', 13);
+Contact us to [schedule a tinnitus evaluation](/contact-us/) and take the first step toward relief.', '/assets/img/OntarioHearing26-2ba68ee2.webp', 12);
 
 INSERT OR REPLACE INTO "ec_service_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "sort_order") VALUES ('types-of-hearing-aids', 'types-of-hearing-aids', 'published', 'en', 1, 'Types Of Hearing Aids', datetime('now'), datetime('now'), datetime('now'), 'Types Of Hearing Aids - Ontario', 'Explore the different types of hearing aids available and find the right fit for your lifestyle. Learn more and schedule a hearing aid consultation today!', 'Ontario Hearing Center carries a wide selection of hearing aids in Rochester, NY.', '## Do you have trouble hearing?
 
@@ -6899,7 +6891,7 @@ Your success with hearing aids can be helped by wearing them regularly and takin
 
 Choosing among the types of hearing aids in the market can be really overwhelming. Audiologists at Ontario Hearing Center want to make the process easier for you. Let our certified [audiologists in Rochester, NY](https://ontariohearing.com/), assess your hearing needs so we can get started with your hearing health journey.
 
-[Contact us](https://ontariohearing.com/contact-us/) today to schedule an appointment!', '/assets/img/three-ways-to-know-you-need-a-hearing-test-1024x585-1-c4046fc9.webp', 14);
+[Contact us](https://ontariohearing.com/contact-us/) today to schedule an appointment!', '/assets/img/three-ways-to-know-you-need-a-hearing-test-1024x585-1-c4046fc9.webp', 13);
 
 INSERT OR REPLACE INTO "ec_service_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "sort_order") VALUES ('what-to-expect', 'what-to-expect', 'published', 'en', 1, 'What to Expect', datetime('now'), datetime('now'), datetime('now'), 'What to Expect | Ontario Hearing Center', 'There is a lot to learn when you first start hearing aids. Find out more about what to expect from your hearing care professional, how they can help you adjust to wearing your new devices, and what others are saying about their experience.', 'Ontario Hearing Center is an audiology and hearing aid clinic with expert audiologists providing comprehensive hearing care services, hearing tests, cochlear implants, and advanced hearing solutions in Rochester, NY.', '## Best Hearing Aids and Audiologists in Rochester, NY
 
@@ -6921,7 +6913,7 @@ We’re committed to helping you hear and feel better, which is why we pay close
 
 Hearing is an essential part of life, and we want to give you the opportunity to live your best life with better hearing. [Contact us](https://ontariohearing.com/contact-us/) today to schedule an appointment!
 
-![Two men in consultation discussing hearing device](/assets/img/OntarioHearingCenter-332-9-b15fc7b4.webp)', '/assets/img/OntarioHearingCenter-332-9-b15fc7b4.webp', 15);
+![Two men in consultation discussing hearing device](/assets/img/OntarioHearingCenter-332-9-b15fc7b4.webp)', '/assets/img/OntarioHearingCenter-332-9-b15fc7b4.webp', 14);
 
 -- brand_pages
 INSERT OR REPLACE INTO "ec_brand_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "brand_name", "sort_order") VALUES ('costco-hearing-aids', 'costco-hearing-aids', 'published', 'en', 1, 'Costco Hearing Aids', datetime('now'), datetime('now'), datetime('now'), 'Costco Hearing Aids | Ontario Hearing Center', 'Are Costco hearing aids worth buying? Read what expert audiologists in Rochester NY have to say about these over-the-counter hearing aids.', 'Still, the question many people ask remains the same: Are Costco hearing aids worth it? This comprehensive guide breaks down what Costco offers, what may be missing, and how professional hearing care at an audiology clinic may provide stronger long-term customer satisfaction.', 'Have you been exploring your options for hearing aids lately? If so, you’ve probably noticed Costco hearing aids mentioned frequently, especially by people looking for affordability, discount options, and well-known brands at lower prices. Costco began selling hearing aids in 2014, and since then, its products have become increasingly popular among shoppers who appreciate convenience and bulk savings.
@@ -8102,14 +8094,6 @@ reliable and expert [audiologists in Rochester, NY](https://ontariohearing.com/)
 [Contact Us Today](https://ontariohearing.com/contact-us/)', '/assets/img/Group-619-3cc4c241.webp', 'Widex', 10);
 
 -- location_pages
-INSERT OR REPLACE INTO "ec_location_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "location_name", "sort_order") VALUES ('audiologist-in-pittsford-ny', 'audiologist-in-pittsford-ny', 'published', 'en', 1, 'Audiologist in Pittsford, NY', datetime('now'), datetime('now'), datetime('now'), 'Audiologist in Pittsford, NY | Ontario Hearing Center', 'Experience expert hearing care in Pittsford, NY. Our trusted audiologists provide personalized solutions to improve your hearing. Book a consultation today.', '', '## Pittsford, NY
-
-- [Custom Ear Molds in Pittsford, NY](https://ontariohearing.com/custom-ear-molds/)
-- [Hearing Tests in Pittsford, NY](https://ontariohearing.com/hearing-test/)
-- [Tinnitus Evaluation & Treatment in Pittsford, NY](https://ontariohearing.com/tinnitus/)
-- [Cochlear Implants in Pittsford, NY](https://ontariohearing.com/cochlear-implant/)
-- [Hearing Aid Fittings in Pittsford, NY](https://ontariohearing.com/hearing-aid-fittings-in-rochester-ny/)', '/assets/img/Audiologists-in-Pittsford-NY-7dc9f43b.webp', 'Rochester', 1);
-
 INSERT OR REPLACE INTO "ec_location_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "location_name", "sort_order") VALUES ('audiologists-in-brighton', 'audiologists-in-brighton', 'published', 'en', 1, 'Audiologists in Brighton, NY', datetime('now'), datetime('now'), datetime('now'), 'Audiologists in Brighton, NY | Ontario Hearing Center', 'Discover expert audiologists in Brighton, NY, at Ontario Hearing Center. Our dedicated professionals provide comprehensive hearing assessments, personalized solutions, and top-notch care. Regain the joy of crystal-clear sound. Book your appointment today.', 'In a world filled with sounds, the importance of maintaining good hearing health cannot be overstated. For this reason, audiologists play a crucial role in diagnosing, treating, and preventing hearing-related issues.', 'In a world filled with sounds, the importance of maintaining good hearing health cannot be overstated. For this reason, audiologists play a crucial role in diagnosing, treating, and preventing hearing-related issues.
 
 Their expertise goes beyond merely selling hearing aids, as they are highly trained professionals dedicated to improving the quality of life for those with hearing impairments.
@@ -8224,7 +8208,7 @@ Excellent, courteous service from our audiologist today for checking and cleanin
 
 5 months ago
 
-our audiologist is not just knowledgeable about Audiology. She is kind and caring as well. I have had nothing but positive interactions at Ontario Hearing since I started going there in 2021. Additionally, Pam is welcoming and efficient. Five out of five stars!', '/assets/img/Audiologists-in-Brighton-NY-eb7f1d32.webp', 'Brighton', 2);
+our audiologist is not just knowledgeable about Audiology. She is kind and caring as well. I have had nothing but positive interactions at Ontario Hearing since I started going there in 2021. Additionally, Pam is welcoming and efficient. Five out of five stars!', '/assets/img/Audiologists-in-Brighton-NY-eb7f1d32.webp', 'Brighton', 1);
 
 INSERT OR REPLACE INTO "ec_location_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "location_name", "sort_order") VALUES ('audiologists-in-fairport-ny', 'audiologists-in-fairport-ny', 'published', 'en', 1, 'Audiologists in Fairport, NY', datetime('now'), datetime('now'), datetime('now'), 'Audiologists in Fairport, NY | Ontario Hearing Center', 'Discover expert audiologists in Fairport, NY at Ontario Hearing Center. Our dedicated team offers comprehensive hearing care solutions to improve your quality of life. Book an appointment today for personalized hearing evaluations and advanced hearing aid services.', 'This blog aims to delve into the multifaceted roles and responsibilities of audiologists, shedding light on their expertise and the positive impact they have on the lives of those with hearing challenges.', 'In a world filled with a symphony of sounds, the importance of maintaining good hearing health cannot be overstated. [Audiologists](/about-us/), as highly skilled healthcare professionals, play a critical role in addressing hearing impairments and promoting better hearing health for individuals of all ages.
 
@@ -8345,7 +8329,7 @@ Excellent, courteous service from our audiologist today for checking and cleanin
 
 5 months ago
 
-our audiologist is not just knowledgeable about Audiology. She is kind and caring as well. I have had nothing but positive interactions at Ontario Hearing since I started going there in 2021. Additionally, Pam is welcoming and efficient. Five out of five stars!', '/assets/img/Audiologists-in-Fairport-NY-480fab3e.webp', 'Fairport', 3);
+our audiologist is not just knowledgeable about Audiology. She is kind and caring as well. I have had nothing but positive interactions at Ontario Hearing since I started going there in 2021. Additionally, Pam is welcoming and efficient. Five out of five stars!', '/assets/img/Audiologists-in-Fairport-NY-480fab3e.webp', 'Fairport', 2);
 
 INSERT OR REPLACE INTO "ec_location_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "location_name", "sort_order") VALUES ('audiologists-in-greece-ny', 'audiologists-in-greece-ny', 'published', 'en', 1, 'Audiologists in Greece, NY', datetime('now'), datetime('now'), datetime('now'), 'Audiologists in Greece, NY - Ontario', 'Looking for trusted audiologists in Greece, NY? Get expert hearing care from our friendly team—book your appointment at Ontario Hearing Center now!', 'Audiology is a specialized branch of healthcare that focuses on the study, assessment, diagnosis, and management of hearing and balance disorders. It encompasses the science of hearing and the evaluation of auditory function.', 'Audiology is a specialized branch of healthcare that focuses on the study, assessment, diagnosis, and management of hearing and balance disorders. It encompasses the science of hearing and the evaluation of auditory function.
 
@@ -8435,7 +8419,7 @@ Excellent, courteous service from our audiologist today for checking and cleanin
 
 **Michael Moellering**
 
-our audiologist is not just knowledgeable about Audiology. She is kind and caring as well. I have had nothing but positive interactions at Ontario Hearing since I started going there in 2021. Additionally, Pam is welcoming and efficient. Five out of five stars!', '/assets/img/Audiologists-in-Greece-NY-725df04e.webp', 'Greece', 4);
+our audiologist is not just knowledgeable about Audiology. She is kind and caring as well. I have had nothing but positive interactions at Ontario Hearing since I started going there in 2021. Additionally, Pam is welcoming and efficient. Five out of five stars!', '/assets/img/Audiologists-in-Greece-NY-725df04e.webp', 'Greece', 3);
 
 INSERT OR REPLACE INTO "ec_location_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "location_name", "sort_order") VALUES ('audiologists-in-pittsford-ny', 'audiologists-in-pittsford-ny', 'published', 'en', 1, 'Audiologists in Pittsford, NY', datetime('now'), datetime('now'), datetime('now'), 'Audiologists in Pittsford, NY | Ontario Hearing Center', 'Visit Ontario Hearing Center for top-rated audiologists in Pittsford, NY. We specialize in personalized hearing care, from diagnostics to advanced hearing aid solutions. Regain your hearing and enhance your life. Schedule an appointment with our experts today.', 'If you are concerned about your hearing or balance, it is important to see an audiologist. Early diagnosis and treatment can help to prevent further hearing loss and improve your quality of life.', 'An audiologist is a healthcare professional who specializes in hearing and balance disorders. Audiologists are different from hearing aid dispensers. They diagnose, treat, and manage hearing loss and balance problems in people of all ages. Audiologists also provide education and counseling on hearing health and prevention.
 
@@ -8517,7 +8501,7 @@ My entire family (3 generations) have been going to Ontario Hearing Instruments 
 
 Well, I just turned 60 and decided to have my hearing tested. The good news is I needed hearing aids. I say good news because I can’t believe how much better I can hear now. our audiologist was so knowledgeable and helped me select the proper hearing aids for my hearing loss. No more saying “What?”, and I can finally hear the TV at a normal volume. Fantastic service and support from a well run office.
 
-[Dave](https://goo.gl/maps/G9wDNqBsqBmuYLeM6)', '/assets/img/Audiologists-in-Pittsford-NY-7dc9f43b.webp', 'Pittsford', 5);
+[Dave](https://goo.gl/maps/G9wDNqBsqBmuYLeM6)', '/assets/img/Audiologists-in-Pittsford-NY-7dc9f43b.webp', 'Pittsford', 4);
 
 INSERT OR REPLACE INTO "ec_location_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "location_name", "sort_order") VALUES ('ear-wax-removal-in-greece-ny', 'ear-wax-removal-in-greece-ny', 'published', 'en', 1, 'Ear Wax Removal in Greece, NY', datetime('now'), datetime('now'), datetime('now'), 'Ear Wax Removal in Greece, NY | Ontario Hearing Center', 'Meta Description: Discover professional ear wax removal in Greece, NY. Our expert audiologists in Ontario Hearing Center ensure safe and effective ear care for improved hearing.', 'Ear wax, medically known as cerumen, is a natural and necessary substance produced by our ears. It serves a vital role in keeping our ears clean and healthy.', 'Ear wax, medically known as cerumen, is a natural and necessary substance produced by our ears. It serves a vital role in keeping our ears clean and healthy.
 
@@ -8562,7 +8546,7 @@ While home remedies and over-the-counter drops can be effective for mild cases, 
 
 Always consult an audiologist in Ontario Hearing Center for persistent or severe earwax blockages to ensure your ears remain healthy and your hearing is preserved. Our audiologists are trained to perform expert [earwax removal in Greece, NY](https://www.google.com/maps?cid=9213821493223506062).
 
-[Contact us](https://ontariohearing.com/) today to schedule an appointment!', '/assets/img/Earwax-Removal-in-Greece-NY-77849ae2.webp', 'Rochester', 6);
+[Contact us](https://ontariohearing.com/) today to schedule an appointment!', '/assets/img/Earwax-Removal-in-Greece-NY-77849ae2.webp', 'Rochester', 5);
 
 INSERT OR REPLACE INTO "ec_location_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "location_name", "sort_order") VALUES ('hearing-aids-in-brighton-ny', 'hearing-aids-in-brighton-ny', 'published', 'en', 1, 'Hearing Aids in Brighton, NY', datetime('now'), datetime('now'), datetime('now'), 'Hearing Aids in Brighton, NY | Ontario Hearing Center', 'Transform your hearing experience with premium hearing aids in Brighton, NY, at Ontario Hearing Center. Our skilled professionals are dedicated to optimizing your auditory well-being. Explore a variety of personalized hearing solutions and embark on the journey to better hearing. Book a consultation today to discover the ideal hearing aid for your needs.', 'If you’ve been experiencing difficulty hearing, you’re not alone. Millions of people worldwide suffer from hearing loss, but the good news is that modern technology has made it easier than ever to improve your hearing and enhance your quality of life.', 'If you’ve been experiencing difficulty hearing, you’re not alone. Millions of people worldwide suffer from hearing loss, but the good news is that modern technology has made it easier than ever to improve your hearing and enhance your quality of life.
 
@@ -8605,7 +8589,7 @@ If you’re experiencing any signs of hearing loss, don’t hesitate to reach ou
 
 Ontario Hearing Center provides a wide selection of [hearing aids in Brighton, NY](https://www.google.com/maps?cid=9213821493223506062), and nearby locations.
 
-[Contact us](https://ontariohearing.com/contact-us/) today to schedule a consultation with our audiologists!', '/assets/img/Hearing-Aids-in-Brighton-NY-1-81c65029.webp', 'Rochester', 7);
+[Contact us](https://ontariohearing.com/contact-us/) today to schedule a consultation with our audiologists!', '/assets/img/Hearing-Aids-in-Brighton-NY-1-81c65029.webp', 'Rochester', 6);
 
 INSERT OR REPLACE INTO "ec_location_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "location_name", "sort_order") VALUES ('hearing-aids-in-fairport-ny', 'hearing-aids-in-fairport-ny', 'published', 'en', 1, 'Hearing Aids in Fairport, NY', datetime('now'), datetime('now'), datetime('now'), 'Hearing Aids in Fairport, NY - Ontario', 'Recent advancements in hearing aid technology have revolutionized the way we address hearing loss. Digital hearing aids are equipped with sophisticated', 'Hearing aids do more than make sounds louder. They help you stay engaged, communicate with less effort, and feel more confident in everyday situations. From conversations at home to busy restaurants and phone calls, the right hearing aids can make daily life feel clearer and easier.', 'Are you tired of missing out on conversations and struggling to hear the world around you? Hearing loss can be a challenging and isolating experience, but modern technology has brought forth a range of solutions to help you regain your sense of hearing and reconnect with life. Audiologists at Ontario Hearing Center in Rochester, NY, can recommend cutting-edge hearing aids to transform the way people experience sound. In this article, we will explore the benefits of [**hearing aids in Fairport, NY**](https://ontariohearing.com/), the different types available, and how they can significantly enhance the quality of life for individuals dealing with hearing impairment.
 
@@ -8690,7 +8674,7 @@ My entire family (3 generations) have been going to Ontario Hearing Instruments 
 
 Well, I just turned 60 and decided to have my hearing tested. The good news is I needed hearing aids. I say good news because I can’t believe how much better I can hear now. our audiologist was so knowledgeable and helped me select the proper hearing aids for my hearing loss. No more saying “What?”, and I can finally hear the TV at a normal volume. Fantastic service and support from a well run office.
 
-[Dave](https://goo.gl/maps/G9wDNqBsqBmuYLeM6)', '/assets/img/Hearing-Aids-in-Fairport-NY-7afbdb4a.webp', 'Fairport', 8);
+[Dave](https://goo.gl/maps/G9wDNqBsqBmuYLeM6)', '/assets/img/Hearing-Aids-in-Fairport-NY-7afbdb4a.webp', 'Fairport', 7);
 
 INSERT OR REPLACE INTO "ec_location_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "location_name", "sort_order") VALUES ('hearing-aids-in-greece-ny', 'hearing-aids-in-greece-ny', 'published', 'en', 1, 'Hearing Aids in Greece, NY', datetime('now'), datetime('now'), datetime('now'), 'Hearing Aids in Greece, NY | Ontario Hearing Center', 'Experience exceptional audiology services at Ontario Hearing Center. Our skilled audiologists offer tailored solutions for your hearing needs, from assessments to cutting-edge hearing aids in Greece, NY. Rediscover the world of sound - schedule your appointment now.', 'This article explores the role of hearing aids shedding light on their impact and the resources available for those seeking assistance.', 'The advancement of technology has brought about significant improvements in the field of audiology, particularly in the form of hearing aids. These small yet powerful devices have become a lifeline for individuals with hearing impairments, enabling them to reconnect with the world around them and enjoy a better quality of life.
 
@@ -8736,7 +8720,7 @@ Hearing aids have brought about a transformational shift in the lives of individ
 
 Ontario Hearing Center’s commitment to fostering a supportive environment, coupled with advancements in audiology, has paved the way for improved communication, enhanced social interactions, and better overall well-being for residents of [Greece, NY](https://www.google.com/maps?cid=9213821493223506062), and nearby locations.
 
-[Contact us](https://ontariohearing.com/contact-us/) today to schedule a consultation with our audiologists!', '/assets/img/Audiologists-in-Greece-NY-725df04e.webp', 'Rochester', 9);
+[Contact us](https://ontariohearing.com/contact-us/) today to schedule a consultation with our audiologists!', '/assets/img/Audiologists-in-Greece-NY-725df04e.webp', 'Rochester', 8);
 
 INSERT OR REPLACE INTO "ec_location_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "location_name", "sort_order") VALUES ('hearing-aids-in-pittsford-ny', 'hearing-aids-in-pittsford-ny', 'published', 'en', 1, 'Hearing Aids in Pittsford, NY', datetime('now'), datetime('now'), datetime('now'), 'Hearing Aids in Pittsford, NY | Ontario Hearing Center', 'Meta Description: Explore a wide selection of hearing aids in Pittsford, NY, at Ontario Hearing Center. Discover personalized solutions for better hearing and a higher quality of life. Schedule your consultation today.', 'Hearing loss is a common yet often underestimated condition that can significantly impact an individual’s quality of life.', 'Hearing loss is a common yet often underestimated condition that can significantly impact an individual’s quality of life.
 
@@ -8784,7 +8768,7 @@ The journey from hearing loss to improved hearing is made smoother through the d
 
 We provide a wide selection of [hearing aids in Pittsford, NY](https://www.google.com/maps?cid=9213821493223506062), and nearby locations.
 
-[Contact us](https://ontariohearing.com/contact-us/) today to schedule a consultation with our audiologists!', '/assets/img/Hearing-Aids-in-Pittsford-NY-08c319cc.webp', 'Rochester', 10);
+[Contact us](https://ontariohearing.com/contact-us/) today to schedule a consultation with our audiologists!', '/assets/img/Hearing-Aids-in-Pittsford-NY-08c319cc.webp', 'Rochester', 9);
 
 INSERT OR REPLACE INTO "ec_location_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "location_name", "sort_order") VALUES ('hearing-tests-in-brighton-ny', 'hearing-tests-in-brighton-ny', 'published', 'en', 1, 'Hearing Tests in Brighton, NY', datetime('now'), datetime('now'), datetime('now'), 'Hearing Tests in Brighton, NY | Ontario Hearing Center', 'Get comprehensive hearing tests in Brighton, NY, at Ontario Hearing Center. Ensure your auditory health with our expert evaluations. Schedule your appointment today.', 'Hearing tests represent a vital checkpoint in our journey through the world of sound. These often-overlooked evaluations are the key to understanding and safeguarding our auditory health.', 'Hearing tests represent a vital checkpoint in our journey through the world of sound. These often-overlooked evaluations are the key to understanding and safeguarding our auditory health.
 
@@ -8826,7 +8810,7 @@ Hearing tests are not just for the elderly or those with obvious hearing issues.
 
 Regular hearing tests can catch problems early, potentially preventing further deterioration and improving your quality of life.
 
-[Schedule a hearing test](https://ontariohearing.com/contact-us/) with Ontario Hearing Center today! We provide hearing tests in Brighton, NY.', '/assets/img/Hearing-Tests-in-Brighton-NY-5f6e7bd8.webp', 'Rochester', 11);
+[Schedule a hearing test](https://ontariohearing.com/contact-us/) with Ontario Hearing Center today! We provide hearing tests in Brighton, NY.', '/assets/img/Hearing-Tests-in-Brighton-NY-5f6e7bd8.webp', 'Rochester', 10);
 
 INSERT OR REPLACE INTO "ec_location_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "location_name", "sort_order") VALUES ('hearing-tests-in-fairport-ny', 'hearing-tests-in-fairport-ny', 'published', 'en', 1, 'Hearing Tests in Fairport, NY', datetime('now'), datetime('now'), datetime('now'), 'Hearing Tests in Fairport, NY | Ontario Hearing Center', 'Discover comprehensive hearing tests in Fairport, NY, at Ontario Hearing Center. Uncover your hearing health with expert evaluations and personalized solutions.', 'Hearing tests, also known as audiometric evaluations, are specialized assessments conducted to evaluate the auditory function of an individual. These tests are essential tools for understanding the state of one’s hearing health and detecting any potential issues.', 'Hearing tests, also known as audiometric evaluations, are specialized assessments conducted to evaluate the auditory function of an individual. These tests are essential tools for understanding the state of one’s hearing health and detecting any potential issues.
 
@@ -8876,7 +8860,7 @@ The process of undergoing a hearing test is painless and straightforward:
 
 Hearing tests are an essential component of overall health maintenance, especially as we age. They provide early detection of hearing problems, which can have a profound impact on our quality of life.
 
-Regular [hearing tests in Fairport, NY](https://www.google.com/maps?cid=9213821493223506062), can make the difference between hearing your loved ones’ voices clearly or missing out on the beauty of your favorite music. If you haven’t had a hearing test in some time, consider [scheduling](https://ontariohearing.com/contact-us/) one today at Ontario Hearing Center.', '/assets/img/Hearing-Tests-in-Fairport-NY-2de32450.webp', 'Rochester', 12);
+Regular [hearing tests in Fairport, NY](https://www.google.com/maps?cid=9213821493223506062), can make the difference between hearing your loved ones’ voices clearly or missing out on the beauty of your favorite music. If you haven’t had a hearing test in some time, consider [scheduling](https://ontariohearing.com/contact-us/) one today at Ontario Hearing Center.', '/assets/img/Hearing-Tests-in-Fairport-NY-2de32450.webp', 'Rochester', 11);
 
 INSERT OR REPLACE INTO "ec_location_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "location_name", "sort_order") VALUES ('hearing-tests-in-greece-ny', 'hearing-tests-in-greece-ny', 'published', 'en', 1, 'Hearing Tests in Greece, NY', datetime('now'), datetime('now'), datetime('now'), 'Hearing Tests in Greece, NY | Ontario Hearing Center', 'Discover comprehensive hearing tests in Greece, NY. Preserve your auditory health with expert evaluations at Ontario Hearing Center.', 'Hearing tests, also known as audiometric evaluations, are not just for the elderly. They are essential for people of all ages. Untreated hearing loss can lead to a cascade of physical and emotional consequences.', 'Hearing tests, also known as audiometric evaluations, are not just for the elderly. They are essential for people of all ages. Untreated hearing loss can lead to a cascade of physical and emotional consequences.
 
@@ -8927,7 +8911,7 @@ Now that you understand the importance of hearing tests, it’s time to take act
 
 Our ability to hear is a precious gift that should not be taken for granted. So, don’t wait – schedule a hearing test today at Ontario Hearing Center. We provide comprehensive [hearing tests in Greece, NY](https://www.google.com/maps?cid=9213821493223506062), and nearby locations.
 
-[Contact us](https://ontariohearing.com/contact-us/) today to schedule an appointment!', '/assets/img/Hearing-Tests-in-Greece-NY-f56a0e3b.webp', 'Rochester', 13);
+[Contact us](https://ontariohearing.com/contact-us/) today to schedule an appointment!', '/assets/img/Hearing-Tests-in-Greece-NY-f56a0e3b.webp', 'Rochester', 12);
 
 INSERT OR REPLACE INTO "ec_location_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "location_name", "sort_order") VALUES ('tinnitus-in-brighton-ny', 'tinnitus-in-brighton-ny', 'published', 'en', 1, 'Tinnitus in Brighton, NY', datetime('now'), datetime('now'), datetime('now'), 'Tinnitus in Brighton, NY | Ontario Hearing Center', 'Seek relief from tinnitus in Brighton, NY at Ontario Hearing Center. Our experts are here to help you find solutions for tinnitus management and improved auditory well-being.', 'Tinnitus is a condition that affects millions of people worldwide, causing them to hear persistent sounds like ringing, buzzing, or hissing in their ears when there is no external source of such noise.', 'Tinnitus is a condition that affects millions of people worldwide, causing them to hear persistent sounds like ringing, buzzing, or hissing in their ears when there is no external source of such noise.
 
@@ -8982,7 +8966,7 @@ Hearing aids are not just amplification devices; they can also serve as effectiv
 
 Tinnitus is a challenging condition that affects countless individuals worldwide. Understanding its causes, symptoms, and available management strategies is crucial for those living with tinnitus.
 
-If you or someone you know is struggling with [tinnitus in Brighton, NY](https://www.google.com/maps?cid=9213821493223506062),  seek the expertise of the audiologists in Ontario Hearing Center now!', '/assets/img/Tinnitus-in-Brighton-NY-b7218aa1.webp', 'Rochester', 14);
+If you or someone you know is struggling with [tinnitus in Brighton, NY](https://www.google.com/maps?cid=9213821493223506062),  seek the expertise of the audiologists in Ontario Hearing Center now!', '/assets/img/Tinnitus-in-Brighton-NY-b7218aa1.webp', 'Rochester', 13);
 
 INSERT OR REPLACE INTO "ec_location_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "location_name", "sort_order") VALUES ('tinnitus-in-fairport-ny', 'tinnitus-in-fairport-ny', 'published', 'en', 1, 'Tinnitus in Fairport, NY', datetime('now'), datetime('now'), datetime('now'), 'Tinnitus in Fairport, NY | Ontario Hearing Center', 'Discover expert care for tinnitus in Fairport, NY, at Ontario Hearing Center. Our audiologists offer tailored solutions for tinnitus relief.', 'Tinnitus, often described as a ringing, buzzing, or hissing sound in the ears, affects millions of people worldwide. This condition can be both bothersome and disruptive to one’s quality of life.', 'Tinnitus, often described as a ringing, buzzing, or hissing sound in the ears, affects millions of people worldwide. This condition can be both bothersome and disruptive to one’s quality of life.
 
@@ -9035,7 +9019,7 @@ Tinnitus is a common and often distressing condition, but with the guidance of a
 
 If you or someone you know is struggling with tinnitus, seeking the expertise of an audiologist can be a crucial step toward finding relief and managing this condition effectively. [Ontario Hearing Center](https://www.google.com/maps?cid=9213821493223506062) has a team of audiologists who are experts in handling tinnitus for patients located in Fairport, NY.
 
-[Contact us](https://ontariohearing.com/contact-us/) for a consultation today!', '/assets/img/Tinnitus-in-Fairport-NY-607a6757.webp', 'Rochester', 15);
+[Contact us](https://ontariohearing.com/contact-us/) for a consultation today!', '/assets/img/Tinnitus-in-Fairport-NY-607a6757.webp', 'Rochester', 14);
 
 INSERT OR REPLACE INTO "ec_location_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "location_name", "sort_order") VALUES ('tinnitus-in-greece-ny', 'tinnitus-in-greece-ny', 'published', 'en', 1, 'Tinnitus in Greece, NY', datetime('now'), datetime('now'), datetime('now'), 'Tinnitus in Greece, NY | Ontario Hearing Center', 'Discover expert management of tinnitus in Greece, NY. Get relief from persistent ringing with our personalized solutions at Ontario Hearing Center.', 'Tinnitus, often described as a persistent ringing, buzzing, or hissing sound in the ears, affects millions of people worldwide. It can be a distressing condition that significantly impacts one’s quality of life.', 'Tinnitus, often described as a persistent ringing, buzzing, or hissing sound in the ears, affects millions of people worldwide. It can be a distressing condition that significantly impacts one’s quality of life.
 
@@ -9077,7 +9061,7 @@ Audiologists in Ontario Hearing Center play a crucial role in diagnosing and tre
 
 If you or someone you know is living with tinnitus, seeking the guidance of an audiologist can be the first step towards finding relief and restoring peace of mind.
 
-Take the first step towards [tinnitus relief](https://www.google.com/maps?cid=9213821493223506062) by [scheduling an appointment](https://ontariohearing.com/contact-us/) with the [best audiologists in Rochester, NY](https://ontariohearing.com/).', '/assets/img/Tinnitus-in-Greece-NY-83f3ab55.webp', 'Rochester', 16);
+Take the first step towards [tinnitus relief](https://www.google.com/maps?cid=9213821493223506062) by [scheduling an appointment](https://ontariohearing.com/contact-us/) with the [best audiologists in Rochester, NY](https://ontariohearing.com/).', '/assets/img/Tinnitus-in-Greece-NY-83f3ab55.webp', 'Rochester', 15);
 
 INSERT OR REPLACE INTO "ec_location_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "location_name", "sort_order") VALUES ('tinnitus-in-pittsford-ny', 'tinnitus-in-pittsford-ny', 'published', 'en', 1, 'Tinnitus in Pittsford, NY', datetime('now'), datetime('now'), datetime('now'), 'Tinnitus in Pittsford, NY | Ontario Hearing Center', 'Ontario Hearing Center can help patients who are suffering from tinnitus in Pittsford, NY. Visit our clinic today!', 'Tinnitus is a common auditory condition that affects millions of people worldwide. Characterized by the perception of ringing, buzzing, or other noises in the ears without any external source, tinnitus can be both distressing and disruptive to one’s quality of life.', 'Tinnitus is a common auditory condition that affects millions of people worldwide. Characterized by the perception of ringing, buzzing, or other noises in the ears without any external source, tinnitus can be both distressing and disruptive to one’s quality of life.
 
@@ -9123,7 +9107,7 @@ Hearing aids are advanced devices that not only amplify sounds for individuals w
 
 Tinnitus is a prevalent condition that can significantly impact an individual’s quality of life. While it may not always be curable, there are effective management strategies available, and audiologists play a vital role in providing relief and support.
 
-Call [Ontario Hearing Center](https://www.google.com/maps?cid=9213821493223506062) today to seek the expertise of an [audiologist in Pittsford, NY](https://www.google.com/maps?cid=9213821493223506062), and take the crucial first step toward finding tinnitus relief.', '/assets/img/Tinnitus-in-Pittsford-NY-d6791ca2.webp', 'Rochester', 17);
+Call [Ontario Hearing Center](https://www.google.com/maps?cid=9213821493223506062) today to seek the expertise of an [audiologist in Pittsford, NY](https://www.google.com/maps?cid=9213821493223506062), and take the crucial first step toward finding tinnitus relief.', '/assets/img/Tinnitus-in-Pittsford-NY-d6791ca2.webp', 'Rochester', 16);
 
 -- resource_pages
 INSERT OR REPLACE INTO "ec_resource_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "sort_order") VALUES ('audiology', 'audiology', 'published', 'en', 1, 'Audiology', datetime('now'), datetime('now'), datetime('now'), 'Audiology - Ontario Hearing Center | Rochester, NY', 'Learn what audiology is, how audiologists are trained, and what to expect when you visit an audiologist at Ontario Hearing Center in Rochester, NY.', 'Audiology is the branch of medical science which deals with hearing, hearing disorders, and balance issues.  It’s a profession that uses the knowledge of hearing, sound, and balance to treat and rehabilitate patients who suffer from related disorders.', '## What is Audiology?
@@ -9773,7 +9757,6 @@ INSERT OR REPLACE INTO "ec_legal_pages" (id, slug, status, locale, version, titl
 - [Nano Hearing Aids](https://ontariohearing.com/nano-hearing-aids/)
 - [Oticon Hearing Aids](https://ontariohearing.com/oticon-hearing-aids/)
 - [Phonak Hearing Aids](https://ontariohearing.com/phonak-hearing-aids/)
-- [Pittsford, NY](https://ontariohearing.com/audiologist-in-pittsford-ny/)
 - [Privacy Policy](https://ontariohearing.com/privacy-policy/)
 - [Real Ear Measurement](https://ontariohearing.com/real-ear-measurement/)
 - [Resound Hearing Aids](https://ontariohearing.com/resound-hearing-aids/)
