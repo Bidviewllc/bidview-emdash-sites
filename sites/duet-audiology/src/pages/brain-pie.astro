@@ -1,0 +1,241 @@
+---
+import Interior from '../layouts/Interior.astro';
+
+const SITE = 'https://duethearing.com';
+const description = "Brain Pie™ is DUET Hearing's educational model illustrating how the brain allocates limited processing power across hearing, memory, attention, and language — and why clearer hearing frees up brain resources for everything else.";
+
+const definedTermSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'DefinedTerm',
+  name: 'Brain Pie™',
+  description,
+  inDefinedTermSet: { '@id': `${SITE}/#organization` },
+  url: `${SITE}/brain-pie/`,
+};
+const businessService = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Brain Pie™',
+  serviceType: 'MedicalService',
+  provider: { '@id': 'https://duethearing.com/#organization' },
+  areaServed: { '@type': 'City', name: 'Lake Forest, Illinois' },
+  audience: { '@type': 'MedicalAudience', audienceType: 'Patient' },
+  description,
+  url: 'https://duethearing.com/brain-pie/',
+};
+
+const allSchemas = [definedTermSchema, businessService];
+
+---
+<Interior
+  title="Brain Pie™ | Duet Hearing"
+  description={description}
+  schema={allSchemas}
+>
+
+<section class="page-hero page-hero--no-media">
+  <div class="page-hero-inner">
+  <div class="page-hero-text">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span class="sep">/</span>
+      <span class="current">Brain Pie™</span>
+    </nav>
+
+    <h1 class="page-title">Brain Pie<sup class="tm">&trade;</sup></h1>
+    <div class="page-underline"></div>
+  </div>
+  </div>
+</section>
+
+<div class="hero-curve curve-arch" aria-hidden="true"></div>
+
+<main class="interior-main">
+  <div class="interior-main-inner">
+
+    <article class="article-col service-article">
+
+      <p class="service-intro">Your brain is a remarkable organ with a limited amount of processing power available at any given moment. Imagine that processing power as a pie.</p>
+
+      <p class="service-intro">Every second of the day, different parts of your brain "take a slice" of the Brain Pie<sup class="tm">&trade;</sup> to perform their jobs. Vision takes a slice. Memory takes a slice. Attention takes a slice. Movement takes a slice. Language takes a slice. Hearing also takes a slice.</p>
+
+      <p class="service-intro">When your hearing system receives a clear, precise sound signal, the hearing and language centers of your brain can understand speech using a relatively small slice of the Brain Pie<sup class="tm">&trade;</sup>. That leaves plenty of brain resources available for other important tasks, remembering what was said, participating in conversations, solving problems, reading facial expressions, or simply enjoying the moment.</p>
+
+      <p class="service-intro">When the incoming speech signal is unclear or degraded, your brain doesn't give up. Instead, it works harder.</p>
+
+      <p class="service-intro">To fill in the missing pieces, your brain recruits additional resources from attention, memory, language, and executive function. In other words, it uses a bigger slice of the Brain Pie<sup class="tm">&trade;</sup> just to figure out what someone is saying.</p>
+
+      <p class="service-intro">The result is called listening effort. More of your Brain Pie<sup class="tm">&trade;</sup> is devoted to decoding speech, leaving less available for everything else.</p>
+
+      <p class="service-intro">That's why people with hearing difficulty often say they can hear someone talking but are exhausted after conversations. Their brains have been working overtime simply to understand the message.</p>
+
+      <p class="service-intro">The goal of hearing treatment is not just to make sounds louder. It is to provide the brain with a more precise, usable signal so it can process speech efficiently.</p>
+
+      <p class="service-intro">Clearer sound means a smaller slice of the Brain Pie<sup class="tm">&trade;</sup> is needed for listening, freeing more brain resources for thinking, remembering, connecting, and living.</p>
+
+      <p class="service-outro">Brain Pie<sup class="tm">&trade;</sup> is a DUET Hearing educational model that illustrates how the brain allocates processing resources during listening and other cognitive tasks.</p>
+
+    </article>
+
+    <aside class="sidebar service-sidebar">
+      <div class="side-cta">
+        <div class="side-cta-image" aria-hidden="true">
+          <img src="/s9-card-6.jpg" alt="" />
+        </div>
+        <div class="side-cta-body">
+          <h3>Schedule your first visit</h3>
+          <p>Begin with a one-on-one consult to discuss your hearing health goals.</p>
+          <a class="btn-schedule" href="#">
+            <span class="btn-schedule-text">Schedule</span>
+            <span class="btn-arrow" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M5 12H19" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+                <path d="M14 7L19 12L14 17" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </a>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+</main>
+
+<style is:global>
+  /* When the hero has no media (right column), let the text span full width */
+  .page-hero--no-media .page-hero-inner {
+    grid-template-columns: 1fr !important;
+  }
+  .service-article :where(.service-intro) {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-size: 17px !important;
+    line-height: 1.7 !important;
+    color: #4E5779 !important;
+    margin: 0 0 18px !important;
+  }
+  .service-article :where(.service-outro) {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-size: 17px !important;
+    line-height: 1.7 !important;
+    color: #4E5779 !important;
+    margin: 28px 0 0 !important;
+  }
+  .service-article :where(.service-block) {
+    padding: 28px 0;
+    border-bottom: 1px solid rgba(33, 39, 63, 0.08);
+  }
+  .service-article :where(.service-block):last-of-type { border-bottom: none; }
+  .service-article :where(.service-block h2) {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-size: 28px !important;
+    font-weight: 600 !important;
+    color: #21273F !important;
+    margin: 0 0 16px !important;
+    line-height: 1.2 !important;
+  }
+  .service-article :where(.service-block p) {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-size: 17px !important;
+    line-height: 1.7 !important;
+    color: #4E5779 !important;
+    margin: 0 0 16px !important;
+  }
+  .service-article :where(.service-block p:last-of-type) { margin-bottom: 0 !important; }
+  .service-article :where(.service-block ul) {
+    list-style: none;
+    padding: 0;
+    margin: 16px 0;
+  }
+  .service-article :where(.service-block ul li) {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-size: 16px !important;
+    line-height: 1.7 !important;
+    color: #4E5779 !important;
+    padding-left: 28px;
+    position: relative;
+    margin-bottom: 16px;
+  }
+  .service-article :where(.service-block ul li)::before {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 11px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #00B2E4;
+  }
+  .service-sidebar .side-cta {
+    background: #00B2E4;
+    color: #ffffff;
+    border-radius: 24px;
+    overflow: hidden;
+    position: sticky;
+    top: 100px;
+  }
+  .service-sidebar .side-cta-image {
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+    position: relative;
+  }
+  .service-sidebar .side-cta-image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0,178,228,0) 60%, rgba(0,178,228,0.65) 100%);
+  }
+  .service-sidebar .side-cta-image img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block;
+  }
+  .service-sidebar .side-cta-body { padding: 24px 28px 28px; }
+  .service-sidebar h3 {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-size: 24px !important;
+    font-weight: 600 !important;
+    color: #ffffff !important;
+    margin: 0 0 12px !important;
+    line-height: 1.2 !important;
+  }
+  .service-sidebar p {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-size: 15px !important;
+    line-height: 1.5 !important;
+    color: rgba(255,255,255,0.92) !important;
+    margin: 0 0 20px !important;
+  }
+  .service-sidebar .btn-schedule {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    background: #21273F !important;
+    color: #ffffff !important;
+    padding: 12px 8px 12px 18px !important;
+    border-radius: 100px !important;
+    text-decoration: none !important;
+  }
+  .service-sidebar .btn-schedule-text {
+    font-family: 'Alternate Gothic', 'Barlow Condensed', sans-serif !important;
+    font-size: 18px !important;
+    color: #ffffff !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+  }
+  .service-sidebar .btn-arrow {
+    width: 36px;
+    height: 36px;
+    background: #FEA153;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  @media (max-width: 1024px) {
+    .service-sidebar .side-cta { position: static; }
+  }
+</style>
+
+</Interior>

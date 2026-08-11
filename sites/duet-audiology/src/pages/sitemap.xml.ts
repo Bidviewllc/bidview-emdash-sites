@@ -20,6 +20,7 @@ const urls: Array<{ path: string; priority: number; changefreq: string; lastmod?
   // { path: '/articles/how-hearing-loss-affects-cognition/', priority: 0.8, changefreq: 'monthly' },
   { path: '/ear-to-brain-evaluation/', priority: 0.9, changefreq: 'monthly' },
   { path: '/ear-to-brain-fitness/', priority: 0.9, changefreq: 'monthly' },
+  { path: '/brain-pie/', priority: 0.8, changefreq: 'monthly' },
   { path: '/duet-method-courses/', priority: 0.7, changefreq: 'monthly' },
   { path: '/hearing-loss/', priority: 0.8, changefreq: 'monthly' },
   { path: '/tinnitus/', priority: 0.8, changefreq: 'monthly' },
