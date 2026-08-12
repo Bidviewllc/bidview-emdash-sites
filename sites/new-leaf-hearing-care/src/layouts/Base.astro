@@ -25,10 +25,14 @@ const canonicalUrl = canonical || new URL(Astro.url.pathname, Astro.url.origin).
 const ogImageUrl = new URL(ogImage || "/assets/og-image.jpg", Astro.url.origin).href;
 const ogDescription = description || "Audiology and hearing aid care from trusted audiologists in Arvada and Littleton, Colorado.";
 
-// Structured data (JSON-LD): per-page blocks from the schema plan (src/data/schema.json),
-// keyed by pathname. Replaces the old sitewide businessSchema.
+// Structured data (JSON-LD): a sitewide Organization + WebSite graph on EVERY page,
+// plus per-page blocks from the schema plan (src/lib/schema.json), keyed by pathname.
+const schemaData = schemaByPath as {
+  sitewide: Array<Record<string, unknown>>;
+  pages: Record<string, Array<Record<string, unknown>>>;
+};
 const schemaKey = Astro.url.pathname.endsWith("/") ? Astro.url.pathname : `${Astro.url.pathname}/`;
-const pageSchemas = (schemaByPath as Record<string, Array<Record<string, unknown>>>)[schemaKey] ?? [];
+const pageSchemas = [...(schemaData.sitewide ?? []), ...(schemaData.pages?.[schemaKey] ?? [])];
 ---
 <!doctype html>
 <html lang="en">
