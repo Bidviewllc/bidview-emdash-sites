@@ -93,6 +93,13 @@ color: var(--dark-gray);
 color: var(--accent);
 }
 
+.about-intro__formerly {
+  color: var(--accent);
+  font-size: 18px;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
 .about-intro__copy p {
 font-size: 20px;
   line-height: 1.5;
