@@ -380,7 +380,7 @@ h2.display, .display {
    Top utility bar
    ------------------------------------------------------------- */
 .topbar {
-  height: 72px;
+  min-height: 72px;
   background: var(--navy);
   color: #fff;
   display: flex;
@@ -399,6 +399,7 @@ h2.display, .display {
 }
 .topbar__group .icon { width: 22px; height: 22px; flex: none; color: #fff; }
 .topbar__group--phone { font-weight: 700; }
+.topbar__hours { font-size: 15px; line-height: 1.4; white-space: normal; }
 .topbar__spacer { flex: 1; }
 
 /* -------------------------------------------------------------
@@ -651,9 +652,9 @@ h2.display, .display {
 /* -------------------------------------------------------------
    Visit section / Location info
    ------------------------------------------------------------- */
-.visit { display: grid; grid-template-columns: 552px 1fr; gap: 80px; }
+.visit { display: grid; grid-template-columns: 620px 1fr; gap: 80px; }
 .visit__left { display: flex; flex-direction: column; gap: 22px; }
-.visit__info { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; padding-top: 12px; }
+.visit__info { display: grid; grid-template-columns: 200px 1fr; gap: 44px; padding-top: 12px; }
 .info-list__label {
   font-family: var(--font-sans);
   font-weight: 600;
@@ -675,8 +676,8 @@ h2.display, .display {
   font-size: 19px;
 }
 .hours__row:first-of-type { border-top: 1px solid var(--sand); }
-.hours__day { color: var(--body); }
-.hours__time { color: var(--muted); }
+.hours__day { color: var(--body); white-space: nowrap; }
+.hours__time { color: var(--muted); white-space: nowrap; text-align: right; }
 .hours__row--closed .hours__time { color: #666; }
 .visit__cta { padding-top: 24px; }
 
@@ -869,7 +870,7 @@ h2.display, .display {
 }
 .footer__grid {
   display: grid;
-  grid-template-columns: 366px 261px 261px 261px;
+  grid-template-columns: 366px 261px 261px 370px;
   gap: 48px;
   justify-content: space-between;
   padding-bottom: 36px;

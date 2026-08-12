@@ -39,7 +39,7 @@ const se = cfg?.edit ?? {};
             <div class="contact__method-body">
               <p class="contact__method-label">Phone</p>
               <p class="contact__method-value"><a href={`tel:${(s.phone ?? "(585) 442-4180").replace(/\D/g, "")}`} {...se.phone}>{s.phone ?? "(585) 442-4180"}</a></p>
-              <p class="contact__method-note">Mon–Thu {s.hours_mon_thu ?? "8 AM – 5 PM"} · Fri {s.hours_fri ?? "8 AM – 4 PM"}</p>
+              <p class="contact__method-note">Mon–Thu {s.hours_mon_thu ?? "8 AM – 12 PM & 1 – 5 PM"} · Fri {s.hours_fri ?? "9 AM – 12 PM & 1 – 4 PM"}</p>
             </div>
           </div>
           <div class="contact__method">
@@ -152,11 +152,11 @@ const se = cfg?.edit ?? {};
           <div>
             <p class="info-list__label">Office hours</p>
             <div class="hours">
-              <div class="hours__row"><span class="hours__day">Monday</span><span class="hours__time" {...se.hours_mon_thu}>{s.hours_mon_thu ?? "8 AM – 5 PM"}</span></div>
-              <div class="hours__row"><span class="hours__day">Tuesday</span><span class="hours__time" {...se.hours_mon_thu}>{s.hours_mon_thu ?? "8 AM – 5 PM"}</span></div>
-              <div class="hours__row"><span class="hours__day">Wednesday</span><span class="hours__time" {...se.hours_mon_thu}>{s.hours_mon_thu ?? "8 AM – 5 PM"}</span></div>
-              <div class="hours__row"><span class="hours__day">Thursday</span><span class="hours__time" {...se.hours_mon_thu}>{s.hours_mon_thu ?? "8 AM – 5 PM"}</span></div>
-              <div class="hours__row"><span class="hours__day">Friday</span><span class="hours__time" {...se.hours_fri}>{s.hours_fri ?? "8 AM – 4 PM"}</span></div>
+              <div class="hours__row"><span class="hours__day">Monday</span><span class="hours__time" {...se.hours_mon_thu}>{s.hours_mon_thu ?? "8 AM – 12 PM & 1 – 5 PM"}</span></div>
+              <div class="hours__row"><span class="hours__day">Tuesday</span><span class="hours__time" {...se.hours_mon_thu}>{s.hours_mon_thu ?? "8 AM – 12 PM & 1 – 5 PM"}</span></div>
+              <div class="hours__row"><span class="hours__day">Wednesday</span><span class="hours__time" {...se.hours_mon_thu}>{s.hours_mon_thu ?? "8 AM – 12 PM & 1 – 5 PM"}</span></div>
+              <div class="hours__row"><span class="hours__day">Thursday</span><span class="hours__time" {...se.hours_mon_thu}>{s.hours_mon_thu ?? "8 AM – 12 PM & 1 – 5 PM"}</span></div>
+              <div class="hours__row"><span class="hours__day">Friday</span><span class="hours__time" {...se.hours_fri}>{s.hours_fri ?? "9 AM – 12 PM & 1 – 4 PM"}</span></div>
               <div class="hours__row hours__row--closed"><span class="hours__day">Saturday</span><span class="hours__time">Closed</span></div>
               <div class="hours__row hours__row--closed"><span class="hours__day">Sunday</span><span class="hours__time">Closed</span></div>
             </div>
