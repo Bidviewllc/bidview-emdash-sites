@@ -1,1966 +1,5 @@
 {
-  "/audiologist/dusty-jessen/": [
-    {
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "@id": "https://newleafhearing.com/audiologist/dusty-jessen/#person",
-      "name": "Dusty Jessen",
-      "honorificSuffix": "Au.D.",
-      "jobTitle": "Practice Owner & Director of Audiology",
-      "url": "https://newleafhearing.com/audiologist/dusty-jessen/",
-      "image": "https://newleafhearing.com/assets/new-leaf-hearing-care-dusty.webp",
-      "worksFor": {
-        "@id": "https://newleafhearing.com/#littleton"
-      },
-      "description": "Dr. Dusty Jessen, Au.D. is the practice owner and Director of Audiology at New Leaf Hearing Care. She has directed audiology services since 2002 and focuses on best-practice, personalized hearing care.",
-      "identifier": [
-        {
-          "@type": "PropertyValue",
-          "propertyID": "NPI",
-          "value": "1841439569"
-        }
-      ],
-      "hasCredential": [
-        {
-          "@type": "EducationalOccupationalCredential",
-          "credentialCategory": "State License",
-          "name": "Colorado Audiologist and Hearing Aid Provider License",
-          "identifier": "0000344",
-          "recognizedBy": {
-            "@type": "GovernmentOrganization",
-            "name": "Colorado Department of Regulatory Agencies (DORA), Division of Professions and Occupations",
-            "url": "https://dpo.colorado.gov/"
-          }
-        },
-        {
-          "@type": "EducationalOccupationalCredential",
-          "credentialCategory": "National Provider Identifier (NPI)",
-          "identifier": "1841439569",
-          "recognizedBy": {
-            "@type": "GovernmentOrganization",
-            "name": "Centers for Medicare & Medicaid Services",
-            "url": "https://npiregistry.cms.hhs.gov/"
-          }
-        }
-      ],
-      "alumniOf": [
-        {
-          "@type": "CollegeOrUniversity",
-          "name": "Arizona State University",
-          "description": "Master of Science in Audiology"
-        },
-        {
-          "@type": "CollegeOrUniversity",
-          "name": "Arizona School of Health Sciences",
-          "description": "Doctorate in Audiology (Au.D.)"
-        }
-      ],
-      "memberOf": [
-        {
-          "@type": "Organization",
-          "name": "American Speech-Language-Hearing Association (ASHA)"
-        },
-        {
-          "@type": "Organization",
-          "name": "Colorado Academy of Audiology (Past President)"
-        },
-        {
-          "@type": "Organization",
-          "name": "Academy of Doctors of Audiology"
-        },
-        {
-          "@type": "Organization",
-          "name": "Academy of Rehabilitative Audiologists"
-        },
-        {
-          "@type": "Organization",
-          "name": "Entheos Audiology Cooperative"
-        },
-        {
-          "@type": "Organization",
-          "name": "Hearing Loss Association of America"
-        }
-      ],
-      "knowsAbout": [
-        "Patient education",
-        "Aural rehabilitation",
-        "Communication counseling",
-        "Hearing aid fitting and management",
-        "Tinnitus evaluation and management"
-      ]
-    }
-  ],
-  "/audiologist/julie-raney/": [
-    {
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "@id": "https://newleafhearing.com/audiologist/julie-raney/#person",
-      "name": "Julie Raney",
-      "honorificSuffix": "M.S.",
-      "jobTitle": "Audiologist",
-      "url": "https://newleafhearing.com/audiologist/julie-raney/",
-      "image": "https://newleafhearing.com/assets/new-leaf-hearing-care-julie.webp",
-      "worksFor": {
-        "@id": "https://newleafhearing.com/#arvada"
-      },
-      "description": "Julie Raney, M.S. is a certified and licensed audiologist at New Leaf Hearing Care with advanced experience in American Sign Language, supporting clear communication for the patients who benefit from it.",
-      "knowsLanguage": [
-        "English",
-        "American Sign Language"
-      ],
-      "identifier": [
-        {
-          "@type": "PropertyValue",
-          "propertyID": "NPI",
-          "value": "1003180209"
-        }
-      ],
-      "hasCredential": [
-        {
-          "@type": "EducationalOccupationalCredential",
-          "credentialCategory": "State License",
-          "name": "Colorado Audiologist and Hearing Aid Provider License",
-          "identifier": "0000493",
-          "recognizedBy": {
-            "@type": "GovernmentOrganization",
-            "name": "Colorado Department of Regulatory Agencies (DORA), Division of Professions and Occupations",
-            "url": "https://dpo.colorado.gov/"
-          }
-        },
-        {
-          "@type": "EducationalOccupationalCredential",
-          "credentialCategory": "National Provider Identifier (NPI)",
-          "identifier": "1003180209",
-          "recognizedBy": {
-            "@type": "GovernmentOrganization",
-            "name": "Centers for Medicare & Medicaid Services",
-            "url": "https://npiregistry.cms.hhs.gov/"
-          }
-        }
-      ],
-      "alumniOf": [
-        {
-          "@type": "CollegeOrUniversity",
-          "name": "Idaho State University",
-          "description": "B.S. in Communication Sciences and Disorders; Master's Degree in Audiology"
-        }
-      ],
-      "memberOf": [
-        {
-          "@type": "Organization",
-          "name": "American Academy of Audiology (Fellow)"
-        },
-        {
-          "@type": "Organization",
-          "name": "American Speech-Language-Hearing Association (ASHA) — Certificate of Clinical Competence (CCC-A)"
-        }
-      ],
-      "knowsAbout": [
-        "Audiology",
-        "American Sign Language",
-        "Hearing assessments",
-        "Hearing aids",
-        "Communication support"
-      ]
-    }
-  ],
-  "/audiologist/lisa-marie-bell/": [
-    {
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "@id": "https://newleafhearing.com/audiologist/lisa-marie-bell/#person",
-      "name": "Lisa Marie Bell",
-      "alternateName": "Lisa Marie Davis Bell",
-      "honorificSuffix": "Au.D.",
-      "jobTitle": "Office Manager & Audiologist",
-      "url": "https://newleafhearing.com/audiologist/lisa-marie-bell/",
-      "image": "https://newleafhearing.com/assets/new-leaf-hearing-care-lisa.webp",
-      "worksFor": [
-        {
-          "@id": "https://newleafhearing.com/#arvada"
-        },
-        {
-          "@id": "https://newleafhearing.com/#littleton"
-        }
-      ],
-      "description": "Lisa Marie Bell, Au.D. is an audiologist and Office Manager at New Leaf Hearing Care with extensive clinical and teaching experience, including prior roles as an Assistant Professor at Pacific University and Clinical Director for Healthy Hearing with Special Olympics.",
-      "identifier": [
-        {
-          "@type": "PropertyValue",
-          "propertyID": "NPI",
-          "value": "1871738567"
-        }
-      ],
-      "hasCredential": [
-        {
-          "@type": "EducationalOccupationalCredential",
-          "credentialCategory": "State License",
-          "name": "Colorado Audiologist and Hearing Aid Provider License",
-          "identifier": "023186",
-          "recognizedBy": {
-            "@type": "GovernmentOrganization",
-            "name": "Colorado Department of Regulatory Agencies (DORA), Division of Professions and Occupations",
-            "url": "https://dpo.colorado.gov/"
-          }
-        },
-        {
-          "@type": "EducationalOccupationalCredential",
-          "credentialCategory": "National Provider Identifier (NPI)",
-          "identifier": "1871738567",
-          "recognizedBy": {
-            "@type": "GovernmentOrganization",
-            "name": "Centers for Medicare & Medicaid Services",
-            "url": "https://npiregistry.cms.hhs.gov/"
-          }
-        }
-      ],
-      "alumniOf": [
-        {
-          "@type": "CollegeOrUniversity",
-          "name": "University of Minnesota",
-          "description": "Bachelor's Degree in Speech & Hearing Sciences and Child Psychology"
-        },
-        {
-          "@type": "CollegeOrUniversity",
-          "name": "University of Washington",
-          "description": "Doctorate of Audiology (Au.D.)"
-        }
-      ],
-      "memberOf": [
-        {
-          "@type": "Organization",
-          "name": "American Speech-Language-Hearing Association (ASHA) — Certificate of Clinical Competence (CCC-A)"
-        },
-        {
-          "@type": "Organization",
-          "name": "American Board of Audiology — Certificate Holder, Audiology Preceptor (CH-AP)"
-        }
-      ],
-      "knowsAbout": [
-        "Clinical audiology",
-        "Aural rehabilitation",
-        "Patient education"
-      ]
-    }
-  ],
-  "/patient-care-coordinator/rose-young/": [
-    {
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "@id": "https://newleafhearing.com/patient-care-coordinator/rose-young/#person",
-      "name": "Rose Young",
-      "jobTitle": "Patient Care Coordinator",
-      "url": "https://newleafhearing.com/patient-care-coordinator/rose-young/",
-      "image": "https://newleafhearing.com/assets/new-leaf-hearing-care-rose.webp",
-      "worksFor": [
-        {
-          "@id": "https://newleafhearing.com/#arvada"
-        },
-        {
-          "@id": "https://newleafhearing.com/#littleton"
-        }
-      ]
-    }
-  ],
-  "/audiology-assistant/brittany/": [
-    {
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "@id": "https://newleafhearing.com/audiology-assistant/brittany/#person",
-      "name": "Brittany",
-      "jobTitle": "Audiology Assistant",
-      "url": "https://newleafhearing.com/audiology-assistant/brittany/",
-      "image": "https://newleafhearing.com/assets/brittany.jpg",
-      "worksFor": [
-        {
-          "@id": "https://newleafhearing.com/#arvada"
-        },
-        {
-          "@id": "https://newleafhearing.com/#littleton"
-        }
-      ]
-    }
-  ],
-  "/audiology-services/": [
-    {
-      "@context": "https://schema.org",
-      "@type": "Service",
-      "@id": "https://newleafhearing.com/audiology-services/#service",
-      "name": "Audiology Services",
-      "serviceType": "Audiology Services",
-      "url": "https://newleafhearing.com/audiology-services/",
-      "description": "New Leaf Hearing Care is an audiology and hearing aid clinic with trusted audiologists providing professional hearing services in Arvada and Littleton, Colorado, including hearing assessments, tinnitus evaluation and management, earwax removal, custom earmolds, communication training, and auditory training.",
-      "category": "Audiology",
-      "provider": [
-        {
-          "@id": "https://newleafhearing.com/#arvada"
-        },
-        {
-          "@id": "https://newleafhearing.com/#littleton"
-        }
-      ],
-      "areaServed": [
-        {
-          "@type": "City",
-          "name": "Arvada"
-        },
-        {
-          "@type": "City",
-          "name": "Littleton"
-        }
-      ]
-    }
-  ],
-  "/audiology-services/communication-training-program/": [
-    {
-      "@context": "https://schema.org",
-      "@type": "Service",
-      "@id": "https://newleafhearing.com/audiology-services/communication-training-program/#service",
-      "name": "Communication Training Program",
-      "serviceType": "Communication Training Program",
-      "url": "https://newleafhearing.com/audiology-services/communication-training-program/",
-      "description": "A Communication Training Program teaches simple skills that help you follow speech, respond with confidence, and reduce mix-ups in daily talk.",
-      "category": "Audiology",
-      "provider": [
-        {
-          "@id": "https://newleafhearing.com/#arvada"
-        },
-        {
-          "@id": "https://newleafhearing.com/#littleton"
-        }
-      ],
-      "areaServed": [
-        {
-          "@type": "City",
-          "name": "Arvada"
-        },
-        {
-          "@type": "City",
-          "name": "Littleton"
-        }
-      ]
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "@id": "https://newleafhearing.com/audiology-services/communication-training-program/#faqpage",
-      "mainEntityOfPage": "https://newleafhearing.com/audiology-services/communication-training-program/",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "What is a Communication Training Program?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "A Communication Training Program is a structured set of skills and strategies that helps you understand speech better and reduce stress in daily conversations."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How does the 5 Keys to Communication Success program work?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "The 5 Keys program teaches five core parts of good communication and gives you a handbook plus weekly lessons for one year through email or a mobile app."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How do I get started with communication training at New Leaf Hearing Care?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "You start by scheduling a consultation with an audiologist in Arvada or Littleton, then you receive the 5 Keys materials and a clear plan for how to use them."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What is the goal of communication training if I already have hearing aids?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "The goal is to improve real-life conversation by adding skills and habits that make speech clearer in noise, groups, and fast talk, so hearing aids work better for your day."
-          }
-        }
-      ]
-    }
-  ],
-  "/audiology-services/custom-earmolds/": [
-    {
-      "@context": "https://schema.org",
-      "@type": "Service",
-      "@id": "https://newleafhearing.com/audiology-services/custom-earmolds/#service",
-      "name": "Custom Earmolds",
-      "serviceType": "Custom Earmolds",
-      "url": "https://newleafhearing.com/audiology-services/custom-earmolds/",
-      "description": "Custom earmolds are made from an impression of your ear, so the fit matches your ear shape instead of a one-size piece.",
-      "category": "Audiology",
-      "provider": [
-        {
-          "@id": "https://newleafhearing.com/#arvada"
-        },
-        {
-          "@id": "https://newleafhearing.com/#littleton"
-        }
-      ],
-      "areaServed": [
-        {
-          "@type": "City",
-          "name": "Arvada"
-        },
-        {
-          "@type": "City",
-          "name": "Littleton"
-        }
-      ]
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "@id": "https://newleafhearing.com/audiology-services/custom-earmolds/#faqpage",
-      "mainEntityOfPage": "https://newleafhearing.com/audiology-services/custom-earmolds/",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "What is a custom earmold?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "A custom earmold is a personalized earpiece made from an impression of your ear, designed to fit securely and comfortably for hearing aids, protection, or other in-ear devices."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How does the custom earmold process work?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Your provider checks your ears, takes an impression using a soft material, sends that impression to a lab, and then fits the finished earmold to confirm comfort and performance."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How do I know if I need custom earmolds for my hearing aids?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Custom earmolds are a strong choice when domes slip, feedback becomes a problem, or you need a tighter seal for better sound clarity and device stability."
-          }
-        }
-      ]
-    }
-  ],
-  "/audiology-services/ear-wax-removal/": [
-    {
-      "@context": "https://schema.org",
-      "@type": "Service",
-      "@id": "https://newleafhearing.com/audiology-services/ear-wax-removal/#service",
-      "name": "Earwax Removal",
-      "serviceType": "Earwax Removal",
-      "url": "https://newleafhearing.com/audiology-services/ear-wax-removal/",
-      "description": "Earwax removal is an in-office service that clears extra wax from the ear canal to restore comfort and clearer sound.",
-      "category": "Audiology",
-      "provider": [
-        {
-          "@id": "https://newleafhearing.com/#arvada"
-        },
-        {
-          "@id": "https://newleafhearing.com/#littleton"
-        }
-      ],
-      "areaServed": [
-        {
-          "@type": "City",
-          "name": "Arvada"
-        },
-        {
-          "@type": "City",
-          "name": "Littleton"
-        }
-      ]
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "@id": "https://newleafhearing.com/audiology-services/ear-wax-removal/#faqpage",
-      "mainEntityOfPage": "https://newleafhearing.com/audiology-services/ear-wax-removal/",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "What is earwax removal?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Earwax removal is a clinical service that clears excess wax from the ear canal using safe tools and methods, so sound can travel normally and the ear feels comfortable again."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How does earwax removal work at New Leaf Hearing Care?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Your provider looks in your ears, selects the right method for your wax type, removes the blockage, and checks your ear canal again to confirm the wax is cleared."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How do I know if my hearing problem is wax or hearing loss?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "A blocked ear can cause sudden muffled hearing, pressure, and ringing, while hearing loss tends to build over time. An in-office ear check and hearing test confirm the cause."
-          }
-        }
-      ]
-    }
-  ],
-  "/audiology-services/hearing-assessments/": [
-    {
-      "@context": "https://schema.org",
-      "@type": "Service",
-      "@id": "https://newleafhearing.com/audiology-services/hearing-assessments/#service",
-      "name": "Hearing Assessments",
-      "serviceType": "Hearing Assessments",
-      "url": "https://newleafhearing.com/audiology-services/hearing-assessments/",
-      "description": "Hearing assessments are in-office evaluations that measure how well you hear sounds and understand speech.",
-      "category": "Audiology",
-      "provider": [
-        {
-          "@id": "https://newleafhearing.com/#arvada"
-        },
-        {
-          "@id": "https://newleafhearing.com/#littleton"
-        }
-      ],
-      "areaServed": [
-        {
-          "@type": "City",
-          "name": "Arvada"
-        },
-        {
-          "@type": "City",
-          "name": "Littleton"
-        }
-      ]
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "@id": "https://newleafhearing.com/audiology-services/hearing-assessments/#faqpage",
-      "mainEntityOfPage": "https://newleafhearing.com/audiology-services/hearing-assessments/",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "What is a hearing test?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "A hearing test is an in-office exam that measures what sounds you hear and how well you understand speech, then turns those results into a clear care plan."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How does a hearing test work at New Leaf Hearing Care?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Your visit includes a health review, an ear check, hearing testing in a quiet room, and a results review with an audiologist who explains what the findings mean."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How do I know which hearing test I need?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "If you want a basic check, a Basic Hearing Exam fits that goal. If you have trouble in daily talks and want treatment options, a Functional Hearing Assessment gives a deeper review."
-          }
-        }
-      ]
-    }
-  ],
-  "/audiology-services/lace-ai-pro-auditory-training/": [
-    {
-      "@context": "https://schema.org",
-      "@type": "Service",
-      "@id": "https://newleafhearing.com/audiology-services/lace-ai-pro-auditory-training/#service",
-      "name": "LACE AI Pro Auditory Training",
-      "serviceType": "Auditory Training",
-      "url": "https://newleafhearing.com/audiology-services/lace-ai-pro-auditory-training/",
-      "description": "LACE AI Pro is an app-based auditory training program that strengthens how your brain understands speech, including speech in noise and fast talk.",
-      "category": "Audiology",
-      "provider": [
-        {
-          "@id": "https://newleafhearing.com/#arvada"
-        },
-        {
-          "@id": "https://newleafhearing.com/#littleton"
-        }
-      ],
-      "areaServed": [
-        {
-          "@type": "City",
-          "name": "Arvada"
-        },
-        {
-          "@type": "City",
-          "name": "Littleton"
-        }
-      ]
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "@id": "https://newleafhearing.com/audiology-services/lace-ai-pro-auditory-training/#faqpage",
-      "mainEntityOfPage": "https://newleafhearing.com/audiology-services/lace-ai-pro-auditory-training/",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "What is LACE AI Pro?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "LACE AI Pro is an app-based auditory training program that improves speech understanding by training the brain skills used in real conversations, including speech in noise."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How does LACE AI Pro work with hearing aids?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "LACE AI Pro works alongside hearing aids by improving how you process the sound your devices deliver, so speech feels clearer and listening takes less effort."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How do I get started with LACE AI Pro at New Leaf Hearing Care?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "You schedule a consultation in Arvada or Littleton, review your hearing needs with an audiologist, and then get help setting up LACE AI Pro with a training plan you can follow at home."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How do I practice LACE AI Pro the right way?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "You practice in a quiet space, use the device setup recommended by your audiologist, and follow the training plan consistently so your progress builds week by week."
-          }
-        }
-      ]
-    }
-  ],
-  "/audiology-services/tinnitus-evaluation-management/": [
-    {
-      "@context": "https://schema.org",
-      "@type": "Service",
-      "@id": "https://newleafhearing.com/audiology-services/tinnitus-evaluation-management/#service",
-      "name": "Tinnitus Evaluation and Management",
-      "serviceType": "Tinnitus Evaluation and Management",
-      "url": "https://newleafhearing.com/audiology-services/tinnitus-evaluation-management/",
-      "description": "Tinnitus Evaluation and Management is a clinical service that checks your hearing, reviews your tinnitus, and builds a plan to make ringing less intrusive.",
-      "category": "Audiology",
-      "provider": [
-        {
-          "@id": "https://newleafhearing.com/#arvada"
-        },
-        {
-          "@id": "https://newleafhearing.com/#littleton"
-        }
-      ],
-      "areaServed": [
-        {
-          "@type": "City",
-          "name": "Arvada"
-        },
-        {
-          "@type": "City",
-          "name": "Littleton"
-        }
-      ]
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "@id": "https://newleafhearing.com/audiology-services/tinnitus-evaluation-management/#faqpage",
-      "mainEntityOfPage": "https://newleafhearing.com/audiology-services/tinnitus-evaluation-management/",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "What is Tinnitus Evaluation and Management?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Tinnitus Evaluation and Management is a clinical service that includes hearing testing, tinnitus-specific questionnaires, and a customized plan that uses counseling and sound tools to reduce tinnitus impact."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How does a tinnitus evaluation work at New Leaf Hearing Care?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Your visit includes a detailed tinnitus history, a full hearing evaluation, additional tinnitus testing and questionnaires, and a demonstration of tinnitus masking options."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How do I get relief from tinnitus during the day?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Relief comes from a plan that reduces stress response and supports sound balance, including counseling and sound therapy tools that lower tinnitus awareness during work, home time, and quiet tasks."
-          }
-        }
-      ]
-    }
-  ],
-  "/hearing-aid-services/": [
-    {
-      "@context": "https://schema.org",
-      "@type": "Service",
-      "@id": "https://newleafhearing.com/hearing-aid-services/#service",
-      "name": "Hearing Aid Services",
-      "serviceType": "Hearing Aid Services",
-      "url": "https://newleafhearing.com/hearing-aid-services/",
-      "description": "New Leaf Hearing Care is a trusted audiology and hearing aid provider delivering professional hearing services throughout Colorado, including hearing aid fittings, repairs and maintenance, and assistive listening devices.",
-      "category": "Audiology",
-      "provider": [
-        {
-          "@id": "https://newleafhearing.com/#arvada"
-        },
-        {
-          "@id": "https://newleafhearing.com/#littleton"
-        }
-      ],
-      "areaServed": [
-        {
-          "@type": "City",
-          "name": "Arvada"
-        },
-        {
-          "@type": "City",
-          "name": "Littleton"
-        }
-      ]
-    }
-  ],
-  "/hearing-aids-products/hearing-aid-fittings/": [
-    {
-      "@context": "https://schema.org",
-      "@type": "Service",
-      "@id": "https://newleafhearing.com/hearing-aids-products/hearing-aid-fittings/#service",
-      "name": "Hearing Aid Fittings",
-      "serviceType": "Hearing Aid Fittings",
-      "url": "https://newleafhearing.com/hearing-aids-products/hearing-aid-fittings/",
-      "description": "Hearing aid fittings are appointments where an audiologist programs your devices, checks comfort, and sets them up for your real-life listening needs.",
-      "category": "Audiology",
-      "provider": [
-        {
-          "@id": "https://newleafhearing.com/#arvada"
-        },
-        {
-          "@id": "https://newleafhearing.com/#littleton"
-        }
-      ],
-      "areaServed": [
-        {
-          "@type": "City",
-          "name": "Arvada"
-        },
-        {
-          "@type": "City",
-          "name": "Littleton"
-        }
-      ]
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "@id": "https://newleafhearing.com/hearing-aids-products/hearing-aid-fittings/#faqpage",
-      "mainEntityOfPage": "https://newleafhearing.com/hearing-aids-products/hearing-aid-fittings/",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "What is a hearing aid fitting?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "A hearing aid fitting is an appointment where an audiologist programs your hearing aids to match your hearing test, checks comfort and fit, and teaches you how to use and care for your devices."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How does a hearing aid fitting work at New Leaf Hearing Care?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Your audiologist confirms the fit, programs settings based on your hearing needs, verifies sound performance when appropriate, and gives you hands-on training for daily use and cleaning."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How do I know if my hearing aids are fitted correctly?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "A correct fit feels secure and comfortable, speech sounds clearer, and you can wear the devices for long periods without soreness, whistling, or frequent slipping."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How does follow-up care improve hearing aid results?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Follow-up visits let your audiologist fine-tune settings using your real-life feedback, which improves clarity in noise, reduces listening effort, and increases comfort over time."
-          }
-        }
-      ]
-    }
-  ],
-  "/hearing-aids-products/hearing-aid-repairs-maintenance/": [
-    {
-      "@context": "https://schema.org",
-      "@type": "Service",
-      "@id": "https://newleafhearing.com/hearing-aids-products/hearing-aid-repairs-maintenance/#service",
-      "name": "Hearing Aid Repairs & Maintenance",
-      "serviceType": "Hearing Aid Repairs & Maintenance",
-      "url": "https://newleafhearing.com/hearing-aids-products/hearing-aid-repairs-maintenance/",
-      "description": "Hearing aid repairs fix problems like weak sound, whistling, broken parts, or devices that will not turn on or charge. Quick, professional service restores clear hearing sooner and helps protect your devices from bigger damage.",
-      "category": "Audiology",
-      "provider": [
-        {
-          "@id": "https://newleafhearing.com/#arvada"
-        },
-        {
-          "@id": "https://newleafhearing.com/#littleton"
-        }
-      ],
-      "areaServed": [
-        {
-          "@type": "City",
-          "name": "Arvada"
-        },
-        {
-          "@type": "City",
-          "name": "Littleton"
-        }
-      ]
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "@id": "https://newleafhearing.com/hearing-aids-products/hearing-aid-repairs-maintenance/#faqpage",
-      "mainEntityOfPage": "https://newleafhearing.com/hearing-aids-products/hearing-aid-repairs-maintenance/",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "What are hearing aid repairs?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Hearing aid repairs are services that fix device problems such as weak sound, feedback, broken parts, moisture damage, charging issues, and devices that will not power on."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How do I know if my hearing aid needs repair or a cleaning?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "A blocked wax filter or dirty microphone can cause muffled sound and cutting out, while broken parts and charging problems point to repair needs. A clinic visit confirms the cause and fixes it safely."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How does a hearing aid repair appointment work?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "A repair visit includes device inspection, troubleshooting, professional cleaning, part replacement, when needed, and programming adjustments when sound settings need to be updated."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How do I prevent hearing aid repairs in the future?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Daily wiping, routine filter changes, safe storage, and moisture control reduce common failures and keep the sound clear and steady over time."
-          }
-        }
-      ]
-    }
-  ],
-  "/hearing-aids-products/": [
-    {
-      "@context": "https://schema.org",
-      "@type": "Service",
-      "@id": "https://newleafhearing.com/hearing-aids-products/#service",
-      "name": "Hearing Aids and Products",
-      "serviceType": "Hearing Aids and Products",
-      "url": "https://newleafhearing.com/hearing-aids-products/",
-      "description": "Hearing aids and products include hearing devices and helpful tools that improve speech clarity, comfort, and daily communication. The right hearing aids reduce listening strain and help you stay connected at home, at work, and out in the community.",
-      "category": "Audiology",
-      "provider": [
-        {
-          "@id": "https://newleafhearing.com/#arvada"
-        },
-        {
-          "@id": "https://newleafhearing.com/#littleton"
-        }
-      ],
-      "areaServed": [
-        {
-          "@type": "City",
-          "name": "Arvada"
-        },
-        {
-          "@type": "City",
-          "name": "Littleton"
-        }
-      ]
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "@id": "https://newleafhearing.com/hearing-aids-products/#faqpage",
-      "mainEntityOfPage": "https://newleafhearing.com/hearing-aids-products/",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "How do I know which hearing aids and products are right for me?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "An audiologist matches your hearing test results, ear shape, and daily listening goals to the right device style and support tools, then fine-tunes them based on real-life feedback."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How does a hearing aid fitting help after I buy hearing aids?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "A hearing aid fitting helps audiologists and hearing care professionals to program your hearing aids to match your hearing needs. It is also an opportunity to check comfort and fit and to set you up for follow-up adjustments so speech stays clear in daily life."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How do I get help if my hearing aids stop working?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "A service visit can diagnose issues such as wax blockage, moisture, broken parts, or poor sound quality. Our audiology team at New Leaf Hearing Care can clean, adjust, or repair the devices to restore performance."
-          }
-        }
-      ]
-    }
-  ],
-  "/hearing-aids-products/choosing-a-hearing-aid/": [
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "@id": "https://newleafhearing.com/hearing-aids-products/choosing-a-hearing-aid/#faqpage",
-      "mainEntityOfPage": "https://newleafhearing.com/hearing-aids-products/choosing-a-hearing-aid/",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "What is choosing a hearing aid based on?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Choosing a hearing aid is based on your hearing test results, your ear shape, your comfort needs, and the places where you listen every day, like work, home, and restaurants."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How do I choose the right hearing aid style?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Your audiologist helps you choose the right style by checking your hearing level, looking at your ear canal size, and matching the device to how you use your hands, glasses, and masks."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How does a hearing aid fitting work?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "A fitting includes selecting the right size, checking comfort, programming the hearing aids to match your hearing test, and teaching you how to use and clean them, followed by fine-tuning visits."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What is Real Ear Measurement and why does it matter?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Real Ear Measurement is an in-office check that measures how the hearing aid sounds in your ear, so the settings can be verified and adjusted for accurate speech clarity."
-          }
-        }
-      ]
-    }
-  ],
-  "/hearing-aids-products/hearing-aid-accessories/": [
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "@id": "https://newleafhearing.com/hearing-aids-products/hearing-aid-accessories/#faqpage",
-      "mainEntityOfPage": "https://newleafhearing.com/hearing-aids-products/hearing-aid-accessories/",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "What are hearing aid accessories?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Hearing aid accessories are add-on devices and care supplies that improve hearing aid performance, help you connect to phones and TVs, and support daily cleaning and moisture control."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How do hearing aid accessories help in noisy places?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Accessories like remote microphones and assistive listening devices send speech directly to your hearing aids, which improves clarity when background noise and distance make listening hard."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How do I know which hearing aid accessories I need?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "A consultation with an audiologist connects your hearing test results to your daily listening problems, then matches you with accessories that solve the specific situations you want to improve."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How does a TV accessory work with hearing aids?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "A TV streaming accessory sends the TV sound directly to your hearing aids, so speech is clearer and the room volume can stay comfortable for others."
-          }
-        }
-      ]
-    }
-  ],
-  "/hearing-aids-products/hearing-aid-styles/": [
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "@id": "https://newleafhearing.com/hearing-aids-products/hearing-aid-styles/#faqpage",
-      "mainEntityOfPage": "https://newleafhearing.com/hearing-aids-products/hearing-aid-styles/",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "What is the most common hearing aid style?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Receiver-in-canal (RIC) hearing aids are one of the most common styles because they feel light, sound natural for many patients, and support modern features like streaming."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How do I know which hearing aid style is right for me?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Your audiologist uses your hearing test results, ear shape, comfort needs, and daily listening goals to recommend the hearing aid style that fits your life and your hearing level."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How does a hearing aid fitting work after I pick a style?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "A fitting includes setting the device to match your hearing test, checking comfort and fit, teaching you how to use it, and scheduling follow-up visits for fine-tuning."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What is the easiest hearing aid style to handle?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Behind-the-ear (BTE) and in-the-ear (ITE) styles are often easier to handle because they are larger and simpler to insert, especially for people with limited finger strength."
-          }
-        }
-      ]
-    }
-  ],
-  "/online-hearing-tests/": [
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "@id": "https://newleafhearing.com/online-hearing-tests/#faqpage",
-      "mainEntityOfPage": "https://newleafhearing.com/online-hearing-tests/",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "How do I know if my online hearing test result is accurate?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Accuracy depends on a quiet room, good headphones, correct volume, and a calibrated device, so the only way to confirm the result is an in-person hearing evaluation with an audiologist."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How does an in-person hearing test compare to an online test?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "An in-person test checks your ears, measures hearing with calibrated equipment, tests speech understanding, and provides a clear diagnosis and treatment plan based on your needs."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How do I schedule a hearing test after taking an online test?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "You can schedule a hearing exam with New Leaf Hearing Care in Arvada or Littleton by calling the office or booking online, and the team will guide you to the right appointment type."
-          }
-        }
-      ]
-    }
-  ],
-  "/oticon-hearing-aids/": [
-    {
-      "@context": "https://schema.org",
-      "@type": "Service",
-      "@id": "https://newleafhearing.com/oticon-hearing-aids/#service",
-      "name": "Oticon Hearing Aids",
-      "serviceType": "Hearing Aids",
-      "url": "https://newleafhearing.com/oticon-hearing-aids/",
-      "description": "Oticon hearing aids are advanced devices that support clearer speech and more natural sound, using modern processing built to help the brain make sense of what you hear.",
-      "brand": {
-        "@type": "Brand",
-        "name": "Oticon"
-      },
-      "category": "Audiology",
-      "provider": [
-        {
-          "@id": "https://newleafhearing.com/#arvada"
-        },
-        {
-          "@id": "https://newleafhearing.com/#littleton"
-        }
-      ],
-      "areaServed": [
-        {
-          "@type": "City",
-          "name": "Arvada"
-        },
-        {
-          "@type": "City",
-          "name": "Littleton"
-        }
-      ]
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "@id": "https://newleafhearing.com/oticon-hearing-aids/#faqpage",
-      "mainEntityOfPage": "https://newleafhearing.com/oticon-hearing-aids/",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "What is the life expectancy of an Oticon hearing aid?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Generally speaking, in-the-ear hearing aids tend to last up to five years, while behind-the-ear hearing aids typically last five to six years. Largely, it depends on how well you take care of your hearing aids. Some patients will decide to upgrade their hearing aids prior to this time, as newer technology is routinely released and may provide greater benefits. An audiologist will be able to guide you in deciding when an upgrade is necessary."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Are Oticon hearing aids compatible with Android and iPhone?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Most modern Oticon aids (including the Zeal, Intent, and Real) are “Made for iPhone” (MFi) and support the Android ASHA protocol. Additionally, the 2026 models now feature Bluetooth LE Audio and Auracast™, which provide more stable streaming and better battery efficiency for the latest smartphones."
-          }
-        }
-      ]
-    }
-  ],
-  "/phonak-hearing-aids/": [
-    {
-      "@context": "https://schema.org",
-      "@type": "Service",
-      "@id": "https://newleafhearing.com/phonak-hearing-aids/#service",
-      "name": "Phonak Hearing Aids",
-      "serviceType": "Hearing Aids",
-      "url": "https://newleafhearing.com/phonak-hearing-aids/",
-      "description": "Phonak hearing aids are modern devices built to support clearer speech and easier listening across many ages and hearing needs.",
-      "brand": {
-        "@type": "Brand",
-        "name": "Phonak"
-      },
-      "category": "Audiology",
-      "provider": [
-        {
-          "@id": "https://newleafhearing.com/#arvada"
-        },
-        {
-          "@id": "https://newleafhearing.com/#littleton"
-        }
-      ],
-      "areaServed": [
-        {
-          "@type": "City",
-          "name": "Arvada"
-        },
-        {
-          "@type": "City",
-          "name": "Littleton"
-        }
-      ]
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "@id": "https://newleafhearing.com/phonak-hearing-aids/#faqpage",
-      "mainEntityOfPage": "https://newleafhearing.com/phonak-hearing-aids/",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "What are the different levels of Phonak Lumity?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Phonak Lumity offers four different technology levels, including the following: L90, L70, L50, and L30, ranging from the highest to the lowest technology levels, respectively."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What is the difference between Phonak Paradise and Phonak Life hearing aids?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "The world’s first waterproof rechargeable hearing aid, Audéo Life, combines the hearing performance of Audéo Paradise with a robust new housing that provides additional protection from water and sweat."
-          }
-        }
-      ]
-    }
-  ],
-  "/resound-hearing-aids/": [
-    {
-      "@context": "https://schema.org",
-      "@type": "Service",
-      "@id": "https://newleafhearing.com/resound-hearing-aids/#service",
-      "name": "ReSound Hearing Aids",
-      "serviceType": "Hearing Aids",
-      "url": "https://newleafhearing.com/resound-hearing-aids/",
-      "description": "ReSound hearing aids are modern hearing devices designed to help you hear speech clearly and stay comfortable in busy, real-life listening situations.",
-      "brand": {
-        "@type": "Brand",
-        "name": "ReSound"
-      },
-      "category": "Audiology",
-      "provider": [
-        {
-          "@id": "https://newleafhearing.com/#arvada"
-        },
-        {
-          "@id": "https://newleafhearing.com/#littleton"
-        }
-      ],
-      "areaServed": [
-        {
-          "@type": "City",
-          "name": "Arvada"
-        },
-        {
-          "@type": "City",
-          "name": "Littleton"
-        }
-      ]
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "@id": "https://newleafhearing.com/resound-hearing-aids/#faqpage",
-      "mainEntityOfPage": "https://newleafhearing.com/resound-hearing-aids/",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "What are the levels of ReSound technology?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "The newest ReSound Omnia hearing aids offer 3 technology levels (9, 7, and 5), ranging from the highest to the lowest technology level, respectively."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How do I adjust my ReSound hearing aids?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "ReSound hearing aids can be adjusted by pressing the buttons on the hearing aids, or through the ReSound Smart App. Pressing the buttons will allow you to change volume and programs, while the Smart App allows you to make these changes as well as adjustments to sound quality, noise reduction, and much more. Your audiologist or hearing care provider will teach you the best way to adjust your hearing aids for your unique needs."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What is the life expectancy of ReSound hearing aids?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "The typical lifespan of a completely new hearing aid is 5 years. Largely, it depends on how well you take care of your hearing aids. Some patients will decide to upgrade their hearing aids prior to this time, as newer technology is routinely released and may provide greater benefits. An audiologist will be able to guide you in deciding when an upgrade is necessary."
-          }
-        }
-      ]
-    }
-  ],
-  "/signia-hearing-aids/": [
-    {
-      "@context": "https://schema.org",
-      "@type": "Service",
-      "@id": "https://newleafhearing.com/signia-hearing-aids/#service",
-      "name": "Signia Hearing Aids",
-      "serviceType": "Hearing Aids",
-      "url": "https://newleafhearing.com/signia-hearing-aids/",
-      "description": "Signia hearing aids are modern devices designed to improve speech clarity and support comfortable listening through advanced sound processing.",
-      "brand": {
-        "@type": "Brand",
-        "name": "Signia"
-      },
-      "category": "Audiology",
-      "provider": [
-        {
-          "@id": "https://newleafhearing.com/#arvada"
-        },
-        {
-          "@id": "https://newleafhearing.com/#littleton"
-        }
-      ],
-      "areaServed": [
-        {
-          "@type": "City",
-          "name": "Arvada"
-        },
-        {
-          "@type": "City",
-          "name": "Littleton"
-        }
-      ]
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "@id": "https://newleafhearing.com/signia-hearing-aids/#faqpage",
-      "mainEntityOfPage": "https://newleafhearing.com/signia-hearing-aids/",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "What is the top-of-the-line Signia hearing aid?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "The Signia AX platform is the most current technology offered by Signia. This platform is available in the Styletto, Pure, and Insio Charge&Go hearing aid styles. The trademarked Augmented Focus (AX) technology is its top feature, which uses two pathways to process sound: one for speech and the other for background noise."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What are the levels of Signia Pure Charge&Go technology?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Signia offers the AX in five different technology levels, including: (1AX, 2AX, 3AX, 5AX, and 7AX) from least to most advanced technology, respectively."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Can I adjust my Signia hearing aid?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes! Using the Signia app, you can change hearing aid programs and the volume level. There’s also an ability to adjust the sound balance between bass and treble."
-          }
-        }
-      ]
-    }
-  ],
-  "/starkey-hearing-aids/": [
-    {
-      "@context": "https://schema.org",
-      "@type": "Service",
-      "@id": "https://newleafhearing.com/starkey-hearing-aids/#service",
-      "name": "Starkey Hearing Aids",
-      "serviceType": "Hearing Aids",
-      "url": "https://newleafhearing.com/starkey-hearing-aids/",
-      "description": "Starkey hearing aids include custom-fit and behind-the-ear options that use advanced processing and AI features to improve speech clarity and comfort.",
-      "brand": {
-        "@type": "Brand",
-        "name": "Starkey"
-      },
-      "category": "Audiology",
-      "provider": [
-        {
-          "@id": "https://newleafhearing.com/#arvada"
-        },
-        {
-          "@id": "https://newleafhearing.com/#littleton"
-        }
-      ],
-      "areaServed": [
-        {
-          "@type": "City",
-          "name": "Arvada"
-        },
-        {
-          "@type": "City",
-          "name": "Littleton"
-        }
-      ]
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "@id": "https://newleafhearing.com/starkey-hearing-aids/#faqpage",
-      "mainEntityOfPage": "https://newleafhearing.com/starkey-hearing-aids/",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "What are the tech levels of Starkey Genesis AI?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "There are four technology levels for most of the available styles (24, 20, 16, 12) ranging from highest to lowest technology level, respectively. A contralateral routing of signal (CROS) model is also available for those with severe single-sided hearing loss."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What app does Starkey Genesis AI use?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "The My Starkey app pairs with Genesis AI hearing aids to help you enjoy greater listening moments, improved well-being, and easier everyday living — all at the convenience of your fingertips. User-friendly and easy to read, it delivers benefits that allow you to hear your best in a multitude of listening scenarios."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What is the life expectancy of a Starkey hearing aid?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Generally speaking, in-the-ear hearing aids tend to last up to five years, while behind-the-ear hearing aids typically last five to six years. Largely, it depends on how well you take care of your hearing aids. Some patients will decide to upgrade their hearing aids prior to this time, as newer technology is routinely released and may provide greater benefits. An audiologist will be able to guide you in deciding when an upgrade is necessary."
-          }
-        }
-      ]
-    }
-  ],
-  "/unitron-hearing-aids/": [
-    {
-      "@context": "https://schema.org",
-      "@type": "Service",
-      "@id": "https://newleafhearing.com/unitron-hearing-aids/#service",
-      "name": "Unitron Hearing Aids",
-      "serviceType": "Hearing Aids",
-      "url": "https://newleafhearing.com/unitron-hearing-aids/",
-      "description": "Unitron hearing aids are smart devices designed to adjust to different sound settings so speech stays clearer and listening feels less tiring.",
-      "brand": {
-        "@type": "Brand",
-        "name": "Unitron"
-      },
-      "category": "Audiology",
-      "provider": [
-        {
-          "@id": "https://newleafhearing.com/#arvada"
-        },
-        {
-          "@id": "https://newleafhearing.com/#littleton"
-        }
-      ],
-      "areaServed": [
-        {
-          "@type": "City",
-          "name": "Arvada"
-        },
-        {
-          "@type": "City",
-          "name": "Littleton"
-        }
-      ]
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "@id": "https://newleafhearing.com/unitron-hearing-aids/#faqpage",
-      "mainEntityOfPage": "https://newleafhearing.com/unitron-hearing-aids/",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "What is the difference between Unitron Blu and Vivante?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Unitron Vivante (V) supersedes Unitron Blu (B) receiver-in-the-canal (RIC) hearing aids. For custom in-the-ear (ITE) hearing aids, Unitron Blu is the most current Unitron product. Unitron Vivante integrates a new design with improved sound quality and a new Remote Plus app."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What are the levels of technology in Unitron?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "The higher the number, the more advanced the technology. Higher levels of technology have more sophisticated sound processing and noise management technology. The higher the level of technology, the more automatic support is available for challenging listening environments."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How long does it take to charge a Unitron hearing aid?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Once the green lights blink approximately 5 times, the hearing aids are charging. When the lights stop blinking and turn solid green, the hearing aids are completely charged. This process can take approximately 5-7 hours."
-          }
-        }
-      ]
-    }
-  ],
-  "/widex-hearing-aids/": [
-    {
-      "@context": "https://schema.org",
-      "@type": "Service",
-      "@id": "https://newleafhearing.com/widex-hearing-aids/#service",
-      "name": "Widex Hearing Aids",
-      "serviceType": "Hearing Aids",
-      "url": "https://newleafhearing.com/widex-hearing-aids/",
-      "description": "Widex hearing aids use advanced sound processing and AI features to deliver clear, natural sound, with strong options for tinnitus support.",
-      "brand": {
-        "@type": "Brand",
-        "name": "Widex"
-      },
-      "category": "Audiology",
-      "provider": [
-        {
-          "@id": "https://newleafhearing.com/#arvada"
-        },
-        {
-          "@id": "https://newleafhearing.com/#littleton"
-        }
-      ],
-      "areaServed": [
-        {
-          "@type": "City",
-          "name": "Arvada"
-        },
-        {
-          "@type": "City",
-          "name": "Littleton"
-        }
-      ]
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "@id": "https://newleafhearing.com/widex-hearing-aids/#faqpage",
-      "mainEntityOfPage": "https://newleafhearing.com/widex-hearing-aids/",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "What is the top-of-the-line Widex hearing aid?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Widex Moment Sheer 440 is the top technology level available in the line. The 440 comes with a complete set of sound processing features, including wind noise reduction, speech enhancement, and 15 adjustment bands of customization for your audiologist."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What are the levels of Widex Moment?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "There are three levels available in the Widex Moment platform: Widex Moment 220: Basic Level, Widex Moment 330: Standard Level, Widex Moment 440: Premium Level."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Is Widex Moment good for tinnitus?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes, the Widex Moment™ app provides access to your tinnitus solution to help manage your tinnitus, relaxation, well-being, and concentration. The Widex app offers “Made for You” and “Create Your Own” features for Moment devices, which allow you to customize your hearing aid fitting."
-          }
-        }
-      ]
-    }
-  ],
-  "/hearing-loss/how-we-hear/": [
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "@id": "https://newleafhearing.com/hearing-loss/how-we-hear/#faqpage",
-      "mainEntityOfPage": "https://newleafhearing.com/hearing-loss/how-we-hear/",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "How do I know if my problem is hearing loss or earwax?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Earwax often causes a sudden muffled feeling or pressure, while hearing loss tends to build over time. An in-office ear check and hearing test confirm the cause."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How does the brain affect hearing?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "The brain sorts sounds, focuses on speech, and helps you understand words, especially in noise. When the brain gets a weak sound signal, understanding speech becomes harder."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How do I schedule a hearing test at New Leaf Hearing Care?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "You can schedule by calling the clinic or booking online for an appointment at our Arvada, CO or Littleton, CO clinic (formerly Columbine Hearing Care). Our audiologist will guide you through testing and the next steps."
-          }
-        }
-      ]
-    }
-  ],
-  "/hearing-loss/protecting-your-hearing/": [
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "@id": "https://newleafhearing.com/hearing-loss/protecting-your-hearing/#faqpage",
-      "mainEntityOfPage": "https://newleafhearing.com/hearing-loss/protecting-your-hearing/",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "What is the best way to protect your hearing from loud noise?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "The best way to protect your hearing from loud noise is to reduce exposure time, increase distance from the sound source, and wear proper hearing protection like earplugs or earmuffs during loud activities."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How do I know if I need custom earplugs?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "You need custom earplugs if store-bought plugs feel uncomfortable, fall out, or do not reduce noise enough for your work, hobbies, or sound sensitivity."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How does a hearing test help protect my hearing?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "A hearing test gives a baseline of your hearing now and helps catch small changes early, so you can adjust habits and protection before hearing loss becomes more noticeable."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How do I protect my hearing if I already have hearing loss?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "You protect your hearing by preventing further damage with ear protection in loud settings and by working with an audiologist to monitor hearing and support safer listening habits."
-          }
-        }
-      ]
-    }
-  ],
-  "/hearing-loss/hearing-loss-facts/": [
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "@id": "https://newleafhearing.com/hearing-loss/hearing-loss-facts/#faqpage",
-      "mainEntityOfPage": "https://newleafhearing.com/hearing-loss/hearing-loss-facts/",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "How do I know if I have hearing loss?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Common signs include asking people to repeat themselves, trouble hearing in noise, turning the TV up, and feeling tired after conversations; a hearing test confirms if a hearing loss is present."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How does a hearing test work?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "A hearing test measures how softly you hear sounds and how clearly you understand speech. Our audiologist explains the results and recommends next steps."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How do I schedule a hearing test in Arvada or Littleton?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "You can schedule by calling New Leaf Hearing Care or booking online for a visit in Arvada or Littleton; the team will guide you to the right appointment type."
-          }
-        }
-      ]
-    }
-  ],
-  "/resources/faq/": [
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "@id": "https://newleafhearing.com/resources/faq/#faqpage",
-      "mainEntityOfPage": "https://newleafhearing.com/resources/faq/",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "Do I really need a hearing test if I feel like I hear okay?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Many hearing changes happen gradually. A baseline hearing test helps identify early changes and protect long-term hearing and brain health."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Are hearing aids only for older adults?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "No. Hearing loss affects people of all ages, and early treatment leads to better outcomes."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How are you different from big box hearing aid stores?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "We provide medical-level care, personalized treatment, and long-term support — not just device sales."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Will hearing aids help my brain health?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes. Research shows that treating hearing loss supports cognitive health and reduces listening fatigue."
-          }
-        }
-      ]
-    }
-  ],
-  "/audiologist-hearing-aids-arvada-colorado/": [
-    {
-      "@context": "https://schema.org",
-      "@type": [
-        "MedicalBusiness",
-        "LocalBusiness"
-      ],
-      "@id": "https://newleafhearing.com/#arvada",
-      "name": "New Leaf Hearing Care - Arvada",
-      "url": "https://newleafhearing.com/audiologist-hearing-aids-arvada-colorado/",
-      "logo": "https://newleafhearing.com/assets/new-leaf-hearing-care-logo.webp",
-      "image": "https://newleafhearing.com/assets/new-leaf-hearing-care-logo.webp",
-      "telephone": "+1-303-639-5323",
-      "priceRange": "$$",
-      "mainEntityOfPage": "https://www.google.com/maps?cid=11656563077069303627",
-      "hasMap": "https://maps.app.goo.gl/D3grzcf64P3v7iTw7",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "8721 Wadsworth Blvd, Suite C",
-        "addressLocality": "Arvada",
-        "addressRegion": "CO",
-        "postalCode": "80003",
-        "addressCountry": "US"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": "39.8540423",
-        "longitude": "-105.08308"
-      },
-      "areaServed": {
-        "@type": "City",
-        "name": "Arvada"
-      },
-      "openingHoursSpecification": [
-        {
-          "@type": "OpeningHoursSpecification",
-          "dayOfWeek": [
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday"
-          ],
-          "opens": "09:00",
-          "closes": "17:00"
-        }
-      ],
-      "sameAs": [
-        "https://youtube.com/@NewLeafHearing",
-        "https://facebook.com/NewLeafHearingCare",
-        "https://instagram.com/newleafhearwell"
-      ],
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.9",
-        "reviewCount": "85",
-        "bestRating": "5",
-        "worstRating": "1"
-      },
-      "review": [
-        {
-          "@type": "Review",
-          "author": {
-            "@type": "Person",
-            "name": "Art Hogarth"
-          },
-          "reviewRating": {
-            "@type": "Rating",
-            "ratingValue": "5",
-            "bestRating": "5",
-            "worstRating": "1"
-          },
-          "reviewBody": "What an amazing office!!!! 110% above and beyond and helped me get hearing aids notninly repaired, but helped tune them and reprogram them for me. Patient, thoughtful, professional, and very friendly! I will be going back for any hearing needs."
-        },
-        {
-          "@type": "Review",
-          "author": {
-            "@type": "Person",
-            "name": "Deborah"
-          },
-          "reviewRating": {
-            "@type": "Rating",
-            "ratingValue": "5",
-            "bestRating": "5",
-            "worstRating": "1"
-          },
-          "reviewBody": "Never have to wait, always a pleasant atmosphere. Always love working with Julie and reception desk. Never an insurance issue."
-        },
-        {
-          "@type": "Review",
-          "author": {
-            "@type": "Person",
-            "name": "Dennis Patterson"
-          },
-          "reviewRating": {
-            "@type": "Rating",
-            "ratingValue": "5",
-            "bestRating": "5",
-            "worstRating": "1"
-          },
-          "reviewBody": "Very personal and caring and listening."
-        },
-        {
-          "@type": "Review",
-          "author": {
-            "@type": "Person",
-            "name": "Cristy Fernandez"
-          },
-          "reviewRating": {
-            "@type": "Rating",
-            "ratingValue": "5",
-            "bestRating": "5",
-            "worstRating": "1"
-          },
-          "reviewBody": "I had an issue with my hearing aid not working when I woke up in the morning. In a bit of a panic, I called the audiologist and they were immediately able to take my call and set me up for a same day appointment to take a look. Not only were they accommodating, they were able to fix the problem during my visit. What a save! Thank you!"
-        },
-        {
-          "@type": "Review",
-          "author": {
-            "@type": "Person",
-            "name": "Jim"
-          },
-          "reviewRating": {
-            "@type": "Rating",
-            "ratingValue": "5",
-            "bestRating": "5",
-            "worstRating": "1"
-          },
-          "reviewBody": "This is a first-rate hearing care business. I couldn’t be more pleased with them in the four years I’ve been going here."
-        }
-      ]
-    }
-  ],
-  "/audiologist-hearing-aids-littleton-colorado/": [
-    {
-      "@context": "https://schema.org",
-      "@type": [
-        "MedicalBusiness",
-        "LocalBusiness"
-      ],
-      "@id": "https://newleafhearing.com/#littleton",
-      "name": "New Leaf Hearing Care - Littleton",
-      "url": "https://newleafhearing.com/audiologist-hearing-aids-littleton-colorado/",
-      "logo": "https://newleafhearing.com/assets/new-leaf-hearing-care-logo.webp",
-      "image": "https://newleafhearing.com/assets/new-leaf-hearing-care-logo.webp",
-      "telephone": "+1-720-689-7989",
-      "priceRange": "$$",
-      "mainEntityOfPage": "https://www.google.com/maps?cid=5615715988750319689",
-      "hasMap": "https://maps.app.goo.gl/cA9H7c7SH5zfsPHC8",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "5808 S Rapp St, Ste 102",
-        "addressLocality": "Littleton",
-        "addressRegion": "CO",
-        "postalCode": "80120",
-        "addressCountry": "US"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": "39.6115068",
-        "longitude": "-105.0194706"
-      },
-      "areaServed": {
-        "@type": "City",
-        "name": "Littleton"
-      },
-      "openingHoursSpecification": [
-        {
-          "@type": "OpeningHoursSpecification",
-          "dayOfWeek": [
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday"
-          ],
-          "opens": "09:00",
-          "closes": "16:30"
-        },
-        {
-          "@type": "OpeningHoursSpecification",
-          "dayOfWeek": "Friday",
-          "opens": "09:00",
-          "closes": "12:00"
-        }
-      ],
-      "sameAs": [
-        "https://youtube.com/@NewLeafHearing",
-        "https://facebook.com/NewLeafHearingCare",
-        "https://instagram.com/newleafhearwell"
-      ],
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "5.0",
-        "reviewCount": "102",
-        "bestRating": "5",
-        "worstRating": "1"
-      },
-      "review": [
-        {
-          "@type": "Review",
-          "author": {
-            "@type": "Person",
-            "name": "Lauren O’Connell"
-          },
-          "reviewRating": {
-            "@type": "Rating",
-            "ratingValue": "5",
-            "bestRating": "5",
-            "worstRating": "1"
-          },
-          "reviewBody": "Dusty and her team are so knowledgeable, caring and friendly. You are in great hands getting your hearing checked and supported with them."
-        },
-        {
-          "@type": "Review",
-          "author": {
-            "@type": "Person",
-            "name": "Stephen Stith"
-          },
-          "reviewRating": {
-            "@type": "Rating",
-            "ratingValue": "5",
-            "bestRating": "5",
-            "worstRating": "1"
-          },
-          "reviewBody": "Knowable, Dedicated, Cost Effective."
-        },
-        {
-          "@type": "Review",
-          "author": {
-            "@type": "Person",
-            "name": "Tom Lisec"
-          },
-          "reviewRating": {
-            "@type": "Rating",
-            "ratingValue": "5",
-            "bestRating": "5",
-            "worstRating": "1"
-          },
-          "reviewBody": "Dusty was promptly on schedule, Diagnosed my aid concern and provided a solution in a timely manner. She was pleasant and knowledgeable and professional. A very pleasant experience."
-        },
-        {
-          "@type": "Review",
-          "author": {
-            "@type": "Person",
-            "name": "Susan Johnson"
-          },
-          "reviewRating": {
-            "@type": "Rating",
-            "ratingValue": "5",
-            "bestRating": "5",
-            "worstRating": "1"
-          },
-          "reviewBody": "A welcoming staff & comfortable atmosphere. Dr. Dusty answered all my questions & concerns. She’s always polite & very knowledgeable."
-        },
-        {
-          "@type": "Review",
-          "author": {
-            "@type": "Person",
-            "name": "Janet Tyrrell-Ead"
-          },
-          "reviewRating": {
-            "@type": "Rating",
-            "ratingValue": "5",
-            "bestRating": "5",
-            "worstRating": "1"
-          },
-          "reviewBody": "Kind, compassionate, responsive and professional service. One always feels welcome and care is comprehensive."
-        }
-      ]
-    }
-  ],
-  "/": [
+  "sitewide": [
     {
       "@context": "https://schema.org",
       "@graph": [
@@ -1998,45 +37,7 @@
             {
               "@id": "https://newleafhearing.com/#littleton"
             }
-          ]
-        },
-        {
-          "@type": "WebSite",
-          "@id": "https://newleafhearing.com/#website",
-          "name": "New Leaf Hearing Care",
-          "url": "https://newleafhearing.com/",
-          "publisher": {
-            "@id": "https://newleafhearing.com/#organization"
-          }
-        }
-      ]
-    }
-  ],
-  "/about/": [
-    {
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "AboutPage",
-          "@id": "https://newleafhearing.com/about/#webpage",
-          "url": "https://newleafhearing.com/about/",
-          "name": "About New Leaf Hearing Care",
-          "isPartOf": {
-            "@id": "https://newleafhearing.com/#website"
-          },
-          "about": {
-            "@id": "https://newleafhearing.com/#organization"
-          },
-          "mainEntity": {
-            "@id": "https://newleafhearing.com/#organization"
-          }
-        },
-        {
-          "@type": [
-            "MedicalOrganization",
-            "Organization"
           ],
-          "@id": "https://newleafhearing.com/#organization",
           "employee": [
             {
               "@id": "https://newleafhearing.com/audiologist/dusty-jessen/#person"
@@ -2054,8 +55,2002 @@
               "@id": "https://newleafhearing.com/audiology-assistant/brittany/#person"
             }
           ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://newleafhearing.com/#website",
+          "name": "New Leaf Hearing Care",
+          "url": "https://newleafhearing.com/",
+          "publisher": {
+            "@id": "https://newleafhearing.com/#organization"
+          }
         }
       ]
     }
-  ]
+  ],
+  "pages": {
+    "/audiologist/dusty-jessen/": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "@id": "https://newleafhearing.com/audiologist/dusty-jessen/#person",
+        "name": "Dusty Jessen",
+        "honorificSuffix": "Au.D.",
+        "jobTitle": "Practice Owner & Director of Audiology",
+        "url": "https://newleafhearing.com/audiologist/dusty-jessen/",
+        "image": "https://newleafhearing.com/assets/new-leaf-hearing-care-dusty.webp",
+        "worksFor": {
+          "@id": "https://newleafhearing.com/#littleton"
+        },
+        "description": "Dr. Dusty Jessen, Au.D. is the practice owner and Director of Audiology at New Leaf Hearing Care. She has directed audiology services since 2002 and focuses on best-practice, personalized hearing care.",
+        "identifier": [
+          {
+            "@type": "PropertyValue",
+            "propertyID": "NPI",
+            "value": "1841439569"
+          }
+        ],
+        "hasCredential": [
+          {
+            "@type": "EducationalOccupationalCredential",
+            "credentialCategory": "State License",
+            "name": "Colorado Audiologist and Hearing Aid Provider License",
+            "identifier": "0000344",
+            "recognizedBy": {
+              "@type": "GovernmentOrganization",
+              "name": "Colorado Department of Regulatory Agencies (DORA), Division of Professions and Occupations",
+              "url": "https://dpo.colorado.gov/"
+            }
+          },
+          {
+            "@type": "EducationalOccupationalCredential",
+            "credentialCategory": "National Provider Identifier (NPI)",
+            "identifier": "1841439569",
+            "recognizedBy": {
+              "@type": "GovernmentOrganization",
+              "name": "Centers for Medicare & Medicaid Services",
+              "url": "https://npiregistry.cms.hhs.gov/"
+            }
+          }
+        ],
+        "alumniOf": [
+          {
+            "@type": "CollegeOrUniversity",
+            "name": "Arizona State University",
+            "description": "Master of Science in Audiology"
+          },
+          {
+            "@type": "CollegeOrUniversity",
+            "name": "Arizona School of Health Sciences",
+            "description": "Doctorate in Audiology (Au.D.)"
+          }
+        ],
+        "memberOf": [
+          {
+            "@type": "Organization",
+            "name": "American Speech-Language-Hearing Association (ASHA)"
+          },
+          {
+            "@type": "Organization",
+            "name": "Colorado Academy of Audiology (Past President)"
+          },
+          {
+            "@type": "Organization",
+            "name": "Academy of Doctors of Audiology"
+          },
+          {
+            "@type": "Organization",
+            "name": "Academy of Rehabilitative Audiologists"
+          },
+          {
+            "@type": "Organization",
+            "name": "Entheos Audiology Cooperative"
+          },
+          {
+            "@type": "Organization",
+            "name": "Hearing Loss Association of America"
+          }
+        ],
+        "knowsAbout": [
+          "Patient education",
+          "Aural rehabilitation",
+          "Communication counseling",
+          "Hearing aid fitting and management",
+          "Tinnitus evaluation and management"
+        ]
+      }
+    ],
+    "/audiologist/julie-raney/": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "@id": "https://newleafhearing.com/audiologist/julie-raney/#person",
+        "name": "Julie Raney",
+        "honorificSuffix": "M.S.",
+        "jobTitle": "Audiologist",
+        "url": "https://newleafhearing.com/audiologist/julie-raney/",
+        "image": "https://newleafhearing.com/assets/new-leaf-hearing-care-julie.webp",
+        "worksFor": {
+          "@id": "https://newleafhearing.com/#arvada"
+        },
+        "description": "Julie Raney, M.S. is a certified and licensed audiologist at New Leaf Hearing Care with advanced experience in American Sign Language, supporting clear communication for the patients who benefit from it.",
+        "knowsLanguage": [
+          "English",
+          "American Sign Language"
+        ],
+        "identifier": [
+          {
+            "@type": "PropertyValue",
+            "propertyID": "NPI",
+            "value": "1003180209"
+          }
+        ],
+        "hasCredential": [
+          {
+            "@type": "EducationalOccupationalCredential",
+            "credentialCategory": "State License",
+            "name": "Colorado Audiologist and Hearing Aid Provider License",
+            "identifier": "0000493",
+            "recognizedBy": {
+              "@type": "GovernmentOrganization",
+              "name": "Colorado Department of Regulatory Agencies (DORA), Division of Professions and Occupations",
+              "url": "https://dpo.colorado.gov/"
+            }
+          },
+          {
+            "@type": "EducationalOccupationalCredential",
+            "credentialCategory": "National Provider Identifier (NPI)",
+            "identifier": "1003180209",
+            "recognizedBy": {
+              "@type": "GovernmentOrganization",
+              "name": "Centers for Medicare & Medicaid Services",
+              "url": "https://npiregistry.cms.hhs.gov/"
+            }
+          }
+        ],
+        "alumniOf": [
+          {
+            "@type": "CollegeOrUniversity",
+            "name": "Idaho State University",
+            "description": "B.S. in Communication Sciences and Disorders; Master's Degree in Audiology"
+          }
+        ],
+        "memberOf": [
+          {
+            "@type": "Organization",
+            "name": "American Academy of Audiology (Fellow)"
+          },
+          {
+            "@type": "Organization",
+            "name": "American Speech-Language-Hearing Association (ASHA) — Certificate of Clinical Competence (CCC-A)"
+          }
+        ],
+        "knowsAbout": [
+          "Audiology",
+          "American Sign Language",
+          "Hearing assessments",
+          "Hearing aids",
+          "Communication support"
+        ]
+      }
+    ],
+    "/audiologist/lisa-marie-bell/": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "@id": "https://newleafhearing.com/audiologist/lisa-marie-bell/#person",
+        "name": "Lisa Marie Bell",
+        "alternateName": "Lisa Marie Davis Bell",
+        "honorificSuffix": "Au.D.",
+        "jobTitle": "Office Manager & Audiologist",
+        "url": "https://newleafhearing.com/audiologist/lisa-marie-bell/",
+        "image": "https://newleafhearing.com/assets/new-leaf-hearing-care-lisa.webp",
+        "worksFor": [
+          {
+            "@id": "https://newleafhearing.com/#arvada"
+          },
+          {
+            "@id": "https://newleafhearing.com/#littleton"
+          }
+        ],
+        "description": "Lisa Marie Bell, Au.D. is an audiologist and Office Manager at New Leaf Hearing Care with extensive clinical and teaching experience, including prior roles as an Assistant Professor at Pacific University and Clinical Director for Healthy Hearing with Special Olympics.",
+        "identifier": [
+          {
+            "@type": "PropertyValue",
+            "propertyID": "NPI",
+            "value": "1871738567"
+          }
+        ],
+        "hasCredential": [
+          {
+            "@type": "EducationalOccupationalCredential",
+            "credentialCategory": "State License",
+            "name": "Colorado Audiologist and Hearing Aid Provider License",
+            "identifier": "023186",
+            "recognizedBy": {
+              "@type": "GovernmentOrganization",
+              "name": "Colorado Department of Regulatory Agencies (DORA), Division of Professions and Occupations",
+              "url": "https://dpo.colorado.gov/"
+            }
+          },
+          {
+            "@type": "EducationalOccupationalCredential",
+            "credentialCategory": "National Provider Identifier (NPI)",
+            "identifier": "1871738567",
+            "recognizedBy": {
+              "@type": "GovernmentOrganization",
+              "name": "Centers for Medicare & Medicaid Services",
+              "url": "https://npiregistry.cms.hhs.gov/"
+            }
+          }
+        ],
+        "alumniOf": [
+          {
+            "@type": "CollegeOrUniversity",
+            "name": "University of Minnesota",
+            "description": "Bachelor's Degree in Speech & Hearing Sciences and Child Psychology"
+          },
+          {
+            "@type": "CollegeOrUniversity",
+            "name": "University of Washington",
+            "description": "Doctorate of Audiology (Au.D.)"
+          }
+        ],
+        "memberOf": [
+          {
+            "@type": "Organization",
+            "name": "American Speech-Language-Hearing Association (ASHA) — Certificate of Clinical Competence (CCC-A)"
+          },
+          {
+            "@type": "Organization",
+            "name": "American Board of Audiology — Certificate Holder, Audiology Preceptor (CH-AP)"
+          }
+        ],
+        "knowsAbout": [
+          "Clinical audiology",
+          "Aural rehabilitation",
+          "Patient education"
+        ]
+      }
+    ],
+    "/patient-care-coordinator/rose-young/": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "@id": "https://newleafhearing.com/patient-care-coordinator/rose-young/#person",
+        "name": "Rose Young",
+        "jobTitle": "Patient Care Coordinator",
+        "url": "https://newleafhearing.com/patient-care-coordinator/rose-young/",
+        "image": "https://newleafhearing.com/assets/new-leaf-hearing-care-rose.webp",
+        "worksFor": [
+          {
+            "@id": "https://newleafhearing.com/#arvada"
+          },
+          {
+            "@id": "https://newleafhearing.com/#littleton"
+          }
+        ]
+      }
+    ],
+    "/audiology-assistant/brittany/": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "@id": "https://newleafhearing.com/audiology-assistant/brittany/#person",
+        "name": "Brittany",
+        "jobTitle": "Audiology Assistant",
+        "url": "https://newleafhearing.com/audiology-assistant/brittany/",
+        "image": "https://newleafhearing.com/assets/brittany.jpg",
+        "worksFor": [
+          {
+            "@id": "https://newleafhearing.com/#arvada"
+          },
+          {
+            "@id": "https://newleafhearing.com/#littleton"
+          }
+        ]
+      }
+    ],
+    "/audiology-services/": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "@id": "https://newleafhearing.com/audiology-services/#service",
+        "name": "Audiology Services",
+        "serviceType": "Audiology Services",
+        "url": "https://newleafhearing.com/audiology-services/",
+        "description": "New Leaf Hearing Care is an audiology and hearing aid clinic with trusted audiologists providing professional hearing services in Arvada and Littleton, Colorado, including hearing assessments, tinnitus evaluation and management, earwax removal, custom earmolds, communication training, and auditory training.",
+        "category": "Audiology",
+        "provider": [
+          {
+            "@id": "https://newleafhearing.com/#arvada"
+          },
+          {
+            "@id": "https://newleafhearing.com/#littleton"
+          }
+        ],
+        "areaServed": [
+          {
+            "@type": "City",
+            "name": "Arvada"
+          },
+          {
+            "@type": "City",
+            "name": "Littleton"
+          }
+        ]
+      }
+    ],
+    "/audiology-services/communication-training-program/": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "@id": "https://newleafhearing.com/audiology-services/communication-training-program/#service",
+        "name": "Communication Training Program",
+        "serviceType": "Communication Training Program",
+        "url": "https://newleafhearing.com/audiology-services/communication-training-program/",
+        "description": "A Communication Training Program teaches simple skills that help you follow speech, respond with confidence, and reduce mix-ups in daily talk.",
+        "category": "Audiology",
+        "provider": [
+          {
+            "@id": "https://newleafhearing.com/#arvada"
+          },
+          {
+            "@id": "https://newleafhearing.com/#littleton"
+          }
+        ],
+        "areaServed": [
+          {
+            "@type": "City",
+            "name": "Arvada"
+          },
+          {
+            "@type": "City",
+            "name": "Littleton"
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "@id": "https://newleafhearing.com/audiology-services/communication-training-program/#faqpage",
+        "mainEntityOfPage": "https://newleafhearing.com/audiology-services/communication-training-program/",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is a Communication Training Program?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A Communication Training Program is a structured set of skills and strategies that helps you understand speech better and reduce stress in daily conversations."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How does the 5 Keys to Communication Success program work?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The 5 Keys program teaches five core parts of good communication and gives you a handbook plus weekly lessons for one year through email or a mobile app."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I get started with communication training at New Leaf Hearing Care?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "You start by scheduling a consultation with an audiologist in Arvada or Littleton, then you receive the 5 Keys materials and a clear plan for how to use them."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is the goal of communication training if I already have hearing aids?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The goal is to improve real-life conversation by adding skills and habits that make speech clearer in noise, groups, and fast talk, so hearing aids work better for your day."
+            }
+          }
+        ]
+      }
+    ],
+    "/audiology-services/custom-earmolds/": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "@id": "https://newleafhearing.com/audiology-services/custom-earmolds/#service",
+        "name": "Custom Earmolds",
+        "serviceType": "Custom Earmolds",
+        "url": "https://newleafhearing.com/audiology-services/custom-earmolds/",
+        "description": "Custom earmolds are made from an impression of your ear, so the fit matches your ear shape instead of a one-size piece.",
+        "category": "Audiology",
+        "provider": [
+          {
+            "@id": "https://newleafhearing.com/#arvada"
+          },
+          {
+            "@id": "https://newleafhearing.com/#littleton"
+          }
+        ],
+        "areaServed": [
+          {
+            "@type": "City",
+            "name": "Arvada"
+          },
+          {
+            "@type": "City",
+            "name": "Littleton"
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "@id": "https://newleafhearing.com/audiology-services/custom-earmolds/#faqpage",
+        "mainEntityOfPage": "https://newleafhearing.com/audiology-services/custom-earmolds/",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is a custom earmold?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A custom earmold is a personalized earpiece made from an impression of your ear, designed to fit securely and comfortably for hearing aids, protection, or other in-ear devices."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How does the custom earmold process work?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Your provider checks your ears, takes an impression using a soft material, sends that impression to a lab, and then fits the finished earmold to confirm comfort and performance."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I know if I need custom earmolds for my hearing aids?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Custom earmolds are a strong choice when domes slip, feedback becomes a problem, or you need a tighter seal for better sound clarity and device stability."
+            }
+          }
+        ]
+      }
+    ],
+    "/audiology-services/ear-wax-removal/": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "@id": "https://newleafhearing.com/audiology-services/ear-wax-removal/#service",
+        "name": "Earwax Removal",
+        "serviceType": "Earwax Removal",
+        "url": "https://newleafhearing.com/audiology-services/ear-wax-removal/",
+        "description": "Earwax removal is an in-office service that clears extra wax from the ear canal to restore comfort and clearer sound.",
+        "category": "Audiology",
+        "provider": [
+          {
+            "@id": "https://newleafhearing.com/#arvada"
+          },
+          {
+            "@id": "https://newleafhearing.com/#littleton"
+          }
+        ],
+        "areaServed": [
+          {
+            "@type": "City",
+            "name": "Arvada"
+          },
+          {
+            "@type": "City",
+            "name": "Littleton"
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "@id": "https://newleafhearing.com/audiology-services/ear-wax-removal/#faqpage",
+        "mainEntityOfPage": "https://newleafhearing.com/audiology-services/ear-wax-removal/",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is earwax removal?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Earwax removal is a clinical service that clears excess wax from the ear canal using safe tools and methods, so sound can travel normally and the ear feels comfortable again."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How does earwax removal work at New Leaf Hearing Care?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Your provider looks in your ears, selects the right method for your wax type, removes the blockage, and checks your ear canal again to confirm the wax is cleared."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I know if my hearing problem is wax or hearing loss?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A blocked ear can cause sudden muffled hearing, pressure, and ringing, while hearing loss tends to build over time. An in-office ear check and hearing test confirm the cause."
+            }
+          }
+        ]
+      }
+    ],
+    "/audiology-services/hearing-assessments/": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "@id": "https://newleafhearing.com/audiology-services/hearing-assessments/#service",
+        "name": "Hearing Assessments",
+        "serviceType": "Hearing Assessments",
+        "url": "https://newleafhearing.com/audiology-services/hearing-assessments/",
+        "description": "Hearing assessments are in-office evaluations that measure how well you hear sounds and understand speech.",
+        "category": "Audiology",
+        "provider": [
+          {
+            "@id": "https://newleafhearing.com/#arvada"
+          },
+          {
+            "@id": "https://newleafhearing.com/#littleton"
+          }
+        ],
+        "areaServed": [
+          {
+            "@type": "City",
+            "name": "Arvada"
+          },
+          {
+            "@type": "City",
+            "name": "Littleton"
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "@id": "https://newleafhearing.com/audiology-services/hearing-assessments/#faqpage",
+        "mainEntityOfPage": "https://newleafhearing.com/audiology-services/hearing-assessments/",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is a hearing test?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A hearing test is an in-office exam that measures what sounds you hear and how well you understand speech, then turns those results into a clear care plan."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How does a hearing test work at New Leaf Hearing Care?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Your visit includes a health review, an ear check, hearing testing in a quiet room, and a results review with an audiologist who explains what the findings mean."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I know which hearing test I need?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "If you want a basic check, a Basic Hearing Exam fits that goal. If you have trouble in daily talks and want treatment options, a Functional Hearing Assessment gives a deeper review."
+            }
+          }
+        ]
+      }
+    ],
+    "/audiology-services/lace-ai-pro-auditory-training/": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "@id": "https://newleafhearing.com/audiology-services/lace-ai-pro-auditory-training/#service",
+        "name": "LACE AI Pro Auditory Training",
+        "serviceType": "Auditory Training",
+        "url": "https://newleafhearing.com/audiology-services/lace-ai-pro-auditory-training/",
+        "description": "LACE AI Pro is an app-based auditory training program that strengthens how your brain understands speech, including speech in noise and fast talk.",
+        "category": "Audiology",
+        "provider": [
+          {
+            "@id": "https://newleafhearing.com/#arvada"
+          },
+          {
+            "@id": "https://newleafhearing.com/#littleton"
+          }
+        ],
+        "areaServed": [
+          {
+            "@type": "City",
+            "name": "Arvada"
+          },
+          {
+            "@type": "City",
+            "name": "Littleton"
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "@id": "https://newleafhearing.com/audiology-services/lace-ai-pro-auditory-training/#faqpage",
+        "mainEntityOfPage": "https://newleafhearing.com/audiology-services/lace-ai-pro-auditory-training/",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is LACE AI Pro?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "LACE AI Pro is an app-based auditory training program that improves speech understanding by training the brain skills used in real conversations, including speech in noise."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How does LACE AI Pro work with hearing aids?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "LACE AI Pro works alongside hearing aids by improving how you process the sound your devices deliver, so speech feels clearer and listening takes less effort."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I get started with LACE AI Pro at New Leaf Hearing Care?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "You schedule a consultation in Arvada or Littleton, review your hearing needs with an audiologist, and then get help setting up LACE AI Pro with a training plan you can follow at home."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I practice LACE AI Pro the right way?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "You practice in a quiet space, use the device setup recommended by your audiologist, and follow the training plan consistently so your progress builds week by week."
+            }
+          }
+        ]
+      }
+    ],
+    "/audiology-services/tinnitus-evaluation-management/": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "@id": "https://newleafhearing.com/audiology-services/tinnitus-evaluation-management/#service",
+        "name": "Tinnitus Evaluation and Management",
+        "serviceType": "Tinnitus Evaluation and Management",
+        "url": "https://newleafhearing.com/audiology-services/tinnitus-evaluation-management/",
+        "description": "Tinnitus Evaluation and Management is a clinical service that checks your hearing, reviews your tinnitus, and builds a plan to make ringing less intrusive.",
+        "category": "Audiology",
+        "provider": [
+          {
+            "@id": "https://newleafhearing.com/#arvada"
+          },
+          {
+            "@id": "https://newleafhearing.com/#littleton"
+          }
+        ],
+        "areaServed": [
+          {
+            "@type": "City",
+            "name": "Arvada"
+          },
+          {
+            "@type": "City",
+            "name": "Littleton"
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "@id": "https://newleafhearing.com/audiology-services/tinnitus-evaluation-management/#faqpage",
+        "mainEntityOfPage": "https://newleafhearing.com/audiology-services/tinnitus-evaluation-management/",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is Tinnitus Evaluation and Management?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Tinnitus Evaluation and Management is a clinical service that includes hearing testing, tinnitus-specific questionnaires, and a customized plan that uses counseling and sound tools to reduce tinnitus impact."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How does a tinnitus evaluation work at New Leaf Hearing Care?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Your visit includes a detailed tinnitus history, a full hearing evaluation, additional tinnitus testing and questionnaires, and a demonstration of tinnitus masking options."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I get relief from tinnitus during the day?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Relief comes from a plan that reduces stress response and supports sound balance, including counseling and sound therapy tools that lower tinnitus awareness during work, home time, and quiet tasks."
+            }
+          }
+        ]
+      }
+    ],
+    "/hearing-aid-services/": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "@id": "https://newleafhearing.com/hearing-aid-services/#service",
+        "name": "Hearing Aid Services",
+        "serviceType": "Hearing Aid Services",
+        "url": "https://newleafhearing.com/hearing-aid-services/",
+        "description": "New Leaf Hearing Care is a trusted audiology and hearing aid provider delivering professional hearing services throughout Colorado, including hearing aid fittings, repairs and maintenance, and assistive listening devices.",
+        "category": "Audiology",
+        "provider": [
+          {
+            "@id": "https://newleafhearing.com/#arvada"
+          },
+          {
+            "@id": "https://newleafhearing.com/#littleton"
+          }
+        ],
+        "areaServed": [
+          {
+            "@type": "City",
+            "name": "Arvada"
+          },
+          {
+            "@type": "City",
+            "name": "Littleton"
+          }
+        ]
+      }
+    ],
+    "/hearing-aids-products/hearing-aid-fittings/": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "@id": "https://newleafhearing.com/hearing-aids-products/hearing-aid-fittings/#service",
+        "name": "Hearing Aid Fittings",
+        "serviceType": "Hearing Aid Fittings",
+        "url": "https://newleafhearing.com/hearing-aids-products/hearing-aid-fittings/",
+        "description": "Hearing aid fittings are appointments where an audiologist programs your devices, checks comfort, and sets them up for your real-life listening needs.",
+        "category": "Audiology",
+        "provider": [
+          {
+            "@id": "https://newleafhearing.com/#arvada"
+          },
+          {
+            "@id": "https://newleafhearing.com/#littleton"
+          }
+        ],
+        "areaServed": [
+          {
+            "@type": "City",
+            "name": "Arvada"
+          },
+          {
+            "@type": "City",
+            "name": "Littleton"
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "@id": "https://newleafhearing.com/hearing-aids-products/hearing-aid-fittings/#faqpage",
+        "mainEntityOfPage": "https://newleafhearing.com/hearing-aids-products/hearing-aid-fittings/",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is a hearing aid fitting?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A hearing aid fitting is an appointment where an audiologist programs your hearing aids to match your hearing test, checks comfort and fit, and teaches you how to use and care for your devices."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How does a hearing aid fitting work at New Leaf Hearing Care?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Your audiologist confirms the fit, programs settings based on your hearing needs, verifies sound performance when appropriate, and gives you hands-on training for daily use and cleaning."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I know if my hearing aids are fitted correctly?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A correct fit feels secure and comfortable, speech sounds clearer, and you can wear the devices for long periods without soreness, whistling, or frequent slipping."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How does follow-up care improve hearing aid results?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Follow-up visits let your audiologist fine-tune settings using your real-life feedback, which improves clarity in noise, reduces listening effort, and increases comfort over time."
+            }
+          }
+        ]
+      }
+    ],
+    "/hearing-aids-products/hearing-aid-repairs-maintenance/": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "@id": "https://newleafhearing.com/hearing-aids-products/hearing-aid-repairs-maintenance/#service",
+        "name": "Hearing Aid Repairs & Maintenance",
+        "serviceType": "Hearing Aid Repairs & Maintenance",
+        "url": "https://newleafhearing.com/hearing-aids-products/hearing-aid-repairs-maintenance/",
+        "description": "Hearing aid repairs fix problems like weak sound, whistling, broken parts, or devices that will not turn on or charge. Quick, professional service restores clear hearing sooner and helps protect your devices from bigger damage.",
+        "category": "Audiology",
+        "provider": [
+          {
+            "@id": "https://newleafhearing.com/#arvada"
+          },
+          {
+            "@id": "https://newleafhearing.com/#littleton"
+          }
+        ],
+        "areaServed": [
+          {
+            "@type": "City",
+            "name": "Arvada"
+          },
+          {
+            "@type": "City",
+            "name": "Littleton"
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "@id": "https://newleafhearing.com/hearing-aids-products/hearing-aid-repairs-maintenance/#faqpage",
+        "mainEntityOfPage": "https://newleafhearing.com/hearing-aids-products/hearing-aid-repairs-maintenance/",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What are hearing aid repairs?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Hearing aid repairs are services that fix device problems such as weak sound, feedback, broken parts, moisture damage, charging issues, and devices that will not power on."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I know if my hearing aid needs repair or a cleaning?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A blocked wax filter or dirty microphone can cause muffled sound and cutting out, while broken parts and charging problems point to repair needs. A clinic visit confirms the cause and fixes it safely."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How does a hearing aid repair appointment work?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A repair visit includes device inspection, troubleshooting, professional cleaning, part replacement, when needed, and programming adjustments when sound settings need to be updated."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I prevent hearing aid repairs in the future?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Daily wiping, routine filter changes, safe storage, and moisture control reduce common failures and keep the sound clear and steady over time."
+            }
+          }
+        ]
+      }
+    ],
+    "/hearing-aids-products/": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "@id": "https://newleafhearing.com/hearing-aids-products/#service",
+        "name": "Hearing Aids and Products",
+        "serviceType": "Hearing Aids and Products",
+        "url": "https://newleafhearing.com/hearing-aids-products/",
+        "description": "Hearing aids and products include hearing devices and helpful tools that improve speech clarity, comfort, and daily communication. The right hearing aids reduce listening strain and help you stay connected at home, at work, and out in the community.",
+        "category": "Audiology",
+        "provider": [
+          {
+            "@id": "https://newleafhearing.com/#arvada"
+          },
+          {
+            "@id": "https://newleafhearing.com/#littleton"
+          }
+        ],
+        "areaServed": [
+          {
+            "@type": "City",
+            "name": "Arvada"
+          },
+          {
+            "@type": "City",
+            "name": "Littleton"
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "@id": "https://newleafhearing.com/hearing-aids-products/#faqpage",
+        "mainEntityOfPage": "https://newleafhearing.com/hearing-aids-products/",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How do I know which hearing aids and products are right for me?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "An audiologist matches your hearing test results, ear shape, and daily listening goals to the right device style and support tools, then fine-tunes them based on real-life feedback."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How does a hearing aid fitting help after I buy hearing aids?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A hearing aid fitting helps audiologists and hearing care professionals to program your hearing aids to match your hearing needs. It is also an opportunity to check comfort and fit and to set you up for follow-up adjustments so speech stays clear in daily life."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I get help if my hearing aids stop working?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A service visit can diagnose issues such as wax blockage, moisture, broken parts, or poor sound quality. Our audiology team at New Leaf Hearing Care can clean, adjust, or repair the devices to restore performance."
+            }
+          }
+        ]
+      }
+    ],
+    "/hearing-aids-products/choosing-a-hearing-aid/": [
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "@id": "https://newleafhearing.com/hearing-aids-products/choosing-a-hearing-aid/#faqpage",
+        "mainEntityOfPage": "https://newleafhearing.com/hearing-aids-products/choosing-a-hearing-aid/",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is choosing a hearing aid based on?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Choosing a hearing aid is based on your hearing test results, your ear shape, your comfort needs, and the places where you listen every day, like work, home, and restaurants."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I choose the right hearing aid style?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Your audiologist helps you choose the right style by checking your hearing level, looking at your ear canal size, and matching the device to how you use your hands, glasses, and masks."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How does a hearing aid fitting work?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A fitting includes selecting the right size, checking comfort, programming the hearing aids to match your hearing test, and teaching you how to use and clean them, followed by fine-tuning visits."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is Real Ear Measurement and why does it matter?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Real Ear Measurement is an in-office check that measures how the hearing aid sounds in your ear, so the settings can be verified and adjusted for accurate speech clarity."
+            }
+          }
+        ]
+      }
+    ],
+    "/hearing-aids-products/hearing-aid-accessories/": [
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "@id": "https://newleafhearing.com/hearing-aids-products/hearing-aid-accessories/#faqpage",
+        "mainEntityOfPage": "https://newleafhearing.com/hearing-aids-products/hearing-aid-accessories/",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What are hearing aid accessories?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Hearing aid accessories are add-on devices and care supplies that improve hearing aid performance, help you connect to phones and TVs, and support daily cleaning and moisture control."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do hearing aid accessories help in noisy places?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Accessories like remote microphones and assistive listening devices send speech directly to your hearing aids, which improves clarity when background noise and distance make listening hard."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I know which hearing aid accessories I need?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A consultation with an audiologist connects your hearing test results to your daily listening problems, then matches you with accessories that solve the specific situations you want to improve."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How does a TV accessory work with hearing aids?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A TV streaming accessory sends the TV sound directly to your hearing aids, so speech is clearer and the room volume can stay comfortable for others."
+            }
+          }
+        ]
+      }
+    ],
+    "/hearing-aids-products/hearing-aid-styles/": [
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "@id": "https://newleafhearing.com/hearing-aids-products/hearing-aid-styles/#faqpage",
+        "mainEntityOfPage": "https://newleafhearing.com/hearing-aids-products/hearing-aid-styles/",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is the most common hearing aid style?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Receiver-in-canal (RIC) hearing aids are one of the most common styles because they feel light, sound natural for many patients, and support modern features like streaming."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I know which hearing aid style is right for me?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Your audiologist uses your hearing test results, ear shape, comfort needs, and daily listening goals to recommend the hearing aid style that fits your life and your hearing level."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How does a hearing aid fitting work after I pick a style?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A fitting includes setting the device to match your hearing test, checking comfort and fit, teaching you how to use it, and scheduling follow-up visits for fine-tuning."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is the easiest hearing aid style to handle?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Behind-the-ear (BTE) and in-the-ear (ITE) styles are often easier to handle because they are larger and simpler to insert, especially for people with limited finger strength."
+            }
+          }
+        ]
+      }
+    ],
+    "/online-hearing-tests/": [
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "@id": "https://newleafhearing.com/online-hearing-tests/#faqpage",
+        "mainEntityOfPage": "https://newleafhearing.com/online-hearing-tests/",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How do I know if my online hearing test result is accurate?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Accuracy depends on a quiet room, good headphones, correct volume, and a calibrated device, so the only way to confirm the result is an in-person hearing evaluation with an audiologist."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How does an in-person hearing test compare to an online test?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "An in-person test checks your ears, measures hearing with calibrated equipment, tests speech understanding, and provides a clear diagnosis and treatment plan based on your needs."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I schedule a hearing test after taking an online test?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "You can schedule a hearing exam with New Leaf Hearing Care in Arvada or Littleton by calling the office or booking online, and the team will guide you to the right appointment type."
+            }
+          }
+        ]
+      }
+    ],
+    "/oticon-hearing-aids/": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "@id": "https://newleafhearing.com/oticon-hearing-aids/#service",
+        "name": "Oticon Hearing Aids",
+        "serviceType": "Hearing Aids",
+        "url": "https://newleafhearing.com/oticon-hearing-aids/",
+        "description": "Oticon hearing aids are advanced devices that support clearer speech and more natural sound, using modern processing built to help the brain make sense of what you hear.",
+        "brand": {
+          "@type": "Brand",
+          "name": "Oticon"
+        },
+        "category": "Audiology",
+        "provider": [
+          {
+            "@id": "https://newleafhearing.com/#arvada"
+          },
+          {
+            "@id": "https://newleafhearing.com/#littleton"
+          }
+        ],
+        "areaServed": [
+          {
+            "@type": "City",
+            "name": "Arvada"
+          },
+          {
+            "@type": "City",
+            "name": "Littleton"
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "@id": "https://newleafhearing.com/oticon-hearing-aids/#faqpage",
+        "mainEntityOfPage": "https://newleafhearing.com/oticon-hearing-aids/",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is the life expectancy of an Oticon hearing aid?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Generally speaking, in-the-ear hearing aids tend to last up to five years, while behind-the-ear hearing aids typically last five to six years. Largely, it depends on how well you take care of your hearing aids. Some patients will decide to upgrade their hearing aids prior to this time, as newer technology is routinely released and may provide greater benefits. An audiologist will be able to guide you in deciding when an upgrade is necessary."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Are Oticon hearing aids compatible with Android and iPhone?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Most modern Oticon aids (including the Zeal, Intent, and Real) are “Made for iPhone” (MFi) and support the Android ASHA protocol. Additionally, the 2026 models now feature Bluetooth LE Audio and Auracast™, which provide more stable streaming and better battery efficiency for the latest smartphones."
+            }
+          }
+        ]
+      }
+    ],
+    "/phonak-hearing-aids/": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "@id": "https://newleafhearing.com/phonak-hearing-aids/#service",
+        "name": "Phonak Hearing Aids",
+        "serviceType": "Hearing Aids",
+        "url": "https://newleafhearing.com/phonak-hearing-aids/",
+        "description": "Phonak hearing aids are modern devices built to support clearer speech and easier listening across many ages and hearing needs.",
+        "brand": {
+          "@type": "Brand",
+          "name": "Phonak"
+        },
+        "category": "Audiology",
+        "provider": [
+          {
+            "@id": "https://newleafhearing.com/#arvada"
+          },
+          {
+            "@id": "https://newleafhearing.com/#littleton"
+          }
+        ],
+        "areaServed": [
+          {
+            "@type": "City",
+            "name": "Arvada"
+          },
+          {
+            "@type": "City",
+            "name": "Littleton"
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "@id": "https://newleafhearing.com/phonak-hearing-aids/#faqpage",
+        "mainEntityOfPage": "https://newleafhearing.com/phonak-hearing-aids/",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What are the different levels of Phonak Lumity?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Phonak Lumity offers four different technology levels, including the following: L90, L70, L50, and L30, ranging from the highest to the lowest technology levels, respectively."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is the difference between Phonak Paradise and Phonak Life hearing aids?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The world’s first waterproof rechargeable hearing aid, Audéo Life, combines the hearing performance of Audéo Paradise with a robust new housing that provides additional protection from water and sweat."
+            }
+          }
+        ]
+      }
+    ],
+    "/resound-hearing-aids/": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "@id": "https://newleafhearing.com/resound-hearing-aids/#service",
+        "name": "ReSound Hearing Aids",
+        "serviceType": "Hearing Aids",
+        "url": "https://newleafhearing.com/resound-hearing-aids/",
+        "description": "ReSound hearing aids are modern hearing devices designed to help you hear speech clearly and stay comfortable in busy, real-life listening situations.",
+        "brand": {
+          "@type": "Brand",
+          "name": "ReSound"
+        },
+        "category": "Audiology",
+        "provider": [
+          {
+            "@id": "https://newleafhearing.com/#arvada"
+          },
+          {
+            "@id": "https://newleafhearing.com/#littleton"
+          }
+        ],
+        "areaServed": [
+          {
+            "@type": "City",
+            "name": "Arvada"
+          },
+          {
+            "@type": "City",
+            "name": "Littleton"
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "@id": "https://newleafhearing.com/resound-hearing-aids/#faqpage",
+        "mainEntityOfPage": "https://newleafhearing.com/resound-hearing-aids/",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What are the levels of ReSound technology?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The newest ReSound Omnia hearing aids offer 3 technology levels (9, 7, and 5), ranging from the highest to the lowest technology level, respectively."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I adjust my ReSound hearing aids?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "ReSound hearing aids can be adjusted by pressing the buttons on the hearing aids, or through the ReSound Smart App. Pressing the buttons will allow you to change volume and programs, while the Smart App allows you to make these changes as well as adjustments to sound quality, noise reduction, and much more. Your audiologist or hearing care provider will teach you the best way to adjust your hearing aids for your unique needs."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is the life expectancy of ReSound hearing aids?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The typical lifespan of a completely new hearing aid is 5 years. Largely, it depends on how well you take care of your hearing aids. Some patients will decide to upgrade their hearing aids prior to this time, as newer technology is routinely released and may provide greater benefits. An audiologist will be able to guide you in deciding when an upgrade is necessary."
+            }
+          }
+        ]
+      }
+    ],
+    "/signia-hearing-aids/": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "@id": "https://newleafhearing.com/signia-hearing-aids/#service",
+        "name": "Signia Hearing Aids",
+        "serviceType": "Hearing Aids",
+        "url": "https://newleafhearing.com/signia-hearing-aids/",
+        "description": "Signia hearing aids are modern devices designed to improve speech clarity and support comfortable listening through advanced sound processing.",
+        "brand": {
+          "@type": "Brand",
+          "name": "Signia"
+        },
+        "category": "Audiology",
+        "provider": [
+          {
+            "@id": "https://newleafhearing.com/#arvada"
+          },
+          {
+            "@id": "https://newleafhearing.com/#littleton"
+          }
+        ],
+        "areaServed": [
+          {
+            "@type": "City",
+            "name": "Arvada"
+          },
+          {
+            "@type": "City",
+            "name": "Littleton"
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "@id": "https://newleafhearing.com/signia-hearing-aids/#faqpage",
+        "mainEntityOfPage": "https://newleafhearing.com/signia-hearing-aids/",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is the top-of-the-line Signia hearing aid?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The Signia AX platform is the most current technology offered by Signia. This platform is available in the Styletto, Pure, and Insio Charge&Go hearing aid styles. The trademarked Augmented Focus (AX) technology is its top feature, which uses two pathways to process sound: one for speech and the other for background noise."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What are the levels of Signia Pure Charge&Go technology?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Signia offers the AX in five different technology levels, including: (1AX, 2AX, 3AX, 5AX, and 7AX) from least to most advanced technology, respectively."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I adjust my Signia hearing aid?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes! Using the Signia app, you can change hearing aid programs and the volume level. There’s also an ability to adjust the sound balance between bass and treble."
+            }
+          }
+        ]
+      }
+    ],
+    "/starkey-hearing-aids/": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "@id": "https://newleafhearing.com/starkey-hearing-aids/#service",
+        "name": "Starkey Hearing Aids",
+        "serviceType": "Hearing Aids",
+        "url": "https://newleafhearing.com/starkey-hearing-aids/",
+        "description": "Starkey hearing aids include custom-fit and behind-the-ear options that use advanced processing and AI features to improve speech clarity and comfort.",
+        "brand": {
+          "@type": "Brand",
+          "name": "Starkey"
+        },
+        "category": "Audiology",
+        "provider": [
+          {
+            "@id": "https://newleafhearing.com/#arvada"
+          },
+          {
+            "@id": "https://newleafhearing.com/#littleton"
+          }
+        ],
+        "areaServed": [
+          {
+            "@type": "City",
+            "name": "Arvada"
+          },
+          {
+            "@type": "City",
+            "name": "Littleton"
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "@id": "https://newleafhearing.com/starkey-hearing-aids/#faqpage",
+        "mainEntityOfPage": "https://newleafhearing.com/starkey-hearing-aids/",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What are the tech levels of Starkey Genesis AI?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "There are four technology levels for most of the available styles (24, 20, 16, 12) ranging from highest to lowest technology level, respectively. A contralateral routing of signal (CROS) model is also available for those with severe single-sided hearing loss."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What app does Starkey Genesis AI use?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The My Starkey app pairs with Genesis AI hearing aids to help you enjoy greater listening moments, improved well-being, and easier everyday living — all at the convenience of your fingertips. User-friendly and easy to read, it delivers benefits that allow you to hear your best in a multitude of listening scenarios."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is the life expectancy of a Starkey hearing aid?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Generally speaking, in-the-ear hearing aids tend to last up to five years, while behind-the-ear hearing aids typically last five to six years. Largely, it depends on how well you take care of your hearing aids. Some patients will decide to upgrade their hearing aids prior to this time, as newer technology is routinely released and may provide greater benefits. An audiologist will be able to guide you in deciding when an upgrade is necessary."
+            }
+          }
+        ]
+      }
+    ],
+    "/unitron-hearing-aids/": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "@id": "https://newleafhearing.com/unitron-hearing-aids/#service",
+        "name": "Unitron Hearing Aids",
+        "serviceType": "Hearing Aids",
+        "url": "https://newleafhearing.com/unitron-hearing-aids/",
+        "description": "Unitron hearing aids are smart devices designed to adjust to different sound settings so speech stays clearer and listening feels less tiring.",
+        "brand": {
+          "@type": "Brand",
+          "name": "Unitron"
+        },
+        "category": "Audiology",
+        "provider": [
+          {
+            "@id": "https://newleafhearing.com/#arvada"
+          },
+          {
+            "@id": "https://newleafhearing.com/#littleton"
+          }
+        ],
+        "areaServed": [
+          {
+            "@type": "City",
+            "name": "Arvada"
+          },
+          {
+            "@type": "City",
+            "name": "Littleton"
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "@id": "https://newleafhearing.com/unitron-hearing-aids/#faqpage",
+        "mainEntityOfPage": "https://newleafhearing.com/unitron-hearing-aids/",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is the difference between Unitron Blu and Vivante?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Unitron Vivante (V) supersedes Unitron Blu (B) receiver-in-the-canal (RIC) hearing aids. For custom in-the-ear (ITE) hearing aids, Unitron Blu is the most current Unitron product. Unitron Vivante integrates a new design with improved sound quality and a new Remote Plus app."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What are the levels of technology in Unitron?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The higher the number, the more advanced the technology. Higher levels of technology have more sophisticated sound processing and noise management technology. The higher the level of technology, the more automatic support is available for challenging listening environments."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How long does it take to charge a Unitron hearing aid?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Once the green lights blink approximately 5 times, the hearing aids are charging. When the lights stop blinking and turn solid green, the hearing aids are completely charged. This process can take approximately 5-7 hours."
+            }
+          }
+        ]
+      }
+    ],
+    "/widex-hearing-aids/": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "@id": "https://newleafhearing.com/widex-hearing-aids/#service",
+        "name": "Widex Hearing Aids",
+        "serviceType": "Hearing Aids",
+        "url": "https://newleafhearing.com/widex-hearing-aids/",
+        "description": "Widex hearing aids use advanced sound processing and AI features to deliver clear, natural sound, with strong options for tinnitus support.",
+        "brand": {
+          "@type": "Brand",
+          "name": "Widex"
+        },
+        "category": "Audiology",
+        "provider": [
+          {
+            "@id": "https://newleafhearing.com/#arvada"
+          },
+          {
+            "@id": "https://newleafhearing.com/#littleton"
+          }
+        ],
+        "areaServed": [
+          {
+            "@type": "City",
+            "name": "Arvada"
+          },
+          {
+            "@type": "City",
+            "name": "Littleton"
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "@id": "https://newleafhearing.com/widex-hearing-aids/#faqpage",
+        "mainEntityOfPage": "https://newleafhearing.com/widex-hearing-aids/",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is the top-of-the-line Widex hearing aid?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Widex Moment Sheer 440 is the top technology level available in the line. The 440 comes with a complete set of sound processing features, including wind noise reduction, speech enhancement, and 15 adjustment bands of customization for your audiologist."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What are the levels of Widex Moment?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "There are three levels available in the Widex Moment platform: Widex Moment 220: Basic Level, Widex Moment 330: Standard Level, Widex Moment 440: Premium Level."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is Widex Moment good for tinnitus?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, the Widex Moment™ app provides access to your tinnitus solution to help manage your tinnitus, relaxation, well-being, and concentration. The Widex app offers “Made for You” and “Create Your Own” features for Moment devices, which allow you to customize your hearing aid fitting."
+            }
+          }
+        ]
+      }
+    ],
+    "/hearing-loss/how-we-hear/": [
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "@id": "https://newleafhearing.com/hearing-loss/how-we-hear/#faqpage",
+        "mainEntityOfPage": "https://newleafhearing.com/hearing-loss/how-we-hear/",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How do I know if my problem is hearing loss or earwax?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Earwax often causes a sudden muffled feeling or pressure, while hearing loss tends to build over time. An in-office ear check and hearing test confirm the cause."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How does the brain affect hearing?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The brain sorts sounds, focuses on speech, and helps you understand words, especially in noise. When the brain gets a weak sound signal, understanding speech becomes harder."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I schedule a hearing test at New Leaf Hearing Care?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "You can schedule by calling the clinic or booking online for an appointment at our Arvada, CO or Littleton, CO clinic (formerly Columbine Hearing Care). Our audiologist will guide you through testing and the next steps."
+            }
+          }
+        ]
+      }
+    ],
+    "/hearing-loss/protecting-your-hearing/": [
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "@id": "https://newleafhearing.com/hearing-loss/protecting-your-hearing/#faqpage",
+        "mainEntityOfPage": "https://newleafhearing.com/hearing-loss/protecting-your-hearing/",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is the best way to protect your hearing from loud noise?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The best way to protect your hearing from loud noise is to reduce exposure time, increase distance from the sound source, and wear proper hearing protection like earplugs or earmuffs during loud activities."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I know if I need custom earplugs?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "You need custom earplugs if store-bought plugs feel uncomfortable, fall out, or do not reduce noise enough for your work, hobbies, or sound sensitivity."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How does a hearing test help protect my hearing?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A hearing test gives a baseline of your hearing now and helps catch small changes early, so you can adjust habits and protection before hearing loss becomes more noticeable."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I protect my hearing if I already have hearing loss?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "You protect your hearing by preventing further damage with ear protection in loud settings and by working with an audiologist to monitor hearing and support safer listening habits."
+            }
+          }
+        ]
+      }
+    ],
+    "/hearing-loss/hearing-loss-facts/": [
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "@id": "https://newleafhearing.com/hearing-loss/hearing-loss-facts/#faqpage",
+        "mainEntityOfPage": "https://newleafhearing.com/hearing-loss/hearing-loss-facts/",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How do I know if I have hearing loss?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Common signs include asking people to repeat themselves, trouble hearing in noise, turning the TV up, and feeling tired after conversations; a hearing test confirms if a hearing loss is present."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How does a hearing test work?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A hearing test measures how softly you hear sounds and how clearly you understand speech. Our audiologist explains the results and recommends next steps."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I schedule a hearing test in Arvada or Littleton?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "You can schedule by calling New Leaf Hearing Care or booking online for a visit in Arvada or Littleton; the team will guide you to the right appointment type."
+            }
+          }
+        ]
+      }
+    ],
+    "/resources/faq/": [
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "@id": "https://newleafhearing.com/resources/faq/#faqpage",
+        "mainEntityOfPage": "https://newleafhearing.com/resources/faq/",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Do I really need a hearing test if I feel like I hear okay?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Many hearing changes happen gradually. A baseline hearing test helps identify early changes and protect long-term hearing and brain health."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Are hearing aids only for older adults?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Hearing loss affects people of all ages, and early treatment leads to better outcomes."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How are you different from big box hearing aid stores?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "We provide medical-level care, personalized treatment, and long-term support — not just device sales."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Will hearing aids help my brain health?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Research shows that treating hearing loss supports cognitive health and reduces listening fatigue."
+            }
+          }
+        ]
+      }
+    ],
+    "/audiologist-hearing-aids-arvada-colorado/": [
+      {
+        "@context": "https://schema.org",
+        "@type": [
+          "MedicalBusiness",
+          "LocalBusiness"
+        ],
+        "@id": "https://newleafhearing.com/#arvada",
+        "name": "New Leaf Hearing Care - Arvada",
+        "url": "https://newleafhearing.com/audiologist-hearing-aids-arvada-colorado/",
+        "logo": "https://newleafhearing.com/assets/new-leaf-hearing-care-logo.webp",
+        "image": "https://newleafhearing.com/assets/new-leaf-hearing-care-logo.webp",
+        "telephone": "+1-303-639-5323",
+        "priceRange": "$$",
+        "mainEntityOfPage": "https://www.google.com/maps?cid=11656563077069303627",
+        "hasMap": "https://maps.app.goo.gl/D3grzcf64P3v7iTw7",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "8721 Wadsworth Blvd, Suite C",
+          "addressLocality": "Arvada",
+          "addressRegion": "CO",
+          "postalCode": "80003",
+          "addressCountry": "US"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": "39.8540423",
+          "longitude": "-105.08308"
+        },
+        "areaServed": {
+          "@type": "City",
+          "name": "Arvada"
+        },
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday"
+            ],
+            "opens": "09:00",
+            "closes": "17:00"
+          }
+        ],
+        "sameAs": [
+          "https://youtube.com/@NewLeafHearing",
+          "https://facebook.com/NewLeafHearingCare",
+          "https://instagram.com/newleafhearwell"
+        ],
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.9",
+          "reviewCount": "85",
+          "bestRating": "5",
+          "worstRating": "1"
+        },
+        "review": [
+          {
+            "@type": "Review",
+            "author": {
+              "@type": "Person",
+              "name": "Art Hogarth"
+            },
+            "reviewRating": {
+              "@type": "Rating",
+              "ratingValue": "5",
+              "bestRating": "5",
+              "worstRating": "1"
+            },
+            "reviewBody": "What an amazing office!!!! 110% above and beyond and helped me get hearing aids notninly repaired, but helped tune them and reprogram them for me. Patient, thoughtful, professional, and very friendly! I will be going back for any hearing needs."
+          },
+          {
+            "@type": "Review",
+            "author": {
+              "@type": "Person",
+              "name": "Deborah"
+            },
+            "reviewRating": {
+              "@type": "Rating",
+              "ratingValue": "5",
+              "bestRating": "5",
+              "worstRating": "1"
+            },
+            "reviewBody": "Never have to wait, always a pleasant atmosphere. Always love working with Julie and reception desk. Never an insurance issue."
+          },
+          {
+            "@type": "Review",
+            "author": {
+              "@type": "Person",
+              "name": "Dennis Patterson"
+            },
+            "reviewRating": {
+              "@type": "Rating",
+              "ratingValue": "5",
+              "bestRating": "5",
+              "worstRating": "1"
+            },
+            "reviewBody": "Very personal and caring and listening."
+          },
+          {
+            "@type": "Review",
+            "author": {
+              "@type": "Person",
+              "name": "Cristy Fernandez"
+            },
+            "reviewRating": {
+              "@type": "Rating",
+              "ratingValue": "5",
+              "bestRating": "5",
+              "worstRating": "1"
+            },
+            "reviewBody": "I had an issue with my hearing aid not working when I woke up in the morning. In a bit of a panic, I called the audiologist and they were immediately able to take my call and set me up for a same day appointment to take a look. Not only were they accommodating, they were able to fix the problem during my visit. What a save! Thank you!"
+          },
+          {
+            "@type": "Review",
+            "author": {
+              "@type": "Person",
+              "name": "Jim"
+            },
+            "reviewRating": {
+              "@type": "Rating",
+              "ratingValue": "5",
+              "bestRating": "5",
+              "worstRating": "1"
+            },
+            "reviewBody": "This is a first-rate hearing care business. I couldn’t be more pleased with them in the four years I’ve been going here."
+          }
+        ]
+      }
+    ],
+    "/audiologist-hearing-aids-littleton-colorado/": [
+      {
+        "@context": "https://schema.org",
+        "@type": [
+          "MedicalBusiness",
+          "LocalBusiness"
+        ],
+        "@id": "https://newleafhearing.com/#littleton",
+        "name": "New Leaf Hearing Care - Littleton",
+        "url": "https://newleafhearing.com/audiologist-hearing-aids-littleton-colorado/",
+        "logo": "https://newleafhearing.com/assets/new-leaf-hearing-care-logo.webp",
+        "image": "https://newleafhearing.com/assets/new-leaf-hearing-care-logo.webp",
+        "telephone": "+1-720-689-7989",
+        "priceRange": "$$",
+        "mainEntityOfPage": "https://www.google.com/maps?cid=5615715988750319689",
+        "hasMap": "https://maps.app.goo.gl/cA9H7c7SH5zfsPHC8",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "5808 S Rapp St, Ste 102",
+          "addressLocality": "Littleton",
+          "addressRegion": "CO",
+          "postalCode": "80120",
+          "addressCountry": "US"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": "39.6115068",
+          "longitude": "-105.0194706"
+        },
+        "areaServed": {
+          "@type": "City",
+          "name": "Littleton"
+        },
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday"
+            ],
+            "opens": "09:00",
+            "closes": "16:30"
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": "Friday",
+            "opens": "09:00",
+            "closes": "12:00"
+          }
+        ],
+        "sameAs": [
+          "https://youtube.com/@NewLeafHearing",
+          "https://facebook.com/NewLeafHearingCare",
+          "https://instagram.com/newleafhearwell"
+        ],
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "5.0",
+          "reviewCount": "102",
+          "bestRating": "5",
+          "worstRating": "1"
+        },
+        "review": [
+          {
+            "@type": "Review",
+            "author": {
+              "@type": "Person",
+              "name": "Lauren O’Connell"
+            },
+            "reviewRating": {
+              "@type": "Rating",
+              "ratingValue": "5",
+              "bestRating": "5",
+              "worstRating": "1"
+            },
+            "reviewBody": "Dusty and her team are so knowledgeable, caring and friendly. You are in great hands getting your hearing checked and supported with them."
+          },
+          {
+            "@type": "Review",
+            "author": {
+              "@type": "Person",
+              "name": "Stephen Stith"
+            },
+            "reviewRating": {
+              "@type": "Rating",
+              "ratingValue": "5",
+              "bestRating": "5",
+              "worstRating": "1"
+            },
+            "reviewBody": "Knowable, Dedicated, Cost Effective."
+          },
+          {
+            "@type": "Review",
+            "author": {
+              "@type": "Person",
+              "name": "Tom Lisec"
+            },
+            "reviewRating": {
+              "@type": "Rating",
+              "ratingValue": "5",
+              "bestRating": "5",
+              "worstRating": "1"
+            },
+            "reviewBody": "Dusty was promptly on schedule, Diagnosed my aid concern and provided a solution in a timely manner. She was pleasant and knowledgeable and professional. A very pleasant experience."
+          },
+          {
+            "@type": "Review",
+            "author": {
+              "@type": "Person",
+              "name": "Susan Johnson"
+            },
+            "reviewRating": {
+              "@type": "Rating",
+              "ratingValue": "5",
+              "bestRating": "5",
+              "worstRating": "1"
+            },
+            "reviewBody": "A welcoming staff & comfortable atmosphere. Dr. Dusty answered all my questions & concerns. She’s always polite & very knowledgeable."
+          },
+          {
+            "@type": "Review",
+            "author": {
+              "@type": "Person",
+              "name": "Janet Tyrrell-Ead"
+            },
+            "reviewRating": {
+              "@type": "Rating",
+              "ratingValue": "5",
+              "bestRating": "5",
+              "worstRating": "1"
+            },
+            "reviewBody": "Kind, compassionate, responsive and professional service. One always feels welcome and care is comprehensive."
+          }
+        ]
+      }
+    ],
+    "/about/": [
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "AboutPage",
+            "@id": "https://newleafhearing.com/about/#webpage",
+            "url": "https://newleafhearing.com/about/",
+            "name": "About New Leaf Hearing Care",
+            "isPartOf": {
+              "@id": "https://newleafhearing.com/#website"
+            },
+            "about": {
+              "@id": "https://newleafhearing.com/#organization"
+            },
+            "mainEntity": {
+              "@id": "https://newleafhearing.com/#organization"
+            }
+          }
+        ]
+      }
+    ]
+  }
 }
