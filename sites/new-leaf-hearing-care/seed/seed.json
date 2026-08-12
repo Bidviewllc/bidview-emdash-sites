@@ -5477,16 +5477,23 @@
             },
             {
               "_type": "block",
-              "_key": "kjv",
-              "style": "normal",
+              "_key": "kjt-heading",
+              "style": "h2",
               "markDefs": [],
               "children": [
-                {
-                  "_type": "span",
-                  "_key": "kju",
-                  "text": "Together, we are making a difference - one patient, one ear, and one paw at a time.",
-                  "marks": []
-                }
+                { "_type": "span", "_key": "kjt-heading-span", "text": "Giving Back in Action", "marks": [] }
+              ]
+            },
+            {
+              "_type": "gallery",
+              "_key": "kjt-gallery",
+              "images": [
+                { "src": "/assets/new-leaf-give-back-gallery-01.jpg", "alt": "New Leaf Hearing Care team giving back in the community" },
+                { "src": "/assets/new-leaf-give-back-gallery-02.jpg", "alt": "New Leaf Hearing Care volunteering with a local charity partner" },
+                { "src": "/assets/new-leaf-give-back-gallery-03.jpg", "alt": "New Leaf Hearing Care staff at a community outreach event" },
+                { "src": "/assets/new-leaf-give-back-gallery-04.jpg", "alt": "New Leaf Hearing Care supporting a Hearing the Call mission" },
+                { "src": "/assets/new-leaf-give-back-gallery-05.jpg", "alt": "New Leaf Hearing Care giving back to the Arvada and Littleton community" },
+                { "src": "/assets/new-leaf-give-back-gallery-06.jpg", "alt": "New Leaf Hearing Care team with a rescue dog from Paws on the Ground Colorado" }
               ]
             }
           ]
