@@ -93,8 +93,7 @@ font-weight: 700;
   }
 
   .about-team {
-  width: 45%;
-    flex-basis: 45%;
+  width: 100%;
   }
 }
 
