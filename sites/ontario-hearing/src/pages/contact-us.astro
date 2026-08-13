@@ -39,7 +39,7 @@ const se = cfg?.edit ?? {};
             <div class="contact__method-body">
               <p class="contact__method-label">Phone</p>
               <p class="contact__method-value"><a href={`tel:${(s.phone ?? "(585) 442-4180").replace(/\D/g, "")}`} {...se.phone}>{s.phone ?? "(585) 442-4180"}</a></p>
-              <p class="contact__method-note">Mon–Thu {s.hours_mon_thu ?? "8 AM – 12 PM & 1 – 5 PM"} · Fri {s.hours_fri ?? "9 AM – 12 PM & 1 – 4 PM"}</p>
+              <p class="contact__method-note">Mon–Thu {s.hours_mon_thu ?? "8 AM – 12 PM & 1 – 5 PM"}<br />Fri {s.hours_fri ?? "9 AM – 12 PM & 1 – 4 PM"}</p>
             </div>
           </div>
           <div class="contact__method">
