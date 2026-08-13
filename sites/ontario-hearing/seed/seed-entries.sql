@@ -5,7 +5,7 @@
 
 -- site_settings
 INSERT OR REPLACE INTO ec_site_settings (id, slug, status, locale, version, title, content, created_at, updated_at, published_at)
-VALUES ('main', 'main', 'published', 'en', 1, 'Site Settings', '{"phone":"(585) 442-4180","email":"info@ontariohearing.com","address_street":"2210 Monroe Avenue","address_city_state":"Rochester, NY 14618","hours_mon_thu":"8 AM – 5 PM","hours_fri":"8 AM – 4 PM","google_maps_url":"https://www.google.com/maps?cid=9213821493223506062"}', datetime('now'), datetime('now'), datetime('now'));
+VALUES ('main', 'main', 'published', 'en', 1, 'Site Settings', '{"phone":"(585) 442-4180","email":"info@ontariohearing.com","address_street":"2210 Monroe Avenue","address_city_state":"Rochester, NY 14618","hours_mon_thu":"8 AM – 12 PM & 1 – 5 PM","hours_fri":"9 AM – 12 PM & 1 – 4 PM","google_maps_url":"https://www.google.com/maps?cid=9213821493223506062"}', datetime('now'), datetime('now'), datetime('now'));
 
 -- homepage
 INSERT OR REPLACE INTO ec_homepage (id, slug, status, locale, version, title, content, created_at, updated_at, published_at)
