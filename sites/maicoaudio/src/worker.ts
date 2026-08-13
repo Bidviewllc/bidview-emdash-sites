@@ -24,8 +24,60 @@ const INSURANCE_TOPBAR_ITEM =
 	'</svg></span>' +
 	'<span class="astro-element-icon-list-text">Check Insurance Coverage</span></a></li>';
 
+
+// ---------------------------------------------------------------------------
+// Media edge cache
+//
+// Uploaded media is served by the CMS at /_emdash/api/media/file/<key>. Without
+// this, EVERY image request booted the whole CMS runtime (runtime init, D1 init +
+// migrations, plugin states, hook resolution) — Server-Timing showed ~0.5–2.4s per
+// image, and any hiccup in that chain produced one broken image for one visitor
+// that then "healed" on reload. That was the unreproducible broken-image report.
+//
+// Media blobs are immutable content addressed by storage key, so they are safe to
+// serve from the edge cache without touching the runtime at all.
+const MEDIA_PREFIX = "/_emdash/api/media/file/";
+
+// The upstream route sends `max-age=31536000, immutable`, so a replaced image can
+// never propagate — a year of stale content with no way to revalidate (this bit us
+// when a client-requested photo swap didn't show up). A week of freshness plus
+// stale-while-revalidate stays fast but remains correctable; repeat fetches hit the
+// edge cache, not the runtime.
+const MEDIA_BROWSER_CACHE = "public, max-age=604800, stale-while-revalidate=2592000";
+
+async function serveMedia(request: Request, env: unknown, ctx: any): Promise<Response> {
+	const url = new URL(request.url);
+	const cache = (caches as any).default;
+	// Key on path only so ?v=/?cb= variants don't fragment the cache.
+	const cacheKey = new Request(url.origin + url.pathname, { method: "GET" });
+
+	const hit = await cache.match(cacheKey);
+	if (hit) return hit;
+
+	const response = await (handler as any).fetch(request, env, ctx);
+	if (response.status !== 200) return response;
+
+	const headers = new Headers(response.headers);
+	headers.set("Cache-Control", MEDIA_BROWSER_CACHE);
+	const cached = new Response(response.body, {
+		status: 200,
+		statusText: response.statusText,
+		headers,
+	});
+
+	if (ctx && typeof ctx.waitUntil === "function") {
+		ctx.waitUntil(cache.put(cacheKey, cached.clone()));
+	}
+	return cached;
+}
+
 export default {
 	async fetch(request: Request, env: unknown, ctx: unknown): Promise<Response> {
+		// Media first — edge-cached, never touches the CMS runtime on a hit.
+		if (request.method === "GET" && new URL(request.url).pathname.startsWith(MEDIA_PREFIX)) {
+			return serveMedia(request, env, ctx);
+		}
+
 		// 301: old /hearing-tests/ URL -> the real page under /audiology-services/.
 		const url = new URL(request.url);
 		if (url.pathname === "/hearing-tests" || url.pathname === "/hearing-tests/") {
