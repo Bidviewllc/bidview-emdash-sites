@@ -1,0 +1,7 @@
+{
+  "name": "gcm-homes-trestle-vercel",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Grant C. Meyer Homes — temporary Vercel staging to test whether Trestle's WAF blocks Vercel egress (Cloudflare is blocked)."
+}

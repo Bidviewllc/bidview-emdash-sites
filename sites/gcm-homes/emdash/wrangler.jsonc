@@ -1,0 +1,41 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "gcm-homes-emdash",
+	"account_id": "239e9d015c7a3a39cdc2e9400312f553",
+	"main": "./src/worker.ts",
+	"compatibility_date": "2026-02-24",
+	"compatibility_flags": ["nodejs_compat"],
+	"workers_dev": true,
+	// Reuse the listings D1 so emdash collections + the Trestle-synced listings
+	// tables (listings, listing_photos, sync_meta) live in ONE database — the
+	// hybrid model. emdash adds its own _emdash_*/ec_* tables alongside them.
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "gcm-homes-db",
+			"database_id": "614044b7-3e0c-41ee-ac78-7805cbab6d99",
+		},
+	],
+	"r2_buckets": [
+		{
+			"binding": "MEDIA",
+			"bucket_name": "gcm-homes-media",
+		},
+	],
+	// Worker Loader for plugin sandboxing
+	"worker_loaders": [
+		{
+			"binding": "LOADER",
+		},
+	],
+	// Drives scheduled publishing, plugin cron, and maintenance (see src/worker.ts)
+	"triggers": {
+		"crons": ["* * * * *"],
+	},
+	// Contact-form lead destination. Currently the bidview monitoring inbox so no
+	// lead is ever lost — SWAP for Grant's real email once confirmed. The Resend
+	// API key is a worker SECRET (RESEND_API_KEY), not stored here.
+	"vars": {
+		"LEAD_TO": "local@bidviewmarketing.com",
+	},
+}

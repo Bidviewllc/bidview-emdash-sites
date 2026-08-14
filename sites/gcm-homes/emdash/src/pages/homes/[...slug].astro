@@ -1,0 +1,9 @@
+---
+// Listing detail — serves the prototype's self-contained detail page verbatim for
+// any /homes/:city/:address path. Its client JS reads the slug from the URL and
+// fetches /api/listing-by-slug/... (this worker's route, backed by D1). Returned
+// as a raw Response so Astro doesn't try to parse the page's ${}/{} JS.
+export const prerender = false;
+import html from "../../detail-page.html?raw";
+return new Response(html, { headers: { "content-type": "text/html; charset=utf-8" } });
+---

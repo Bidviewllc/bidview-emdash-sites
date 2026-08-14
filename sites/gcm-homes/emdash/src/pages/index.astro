@@ -1,0 +1,148 @@
+---
+// Grant C. Meyer Homes — homepage, ported from the prototype into emdash.
+// Editable text comes from the `homepage` singleton collection (entry id "home").
+// Every field falls back to the approved copy, so the page renders correctly even
+// before the collection is seeded; editing lights up once you're logged into admin.
+import GcmLayout from "../layouts/GcmLayout.astro";
+import { getEmDashEntry } from "emdash";
+import { env } from "cloudflare:workers";
+
+// Load the homepage entry; tolerate it not existing yet (renders from fallbacks).
+let entry: any = null;
+try {
+	const res = await getEmDashEntry("homepage", "home");
+	entry = res?.entry ?? null;
+} catch { entry = null; }
+const d = entry?.data ?? {};
+const e = entry?.edit ?? {};
+
+// Featured listings — live from the Trestle-synced D1 tables (read-only).
+// Astro 6 exposes Cloudflare bindings via `cloudflare:workers`, not Astro.locals.
+let featured: any[] = [];
+try {
+	const DB = (env as any)?.DB;
+	if (DB) {
+		const { results } = await DB.prepare(
+			"SELECT id, slug, address, city, state, price, beds, baths, sqft, sub_type, type, photo FROM listings WHERE status='Active' AND photo IS NOT NULL ORDER BY price DESC LIMIT 3"
+		).all();
+		featured = results ?? [];
+	}
+} catch { featured = []; }
+const money = (n: number) => (n ? "$" + Number(n).toLocaleString("en-US") : "—");
+const metaOf = (l: any) => [l.beds && `${l.beds} BD`, l.baths && `${l.baths} BA`,
+	l.sqft && `${Number(l.sqft).toLocaleString()} SQ.FT.`].filter(Boolean).join(" | ");
+---
+
+<GcmLayout
+	title="Grant C. Meyer Homes — Lake Tahoe Luxury Real Estate"
+	description="Luxury real estate in Incline Village & Crystal Bay, Lake Tahoe — guided by a 35-year resident."
+	content={entry ? { collection: "homepage", id: "home" } : undefined}
+>
+	{/* HERO */}
+	<section class="hero" data-screen-label="01 Hero">
+		<div class="hero__img"></div>
+		<div class="hero__dusk"></div>
+		<div class="hero__night"></div>
+		<div class="hero__stars"></div>
+		<div class="hero__veil"></div>
+		<div class="hero__copy">
+			<h1 class="hero__title" set:html={d.hero_headline ?? 'The View From Here <em>Changes Everything.</em>'} {...(e.hero_headline ?? {})}></h1>
+			<p class="hero__sub" {...(e.hero_sub ?? {})}>
+				{d.hero_sub ?? "Falling in love with Lake Tahoe is easy. Finding the right home in a market this unique… that's where it gets interesting."}
+			</p>
+			<div class="hero__cta">
+				<a class="btn btn--orange" href="/listings/">{d.hero_cta_primary ?? "EXPLORE TAHOE HOMES"}</a>
+				<a class="btn btn--ghost-light" href="/contact/">{d.hero_cta_secondary ?? "WHAT IS YOUR HOME WORTH"}</a>
+			</div>
+		</div>
+	</section>
+
+	{/* REALITY CHECK + STATS */}
+	<section class="section section--dark" data-screen-label="02 Reality Check">
+		<div class="container reality">
+			<div>
+				<h2 class="reality__h" {...(e.reality_heading ?? {})}>
+					{d.reality_heading ?? "Incline Village Isn't Like Any Market You've Bought In Before."}
+				</h2>
+				<p class="reality__p" {...(e.reality_body ?? {})}>
+					{d.reality_body ?? "Tahoe real estate operates on its own set of rules. The luxury segment here is defined by low turnover, high privacy, and a pace that catches outsiders off guard. Professionalism here isn't just about sales — it's about survival."}
+				</p>
+			</div>
+			<div class="stats">
+				<div class="stat" style="border-style:solid;border-width:0 0 0 1px;border-color:rgba(247,148,91,0.5)">
+					<div class="stat__num" {...(e.stat1_num ?? {})}>{d.stat1_num ?? "11+ Months"}</div>
+					<div class="stat__label" {...(e.stat1_label ?? {})}>{d.stat1_label ?? "AVERAGE DAYS ON MARKET"}</div>
+					<div class="stat__desc" {...(e.stat1_desc ?? {})}>{d.stat1_desc ?? "Luxury homes often wait for the perfect buyer. Patience is as critical as the price tag."}</div>
+				</div>
+				<div class="stat" style="border-width:0 0 0 1px;border-color:rgba(247,148,91,0.5)">
+					<div class="stat__num" {...(e.stat2_num ?? {})}>{d.stat2_num ?? "~50%"}</div>
+					<div class="stat__label" {...(e.stat2_label ?? {})}>{d.stat2_label ?? "CASH PURCHASES"}</div>
+					<div class="stat__desc" {...(e.stat2_desc ?? {})}>{d.stat2_desc ?? "Competition is fierce. Half of all transactions are liquidity-driven, requiring rapid negotiation."}</div>
+				</div>
+				<div class="stat" style="border-width:0 0 0 1px;border-color:rgba(247,148,91,0.5)">
+					<div class="stat__num" {...(e.stat3_num ?? {})}>{d.stat3_num ?? "20–40%"}</div>
+					<div class="stat__label" {...(e.stat3_label ?? {})}>{d.stat3_label ?? "ONLINE VALUATION INACCURACY"}</div>
+					<div class="stat__desc" {...(e.stat3_desc ?? {})}>{d.stat3_desc ?? "Algorithm-based estimates fail to account for Tahoe's specific micro-locations and lot features."}</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	{/* THE GUIDE — Grant */}
+	<section class="section section--beige" data-screen-label="04 The Guide">
+		<div class="container guide">
+			<div class="guide__photo">
+				<div class="guide__img" style="background-image:url(/assets/grant.jpg);background-size:cover;background-position:center"></div>
+				<div class="guide__name">Grant C. Meyer</div>
+			</div>
+			<div class="guide__copy">
+				<div class="eyebrow" {...(e.guide_eyebrow ?? {})}>{d.guide_eyebrow ?? "YOUR NEIGHBOR BEFORE YOU EVEN ARRIVE"}</div>
+				<h2 class="guide__h" {...(e.guide_heading ?? {})}>{d.guide_heading ?? "This Is Where 35 Years Makes the Difference."}</h2>
+				<div class="guide__creds">
+					<div class="cred"><div class="cred__icon">✓</div><div><div class="cred__t">35-Year Resident</div><div class="cred__d">Unmatched local knowledge and community roots</div></div></div>
+					<div class="cred"><div class="cred__icon">✓</div><div><div class="cred__t">17 Years Realtor</div><div class="cred__d">Navigating every market cycle since 2007.</div></div></div>
+					<div class="cred"><div class="cred__icon">✓</div><div><div class="cred__t">Volume Leader</div><div class="cred__d">Consistently ranked in the top 1% of Sierra agents.</div></div></div>
+					<div class="cred"><div class="cred__icon">✓</div><div><div class="cred__t">Legal Training</div><div class="cred__d">Expertise in complex zoning and water rights.</div></div></div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	{/* FEATURED LISTINGS — live from D1 */}
+	<section class="section section--cream" data-screen-label="Featured Listings">
+		<div class="container">
+			<div style="text-align:center;max-width:640px;margin:0 auto 48px">
+				<span class="eyebrow" {...(e.featured_eyebrow ?? {})}>{d.featured_eyebrow ?? "CURATED LAKE TAHOE PROPERTIES"}</span>
+				<h2 class="reality__h" style="color:var(--navy);margin-top:12px" {...(e.featured_heading ?? {})}>{d.featured_heading ?? "Currently Representing"}</h2>
+			</div>
+			<div class="listings-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:32px">
+				{featured.map((l) => (
+					<a class="prop-card" href={`/homes/${l.slug}/`} style="background:#fff;border-radius:4px;overflow:hidden;display:block">
+						<div class="prop-card__media" style="position:relative;height:260px;overflow:hidden;background:var(--beige)">
+							<div class="prop-card__img" style={`background-image:url(${l.photo});background-size:cover;background-position:center;width:100%;height:100%`}></div>
+							<div class="prop-card__tag">{(l.sub_type || l.type || "Residential").replace(/([a-z])([A-Z])/g, "$1 $2")}</div>
+						</div>
+						<div class="prop-card__body" style="padding:24px">
+							<h3 class="prop-card__addr">{l.address}</h3>
+							<div class="prop-card__city" style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:14px">{[l.city, l.state].filter(Boolean).join(", ")}</div>
+							<div class="prop-card__meta">{metaOf(l)}</div>
+							<div class="prop-card__price">{money(l.price)}</div>
+						</div>
+					</a>
+				))}
+			</div>
+			<div style="text-align:center;margin-top:48px">
+				<a class="btn btn--dark" href="/listings/">VIEW ALL LISTINGS →</a>
+			</div>
+		</div>
+	</section>
+
+	{/* CTA */}
+	<section class="section section--dark" data-screen-label="CTA" style="text-align:center">
+		<div class="container" style="max-width:720px">
+			<h2 class="reality__h" style="color:#fff" {...(e.cta_heading ?? {})}>{d.cta_heading ?? "Your Tahoe Story Starts With One Conversation."}</h2>
+			<p class="reality__p" style="margin:16px auto 32px" {...(e.cta_body ?? {})}>{d.cta_body ?? "Whether you're buying, selling, or just getting to know the North Shore — start with a conversation, not a transaction."}</p>
+			<a class="btn btn--orange" href="/contact/">INQUIRE NOW</a>
+		</div>
+	</section>
+</GcmLayout>

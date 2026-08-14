@@ -1,0 +1,44 @@
+---
+// Shared layout for the simple content pages (Buyers/Sellers/Concierge/About).
+// Reads a `page_content` entry by slug; every field is inline-editable and falls
+// back to nothing (the page is seeded, so real content always shows).
+import GcmLayout from "../layouts/GcmLayout.astro";
+import { getEmDashEntry } from "emdash";
+
+const { slug } = Astro.props as { slug: string };
+let entry: any = null;
+try { entry = (await getEmDashEntry("page_content", slug))?.entry ?? null; } catch { entry = null; }
+if (!entry) return Astro.redirect("/404");
+const d = entry.data ?? {};
+const e = entry.edit ?? {};
+const cards = [1, 2, 3, 4].map((i) => ({ h: d[`card${i}_h`], p: d[`card${i}_p`], eh: e[`card${i}_h`], ep: e[`card${i}_p`] }))
+	.filter((c) => c.h || c.p);
+---
+
+<GcmLayout title={`${d.headline ?? d.title} — Grant C. Meyer Homes`} description={d.lead} content={{ collection: "page_content", id: entry.data.id, slug }}>
+	<section class="listings-page-hero" data-screen-label={`Page ${slug}`} style="padding:160px 80px 80px;text-align:center;background:var(--beige);border-bottom:1px solid var(--line)">
+		<span class="eyebrow" {...(e.eyebrow ?? {})}>{d.eyebrow}</span>
+		<h1 style="font-family:var(--font-serif);font-size:56px;color:var(--navy);margin-top:16px;max-width:880px;margin-left:auto;margin-right:auto;font-weight:600" {...(e.headline ?? {})}>{d.headline ?? d.title}</h1>
+		<p style="max-width:560px;margin:16px auto 0;font-size:17px;line-height:1.7;color:var(--muted)" {...(e.lead ?? {})}>{d.lead}</p>
+	</section>
+
+	<section class="section section--cream">
+		<div class="container" style="display:grid;grid-template-columns:repeat(2,1fr);gap:56px">
+			{cards.map((c, i) => (
+				<div style="background:var(--white);padding:44px 40px;border-radius:6px;border:1px solid rgba(197,198,206,0.4);box-shadow:0 8px 16px -12px rgba(0,0,0,0.08);position:relative">
+					<div style="position:absolute;top:0;left:40px;width:40px;height:3px;background:var(--orange)"></div>
+					<div class="eyebrow" style="font-size:11px;margin-top:12px">{String(i + 1).padStart(2, "0")}</div>
+					<h3 style="font-family:var(--font-serif);font-weight:500;font-size:32px;color:var(--navy);margin:12px 0 16px;line-height:1.1" {...(c.eh ?? {})}>{c.h}</h3>
+					<p style="font-size:15px;line-height:1.7;color:var(--body)" {...(c.ep ?? {})}>{c.p}</p>
+				</div>
+			))}
+		</div>
+	</section>
+
+	<section class="section section--dark" style="text-align:center">
+		<div class="container" style="max-width:720px">
+			<h2 class="reality__h" style="color:#fff">Your Tahoe Story Starts With One Conversation.</h2>
+			<a class="btn btn--orange" href="/contact/" style="margin-top:24px;display:inline-block">INQUIRE NOW</a>
+		</div>
+	</section>
+</GcmLayout>
