@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Listing Detail — Grant C. Meyer Homes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --cream: #FCF9F4; --beige: #F6F3EE; --beige-2: #F0EDE8;
+      --navy: #15243B; --orange: #F7945B; --ink: #1C1C19;
+      --body: #44474D; --muted: #75777E; --line: #C5C6CE;
+      --serif: "Source Serif 4", Georgia, serif;
+      --sans: "Manrope", sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--cream); font-family: var(--sans); color: var(--body); -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; height: 80px; z-index: 50;
+      display: flex; align-items: center; padding: 0 48px;
+      background: transparent; transition: background 280ms ease;
+      justify-content: space-between;
+    }
+    nav.scrolled { background: rgba(252,249,244,0.96); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(21,36,59,0.08); }
+    nav.scrolled .nav-links a { color: var(--navy); }
+    /* Same logo asset + sizing as the homepage nav (styles.css .nav__logo img).
+       Over the hero the nav is transparent, so the logo is inverted to white —
+       exactly how the homepage handles its transparent state — then restored to
+       full colour once the cream nav background fades in on scroll. */
+    .nav-logo { display: flex; align-items: center; flex-shrink: 0; }
+    .nav-logo img { height: 60px; width: auto; display: block; filter: brightness(0) invert(1); transition: filter 280ms ease; }
+    nav.scrolled .nav-logo img { filter: none; }
+    .nav-links { display: flex; gap: 32px; align-items: center; }
+    .nav-links a { font-size: 13px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255,255,255,0.9); transition: color 280ms; }
+    .nav-links a:hover { color: var(--orange); }
+    /* Matches listings.html. Stays navy-on-white in both nav states, so it reads
+       as a button over the hero photo and over the cream scrolled background. */
+    .nav-cta { background: var(--navy); color: #fff !important; padding: 10px 22px; border-radius: 2px; font-size: 12px !important; letter-spacing: 0.1em !important; }
+    .nav-cta:hover { background: var(--orange); }
+
+    /* HERO */
+    .listing-hero { position: relative; height: 85vh; min-height: 600px; overflow: hidden; }
+    .listing-hero__img { width: 100%; height: 100%; object-fit: cover; }
+    .listing-hero__placeholder { width: 100%; height: 100%; background: var(--navy); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.2); font-size: 80px; }
+    .listing-hero__veil { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 40%, rgba(0,0,0,0.55) 100%); }
+    .listing-hero__actions { position: absolute; top: 96px; right: 48px; display: flex; gap: 12px; }
+    .hero-action-btn {
+      width: 42px; height: 42px; border-radius: 50%; background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 18px; transition: background 200ms;
+    }
+    .hero-action-btn:hover { background: rgba(255,255,255,0.25); }
+    .listing-hero__bottom {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 48px; display: flex; justify-content: space-between; align-items: flex-end;
+    }
+    .listing-hero__addr { font-family: var(--serif); font-size: 42px; font-weight: 600; color: #fff; line-height: 1.15; margin-bottom: 6px; }
+    .listing-hero__crumb { font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.65); }
+    .listing-hero__stats { display: flex; gap: 0; }
+    .hero-stat { padding: 16px 28px; background: rgba(255,255,255,0.1); backdrop-filter: blur(12px); border-left: 1px solid rgba(255,255,255,0.15); text-align: center; }
+    .hero-stat:first-child { border-left: none; border-radius: 4px 0 0 4px; }
+    .hero-stat:last-child { border-radius: 0 4px 4px 0; }
+    .hero-stat__l { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.65); margin-bottom: 4px; }
+    .hero-stat__v { font-family: var(--serif); font-size: 20px; color: #fff; font-weight: 600; }
+    .hero-stat__v--price { color: var(--orange); font-size: 22px; }
+
+    /* BACK */
+    .back-bar { padding: 20px 48px; border-bottom: 1px solid var(--line); }
+    .back-btn { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; color: var(--muted); display: inline-flex; align-items: center; gap: 8px; }
+    .back-btn:hover { color: var(--navy); }
+
+    /* BODY */
+    .listing-body { padding: 64px 80px; display: grid; grid-template-columns: 1fr 360px; gap: 80px; max-width: 1400px; margin: 0 auto; }
+    .listing-body h2 { font-family: var(--serif); font-size: 32px; color: var(--navy); font-weight: 600; margin-bottom: 20px; line-height: 1.3; }
+    .rule { height: 2px; background: var(--orange); width: 48px; margin-bottom: 24px; }
+    .listing-body p { font-size: 16px; line-height: 1.8; color: var(--body); }
+
+    /* ASIDE */
+    .aside { background: var(--navy); color: #fff; border-radius: 4px; padding: 32px; align-self: start; }
+    .aside__h { font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 24px; }
+    .aside__row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 13px; }
+    .aside__row:last-of-type { border-bottom: none; }
+    .aside__row__l { color: rgba(255,255,255,0.55); }
+    .aside__row__v { font-weight: 600; color: #fff; text-align: right; }
+    .aside__cta { width: 100%; margin-top: 28px; padding: 14px; background: var(--orange); color: #fff; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; border-radius: 2px; }
+    .aside__cta:hover { background: #f28c4e; }
+
+    /* GALLERY */
+    .gallery-section { padding: 0 0 80px; }
+    .gallery-header { padding: 0 80px 20px; display: flex; justify-content: space-between; align-items: center; }
+    .gallery-header h3 { font-family: var(--serif); font-size: 24px; color: var(--navy); font-weight: 600; }
+    .gallery-header span { font-size: 12px; color: var(--muted); letter-spacing: 0.08em; }
+    .filmstrip { display: flex; gap: 8px; overflow-x: auto; padding: 0 80px; scroll-snap-type: x mandatory; scrollbar-width: none; }
+    .filmstrip::-webkit-scrollbar { display: none; }
+    .film-tile { width: 320px; height: 220px; flex-shrink: 0; cursor: pointer; overflow: hidden; border-radius: 2px; scroll-snap-align: start; background: var(--beige); }
+    .film-tile img { width: 100%; height: 100%; object-fit: cover; transition: transform 300ms ease; }
+    .film-tile:hover img { transform: scale(1.05); }
+
+    /* LIGHTBOX */
+    .lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 999; display: flex; align-items: center; justify-content: center; }
+    .lightbox img { max-width: 90vw; max-height: 90vh; object-fit: contain; }
+    .lb-close { position: absolute; top: 24px; right: 24px; color: #fff; font-size: 28px; background: none; border: none; cursor: pointer; opacity: 0.7; }
+    .lb-close:hover { opacity: 1; }
+    .lb-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); color: #fff; border: none; cursor: pointer; width: 48px; height: 48px; border-radius: 50%; font-size: 20px; display: flex; align-items: center; justify-content: center; }
+    .lb-prev { left: 24px; }
+    .lb-next { right: 24px; }
+    .lb-counter { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.6); font-size: 12px; letter-spacing: 0.1em; }
+
+    /* FEATURES */
+    .features-section { background: var(--beige-2); padding: 80px; }
+    .features-section h2 { font-family: var(--serif); font-size: 32px; color: var(--navy); font-weight: 600; margin-bottom: 40px; }
+    .features-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .feat-card { background: #fff; padding: 28px; border-radius: 4px; }
+    .feat-card__h { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 700; color: var(--orange); margin-bottom: 20px; }
+    .feat-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 12px; gap: 12px; }
+    .feat-row:last-child { border-bottom: none; }
+    .feat-row__l { color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; flex-shrink: 0; }
+    .feat-row__v { font-weight: 600; color: var(--navy); text-align: right; }
+
+    /* AGENT */
+    .agent-section { background: var(--navy); padding: 80px; display: grid; grid-template-columns: 300px 1fr; gap: 80px; align-items: center; }
+    .agent-photo { width: 100%; aspect-ratio: 3/4; object-fit: cover; border-radius: 2px; background: rgba(255,255,255,0.05); }
+    .agent-photo-placeholder { width: 100%; aspect-ratio: 3/4; background: rgba(255,255,255,0.05); border-radius: 2px; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.2); font-size: 60px; }
+    .agent-eyebrow { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--orange); margin-bottom: 12px; }
+    .agent-name { font-family: var(--serif); font-size: 40px; color: #fff; font-weight: 600; margin-bottom: 24px; }
+    .agent-creds { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px; }
+    .cred { display: flex; gap: 12px; align-items: flex-start; }
+    .cred-icon { width: 22px; height: 22px; background: var(--orange); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; color: #fff; font-size: 11px; }
+    .cred-h { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 2px; }
+    .cred-p { font-size: 12px; color: rgba(255,255,255,0.5); }
+    .agent-p { font-size: 15px; line-height: 1.7; color: rgba(255,255,255,0.65); margin-bottom: 28px; }
+    .agent-cta { display: inline-block; padding: 14px 32px; background: var(--orange); color: #fff; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; border-radius: 2px; cursor: pointer; }
+
+    /* CONTACT */
+    .contact-section { padding: 100px 80px; text-align: center; background: var(--cream); }
+    .contact-section h2 { font-family: var(--serif); font-size: 44px; color: var(--navy); font-weight: 600; margin-bottom: 16px; }
+    .contact-section p { max-width: 520px; margin: 0 auto 48px; font-size: 16px; line-height: 1.7; color: var(--muted); }
+    .contact-form { max-width: 560px; margin: 0 auto; display: grid; gap: 16px; }
+    .contact-form input, .contact-form textarea {
+      width: 100%; padding: 14px 18px; border: 1px solid var(--line); background: #fff;
+      font-family: inherit; font-size: 14px; color: var(--navy); border-radius: 2px;
+    }
+    .contact-form textarea { height: 120px; resize: none; }
+    .contact-form button { background: var(--navy); color: #fff; padding: 16px; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; border-radius: 2px; cursor: pointer; }
+
+    /* FOOTER */
+    footer { background: var(--navy); color: rgba(255,255,255,0.5); padding: 48px 80px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
+    .footer-brand { font-family: var(--serif); font-size: 16px; color: #fff; font-weight: 600; }
+
+    /* LOADING */
+    .loading { text-align: center; padding: 200px 40px; }
+    .loading__spinner { width: 40px; height: 40px; border: 3px solid var(--line); border-top-color: var(--navy); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+<nav id="nav">
+  <a class="nav-logo" href="/"><img src="/assets/logo.png" alt="Grant C. Meyer Homes" /></a>
+  <!-- Keep in sync with the SPA nav (js/chrome.jsx) and listings.html.
+       "Back to All Listings" still lives in the back-bar under the hero. -->
+  <div class="nav-links">
+    <a href="/listings/">Listings</a>
+    <a href="/buyers/">Buyers</a>
+    <a href="/sellers/">Sellers</a>
+    <a href="/community/">The Community</a>
+    <a href="/concierge/">Concierge</a>
+    <a href="/about/">About</a>
+    <a href="/contact/" class="nav-cta">Contact</a>
+  </div>
+</nav>
+
+<div id="app">
+  <div class="loading">
+    <div class="loading__spinner"></div>
+    <p>Loading listing details…</p>
+  </div>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" style="display:none">
+  <img id="lb-img" src="" alt="" />
+  <button class="lb-close" onclick="closeLightbox()">✕</button>
+  <button class="lb-nav lb-prev" onclick="lbNav(-1)">‹</button>
+  <button class="lb-nav lb-next" onclick="lbNav(1)">›</button>
+  <div class="lb-counter" id="lb-counter"></div>
+</div>
+
+<script>
+const API = "";
+let photos = [];
+let lbIdx = 0;
+
+function fmt(price) { return price ? "$" + Number(price).toLocaleString() : "—"; }
+function fmtSqft(n) { return n ? Number(n).toLocaleString() + " sq.ft." : "—"; }
+
+function openLightbox(i) {
+  lbIdx = i;
+  document.getElementById("lb-img").src = photos[i];
+  document.getElementById("lb-counter").textContent = `${i + 1} / ${photos.length}`;
+  document.getElementById("lightbox").style.display = "flex";
+  document.body.style.overflow = "hidden";
+}
+function closeLightbox() {
+  document.getElementById("lightbox").style.display = "none";
+  document.body.style.overflow = "";
+}
+function lbNav(dir) {
+  lbIdx = (lbIdx + dir + photos.length) % photos.length;
+  document.getElementById("lb-img").src = photos[lbIdx];
+  document.getElementById("lb-counter").textContent = `${lbIdx + 1} / ${photos.length}`;
+}
+document.addEventListener("keydown", e => {
+  if (document.getElementById("lightbox").style.display !== "none") {
+    if (e.key === "Escape") closeLightbox();
+    if (e.key === "ArrowLeft") lbNav(-1);
+    if (e.key === "ArrowRight") lbNav(1);
+  }
+});
+
+// Sticky nav
+window.addEventListener("scroll", () => {
+  document.getElementById("nav").classList.toggle("scrolled", window.scrollY > 80);
+});
+
+function render(listing, photoUrls) {
+  photos = photoUrls;
+  const heroPhoto = photos[0]
+    ? `<img class="listing-hero__img" src="${photos[0]}" alt="${listing.address}" />`
+    : `<div class="listing-hero__placeholder">⌂</div>`;
+
+  const gallery = photos.length > 0 ? `
+    <div class="gallery-section">
+      <div class="gallery-header">
+        <h3>Property Gallery</h3>
+        <span>${photos.length} Photos · Scroll →</span>
+      </div>
+      <div class="filmstrip">
+        ${photos.map((src, i) => `
+          <div class="film-tile" onclick="openLightbox(${i})">
+            <img src="${src}" alt="Photo ${i+1}" loading="lazy" />
+          </div>`).join("")}
+      </div>
+    </div>` : "";
+
+  document.getElementById("app").innerHTML = `
+    <!-- HERO -->
+    <section class="listing-hero">
+      ${heroPhoto}
+      <div class="listing-hero__veil"></div>
+      <div class="listing-hero__actions">
+        <button class="hero-action-btn" title="Save">♡</button>
+        <button class="hero-action-btn" title="Share">↗</button>
+        <button class="hero-action-btn" title="Print" onclick="window.print()">⎙</button>
+      </div>
+      <div class="listing-hero__bottom">
+        <div>
+          <div class="listing-hero__addr">${listing.address}</div>
+          <div class="listing-hero__crumb">${listing.city}, ${listing.state} ${listing.zip || ""}</div>
+        </div>
+        <div class="listing-hero__stats">
+          <div class="hero-stat"><div class="hero-stat__l">Bedrooms</div><div class="hero-stat__v">${listing.beds || "—"} BD</div></div>
+          <div class="hero-stat"><div class="hero-stat__l">Bathrooms</div><div class="hero-stat__v">${listing.baths || "—"} BA</div></div>
+          <div class="hero-stat"><div class="hero-stat__l">List Price</div><div class="hero-stat__v hero-stat__v--price">${fmt(listing.price)}</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BACK -->
+    <div class="back-bar"><a class="back-btn" href="/listings/">← Back to All Listings</a></div>
+
+    <!-- BODY -->
+    <div class="listing-body">
+      <div>
+        <h2>${listing.address}, ${listing.city}</h2>
+        <div class="rule"></div>
+        <p>${listing.description || "Contact Grant for full details on this exceptional Incline Village property."}</p>
+      </div>
+      <aside class="aside">
+        <div class="aside__h">Quick Statistics</div>
+        ${[
+          ["Status", listing.status],
+          ["Property Type", listing.subType || listing.type],
+          ["Year Built", listing.yearBuilt],
+          ["Living Area", fmtSqft(listing.sqft)],
+          ["Lot Size", listing.lotAcres ? listing.lotAcres + " acres" : "—"],
+          ["Garage", listing.garage ? listing.garage + " spaces" : "—"],
+          ["View", listing.view || "—"],
+          ["Annual Taxes", listing.taxes ? fmt(listing.taxes) : "—"],
+          ["Days on Market", listing.daysOnMarket ?? "—"],
+        ].map(([l,v]) => `
+          <div class="aside__row">
+            <span class="aside__row__l">${l}</span>
+            <span class="aside__row__v">${v || "—"}</span>
+          </div>`).join("")}
+        <button class="aside__cta">Schedule a Private Tour</button>
+      </aside>
+    </div>
+
+    <!-- GALLERY -->
+    ${gallery}
+
+    <!-- FEATURES -->
+    <div class="features-section">
+      <h2>Features &amp; Details</h2>
+      <div class="features-grid">
+        <div class="feat-card">
+          <div class="feat-card__h">Bedrooms &amp; Baths</div>
+          ${[["Bedrooms", listing.beds], ["Bathrooms Total", listing.baths], ["Full Baths", listing.bathsFull], ["Half Baths", listing.bathsHalf]].map(([l,v]) => `<div class="feat-row"><span class="feat-row__l">${l}</span><span class="feat-row__v">${v ?? "—"}</span></div>`).join("")}
+        </div>
+        <div class="feat-card">
+          <div class="feat-card__h">Area &amp; Lot</div>
+          ${[["Living Area", fmtSqft(listing.sqft)], ["Lot Size", listing.lotAcres ? listing.lotAcres + " ac." : "—"], ["Year Built", listing.yearBuilt], ["Type", listing.type]].map(([l,v]) => `<div class="feat-row"><span class="feat-row__l">${l}</span><span class="feat-row__v">${v ?? "—"}</span></div>`).join("")}
+        </div>
+        <div class="feat-card">
+          <div class="feat-card__h">Property Info</div>
+          ${[["Garage", listing.garage ? listing.garage + " spaces" : "—"], ["View", listing.view || "—"], ["Sub-Type", listing.subType || "—"], ["Status", listing.status]].map(([l,v]) => `<div class="feat-row"><span class="feat-row__l">${l}</span><span class="feat-row__v">${v ?? "—"}</span></div>`).join("")}
+        </div>
+        <div class="feat-card">
+          <div class="feat-card__h">Financial</div>
+          ${[["List Price", fmt(listing.price)], ["Annual Taxes", listing.taxes ? fmt(listing.taxes) : "—"], ["Days on Market", listing.daysOnMarket ?? "—"], ["Agent", listing.agent || "Grant C. Meyer"]].map(([l,v]) => `<div class="feat-row"><span class="feat-row__l">${l}</span><span class="feat-row__v">${v ?? "—"}</span></div>`).join("")}
+        </div>
+      </div>
+    </div>
+
+    <!-- AGENT -->
+    <div class="agent-section">
+      <div class="agent-photo-placeholder">⌂</div>
+      <div>
+        <div class="agent-eyebrow">Your Neighbor Before You Even Arrive</div>
+        <div class="agent-name">Grant C. Meyer</div>
+        <div class="agent-creds">
+          ${[["35-Year Resident","Unmatched local knowledge"],["17 Years Realtor","Every market cycle since 2007"],["Volume Leader","Top 1% of Sierra agents"],["Legal Training","Zoning & water rights expertise"]].map(([h,p]) => `
+          <div class="cred"><div class="cred-icon">✓</div><div><div class="cred-h">${h}</div><div class="cred-p">${p}</div></div></div>`).join("")}
+        </div>
+        <p class="agent-p">Grant doesn't just sell homes — he curates the Tahoe lifestyle. With deep understanding of local micro-climates, community nuances, and the intricate legal landscape of Lake Tahoe property, he provides counsel that goes beyond the sale.</p>
+        <a href="#contact" class="agent-cta">Let's Talk About This Property</a>
+      </div>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="contact-section" id="contact">
+      <h2>Schedule a Private Showing</h2>
+      <p>Interested in ${listing.address}? Contact Grant to arrange a private tour at your convenience.</p>
+      <div class="contact-form">
+        <input type="text" placeholder="Your Name" />
+        <input type="email" placeholder="Email Address" />
+        <input type="tel" placeholder="Phone Number" />
+        <textarea placeholder="Message — mention if you'd like to schedule a tour"></textarea>
+        <button type="submit">Send Message to Grant</button>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-brand">Grant C. Meyer Homes</div>
+      <div>Incline Village · Lake Tahoe · Nevada</div>
+      <div>Data via Trestle MLS · Incline Village Realtors®</div>
+    </footer>
+  `;
+  document.title = `${listing.address} — Grant C. Meyer Homes`;
+}
+
+async function load() {
+  // Support both SEO URL (/homes/city/address) and legacy (?id=key)
+  // URLs are canonically trailing-slashed (/homes/city/address/), so strip it —
+  // the API resolves slugs in their bare "city/address" form.
+  const slug = location.pathname.match(/^\/homes\/(.+?)\/?$/)?.[1];
+  const legacyId = new URLSearchParams(location.search).get("id");
+
+  if (!slug && !legacyId) { location.href = "/listings.html"; return; }
+
+  const endpoint = slug
+    ? `${API}/api/listing-by-slug/${slug}`
+    : `${API}/listing/${legacyId}`;
+
+  try {
+    const resp = await fetch(endpoint);
+    const data = await resp.json();
+    if (data.error) throw new Error(data.error);
+    render(data.listing, data.photos || []);
+  } catch (e) {
+    document.getElementById("app").innerHTML = `<div style="text-align:center;padding:200px 40px;color:var(--muted)">Failed to load listing: ${e.message}</div>`;
+  }
+}
+
+load();
+</script>
+</body>
+</html>

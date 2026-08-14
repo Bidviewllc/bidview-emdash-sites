@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Incline Village Neighborhoods — Grant C. Meyer Homes</title>
+
+  <!-- Leaflet (the map library) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <!-- Brand fonts (same as the main site) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+
+  <!-- Neighborhood polygons (your traced GeoJSON, embedded).
+       Absolute path so it loads whether the URL is /map or /map/ -->
+  <script src="/map/neighborhoods-data.js"></script>
+
+  <style>
+    :root {
+      --navy:   #06223A;
+      --orange: #F28C4E;
+      --burg:   #800020;
+      --cream:  #FEDCB9;
+    }
+    html, body { margin: 0; height: 100%; }
+    #map {
+      position: absolute; inset: 0;
+      background: #eef2f4;
+      font-family: 'Manrope', system-ui, sans-serif;
+    }
+
+    /* Title card, top-left */
+    .map-title {
+      position: absolute; top: 18px; left: 18px; z-index: 1000;
+      background: rgba(255,255,255,0.94);
+      border-left: 4px solid var(--orange);
+      padding: 14px 18px; border-radius: 4px;
+      box-shadow: 0 2px 12px rgba(6,34,58,0.18);
+      max-width: 300px;
+    }
+    .map-title h1 {
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-size: 19px; line-height: 1.2; margin: 0 0 4px; color: var(--navy);
+    }
+    .map-title p {
+      font-family: 'Manrope', sans-serif;
+      font-size: 12.5px; line-height: 1.45; margin: 0; color: #44607a;
+    }
+
+    /* Neighborhood name labels drawn on the polygons */
+    .area-label {
+      background: transparent; border: none; box-shadow: none;
+      color: var(--navy); font-family: 'Manrope', sans-serif;
+      font-weight: 700; font-size: 12px; text-align: center;
+      text-shadow: 0 0 3px #fff, 0 0 3px #fff, 0 0 4px #fff;
+      pointer-events: none;
+    }
+
+    /* Click popups */
+    .leaflet-popup-content-wrapper { border-radius: 6px; }
+    .leaflet-popup-content { margin: 14px 16px; width: 250px !important; }
+    .pop h2 {
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-size: 17px; margin: 0 0 6px; color: var(--navy);
+    }
+    .pop p {
+      font-family: 'Manrope', sans-serif;
+      font-size: 13px; line-height: 1.5; margin: 0; color: #33485c;
+    }
+    .pop .count {
+      display: inline-block; margin-top: 8px;
+      font-size: 11.5px; font-weight: 600; color: var(--orange);
+      text-transform: uppercase; letter-spacing: 0.04em;
+    }
+    .pop .explore {
+      display: inline-block; margin-top: 12px; padding: 7px 14px;
+      background: var(--orange); color: #fff; border: none; border-radius: 4px;
+      font-family: 'Manrope', sans-serif; font-size: 12px; font-weight: 600;
+      letter-spacing: 0.04em; text-transform: uppercase; cursor: pointer;
+    }
+    .pop .explore:hover { background: #f9a168; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <div class="map-title">
+    <h1>Incline Village Neighborhoods</h1>
+    <p>Tap any area to explore the neighborhood.</p>
+  </div>
+
+  <script>
+    // --- Neighborhood descriptions (source: Coldwell Banker Select Real Estate) ---
+    // Keyed to the "area" name in the GeoJSON. "homes" = approx. single-family homes.
+    var INFO = {
+      "Lakefront": { homes: 161, text: "Shorelines range from expansive sandy beaches and private coves with piers to steep, rocky terrain — including the streets off Lakeshore such as Vivian, Pinecone Circle and Shoreline Circle." },
+      "Lakeview": { homes: 289, text: "The area west of Village Blvd. along the mountain side of Lakeshore Boulevard. Multi-million-dollar homes alongside a few older Boise Cascade homes." },
+      "Mill Creek": { homes: 263, text: "A low-elevation area within walking distance of the beaches, east of the Hyatt. Level lots averaging about 0.40 acres — family-friendly, with many full-time residents." },
+      "Central North": { text: "Walk to beaches, the movie theatre, shopping, restaurants, schools, the post office, Recreation Center, tennis complex and the Hyatt Regency. Snowfall is minimal to moderate." },
+      "Central South": { text: "Walk to beaches, the movie theatre, shopping, restaurants, schools, the post office, Recreation Center, tennis complex and the Hyatt Regency. Snowfall is minimal to moderate." },
+      "Apollo": { homes: 93, text: "Hiking trails right outside your door and many un-buildable U.S. Forest Service parcels that add privacy. Many homes enjoy great lake and mountain views." },
+      "Woods": { homes: 216, text: "A relatively low-elevation area at 6,600' — Incline's first neighborhood. Large, level lots and a central location, with low traffic and quiet surroundings." },
+      "Ponderosa": { homes: 247, text: "Off Highway 28, across from the Lakeview subdivision and west of Highway 431. Many homes have full or partial lake views; most enjoy serene, wooded forest settings." },
+      "Lower Tyner": { homes: 343, text: "A lower-to-mid-elevation area, with some lake views and many homes with mountain and canyon views." },
+      "Upper Tyner": { homes: 328, text: "Above Hwy 431 with easy highway access, a quiet setting, more privacy and more snow. Views of Diamond Peak, forest areas and the lake." },
+      "Jennifer": { homes: 276, text: "Some homes have lake views; higher-elevation properties enjoy forest settings. Great hiking trails start at the end of Jennifer Street and off Barbara Street." },
+      "Championship Golf Course": { homes: 274, text: "Beautiful course frontage at mid elevation — minimal snow, easy access and level lots." },
+      "Mountain Golf Course": { homes: 149, text: "Mid elevation with easy access from Hwys 431 or 28. A quiet area, with cross-country skiing in winter." },
+      "Eastern Slope": { homes: 222, text: "Locally known as the 'Banana Belt' for its warm southern exposure. Most parcels are sloped and many have lake views." },
+      "Ski Way": { text: "Just off Country Club Drive and very close to Diamond Peak ski resort. Offers more multi-family developments (PUDs and condominiums)." },
+      "Crystal Bay": { text: "Greets everyone crossing the state line from California into Incline Village. Homes range from lakefronts to old cabins. Owners have rights to all community amenities other than the private beaches." }
+    };
+
+    // --- On-brand fill colors, cycled across the neighborhoods ---
+    var PALETTE = ["#F28C4E", "#06223A", "#800020", "#EE9666", "#3C5A75", "#A8443C", "#F7945B", "#15243B"];
+
+    // Turn an area name into the detail-page slug (must match community.jsx areaToSlug).
+    function areaToSlug(name) {
+      var s = String(name || '').toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      if (s === 'central-north' || s === 'central-south') return 'central';
+      return s;
+    }
+    // Called from the popup CTA. Tells the parent React page to open the neighborhood.
+    window.gotoNeighborhood = function (slug) {
+      try { window.parent.postMessage({ type: 'gotoNeighborhood', slug: slug }, '*'); } catch (e) {}
+    };
+
+    var map = L.map('map', { scrollWheelZoom: true });
+
+    // --- Base layers (all free, no API key). Voyager is the default. ---
+    var voyager = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; OpenStreetMap, &copy; CARTO', subdomains: 'abcd', maxZoom: 19 });
+    var satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      attribution: 'Imagery &copy; Esri, Maxar, Earthstar Geographics', maxZoom: 19 });
+    var terrain = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {
+      attribution: 'Tiles &copy; Esri', maxZoom: 19 });
+
+    voyager.addTo(map);
+    L.control.layers(
+      { 'Map': voyager, 'Satellite': satellite, 'Terrain': terrain },
+      null,
+      { position: 'topright', collapsed: false }
+    ).addTo(map);
+
+    // Outline style adapts to the base: navy on light maps, cream over satellite.
+    var mode = { border: '#06223A', fill: 0.32, hoverFill: 0.5 };
+
+    var i = 0;
+    var layer = L.geoJSON(window.NEIGHBORHOODS, {
+      style: function (feature) {
+        var c = PALETTE[i % PALETTE.length]; i++;
+        feature.properties._fill = c;
+        return { color: mode.border, weight: 1.5, fillColor: c, fillOpacity: mode.fill };
+      },
+      onEachFeature: function (feature, lyr) {
+        var name = feature.properties.area || 'Neighborhood';
+        var info = INFO[name] || {};
+        var count = info.homes ? '<span class="count">~' + info.homes + ' single-family homes</span>' : '';
+        var body = info.text ? '<p>' + info.text + '</p>' : '';
+        var slug = areaToSlug(name);
+        var cta = '<div><button class="explore" onclick="gotoNeighborhood(\'' + slug + '\')">Explore ' + name + ' &rarr;</button></div>';
+        lyr.bindPopup('<div class="pop"><h2>' + name + '</h2>' + body + count + cta + '</div>');
+
+        // Permanent name label centered on the area
+        lyr.bindTooltip(name, { permanent: true, direction: 'center', className: 'area-label' });
+
+        // Hover highlight
+        lyr.on('mouseover', function () {
+          lyr.setStyle({ weight: 2.5, color: '#F28C4E', fillOpacity: mode.hoverFill });
+          lyr.bringToFront();
+        });
+        lyr.on('mouseout', function () {
+          lyr.setStyle({ weight: 1.5, color: mode.border, fillOpacity: mode.fill });
+        });
+      }
+    }).addTo(map);
+
+    // When the base layer changes, re-tune the outline color/opacity to stay readable.
+    map.on('baselayerchange', function (e) {
+      if (e.layer === satellite) { mode.border = '#FEDCB9'; mode.fill = 0.28; mode.hoverFill = 0.45; }
+      else { mode.border = '#06223A'; mode.fill = 0.32; mode.hoverFill = 0.5; }
+      layer.setStyle(function (f) {
+        return { color: mode.border, weight: 1.5, fillColor: f.properties._fill, fillOpacity: mode.fill };
+      });
+    });
+
+    // Frame the map to the neighborhoods
+    map.fitBounds(layer.getBounds(), { padding: [30, 30] });
+  </script>
+</body>
+</html>

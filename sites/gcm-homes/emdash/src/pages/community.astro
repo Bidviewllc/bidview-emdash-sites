@@ -1,0 +1,240 @@
+---
+// Community Guide — ported from the prototype's community.jsx into emdash SSR.
+// Nine sections: hero, lake facts, neighborhood map (Liz's Leaflet iframe /map/),
+// things-to-do, schools, history, living-here accordion, featured (live D1), CTA.
+// The neighborhood grid links to /neighborhood/:slug/ (editable copy per area).
+import GcmLayout from "../layouts/GcmLayout.astro";
+import { env } from "cloudflare:workers";
+import { NEIGHBORHOODS } from "../lib/neighborhoods";
+
+const LAKE_FACTS = [
+	{ num: "6,225–7,700", unit: "ft", label: "Elevation range" },
+	{ num: "290", unit: "days", label: "Of sunshine a year" },
+	{ num: "216", unit: "in", label: "Average snowfall" },
+	{ num: "72", unit: "miles", label: "Of shoreline" },
+];
+const THINGS_TODO = [
+	{ h: "Diamond Peak", pick: true, p: "A community-owned ski resort with some of the best lake-view runs on the North Shore — and short lift lines compared with the bigger Tahoe resorts." },
+	{ h: "The Private Beaches", pick: false, p: "Incline, Burnt Cedar, and Ski Beach are reserved for residents and their guests — swimming, picnics, and boat access through the summer." },
+	{ h: "Two Golf Courses", pick: false, p: "The Robert Trent Jones championship course and the shorter mountain course, both run by the community improvement district." },
+	{ h: "Trails & Sand Harbor", pick: true, p: "Hiking and biking from the village down to the lake, plus the East Shore Trail and Sand Harbor's coves just off Highway 28." },
+	{ h: "On the Water", pick: false, p: "Boating, paddleboarding, and kayaking on the clearest large lake in the country, with full-service marinas a short drive away." },
+	{ h: "Thunderbird Lodge", pick: false, p: "Captain Whittell's stone lakeside castle south of Sand Harbor, open for docent-led tours through the summer months." },
+];
+const SCHOOLS_GLANCE = [
+	"Public elementary, middle & high schools",
+	"Private K–8 options within the village",
+	"A newer elementary campus completed in 2009",
+	"Reno–Tahoe universities within an hour",
+];
+const HISTORY_ERAS = [
+	{ era: "Logging era", year: "1880s", p: "The North Shore began as timber country, feeding the Comstock silver mines of Virginia City. Through the 1800s a narrow-gauge line hauled logs up the mountain to a V-flume — the scars of that era still trace the ridgelines between Mill Creek and Sand Harbor." },
+	{ era: "Thunderbird Lodge", year: "1930s", p: "By the early 1900s the lake had become a summer escape. Captain George Whittell bought some 40,000 acres and built a stone castle south of Sand Harbor — the Thunderbird Lodge — where he was known for legendary parties and a private menagerie that included lions and an elephant." },
+	{ era: "Crystal Bay Development Co.", year: "1960s", p: "In the 1960s the Crystal Bay Development Company acquired Whittell's holdings and set out to build a master-planned community. Robert Trent Jones designed the golf course, the name Incline Village was chosen, and the first school opened in 1964 — the framework of the village you see today." },
+];
+const LIVING_HERE = [
+	{ h: "Getting here", body: ["Reno–Tahoe International Airport sits about 45 minutes down Highway 431, which makes Incline Village one of the more reachable luxury markets in the Sierra.", "Sacramento and the Bay Area are an easy weekend drive, and most of the village is only a few minutes from Highway 28 along the shore."] },
+	{ h: "Amenities & IVGID", body: ["The Incline Village General Improvement District runs the private beaches, Diamond Peak, both golf courses, the tennis complex, and the recreation center.", "Access comes through an annual recreation fee billed alongside your Washoe County property taxes — one of the things that makes residency here distinct."] },
+	{ h: "Climate & the seasons", body: ["Incline sits between roughly 6,225 and 7,700 feet, which gives it four genuine seasons: deep, snowy winters and dry, mild summers, with around 290 days of sunshine across the year.", "Snow piles up through the winter — well over a hundred inches in a typical year — then gives way to long, clear summers ideal for the lake."] },
+	{ h: "Day-to-day essentials", body: ["The village covers the basics close to home — Raley's and the Village shopping center for groceries, the recreation center and library at the core, and the local public and private schools all within a few minutes.", "For specialized care and bigger errands, Tahoe Forest Health System is over the hill in Truckee, and Reno's hospitals and shopping are about 45 minutes away."] },
+];
+const HERO_IMG = "https://images.unsplash.com/photo-1508739773434-c26b3d09e071?fm=jpg&q=80&w=2800&auto=format&fit=crop";
+
+// Featured — live top 3 from the Trestle-synced D1 tables.
+let featured: any[] = [];
+try {
+	const DB = (env as any)?.DB;
+	if (DB) {
+		const { results } = await DB.prepare(
+			"SELECT id, slug, address, price, beds, baths, sqft, category, type, photo FROM listings WHERE status='Active' AND photo IS NOT NULL ORDER BY price DESC LIMIT 3",
+		).all();
+		featured = results ?? [];
+	}
+} catch { featured = []; }
+const fmt = (n: number) => (n ? "$" + Number(n).toLocaleString("en-US") : "—");
+const meta = (l: any) => [l.beds && `${l.beds} BD`, l.baths && `${l.baths} BA`, l.sqft && `${Number(l.sqft).toLocaleString()} SQ.FT.`].filter(Boolean).join(" | ");
+---
+
+<GcmLayout
+	title="The Community — Grant C. Meyer Homes"
+	description="A 35-year resident's guide to life on Lake Tahoe's North Shore — Incline Village & Crystal Bay neighborhoods, schools, history, and things to do."
+>
+	<link rel="stylesheet" href="/community.css" />
+	<div class="cg">
+		{/* 1. Hero */}
+		<section class="cg-hero" data-screen-label="Community Hero">
+			<div class="cg-hero__img" style={`background-image:url(${HERO_IMG})`}></div>
+			<div class="cg-hero__veil"></div>
+			<div class="cg-hero__copy">
+				<span class="eyebrow eyebrow--light">Incline Village &amp; Crystal Bay</span>
+				<h1 class="cg-hero__title">A Guide to Life on Tahoe's <em>North Shore.</em></h1>
+				<p class="cg-hero__sub">Sixteen distinct neighborhoods, one extraordinary lake, and the details that make this corner of Nevada worth the move — mapped out from a 35-year resident's point of view.</p>
+			</div>
+		</section>
+
+		{/* 2. Lake facts */}
+		<section class="cg-facts" data-screen-label="Quick Facts">
+			<div class="container">
+				<span class="eyebrow">Incline at a Glance</span>
+				<h2 class="cg-h2">The Lake, By the Numbers</h2>
+				<div class="cg-facts__grid">
+					{LAKE_FACTS.map((f) => (
+						<div class="cg-fact">
+							<div class="cg-fact__num">{f.num}<span>{f.unit}</span></div>
+							<div class="cg-fact__label">{f.label}</div>
+						</div>
+					))}
+				</div>
+			</div>
+		</section>
+
+		{/* 3. Explore the Neighborhoods — map + grid */}
+		<section class="section" data-screen-label="Neighborhoods">
+			<div class="container">
+				<div class="cg-head">
+					<span class="eyebrow">Explore the Neighborhoods</span>
+					<h2 class="cg-h2">Sixteen Areas, One Community</h2>
+					<p class="cg-intro">Tap an area on the map to see its character, or pick a neighborhood below. Each opens its own guide, with the homes currently for sale there.</p>
+				</div>
+				<div class="nbhd">
+					<div class="nbhd__mapframe">
+						<iframe title="Incline Village neighborhood map" src="/map/" loading="lazy"></iframe>
+					</div>
+					<div class="nbhd__grid">
+						{NEIGHBORHOODS.map((n) => (
+							<a class="nbhd__card" href={`/neighborhood/${n.slug}/`}>
+								<div class="nbhd__card__name">{n.name}</div>
+								<div class="nbhd__card__tag">{n.tag}</div>
+								<div class="nbhd__card__go">Explore →</div>
+							</a>
+						))}
+					</div>
+				</div>
+			</div>
+		</section>
+
+		{/* 4. Things to Do */}
+		<section class="section section--cream" data-screen-label="Things To Do">
+			<div class="container">
+				<div class="cg-head">
+					<span class="eyebrow">Things to Do</span>
+					<h2 class="cg-h2">What Living on the North Shore Looks Like</h2>
+					<p class="cg-intro">Skiing in the morning, the beach by afternoon — the calendar here runs on the seasons.</p>
+				</div>
+				<div class="cg-todo">
+					{THINGS_TODO.map((t) => (
+						<div class="cg-todo__card">
+							{t.pick && <div class="cg-todo__pick">Grant's pick</div>}
+							<h3 class="cg-todo__h">{t.h}</h3>
+							<p class="cg-todo__p">{t.p}</p>
+						</div>
+					))}
+				</div>
+				<blockquote class="cg-quote">
+					<p>Ask any local where the lake is best and you'll get a different answer for every month — the cove in July, the East Shore Trail in October, Diamond Peak in February. That's the whole secret of living here: there's a season for all of it.</p>
+					<cite>Grant C. Meyer · 35 years on the lake</cite>
+				</blockquote>
+			</div>
+		</section>
+
+		{/* 5. Schools */}
+		<section class="section" data-screen-label="Schools">
+			<div class="container cg-split">
+				<div>
+					<span class="eyebrow">Schools</span>
+					<h2 class="cg-h2">Learning, a Few Minutes From Home</h2>
+					<p class="cg-body">Incline Village built its first elementary school in 1964 and its high school as the community itself took shape. Today families choose between the local public schools and a handful of private options — all within the village, none more than a short drive away.</p>
+				</div>
+				<div class="cg-glance">
+					<div class="cg-glance__h">In One Glance</div>
+					{SCHOOLS_GLANCE.map((s) => (
+						<div class="cg-glance__row"><span>✓</span> <span>{s}</span></div>
+					))}
+				</div>
+			</div>
+		</section>
+
+		{/* 6. History */}
+		<section class="cg-history" data-screen-label="History">
+			<div class="container">
+				<span class="eyebrow eyebrow--light">A Short History</span>
+				<h2 class="cg-h2 cg-h2--light">From Logging Camp to Master-Planned Village</h2>
+				<div class="cg-eras">
+					{HISTORY_ERAS.map((e, i) => (
+						<div class="cg-era">
+							<div class="cg-era__mark">{String(i + 1).padStart(2, "0")}</div>
+							<div class="cg-era__title">{e.era}<span> · {e.year}</span></div>
+							<p class="cg-era__p">{e.p}</p>
+						</div>
+					))}
+				</div>
+			</div>
+		</section>
+
+		{/* 7. Living Here — native accordion */}
+		<section class="section section--cream" data-screen-label="Living Here">
+			<div class="container">
+				<div class="cg-head">
+					<span class="eyebrow">Living Here</span>
+					<h2 class="cg-h2">Settling Into Incline Village</h2>
+					<p class="cg-intro">The practical side of the move — how you get here, what residency opens up, and what the year actually feels like.</p>
+				</div>
+				<div class="cg-acc">
+					{LIVING_HERE.map((item, i) => (
+						<details class="cg-acc__item" open={i === 0}>
+							<summary class="cg-acc__head"><span>{item.h}</span><span class="cg-acc__sign"></span></summary>
+							<div class="cg-acc__body">{item.body.map((p) => <p>{p}</p>)}</div>
+						</details>
+					))}
+				</div>
+			</div>
+		</section>
+
+		{/* 8. Featured (live) */}
+		<section class="section section--cream" data-screen-label="Featured Properties">
+			<div class="container">
+				<div class="cg-head">
+					<span class="eyebrow">Currently on the Market</span>
+					<h2 class="cg-h2">Featured Properties</h2>
+					<p class="cg-intro">Homes Grant is representing right now across Incline Village and Crystal Bay.</p>
+				</div>
+				<div class="cg-featured">
+					{featured.map((l) => (
+						<a class="cg-fcard" href={`/homes/${l.slug}/`}>
+							<div class="cg-fcard__media" style={l.photo ? `background-image:url(${l.photo})` : ""}></div>
+							<div class="cg-fcard__body">
+								<div class="cg-fcard__tag">{l.category || l.type || "Residential"}</div>
+								<h3 class="cg-fcard__addr">{l.address}</h3>
+								<div class="cg-fcard__meta">{meta(l)}</div>
+								<div class="cg-fcard__price">{fmt(l.price)}</div>
+							</div>
+						</a>
+					))}
+				</div>
+				<div style="text-align:center;margin-top:48px">
+					<a class="btn btn--dark" href="/listings/">VIEW ALL LISTINGS →</a>
+				</div>
+			</div>
+		</section>
+
+		{/* 9. CTA */}
+		<section class="section section--dark" style="text-align:center">
+			<div class="container" style="max-width:720px">
+				<h2 class="reality__h" style="color:#fff">Ready to Know the North Shore From the Inside?</h2>
+				<p class="reality__p" style="margin:16px auto 32px">Start with a conversation. Grant will walk you through the neighborhoods, the market, and what's quietly available.</p>
+				<a class="btn btn--orange" href="/contact/">INQUIRE NOW</a>
+			</div>
+		</section>
+	</div>
+
+	<script is:inline>
+		// The embedded Leaflet map (public/map/) postMessages `gotoNeighborhood`
+		// when a popup "Explore" is clicked — navigate to that area's sub-page.
+		window.addEventListener("message", function (e) {
+			var d = e.data || {};
+			if (d && d.type === "gotoNeighborhood" && d.slug) {
+				window.location.href = "/neighborhood/" + d.slug + "/";
+			}
+		});
+	</script>
+</GcmLayout>

@@ -1,0 +1,814 @@
+{
+	"$schema": "https://emdashcms.com/seed.schema.json",
+	"version": "1",
+	"meta": {
+		"name": "Starter",
+		"description": "A minimal EmDash starter with posts and pages",
+		"author": "EmDash"
+	},
+	"settings": {
+		"title": "My Site",
+		"tagline": "Built with EmDash"
+	},
+	"collections": [
+		{
+			"slug": "posts",
+			"label": "Posts",
+			"labelSingular": "Post",
+			"supports": [
+				"drafts",
+				"revisions",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "featured_image",
+					"label": "Featured Image",
+					"type": "image"
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "portableText",
+					"searchable": true
+				},
+				{
+					"slug": "excerpt",
+					"label": "Excerpt",
+					"type": "text"
+				}
+			]
+		},
+		{
+			"slug": "pages",
+			"label": "Pages",
+			"labelSingular": "Page",
+			"urlPattern": "/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"search"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "portableText",
+					"searchable": true
+				}
+			]
+		},
+		{
+			"slug": "homepage",
+			"label": "Homepage",
+			"labelSingular": "Homepage",
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "hero_headline",
+					"label": "Hero headline",
+					"type": "text"
+				},
+				{
+					"slug": "hero_sub",
+					"label": "Hero subhead",
+					"type": "text"
+				},
+				{
+					"slug": "hero_cta_primary",
+					"label": "Hero primary CTA",
+					"type": "string"
+				},
+				{
+					"slug": "hero_cta_secondary",
+					"label": "Hero secondary CTA",
+					"type": "string"
+				},
+				{
+					"slug": "reality_heading",
+					"label": "Reality heading",
+					"type": "text"
+				},
+				{
+					"slug": "reality_body",
+					"label": "Reality body",
+					"type": "text"
+				},
+				{
+					"slug": "stat1_num",
+					"label": "Stat 1 number",
+					"type": "string"
+				},
+				{
+					"slug": "stat1_label",
+					"label": "Stat 1 label",
+					"type": "string"
+				},
+				{
+					"slug": "stat1_desc",
+					"label": "Stat 1 desc",
+					"type": "text"
+				},
+				{
+					"slug": "stat2_num",
+					"label": "Stat 2 number",
+					"type": "string"
+				},
+				{
+					"slug": "stat2_label",
+					"label": "Stat 2 label",
+					"type": "string"
+				},
+				{
+					"slug": "stat2_desc",
+					"label": "Stat 2 desc",
+					"type": "text"
+				},
+				{
+					"slug": "stat3_num",
+					"label": "Stat 3 number",
+					"type": "string"
+				},
+				{
+					"slug": "stat3_label",
+					"label": "Stat 3 label",
+					"type": "string"
+				},
+				{
+					"slug": "stat3_desc",
+					"label": "Stat 3 desc",
+					"type": "text"
+				},
+				{
+					"slug": "guide_eyebrow",
+					"label": "Guide eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "guide_heading",
+					"label": "Guide heading",
+					"type": "text"
+				},
+				{
+					"slug": "featured_eyebrow",
+					"label": "Featured eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "featured_heading",
+					"label": "Featured heading",
+					"type": "string"
+				},
+				{
+					"slug": "cta_heading",
+					"label": "CTA heading",
+					"type": "text"
+				},
+				{
+					"slug": "cta_body",
+					"label": "CTA body",
+					"type": "text"
+				}
+			]
+		},
+		{
+			"slug": "page_content",
+			"label": "Content Pages",
+			"labelSingular": "Content Page",
+			"urlPattern": "/{slug}",
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "headline",
+					"label": "Page headline (H1)",
+					"type": "text"
+				},
+				{
+					"slug": "eyebrow",
+					"label": "Eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "lead",
+					"label": "Lead paragraph",
+					"type": "text"
+				},
+				{
+					"slug": "card1_h",
+					"label": "Card 1 title",
+					"type": "string"
+				},
+				{
+					"slug": "card1_p",
+					"label": "Card 1 body",
+					"type": "text"
+				},
+				{
+					"slug": "card2_h",
+					"label": "Card 2 title",
+					"type": "string"
+				},
+				{
+					"slug": "card2_p",
+					"label": "Card 2 body",
+					"type": "text"
+				},
+				{
+					"slug": "card3_h",
+					"label": "Card 3 title",
+					"type": "string"
+				},
+				{
+					"slug": "card3_p",
+					"label": "Card 3 body",
+					"type": "text"
+				},
+				{
+					"slug": "card4_h",
+					"label": "Card 4 title",
+					"type": "string"
+				},
+				{
+					"slug": "card4_p",
+					"label": "Card 4 body",
+					"type": "text"
+				}
+			]
+		},
+		{
+			"slug": "neighborhoods",
+			"label": "Neighborhoods",
+			"labelSingular": "Neighborhood",
+			"urlPattern": "/neighborhood/{slug}",
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "tag",
+					"label": "Tag",
+					"type": "string"
+				},
+				{
+					"slug": "blurb",
+					"label": "Short blurb",
+					"type": "text"
+				},
+				{
+					"slug": "hero_sub",
+					"label": "Hero subhead",
+					"type": "text"
+				},
+				{
+					"slug": "overview",
+					"label": "Overview (owner-editable)",
+					"type": "text"
+				},
+				{
+					"slug": "take",
+					"label": "Grant's Take (owner-editable)",
+					"type": "text"
+				},
+				{
+					"slug": "avg_price",
+					"label": "Avg price",
+					"type": "string"
+				},
+				{
+					"slug": "trend",
+					"label": "Inventory trend",
+					"type": "string"
+				}
+			]
+		}
+	],
+	"taxonomies": [
+		{
+			"name": "category",
+			"label": "Categories",
+			"labelSingular": "Category",
+			"hierarchical": true,
+			"collections": [
+				"posts"
+			],
+			"terms": [
+				{
+					"slug": "general",
+					"label": "General"
+				},
+				{
+					"slug": "updates",
+					"label": "Updates"
+				}
+			]
+		},
+		{
+			"name": "tag",
+			"label": "Tags",
+			"labelSingular": "Tag",
+			"hierarchical": false,
+			"collections": [
+				"posts"
+			],
+			"terms": [
+				{
+					"slug": "starter",
+					"label": "Starter"
+				},
+				{
+					"slug": "example",
+					"label": "Example"
+				}
+			]
+		}
+	],
+	"menus": [
+		{
+			"name": "primary",
+			"label": "Primary Navigation",
+			"items": [
+				{
+					"type": "custom",
+					"label": "Home",
+					"url": "/"
+				},
+				{
+					"type": "custom",
+					"label": "Posts",
+					"url": "/posts"
+				},
+				{
+					"type": "custom",
+					"label": "About",
+					"url": "/about"
+				}
+			]
+		}
+	],
+	"widgetAreas": [
+		{
+			"name": "sidebar",
+			"label": "Sidebar",
+			"description": "Sidebar widget area",
+			"widgets": [
+				{
+					"type": "component",
+					"componentId": "core:search",
+					"title": "Search"
+				},
+				{
+					"type": "component",
+					"componentId": "core:categories",
+					"title": "Categories"
+				},
+				{
+					"type": "component",
+					"componentId": "core:recent-posts",
+					"title": "Recent Posts",
+					"settings": {
+						"count": 5
+					}
+				}
+			]
+		}
+	],
+	"content": {
+		"pages": [
+			{
+				"id": "about",
+				"slug": "about",
+				"status": "published",
+				"data": {
+					"title": "About",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "This is the about page. Edit it in the admin panel or replace this template with your own design.",
+									"_key": "k1"
+								}
+							],
+							"_key": "k0"
+						}
+					]
+				}
+			}
+		],
+		"posts": [
+			{
+				"id": "post-1",
+				"slug": "welcome",
+				"status": "published",
+				"data": {
+					"title": "Welcome",
+					"excerpt": "Your first post. Replace this with your own content.",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "This is a starter post. The templates in this project show the basic patterns for querying and rendering EmDash content. Replace them with your own design.",
+									"_key": "k1"
+								}
+							],
+							"_key": "k0"
+						},
+						{
+							"_type": "block",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "What to do next",
+									"_key": "k3"
+								}
+							],
+							"_key": "k2"
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Open the admin panel to add content, or edit the Astro pages in src/pages to change how content is displayed.",
+									"_key": "k5"
+								}
+							],
+							"_key": "k4"
+						}
+					]
+				},
+				"taxonomies": {
+					"category": [
+						"general"
+					],
+					"tag": [
+						"starter",
+						"example"
+					]
+				}
+			}
+		],
+		"homepage": [
+			{
+				"id": "home",
+				"slug": "home",
+				"status": "published",
+				"data": {
+					"title": "Homepage",
+					"hero_headline": "The View From Here <em>Changes Everything.</em>",
+					"hero_sub": "Falling in love with Lake Tahoe is easy. Finding the right home in a market this unique… that's where it gets interesting.",
+					"hero_cta_primary": "EXPLORE TAHOE HOMES",
+					"hero_cta_secondary": "WHAT IS YOUR HOME WORTH",
+					"reality_heading": "Incline Village Isn't Like Any Market You've Bought In Before.",
+					"reality_body": "Tahoe real estate operates on its own set of rules. The luxury segment here is defined by low turnover, high privacy, and a pace that catches outsiders off guard. Professionalism here isn't just about sales — it's about survival.",
+					"stat1_num": "11+ Months",
+					"stat1_label": "AVERAGE DAYS ON MARKET",
+					"stat1_desc": "Luxury homes often wait for the perfect buyer. Patience is as critical as the price tag.",
+					"stat2_num": "~50%",
+					"stat2_label": "CASH PURCHASES",
+					"stat2_desc": "Competition is fierce. Half of all transactions are liquidity-driven, requiring rapid negotiation.",
+					"stat3_num": "20–40%",
+					"stat3_label": "ONLINE VALUATION INACCURACY",
+					"stat3_desc": "Algorithm-based estimates fail to account for Tahoe's specific micro-locations and lot features.",
+					"guide_eyebrow": "YOUR NEIGHBOR BEFORE YOU EVEN ARRIVE",
+					"guide_heading": "This Is Where 35 Years Makes the Difference.",
+					"featured_eyebrow": "CURATED LAKE TAHOE PROPERTIES",
+					"featured_heading": "Currently Representing",
+					"cta_heading": "Your Tahoe Story Starts With One Conversation.",
+					"cta_body": "Whether you're buying, selling, or just getting to know the North Shore — start with a conversation, not a transaction."
+				}
+			}
+		],
+		"page_content": [
+			{
+				"id": "buyers",
+				"slug": "buyers",
+				"status": "published",
+				"data": {
+					"title": "Buyers",
+					"eyebrow": "FOR BUYERS",
+					"lead": "Many of the most significant properties in Incline Village never see a public listing. Grant's network surfaces them first.",
+					"card1_h": "Off-Market Inventory",
+					"card1_p": "Direct access to properties before they hit Compass or MLS — from generational lakefront homes to ski-in mountain estates.",
+					"card2_h": "Discreet Representation",
+					"card2_p": "Buyer agency that prioritizes your privacy. NDA-backed showings, blind offers when appropriate.",
+					"card3_h": "Local Legal Counsel",
+					"card3_p": "Tahoe-specific zoning, water-rights, and TRPA permitting handled before they become deal-killers.",
+					"card4_h": "Resident Concierge",
+					"card4_p": "We help with property managers, contractors, IVGID enrollment, and the hundred small things between purchase and possession.",
+					"headline": "Quiet Access to Tahoe's Most Coveted Estates."
+				}
+			},
+			{
+				"id": "sellers",
+				"slug": "sellers",
+				"status": "published",
+				"data": {
+					"title": "Sellers",
+					"eyebrow": "FOR SELLERS",
+					"lead": "Selling Tahoe property is personal. Our process is tailored for sellers who care as much about who buys it as what it sells for.",
+					"card1_h": "Quiet Sale Specialty",
+					"card1_p": "Off-market positioning that protects your privacy and the property's storyline.",
+					"card2_h": "Pre-Listing Strategy",
+					"card2_p": "Selective staging, photography, and a calibrated price ladder — built around comparable transactions, not algorithms.",
+					"card3_h": "Buyer Vetting",
+					"card3_p": "Cash-pre-approval verification, intentions discussion, and lifestyle-fit conversations before a single showing.",
+					"card4_h": "International Reach",
+					"card4_p": "Coldwell Banker Global Luxury network places your home in front of the right buyers in Aspen, Jackson, and Park City.",
+					"headline": "A Sale Designed Around Your Life, Not Just the Listing."
+				}
+			},
+			{
+				"id": "concierge",
+				"slug": "concierge",
+				"status": "published",
+				"data": {
+					"title": "Concierge",
+					"eyebrow": "TAHOE CONCIERGE",
+					"lead": "Our work doesn't end at signing. The Grant C. Meyer Concierge is a private extension of our service for current and former clients.",
+					"card1_h": "Property Care",
+					"card1_p": "Trusted handymen, snow removal, lake-house openings, and seasonal preparation — all on speed dial.",
+					"card2_h": "Membership Curation",
+					"card2_p": "Country club introductions, Olympic Club references, Lone Eagle, Lakeside Beach.",
+					"card3_h": "Tax & Residency",
+					"card3_p": "Coordination with CPAs on Nevada-resident status, Williams Equity transitions, and trust planning.",
+					"card4_h": "Discreet Recommendations",
+					"card4_p": "Architects, designers, art consultants, household staff — vetted through 35 years on the lake.",
+					"headline": "Beyond the Closing Table."
+				}
+			},
+			{
+				"id": "about",
+				"slug": "about",
+				"status": "published",
+				"data": {
+					"title": "About",
+					"eyebrow": "ABOUT GRANT",
+					"lead": "From a 16-year-old part-time ski instructor at Diamond Peak to one of the most consistently top-ranked Sierra agents, Grant has built his career on a single bet: that knowing your client matters more than knowing the market.",
+					"card1_h": "Roots",
+					"card1_p": "Born in Reno. Family moved to Incline in 1989. Helped run his grandfather's small fly-fishing outfit on the East Shore — that's where the relationships started.",
+					"card2_h": "Training",
+					"card2_p": "JD from McGeorge School of Law, real-estate-focused. Practiced for four years before moving into agency in 2007.",
+					"card3_h": "Philosophy",
+					"card3_p": "\"You don't sell Tahoe by selling Tahoe. You sell it by listening for what someone is actually looking for, and then quietly finding it.\"",
+					"card4_h": "Recognition",
+					"card4_p": "Coldwell Banker International Society of Excellence, six consecutive years. Top 1% of Sierra agents by volume.",
+					"headline": "Three Decades. One Lake. Thousands of Conversations."
+				}
+			}
+		],
+		"neighborhoods": [
+			{
+				"id": "lakefront",
+				"slug": "lakefront",
+				"status": "published",
+				"data": {
+					"title": "Lakefront",
+					"tag": "Waterfront living",
+					"blurb": "Tahoe's most coveted address — private piers, sweeping water views, and the longest sunsets on the North Shore.",
+					"hero_sub": "Tahoe's most coveted address — private piers, sweeping water views, and the longest sunsets on the North Shore.",
+					"overview": "Lakefront is one of the fifteen areas that make up Incline Village and Crystal Bay, each with its own character, price range, and rhythm through the seasons. Detailed notes for this neighborhood are on the way — Grant can share off-market context, recent comps, and what's quietly available here.",
+					"take": "Grant's perspective on Lakefront — who it suits, how it holds value, and what to watch for — goes here once we capture it.",
+					"avg_price": "$9.2M",
+					"trend": "Tight Hold"
+				}
+			},
+			{
+				"id": "lakeview",
+				"slug": "lakeview",
+				"status": "published",
+				"data": {
+					"title": "Lakeview",
+					"tag": "Lake-view estates",
+					"blurb": "Elevated homes that trade the waterfront for the wide, unobstructed lake panoramas Incline is known for.",
+					"hero_sub": "Elevated homes that trade the waterfront for the wide, unobstructed lake panoramas Incline is known for.",
+					"overview": "Lakeview is one of the fifteen areas that make up Incline Village and Crystal Bay, each with its own character, price range, and rhythm through the seasons. Detailed notes for this neighborhood are on the way — Grant can share off-market context, recent comps, and what's quietly available here.",
+					"take": "Grant's perspective on Lakeview — who it suits, how it holds value, and what to watch for — goes here once we capture it.",
+					"avg_price": "$3.4M",
+					"trend": "Limited"
+				}
+			},
+			{
+				"id": "mill-creek",
+				"slug": "mill-creek",
+				"status": "published",
+				"data": {
+					"title": "Mill Creek",
+					"tag": "Walk-to-beach family living",
+					"blurb": "A family favorite on the eastern edge — level lots, a short walk to the beach, and easy reach of Diamond Peak.",
+					"hero_sub": "A family favorite on the eastern edge — level lots, a short walk to the beach, and easy reach of Diamond Peak.",
+					"overview": "Mill Creek is one of the fifteen areas that make up Incline Village and Crystal Bay, each with its own character, price range, and rhythm through the seasons. Detailed notes for this neighborhood are on the way — Grant can share off-market context, recent comps, and what's quietly available here.",
+					"take": "Grant's perspective on Mill Creek — who it suits, how it holds value, and what to watch for — goes here once we capture it.",
+					"avg_price": "$2.1M",
+					"trend": "Active"
+				}
+			},
+			{
+				"id": "central",
+				"slug": "central",
+				"status": "published",
+				"data": {
+					"title": "Central",
+					"tag": "Walkable village core",
+					"blurb": "The walkable heart of the village, minutes from Raley's, the recreation center, and the public schools.",
+					"hero_sub": "The walkable heart of the village, minutes from Raley's, the recreation center, and the public schools.",
+					"overview": "Central is one of the fifteen areas that make up Incline Village and Crystal Bay, each with its own character, price range, and rhythm through the seasons. Detailed notes for this neighborhood are on the way — Grant can share off-market context, recent comps, and what's quietly available here.",
+					"take": "Grant's perspective on Central — who it suits, how it holds value, and what to watch for — goes here once we capture it.",
+					"avg_price": "$1.6M",
+					"trend": "Active"
+				}
+			},
+			{
+				"id": "apollo",
+				"slug": "apollo",
+				"status": "published",
+				"data": {
+					"title": "Apollo",
+					"tag": "Trailhead privacy",
+					"blurb": "Tucked against the national forest up top, prized for trailhead access and end-of-road privacy.",
+					"hero_sub": "Tucked against the national forest up top, prized for trailhead access and end-of-road privacy.",
+					"overview": "Apollo is one of the fifteen areas that make up Incline Village and Crystal Bay, each with its own character, price range, and rhythm through the seasons. Detailed notes for this neighborhood are on the way — Grant can share off-market context, recent comps, and what's quietly available here.",
+					"take": "Grant's perspective on Apollo — who it suits, how it holds value, and what to watch for — goes here once we capture it.",
+					"avg_price": "$2.8M",
+					"trend": "Limited"
+				}
+			},
+			{
+				"id": "woods",
+				"slug": "woods",
+				"status": "published",
+				"data": {
+					"title": "Woods",
+					"tag": "Quiet, central location",
+					"blurb": "Quiet, wooded, and genuinely central — a calm pocket within easy reach of everything.",
+					"hero_sub": "Quiet, wooded, and genuinely central — a calm pocket within easy reach of everything.",
+					"overview": "Woods is one of the fifteen areas that make up Incline Village and Crystal Bay, each with its own character, price range, and rhythm through the seasons. Detailed notes for this neighborhood are on the way — Grant can share off-market context, recent comps, and what's quietly available here.",
+					"take": "Grant's perspective on Woods — who it suits, how it holds value, and what to watch for — goes here once we capture it.",
+					"avg_price": "$1.9M",
+					"trend": "Steady"
+				}
+			},
+			{
+				"id": "ponderosa",
+				"slug": "ponderosa",
+				"status": "published",
+				"data": {
+					"title": "Ponderosa",
+					"tag": "Wooded seclusion",
+					"blurb": "Secluded lots under tall pines on the western side, close to the golf course and the shore road.",
+					"hero_sub": "Secluded lots under tall pines on the western side, close to the golf course and the shore road.",
+					"overview": "Ponderosa is one of the fifteen areas that make up Incline Village and Crystal Bay, each with its own character, price range, and rhythm through the seasons. Detailed notes for this neighborhood are on the way — Grant can share off-market context, recent comps, and what's quietly available here.",
+					"take": "Grant's perspective on Ponderosa — who it suits, how it holds value, and what to watch for — goes here once we capture it.",
+					"avg_price": "$2.3M",
+					"trend": "Limited"
+				}
+			},
+			{
+				"id": "lower-tyner",
+				"slug": "lower-tyner",
+				"status": "published",
+				"data": {
+					"title": "Lower Tyner",
+					"tag": "Mountain & canyon views",
+					"blurb": "Mountain and canyon views on gently rising ground, a step up from the village core.",
+					"hero_sub": "Mountain and canyon views on gently rising ground, a step up from the village core.",
+					"overview": "Lower Tyner is one of the fifteen areas that make up Incline Village and Crystal Bay, each with its own character, price range, and rhythm through the seasons. Detailed notes for this neighborhood are on the way — Grant can share off-market context, recent comps, and what's quietly available here.",
+					"take": "Grant's perspective on Lower Tyner — who it suits, how it holds value, and what to watch for — goes here once we capture it.",
+					"avg_price": "$2.0M",
+					"trend": "Steady"
+				}
+			},
+			{
+				"id": "upper-tyner",
+				"slug": "upper-tyner",
+				"status": "published",
+				"data": {
+					"title": "Upper Tyner",
+					"tag": "Elevation & privacy",
+					"blurb": "Higher still — more elevation, more privacy, and bigger views for those who want the climb.",
+					"hero_sub": "Higher still — more elevation, more privacy, and bigger views for those who want the climb.",
+					"overview": "Upper Tyner is one of the fifteen areas that make up Incline Village and Crystal Bay, each with its own character, price range, and rhythm through the seasons. Detailed notes for this neighborhood are on the way — Grant can share off-market context, recent comps, and what's quietly available here.",
+					"take": "Grant's perspective on Upper Tyner — who it suits, how it holds value, and what to watch for — goes here once we capture it.",
+					"avg_price": "$2.6M",
+					"trend": "Limited"
+				}
+			},
+			{
+				"id": "jennifer",
+				"slug": "jennifer",
+				"status": "published",
+				"data": {
+					"title": "Jennifer",
+					"tag": "Hiking from the doorstep",
+					"blurb": "Hiking from the doorstep, with quick access to the trails that lace the slopes above the village.",
+					"hero_sub": "Hiking from the doorstep, with quick access to the trails that lace the slopes above the village.",
+					"overview": "Jennifer is one of the fifteen areas that make up Incline Village and Crystal Bay, each with its own character, price range, and rhythm through the seasons. Detailed notes for this neighborhood are on the way — Grant can share off-market context, recent comps, and what's quietly available here.",
+					"take": "Grant's perspective on Jennifer — who it suits, how it holds value, and what to watch for — goes here once we capture it.",
+					"avg_price": "$2.2M",
+					"trend": "Steady"
+				}
+			},
+			{
+				"id": "championship-golf-course",
+				"slug": "championship-golf-course",
+				"status": "published",
+				"data": {
+					"title": "Championship Golf Course",
+					"tag": "Course frontage",
+					"blurb": "Homes fronting the Robert Trent Jones championship course — green in summer, trail-laced in winter.",
+					"hero_sub": "Homes fronting the Robert Trent Jones championship course — green in summer, trail-laced in winter.",
+					"overview": "Championship Golf Course is one of the fifteen areas that make up Incline Village and Crystal Bay, each with its own character, price range, and rhythm through the seasons. Detailed notes for this neighborhood are on the way — Grant can share off-market context, recent comps, and what's quietly available here.",
+					"take": "Grant's perspective on Championship Golf Course — who it suits, how it holds value, and what to watch for — goes here once we capture it.",
+					"avg_price": "$3.1M",
+					"trend": "Tight Hold"
+				}
+			},
+			{
+				"id": "mountain-golf-course",
+				"slug": "mountain-golf-course",
+				"status": "published",
+				"data": {
+					"title": "Mountain Golf Course",
+					"tag": "Golf & winter trails",
+					"blurb": "Along the shorter mountain course — golf in the warm months, groomed nordic tracks once the snow falls.",
+					"hero_sub": "Along the shorter mountain course — golf in the warm months, groomed nordic tracks once the snow falls.",
+					"overview": "Mountain Golf Course is one of the fifteen areas that make up Incline Village and Crystal Bay, each with its own character, price range, and rhythm through the seasons. Detailed notes for this neighborhood are on the way — Grant can share off-market context, recent comps, and what's quietly available here.",
+					"take": "Grant's perspective on Mountain Golf Course — who it suits, how it holds value, and what to watch for — goes here once we capture it.",
+					"avg_price": "$2.7M",
+					"trend": "Limited"
+				}
+			},
+			{
+				"id": "eastern-slope",
+				"slug": "eastern-slope",
+				"status": "published",
+				"data": {
+					"title": "Eastern Slope",
+					"tag": "Water & southern exposure",
+					"blurb": "Eastern exposure and water views, catching the morning light coming up over the lake.",
+					"hero_sub": "Eastern exposure and water views, catching the morning light coming up over the lake.",
+					"overview": "Eastern Slope is one of the fifteen areas that make up Incline Village and Crystal Bay, each with its own character, price range, and rhythm through the seasons. Detailed notes for this neighborhood are on the way — Grant can share off-market context, recent comps, and what's quietly available here.",
+					"take": "Grant's perspective on Eastern Slope — who it suits, how it holds value, and what to watch for — goes here once we capture it.",
+					"avg_price": "$3.6M",
+					"trend": "Limited"
+				}
+			},
+			{
+				"id": "ski-way",
+				"slug": "ski-way",
+				"status": "published",
+				"data": {
+					"title": "Ski Way",
+					"tag": "Close to Diamond Peak",
+					"blurb": "The closest neighborhood to Diamond Peak — ski-in mornings and the shortest lift-line commute in town.",
+					"hero_sub": "The closest neighborhood to Diamond Peak — ski-in mornings and the shortest lift-line commute in town.",
+					"overview": "Ski Way is one of the fifteen areas that make up Incline Village and Crystal Bay, each with its own character, price range, and rhythm through the seasons. Detailed notes for this neighborhood are on the way — Grant can share off-market context, recent comps, and what's quietly available here.",
+					"take": "Grant's perspective on Ski Way — who it suits, how it holds value, and what to watch for — goes here once we capture it.",
+					"avg_price": "$2.4M",
+					"trend": "Active"
+				}
+			},
+			{
+				"id": "crystal-bay",
+				"slug": "crystal-bay",
+				"status": "published",
+				"data": {
+					"title": "Crystal Bay",
+					"tag": "The state-line gateway",
+					"blurb": "The state-line gateway, where grand lakefront estates meet original mid-century cabins on wooded lots.",
+					"hero_sub": "The state-line gateway, where grand lakefront estates meet original mid-century cabins on wooded lots.",
+					"overview": "Crystal Bay sits where Highway 28 crosses from California into Nevada, wrapping the northwest corner of the lake. It's the quieter, more weathered cousin of Incline Village — a mix of grand lakefront estates and original mid-century cabins on wooded lots, many held by the same families for generations.",
+					"take": "Crystal Bay rewards patience. The lakefront here rarely lists publicly, and when it does the right buyer is often already on a list. If this is the corner you want, the move is to be known here before the home exists.",
+					"avg_price": "$4.1M",
+					"trend": "Emerging"
+				}
+			}
+		]
+	}
+}

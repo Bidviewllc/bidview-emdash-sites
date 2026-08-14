@@ -1,0 +1,143 @@
+---
+// Neighborhood sub-page — /neighborhood/:slug/.
+// Owner-editable copy (overview, Grant's Take, hero subhead) comes from the
+// `neighborhoods` emdash collection; the "Homes for Sale here" section is live
+// from D1, matched by point-in-polygon against the traced GeoJSON. Renders on
+// demand (needs D1 + the slug param), so prerender is off.
+export const prerender = false;
+
+import GcmLayout from "../../layouts/GcmLayout.astro";
+import { getEmDashEntry } from "emdash";
+import { env } from "cloudflare:workers";
+import { bySlug, listingsInNeighborhood } from "../../lib/neighborhoods";
+
+const { slug } = Astro.params as { slug: string };
+const area = bySlug(slug);
+if (!area) return Astro.redirect("/404");
+
+// Editable copy (falls back to seeded defaults if the collection isn't there).
+let entry: any = null;
+try { entry = (await getEmDashEntry("neighborhoods", slug))?.entry ?? null; } catch { entry = null; }
+const d = entry?.data ?? {};
+const e = entry?.edit ?? {};
+
+// Static at-a-glance + stats (bespoke for Crystal Bay, generic otherwise).
+const BESPOKE: Record<string, { glance: string[]; stats: [string, string][] }> = {
+	"crystal-bay": {
+		glance: ["Right at the Nevada–California state line", "Lakefront estates to historic cabins", "Shares community amenities (beaches excepted)"],
+		stats: [["$2.1M–$12M", "Typical range"], ["1–3 / yr", "Lakefront sales"], ["Mixed", "Home styles"], ["NV", "Tax jurisdiction"]],
+	},
+};
+const glance = BESPOKE[slug]?.glance ?? [area.tag, "Part of greater Incline Village", "Full IVGID amenity access"];
+const stats: [string, string][] = BESPOKE[slug]?.stats ?? [[d.avg_price ?? area.price, "Typical range"], [d.trend ?? area.trend, "Market"], ["Mixed", "Home styles"], ["NV", "Tax jurisdiction"]];
+
+const overview = (d.overview ?? "").toString();
+const take = (d.take ?? "").toString();
+const heroSub = (d.hero_sub ?? d.blurb ?? area.blurb).toString();
+
+// Live listings inside this neighborhood (point-in-polygon on lat/lng).
+let homes: any[] = [];
+try {
+	const DB = (env as any)?.DB;
+	if (DB) {
+		const { results } = await DB.prepare(
+			"SELECT id, slug, address, price, beds, baths, sqft, category, type, photo, lat, lng FROM listings WHERE status='Active'",
+		).all();
+		homes = listingsInNeighborhood(slug, results ?? []).sort((a: any, b: any) => (b.price ?? -1) - (a.price ?? -1));
+	}
+} catch { homes = []; }
+const fmt = (n: number) => (n ? "$" + Number(n).toLocaleString("en-US") : "—");
+const meta = (l: any) => [l.beds && `${l.beds} BD`, l.baths && `${l.baths} BA`, l.sqft && `${Number(l.sqft).toLocaleString()} SQ.FT.`].filter(Boolean).join(" | ");
+---
+
+<GcmLayout
+	title={`${area.name} — The Community — Grant C. Meyer Homes`}
+	description={heroSub}
+	content={entry ? { collection: "neighborhoods", id: entry.data.id, slug } : undefined}
+>
+	<link rel="stylesheet" href="/community.css" />
+	<div class="cg">
+		<section class="nb-hero" data-screen-label="Neighborhood Hero">
+			<div class="nb-hero__veil"></div>
+			<div class="container nb-hero__copy">
+				<a class="nb-hero__back" href="/community/" style="display:inline-block;margin-bottom:20px">← The Community</a>
+				<span class="eyebrow eyebrow--light" style="display:block" {...(e.tag ?? {})}>{d.tag ?? area.tag}</span>
+				<h1 class="cg-hero__title" {...(e.title ?? {})}>{d.title ?? area.name}</h1>
+				<p class="cg-hero__sub" {...(e.hero_sub ?? {})}>{heroSub}</p>
+			</div>
+		</section>
+
+		<section class="section">
+			<div class="container cg-split">
+				<div>
+					<h2 class="cg-h2">Living in {area.name}</h2>
+					<p class="cg-body" {...(e.overview ?? {})}>{overview}</p>
+					<div class="nb-take">
+						<div class="nb-take__l">Grant's Take</div>
+						<p {...(e.take ?? {})}>{take}</p>
+					</div>
+				</div>
+				<aside class="nb-side">
+					<div class="cg-glance">
+						<div class="cg-glance__h">At a Glance</div>
+						{glance.map((g) => <div class="cg-glance__row"><span>✓</span> <span>{g}</span></div>)}
+					</div>
+					<div class="nb-stats">
+						{stats.map(([v, l]) => (
+							<div class="nb-stat"><div class="nb-stat__v">{v}</div><div class="nb-stat__l">{l}</div></div>
+						))}
+					</div>
+					<a class="btn btn--orange nb-cta" href="/contact/">Ask Grant About {area.name}</a>
+				</aside>
+			</div>
+		</section>
+
+		{/* Homes for sale here — live */}
+		<section class="section section--cream" data-screen-label="Neighborhood Listings">
+			<div class="container">
+				<div class="cg-head">
+					<span class="eyebrow">Currently on the Market</span>
+					<h2 class="cg-h2">Homes for Sale in {area.name}</h2>
+					<p class="cg-intro">
+						{homes.length
+							? `${homes.length} active ${homes.length === 1 ? "listing" : "listings"} within ${area.name}, straight from the MLS.`
+							: `No active listings inside ${area.name} at the moment — the market here moves quietly. Grant can share what's coming and what's sold off-market.`}
+					</p>
+				</div>
+				{homes.length ? (
+					<>
+						<div class="cg-featured">
+							{homes.slice(0, 6).map((l) => (
+								<a class="cg-fcard" href={`/homes/${l.slug}/`}>
+									<div class="cg-fcard__media" style={l.photo ? `background-image:url(${l.photo})` : ""}></div>
+									<div class="cg-fcard__body">
+										<div class="cg-fcard__tag">{l.category || l.type || "Residential"}</div>
+										<h3 class="cg-fcard__addr">{l.address}</h3>
+										<div class="cg-fcard__meta">{meta(l)}</div>
+										<div class="cg-fcard__price">{fmt(l.price)}</div>
+									</div>
+								</a>
+							))}
+						</div>
+						{homes.length > 6 && (
+							<div style="text-align:center;margin-top:44px">
+								<a class="btn btn--dark" href="/listings/">SEE ALL {homes.length} HOMES →</a>
+							</div>
+						)}
+					</>
+				) : (
+					<div style="text-align:center">
+						<a class="btn btn--orange" href="/contact/">Ask Grant what's available</a>
+					</div>
+				)}
+			</div>
+		</section>
+
+		<section class="section section--dark" style="text-align:center">
+			<div class="container" style="max-width:720px">
+				<h2 class="reality__h" style="color:#fff">Thinking About {area.name}?</h2>
+				<a class="btn btn--orange" href="/contact/" style="margin-top:24px;display:inline-block">INQUIRE NOW</a>
+			</div>
+		</section>
+	</div>
+</GcmLayout>

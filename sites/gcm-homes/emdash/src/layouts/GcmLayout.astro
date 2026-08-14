@@ -1,0 +1,117 @@
+---
+// Grant C. Meyer Homes — site layout (ports the prototype chrome into the emdash
+// app). Uses the real nav/footer/logo/fonts + styles.css, and includes the
+// EmDash head/body components so inline editing lights up when logged in.
+import { getSiteSettings } from "emdash";
+import { EmDashHead, EmDashBodyStart, EmDashBodyEnd } from "emdash/ui";
+import { createPublicPageContext } from "emdash/page";
+
+interface Props {
+	title: string;
+	description?: string | null;
+	canonical?: string | null;
+	image?: string | null;
+	content?: { collection: string; id: string; slug?: string | null };
+}
+const { title, description, canonical, image, content } = Astro.props;
+await getSiteSettings();
+
+const nav = [
+	["Listings", "/listings/"],
+	["Buyers", "/buyers/"],
+	["Sellers", "/sellers/"],
+	["The Community", "/community/"],
+	["Concierge", "/concierge/"],
+	["About", "/about/"],
+];
+
+const pageCtx = createPublicPageContext({
+	Astro,
+	kind: content ? "content" : "custom",
+	pageType: "website",
+	title,
+	pageTitle: title,
+	description,
+	canonical,
+	image,
+	content,
+	siteName: "Grant C. Meyer Homes",
+});
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>{title}</title>
+		{description && <meta name="description" content={description} />}
+		{canonical && <link rel="canonical" href={canonical} />}
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,500;1,8..60,600&family=Noto+Serif:ital,wght@0,400;0,500;0,600;1,400&display=swap"
+			rel="stylesheet"
+		/>
+		<link rel="stylesheet" href="/styles.css" />
+		<EmDashHead page={pageCtx} />
+	</head>
+	<body>
+		<EmDashBodyStart page={pageCtx} />
+
+		<header class="nav">
+			<div class="nav__inner">
+				<a class="nav__logo" href="/"><img src="/assets/logo.png" alt="Grant C. Meyer Homes" /></a>
+				<nav class="nav__links">
+					{nav.map(([label, href]) => <a class="nav__link" href={href}>{label}</a>)}
+				</nav>
+				<a class="btn btn--orange" href="/contact/">INQUIRE NOW</a>
+			</div>
+		</header>
+
+		<main>
+			<slot />
+		</main>
+
+		<footer class="footer">
+			<div class="footer__cols">
+				<div class="footer__brand">
+					<img src="/assets/logo.png" alt="Grant C. Meyer Homes" style="filter:brightness(0) invert(1);height:72px" />
+					<p style="font-size:14px;line-height:1.6;color:rgba(255,255,255,0.7);margin-bottom:24px;max-width:280px">
+						Three decades of expertise in Lake Tahoe luxury real estate. Curated representation, quiet sales, lasting relationships.
+					</p>
+				</div>
+				<div>
+					<h4 class="footer__h">Properties</h4>
+					<div class="footer__links">
+						<a href="/listings/">Search Listings</a>
+						<a href="/buyers/">For Buyers</a>
+						<a href="/sellers/">For Sellers</a>
+					</div>
+				</div>
+				<div>
+					<h4 class="footer__h">Tahoe</h4>
+					<div class="footer__links">
+						<a href="/community/">The Community</a>
+						<a href="/concierge/">Concierge</a>
+					</div>
+				</div>
+				<div>
+					<h4 class="footer__h">About</h4>
+					<div class="footer__links">
+						<a href="/about/">About Grant</a>
+						<a href="/contact/">Contact</a>
+					</div>
+				</div>
+			</div>
+			<div class="footer__bottom">
+				<span style="font-size:12px;line-height:1.6;color:rgba(255,255,255,0.45);max-width:640px">
+					Listing data via Trestle (Cotality), courtesy of Incline Village Realtors®. Information is deemed reliable but not guaranteed and should be independently verified.
+				</span>
+				<span>© 2026 Grant C. Meyer Homes.</span>
+			</div>
+		</footer>
+
+		<EmDashBodyEnd page={pageCtx} />
+	</body>
+</html>
