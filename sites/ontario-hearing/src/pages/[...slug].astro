@@ -51,13 +51,25 @@ if (/^\d{4}(\/\d{2}){0,2}$/.test(redirectKey)) {
   return Astro.redirect("/blog/", 301);
 }
 
+// Date-prefixed permalinks: /YYYY/MM/DD/post-name/ (a standard WordPress permalink
+// structure). Send these to the post itself where it still exists, so the link
+// equity lands on the article instead of the blog index; otherwise fall back to /blog/.
+const datedPost = redirectKey.match(/^\d{4}\/\d{2}(?:\/\d{2})?\/(.+)$/);
+if (datedPost) {
+  const tail = datedPost[1].replace(/\/+$/, "");
+  const hit = all.find(p => p.slug !== "_home" && (p.slug === tail || p.url_path.replace(/^\/|\/$/g, "") === tail));
+  return Astro.redirect(hit ? hit.url_path : "/blog/", 301);
+}
+
 // Other legacy WordPress URL families with no equivalent here — taxonomy archives,
 // pagination, feeds, the Yoast sitemap index and old home aliases.
 // wp-admin / wp-login.php / xmlrpc.php are deliberately NOT listed: nothing should
 // link to them and they should keep returning 404.
 const LEGACY_PATTERNS: Array<[RegExp, string]> = [
   [/^(category|tag|author)(\/|$)/, "/blog/"],
-  [/^(blog\/)?page\/\d+$/, "/blog/"],
+  [/(^|\/)page\/\d+$/, "/blog/"],            // any pagination: /page/2/, /blog/page/2/, /2025/page/2/
+  [/^blog\/\d{4}(\/\d{2}){0,2}$/, "/blog/"], // /blog/2025/11/25/
+  [/^archives?$/, "/blog/"],
   [/^(comments\/)?feed$/, "/blog/"],
   [/^rss$/, "/blog/"],
   [/^sitemap_index\.xml$/, "/sitemap.xml"],
