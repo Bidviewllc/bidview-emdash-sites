@@ -35,8 +35,38 @@ const REDIRECTS: Record<string, string> = {
   "audiologists-in-pittsford-ny/tinnitus-evaluation-treatment": "/tinnitus/",
   "understanding-the-impact-of-diet-on-ear-health": "/understanding-ear-wax-causes-care-when-to-see-an-audiologist/", // renamed (ear wax topic)
 };
-if (REDIRECTS[slugStr]) {
-  return Astro.redirect(REDIRECTS[slugStr], 301);
+// Nested pages are stored with "__" separating the segments (emdash slug encoding).
+// That form can leak into hrefs (e.g. the related-pages sidebar builds `/${slug}/`),
+// so normalise it to a real path before looking up the redirect map, which is keyed
+// on paths. A slug without "__" is unaffected.
+const redirectKey = slugStr.replace(/__/g, "/");
+if (REDIRECTS[redirectKey]) {
+  return Astro.redirect(REDIRECTS[redirectKey], 301);
+}
+
+// WordPress date archives (/YYYY/, /YYYY/MM/, /YYYY/MM/DD/) have no equivalent here —
+// send them to the blog index rather than 404. Still linked from leftover "Recent Posts"
+// blocks in migrated content, and indexed from the WordPress era.
+if (/^\d{4}(\/\d{2}){0,2}$/.test(redirectKey)) {
+  return Astro.redirect("/blog/", 301);
+}
+
+// Other legacy WordPress URL families with no equivalent here — taxonomy archives,
+// pagination, feeds, the Yoast sitemap index and old home aliases.
+// wp-admin / wp-login.php / xmlrpc.php are deliberately NOT listed: nothing should
+// link to them and they should keep returning 404.
+const LEGACY_PATTERNS: Array<[RegExp, string]> = [
+  [/^(category|tag|author)(\/|$)/, "/blog/"],
+  [/^(blog\/)?page\/\d+$/, "/blog/"],
+  [/^(comments\/)?feed$/, "/blog/"],
+  [/^rss$/, "/blog/"],
+  [/^sitemap_index\.xml$/, "/sitemap.xml"],
+  [/^(home|index\.php|index\.html)$/, "/"],
+];
+for (const [pattern, target] of LEGACY_PATTERNS) {
+  if (pattern.test(redirectKey)) {
+    return Astro.redirect(target, 301);
+  }
 }
 
 // Find the static fallback record (used for type + fallback content + nested URL)
