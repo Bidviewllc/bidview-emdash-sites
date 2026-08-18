@@ -25,26 +25,26 @@
   ],
   "env": {
     "staging": {
-      "name": "newleafhearingcare-staging",
-      "account_id": "981338e6544cfe45d9819bf0ea6eb83a",
+      "name": "new-leaf-hearing-care-staging",
+      "account_id": "239e9d015c7a3a39cdc2e9400312f553",
       "workers_dev": true,
       "d1_databases": [
         {
           "binding": "DB",
-          "database_name": "newleafhearing-staging-db",
-          "database_id": "5c223806-0e17-4dfb-aaa1-2d84e7560eb2"
+          "database_name": "new-leaf-staging-db",
+          "database_id": "bc1b859c-eeae-462d-b1e6-fe9db820e7e7"
         }
       ],
       "r2_buckets": [
         {
           "binding": "MEDIA",
-          "bucket_name": "newleafhearing-staging-media"
+          "bucket_name": "new-leaf-staging-media"
         }
       ],
       "kv_namespaces": [
         {
           "binding": "SESSION",
-          "id": "b0a88beb034a433788cd9725301d5f5f"
+          "id": "0d21dcb769ab44958301b4d540581139"
         }
       ]
     }

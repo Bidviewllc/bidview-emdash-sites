@@ -34,6 +34,9 @@ if (target === "staging") {
 
   generated.name = staging.name;
   generated.topLevelName = staging.name;
+  // account_id must be swapped too, or a staging env on a different account than
+  // production deploys the staging name against production's account.
+  generated.account_id = staging.account_id ?? generated.account_id;
   generated.workers_dev = staging.workers_dev ?? generated.workers_dev;
   generated.d1_databases = staging.d1_databases ?? generated.d1_databases;
   generated.r2_buckets = staging.r2_buckets ?? generated.r2_buckets;

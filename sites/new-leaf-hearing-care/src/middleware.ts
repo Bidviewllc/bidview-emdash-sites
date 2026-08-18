@@ -6,7 +6,10 @@ const PUBLIC_HTML_CACHE_CONTROL = "public, max-age=300, s-maxage=3600, stale-whi
 const EDGE_HTML_CACHE_CONTROL = "public, max-age=3600, stale-while-revalidate=86400";
 const PUBLIC_MEDIA_CACHE_CONTROL = "public, max-age=31536000, immutable";
 const PRIVATE_CACHE_CONTROL = "no-store, max-age=0";
-const HTML_CACHE_VERSION = "2026-08-13-gsc-verification-v36";
+// Bump on every deploy that changes CSS/JS. Cached HTML references hashed asset
+// filenames; if the version is not bumped, stale HTML keeps pointing at a hash
+// that no longer exists and the page renders unstyled.
+const HTML_CACHE_VERSION = "2026-08-18-community-resources-v37";
 const PUBLIC_MEDIA_PREFIX = "/_emdash/api/media/file/";
 const CACHEABLE_MEDIA_TYPES = ["image/", "video/", "audio/"];
 const STATIC_PATHS = [
@@ -68,9 +71,34 @@ const isCacheableMediaResponse = (response: Response) => {
   return CACHEABLE_MEDIA_TYPES.some((type) => contentType.startsWith(type));
 };
 
+// Pages where the query string changes the rendered HTML. Everything else has its
+// query string dropped from the cache key, so without this a filtered request would
+// be served the cached unfiltered page.
+const QUERY_AWARE_PATHS: Record<string, string[]> = {
+  "/community-resources/": ["category", "sort"]
+};
+
+// Pages whose content is edited in the admin rather than changed by a deploy.
+// The HTML cache is keyed on HTML_CACHE_VERSION and has no invalidation hook, so a
+// cached page hides admin edits until the next deploy or the hour-long TTL expires.
+// These paths skip the HTML cache entirely and are served fresh.
+const LIVE_HTML_PATHS = new Set(["/community-resources/"]);
+
+const isLiveHtmlPath = (pathname: string) =>
+  LIVE_HTML_PATHS.has(pathname.endsWith("/") ? pathname : `${pathname}/`);
+
 const getHtmlCacheKey = (url: URL) => {
   const cacheUrl = new URL(url);
+  const normalisedPath = url.pathname.endsWith("/") ? url.pathname : `${url.pathname}/`;
+  const allowedParams = QUERY_AWARE_PATHS[normalisedPath] ?? [];
+  const preserved = allowedParams
+    .map((key) => [key, url.searchParams.get(key)] as const)
+    .filter((entry): entry is readonly [string, string] => entry[1] !== null);
+
   cacheUrl.search = "";
+  for (const [key, value] of preserved) {
+    cacheUrl.searchParams.set(key, value);
+  }
   cacheUrl.searchParams.set("__html_cache_version", HTML_CACHE_VERSION);
   return new Request(cacheUrl.toString(), {
     method: "GET",
@@ -83,6 +111,7 @@ const getHtmlCacheKey = (url: URL) => {
 const canCacheHtmlRequest = (method: string, pathname: string) =>
   method === "GET" &&
   !isPrivatePath(pathname) &&
+  !isLiveHtmlPath(pathname) &&
   !FILE_EXTENSION_PATTERN.test(pathname);
 
 const getWorkerCache = () => {
@@ -105,6 +134,21 @@ const applyPublicHtmlCacheHeaders = (response: Response) => {
   headers.set("Cache-Control", PUBLIC_HTML_CACHE_CONTROL);
   headers.set("CDN-Cache-Control", EDGE_HTML_CACHE_CONTROL);
   headers.set("Cloudflare-CDN-Cache-Control", EDGE_HTML_CACHE_CONTROL);
+  headers.set("Vary", "Accept-Encoding");
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers
+  });
+};
+
+// Admin-edited pages: skip the edge cache as well, or the Worker bypass alone would
+// still leave Cloudflare serving an hour-old copy.
+const applyLiveHtmlCacheHeaders = (response: Response) => {
+  const headers = new Headers(response.headers);
+  headers.set("Cache-Control", "no-store, max-age=0");
+  headers.set("CDN-Cache-Control", "no-store");
+  headers.set("Cloudflare-CDN-Cache-Control", "no-store");
   headers.set("Vary", "Accept-Encoding");
   return new Response(response.body, {
     status: response.status,
@@ -202,6 +246,10 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   if (isPrivatePath(pathname) || response.headers.has("Set-Cookie")) {
     return applyPrivateCacheHeaders(response);
+  }
+
+  if (response.status === 200 && isHtmlResponse(response) && isLiveHtmlPath(pathname)) {
+    return withWorkerCacheStatus(applyLiveHtmlCacheHeaders(response), "BYPASS");
   }
 
   if (response.status === 200 && isHtmlResponse(response)) {

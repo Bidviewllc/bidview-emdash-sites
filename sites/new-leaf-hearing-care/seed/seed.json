@@ -223,6 +223,61 @@
           "searchable": true
         }
       ]
+    },
+    {
+      "slug": "community_resources",
+      "label": "Community Resources",
+      "labelSingular": "Community Resource",
+      "description": "Local organizations and services referred to patients. Listed on /community-resources/ only; these do not get their own pages.",
+      "supports": [
+        "drafts",
+        "revisions",
+        "search"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Company Name",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "category",
+          "label": "Category",
+          "type": "select",
+          "validation": {
+            "options": ["Hearing Support & Advocacy", "Transportation"]
+          }
+        },
+        {
+          "slug": "contact_person",
+          "label": "Contact Person",
+          "type": "string",
+          "searchable": true
+        },
+        {
+          "slug": "website",
+          "label": "Website",
+          "type": "string"
+        },
+        {
+          "slug": "phone",
+          "label": "Phone",
+          "type": "string"
+        },
+        {
+          "slug": "service_description",
+          "label": "Description of Service",
+          "type": "text",
+          "searchable": true
+        },
+        {
+          "slug": "logo",
+          "label": "Logo",
+          "type": "image"
+        }
+      ]
     }
   ],
   "taxonomies": [
