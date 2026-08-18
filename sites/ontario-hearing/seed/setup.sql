@@ -11,33 +11,33 @@
 -- Collection: site_settings
 -- ============================================================
 INSERT OR REPLACE INTO _emdash_collections (id, slug, label, label_singular, supports, source, search_config, has_seo, comments_enabled, comments_moderation, comments_closed_after_days, comments_auto_approve_users) VALUES (
-  '0101K09T7KIU00T0K0CS00T0K0', 'site_settings', 'Site Settings', 'Site Setting',
+  '0101K09UT68000T0K0CS00T0K0', 'site_settings', 'Site Settings', 'Site Setting',
   '["drafts","revisions","search"]', 'seed', '{"enabled":true}', 0, 0, 'first_time', 90, 1
 );
 
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KIV01SQT03F01SQT0', '0101K09T7KIU00T0K0CS00T0K0', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
+  '0101K09UT68101SQT03F01SQT0', '0101K09UT68000T0K0CS00T0K0', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KJ001SNB6S501SNB6', '0101K09T7KIU00T0K0CS00T0K0', 'phone', 'Phone', 'string', 'TEXT', 0, 1, 0, 1
+  '0101K09UT68201SNB6S501SNB6', '0101K09UT68000T0K0CS00T0K0', 'phone', 'Phone', 'string', 'TEXT', 0, 1, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KJ101SDPADJ01SDPA', '0101K09T7KIU00T0K0CS00T0K0', 'email', 'Email', 'string', 'TEXT', 0, 2, 0, 1
+  '0101K09UT68301SDPADJ01SDPA', '0101K09UT68000T0K0CS00T0K0', 'email', 'Email', 'string', 'TEXT', 0, 2, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KJ201QU18JN01QU18', '0101K09T7KIU00T0K0CS00T0K0', 'address_street', 'Address Street', 'string', 'TEXT', 0, 3, 0, 1
+  '0101K09UT68401QU18JN01QU18', '0101K09UT68000T0K0CS00T0K0', 'address_street', 'Address Street', 'string', 'TEXT', 0, 3, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KJ301292GMF01292G', '0101K09T7KIU00T0K0CS00T0K0', 'address_city_state', 'Address City State', 'string', 'TEXT', 0, 4, 0, 1
+  '0101K09UT68501292GMF01292G', '0101K09UT68000T0K0CS00T0K0', 'address_city_state', 'Address City State', 'string', 'TEXT', 0, 4, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KJ40198H2AB0198H2', '0101K09T7KIU00T0K0CS00T0K0', 'hours_mon_thu', 'Hours Mon Thu', 'string', 'TEXT', 0, 5, 0, 1
+  '0101K09UT6860198H2AB0198H2', '0101K09UT68000T0K0CS00T0K0', 'hours_mon_thu', 'Hours Mon Thu', 'string', 'TEXT', 0, 5, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KJ500VKS8BS00VKS8', '0101K09T7KIU00T0K0CS00T0K0', 'hours_fri', 'Hours Fri', 'string', 'TEXT', 0, 6, 0, 1
+  '0101K09UT68700VKS8BS00VKS8', '0101K09UT68000T0K0CS00T0K0', 'hours_fri', 'Hours Fri', 'string', 'TEXT', 0, 6, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KJ6008HN234008HN2', '0101K09T7KIU00T0K0CS00T0K0', 'google_maps_url', 'Google Maps Url', 'string', 'TEXT', 0, 7, 0, 1
+  '0101K09UT688008HN234008HN2', '0101K09UT68000T0K0CS00T0K0', 'google_maps_url', 'Google Maps Url', 'string', 'TEXT', 0, 7, 0, 1
 );
 
 CREATE TABLE IF NOT EXISTS "ec_site_settings" (
@@ -72,123 +72,123 @@ CREATE TABLE IF NOT EXISTS "ec_site_settings" (
 -- Collection: homepage
 -- ============================================================
 INSERT OR REPLACE INTO _emdash_collections (id, slug, label, label_singular, supports, source, search_config, has_seo, comments_enabled, comments_moderation, comments_closed_after_days, comments_auto_approve_users) VALUES (
-  '0101K09T7KJ701VR1K1J01VR1K', 'homepage', 'Homepage', 'Homepage',
+  '0101K09UT68901VR1K1J01VR1K', 'homepage', 'Homepage', 'Homepage',
   '["drafts","revisions","search"]', 'seed', '{"enabled":true}', 0, 0, 'first_time', 90, 1
 );
 
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KJ8011F595C011F59', '0101K09T7KJ701VR1K1J01VR1K', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
+  '0101K09UT68A011F595C011F59', '0101K09UT68901VR1K1J01VR1K', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KJ901EF28UG01EF28', '0101K09T7KJ701VR1K1J01VR1K', 'hero_eyebrow', 'Hero Eyebrow', 'string', 'TEXT', 0, 1, 0, 1
+  '0101K09UT68B01EF28UG01EF28', '0101K09UT68901VR1K1J01VR1K', 'hero_eyebrow', 'Hero Eyebrow', 'string', 'TEXT', 0, 1, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KJA00JB9BGN00JB9B', '0101K09T7KJ701VR1K1J01VR1K', 'hero_heading', 'Hero Heading', 'string', 'TEXT', 0, 2, 0, 1
+  '0101K09UT68C00JB9BGN00JB9B', '0101K09UT68901VR1K1J01VR1K', 'hero_heading', 'Hero Heading', 'string', 'TEXT', 0, 2, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KJB01MH2KPB01MH2K', '0101K09T7KJ701VR1K1J01VR1K', 'hero_lead', 'Hero Lead', 'text', 'TEXT', 0, 3, 0, 1
+  '0101K09UT68D01MH2KPB01MH2K', '0101K09UT68901VR1K1J01VR1K', 'hero_lead', 'Hero Lead', 'text', 'TEXT', 0, 3, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KJC01GV9RNL01GV9R', '0101K09T7KJ701VR1K1J01VR1K', 'hero_cta_text', 'Hero Cta Text', 'string', 'TEXT', 0, 4, 0, 1
+  '0101K09UT68E01GV9RNL01GV9R', '0101K09UT68901VR1K1J01VR1K', 'hero_cta_text', 'Hero Cta Text', 'string', 'TEXT', 0, 4, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KJD019VKAE1019VKA', '0101K09T7KJ701VR1K1J01VR1K', 'reviews_count', 'Reviews Count', 'string', 'TEXT', 0, 5, 0, 1
+  '0101K09UT68F019VKAE1019VKA', '0101K09UT68901VR1K1J01VR1K', 'reviews_count', 'Reviews Count', 'string', 'TEXT', 0, 5, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KJE01D32ASB01D32A', '0101K09T7KJ701VR1K1J01VR1K', 'about_eyebrow', 'About Eyebrow', 'string', 'TEXT', 0, 6, 0, 1
+  '0101K09UT68G01D32ASB01D32A', '0101K09UT68901VR1K1J01VR1K', 'about_eyebrow', 'About Eyebrow', 'string', 'TEXT', 0, 6, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KJF00KN99IS00KN99', '0101K09T7KJ701VR1K1J01VR1K', 'about_heading', 'About Heading', 'string', 'TEXT', 0, 7, 0, 1
+  '0101K09UT68H00KN99IS00KN99', '0101K09UT68901VR1K1J01VR1K', 'about_heading', 'About Heading', 'string', 'TEXT', 0, 7, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KJG01RGIBM001RGIB', '0101K09T7KJ701VR1K1J01VR1K', 'about_body', 'About Body', 'text', 'TEXT', 0, 8, 0, 1
+  '0101K09UT68I01RGIBM001RGIB', '0101K09UT68901VR1K1J01VR1K', 'about_body', 'About Body', 'text', 'TEXT', 0, 8, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KJH01L1PA8E01L1PA', '0101K09T7KJ701VR1K1J01VR1K', 'about_body2', 'About Body2', 'text', 'TEXT', 0, 9, 0, 1
+  '0101K09UT68J01L1PA8E01L1PA', '0101K09UT68901VR1K1J01VR1K', 'about_body2', 'About Body2', 'text', 'TEXT', 0, 9, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KJI010U7LAU010U7L', '0101K09T7KJ701VR1K1J01VR1K', 'about_badge_title', 'About Badge Title', 'string', 'TEXT', 0, 10, 0, 1
+  '0101K09UT68K010U7LAU010U7L', '0101K09UT68901VR1K1J01VR1K', 'about_badge_title', 'About Badge Title', 'string', 'TEXT', 0, 10, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KJJ01911ULV01911U', '0101K09T7KJ701VR1K1J01VR1K', 'about_years_num', 'About Years Num', 'string', 'TEXT', 0, 11, 0, 1
+  '0101K09UT68L01911ULV01911U', '0101K09UT68901VR1K1J01VR1K', 'about_years_num', 'About Years Num', 'string', 'TEXT', 0, 11, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KJL008PFOVD008PFO', '0101K09T7KJ701VR1K1J01VR1K', 'about_years_label', 'About Years Label', 'string', 'TEXT', 0, 12, 0, 1
+  '0101K09UT68M008PFOVD008PFO', '0101K09UT68901VR1K1J01VR1K', 'about_years_label', 'About Years Label', 'string', 'TEXT', 0, 12, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KJM01ACO4B301ACO4', '0101K09T7KJ701VR1K1J01VR1K', 'about_doctors_num', 'About Doctors Num', 'string', 'TEXT', 0, 13, 0, 1
+  '0101K09UT68N01ACO4B301ACO4', '0101K09UT68901VR1K1J01VR1K', 'about_doctors_num', 'About Doctors Num', 'string', 'TEXT', 0, 13, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KJN019359TL019359', '0101K09T7KJ701VR1K1J01VR1K', 'about_doctors_label', 'About Doctors Label', 'string', 'TEXT', 0, 14, 0, 1
+  '0101K09UT68O019359TL019359', '0101K09UT68901VR1K1J01VR1K', 'about_doctors_label', 'About Doctors Label', 'string', 'TEXT', 0, 14, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KJO01JIVN2F01JIVN', '0101K09T7KJ701VR1K1J01VR1K', 'about_brands_num', 'About Brands Num', 'string', 'TEXT', 0, 15, 0, 1
+  '0101K09UT68P01JIVN2F01JIVN', '0101K09UT68901VR1K1J01VR1K', 'about_brands_num', 'About Brands Num', 'string', 'TEXT', 0, 15, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KJP01DCUPT101DCUP', '0101K09T7KJ701VR1K1J01VR1K', 'about_brands_label', 'About Brands Label', 'string', 'TEXT', 0, 16, 0, 1
+  '0101K09UT68Q01DCUPT101DCUP', '0101K09UT68901VR1K1J01VR1K', 'about_brands_label', 'About Brands Label', 'string', 'TEXT', 0, 16, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KJQ01BTN0PJ01BTN0', '0101K09T7KJ701VR1K1J01VR1K', 'team_eyebrow', 'Team Eyebrow', 'string', 'TEXT', 0, 17, 0, 1
+  '0101K09UT68R01BTN0PJ01BTN0', '0101K09UT68901VR1K1J01VR1K', 'team_eyebrow', 'Team Eyebrow', 'string', 'TEXT', 0, 17, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KJR00LSKJLK00LSKJ', '0101K09T7KJ701VR1K1J01VR1K', 'team_heading', 'Team Heading', 'string', 'TEXT', 0, 18, 0, 1
+  '0101K09UT68S00LSKJLK00LSKJ', '0101K09UT68901VR1K1J01VR1K', 'team_heading', 'Team Heading', 'string', 'TEXT', 0, 18, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KJS00QNF7RA00QNF7', '0101K09T7KJ701VR1K1J01VR1K', 'team_subhead', 'Team Subhead', 'text', 'TEXT', 0, 19, 0, 1
+  '0101K09UT68T00QNF7RA00QNF7', '0101K09UT68901VR1K1J01VR1K', 'team_subhead', 'Team Subhead', 'text', 'TEXT', 0, 19, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KJT0023ETJF0023ET', '0101K09T7KJ701VR1K1J01VR1K', 'cochlear_eyebrow', 'Cochlear Eyebrow', 'string', 'TEXT', 0, 20, 0, 1
+  '0101K09UT68U0023ETJF0023ET', '0101K09UT68901VR1K1J01VR1K', 'cochlear_eyebrow', 'Cochlear Eyebrow', 'string', 'TEXT', 0, 20, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KJU01S25DTA01S25D', '0101K09T7KJ701VR1K1J01VR1K', 'cochlear_heading', 'Cochlear Heading', 'string', 'TEXT', 0, 21, 0, 1
+  '0101K09UT68V01S25DTA01S25D', '0101K09UT68901VR1K1J01VR1K', 'cochlear_heading', 'Cochlear Heading', 'string', 'TEXT', 0, 21, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KJV00J0R87Q00J0R8', '0101K09T7KJ701VR1K1J01VR1K', 'cochlear_body', 'Cochlear Body', 'text', 'TEXT', 0, 22, 0, 1
+  '0101K09UT69000J0R87Q00J0R8', '0101K09UT68901VR1K1J01VR1K', 'cochlear_body', 'Cochlear Body', 'text', 'TEXT', 0, 22, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KK0014KD8DV014KD8', '0101K09T7KJ701VR1K1J01VR1K', 'diag_eyebrow', 'Diag Eyebrow', 'string', 'TEXT', 0, 23, 0, 1
+  '0101K09UT691014KD8DV014KD8', '0101K09UT68901VR1K1J01VR1K', 'diag_eyebrow', 'Diag Eyebrow', 'string', 'TEXT', 0, 23, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KK100PH732Q00PH73', '0101K09T7KJ701VR1K1J01VR1K', 'diag_heading', 'Diag Heading', 'string', 'TEXT', 0, 24, 0, 1
+  '0101K09UT69200PH732Q00PH73', '0101K09UT68901VR1K1J01VR1K', 'diag_heading', 'Diag Heading', 'string', 'TEXT', 0, 24, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KK201LQL1C801LQL1', '0101K09T7KJ701VR1K1J01VR1K', 'diag_subhead', 'Diag Subhead', 'text', 'TEXT', 0, 25, 0, 1
+  '0101K09UT69301LQL1C801LQL1', '0101K09UT68901VR1K1J01VR1K', 'diag_subhead', 'Diag Subhead', 'text', 'TEXT', 0, 25, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KK300GEACPH00GEAC', '0101K09T7KJ701VR1K1J01VR1K', 'ha_eyebrow', 'Ha Eyebrow', 'string', 'TEXT', 0, 26, 0, 1
+  '0101K09UT69400GEACPH00GEAC', '0101K09UT68901VR1K1J01VR1K', 'ha_eyebrow', 'Ha Eyebrow', 'string', 'TEXT', 0, 26, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KK401DN9UN801DN9U', '0101K09T7KJ701VR1K1J01VR1K', 'ha_heading', 'Ha Heading', 'string', 'TEXT', 0, 27, 0, 1
+  '0101K09UT69501DN9UN801DN9U', '0101K09UT68901VR1K1J01VR1K', 'ha_heading', 'Ha Heading', 'string', 'TEXT', 0, 27, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KK500CSOR5200CSOR', '0101K09T7KJ701VR1K1J01VR1K', 'brands_eyebrow', 'Brands Eyebrow', 'string', 'TEXT', 0, 28, 0, 1
+  '0101K09UT69600CSOR5200CSOR', '0101K09UT68901VR1K1J01VR1K', 'brands_eyebrow', 'Brands Eyebrow', 'string', 'TEXT', 0, 28, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KK601KTIPA501KTIP', '0101K09T7KJ701VR1K1J01VR1K', 'brands_heading', 'Brands Heading', 'string', 'TEXT', 0, 29, 0, 1
+  '0101K09UT69701KTIPA501KTIP', '0101K09UT68901VR1K1J01VR1K', 'brands_heading', 'Brands Heading', 'string', 'TEXT', 0, 29, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KK70049ETP70049ET', '0101K09T7KJ701VR1K1J01VR1K', 'brands_subhead', 'Brands Subhead', 'text', 'TEXT', 0, 30, 0, 1
+  '0101K09UT6980049ETP70049ET', '0101K09UT68901VR1K1J01VR1K', 'brands_subhead', 'Brands Subhead', 'text', 'TEXT', 0, 30, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KK801QGMVCA01QGMV', '0101K09T7KJ701VR1K1J01VR1K', 'testimonials_eyebrow', 'Testimonials Eyebrow', 'string', 'TEXT', 0, 31, 0, 1
+  '0101K09UT69901QGMVCA01QGMV', '0101K09UT68901VR1K1J01VR1K', 'testimonials_eyebrow', 'Testimonials Eyebrow', 'string', 'TEXT', 0, 31, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KK90079KL2T0079KL', '0101K09T7KJ701VR1K1J01VR1K', 'testimonials_heading', 'Testimonials Heading', 'string', 'TEXT', 0, 32, 0, 1
+  '0101K09UT69A0079KL2T0079KL', '0101K09UT68901VR1K1J01VR1K', 'testimonials_heading', 'Testimonials Heading', 'string', 'TEXT', 0, 32, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KKA00JRL07C00JRL0', '0101K09T7KJ701VR1K1J01VR1K', 'faq_eyebrow', 'Faq Eyebrow', 'string', 'TEXT', 0, 33, 0, 1
+  '0101K09UT69B00JRL07C00JRL0', '0101K09UT68901VR1K1J01VR1K', 'faq_eyebrow', 'Faq Eyebrow', 'string', 'TEXT', 0, 33, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KKB01A9VB9D01A9VB', '0101K09T7KJ701VR1K1J01VR1K', 'faq_heading', 'Faq Heading', 'string', 'TEXT', 0, 34, 0, 1
+  '0101K09UT69C01A9VB9D01A9VB', '0101K09UT68901VR1K1J01VR1K', 'faq_heading', 'Faq Heading', 'string', 'TEXT', 0, 34, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KKC0151SP5L0151SP', '0101K09T7KJ701VR1K1J01VR1K', 'faq_subhead', 'Faq Subhead', 'text', 'TEXT', 0, 35, 0, 1
+  '0101K09UT69D0151SP5L0151SP', '0101K09UT68901VR1K1J01VR1K', 'faq_subhead', 'Faq Subhead', 'text', 'TEXT', 0, 35, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KKD00UVF94800UVF9', '0101K09T7KJ701VR1K1J01VR1K', 'blog_eyebrow', 'Blog Eyebrow', 'string', 'TEXT', 0, 36, 0, 1
+  '0101K09UT69E00UVF94800UVF9', '0101K09UT68901VR1K1J01VR1K', 'blog_eyebrow', 'Blog Eyebrow', 'string', 'TEXT', 0, 36, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KKE00V652CH00V652', '0101K09T7KJ701VR1K1J01VR1K', 'blog_heading', 'Blog Heading', 'string', 'TEXT', 0, 37, 0, 1
+  '0101K09UT69F00V652CH00V652', '0101K09UT68901VR1K1J01VR1K', 'blog_heading', 'Blog Heading', 'string', 'TEXT', 0, 37, 0, 1
 );
 
 CREATE TABLE IF NOT EXISTS "ec_homepage" (
@@ -253,81 +253,81 @@ CREATE TABLE IF NOT EXISTS "ec_homepage" (
 -- Collection: about_page
 -- ============================================================
 INSERT OR REPLACE INTO _emdash_collections (id, slug, label, label_singular, supports, source, search_config, has_seo, comments_enabled, comments_moderation, comments_closed_after_days, comments_auto_approve_users) VALUES (
-  '0101K09T7KKF01JLFSV001JLFS', 'about_page', 'About Page', 'About Page',
+  '0101K09UT69G01JLFSV001JLFS', 'about_page', 'About Page', 'About Page',
   '["drafts","revisions","search"]', 'seed', '{"enabled":true}', 0, 0, 'first_time', 90, 1
 );
 
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KKG01NLT0M101NLT0', '0101K09T7KKF01JLFSV001JLFS', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
+  '0101K09UT69H01NLT0M101NLT0', '0101K09UT69G01JLFSV001JLFS', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KKH019G3BK6019G3B', '0101K09T7KKF01JLFSV001JLFS', 'story_eyebrow', 'Story Eyebrow', 'string', 'TEXT', 0, 1, 0, 1
+  '0101K09UT69I019G3BK6019G3B', '0101K09UT69G01JLFSV001JLFS', 'story_eyebrow', 'Story Eyebrow', 'string', 'TEXT', 0, 1, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KKI00OA88R100OA88', '0101K09T7KKF01JLFSV001JLFS', 'story_heading', 'Story Heading', 'string', 'TEXT', 0, 2, 0, 1
+  '0101K09UT69J00OA88R100OA88', '0101K09UT69G01JLFSV001JLFS', 'story_heading', 'Story Heading', 'string', 'TEXT', 0, 2, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KKJ01VA38QK01VA38', '0101K09T7KKF01JLFSV001JLFS', 'story_body1', 'Story Body1', 'text', 'TEXT', 0, 3, 0, 1
+  '0101K09UT69K01VA38QK01VA38', '0101K09UT69G01JLFSV001JLFS', 'story_body1', 'Story Body1', 'text', 'TEXT', 0, 3, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KKK01VA38QJ01VA38', '0101K09T7KKF01JLFSV001JLFS', 'story_body2', 'Story Body2', 'text', 'TEXT', 0, 4, 0, 1
+  '0101K09UT69L01VA38QJ01VA38', '0101K09UT69G01JLFSV001JLFS', 'story_body2', 'Story Body2', 'text', 'TEXT', 0, 4, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KKL00OG6R1100OG6R', '0101K09T7KKF01JLFSV001JLFS', 'story_image_caption', 'Story Image Caption', 'string', 'TEXT', 0, 5, 0, 1
+  '0101K09UT69M00OG6R1100OG6R', '0101K09UT69G01JLFSV001JLFS', 'story_image_caption', 'Story Image Caption', 'string', 'TEXT', 0, 5, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KKM005D9AVV005D9A', '0101K09T7KKF01JLFSV001JLFS', 'story_stat1_num', 'Story Stat1 Num', 'string', 'TEXT', 0, 6, 0, 1
+  '0101K09UT69N005D9AVV005D9A', '0101K09UT69G01JLFSV001JLFS', 'story_stat1_num', 'Story Stat1 Num', 'string', 'TEXT', 0, 6, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KKN01BO1T5F01BO1T', '0101K09T7KKF01JLFSV001JLFS', 'story_stat1_label', 'Story Stat1 Label', 'string', 'TEXT', 0, 7, 0, 1
+  '0101K09UT69O01BO1T5F01BO1T', '0101K09UT69G01JLFSV001JLFS', 'story_stat1_label', 'Story Stat1 Label', 'string', 'TEXT', 0, 7, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KKO005CD53U005CD5', '0101K09T7KKF01JLFSV001JLFS', 'story_stat2_num', 'Story Stat2 Num', 'string', 'TEXT', 0, 8, 0, 1
+  '0101K09UT69Q005CD53U005CD5', '0101K09UT69G01JLFSV001JLFS', 'story_stat2_num', 'Story Stat2 Num', 'string', 'TEXT', 0, 8, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KKP01PPHK0G01PPHK', '0101K09T7KKF01JLFSV001JLFS', 'story_stat2_label', 'Story Stat2 Label', 'string', 'TEXT', 0, 9, 0, 1
+  '0101K09UT69R01PPHK0G01PPHK', '0101K09UT69G01JLFSV001JLFS', 'story_stat2_label', 'Story Stat2 Label', 'string', 'TEXT', 0, 9, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KKQ005BGV7T005BGV', '0101K09T7KKF01JLFSV001JLFS', 'story_stat3_num', 'Story Stat3 Num', 'string', 'TEXT', 0, 10, 0, 1
+  '0101K09UT69S005BGV7T005BGV', '0101K09UT69G01JLFSV001JLFS', 'story_stat3_num', 'Story Stat3 Num', 'string', 'TEXT', 0, 10, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KKR00VB556F00VB55', '0101K09T7KKF01JLFSV001JLFS', 'story_stat3_label', 'Story Stat3 Label', 'string', 'TEXT', 0, 11, 0, 1
+  '0101K09UT69T00VB556F00VB55', '0101K09UT69G01JLFSV001JLFS', 'story_stat3_label', 'Story Stat3 Label', 'string', 'TEXT', 0, 11, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KKS006JCQCK006JCQ', '0101K09T7KKF01JLFSV001JLFS', 'philosophy_eyebrow', 'Philosophy Eyebrow', 'string', 'TEXT', 0, 12, 0, 1
+  '0101K09UT69U006JCQCK006JCQ', '0101K09UT69G01JLFSV001JLFS', 'philosophy_eyebrow', 'Philosophy Eyebrow', 'string', 'TEXT', 0, 12, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KKT01R6UQ2J01R6UQ', '0101K09T7KKF01JLFSV001JLFS', 'philosophy_heading', 'Philosophy Heading', 'string', 'TEXT', 0, 13, 0, 1
+  '0101K09UT69V01R6UQ2J01R6UQ', '0101K09UT69G01JLFSV001JLFS', 'philosophy_heading', 'Philosophy Heading', 'string', 'TEXT', 0, 13, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KKU01A050PQ01A050', '0101K09T7KKF01JLFSV001JLFS', 'philosophy_body1', 'Philosophy Body1', 'text', 'TEXT', 0, 14, 0, 1
+  '0101K09UT6A001A050PQ01A050', '0101K09UT69G01JLFSV001JLFS', 'philosophy_body1', 'Philosophy Body1', 'text', 'TEXT', 0, 14, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KKV01A050PR01A050', '0101K09T7KKF01JLFSV001JLFS', 'philosophy_body2', 'Philosophy Body2', 'text', 'TEXT', 0, 15, 0, 1
+  '0101K09UT6A101A050PR01A050', '0101K09UT69G01JLFSV001JLFS', 'philosophy_body2', 'Philosophy Body2', 'text', 'TEXT', 0, 15, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KL001A050PS01A050', '0101K09T7KKF01JLFSV001JLFS', 'philosophy_body3', 'Philosophy Body3', 'text', 'TEXT', 0, 16, 0, 1
+  '0101K09UT6A201A050PS01A050', '0101K09UT69G01JLFSV001JLFS', 'philosophy_body3', 'Philosophy Body3', 'text', 'TEXT', 0, 16, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KL101A050PT01A050', '0101K09T7KKF01JLFSV001JLFS', 'philosophy_body4', 'Philosophy Body4', 'text', 'TEXT', 0, 17, 0, 1
+  '0101K09UT6A301A050PT01A050', '0101K09UT69G01JLFSV001JLFS', 'philosophy_body4', 'Philosophy Body4', 'text', 'TEXT', 0, 17, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KL200I10J3D00I10J', '0101K09T7KKF01JLFSV001JLFS', 'philosophy_image_caption', 'Philosophy Image Caption', 'string', 'TEXT', 0, 18, 0, 1
+  '0101K09UT6A400I10J3D00I10J', '0101K09UT69G01JLFSV001JLFS', 'philosophy_image_caption', 'Philosophy Image Caption', 'string', 'TEXT', 0, 18, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KL301OMJ46001OMJ4', '0101K09T7KKF01JLFSV001JLFS', 'team_eyebrow', 'Team Eyebrow', 'string', 'TEXT', 0, 19, 0, 1
+  '0101K09UT6A501OMJ46001OMJ4', '0101K09UT69G01JLFSV001JLFS', 'team_eyebrow', 'Team Eyebrow', 'string', 'TEXT', 0, 19, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KL4005F17AP005F17', '0101K09T7KKF01JLFSV001JLFS', 'team_heading', 'Team Heading', 'string', 'TEXT', 0, 20, 0, 1
+  '0101K09UT6A6005F17AP005F17', '0101K09UT69G01JLFSV001JLFS', 'team_heading', 'Team Heading', 'string', 'TEXT', 0, 20, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KL501M352RN01M352', '0101K09T7KKF01JLFSV001JLFS', 'team_subhead', 'Team Subhead', 'text', 'TEXT', 0, 21, 0, 1
+  '0101K09UT6A701M352RN01M352', '0101K09UT69G01JLFSV001JLFS', 'team_subhead', 'Team Subhead', 'text', 'TEXT', 0, 21, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KL600EA988N00EA98', '0101K09T7KKF01JLFSV001JLFS', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 22, 0, 1
+  '0101K09UT6A800EA988N00EA98', '0101K09UT69G01JLFSV001JLFS', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 22, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KL7019SKI45019SKI', '0101K09T7KKF01JLFSV001JLFS', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 23, 0, 1
+  '0101K09UT6A9019SKI45019SKI', '0101K09UT69G01JLFSV001JLFS', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 23, 0, 1
 );
 
 CREATE TABLE IF NOT EXISTS "ec_about_page" (
@@ -378,30 +378,30 @@ CREATE TABLE IF NOT EXISTS "ec_about_page" (
 -- Collection: contact_page
 -- ============================================================
 INSERT OR REPLACE INTO _emdash_collections (id, slug, label, label_singular, supports, source, search_config, has_seo, comments_enabled, comments_moderation, comments_closed_after_days, comments_auto_approve_users) VALUES (
-  '0101K09T7KL8014UBOTD014UBO', 'contact_page', 'Contact Page', 'Contact Page',
+  '0101K09UT6AA014UBOTD014UBO', 'contact_page', 'Contact Page', 'Contact Page',
   '["drafts","revisions","search"]', 'seed', '{"enabled":true}', 0, 0, 'first_time', 90, 1
 );
 
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KL901IU28JK01IU28', '0101K09T7KL8014UBOTD014UBO', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
+  '0101K09UT6AB01IU28JK01IU28', '0101K09UT6AA014UBOTD014UBO', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KLA01O3EU2A01O3EU', '0101K09T7KL8014UBOTD014UBO', 'intro_eyebrow', 'Intro Eyebrow', 'string', 'TEXT', 0, 1, 0, 1
+  '0101K09UT6AC01O3EU2A01O3EU', '0101K09UT6AA014UBOTD014UBO', 'intro_eyebrow', 'Intro Eyebrow', 'string', 'TEXT', 0, 1, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KLB009MSMCT009MSM', '0101K09T7KL8014UBOTD014UBO', 'intro_heading', 'Intro Heading', 'string', 'TEXT', 0, 2, 0, 1
+  '0101K09UT6AD009MSMCT009MSM', '0101K09UT6AA014UBOTD014UBO', 'intro_heading', 'Intro Heading', 'string', 'TEXT', 0, 2, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KLC01147HRG01147H', '0101K09T7KL8014UBOTD014UBO', 'intro_body1', 'Intro Body1', 'text', 'TEXT', 0, 3, 0, 1
+  '0101K09UT6AE01147HRG01147H', '0101K09UT6AA014UBOTD014UBO', 'intro_body1', 'Intro Body1', 'text', 'TEXT', 0, 3, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KLD01147HRH01147H', '0101K09T7KL8014UBOTD014UBO', 'intro_body2', 'Intro Body2', 'text', 'TEXT', 0, 4, 0, 1
+  '0101K09UT6AF01147HRH01147H', '0101K09UT6AA014UBOTD014UBO', 'intro_body2', 'Intro Body2', 'text', 'TEXT', 0, 4, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KLE00P1F5OM00P1F5', '0101K09T7KL8014UBOTD014UBO', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 5, 0, 1
+  '0101K09UT6AG00P1F5OM00P1F5', '0101K09UT6AA014UBOTD014UBO', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 5, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KLF017F9QNI017F9Q', '0101K09T7KL8014UBOTD014UBO', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 6, 0, 1
+  '0101K09UT6AH017F9QNI017F9Q', '0101K09UT6AA014UBOTD014UBO', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 6, 0, 1
 );
 
 CREATE TABLE IF NOT EXISTS "ec_contact_page" (
@@ -435,36 +435,36 @@ CREATE TABLE IF NOT EXISTS "ec_contact_page" (
 -- Collection: team_members
 -- ============================================================
 INSERT OR REPLACE INTO _emdash_collections (id, slug, label, label_singular, supports, source, search_config, has_seo, comments_enabled, comments_moderation, comments_closed_after_days, comments_auto_approve_users) VALUES (
-  '0101K09T7KLG018N98JA018N98', 'team_members', 'Team Members', 'Team Member',
+  '0101K09UT6AI018N98JA018N98', 'team_members', 'Team Members', 'Team Member',
   '["drafts","revisions","search"]', 'seed', '{"enabled":true}', 0, 0, 'first_time', 90, 1
 );
 
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KLH00J9315L00J931', '0101K09T7KLG018N98JA018N98', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
+  '0101K09UT6AJ00J9315L00J931', '0101K09UT6AI018N98JA018N98', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KLI00D03M4E00D03M', '0101K09T7KLG018N98JA018N98', 'name', 'Name', 'string', 'TEXT', 0, 1, 0, 1
+  '0101K09UT6AK00D03M4E00D03M', '0101K09UT6AI018N98JA018N98', 'name', 'Name', 'string', 'TEXT', 0, 1, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KLJ00D07NJP00D07N', '0101K09T7KLG018N98JA018N98', 'role', 'Role', 'string', 'TEXT', 0, 2, 0, 1
+  '0101K09UT6AL00D07NJP00D07N', '0101K09UT6AI018N98JA018N98', 'role', 'Role', 'string', 'TEXT', 0, 2, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KLK00J3ET3700J3ET', '0101K09T7KLG018N98JA018N98', 'credentials', 'Credentials', 'string', 'TEXT', 0, 3, 0, 1
+  '0101K09UT6AM00J3ET3700J3ET', '0101K09UT6AI018N98JA018N98', 'credentials', 'Credentials', 'string', 'TEXT', 0, 3, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KLL00BF060N00BF06', '0101K09T7KLG018N98JA018N98', 'bio_full', 'Bio Full', 'portableText', 'TEXT', 0, 4, 0, 1
+  '0101K09UT6AN00BF060N00BF06', '0101K09UT6AI018N98JA018N98', 'bio_full', 'Bio Full', 'portableText', 'TEXT', 0, 4, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KLM01663TPN01663T', '0101K09T7KLG018N98JA018N98', 'hero_image_url', 'Hero Image Url', 'string', 'TEXT', 0, 5, 0, 1
+  '0101K09UT6AO01663TPN01663T', '0101K09UT6AI018N98JA018N98', 'hero_image_url', 'Hero Image Url', 'string', 'TEXT', 0, 5, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KLN01RVPKR101RVPK', '0101K09T7KLG018N98JA018N98', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 6, 0, 1
+  '0101K09UT6AP01RVPKR101RVPK', '0101K09UT6AI018N98JA018N98', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 6, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KLO01JQR2I501JQR2', '0101K09T7KLG018N98JA018N98', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 7, 0, 1
+  '0101K09UT6AQ01JQR2I501JQR2', '0101K09UT6AI018N98JA018N98', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 7, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KLP00CN6G9G00CN6G', '0101K09T7KLG018N98JA018N98', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 8, 0, 1
+  '0101K09UT6AR00CN6G9G00CN6G', '0101K09UT6AI018N98JA018N98', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 8, 0, 1
 );
 
 CREATE TABLE IF NOT EXISTS "ec_team_members" (
@@ -500,42 +500,42 @@ CREATE TABLE IF NOT EXISTS "ec_team_members" (
 -- Collection: blog_posts
 -- ============================================================
 INSERT OR REPLACE INTO _emdash_collections (id, slug, label, label_singular, supports, source, search_config, has_seo, comments_enabled, comments_moderation, comments_closed_after_days, comments_auto_approve_users) VALUES (
-  '0101K09T7KLQ01820C8L01820C', 'blog_posts', 'Blog Posts', 'Blog Post',
+  '0101K09UT6AS01820C8L01820C', 'blog_posts', 'Blog Posts', 'Blog Post',
   '["drafts","revisions","search"]', 'seed', '{"enabled":true}', 0, 0, 'first_time', 90, 1
 );
 
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KLR00OJLACC00OJLA', '0101K09T7KLQ01820C8L01820C', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
+  '0101K09UT6AT00OJLACC00OJLA', '0101K09UT6AS01820C8L01820C', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KLS00OV4GKT00OV4G', '0101K09T7KLQ01820C8L01820C', 'excerpt', 'Excerpt', 'text', 'TEXT', 0, 1, 0, 1
+  '0101K09UT6AU00OV4GKT00OV4G', '0101K09UT6AS01820C8L01820C', 'excerpt', 'Excerpt', 'text', 'TEXT', 0, 1, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KLT01398BJB01398B', '0101K09T7KLQ01820C8L01820C', 'content', 'Content', 'portableText', 'TEXT', 0, 2, 0, 1
+  '0101K09UT6AV01398BJB01398B', '0101K09UT6AS01820C8L01820C', 'content', 'Content', 'portableText', 'TEXT', 0, 2, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KLU00278C7200278C', '0101K09T7KLQ01820C8L01820C', 'featured_image_url', 'Featured Image Url', 'string', 'TEXT', 0, 3, 0, 1
+  '0101K09UT6B000278C7200278C', '0101K09UT6AS01820C8L01820C', 'featured_image_url', 'Featured Image Url', 'string', 'TEXT', 0, 3, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KLV00ATR3OH00ATR3', '0101K09T7KLQ01820C8L01820C', 'author', 'Author', 'string', 'TEXT', 0, 4, 0, 1
+  '0101K09UT6B100ATR3OH00ATR3', '0101K09UT6AS01820C8L01820C', 'author', 'Author', 'string', 'TEXT', 0, 4, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KM001CJHI0I01CJHI', '0101K09T7KLQ01820C8L01820C', 'date', 'Date', 'string', 'TEXT', 0, 5, 0, 1
+  '0101K09UT6B201CJHI0I01CJHI', '0101K09UT6AS01820C8L01820C', 'date', 'Date', 'string', 'TEXT', 0, 5, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KM101JHSF4U01JHSF', '0101K09T7KLQ01820C8L01820C', 'category', 'Category', 'string', 'TEXT', 0, 6, 0, 1
+  '0101K09UT6B301JHSF4U01JHSF', '0101K09UT6AS01820C8L01820C', 'category', 'Category', 'string', 'TEXT', 0, 6, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KM200E5NUGE00E5NU', '0101K09T7KLQ01820C8L01820C', 'read_time', 'Read Time', 'string', 'TEXT', 0, 7, 0, 1
+  '0101K09UT6B400E5NUGE00E5NU', '0101K09UT6AS01820C8L01820C', 'read_time', 'Read Time', 'string', 'TEXT', 0, 7, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KM300EOTFNU00EOTF', '0101K09T7KLQ01820C8L01820C', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 8, 0, 1
+  '0101K09UT6B500EOTFNU00EOTF', '0101K09UT6AS01820C8L01820C', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 8, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KM401RIEUP601RIEU', '0101K09T7KLQ01820C8L01820C', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 9, 0, 1
+  '0101K09UT6B601RIEUP601RIEU', '0101K09UT6AS01820C8L01820C', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 9, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KM501U1GK9F01U1GK', '0101K09T7KLQ01820C8L01820C', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 10, 0, 1
+  '0101K09UT6B701U1GK9F01U1GK', '0101K09UT6AS01820C8L01820C', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 10, 0, 1
 );
 
 CREATE TABLE IF NOT EXISTS "ec_blog_posts" (
@@ -573,27 +573,27 @@ CREATE TABLE IF NOT EXISTS "ec_blog_posts" (
 -- Collection: testimonials
 -- ============================================================
 INSERT OR REPLACE INTO _emdash_collections (id, slug, label, label_singular, supports, source, search_config, has_seo, comments_enabled, comments_moderation, comments_closed_after_days, comments_auto_approve_users) VALUES (
-  '0101K09T7KM6004O3I0J004O3I', 'testimonials', 'Testimonials', 'Testimonial',
+  '0101K09UT6B8004O3I0J004O3I', 'testimonials', 'Testimonials', 'Testimonial',
   '["drafts","revisions","search"]', 'seed', '{"enabled":true}', 0, 0, 'first_time', 90, 1
 );
 
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KM700CVMNBI00CVMN', '0101K09T7KM6004O3I0J004O3I', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
+  '0101K09UT6B900CVMNBI00CVMN', '0101K09UT6B8004O3I0J004O3I', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KM800CTCUCM00CTCU', '0101K09T7KM6004O3I0J004O3I', 'quote', 'Quote', 'text', 'TEXT', 0, 1, 0, 1
+  '0101K09UT6BA00CTCUCM00CTCU', '0101K09UT6B8004O3I0J004O3I', 'quote', 'Quote', 'text', 'TEXT', 0, 1, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KM9002QQIDH002QQI', '0101K09T7KM6004O3I0J004O3I', 'author', 'Author', 'string', 'TEXT', 0, 2, 0, 1
+  '0101K09UT6BB002QQIDH002QQI', '0101K09UT6B8004O3I0J004O3I', 'author', 'Author', 'string', 'TEXT', 0, 2, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KMA00G3IR7F00G3IR', '0101K09T7KM6004O3I0J004O3I', 'city', 'City', 'string', 'TEXT', 0, 3, 0, 1
+  '0101K09UT6BC00G3IR7F00G3IR', '0101K09UT6B8004O3I0J004O3I', 'city', 'City', 'string', 'TEXT', 0, 3, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KMB00GPBME300GPBM', '0101K09T7KM6004O3I0J004O3I', 'rating', 'Rating', 'integer', 'INTEGER', 0, 4, 0, 1
+  '0101K09UT6BD00GPBME300GPBM', '0101K09UT6B8004O3I0J004O3I', 'rating', 'Rating', 'integer', 'INTEGER', 0, 4, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KMC013GNABD013GNA', '0101K09T7KM6004O3I0J004O3I', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 5, 0, 1
+  '0101K09UT6BE013GNABD013GNA', '0101K09UT6B8004O3I0J004O3I', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 5, 0, 1
 );
 
 CREATE TABLE IF NOT EXISTS "ec_testimonials" (
@@ -626,21 +626,21 @@ CREATE TABLE IF NOT EXISTS "ec_testimonials" (
 -- Collection: faqs
 -- ============================================================
 INSERT OR REPLACE INTO _emdash_collections (id, slug, label, label_singular, supports, source, search_config, has_seo, comments_enabled, comments_moderation, comments_closed_after_days, comments_auto_approve_users) VALUES (
-  '0101K09T7KMD00J6404400J640', 'faqs', 'FAQs', 'FAQ',
+  '0101K09UT6BF00J6404400J640', 'faqs', 'FAQs', 'FAQ',
   '["drafts","revisions","search"]', 'seed', '{"enabled":true}', 0, 0, 'first_time', 90, 1
 );
 
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KME01UIBDV501UIBD', '0101K09T7KMD00J6404400J640', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
+  '0101K09UT6BG01UIBDV501UIBD', '0101K09UT6BF00J6404400J640', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KMF01F5IP5T01F5IP', '0101K09T7KMD00J6404400J640', 'question', 'Question', 'string', 'TEXT', 0, 1, 0, 1
+  '0101K09UT6BH01F5IP5T01F5IP', '0101K09UT6BF00J6404400J640', 'question', 'Question', 'string', 'TEXT', 0, 1, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KMG013REBD5013REB', '0101K09T7KMD00J6404400J640', 'answer', 'Answer', 'text', 'TEXT', 0, 2, 0, 1
+  '0101K09UT6BI013REBD5013REB', '0101K09UT6BF00J6404400J640', 'answer', 'Answer', 'text', 'TEXT', 0, 2, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KMH01JCAKJM01JCAK', '0101K09T7KMD00J6404400J640', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 3, 0, 1
+  '0101K09UT6BJ01JCAKJM01JCAK', '0101K09UT6BF00J6404400J640', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 3, 0, 1
 );
 
 CREATE TABLE IF NOT EXISTS "ec_faqs" (
@@ -671,30 +671,30 @@ CREATE TABLE IF NOT EXISTS "ec_faqs" (
 -- Collection: service_pages
 -- ============================================================
 INSERT OR REPLACE INTO _emdash_collections (id, slug, label, label_singular, supports, source, search_config, has_seo, comments_enabled, comments_moderation, comments_closed_after_days, comments_auto_approve_users) VALUES (
-  '0101K09T7KMI019E4C9R019E4C', 'service_pages', 'Service Pages', 'Service Page',
+  '0101K09UT6BK019E4C9R019E4C', 'service_pages', 'Service Pages', 'Service Page',
   '["drafts","revisions","search"]', 'seed', '{"enabled":true}', 0, 0, 'first_time', 90, 1
 );
 
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KMJ017PJGPI017PJG', '0101K09T7KMI019E4C9R019E4C', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
+  '0101K09UT6BL017PJGPI017PJG', '0101K09UT6BK019E4C9R019E4C', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KMK00CG8GN800CG8G', '0101K09T7KMI019E4C9R019E4C', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 1, 0, 1
+  '0101K09UT6BM00CG8GN800CG8G', '0101K09UT6BK019E4C9R019E4C', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 1, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KML01FN21RK01FN21', '0101K09T7KMI019E4C9R019E4C', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 2, 0, 1
+  '0101K09UT6BN01FN21RK01FN21', '0101K09UT6BK019E4C9R019E4C', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 2, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KMM016EF8EQ016EF8', '0101K09T7KMI019E4C9R019E4C', 'lead', 'Lead', 'text', 'TEXT', 0, 3, 0, 1
+  '0101K09UT6BO016EF8EQ016EF8', '0101K09UT6BK019E4C9R019E4C', 'lead', 'Lead', 'text', 'TEXT', 0, 3, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KMN014P6TKH014P6T', '0101K09T7KMI019E4C9R019E4C', 'content', 'Content', 'portableText', 'TEXT', 0, 4, 0, 1
+  '0101K09UT6BP014P6TKH014P6T', '0101K09UT6BK019E4C9R019E4C', 'content', 'Content', 'portableText', 'TEXT', 0, 4, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KMO01HJN8PG01HJN8', '0101K09T7KMI019E4C9R019E4C', 'hero_image_url', 'Hero Image Url', 'string', 'TEXT', 0, 5, 0, 1
+  '0101K09UT6BQ01HJN8PG01HJN8', '0101K09UT6BK019E4C9R019E4C', 'hero_image_url', 'Hero Image Url', 'string', 'TEXT', 0, 5, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KMP012OAJQ9012OAJ', '0101K09T7KMI019E4C9R019E4C', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 6, 0, 1
+  '0101K09UT6BR012OAJQ9012OAJ', '0101K09UT6BK019E4C9R019E4C', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 6, 0, 1
 );
 
 CREATE TABLE IF NOT EXISTS "ec_service_pages" (
@@ -728,33 +728,33 @@ CREATE TABLE IF NOT EXISTS "ec_service_pages" (
 -- Collection: brand_pages
 -- ============================================================
 INSERT OR REPLACE INTO _emdash_collections (id, slug, label, label_singular, supports, source, search_config, has_seo, comments_enabled, comments_moderation, comments_closed_after_days, comments_auto_approve_users) VALUES (
-  '0101K09T7KMQ00A8MF6D00A8MF', 'brand_pages', 'Brand Pages', 'Brand Page',
+  '0101K09UT6BS00A8MF6D00A8MF', 'brand_pages', 'Brand Pages', 'Brand Page',
   '["drafts","revisions","search"]', 'seed', '{"enabled":true}', 0, 0, 'first_time', 90, 1
 );
 
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KMR009IRLL0009IRL', '0101K09T7KMQ00A8MF6D00A8MF', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
+  '0101K09UT6BT009IRLL0009IRL', '0101K09UT6BS00A8MF6D00A8MF', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KMS01JR17JA01JR17', '0101K09T7KMQ00A8MF6D00A8MF', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 1, 0, 1
+  '0101K09UT6BU01JR17JA01JR17', '0101K09UT6BS00A8MF6D00A8MF', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 1, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KMT00LGFN5Q00LGFN', '0101K09T7KMQ00A8MF6D00A8MF', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 2, 0, 1
+  '0101K09UT6BV00LGFN5Q00LGFN', '0101K09UT6BS00A8MF6D00A8MF', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 2, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KMU00KUOQ5C00KUOQ', '0101K09T7KMQ00A8MF6D00A8MF', 'lead', 'Lead', 'text', 'TEXT', 0, 3, 0, 1
+  '0101K09UT6C000KUOQ5C00KUOQ', '0101K09UT6BS00A8MF6D00A8MF', 'lead', 'Lead', 'text', 'TEXT', 0, 3, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KMV01S70PJV01S70P', '0101K09T7KMQ00A8MF6D00A8MF', 'content', 'Content', 'portableText', 'TEXT', 0, 4, 0, 1
+  '0101K09UT6C101S70PJV01S70P', '0101K09UT6BS00A8MF6D00A8MF', 'content', 'Content', 'portableText', 'TEXT', 0, 4, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KN000NE8T3U00NE8T', '0101K09T7KMQ00A8MF6D00A8MF', 'hero_image_url', 'Hero Image Url', 'string', 'TEXT', 0, 5, 0, 1
+  '0101K09UT6C200NE8T3U00NE8T', '0101K09UT6BS00A8MF6D00A8MF', 'hero_image_url', 'Hero Image Url', 'string', 'TEXT', 0, 5, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KN101F03NE501F03N', '0101K09T7KMQ00A8MF6D00A8MF', 'brand_name', 'Brand Name', 'string', 'TEXT', 0, 6, 0, 1
+  '0101K09UT6C301F03NE501F03N', '0101K09UT6BS00A8MF6D00A8MF', 'brand_name', 'Brand Name', 'string', 'TEXT', 0, 6, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KN200SSBJR500SSBJ', '0101K09T7KMQ00A8MF6D00A8MF', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 7, 0, 1
+  '0101K09UT6C400SSBJR500SSBJ', '0101K09UT6BS00A8MF6D00A8MF', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 7, 0, 1
 );
 
 CREATE TABLE IF NOT EXISTS "ec_brand_pages" (
@@ -789,33 +789,33 @@ CREATE TABLE IF NOT EXISTS "ec_brand_pages" (
 -- Collection: location_pages
 -- ============================================================
 INSERT OR REPLACE INTO _emdash_collections (id, slug, label, label_singular, supports, source, search_config, has_seo, comments_enabled, comments_moderation, comments_closed_after_days, comments_auto_approve_users) VALUES (
-  '0101K09T7KN301RTVB5701RTVB', 'location_pages', 'Location Pages', 'Location Page',
+  '0101K09UT6C501RTVB5701RTVB', 'location_pages', 'Location Pages', 'Location Page',
   '["drafts","revisions","search"]', 'seed', '{"enabled":true}', 0, 0, 'first_time', 90, 1
 );
 
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KN401TRGOLO01TRGO', '0101K09T7KN301RTVB5701RTVB', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
+  '0101K09UT6C601TRGOLO01TRGO', '0101K09UT6C501RTVB5701RTVB', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KN5011OUFPU011OUF', '0101K09T7KN301RTVB5701RTVB', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 1, 0, 1
+  '0101K09UT6C7011OUFPU011OUF', '0101K09UT6C501RTVB5701RTVB', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 1, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KN601EBM8SU01EBM8', '0101K09T7KN301RTVB5701RTVB', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 2, 0, 1
+  '0101K09UT6C801EBM8SU01EBM8', '0101K09UT6C501RTVB5701RTVB', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 2, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KN701NL9KNS01NL9K', '0101K09T7KN301RTVB5701RTVB', 'lead', 'Lead', 'text', 'TEXT', 0, 3, 0, 1
+  '0101K09UT6C901NL9KNS01NL9K', '0101K09UT6C501RTVB5701RTVB', 'lead', 'Lead', 'text', 'TEXT', 0, 3, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KN8005368P7005368', '0101K09T7KN301RTVB5701RTVB', 'content', 'Content', 'portableText', 'TEXT', 0, 4, 0, 1
+  '0101K09UT6CA005368P7005368', '0101K09UT6C501RTVB5701RTVB', 'content', 'Content', 'portableText', 'TEXT', 0, 4, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KN901B2QFH601B2QF', '0101K09T7KN301RTVB5701RTVB', 'hero_image_url', 'Hero Image Url', 'string', 'TEXT', 0, 5, 0, 1
+  '0101K09UT6CB01B2QFH601B2QF', '0101K09UT6C501RTVB5701RTVB', 'hero_image_url', 'Hero Image Url', 'string', 'TEXT', 0, 5, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KNA01DN9V9L01DN9V', '0101K09T7KN301RTVB5701RTVB', 'location_name', 'Location Name', 'string', 'TEXT', 0, 6, 0, 1
+  '0101K09UT6CC01DN9V9L01DN9V', '0101K09UT6C501RTVB5701RTVB', 'location_name', 'Location Name', 'string', 'TEXT', 0, 6, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KNB00DFKKNJ00DFKK', '0101K09T7KN301RTVB5701RTVB', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 7, 0, 1
+  '0101K09UT6CD00DFKKNJ00DFKK', '0101K09UT6C501RTVB5701RTVB', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 7, 0, 1
 );
 
 CREATE TABLE IF NOT EXISTS "ec_location_pages" (
@@ -850,30 +850,30 @@ CREATE TABLE IF NOT EXISTS "ec_location_pages" (
 -- Collection: resource_pages
 -- ============================================================
 INSERT OR REPLACE INTO _emdash_collections (id, slug, label, label_singular, supports, source, search_config, has_seo, comments_enabled, comments_moderation, comments_closed_after_days, comments_auto_approve_users) VALUES (
-  '0101K09T7KNC01N27ROE01N27R', 'resource_pages', 'Resource Pages', 'Resource Page',
+  '0101K09UT6CE01N27ROE01N27R', 'resource_pages', 'Resource Pages', 'Resource Page',
   '["drafts","revisions","search"]', 'seed', '{"enabled":true}', 0, 0, 'first_time', 90, 1
 );
 
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KND01DN8DJF01DN8D', '0101K09T7KNC01N27ROE01N27R', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
+  '0101K09UT6CF01DN8DJF01DN8D', '0101K09UT6CE01N27ROE01N27R', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KNE00JJEE0500JJEE', '0101K09T7KNC01N27ROE01N27R', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 1, 0, 1
+  '0101K09UT6CG00JJEE0500JJEE', '0101K09UT6CE01N27ROE01N27R', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 1, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KNF00B0LOV900B0LO', '0101K09T7KNC01N27ROE01N27R', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 2, 0, 1
+  '0101K09UT6CH00B0LOV900B0LO', '0101K09UT6CE01N27ROE01N27R', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 2, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KNG00Q86KNT00Q86K', '0101K09T7KNC01N27ROE01N27R', 'lead', 'Lead', 'text', 'TEXT', 0, 3, 0, 1
+  '0101K09UT6CI00Q86KNT00Q86K', '0101K09UT6CE01N27ROE01N27R', 'lead', 'Lead', 'text', 'TEXT', 0, 3, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KNH00RM3SBI00RM3S', '0101K09T7KNC01N27ROE01N27R', 'content', 'Content', 'portableText', 'TEXT', 0, 4, 0, 1
+  '0101K09UT6CJ00RM3SBI00RM3S', '0101K09UT6CE01N27ROE01N27R', 'content', 'Content', 'portableText', 'TEXT', 0, 4, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KNI00VV514J00VV51', '0101K09T7KNC01N27ROE01N27R', 'hero_image_url', 'Hero Image Url', 'string', 'TEXT', 0, 5, 0, 1
+  '0101K09UT6CK00VV514J00VV51', '0101K09UT6CE01N27ROE01N27R', 'hero_image_url', 'Hero Image Url', 'string', 'TEXT', 0, 5, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KNJ00RL4MHC00RL4M', '0101K09T7KNC01N27ROE01N27R', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 6, 0, 1
+  '0101K09UT6CL00RL4MHC00RL4M', '0101K09UT6CE01N27ROE01N27R', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 6, 0, 1
 );
 
 CREATE TABLE IF NOT EXISTS "ec_resource_pages" (
@@ -907,30 +907,30 @@ CREATE TABLE IF NOT EXISTS "ec_resource_pages" (
 -- Collection: condition_pages
 -- ============================================================
 INSERT OR REPLACE INTO _emdash_collections (id, slug, label, label_singular, supports, source, search_config, has_seo, comments_enabled, comments_moderation, comments_closed_after_days, comments_auto_approve_users) VALUES (
-  '0101K09T7KNK018IVQ8V018IVQ', 'condition_pages', 'Condition Pages', 'Condition Page',
+  '0101K09UT6CM018IVQ8V018IVQ', 'condition_pages', 'Condition Pages', 'Condition Page',
   '["drafts","revisions","search"]', 'seed', '{"enabled":true}', 0, 0, 'first_time', 90, 1
 );
 
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KNL01GSTQ4C01GSTQ', '0101K09T7KNK018IVQ8V018IVQ', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
+  '0101K09UT6CN01GSTQ4C01GSTQ', '0101K09UT6CM018IVQ8V018IVQ', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KNM01AJC80201AJC8', '0101K09T7KNK018IVQ8V018IVQ', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 1, 0, 1
+  '0101K09UT6CO01AJC80201AJC8', '0101K09UT6CM018IVQ8V018IVQ', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 1, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KNN01A8I6H601A8I6', '0101K09T7KNK018IVQ8V018IVQ', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 2, 0, 1
+  '0101K09UT6CP01A8I6H601A8I6', '0101K09UT6CM018IVQ8V018IVQ', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 2, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KNO001IMQA0001IMQ', '0101K09T7KNK018IVQ8V018IVQ', 'lead', 'Lead', 'text', 'TEXT', 0, 3, 0, 1
+  '0101K09UT6CQ001IMQA0001IMQ', '0101K09UT6CM018IVQ8V018IVQ', 'lead', 'Lead', 'text', 'TEXT', 0, 3, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KNP01EEMKKL01EEMK', '0101K09T7KNK018IVQ8V018IVQ', 'content', 'Content', 'portableText', 'TEXT', 0, 4, 0, 1
+  '0101K09UT6CR01EEMKKL01EEMK', '0101K09UT6CM018IVQ8V018IVQ', 'content', 'Content', 'portableText', 'TEXT', 0, 4, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KNQ01TT3OOM01TT3O', '0101K09T7KNK018IVQ8V018IVQ', 'hero_image_url', 'Hero Image Url', 'string', 'TEXT', 0, 5, 0, 1
+  '0101K09UT6CS01TT3OOM01TT3O', '0101K09UT6CM018IVQ8V018IVQ', 'hero_image_url', 'Hero Image Url', 'string', 'TEXT', 0, 5, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KNR004L6SHF004L6S', '0101K09T7KNK018IVQ8V018IVQ', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 6, 0, 1
+  '0101K09UT6CT004L6SHF004L6S', '0101K09UT6CM018IVQ8V018IVQ', 'sort_order', 'Sort Order', 'integer', 'INTEGER', 0, 6, 0, 1
 );
 
 CREATE TABLE IF NOT EXISTS "ec_condition_pages" (
@@ -964,21 +964,21 @@ CREATE TABLE IF NOT EXISTS "ec_condition_pages" (
 -- Collection: legal_pages
 -- ============================================================
 INSERT OR REPLACE INTO _emdash_collections (id, slug, label, label_singular, supports, source, search_config, has_seo, comments_enabled, comments_moderation, comments_closed_after_days, comments_auto_approve_users) VALUES (
-  '0101K09T7KNS01C1P9JV01C1P9', 'legal_pages', 'Legal Pages', 'Legal Page',
+  '0101K09UT6CU01C1P9JV01C1P9', 'legal_pages', 'Legal Pages', 'Legal Page',
   '["drafts","revisions","search"]', 'seed', '{"enabled":true}', 0, 0, 'first_time', 90, 1
 );
 
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KNT014VJUJE014VJU', '0101K09T7KNS01C1P9JV01C1P9', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
+  '0101K09UT6CV014VJUJE014VJU', '0101K09UT6CU01C1P9JV01C1P9', 'title', 'Title', 'string', 'TEXT', 1, 0, 1, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KNU01B7EL5401B7EL', '0101K09T7KNS01C1P9JV01C1P9', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 1, 0, 1
+  '0101K09UT6D001B7EL5401B7EL', '0101K09UT6CU01C1P9JV01C1P9', 'meta_title', 'Meta Title', 'string', 'TEXT', 0, 1, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KNV00GJMCLO00GJMC', '0101K09T7KNS01C1P9JV01C1P9', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 2, 0, 1
+  '0101K09UT6D100GJMCLO00GJMC', '0101K09UT6CU01C1P9JV01C1P9', 'meta_description', 'Meta Description', 'text', 'TEXT', 0, 2, 0, 1
 );
 INSERT OR REPLACE INTO _emdash_fields (id, collection_id, slug, label, type, column_type, required, sort_order, searchable, translatable) VALUES (
-  '0101K09T7KO000MC5JMD00MC5J', '0101K09T7KNS01C1P9JV01C1P9', 'content', 'Content', 'portableText', 'TEXT', 0, 3, 0, 1
+  '0101K09UT6D200MC5JMD00MC5J', '0101K09UT6CU01C1P9JV01C1P9', 'content', 'Content', 'portableText', 'TEXT', 0, 3, 0, 1
 );
 
 CREATE TABLE IF NOT EXISTS "ec_legal_pages" (
@@ -8521,51 +8521,6 @@ Well, I just turned 60 and decided to have my hearing tested. The good news is I
 
 [Dave](https://goo.gl/maps/G9wDNqBsqBmuYLeM6)', '/assets/img/Audiologists-in-Pittsford-NY-7dc9f43b.webp', 'Pittsford', 4);
 
-INSERT OR REPLACE INTO "ec_location_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "location_name", "sort_order") VALUES ('ear-wax-removal-in-greece-ny', 'ear-wax-removal-in-greece-ny', 'published', 'en', 1, 'Ear Wax Removal in Greece, NY', datetime('now'), datetime('now'), datetime('now'), 'Ear Wax Removal in Greece, NY | Ontario Hearing Center', 'Meta Description: Discover professional ear wax removal in Greece, NY. Our expert audiologists in Ontario Hearing Center ensure safe and effective ear care for improved hearing.', 'Ear wax, medically known as cerumen, is a natural and necessary substance produced by our ears. It serves a vital role in keeping our ears clean and healthy.', 'Ear wax, medically known as cerumen, is a natural and necessary substance produced by our ears. It serves a vital role in keeping our ears clean and healthy.
-
-However, ear wax can become problematic when it accumulates and creates a blockage.
-
-In this article, we’ll delve into earwax blockage, its diagnosis, and treatment options. We’ll also explore the role of an audiologist in safe **earwax removal in Greece, NY**.
-
-[Ontario Hearing Center](https://ontariohearing.com/) has audiologists who can help you in managing ear wax-related concerns.
-
-## Ear Wax Blockage: What Is It?
-
-Ear wax blockage occurs when an excessive amount of ear wax accumulates in the ear canal. This can happen for various reasons, including the body’s natural production of ear wax, improper ear-cleaning techniques, or the use of hearing aids or earplugs that push wax deeper into the ear.
-
-When ear wax builds up and becomes impacted, it can lead to discomfort, hearing problems, and even infection.
-
-## Diagnosis of Ear Wax Blockage
-
-If you suspect you have ear wax blockage, it’s essential to consult an audiologist or an ear, nose, and throat (ENT) specialist. They can diagnose the condition through a visual examination of your ear using specialized tools like an otoscope.
-
-This examination helps determine the extent of the blockage and whether any complications, such as infection, are present.
-
-## Treatment Options
-
-The treatment of ear wax blockage depends on the severity of the condition. In mild cases, an audiologist may recommend over-the-counter earwax removal drops. These drops soften the wax, making it easier for the body to naturally expel it.
-
-However, in more severe cases, professional intervention may be required.
-
-## The Role of an Audiologist
-
-Audiologists are trained professionals who specialize in diagnosing and treating hearing and balance disorders, including ear wax blockage. Their role in managing ear wax includes:
-
-- Diagnosis: Audiologists can visually examine the ear canal using specialized equipment to determine the presence and severity of earwax blockage.
-- Treatment: Depending on the diagnosis, audiologists can recommend appropriate treatments, such as ear wax removal drops or in-office procedures.
-- Safe Removal: In cases where home treatments are insufficient, audiologists can safely remove impacted ear wax using specialized tools and techniques.
-- Hearing Care: Audiologists can also assess and address any hearing issues that may have arisen due to ear wax blockage.
-
-## Ear Wax Removal in Greece, NY: Ontario Hearing Center
-
-Ear wax blockage is a common issue that can lead to discomfort and hearing problems if left untreated. Proper diagnosis and treatment by an audiologist or healthcare professional are crucial to safely manage this condition.
-
-While home remedies and over-the-counter drops can be effective for mild cases, it’s essential to avoid practices that can exacerbate the problem.
-
-Always consult an audiologist in Ontario Hearing Center for persistent or severe earwax blockages to ensure your ears remain healthy and your hearing is preserved. Our audiologists are trained to perform expert [earwax removal in Greece, NY](https://www.google.com/maps?cid=9213821493223506062).
-
-[Contact us](https://ontariohearing.com/) today to schedule an appointment!', '/assets/img/Earwax-Removal-in-Greece-NY-77849ae2.webp', 'Rochester', 5);
-
 INSERT OR REPLACE INTO "ec_location_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "location_name", "sort_order") VALUES ('hearing-aids-in-brighton-ny', 'hearing-aids-in-brighton-ny', 'published', 'en', 1, 'Hearing Aids in Brighton, NY', datetime('now'), datetime('now'), datetime('now'), 'Hearing Aids in Brighton, NY | Ontario Hearing Center', 'Transform your hearing experience with premium hearing aids in Brighton, NY, at Ontario Hearing Center. Our skilled professionals are dedicated to optimizing your auditory well-being. Explore a variety of personalized hearing solutions and embark on the journey to better hearing. Book a consultation today to discover the ideal hearing aid for your needs.', 'If you’ve been experiencing difficulty hearing, you’re not alone. Millions of people worldwide suffer from hearing loss, but the good news is that modern technology has made it easier than ever to improve your hearing and enhance your quality of life.', 'If you’ve been experiencing difficulty hearing, you’re not alone. Millions of people worldwide suffer from hearing loss, but the good news is that modern technology has made it easier than ever to improve your hearing and enhance your quality of life.
 
 In this blog, we’ll explain what hearing aids are, how they work, and the incredible benefits they offer.
@@ -8607,7 +8562,7 @@ If you’re experiencing any signs of hearing loss, don’t hesitate to reach ou
 
 Ontario Hearing Center provides a wide selection of [hearing aids in Brighton, NY](https://www.google.com/maps?cid=9213821493223506062), and nearby locations.
 
-[Contact us](https://ontariohearing.com/contact-us/) today to schedule a consultation with our audiologists!', '/assets/img/Hearing-Aids-in-Brighton-NY-1-81c65029.webp', 'Rochester', 6);
+[Contact us](https://ontariohearing.com/contact-us/) today to schedule a consultation with our audiologists!', '/assets/img/Hearing-Aids-in-Brighton-NY-1-81c65029.webp', 'Rochester', 5);
 
 INSERT OR REPLACE INTO "ec_location_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "location_name", "sort_order") VALUES ('hearing-aids-in-fairport-ny', 'hearing-aids-in-fairport-ny', 'published', 'en', 1, 'Hearing Aids in Fairport, NY', datetime('now'), datetime('now'), datetime('now'), 'Hearing Aids in Fairport, NY - Ontario', 'Recent advancements in hearing aid technology have revolutionized the way we address hearing loss. Digital hearing aids are equipped with sophisticated', 'Hearing aids do more than make sounds louder. They help you stay engaged, communicate with less effort, and feel more confident in everyday situations. From conversations at home to busy restaurants and phone calls, the right hearing aids can make daily life feel clearer and easier.', 'Are you tired of missing out on conversations and struggling to hear the world around you? Hearing loss can be a challenging and isolating experience, but modern technology has brought forth a range of solutions to help you regain your sense of hearing and reconnect with life. Audiologists at Ontario Hearing Center in Rochester, NY, can recommend cutting-edge hearing aids to transform the way people experience sound. In this article, we will explore the benefits of [**hearing aids in Fairport, NY**](https://ontariohearing.com/), the different types available, and how they can significantly enhance the quality of life for individuals dealing with hearing impairment.
 
@@ -8692,7 +8647,7 @@ My entire family (3 generations) have been going to Ontario Hearing Instruments 
 
 Well, I just turned 60 and decided to have my hearing tested. The good news is I needed hearing aids. I say good news because I can’t believe how much better I can hear now. our audiologist was so knowledgeable and helped me select the proper hearing aids for my hearing loss. No more saying “What?”, and I can finally hear the TV at a normal volume. Fantastic service and support from a well run office.
 
-[Dave](https://goo.gl/maps/G9wDNqBsqBmuYLeM6)', '/assets/img/Hearing-Aids-in-Fairport-NY-7afbdb4a.webp', 'Fairport', 7);
+[Dave](https://goo.gl/maps/G9wDNqBsqBmuYLeM6)', '/assets/img/Hearing-Aids-in-Fairport-NY-7afbdb4a.webp', 'Fairport', 6);
 
 INSERT OR REPLACE INTO "ec_location_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "location_name", "sort_order") VALUES ('hearing-aids-in-greece-ny', 'hearing-aids-in-greece-ny', 'published', 'en', 1, 'Hearing Aids in Greece, NY', datetime('now'), datetime('now'), datetime('now'), 'Hearing Aids in Greece, NY | Ontario Hearing Center', 'Experience exceptional audiology services at Ontario Hearing Center. Our skilled audiologists offer tailored solutions for your hearing needs, from assessments to cutting-edge hearing aids in Greece, NY. Rediscover the world of sound - schedule your appointment now.', 'This article explores the role of hearing aids shedding light on their impact and the resources available for those seeking assistance.', 'The advancement of technology has brought about significant improvements in the field of audiology, particularly in the form of hearing aids. These small yet powerful devices have become a lifeline for individuals with hearing impairments, enabling them to reconnect with the world around them and enjoy a better quality of life.
 
@@ -8738,7 +8693,7 @@ Hearing aids have brought about a transformational shift in the lives of individ
 
 Ontario Hearing Center’s commitment to fostering a supportive environment, coupled with advancements in audiology, has paved the way for improved communication, enhanced social interactions, and better overall well-being for residents of [Greece, NY](https://www.google.com/maps?cid=9213821493223506062), and nearby locations.
 
-[Contact us](https://ontariohearing.com/contact-us/) today to schedule a consultation with our audiologists!', '/assets/img/Audiologists-in-Greece-NY-725df04e.webp', 'Rochester', 8);
+[Contact us](https://ontariohearing.com/contact-us/) today to schedule a consultation with our audiologists!', '/assets/img/Audiologists-in-Greece-NY-725df04e.webp', 'Rochester', 7);
 
 INSERT OR REPLACE INTO "ec_location_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "location_name", "sort_order") VALUES ('hearing-aids-in-pittsford-ny', 'hearing-aids-in-pittsford-ny', 'published', 'en', 1, 'Hearing Aids in Pittsford, NY', datetime('now'), datetime('now'), datetime('now'), 'Hearing Aids in Pittsford, NY | Ontario Hearing Center', 'Meta Description: Explore a wide selection of hearing aids in Pittsford, NY, at Ontario Hearing Center. Discover personalized solutions for better hearing and a higher quality of life. Schedule your consultation today.', 'Hearing loss is a common yet often underestimated condition that can significantly impact an individual’s quality of life.', 'Hearing loss is a common yet often underestimated condition that can significantly impact an individual’s quality of life.
 
@@ -8786,7 +8741,7 @@ The journey from hearing loss to improved hearing is made smoother through the d
 
 We provide a wide selection of [hearing aids in Pittsford, NY](https://www.google.com/maps?cid=9213821493223506062), and nearby locations.
 
-[Contact us](https://ontariohearing.com/contact-us/) today to schedule a consultation with our audiologists!', '/assets/img/Hearing-Aids-in-Pittsford-NY-08c319cc.webp', 'Rochester', 9);
+[Contact us](https://ontariohearing.com/contact-us/) today to schedule a consultation with our audiologists!', '/assets/img/Hearing-Aids-in-Pittsford-NY-08c319cc.webp', 'Rochester', 8);
 
 INSERT OR REPLACE INTO "ec_location_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "location_name", "sort_order") VALUES ('hearing-tests-in-brighton-ny', 'hearing-tests-in-brighton-ny', 'published', 'en', 1, 'Hearing Tests in Brighton, NY', datetime('now'), datetime('now'), datetime('now'), 'Hearing Tests in Brighton, NY | Ontario Hearing Center', 'Get comprehensive hearing tests in Brighton, NY, at Ontario Hearing Center. Ensure your auditory health with our expert evaluations. Schedule your appointment today.', 'Hearing tests represent a vital checkpoint in our journey through the world of sound. These often-overlooked evaluations are the key to understanding and safeguarding our auditory health.', 'Hearing tests represent a vital checkpoint in our journey through the world of sound. These often-overlooked evaluations are the key to understanding and safeguarding our auditory health.
 
@@ -8828,7 +8783,7 @@ Hearing tests are not just for the elderly or those with obvious hearing issues.
 
 Regular hearing tests can catch problems early, potentially preventing further deterioration and improving your quality of life.
 
-[Schedule a hearing test](https://ontariohearing.com/contact-us/) with Ontario Hearing Center today! We provide hearing tests in Brighton, NY.', '/assets/img/Hearing-Tests-in-Brighton-NY-5f6e7bd8.webp', 'Rochester', 10);
+[Schedule a hearing test](https://ontariohearing.com/contact-us/) with Ontario Hearing Center today! We provide hearing tests in Brighton, NY.', '/assets/img/Hearing-Tests-in-Brighton-NY-5f6e7bd8.webp', 'Rochester', 9);
 
 INSERT OR REPLACE INTO "ec_location_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "location_name", "sort_order") VALUES ('hearing-tests-in-fairport-ny', 'hearing-tests-in-fairport-ny', 'published', 'en', 1, 'Hearing Tests in Fairport, NY', datetime('now'), datetime('now'), datetime('now'), 'Hearing Tests in Fairport, NY | Ontario Hearing Center', 'Discover comprehensive hearing tests in Fairport, NY, at Ontario Hearing Center. Uncover your hearing health with expert evaluations and personalized solutions.', 'Hearing tests, also known as audiometric evaluations, are specialized assessments conducted to evaluate the auditory function of an individual. These tests are essential tools for understanding the state of one’s hearing health and detecting any potential issues.', 'Hearing tests, also known as audiometric evaluations, are specialized assessments conducted to evaluate the auditory function of an individual. These tests are essential tools for understanding the state of one’s hearing health and detecting any potential issues.
 
@@ -8878,7 +8833,7 @@ The process of undergoing a hearing test is painless and straightforward:
 
 Hearing tests are an essential component of overall health maintenance, especially as we age. They provide early detection of hearing problems, which can have a profound impact on our quality of life.
 
-Regular [hearing tests in Fairport, NY](https://www.google.com/maps?cid=9213821493223506062), can make the difference between hearing your loved ones’ voices clearly or missing out on the beauty of your favorite music. If you haven’t had a hearing test in some time, consider [scheduling](https://ontariohearing.com/contact-us/) one today at Ontario Hearing Center.', '/assets/img/Hearing-Tests-in-Fairport-NY-2de32450.webp', 'Rochester', 11);
+Regular [hearing tests in Fairport, NY](https://www.google.com/maps?cid=9213821493223506062), can make the difference between hearing your loved ones’ voices clearly or missing out on the beauty of your favorite music. If you haven’t had a hearing test in some time, consider [scheduling](https://ontariohearing.com/contact-us/) one today at Ontario Hearing Center.', '/assets/img/Hearing-Tests-in-Fairport-NY-2de32450.webp', 'Rochester', 10);
 
 INSERT OR REPLACE INTO "ec_location_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "location_name", "sort_order") VALUES ('hearing-tests-in-greece-ny', 'hearing-tests-in-greece-ny', 'published', 'en', 1, 'Hearing Tests in Greece, NY', datetime('now'), datetime('now'), datetime('now'), 'Hearing Tests in Greece, NY | Ontario Hearing Center', 'Discover comprehensive hearing tests in Greece, NY. Preserve your auditory health with expert evaluations at Ontario Hearing Center.', 'Hearing tests, also known as audiometric evaluations, are not just for the elderly. They are essential for people of all ages. Untreated hearing loss can lead to a cascade of physical and emotional consequences.', 'Hearing tests, also known as audiometric evaluations, are not just for the elderly. They are essential for people of all ages. Untreated hearing loss can lead to a cascade of physical and emotional consequences.
 
@@ -8929,7 +8884,7 @@ Now that you understand the importance of hearing tests, it’s time to take act
 
 Our ability to hear is a precious gift that should not be taken for granted. So, don’t wait – schedule a hearing test today at Ontario Hearing Center. We provide comprehensive [hearing tests in Greece, NY](https://www.google.com/maps?cid=9213821493223506062), and nearby locations.
 
-[Contact us](https://ontariohearing.com/contact-us/) today to schedule an appointment!', '/assets/img/Hearing-Tests-in-Greece-NY-f56a0e3b.webp', 'Rochester', 12);
+[Contact us](https://ontariohearing.com/contact-us/) today to schedule an appointment!', '/assets/img/Hearing-Tests-in-Greece-NY-f56a0e3b.webp', 'Rochester', 11);
 
 INSERT OR REPLACE INTO "ec_location_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "location_name", "sort_order") VALUES ('tinnitus-in-brighton-ny', 'tinnitus-in-brighton-ny', 'published', 'en', 1, 'Tinnitus in Brighton, NY', datetime('now'), datetime('now'), datetime('now'), 'Tinnitus in Brighton, NY | Ontario Hearing Center', 'Seek relief from tinnitus in Brighton, NY at Ontario Hearing Center. Our experts are here to help you find solutions for tinnitus management and improved auditory well-being.', 'Tinnitus is a condition that affects millions of people worldwide, causing them to hear persistent sounds like ringing, buzzing, or hissing in their ears when there is no external source of such noise.', 'Tinnitus is a condition that affects millions of people worldwide, causing them to hear persistent sounds like ringing, buzzing, or hissing in their ears when there is no external source of such noise.
 
@@ -8984,7 +8939,7 @@ Hearing aids are not just amplification devices; they can also serve as effectiv
 
 Tinnitus is a challenging condition that affects countless individuals worldwide. Understanding its causes, symptoms, and available management strategies is crucial for those living with tinnitus.
 
-If you or someone you know is struggling with [tinnitus in Brighton, NY](https://www.google.com/maps?cid=9213821493223506062),  seek the expertise of the audiologists in Ontario Hearing Center now!', '/assets/img/Tinnitus-in-Brighton-NY-b7218aa1.webp', 'Rochester', 13);
+If you or someone you know is struggling with [tinnitus in Brighton, NY](https://www.google.com/maps?cid=9213821493223506062),  seek the expertise of the audiologists in Ontario Hearing Center now!', '/assets/img/Tinnitus-in-Brighton-NY-b7218aa1.webp', 'Rochester', 12);
 
 INSERT OR REPLACE INTO "ec_location_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "location_name", "sort_order") VALUES ('tinnitus-in-fairport-ny', 'tinnitus-in-fairport-ny', 'published', 'en', 1, 'Tinnitus in Fairport, NY', datetime('now'), datetime('now'), datetime('now'), 'Tinnitus in Fairport, NY | Ontario Hearing Center', 'Discover expert care for tinnitus in Fairport, NY, at Ontario Hearing Center. Our audiologists offer tailored solutions for tinnitus relief.', 'Tinnitus, often described as a ringing, buzzing, or hissing sound in the ears, affects millions of people worldwide. This condition can be both bothersome and disruptive to one’s quality of life.', 'Tinnitus, often described as a ringing, buzzing, or hissing sound in the ears, affects millions of people worldwide. This condition can be both bothersome and disruptive to one’s quality of life.
 
@@ -9037,7 +8992,7 @@ Tinnitus is a common and often distressing condition, but with the guidance of a
 
 If you or someone you know is struggling with tinnitus, seeking the expertise of an audiologist can be a crucial step toward finding relief and managing this condition effectively. [Ontario Hearing Center](https://www.google.com/maps?cid=9213821493223506062) has a team of audiologists who are experts in handling tinnitus for patients located in Fairport, NY.
 
-[Contact us](https://ontariohearing.com/contact-us/) for a consultation today!', '/assets/img/Tinnitus-in-Fairport-NY-607a6757.webp', 'Rochester', 14);
+[Contact us](https://ontariohearing.com/contact-us/) for a consultation today!', '/assets/img/Tinnitus-in-Fairport-NY-607a6757.webp', 'Rochester', 13);
 
 INSERT OR REPLACE INTO "ec_location_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "location_name", "sort_order") VALUES ('tinnitus-in-greece-ny', 'tinnitus-in-greece-ny', 'published', 'en', 1, 'Tinnitus in Greece, NY', datetime('now'), datetime('now'), datetime('now'), 'Tinnitus in Greece, NY | Ontario Hearing Center', 'Discover expert management of tinnitus in Greece, NY. Get relief from persistent ringing with our personalized solutions at Ontario Hearing Center.', 'Tinnitus, often described as a persistent ringing, buzzing, or hissing sound in the ears, affects millions of people worldwide. It can be a distressing condition that significantly impacts one’s quality of life.', 'Tinnitus, often described as a persistent ringing, buzzing, or hissing sound in the ears, affects millions of people worldwide. It can be a distressing condition that significantly impacts one’s quality of life.
 
@@ -9079,7 +9034,7 @@ Audiologists in Ontario Hearing Center play a crucial role in diagnosing and tre
 
 If you or someone you know is living with tinnitus, seeking the guidance of an audiologist can be the first step towards finding relief and restoring peace of mind.
 
-Take the first step towards [tinnitus relief](https://www.google.com/maps?cid=9213821493223506062) by [scheduling an appointment](https://ontariohearing.com/contact-us/) with the [best audiologists in Rochester, NY](https://ontariohearing.com/).', '/assets/img/Tinnitus-in-Greece-NY-83f3ab55.webp', 'Rochester', 15);
+Take the first step towards [tinnitus relief](https://www.google.com/maps?cid=9213821493223506062) by [scheduling an appointment](https://ontariohearing.com/contact-us/) with the [best audiologists in Rochester, NY](https://ontariohearing.com/).', '/assets/img/Tinnitus-in-Greece-NY-83f3ab55.webp', 'Rochester', 14);
 
 INSERT OR REPLACE INTO "ec_location_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "location_name", "sort_order") VALUES ('tinnitus-in-pittsford-ny', 'tinnitus-in-pittsford-ny', 'published', 'en', 1, 'Tinnitus in Pittsford, NY', datetime('now'), datetime('now'), datetime('now'), 'Tinnitus in Pittsford, NY | Ontario Hearing Center', 'Ontario Hearing Center can help patients who are suffering from tinnitus in Pittsford, NY. Visit our clinic today!', 'Tinnitus is a common auditory condition that affects millions of people worldwide. Characterized by the perception of ringing, buzzing, or other noises in the ears without any external source, tinnitus can be both distressing and disruptive to one’s quality of life.', 'Tinnitus is a common auditory condition that affects millions of people worldwide. Characterized by the perception of ringing, buzzing, or other noises in the ears without any external source, tinnitus can be both distressing and disruptive to one’s quality of life.
 
@@ -9125,7 +9080,7 @@ Hearing aids are advanced devices that not only amplify sounds for individuals w
 
 Tinnitus is a prevalent condition that can significantly impact an individual’s quality of life. While it may not always be curable, there are effective management strategies available, and audiologists play a vital role in providing relief and support.
 
-Call [Ontario Hearing Center](https://www.google.com/maps?cid=9213821493223506062) today to seek the expertise of an [audiologist in Pittsford, NY](https://www.google.com/maps?cid=9213821493223506062), and take the crucial first step toward finding tinnitus relief.', '/assets/img/Tinnitus-in-Pittsford-NY-d6791ca2.webp', 'Rochester', 16);
+Call [Ontario Hearing Center](https://www.google.com/maps?cid=9213821493223506062) today to seek the expertise of an [audiologist in Pittsford, NY](https://www.google.com/maps?cid=9213821493223506062), and take the crucial first step toward finding tinnitus relief.', '/assets/img/Tinnitus-in-Pittsford-NY-d6791ca2.webp', 'Rochester', 15);
 
 -- resource_pages
 INSERT OR REPLACE INTO "ec_resource_pages" (id, slug, status, locale, version, title, created_at, updated_at, published_at, "meta_title", "meta_description", "lead", "content", "hero_image_url", "sort_order") VALUES ('audiology', 'audiology', 'published', 'en', 1, 'Audiology', datetime('now'), datetime('now'), datetime('now'), 'Audiology - Ontario Hearing Center | Rochester, NY', 'Learn what audiology is, how audiologists are trained, and what to expect when you visit an audiologist at Ontario Hearing Center in Rochester, NY.', 'Audiology is the branch of medical science which deals with hearing, hearing disorders, and balance issues.  It’s a profession that uses the knowledge of hearing, sound, and balance to treat and rehabilitate patients who suffer from related disorders.', '## What is Audiology?
@@ -9752,7 +9707,6 @@ INSERT OR REPLACE INTO "ec_legal_pages" (id, slug, status, locale, version, titl
 - [DISCLAIMER](https://ontariohearing.com/disclaimer/)
 - [Dr. Adam Sheppard, Au.D., Ph.D.](https://ontariohearing.com/dr-adam-sheppard/)
 - [Dr. Andrea Segmond, Au.D.](https://ontariohearing.com/dr-andrea-segmond/)
-- [Ear Wax Removal in Greece, NY](https://ontariohearing.com/ear-wax-removal-in-greece-ny/)
 - [Dr. Elizabeth Orlando, Au.D.](https://ontariohearing.com/dr-elizabeth-orlando/)
 - [Giving Back](https://ontariohearing.com/giving-back/)
 - [Hearing Aid Batteries](https://ontariohearing.com/hearing-aid-batteries/)

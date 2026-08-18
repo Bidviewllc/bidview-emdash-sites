@@ -2,7 +2,7 @@ import handler from "@astrojs/cloudflare/entrypoints/server";
 export { PluginBridge } from "@emdash-cms/cloudflare/sandbox";
 
 // Bump this string on each deploy that changes HTML to invalidate the edge cache
-const CACHE_VERSION = "v80";
+const CACHE_VERSION = "v82";
 
 // Paths we never serve from cache — admin UI, API endpoints, internal emdash routes
 const SKIP_CACHE_PATHS = ["/_emdash", "/api"];
