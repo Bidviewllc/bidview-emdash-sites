@@ -22,6 +22,8 @@ interface Props {
 	/** CMS pages-collection slug for this page (e.g. "hearing-tests"). Used to pull the featured image. */
 	pageSlug?: string;
 	heroImage?: string;
+	/** Optional background-position for the hero image (e.g. "center 70%"). */
+	heroPosition?: string;
 	description?: string | null;
 	/** Optional meta line shown in the hero, directly below the title. */
 	heroMeta?: string | null;
@@ -31,6 +33,7 @@ const {
 	breadcrumbs,
 	pageSlug,
 	heroImage: heroImageProp = "/uploads/internal-hero-default.png",
+	heroPosition,
 	description,
 	heroMeta,
 } = Astro.props;
@@ -69,6 +72,7 @@ const posts = postEntries.map((p) => ({
 		title={title}
 		breadcrumbs={breadcrumbs}
 		image={heroImage}
+		imagePosition={heroPosition}
 		meta={heroMeta}
 		editImage={pageEditImage}
 		editTitle={pageEditTitle}
@@ -120,6 +124,51 @@ const posts = postEntries.map((p) => ({
 		font-size: 1.125rem;
 		line-height: 1.55;
 		color: #1a1a1a;
+	}
+
+	/* In-content photos (CMS image blocks and the static fallback figures).
+	   The CMS Image component ships inline "max-width:100%;height:auto", so the
+	   height cap below is what stops a portrait photo running ~1200px tall and
+	   swallowing the column. max-height + auto width keeps the aspect ratio. */
+	.page-main :global(.section-photo) {
+		margin: 1.6rem 0 2rem;
+	}
+
+	/* In-content photos. The CMS renders them as <figure class="emdash-image">,
+	   so the FLOAT must go on the figure — floating the inner <img> leaves the
+	   block-level figure in the flow and the body copy can't wrap beside it. */
+	.page-main :global(.emdash-image),
+	.page-main :global(.section-photo) {
+		float: left;
+		width: auto;
+		max-width: 46%;
+		margin: 0.35rem 1.9rem 1.2rem 0;
+	}
+
+	.page-main :global(.emdash-image img),
+	.page-main :global(.section-photo img) {
+		display: block;
+		width: 100%;
+		height: auto;
+		border-radius: 10px;
+	}
+
+	/* Let headings, paragraphs and lists flow around the photo — clearing them
+	   leaves a tall column of dead space beside a portrait image. Only the
+	   full-width components (ToC, accordions) are forced below it. */
+	.page-main :global(details),
+	.page-main :global(.toc) {
+		clear: both;
+	}
+
+	/* Below tablet the column is too narrow to wrap text beside a photo. */
+	@media (max-width: 700px) {
+		.page-main :global(.emdash-image),
+		.page-main :global(.section-photo) {
+			float: none;
+			max-width: 100%;
+			margin: 1.4rem 0 1.8rem;
+		}
 	}
 
 	.page-main :global(.lead-italic) {

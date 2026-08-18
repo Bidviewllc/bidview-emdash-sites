@@ -41,9 +41,9 @@ import PageHero from "../components/PageHero.astro";
 	<!-- Media row: images left | "Why This Work Matters" h2 + GIFT OF HEARING right -->
 	<div class="giveback-media-row">
 		<div class="giveback-image-grid">
-			<img src="/uploads/CWA-sensorineural.webp" alt="Audiologist fitting a patient with a hearing aid" />
+			<img class="img-focus-low" src="/uploads/giveback-hands.jpg" alt="Dr. Brewer holding a patient's hand during a consultation" />
 			<img src="/uploads/CWA-Ear-wax-removal-683x1024.webp" alt="Ear wax removal procedure" />
-			<img src="/uploads/CWA-tinnitus.webp" alt="Tinnitus evaluation and treatment" />
+			<img class="img-focus-low" src="/uploads/giveback-audiometry.jpg" alt="Audiologist operating diagnostic audiometry equipment" />
 			<img src="/uploads/CWA-hearing-aid-fitting.webp" alt="Hearing aid fitting consultation" />
 		</div>
 		<div class="giveback-why">
@@ -208,7 +208,14 @@ import PageHero from "../components/PageHero.astro";
 		width: 100%;
 		aspect-ratio: 3 / 4;
 		object-fit: cover;
+		object-position: center;
 		border-radius: 6px;
+	}
+
+	/* Portrait shots whose subject sits low in the frame — without this the
+	   3/4 centre-crop cuts the hands / the audiometer out of view. */
+	.giveback-image-grid img.img-focus-low {
+		object-position: center 72%;
 	}
 
 	/* "Why This Work Matters" in the right column */
