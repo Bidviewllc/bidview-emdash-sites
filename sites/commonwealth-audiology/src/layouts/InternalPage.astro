@@ -126,6 +126,24 @@ const posts = postEntries.map((p) => ({
 		color: #1a1a1a;
 	}
 
+	/* In-content photos (CMS image blocks and the static fallback figures).
+	   The CMS Image component ships inline "max-width:100%;height:auto", so the
+	   height cap below is what stops a portrait photo running ~1200px tall and
+	   swallowing the column. max-height + auto width keeps the aspect ratio. */
+	.page-main :global(.section-photo) {
+		margin: 1.6rem 0 2rem;
+	}
+
+	.page-main :global(img) {
+		display: block;
+		width: auto;
+		max-width: 100%;
+		height: auto;
+		max-height: 520px;
+		margin: 1.6rem auto 2rem;
+		border-radius: 10px;
+	}
+
 	.page-main :global(.lead-italic) {
 		font-style: italic;
 		font-weight: 700;
