@@ -134,15 +134,41 @@ const posts = postEntries.map((p) => ({
 		margin: 1.6rem 0 2rem;
 	}
 
-	.page-main :global(img) {
-		display: block;
+	/* In-content photos. The CMS renders them as <figure class="emdash-image">,
+	   so the FLOAT must go on the figure — floating the inner <img> leaves the
+	   block-level figure in the flow and the body copy can't wrap beside it. */
+	.page-main :global(.emdash-image),
+	.page-main :global(.section-photo) {
+		float: left;
 		width: auto;
-		max-width: 100%;
+		max-width: 46%;
+		margin: 0.35rem 1.9rem 1.2rem 0;
+	}
+
+	.page-main :global(.emdash-image img),
+	.page-main :global(.section-photo img) {
+		display: block;
+		width: 100%;
 		height: auto;
-		max-height: 520px;
-		/* Left-aligned to the text column (not centred) — Vince's call. */
-		margin: 1.6rem 0 2rem;
 		border-radius: 10px;
+	}
+
+	/* Let headings, paragraphs and lists flow around the photo — clearing them
+	   leaves a tall column of dead space beside a portrait image. Only the
+	   full-width components (ToC, accordions) are forced below it. */
+	.page-main :global(details),
+	.page-main :global(.toc) {
+		clear: both;
+	}
+
+	/* Below tablet the column is too narrow to wrap text beside a photo. */
+	@media (max-width: 700px) {
+		.page-main :global(.emdash-image),
+		.page-main :global(.section-photo) {
+			float: none;
+			max-width: 100%;
+			margin: 1.4rem 0 1.8rem;
+		}
 	}
 
 	.page-main :global(.lead-italic) {
