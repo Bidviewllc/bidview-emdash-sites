@@ -138,15 +138,18 @@ const fallbackImages = {
 	teamGroup: "/uploads/5edd7cf293773c4cbe8f80f5fa3a54d67a2f7acf.jpg",
 	tiffany: "/uploads/7854b158e5b131e9a356dfaafa022012ce061557.jpg",
 	ashley: "/uploads/6e9f81d4d3d1cc131aee03667f847a44c2b4765e.jpg",
-	magnolia: "/uploads/magnolia.jpg?v=1",
+	magnolia: "/uploads/mags.jpg",
 	evaluation: "/uploads/454a6991e526dce986ad698d24fbe50e622dd410.jpg",
 	loss: "/uploads/987f9e696c6744d636bb6afb18b12cf000eaa426.jpg",
 	wax: "/uploads/eed506fc51205e55275e3792962852d28e218d9a.jpg",
 	tinnitus: "/uploads/f34a0d4f4c8eea750dd899ef83306ee874cbceb5.jpg",
-	selection: "/uploads/card1.jpg",
-	fittings: "/uploads/card2.png",
-	cleaning: "/uploads/card3.png",
-	batteries: "/uploads/card4.png",
+	selection: "/uploads/ha-selection.jpg",
+	/* HA Fitting reuses the previous "HA cleaning square" photo, per client request */
+	fittings: "/uploads/card3.png",
+	cleaning: "/uploads/ha-cleaning.jpg",
+	batteries: "/uploads/ha-batteries.jpg",
+	aspo: "/uploads/logo-aspo.png",
+	entheos: "/uploads/logo-entheos.png",
 	aaa: "/uploads/87ed96a25b1f78845e8de29258ec248d20a201d0.png",
 	ada: "/uploads/80f5515bb2d76e90726fdf8cc3a42a785aeb0d9f.png",
 	kentucky: "/uploads/b88d47dcf30a2d5545983ee6f70d9f4cfce0ebac.png",
@@ -191,11 +194,16 @@ const aboutSliderImages = [
 		src: "/uploads/676765b59a5714fb6044d267fb3889073a1e9187.jpg",
 		alt: "Hearing aid service detail",
 	},
-	{
-		src: "/uploads/5edd7cf293773c4cbe8f80f5fa3a54d67a2f7acf.jpg",
-		alt: "Commonwealth Audiology care team",
-	},
 ];
+
+/**
+ * Split a stored answer into paragraphs on blank lines.
+ * Kept in the frontmatter on purpose — a "\n" escape inside an .astro template
+ * expression breaks the Astro compiler (see project CLAUDE.md known issues).
+ */
+function splitParagraphs(value: unknown): string[] {
+	return String(value ?? "").split(/\n{2,}/).map((p) => p.trim()).filter(Boolean);
+}
 
 function imageSrc(image: { src?: string } | null | undefined, fallback: string) {
 	return image?.src ?? fallback;
@@ -297,6 +305,12 @@ function stars(rating: string | undefined) {
 				<div class="trust-badge">
 					<img src={fallbackImages.hearingUp} alt="HearingUp Network" />
 				</div>
+				<div class="trust-badge">
+					<img src={fallbackImages.aspo} alt="Audiology Standards of Practice Organization" />
+				</div>
+				<div class="trust-badge">
+					<img src={fallbackImages.entheos} alt="Entheos Hearing Co-op" />
+				</div>
 			</div>
 		</div>
 	</section>
@@ -350,7 +364,6 @@ function stars(rating: string | undefined) {
 						{team.map((member) => {
 							const photoSrc = member.data.photo?.src
 								?? (member.data.name?.toLowerCase().includes("tiffany") ? fallbackImages.tiffany
-									: member.data.name?.toLowerCase().includes("aubrey") ? fallbackImages.ashley
 									: member.data.name === "Magnolia" ? fallbackImages.magnolia
 									: null);
 							return (
@@ -368,11 +381,6 @@ function stars(rating: string | undefined) {
 							<img src={fallbackImages.tiffany} alt="Dr. Tiffany Brewer" class="team-photo" />
 							<p class="team-name">Dr. Tiffany Brewer</p>
 							<p class="team-role">AUDIOLOGIST</p>
-						</div>
-						<div class="team-card team-card-secondary" data-team-featured>
-							<img src={fallbackImages.ashley} alt="Aubrey Gingrick" class="team-photo" />
-							<p class="team-name">Aubrey Gingrick</p>
-							<p class="team-role">PATIENT CARE COORDINATOR</p>
 						</div>
 						<div class="team-card team-card-dog" data-team-featured>
 							<img src={fallbackImages.magnolia} alt="Magnolia" class="team-photo" />
@@ -515,7 +523,11 @@ function stars(rating: string | undefined) {
 								<svg class="accordion-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
 							</summary>
 							<div class="faq-answer">
-								{item.data.answer && <p {...item.edit.answer}>{item.data.answer}</p>}
+								{item.data.answer && (
+									<div {...item.edit.answer}>
+										{splitParagraphs(item.data.answer).map((para: string) => <p>{para}</p>)}
+									</div>
+								)}
 							</div>
 						</details>
 					))}
@@ -2659,7 +2671,7 @@ details[open] .accordion-icon { transform: rotate(90deg); }
 	display: flex !important;
 	align-items: center !important;
 	justify-content: center !important;
-	gap: 5.4rem !important;
+	gap: 2.5rem !important;
 	flex-wrap: nowrap !important;
 }
 
@@ -2679,10 +2691,14 @@ details[open] .accordion-icon { transform: rotate(90deg); }
 	object-fit: contain;
 }
 
-.trust-badge:nth-child(1) img { height: 68px !important; }
-.trust-badge:nth-child(2) img { height: 62px !important; }
-.trust-badge:nth-child(3) img { height: 56px !important; }
-.trust-badge:nth-child(4) img { height: 58px !important; }
+/* Per-logo heights, hand-tuned so the six badges optically match.
+   Scaled down from the original 4-badge row to fit ASPO + Entheos. */
+.trust-badge:nth-child(1) img { height: 58px !important; }
+.trust-badge:nth-child(2) img { height: 52px !important; }
+.trust-badge:nth-child(3) img { height: 48px !important; }
+.trust-badge:nth-child(4) img { height: 50px !important; }
+.trust-badge:nth-child(5) img { height: 50px !important; }
+.trust-badge:nth-child(6) img { height: 30px !important; }
 
 @media (max-width: 900px) {
 	.trust-badges {
@@ -4382,6 +4398,8 @@ details[open] .accordion-icon { transform: rotate(90deg); }
 	.trust-badge:nth-child(2) img { height: 42px !important; }
 	.trust-badge:nth-child(3) img { height: 40px !important; }
 	.trust-badge:nth-child(4) img { height: 40px !important; }
+	.trust-badge:nth-child(5) img { height: 40px !important; }
+	.trust-badge:nth-child(6) img { height: 26px !important; }
 
 	.about-section .container,
 	.team-section .container,

@@ -19,11 +19,20 @@ interface Props {
 	editImage?: Record<string, any>;
 	/** emdash edit binding for the page title field */
 	editTitle?: Record<string, any>;
+	/**
+	 * Optional background-position for the hero image (default "center").
+	 * Use when the photo's subject would otherwise sit behind the floating nav bar.
+	 */
+	imagePosition?: string;
 }
-const { title, breadcrumbs, image, meta, subtitle, editImage, editTitle } = Astro.props;
+const { title, breadcrumbs, image, meta, subtitle, editImage, editTitle, imagePosition } = Astro.props;
 ---
 
-<section class="page-hero" style={`--page-hero-img: url('${image}')`} {...(editImage ?? {})}>
+<section
+	class="page-hero"
+	style={`--page-hero-img: url('${image}'); --page-hero-pos: ${imagePosition ?? "center"}`}
+	{...(editImage ?? {})}
+>
 	<div class="page-hero-content">
 		<nav class="page-hero-crumbs" aria-label="Breadcrumb">
 			{breadcrumbs.map((crumb, i) => (
@@ -62,7 +71,7 @@ const { title, breadcrumbs, image, meta, subtitle, editImage, editTitle } = Astr
 			linear-gradient(180deg, rgba(0, 0, 0, 0) 45%, rgba(0, 0, 0, 0.82) 100%),
 			var(--page-hero-img);
 		background-size: cover;
-		background-position: center;
+		background-position: center, var(--page-hero-pos, center);
 		border-radius: 18px;
 		overflow: hidden;
 	}

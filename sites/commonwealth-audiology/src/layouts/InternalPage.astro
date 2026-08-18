@@ -22,6 +22,8 @@ interface Props {
 	/** CMS pages-collection slug for this page (e.g. "hearing-tests"). Used to pull the featured image. */
 	pageSlug?: string;
 	heroImage?: string;
+	/** Optional background-position for the hero image (e.g. "center 70%"). */
+	heroPosition?: string;
 	description?: string | null;
 	/** Optional meta line shown in the hero, directly below the title. */
 	heroMeta?: string | null;
@@ -31,6 +33,7 @@ const {
 	breadcrumbs,
 	pageSlug,
 	heroImage: heroImageProp = "/uploads/internal-hero-default.png",
+	heroPosition,
 	description,
 	heroMeta,
 } = Astro.props;
@@ -69,6 +72,7 @@ const posts = postEntries.map((p) => ({
 		title={title}
 		breadcrumbs={breadcrumbs}
 		image={heroImage}
+		imagePosition={heroPosition}
 		meta={heroMeta}
 		editImage={pageEditImage}
 		editTitle={pageEditTitle}
