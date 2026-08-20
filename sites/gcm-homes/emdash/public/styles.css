@@ -81,7 +81,7 @@ img { display: block; max-width: 100%; }
   align-items: center;
   flex-shrink: 0;
 }
-.nav__logo img { height: 60px; width: auto; transition: filter 240ms ease; }
+.nav__logo img { height: 80px; width: auto; transition: filter 240ms ease; }
 .nav.transparent .nav__logo img { filter: brightness(0) invert(1); }
 .nav__links {
   display: flex;
