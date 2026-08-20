@@ -103,6 +103,14 @@ const allSchemas = [organizationSchema, ...schemaList];
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Barlow+Condensed:wght@400;500&display=swap" rel="stylesheet" />
+  <!-- Google Analytics (GA4) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DDEH9GX4KY"></script>
+  <script define:vars={{ measurementId: "G-DDEH9GX4KY" }}>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag("js", new Date());
+    gtag("config", measurementId);
+  </script>
   <link rel="stylesheet" href="/styles.css" />
   {extraCss && <link rel="stylesheet" href={extraCss} />}
 
