@@ -84,7 +84,7 @@
 }
 .nav__drawer__logo img {
   /* Real white artwork — no invert hack (it flattened the mark's detail). */
-  height: 48px;
+  height: 60px;
   width: auto;
 }
 .nav__drawer__close {
@@ -163,7 +163,7 @@
   /* --- Nav --- */
   .nav { height: 80px; padding: 0 24px; }
   .nav__inner { gap: 16px; }
-  .nav__logo img { height: 48px; }
+  .nav__logo img { height: 60px; }
   .nav__links { display: none; }
   .nav__cta   { display: none; }
   .nav__hamburger { display: flex; }
@@ -327,12 +327,12 @@
 @media (max-width: 640px) {
 
   /* --- Nav --- */
-  .nav { height: 64px; padding: 0 16px; }
-  .nav__logo img { height: 36px; }
+  .nav { height: 80px; padding: 0 16px; }
+  .nav__logo img { height: 60px; }
   .nav__hamburger { width: 40px; height: 40px; }
 
   .nav__drawer__head { padding: 12px 16px; }
-  .nav__drawer__logo img { height: 36px; }
+  .nav__drawer__logo img { height: 60px; }
   .nav__drawer__link { padding: 18px 20px; font-size: 22px; }
   .nav__drawer__foot { padding: 16px 16px calc(16px + env(safe-area-inset-bottom)); }
   .nav__drawer__contact { flex-direction: column; gap: 4px; }
@@ -445,7 +445,7 @@
   .listing-hero--fl .listing-hero__stats { gap: 20px 28px; padding: 16px 0 0; }
   .listing-hero--fl .listing-hero__stat__l { font-size: 10px; }
   .listing-hero--fl .listing-hero__stat__v { font-size: 20px; }
-  .listing-hero__share { top: 80px; right: 16px; gap: 8px; }
+  .listing-hero__share { top: 96px; right: 16px; gap: 8px; }
   .listing-hero__share button { width: 36px; height: 36px; }
 
   /* Description + sidebar */
