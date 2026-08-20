@@ -9,7 +9,8 @@
     "build:cloudflare": "node scripts/build-cloudflare.mjs",
     "preview": "astro preview",
     "deploy:staging": "node scripts/deploy-cloudflare.mjs staging",
-    "deploy:production": "node scripts/deploy-cloudflare.mjs production"
+    "deploy:production": "node scripts/deploy-cloudflare.mjs production",
+    "publish:content": "node scripts/publish-content.mjs"
   },
   "emdash": {
     "seed": "seed/seed.json"

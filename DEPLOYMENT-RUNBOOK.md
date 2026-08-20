@@ -178,6 +178,35 @@ curl -X POST "https://api.cloudflare.com/client/v4/accounts/239e9d015c7a3a39cdc2
 
 Contact-form leads are also stored in D1, in the `contact_submissions` table of the same database.
 
+### 4.1 emdash-CMS sites (`new-leaf-hearing-care`, `duet-audiology`, `ontario-hearing`) — same trap, different mechanism
+
+These sites don't use `ec_pages`/`body_html`. Their pages are emdash content items, read via `getEmDashEntry` from D1 at request time. `seed/seed.json` is only an **initial-seed template** — `emdash init`/`emdash seed` writes it into a fresh, empty database. Nothing in `build:cloudflare` or `deploy:production` re-applies it. So:
+
+**Editing `seed/seed.json` and merging + deploying ships code only. The live D1 content is untouched and the page will look exactly as it did before the PR.**
+
+There is no raw-SQL shortcut here (unlike §4's `ec_pages` example) — the emdash D1 dialect only runs inside the deployed Worker via its binding, so there's no local file or `wrangler d1 execute --remote` path that understands the content schema. Publishing has to go through the emdash HTTP API instead, the same path the admin UI (`/_emdash/admin`) uses:
+
+```bash
+# 1. Get the current revision token for the item on the target (staging/production)
+npx emdash content get <collection> <slug> -u <target-url> -t "$EMDASH_ADMIN_TOKEN" --json
+
+# 2. Push your local/dev version's data using that rev token
+npx emdash content update <collection> <slug> \
+  --data '<json data object>' \
+  --rev <rev-from-step-1> \
+  -u <target-url> -t "$EMDASH_ADMIN_TOKEN"
+```
+
+`scripts/publish-content.mjs` (in each emdash-CMS site folder) wraps both steps — it reads the item from your local dev server (where you validated the seed change) and republishes it to whatever `--to-url` you point at:
+
+```bash
+node scripts/publish-content.mjs <collection> <slug> \
+  --to-url <staging-or-production-url> \
+  --to-token "$EMDASH_ADMIN_TOKEN"
+```
+
+**After merging any PR that only changes `seed/seed.json` for one of these sites, this publish step is required — deploy alone does not ship the content.** An admin token for the target instance is needed (issue one via the admin UI or `emdash auth secret` on that instance).
+
 ---
 
 ## 5. Gotchas that will bite you
