@@ -1,9 +1,11 @@
-# Trestle field availability — answers + plan (GCM Homes)
+# Trestle field availability — answers + what's now live (GCM Homes)
 
 **To:** Liz
 **From:** Vince
 **Date:** 2026-08-19
 **Re:** your `trestle-field-request.md`
+**Status:** ✅ **Done** — the populated fields are added, deployed, and synced into D1 (verified). Merged in PR #108.
+Jump to the **API-key table** for exactly what your design reads.
 
 ---
 
@@ -21,7 +23,7 @@ fills them.**
 
 ## TL;DR
 
-- **4 of your 9 Group-1 fields are well-populated** and we'll add them: `Flooring`, `Fireplace`, `Roof`, `ListingContractDate`.
+- **All the populated fields are already added, deployed, and synced** (see the "DONE & LIVE" section + API-key table below). E.g. the 4 well-populated Group-1 fields — `Flooring`, `Fireplace`, `Roof`, `ListingContractDate` — are live now.
 - **3 Group-1 fields are simply NOT in this feed** (0% on all 210): `WaterSource`, **all School fields**, `BuyerAgencyCompensation`. These need a substitute or Grant — details below.
 - **The HOA bug is real and fixable:** `AssociationFeeFrequency` is populated on **56%** — the exact same listings as `AssociationFee`. Easy win.
 - **The 3D tour CAN exist:** `VirtualTourURLUnbranded` is populated on **54% (113/210)**. Branded is empty — unbranded only. (Bonus: 25% of listings also carry videos.)
@@ -99,26 +101,51 @@ Situational (low coverage, but real): `Cooling` 24% (Tahoe — few have AC), `Wi
 
 ---
 
-## What we're adding to the sync (our side)
+## What we added to the sync — ✅ DONE & LIVE (2026-08-19)
 
-We'll add only the fields that are **actually populated and useful** — no point syncing 0% fields. Each goes into
-all three touchpoints you listed (`FULL_SELECT`, `LCOLS` + `ALTER TABLE`, `EMDASH_MLS_FIELDS`):
+**This is already built, deployed, and synced** — the fields are in D1 and served by the API now (verified: D1
+coverage matches the probe numbers above exactly). Merged to the monorepo in **PR #108**. You can build against it
+today; the daily 15:00 UTC sync keeps it current.
 
-**Adding:** `Flooring`, `FireplacesTotal`, `FireplaceYN`, `FireplaceFeatures`, `Roof`, `Utilities`, `PoolFeatures`,
-`ListingContractDate`, `AssociationFeeFrequency`, `VirtualTourURLUnbranded`, `ListingId`, `Stories`,
-`ArchitecturalStyle`, `ConstructionMaterials`, `LotFeatures`, `PropertyCondition` — plus a derived
-`lot_size_sqft` (from `LotSizeAcres`).
+**Added (16 fields + a derived one):** `Flooring`, `FireplacesTotal`, `FireplaceYN`, `FireplaceFeatures`, `Roof`,
+`Utilities`, `PoolFeatures`, `ListingContractDate`, `AssociationFeeFrequency`, `VirtualTourURLUnbranded`, `ListingId`,
+`Stories`, `ArchitecturalStyle`, `ConstructionMaterials`, `LotFeatures`, `PropertyCondition`, + derived lot sq ft.
 
-**NOT adding (0% populated — nothing to sync):** `WaterSource`, `PoolPrivateYN`, `SchoolDistrict` + the 3 school
+Wired through all touchpoints: `FULL_SELECT` + row map + `LCOLS` (both sync files), D1 `ALTER TABLE`, the detail API
+(`toDetail`), and the admin mirror (`EMDASH_MLS_FIELDS` / `MLS_FIELDS` — read-only MLS, not owner fields).
+
+### 🔑 The API keys to render against (this is what your design reads)
+
+The listing detail endpoint (`/api/listing-by-slug/:city/:address`) now returns these on `listing`:
+
+| Design row | API key on `listing` | Source field |
+|---|---|---|
+| Flooring | `flooring` | Flooring |
+| Fireplace | `fireplaces` (count), `fireplaceYN`, `fireplaceFeatures` | FireplacesTotal / FireplaceYN / FireplaceFeatures |
+| Roof | `roof` | Roof |
+| Utilities | `utilities` | Utilities |
+| Pool | `poolFeatures` (present = has pool) | PoolFeatures |
+| Year Listed | `listingDate` | ListingContractDate |
+| HOA | `hoaFee` + `hoaFrequency` | AssociationFee + AssociationFeeFrequency |
+| 3D Tour | `tourUrlMls` | VirtualTourURLUnbranded |
+| MLS # | `mlsNumber` | ListingId |
+| Stories | `stories` | Stories |
+| Arch. Style | `archStyle` | ArchitecturalStyle |
+| Construction | `construction` | ConstructionMaterials |
+| Lot Features | `lotFeatures` | LotFeatures |
+| Condition | `condition` | PropertyCondition |
+| Lot (sq ft) | `lotSqft` | derived: LotSizeAcres × 43,560 |
+
+> Array-type MLS values (Flooring, Utilities, LotFeatures, FireplaceFeatures, ConstructionMaterials, ArchStyle,
+> PoolFeatures) are stored **comma-joined strings** — split on `", "` if you want chips/pills.
+
+**`tour_url`:** `tourUrlMls` is the MLS unbranded tour (populated 54%). Wire your section to **prefer `tourUrlMls`**
+and fall back to the owner's manual `tour_url` when it's empty — your `OWNER_FIELDS` (`headline`, `tour_url`,
+`note_image`, `owner_note`) are untouched by the sync, exactly as you asked.
+
+**NOT added (0% populated — nothing to sync):** `WaterSource`, `PoolPrivateYN`, `SchoolDistrict` + the 3 school
 fields, `OnMarketDate`, `BuyerAgencyCompensation`, `SubdivisionName`, `StoriesTotal`, `LotSizeSquareFeet`,
-`VirtualTourURLBranded`.
-
-**`tour_url`:** since the MLS unbranded tour is populated 54%, the site will make `tour_url` **prefer the MLS
-`VirtualTourURLUnbranded`** and fall back to your manual `tour_url` when the MLS one is empty. Your `OWNER_FIELDS`
-(`headline`, `tour_url`, `note_image`, `owner_note`) stay in the owner list — we won't put them in
-`EMDASH_MLS_FIELDS` and the sync won't touch them.
-
-Once merged, we run one manual sync so it's all live immediately; the daily 15:00 UTC sync keeps it current after.
+`VirtualTourURLBranded`. (Substitutes are in the table above — e.g. use `Stories` not `StoriesTotal`.)
 
 ---
 
