@@ -677,6 +677,11 @@
         if (res.ok && res.body && res.body.ok) {
           form.style.display = 'none';
           successPanel.hidden = false;
+          // GA4 conversion. The submit is intercepted below, so enhanced measurement's
+          // automatic form_submit cannot be relied on: fire it explicitly on success only.
+          if (typeof gtag === 'function') {
+            gtag('event', 'form_submit', { form_id: 'scheduleForm', form_name: 'Request an appointment' });
+          }
         } else {
           var msg = 'Something went wrong sending your request. Please try again or call (847) 295-1185.';
           if (res.body && res.body.error === 'turnstile_failed') msg = 'Anti-spam verification failed. Please try again.';

@@ -31,6 +31,31 @@ function isEmail(s: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
 }
 
+// Store the request before emailing. Email alone leaves no durable record: if Resend fails or
+// the inbox is cleared the lead is gone, and there is nothing to reconcile the weekly pulse
+// against. Failure here is non-fatal - a save problem must never cost the practice the email.
+async function saveToD1(workerEnv: any, d: Record<string, string>): Promise<void> {
+  const db = workerEnv?.DB;
+  if (!db) return;
+  try {
+    await db.prepare(
+      `CREATE TABLE IF NOT EXISTS contact_submissions (
+        id TEXT PRIMARY KEY, name TEXT, email TEXT, phone TEXT,
+        extra TEXT, message TEXT, created_at TEXT
+      )`
+    ).run();
+    await db
+      .prepare(
+        `INSERT INTO contact_submissions (id, name, email, phone, extra, message, created_at)
+         VALUES (?, ?, ?, ?, ?, ?, datetime('now'))`
+      )
+      .bind(crypto.randomUUID(), d.name, d.email, d.phone, d.extra || '', d.message || '')
+      .run();
+  } catch (err) {
+    console.error('D1 save failed (non-fatal):', err);
+  }
+};
+
 export const POST: APIRoute = async ({ request, locals }) => {
   try {
   let body: Record<string, any>;
@@ -109,6 +134,14 @@ export const POST: APIRoute = async ({ request, locals }) => {
       });
     }
   }
+
+  await saveToD1(cfEnv, {
+    name: `${firstName} ${lastName}`.trim(),
+    email,
+    phone,
+    extra: [reason, preferredDate ? `preferred: ${preferredDate}` : ''].filter(Boolean).join(' | '),
+    message,
+  });
 
   const apiKey: string = (cfEnv as any)?.RESEND_API_KEY || '';
   const from: string = (cfEnv as any)?.RESEND_FROM || 'Duet Hearing <appointments@duethearing.com>';

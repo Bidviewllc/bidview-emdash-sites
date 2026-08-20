@@ -3,6 +3,15 @@
 	"account_id": "239e9d015c7a3a39cdc2e9400312f553",
 	"compatibility_date": "2025-04-01",
 	"compatibility_flags": ["nodejs_compat"],
+	// Appointment requests are written here before the email is sent, so the practice
+	// has a durable lead record and the weekly pulse can verify real submissions.
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "duet-audiology-db",
+			"database_id": "8cb09fcd-352f-4bdc-8190-cd9363341326"
+		}
+	],
 	"observability": {
 		"enabled": true
 	},
