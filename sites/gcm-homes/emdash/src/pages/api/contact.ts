@@ -90,19 +90,26 @@ export async function POST({ request }: { request: Request }) {
 	const email   = esc(data.email || "");
 	const phone   = esc(data.phone || "");
 	const reason  = esc(data.reason || data.subject || "");
+	// Which page the form was on. The contact section now appears on most pages, so
+	// without this a lead gives no clue what the person was reading.
+	const source  = esc(data.source || "");
 	const message = (data.message || "").trim();
 
 	if (!name || !email || !message) {
 		return fail("Please complete your name, email, and message.", 400);
 	}
 
-	await saveToD1({ name, email, phone, extra: reason, message });
+	await saveToD1({
+		name, email, phone, message,
+		extra: [reason, source && `page: ${source}`].filter(Boolean).join(" | "),
+	});
 
 	const textBody = [
 		`Name:    ${name}`,
 		`Email:   ${email}`,
 		phone  ? `Phone:   ${phone}`  : null,
 		reason ? `Topic:   ${reason}` : null,
+		source ? `Page:    ${source}` : null,
 		"",
 		"Message:",
 		message,

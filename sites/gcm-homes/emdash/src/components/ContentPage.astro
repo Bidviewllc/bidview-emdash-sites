@@ -3,6 +3,7 @@
 // Reads a `page_content` entry by slug; every field is inline-editable and falls
 // back to nothing (the page is seeded, so real content always shows).
 import GcmLayout from "../layouts/GcmLayout.astro";
+import ContactCta from "./ContactCta.astro";
 import { getEmDashEntry } from "emdash";
 
 const { slug } = Astro.props as { slug: string };
@@ -35,10 +36,7 @@ const cards = [1, 2, 3, 4].map((i) => ({ h: d[`card${i}_h`], p: d[`card${i}_p`],
 		</div>
 	</section>
 
-	<section class="section section--dark" style="text-align:center">
-		<div class="container" style="max-width:720px">
-			<h2 class="reality__h" style="color:#fff">Your Tahoe Story Starts With One Conversation.</h2>
-			<a class="btn btn--orange" href="/contact/" style="margin-top:24px;display:inline-block">INQUIRE NOW</a>
-		</div>
-	</section>
+	{/* Shared contact section — same component and same CMS entry as every other
+	    page, so editing it once updates all of them. */}
+	<ContactCta />
 </GcmLayout>

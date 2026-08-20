@@ -56,6 +56,17 @@ function pointInFeature(lng: number, lat: number, feature: any): boolean {
 	return false;
 }
 
+// Reverse of listingsInNeighborhood: which traced area contains this point? Used by
+// the listing API so a listing page can name its neighborhood (the MLS feed has no
+// neighborhood field — SubdivisionName is null on every listing).
+export function neighborhoodForPoint(lng: number | null | undefined, lat: number | null | undefined): Neighborhood | null {
+	if (lng == null || lat == null) return null;
+	for (const f of (geo as any).features) {
+		if (pointInFeature(Number(lng), Number(lat), f)) return bySlug(areaToSlug(f.properties.area));
+	}
+	return null;
+}
+
 // Filter a list of listings (with numeric .lat/.lng) to those inside `slug`.
 export function listingsInNeighborhood(slug: string, listings: any[]): any[] {
 	const features = (geo as any).features.filter((f: any) => areaToSlug(f.properties.area) === slug);

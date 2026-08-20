@@ -4,8 +4,10 @@
 // Every field falls back to the approved copy, so the page renders correctly even
 // before the collection is seeded; editing lights up once you're logged into admin.
 import GcmLayout from "../layouts/GcmLayout.astro";
-import { getEmDashEntry } from "emdash";
+import { getEmDashEntry, getTermsForEntries } from "emdash";
 import { env } from "cloudflare:workers";
+import { firstImageUrl } from "../lib/media";
+import ContactCta from "../components/ContactCta.astro";
 
 // Load the homepage entry; tolerate it not existing yet (renders from fallbacks).
 let entry: any = null;
@@ -23,14 +25,138 @@ try {
 	const DB = (env as any)?.DB;
 	if (DB) {
 		const { results } = await DB.prepare(
-			"SELECT id, slug, address, city, state, price, beds, baths, sqft, sub_type, type, photo FROM listings WHERE status='Active' AND photo IS NOT NULL ORDER BY price DESC LIMIT 3"
+			"SELECT id, slug, address, city, state, price, beds, baths, sqft, lot_acres, category, sub_type, type, waterfront, photos_count, photo FROM listings WHERE status='Active' AND photo IS NOT NULL ORDER BY price DESC LIMIT 3"
 		).all();
 		featured = results ?? [];
 	}
 } catch { featured = []; }
+// ---- The Proof ---------------------------------------------------------------
+// The design's template quotes, kept as-is for now: Liz is checking with Vince how
+// real reviews get pulled in, so these are placeholders to be replaced, not claims.
+const TESTIMONIALS = [
+	{
+		q: "Grant's knowledge of Incline Village is encyclopedic. He knew about our dream home before it even hit the market, allowing us to secure it in a cash-only bidding war.",
+		name: "The Harrison Family",
+		loc: "LAKESHORE BOULEVARD",
+	},
+	{
+		q: "Selling a property we had owned for 40 years was emotional. Grant handled the transition with such dignity and achieved a price that far exceeded our expectations.",
+		name: "Dr. Robert Chen",
+		loc: "TYNER WAY",
+	},
+	{
+		q: "Navigating the TRPA requirements and water rights was daunting until Grant stepped in. His legal background and local connections saved us months of delay.",
+		name: "Sarah & James Miller",
+		loc: "CRYSTAL BAY",
+	},
+];
+
+// ---- Micro-Markets slider ----------------------------------------------------
+// One slide per neighbourhood flagged `featured` in the CMS, so Liz picks what
+// appears here without touching code. The community page still lists all sixteen.
+//
+// Body copy is `overview` falling back to `blurb`, as agreed — with one guard. The
+// seeded overview on 14 of the 15 areas is generic filler ("X is one of the fifteen
+// areas that make up Incline Village and Crystal Bay, each with its own
+// character…"), while every blurb is specific and written. Treating that filler as
+// "no overview" is what makes the agreed rule produce the intended result; remove
+// the test once the real overviews are written.
+const SEED_FILLER = /is one of the fifteen areas that make up/i;
+
+// `boolean` fields arrive from D1 as text, and which text depends on who wrote it
+// (the admin checkbox vs a SQL update), so accept anything that isn't a clear no.
+const isOn = (v: any) =>
+	v != null && v !== "" && v !== 0 && v !== "0" && v !== false && v !== "false";
+
+let micro: any[] = [];
+try {
+	const DB = (env as any)?.DB;
+	if (DB) {
+		const { results } = await DB.prepare(
+			"SELECT slug, title, tag, overview, blurb, avg_price, trend, featured, map_image, featured_image FROM ec_neighborhoods WHERE status='published' ORDER BY title",
+		).all();
+		micro = (results ?? [])
+			.filter((n: any) => isOn(n.featured))
+			.map((n: any) => ({
+				slug: n.slug,
+				title: n.title,
+				body: n.overview && !SEED_FILLER.test(n.overview) ? n.overview : (n.blurb || null),
+				avgPrice: n.avg_price || null,
+				trend: n.trend || null,
+				// Her own map image wins; the shared Tahoe map is the backstop so a
+				// slide is never a blank frame while the images are still being added.
+				image: firstImageUrl(n.map_image, n.featured_image) ?? "/assets/micromap.png",
+			}))
+			// A slide with no copy at all is worse than one fewer slide.
+			.filter((n: any) => n.body);
+	}
+} catch { micro = []; }
+
+// ---- Market Insights ---------------------------------------------------------
+// Only the three real photographs in public/assets are used here. Everything else
+// there is 512px AI-generated filler — listing-interior-1.jpg is a stock headshot,
+// -2 a dark corridor, tahoe-lifestyle.jpg is clip art — and listing-1056.jpg is a
+// byte-identical copy of listing-hero-exterior.jpg. Used only when a post has no
+// featured image of its own.
+const POST_FALLBACK_IMAGES = [
+	"/assets/gallery-1.jpg",
+	"/assets/listing-hero-exterior.jpg",
+	"/assets/listing-interior-3.jpg",
+];
+let posts: any[] = [];
+try {
+	const DB = (env as any)?.DB;
+	if (DB) {
+		const { results } = await DB.prepare(
+			"SELECT id, slug, title, excerpt, featured_image, published_at FROM ec_posts WHERE status='published' ORDER BY published_at DESC LIMIT 3",
+		).all();
+		// Categories come from the Categories taxonomy on each post, not from a field
+		// on the collection — one batched query for all three rather than one each.
+		let catsById = new Map<string, any[]>();
+		try {
+			catsById = await getTermsForEntries(
+				"posts",
+				(results ?? []).map((p: any) => p.id),
+				"category",
+			);
+		} catch { catsById = new Map(); }
+		posts = (results ?? []).map((p: any, i: number) => ({
+			slug: p.slug,
+			title: p.title,
+			excerpt: p.excerpt || "",
+			// A post can sit in more than one category; show them all. Blank when the
+			// post has none — the label is hidden rather than guessed at.
+			category: (catsById.get(p.id) ?? []).map((t: any) => t.label).join(" · "),
+			image: firstImageUrl(p.featured_image) ?? POST_FALLBACK_IMAGES[i % POST_FALLBACK_IMAGES.length],
+			date: p.published_at
+				? new Date(String(p.published_at).replace(" ", "T") + "Z")
+					.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })
+					.toUpperCase()
+				: "",
+		}));
+	}
+} catch { posts = []; }
+
+// ---- Emotional Weight background ---------------------------------------------
+// Defaults to the design's skier, self-hosted. Swappable from the CMS.
+const emotionImage = firstImageUrl(d.emotion_image) ?? "/assets/emotion-lifestyle.jpg";
+
 const money = (n: number) => (n ? "$" + Number(n).toLocaleString("en-US") : "—");
-const metaOf = (l: any) => [l.beds && `${l.beds} BD`, l.baths && `${l.baths} BA`,
-	l.sqft && `${Number(l.sqft).toLocaleString()} SQ.FT.`].filter(Boolean).join(" | ");
+// The card's fact row, as pairs so each figure can be bolded the way the
+// /listings/ cards do it. Falls back to lot size when there's no house on the lot.
+const metaBits = (l: any) => {
+	const bits: Array<[string, string]> = [];
+	if (l.beds) bits.push([String(l.beds), "BD"]);
+	if (l.baths) bits.push([String(l.baths), "BA"]);
+	if (l.sqft) bits.push([Number(l.sqft).toLocaleString(), "SQFT"]);
+	if (!bits.length && l.lot_acres) bits.push([String(l.lot_acres), "ACRES"]);
+	return bits;
+};
+// The badge text. `category` is the readable MLS field the /listings/ cards use
+// ("Single Family", "Multi-Family"); sub_type is the raw enum, so it only gets
+// used as a fallback and needs its camelCase split apart.
+const tagOf = (l: any) =>
+	l.category || String(l.sub_type || l.type || "Property").replace(/([a-z])([A-Z])/g, "$1 $2");
 ---
 
 <GcmLayout
@@ -88,6 +214,33 @@ const metaOf = (l: any) => [l.beds && `${l.beds} BD`, l.baths && `${l.baths} BA`
 		</div>
 	</section>
 
+	{/* 03 EMOTIONAL WEIGHT — the `bc` (bottom-card) variant, which is what the design
+	     demo actually renders. The first build used the centred-card variant, which
+	     drops a solid navy panel on top of the photo; this one leaves the photograph
+	     fully visible and sets the copy in two columns over a bottom gradient. Every
+	     rule below already ships in styles.css and responsive.css.
+
+	     Background: the design's skier — the lifestyle shot, which is the point of the
+	     section. It was being overridden here with a listing photo; now it's the same
+	     photograph, served from our own origin instead of hotlinked, and swappable from
+	     the CMS via the Emotion background image field. */}
+	<section class="emotion emotion--bc" data-screen-label="03 Emotional Weight">
+		<div class="emotion__bg" style={`background-image:url('${emotionImage}')`}></div>
+		<div class="emotion__veil emotion__veil--bc"></div>
+		<div class="emotion-bc__card">
+			<div class="emotion-bc__left">
+				<h2 class="emotion-bc__h" {...(e.emotion_h1 ?? {})}>
+					{d.emotion_h1 ?? "You're Not Just Buying A Home."} <em>{d.emotion_h2 ?? "You're Choosing A Life."}</em>
+				</h2>
+			</div>
+			<div class="emotion-bc__right">
+				<p class="emotion-bc__p" {...(e.emotion_body ?? {})}>
+					{d.emotion_body ?? "The skiing, the beaches, the trails, the community — people don't move to Incline Village for the square footage. They move here because something about this place got under their skin. The right home makes it real."}
+				</p>
+			</div>
+		</div>
+	</section>
+
 	{/* THE GUIDE — Grant */}
 	<section class="section section--beige" data-screen-label="04 The Guide">
 		<div class="container guide">
@@ -104,29 +257,69 @@ const metaOf = (l: any) => [l.beds && `${l.beds} BD`, l.baths && `${l.baths} BA`
 					<div class="cred"><div class="cred__icon">✓</div><div><div class="cred__t">Volume Leader</div><div class="cred__d">Consistently ranked in the top 1% of Sierra agents.</div></div></div>
 					<div class="cred"><div class="cred__icon">✓</div><div><div class="cred__t">Legal Training</div><div class="cred__d">Expertise in complex zoning and water rights.</div></div></div>
 				</div>
+				<p class="guide__p" {...(e.guide_body ?? {})}>
+					{d.guide_body ?? "Buying here is not the same as buying anywhere else. The lot lines, the lake rights, the TRPA coverage rules, the difference one street makes to a view — those are the things that decide whether a house is worth what it's listed at. Thirty-five years of living here is how you learn them."}
+				</p>
+				<a class="btn btn--dark" href="/about/" style="align-self:flex-start;margin-top:8px">{d.guide_cta ?? "MORE ABOUT GRANT"}</a>
+			</div>
+		</div>
+		{/* The design also has a logos strip here. Not built: its headline is still
+		    placeholder ("Nice Headline About Benefit of These Logos") and we have
+		    neither the logo files nor confirmation we can display them. */}
+	</section>
+
+	{/* 05 THE PROOF — testimonials are the design's template copy for now; Liz is
+	     checking with Vince how real reviews get pulled in. */}
+	<section class="section section--white" data-screen-label="05 The Proof">
+		<div class="container">
+			<div class="section-title">
+				<h2 {...(e.proof_heading ?? {})}>{d.proof_heading ?? "Hundreds of Clients. Thousands of Negotiations. One Market."}</h2>
+				<p {...(e.proof_body ?? {})}>
+					{d.proof_body ?? "From first-time Tahoe buyers to clients who've completed 23 transactions together, the proof is in the relationships, not the brochures."}
+				</p>
+			</div>
+			<div class="testimonials">
+				{TESTIMONIALS.map((t) => (
+					<div class="testimonial">
+						<div class="stars">{[0, 1, 2, 3, 4].map(() => <span>★</span>)}</div>
+						<p class="testimonial__q">"{t.q}"</p>
+						<div class="testimonial__attr">
+							<div class="testimonial__name">{t.name}</div>
+							<div class="testimonial__loc">{t.loc}</div>
+						</div>
+					</div>
+				))}
 			</div>
 		</div>
 	</section>
 
 	{/* FEATURED LISTINGS — live from D1 */}
-	<section class="section section--cream" data-screen-label="Featured Listings">
+	<section class="section section--cream" data-screen-label="07 Featured Listings">
 		<div class="container">
 			<div style="text-align:center;max-width:640px;margin:0 auto 48px">
 				<span class="eyebrow" {...(e.featured_eyebrow ?? {})}>{d.featured_eyebrow ?? "CURATED LAKE TAHOE PROPERTIES"}</span>
-				<h2 class="reality__h" style="color:var(--navy);margin-top:12px" {...(e.featured_heading ?? {})}>{d.featured_heading ?? "Currently Representing"}</h2>
+				<h2 class="reality__h" style="color:var(--navy);margin-top:12px" {...(e.featured_heading ?? {})}>{d.featured_heading ?? "Featured Listings"}</h2>
 			</div>
 			<div class="listings-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:32px">
 				{featured.map((l) => (
-					<a class="prop-card" href={`/homes/${l.slug}/`} style="background:#fff;border-radius:4px;overflow:hidden;display:block">
-						<div class="prop-card__media" style="position:relative;height:260px;overflow:hidden;background:var(--beige)">
-							<div class="prop-card__img" style={`background-image:url(${l.photo});background-size:cover;background-position:center;width:100%;height:100%`}></div>
-							<div class="prop-card__tag">{(l.sub_type || l.type || "Residential").replace(/([a-z])([A-Z])/g, "$1 $2")}</div>
+					<a class="card" href={`/homes/${l.slug}/`}>
+						<div class="card__media">
+							<img class="card__img" src={l.photo} alt={l.address} loading="lazy" />
+							<div class="card__badges">
+								<div class="card__tag">{tagOf(l)}</div>
+								{l.waterfront ? <div class="card__wf">Waterfront</div> : null}
+							</div>
+							{l.photos_count ? <div class="card__count">{l.photos_count} photos</div> : null}
 						</div>
-						<div class="prop-card__body" style="padding:24px">
-							<h3 class="prop-card__addr">{l.address}</h3>
-							<div class="prop-card__city" style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:14px">{[l.city, l.state].filter(Boolean).join(", ")}</div>
-							<div class="prop-card__meta">{metaOf(l)}</div>
-							<div class="prop-card__price">{money(l.price)}</div>
+						<div class="card__body">
+							<div class="card__price">{money(l.price)}</div>
+							<div class="card__addr">{l.address || "Address on request"}</div>
+							<div class="card__city">{[l.city, l.state].filter(Boolean).join(", ") || "Lake Tahoe"}</div>
+							{metaBits(l).length > 0 && (
+								<div class="card__meta">
+									{metaBits(l).map(([n, unit]) => <span><b>{n}</b> {unit}</span>)}
+								</div>
+							)}
 						</div>
 					</a>
 				))}
@@ -137,12 +330,142 @@ const metaOf = (l: any) => [l.beds && `${l.beds} BD`, l.baths && `${l.baths} BA`
 		</div>
 	</section>
 
-	{/* CTA */}
-	<section class="section section--dark" data-screen-label="CTA" style="text-align:center">
-		<div class="container" style="max-width:720px">
-			<h2 class="reality__h" style="color:#fff" {...(e.cta_heading ?? {})}>{d.cta_heading ?? "Your Tahoe Story Starts With One Conversation."}</h2>
-			<p class="reality__p" style="margin:16px auto 32px" {...(e.cta_body ?? {})}>{d.cta_body ?? "Whether you're buying, selling, or just getting to know the North Shore — start with a conversation, not a transaction."}</p>
-			<a class="btn btn--orange" href="/contact/">INQUIRE NOW</a>
-		</div>
-	</section>
+	{/* 08 MICRO-MARKETS — one slide per neighbourhood flagged `featured` in the CMS.
+	     Deliberately NOT the design's click-the-map-to-jump behaviour: Liz asked for a
+	     plain slider, one slide each, showing that neighbourhood's own map image.
+	     The whole section is absent when nothing is flagged. */}
+	{micro.length > 0 && (
+		<section class="section section--dark" style="position:relative;overflow:hidden" data-screen-label="08 Micro-Markets">
+			<div aria-hidden="true" style="position:absolute;right:0;top:50%;transform:translateY(-50%);width:427px;height:910px;opacity:0.1;color:var(--orange);pointer-events:none;display:flex;flex-direction:column;justify-content:center;gap:40px">
+				<img src="/assets/decoration-wave.svg" alt="" style="width:100%" />
+				<img src="/assets/decoration-wave.svg" alt="" style="width:100%;transform:translateY(-40px)" />
+			</div>
+			<div class="container">
+				<div class="section-title on-dark">
+					<span class="eyebrow" {...(e.micro_eyebrow ?? {})}>{d.micro_eyebrow ?? "NEIGHBORHOOD INTELLIGENCE"}</span>
+					<h2 {...(e.micro_heading ?? {})}>{d.micro_heading ?? "Explore Tahoe's Micro-Markets"}</h2>
+				</div>
+
+				{micro.map((n: any, i: number) => (
+					<div class="micro" data-micro-slide={i} style={i === 0 ? "" : "display:none"}>
+						<div class="micro__map">
+							<div class="micro__map__img" style={`background-image:url('${n.image}')`}></div>
+							<div style="position:absolute;left:24px;bottom:24px;color:rgba(255,255,255,0.6);font-size:11px;letter-spacing:0.18em;text-transform:uppercase">
+								LAKE TAHOE · NEVADA SIDE
+							</div>
+						</div>
+						<div class="micro__content">
+							<h3 class="micro__h" style="border-width:0 0 0 2px">{n.title}</h3>
+							<p class="micro__p">{n.body}</p>
+							<div class="micro__stats">
+								{n.avgPrice && (
+									<div>
+										<div class="micro__stat__label">AVERAGE PRICE</div>
+										<div class="micro__stat__v">{n.avgPrice}</div>
+									</div>
+								)}
+								{n.trend && (
+									<div>
+										<div class="micro__stat__label">INVENTORY TREND</div>
+										<div class="micro__stat__v">{n.trend}</div>
+									</div>
+								)}
+							</div>
+							<a class="reality__link micro__cta" href={`/neighborhood/${n.slug}/`}>LEARN MORE →</a>
+						</div>
+					</div>
+				))}
+
+				{micro.length > 1 && (
+					<div class="micro__nav">
+						<button class="btn btn--icon btn--ghost" id="microPrev" aria-label="Previous neighborhood">←</button>
+						<div style="display:flex;align-items:center;gap:6px;padding:0 14px">
+							{micro.map((n: any, i: number) => (
+								<button data-micro-dot={i} aria-label={n.title} style="width:6px;height:6px;border-radius:3px;background:rgba(255,255,255,0.3);transition:all 200ms ease"></button>
+							))}
+						</div>
+						<button class="btn btn--icon" id="microNext" style="background:var(--orange)" aria-label="Next neighborhood">→</button>
+					</div>
+				)}
+			</div>
+		</section>
+	)}
+
+	{/* 09 MARKET INSIGHTS — hidden until posts exist. The category comes from the
+	     post's Categories taxonomy in the CMS; the byline is still a fixed string
+	     because the posts collection has no byline field. */}
+	{posts.length > 0 && (
+		<section class="section section--cream" data-screen-label="09 Market Insights">
+			<div class="container">
+				<div class="section-title">
+					<h2 style="font-size:60px" {...(e.insights_heading ?? {})}>{d.insights_heading ?? "Market Insights"}</h2>
+					<p {...(e.insights_body ?? {})}>
+						{d.insights_body ?? "Expert perspectives on the evolving landscape of Lake Tahoe luxury real estate, community lifestyle, and investment trends."}
+					</p>
+				</div>
+				<div class="blog">
+					{posts.map((p: any) => (
+						/* The same .card as the listing cards, with the category in the same
+						    .card__tag pill. The whole card is the link, so the "READ ARTICLE"
+						    cue is a span — an <a> inside an <a> is invalid. */
+						<a class="card card--post" href={`/posts/${p.slug}/`}>
+							<div class="card__media">
+								<img class="card__img" src={p.image} alt={p.title} loading="lazy" />
+								{p.category && (
+									<div class="card__badges">
+										<div class="card__tag">{p.category}</div>
+									</div>
+								)}
+							</div>
+							<div class="card__body">
+								<h3 class="blog-card__h">{p.title}</h3>
+								<p class="blog-card__p">{p.excerpt}</p>
+								<span class="blog-card__cta">READ ARTICLE →</span>
+								<div class="blog-card__byline">
+									<div class="blog-card__avatar"></div>
+									<div>
+										<div class="blog-card__byline__t">GRANT C. MEYER</div>
+										<div class="blog-card__byline__d">{p.date}</div>
+									</div>
+								</div>
+							</div>
+						</a>
+					))}
+				</div>
+			</div>
+		</section>
+	)}
+
+	{/* CONTACT — the shared site-wide section. Same component and same CMS entry as
+	    /contact/, /community/ and the four content pages, so it is edited in one
+	    place. Liz's design renders it twice on the home page (mid-page and at the
+	    end); built once at the end. */}
+	<ContactCta />
+
+	<script is:inline>
+		/* Micro-markets slider. Plain show/hide rather than a transform track: the
+		   slides are full grid rows and only one is ever needed on screen. */
+		(function () {
+			var slides = Array.prototype.slice.call(document.querySelectorAll("[data-micro-slide]"));
+			var dots = Array.prototype.slice.call(document.querySelectorAll("[data-micro-dot]"));
+			var prev = document.getElementById("microPrev");
+			var next = document.getElementById("microNext");
+			if (slides.length < 2 || !prev || !next) return;
+			var at = 0;
+			function show(n) {
+				at = (n + slides.length) % slides.length;
+				slides.forEach(function (el, k) { el.style.display = k === at ? "" : "none"; });
+				dots.forEach(function (el, k) {
+					el.style.width = k === at ? "22px" : "6px";
+					el.style.background = k === at ? "#F7945B" : "rgba(255,255,255,0.3)";
+					el.setAttribute("aria-current", k === at ? "true" : "false");
+				});
+			}
+			prev.addEventListener("click", function () { show(at - 1); });
+			next.addEventListener("click", function () { show(at + 1); });
+			dots.forEach(function (el, k) { el.addEventListener("click", function () { show(k); }); });
+			show(0);
+		})();
+
+	</script>
 </GcmLayout>

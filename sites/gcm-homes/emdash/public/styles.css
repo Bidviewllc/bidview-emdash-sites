@@ -31,7 +31,9 @@ html, body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-feature-settings: "kern";
-  min-width: 1280px;
+  /* No min-width: the responsive overlay (responsive.css) reflows the layout
+     below 1024px. A hard min-width here would force mobile browsers to zoom
+     out to a 1280px viewport instead. */
 }
 
 a { color: inherit; text-decoration: none; }
@@ -167,7 +169,8 @@ img { display: block; max-width: 100%; }
 .hero__img {
   position: absolute;
   inset: 0;
-  background-image: url("https://images.unsplash.com/photo-1577756620835-c0fe2902103e?fm=jpg&q=80&w=2800&auto=format&fit=crop");
+  /* Self-hosted rather than hotlinked from images.unsplash.com — see .emotion__bg. */
+  background-image: url("/assets/hero-lake.jpg");
   background-size: cover;
   background-position: center 55%;
   filter: brightness(0.92);
@@ -442,7 +445,11 @@ img { display: block; max-width: 100%; }
 .emotion__bg {
   position: absolute;
   inset: 0;
-  background-image: url("https://images.unsplash.com/photo-1578624495146-f78dc655eae6?fm=jpg&q=80&w=2800&auto=format&fit=crop");
+  /* Same photograph the design uses, downloaded and served from our own origin
+     rather than hotlinked from images.unsplash.com — no third-party dependency,
+     and it cannot disappear from under us. Unsplash's licence permits commercial
+     use without attribution. */
+  background-image: url("/assets/emotion-lifestyle.jpg");
   background-size: cover;
   background-position: center 50%;
 }
@@ -855,80 +862,93 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
 
 /* ===== Property Cards ===== */
 .props { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 64px; }
-.prop-card {
-  background: var(--white);
+/* ===== Cards =====
+   ONE card design, shared by three places: the /listings/ search results, the
+   home page Featured Listings grid and the home page Market Insights blog cards.
+   It started life inside /listings/index.html's own <style> block; that page now
+   loads it from here, so changing the card changes it everywhere.
+
+   The blog cards use the same shell and the same .card__tag pill for their
+   category, with .card--post supplying the editorial spacing in the body. */
+.card {
+  background: #fff;
   border-radius: 4px;
   overflow: hidden;
-  border: 1px solid rgba(197,198,206,0.35);
-  box-shadow: 0 8px 16px -10px rgba(0,0,0,0.12);
-  display: flex;
-  flex-direction: column;
   cursor: pointer;
-  transition: transform 260ms ease, box-shadow 260ms ease;
-}
-.prop-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 30px 50px -20px rgba(0,0,0,0.22);
-}
-.prop-card__media {
-  aspect-ratio: 4 / 3;
-  position: relative;
-  overflow: hidden;
-}
-.prop-card__img {
-  position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-position: center;
-  transition: transform 700ms ease;
-}
-.prop-card:hover .prop-card__img { transform: scale(1.05); }
-.prop-card__tag {
-  position: absolute;
-  top: 0; right: 0;
-  background: var(--orange);
-  color: var(--white);
-  padding: 8px 14px;
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  font-weight: 600;
-}
-.prop-card__body {
-  background: var(--cream);
-  padding: 28px;
-  text-align: center;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  flex: 1;
+  transition: transform 220ms ease, box-shadow 220ms ease;
+  border: 1px solid transparent;
 }
-.prop-card__addr {
-  font-family: var(--font-serif);
-  font-size: 22px;
-  font-weight: 500;
-  color: var(--navy);
-  line-height: 1.2;
+.card:hover, .card.is-active { transform: translateY(-4px); box-shadow: 0 16px 44px rgba(21,36,59,0.13); }
+.card.is-active { border-color: var(--orange); }
+.card__media { position: relative; aspect-ratio: 4/3; overflow: hidden; background: var(--beige); }
+.card__img { width: 100%; height: 100%; object-fit: cover; transition: transform 500ms ease; display: block; }
+.card:hover .card__img { transform: scale(1.045); }
+.card__ph { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--line); font-size: 34px; }
+/* One row rather than two absolutely-positioned corners. Pinned to opposite
+   corners they overlapped as soon as the cards got narrow: three columns in the
+   56%-wide results pane gives ~204px cards at 1280px, not enough for
+   "SINGLE FAMILY" and "WATERFRONT" to pass each other. Now they wrap. */
+.card__badges {
+  position: absolute;
+  top: 14px; left: 14px; right: 14px;
+  /* space-between (not margin-left:auto on the Waterfront badge) so that when
+     both fit on one line the Waterfront badge sits right, as designed, but a
+     wrapped one stays left-aligned on its own line instead of being shoved to
+     the far edge. CSS can't detect wrapping; this needs no detection. */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: flex-start;
+  justify-content: space-between;
 }
-.prop-card__meta {
-  font-size: 12px;
-  letter-spacing: 0.16em;
-  color: var(--body);
+.card__tag, .card__wf {
+  font-size: 9px;
+  letter-spacing: 0.13em;
   text-transform: uppercase;
-}
-.prop-card__price {
-  font-family: var(--font-serif);
-  font-size: 22px;
-  color: var(--navy);
-  font-weight: 500;
-}
-.prop-card__cta {
-  font-size: 12px;
-  letter-spacing: 0.18em;
   font-weight: 700;
-  color: var(--orange);
-  text-transform: uppercase;
-  margin-top: 4px;
+  padding: 5px 10px;
+  border-radius: 2px;
+  color: #fff;
+  white-space: nowrap;
 }
+.card__tag { background: rgba(21,36,59,0.92); backdrop-filter: blur(4px); }
+.card__wf { background: var(--orange); }
+.card__count {
+  position: absolute;
+  bottom: 12px; right: 12px;
+  background: rgba(0,0,0,0.55);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 4px 9px;
+  border-radius: 2px;
+  letter-spacing: 0.04em;
+  backdrop-filter: blur(4px);
+}
+.card__body { padding: 18px 20px 20px; display: flex; flex-direction: column; flex: 1; }
+.card__price { font-family: var(--font-serif); font-size: 22px; font-weight: 600; color: var(--navy); line-height: 1.1; }
+.card__addr { font-size: 14px; font-weight: 600; color: var(--ink); margin-top: 7px; line-height: 1.35; }
+.card__city { font-size: 11px; color: var(--muted); letter-spacing: 0.07em; text-transform: uppercase; margin-top: 3px; }
+.card__meta {
+  display: flex;
+  gap: 14px;
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-top: 14px;
+  padding-top: 13px;
+  border-top: 1px solid var(--line);
+}
+.card__meta b { color: var(--navy); font-weight: 700; }
+
+/* Post variant. A listing card's body is a tight stack of facts; an article's
+   needs air between the headline, the standfirst and the byline, and the byline
+   sits on the bottom edge so a row of cards lines up whatever the excerpt length. */
+.card--post .card__body { gap: 14px; padding: 22px 22px 20px; }
+.card--post .blog-card__byline { margin-top: auto; }
 
 /* ===== Micro Markets ===== */
 .micro {
@@ -1071,28 +1091,9 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
 
 /* ===== Blog ===== */
 .blog { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 64px; }
-.blog-card {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  cursor: pointer;
-}
-.blog-card__media {
-  aspect-ratio: 16/12;
-  border-radius: 4px;
-  overflow: hidden;
-  background-size: cover;
-  background-position: center;
-  transition: transform 280ms ease;
-}
-.blog-card:hover .blog-card__media { transform: translateY(-4px); }
-.blog-card__meta {
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  color: var(--orange);
-  text-transform: uppercase;
-  font-weight: 700;
-}
+/* The article-card shell is .card / .card--post above; what follows is the
+   typography used inside its body. .blog-card__meta is gone — the category is
+   now the same .card__tag pill the listing cards use. */
 .blog-card__h {
   font-family: var(--font-serif);
   font-weight: 500;
@@ -2306,7 +2307,7 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 32px;
-  padding: 64px 48px 128px;
+  padding: 32px 48px;
   background: var(--cream);
   max-width: 1280px;
   margin: 0 auto;

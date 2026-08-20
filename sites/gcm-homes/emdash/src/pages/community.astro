@@ -4,6 +4,7 @@
 // things-to-do, schools, history, living-here accordion, featured (live D1), CTA.
 // The neighborhood grid links to /neighborhood/:slug/ (editable copy per area).
 import GcmLayout from "../layouts/GcmLayout.astro";
+import ContactCta from "../components/ContactCta.astro";
 import { env } from "cloudflare:workers";
 import { NEIGHBORHOODS } from "../lib/neighborhoods";
 
@@ -38,7 +39,8 @@ const LIVING_HERE = [
 	{ h: "Climate & the seasons", body: ["Incline sits between roughly 6,225 and 7,700 feet, which gives it four genuine seasons: deep, snowy winters and dry, mild summers, with around 290 days of sunshine across the year.", "Snow piles up through the winter — well over a hundred inches in a typical year — then gives way to long, clear summers ideal for the lake."] },
 	{ h: "Day-to-day essentials", body: ["The village covers the basics close to home — Raley's and the Village shopping center for groceries, the recreation center and library at the core, and the local public and private schools all within a few minutes.", "For specialized care and bigger errands, Tahoe Forest Health System is over the hill in Truckee, and Reno's hospitals and shopping are about 45 minutes away."] },
 ];
-const HERO_IMG = "https://images.unsplash.com/photo-1508739773434-c26b3d09e071?fm=jpg&q=80&w=2800&auto=format&fit=crop";
+// Self-hosted rather than hotlinked from images.unsplash.com — see .emotion__bg.
+const HERO_IMG = "/assets/community-hero.jpg";
 
 // Featured — live top 3 from the Trestle-synced D1 tables.
 let featured: any[] = [];
@@ -217,14 +219,8 @@ const meta = (l: any) => [l.beds && `${l.beds} BD`, l.baths && `${l.baths} BA`, 
 			</div>
 		</section>
 
-		{/* 9. CTA */}
-		<section class="section section--dark" style="text-align:center">
-			<div class="container" style="max-width:720px">
-				<h2 class="reality__h" style="color:#fff">Ready to Know the North Shore From the Inside?</h2>
-				<p class="reality__p" style="margin:16px auto 32px">Start with a conversation. Grant will walk you through the neighborhoods, the market, and what's quietly available.</p>
-				<a class="btn btn--orange" href="/contact/">INQUIRE NOW</a>
-			</div>
-		</section>
+		{/* 9. Contact — the shared section, keeping this page's own heading. */}
+		<ContactCta heading="Ready to Know the North Shore From the Inside?" />
 	</div>
 
 	<script is:inline>

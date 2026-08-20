@@ -185,6 +185,126 @@
 					"slug": "cta_body",
 					"label": "CTA body",
 					"type": "text"
+				},
+				{
+					"slug": "emotion_h1",
+					"label": "Emotion heading line 1",
+					"type": "text"
+				},
+				{
+					"slug": "emotion_h2",
+					"label": "Emotion heading line 2 (italic)",
+					"type": "text"
+				},
+				{
+					"slug": "emotion_body",
+					"label": "Emotion body",
+					"type": "text"
+				},
+				{
+					"slug": "emotion_image",
+					"label": "Emotion background image",
+					"type": "image"
+				},
+				{
+					"slug": "guide_body",
+					"label": "Guide closing paragraph",
+					"type": "text"
+				},
+				{
+					"slug": "guide_cta",
+					"label": "Guide button label",
+					"type": "string"
+				},
+				{
+					"slug": "proof_heading",
+					"label": "Proof heading",
+					"type": "text"
+				},
+				{
+					"slug": "proof_body",
+					"label": "Proof body",
+					"type": "text"
+				},
+				{
+					"slug": "micro_eyebrow",
+					"label": "Micro-markets eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "micro_heading",
+					"label": "Micro-markets heading",
+					"type": "text"
+				},
+				{
+					"slug": "insights_heading",
+					"label": "Market insights heading",
+					"type": "string"
+				},
+				{
+					"slug": "insights_body",
+					"label": "Market insights body",
+					"type": "text"
+				}
+			]
+		},
+		{
+			"slug": "contact_cta",
+			"label": "Contact CTA (site-wide)",
+			"labelSingular": "Contact CTA",
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "heading",
+					"label": "Section heading",
+					"type": "text"
+				},
+				{
+					"slug": "form_heading",
+					"label": "Form heading",
+					"type": "text"
+				},
+				{
+					"slug": "phone",
+					"label": "Phone (blank = row hidden)",
+					"type": "string"
+				},
+				{
+					"slug": "email",
+					"label": "Email (blank = row hidden)",
+					"type": "string"
+				},
+				{
+					"slug": "address",
+					"label": "Mailing address (blank = row hidden)",
+					"type": "string"
+				},
+				{
+					"slug": "agent_name",
+					"label": "Agent name",
+					"type": "string"
+				},
+				{
+					"slug": "agent_role",
+					"label": "Agent role",
+					"type": "string"
+				},
+				{
+					"slug": "agent_photo",
+					"label": "Agent photo",
+					"type": "image"
+				},
+				{
+					"slug": "submit_label",
+					"label": "Submit button label",
+					"type": "string"
+				},
+				{
+					"slug": "success_message",
+					"label": "Message shown after sending",
+					"type": "text"
 				}
 			]
 		},
@@ -297,6 +417,72 @@
 					"slug": "trend",
 					"label": "Inventory trend",
 					"type": "string"
+				},
+				{
+					"slug": "featured_image",
+					"label": "Featured image",
+					"type": "image"
+				},
+				{
+					"slug": "map_image",
+					"label": "Map image (used on listing pages)",
+					"type": "image"
+				},
+				{
+					"slug": "featured",
+					"label": "Featured on homepage slider",
+					"type": "boolean"
+				}
+			]
+		},
+		{
+			"slug": "market_intelligence",
+			"label": "Market Intelligence",
+			"labelSingular": "Market Intelligence Post",
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "neighborhood",
+					"label": "Neighborhood slug (e.g. crystal-bay)",
+					"type": "string",
+					"searchable": true
+				},
+				{
+					"slug": "period",
+					"label": "Period badge (e.g. Q3 2026)",
+					"type": "string"
+				},
+				{
+					"slug": "summary",
+					"label": "Summary paragraph",
+					"type": "text"
+				},
+				{
+					"slug": "list_to_sale",
+					"label": "Avg list-to-sale ratio (e.g. 98.2%)",
+					"type": "string"
+				},
+				{
+					"slug": "list_to_sale_note",
+					"label": "List-to-sale caption",
+					"type": "text"
+				},
+				{
+					"slug": "avg_dom",
+					"label": "Avg days on market (e.g. 42 Days)",
+					"type": "string"
+				},
+				{
+					"slug": "avg_dom_note",
+					"label": "Days-on-market caption",
+					"type": "text"
+				},
+				{
+					"slug": "source",
+					"label": "Data source / as-of note",
+					"type": "text"
 				}
 			]
 		}
@@ -499,7 +685,7 @@
 					"guide_eyebrow": "YOUR NEIGHBOR BEFORE YOU EVEN ARRIVE",
 					"guide_heading": "This Is Where 35 Years Makes the Difference.",
 					"featured_eyebrow": "CURATED LAKE TAHOE PROPERTIES",
-					"featured_heading": "Currently Representing",
+					"featured_heading": "Featured Listings",
 					"cta_heading": "Your Tahoe Story Starts With One Conversation.",
 					"cta_body": "Whether you're buying, selling, or just getting to know the North Shore — start with a conversation, not a transaction."
 				}
@@ -807,6 +993,22 @@
 					"take": "Crystal Bay rewards patience. The lakefront here rarely lists publicly, and when it does the right buyer is often already on a list. If this is the corner you want, the move is to be known here before the home exists.",
 					"avg_price": "$4.1M",
 					"trend": "Emerging"
+				}
+			}
+		],
+		"contact_cta": [
+			{
+				"id": "default",
+				"slug": "default",
+				"status": "published",
+				"data": {
+					"title": "Contact CTA",
+					"heading": "Your Tahoe Story Starts With One Conversation.",
+					"form_heading": "Let's begin with a conversation, not a transaction.",
+					"agent_name": "Grant C. Meyer",
+					"agent_role": "Coldwell Banker Global Luxury Agent",
+					"submit_label": "SEND INQUIRY",
+					"success_message": "Thanks — Grant will be in touch within 24 hours."
 				}
 			}
 		]
