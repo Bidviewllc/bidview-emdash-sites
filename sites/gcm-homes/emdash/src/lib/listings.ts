@@ -28,6 +28,13 @@ export function toDetail(r: any) {
 		taxes: r.taxes, daysOnMarket: r.dom, agent: r.agent, office: r.office,
 		lat: r.lat, lng: r.lng, hoaFee: r.hoa_fee, heating: r.heating, cooling: r.cooling,
 		parking: r.parking, appliances: r.appliances, updated: r.updated, slug: r.slug,
+		// Added 2026-08-19 (Liz's field request — for the Features/Amenities cards + 3D tour):
+		flooring: r.flooring, fireplaces: r.fireplaces, fireplaceYN: r.fireplace_yn,
+		fireplaceFeatures: r.fireplace_features, roof: r.roof, utilities: r.utilities,
+		poolFeatures: r.pool_features, listingDate: r.listing_date, hoaFrequency: r.hoa_frequency,
+		tourUrlMls: r.tour_url_mls, mlsNumber: r.mls_number, stories: r.stories,
+		archStyle: r.arch_style, construction: r.construction, lotFeatures: r.lot_features,
+		condition: r.condition, lotSqft: r.lot_sqft,
 	};
 }
 

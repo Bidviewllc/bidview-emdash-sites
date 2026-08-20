@@ -56,6 +56,13 @@ const MLS_FIELDS = [
 	["lot_acres", "Lot (acres)"], ["year_built", "Year Built"],
 	["property_type", "Property Type"], ["mls_status", "MLS Status"], ["view", "View"],
 	["photo", "Primary Photo"], ["dom", "Days on Market"],
+	// Added 2026-08-19 (Liz's field request — MLS-authoritative, refreshed each sync):
+	["flooring", "Flooring"], ["fireplaces", "Fireplaces"], ["fireplace_yn", "Fireplace (Y/N)"],
+	["fireplace_features", "Fireplace Features"], ["roof", "Roof"], ["utilities", "Utilities"],
+	["pool_features", "Pool Features"], ["listing_date", "Date Listed"], ["hoa_frequency", "HOA Frequency"],
+	["tour_url_mls", "3D Tour (MLS)"], ["mls_number", "MLS #"], ["stories", "Stories"],
+	["arch_style", "Architectural Style"], ["construction", "Construction"], ["lot_features", "Lot Features"],
+	["condition", "Condition"], ["lot_sqft", "Lot (sq ft)"],
 ];
 const OWNER_FIELDS = [
 	["description", "Description (editable — overrides the MLS remarks)"],
@@ -121,7 +128,11 @@ export async function mirrorListings(log = console.log) {
 			S(r.price != null ? "$" + Number(r.price).toLocaleString("en-US") : null),
 			S(r.beds), S(r.baths), S(r.sqft != null ? Number(r.sqft).toLocaleString("en-US") : null),
 			S(r.lot_acres), S(r.year_built), S(propType || null), S(r.mls_status ?? r.status), S(r.view),
-			S(r.photo), S(r.dom), S(plainToPortableText(r.description)), S(plainToPortableText(r.description)),
+			S(r.photo), S(r.dom),
+			S(r.flooring), S(r.fireplaces), S(r.fireplace_yn), S(r.fireplace_features), S(r.roof), S(r.utilities),
+			S(r.pool_features), S(r.listing_date), S(r.hoa_frequency), S(r.tour_url_mls), S(r.mls_number), S(r.stories),
+			S(r.arch_style), S(r.construction), S(r.lot_features), S(r.condition), S(r.lot_sqft),
+			S(plainToPortableText(r.description)), S(plainToPortableText(r.description)),
 		];
 		const tuple = `(${vals.join(",")})`;
 		if (sqlLen + tuple.length + 1 > 90000 || batch.length >= 40) await flush();

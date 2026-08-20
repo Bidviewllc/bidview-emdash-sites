@@ -29,6 +29,11 @@ const FULL_SELECT = [
   "DaysOnMarket", "PhotosCount", "ListAgentFullName", "ListOfficeName",
   "TaxAnnualAmount", "AssociationFee", "Heating", "Cooling", "ParkingFeatures",
   "Appliances", "PublicRemarks", "ModificationTimestamp",
+  // Added 2026-08-19 (Liz's field request — only fields the feed actually populates):
+  "Flooring", "FireplacesTotal", "FireplaceYN", "FireplaceFeatures", "Roof",
+  "Utilities", "PoolFeatures", "ListingContractDate", "AssociationFeeFrequency",
+  "VirtualTourURLUnbranded", "ListingId", "Stories", "ArchitecturalStyle",
+  "ConstructionMaterials", "LotFeatures", "PropertyCondition",
 ].join(",");
 
 const flat = v => Array.isArray(v) ? v.filter(Boolean).join(", ") : v;
@@ -90,7 +95,9 @@ function sqlVal(v) {
 // only MLS columns on existing rows via ON CONFLICT(id), inserts new listings, drops
 // removed ones. So admin + inline owner edits survive every sync. Mirrors
 // emdash/seed/mirror-listings.mjs.
-const EMDASH_MLS_FIELDS = ["city","state","zip","price","beds","baths","sqft","lot_acres","year_built","property_type","mls_status","view","photo","dom"];
+const EMDASH_MLS_FIELDS = ["city","state","zip","price","beds","baths","sqft","lot_acres","year_built","property_type","mls_status","view","photo","dom",
+  // Added 2026-08-19 (Liz's field request):
+  "flooring","fireplaces","fireplace_yn","fireplace_features","roof","utilities","pool_features","listing_date","hoa_frequency","tour_url_mls","mls_number","stories","arch_style","construction","lot_features","condition","lot_sqft"];
 // Plain MLS remarks -> Portable Text JSON (WYSIWYG storage), deterministic keys.
 function ptFromPlain(plain) {
   const text = (plain == null ? "" : plain).toString();
@@ -120,7 +127,11 @@ async function mirrorEmdashListings() {
       sqlVal(r.price != null ? "$" + Number(r.price).toLocaleString("en-US") : null),
       sqlVal(r.beds), sqlVal(r.baths), sqlVal(r.sqft != null ? Number(r.sqft).toLocaleString("en-US") : null),
       sqlVal(r.lot_acres), sqlVal(r.year_built), sqlVal(pt || null), sqlVal(r.status), sqlVal(r.view),
-      sqlVal(r.photo), sqlVal(r.dom), sqlVal(ptFromPlain(r.description)), sqlVal(ptFromPlain(r.description)),
+      sqlVal(r.photo), sqlVal(r.dom),
+      sqlVal(r.flooring), sqlVal(r.fireplaces), sqlVal(r.fireplace_yn), sqlVal(r.fireplace_features), sqlVal(r.roof), sqlVal(r.utilities),
+      sqlVal(r.pool_features), sqlVal(r.listing_date), sqlVal(r.hoa_frequency), sqlVal(r.tour_url_mls), sqlVal(r.mls_number), sqlVal(r.stories),
+      sqlVal(r.arch_style), sqlVal(r.construction), sqlVal(r.lot_features), sqlVal(r.condition), sqlVal(r.lot_sqft),
+      sqlVal(ptFromPlain(r.description)), sqlVal(ptFromPlain(r.description)),
     ];
     const tuple = "(" + vals.join(",") + ")";
     if (len + tuple.length + 1 > 90000 || batch.length >= 40) await flush();
@@ -178,6 +189,13 @@ export default async function handler(req, res) {
         l.ListAgentFullName || null, l.ListOfficeName || null, l.TaxAnnualAmount ?? null, l.AssociationFee ?? null,
         flat(l.Heating) || null, flat(l.Cooling) || null, flat(l.ParkingFeatures) || null, flat(l.Appliances) || null,
         l.PublicRemarks || null, primary, l.ModificationTimestamp || null,
+        // Added 2026-08-19 (Liz's field request):
+        flat(l.Flooring) || null, l.FireplacesTotal ?? null, l.FireplaceYN === true ? 1 : (l.FireplaceYN === false ? 0 : null),
+        flat(l.FireplaceFeatures) || null, flat(l.Roof) || null, flat(l.Utilities) || null, flat(l.PoolFeatures) || null,
+        l.ListingContractDate || null, l.AssociationFeeFrequency || null, l.VirtualTourURLUnbranded || null,
+        l.ListingId || null, l.Stories ?? null, flat(l.ArchitecturalStyle) || null, flat(l.ConstructionMaterials) || null,
+        flat(l.LotFeatures) || null, l.PropertyCondition ? flat(l.PropertyCondition) : null,
+        l.LotSizeAcres != null ? Math.round(Number(l.LotSizeAcres) * 43560) : null,
       ];
     });
     const photoRows = [];
@@ -185,7 +203,9 @@ export default async function handler(req, res) {
 
     await d1("DELETE FROM listing_photos");
     await d1("DELETE FROM listings");
-    const LCOLS = ["id","slug","address","city","state","zip","price","beds","baths","baths_full","baths_half","sqft","lot_acres","year_built","garage","type","sub_type","category","status","lat","lng","view","waterfront","dom","photos_count","agent","office","taxes","hoa_fee","heating","cooling","parking","appliances","description","photo","updated"];
+    const LCOLS = ["id","slug","address","city","state","zip","price","beds","baths","baths_full","baths_half","sqft","lot_acres","year_built","garage","type","sub_type","category","status","lat","lng","view","waterfront","dom","photos_count","agent","office","taxes","hoa_fee","heating","cooling","parking","appliances","description","photo","updated",
+      // Added 2026-08-19 (Liz's field request):
+      "flooring","fireplaces","fireplace_yn","fireplace_features","roof","utilities","pool_features","listing_date","hoa_frequency","tour_url_mls","mls_number","stories","arch_style","construction","lot_features","condition","lot_sqft"];
     await insertRows("listings", LCOLS, listingRows, 25);
     await insertRows("listing_photos", ["listing_key","ord","url"], photoRows, 300);
     await d1(`INSERT OR REPLACE INTO sync_meta (id,last_synced_at,count) VALUES (1,${sqlVal(new Date().toISOString())},${listingRows.length})`);
