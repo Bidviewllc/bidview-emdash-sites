@@ -1524,12 +1524,26 @@
               "_type": "block",
               "_key": "k4n",
               "style": "normal",
-              "markDefs": [],
+              "markDefs": [
+                {
+                  "_type": "link",
+                  "_key": "phonaklink",
+                  "href": "/phonak-hearing-aids/"
+                }
+              ],
               "children": [
                 {
                   "_type": "span",
-                  "_key": "k4m",
-                  "text": "Rechargeable models reduce battery changes and can be simpler day to day. Disposable batteries work well for people who want quick swaps and longer storage.",
+                  "_key": "k4m_lnk",
+                  "text": "Rechargeable models",
+                  "marks": [
+                    "phonaklink"
+                  ]
+                },
+                {
+                  "_type": "span",
+                  "_key": "k4m_c",
+                  "text": " reduce battery changes and can be simpler day to day. Disposable batteries work well for people who want quick swaps and longer storage.",
                   "marks": []
                 }
               ]
@@ -5481,19 +5495,42 @@
               "style": "h2",
               "markDefs": [],
               "children": [
-                { "_type": "span", "_key": "kjt-heading-span", "text": "Giving Back in Action", "marks": [] }
+                {
+                  "_type": "span",
+                  "_key": "kjt-heading-span",
+                  "text": "Giving Back in Action",
+                  "marks": []
+                }
               ]
             },
             {
               "_type": "gallery",
               "_key": "kjt-gallery",
               "images": [
-                { "src": "/assets/new-leaf-give-back-gallery-01.jpg", "alt": "New Leaf Hearing Care team giving back in the community" },
-                { "src": "/assets/new-leaf-give-back-gallery-02.jpg", "alt": "New Leaf Hearing Care volunteering with a local charity partner" },
-                { "src": "/assets/new-leaf-give-back-gallery-03.jpg", "alt": "New Leaf Hearing Care staff at a community outreach event" },
-                { "src": "/assets/new-leaf-give-back-gallery-04.jpg", "alt": "New Leaf Hearing Care supporting a Hearing the Call mission" },
-                { "src": "/assets/new-leaf-give-back-gallery-05.jpg", "alt": "New Leaf Hearing Care giving back to the Arvada and Littleton community" },
-                { "src": "/assets/new-leaf-give-back-gallery-06.jpg", "alt": "New Leaf Hearing Care team with a rescue dog from Paws on the Ground Colorado" }
+                {
+                  "src": "/assets/new-leaf-give-back-gallery-01.jpg",
+                  "alt": "New Leaf Hearing Care team giving back in the community"
+                },
+                {
+                  "src": "/assets/new-leaf-give-back-gallery-02.jpg",
+                  "alt": "New Leaf Hearing Care volunteering with a local charity partner"
+                },
+                {
+                  "src": "/assets/new-leaf-give-back-gallery-03.jpg",
+                  "alt": "New Leaf Hearing Care staff at a community outreach event"
+                },
+                {
+                  "src": "/assets/new-leaf-give-back-gallery-04.jpg",
+                  "alt": "New Leaf Hearing Care supporting a Hearing the Call mission"
+                },
+                {
+                  "src": "/assets/new-leaf-give-back-gallery-05.jpg",
+                  "alt": "New Leaf Hearing Care giving back to the Arvada and Littleton community"
+                },
+                {
+                  "src": "/assets/new-leaf-give-back-gallery-06.jpg",
+                  "alt": "New Leaf Hearing Care team with a rescue dog from Paws on the Ground Colorado"
+                }
               ]
             }
           ]
@@ -6675,12 +6712,27 @@
               "style": "normal",
               "listItem": "bullet",
               "level": 1,
-              "markDefs": [],
+              "markDefs": [
+                {
+                  "_type": "link",
+                  "_key": "phonaklink",
+                  "href": "/phonak-hearing-aids/"
+                }
+              ],
               "children": [
                 {
                   "_type": "span",
-                  "_key": "koa",
-                  "text": "Performance Accessories (Hear Better in Real Life)",
+                  "_key": "koa_lnk",
+                  "text": "Performance Accessories",
+                  "marks": [
+                    "strong",
+                    "phonaklink"
+                  ]
+                },
+                {
+                  "_type": "span",
+                  "_key": "koa_c",
+                  "text": " (Hear Better in Real Life)",
                   "marks": [
                     "strong"
                   ]
@@ -10585,12 +10637,32 @@
               "_type": "block",
               "_key": "k133",
               "style": "normal",
-              "markDefs": [],
+              "markDefs": [
+                {
+                  "_type": "link",
+                  "_key": "phonaklink",
+                  "href": "/phonak-hearing-aids/"
+                }
+              ],
               "children": [
                 {
                   "_type": "span",
-                  "_key": "k132",
-                  "text": "Better hearing should feel natural and fit your life. At New Leaf Hearing Care, you’ll find modern hearing solutions selected for your hearing needs, lifestyle, and comfort preferences (never a one-size-fits-all recommendation). From style and features to fitting and fine-tuning, we focus on helping you hear clearly in the situations that matter most: conversations, family gatherings, restaurants, and everyday moments.",
+                  "_key": "k132_a",
+                  "text": "Better hearing should feel natural and fit your life. At New Leaf Hearing Care, you’ll find ",
+                  "marks": []
+                },
+                {
+                  "_type": "span",
+                  "_key": "k132_lnk",
+                  "text": "modern hearing solutions",
+                  "marks": [
+                    "phonaklink"
+                  ]
+                },
+                {
+                  "_type": "span",
+                  "_key": "k132_c",
+                  "text": " selected for your hearing needs, lifestyle, and comfort preferences (never a one-size-fits-all recommendation). From style and features to fitting and fine-tuning, we focus on helping you hear clearly in the situations that matter most: conversations, family gatherings, restaurants, and everyday moments.",
                   "marks": []
                 }
               ]
@@ -11456,13 +11528,21 @@
               "_type": "block",
               "_key": "k16f",
               "style": "h3",
-              "markDefs": [],
+              "markDefs": [
+                {
+                  "_type": "link",
+                  "_key": "phonaklink",
+                  "href": "/phonak-hearing-aids/"
+                }
+              ],
               "children": [
                 {
                   "_type": "span",
-                  "_key": "k16e",
+                  "_key": "k16e_lnk",
                   "text": "Bluetooth streaming",
-                  "marks": []
+                  "marks": [
+                    "phonaklink"
+                  ]
                 }
               ]
             },
@@ -12313,12 +12393,26 @@
               "style": "normal",
               "listItem": "bullet",
               "level": 1,
-              "markDefs": [],
+              "markDefs": [
+                {
+                  "_type": "link",
+                  "_key": "phonaklink",
+                  "href": "/phonak-hearing-aids/"
+                }
+              ],
               "children": [
                 {
                   "_type": "span",
-                  "_key": "k19l",
-                  "text": "Bluetooth streaming for phone calls, music, and TV audio.",
+                  "_key": "k19l_lnk",
+                  "text": "Bluetooth streaming",
+                  "marks": [
+                    "phonaklink"
+                  ]
+                },
+                {
+                  "_type": "span",
+                  "_key": "k19l_c",
+                  "text": " for phone calls, music, and TV audio.",
                   "marks": []
                 }
               ]
