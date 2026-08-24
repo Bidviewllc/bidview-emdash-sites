@@ -6,7 +6,7 @@ const PUBLIC_HTML_CACHE_CONTROL = "public, max-age=300, s-maxage=3600, stale-whi
 const EDGE_HTML_CACHE_CONTROL = "public, max-age=3600, stale-while-revalidate=86400";
 const PUBLIC_MEDIA_CACHE_CONTROL = "public, max-age=31536000, immutable";
 const PRIVATE_CACHE_CONTROL = "no-store, max-age=0";
-const HTML_CACHE_VERSION = "2026-08-24-phonak-internal-links-v40";
+const HTML_CACHE_VERSION = "2026-08-24-community-resources-v41";
 const PUBLIC_MEDIA_PREFIX = "/_emdash/api/media/file/";
 const CACHEABLE_MEDIA_TYPES = ["image/", "video/", "audio/"];
 const STATIC_PATHS = [
@@ -16,6 +16,7 @@ const STATIC_PATHS = [
   "/audiologist-hearing-aids-arvada-colorado/",
   "/audiologist-hearing-aids-littleton-colorado/",
   "/contact-us/",
+  "/community-resources/",
   "/littleton-reviews/",
   "/patient-resources/",
   "/schedule-appointment/",

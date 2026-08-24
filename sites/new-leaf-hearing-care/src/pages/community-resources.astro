@@ -1,0 +1,15 @@
+---
+import Base from "../layouts/Base.astro";
+import mainHtml from "../lib/community-resources-main.html?raw";
+import filterScript from "../lib/community-resources-script.js?raw";
+import "../styles/community-resources.css";
+
+export const prerender = false;
+---
+<Base
+  title="Community Resources | New Leaf Hearing Care"
+  description="Local organizations and services the audiologists at New Leaf Hearing Care refer patients to, grouped by category."
+>
+  <Fragment set:html={mainHtml} />
+  <script is:inline set:html={filterScript} />
+</Base>
