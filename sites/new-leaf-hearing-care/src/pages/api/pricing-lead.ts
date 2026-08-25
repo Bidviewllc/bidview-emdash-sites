@@ -94,6 +94,29 @@ ${answerLines}
 A copy of the estimate was emailed to them.`;
 }
 
+// Minimal HTML twin of the plain-text email: same words, default-looking type,
+// with leading "Label:" phrases bolded and URLs clickable. The plain-text
+// version is still sent as the fallback part.
+function escapeHtml(s: string): string {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function textToHtml(text: string): string {
+  const paragraphs = text.split('\n\n').map(para => {
+    const lines = para.split('\n').map(line => {
+      let html = escapeHtml(line);
+      // Bold a leading "Label:" phrase — colon must be followed by a space or
+      // end the line, so URLs (://) never match.
+      html = html.replace(/^(\s*)([A-Za-z][^:]{0,48}):(\s|$)/, '$1<strong>$2:</strong>$3');
+      html = html.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1">$1</a>');
+      return html;
+    });
+    return '<p style="margin:0 0 1em;">' + lines.join('<br>') + '</p>';
+  });
+  return '<div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.55;color:#222222;">'
+    + paragraphs.join('') + '</div>';
+}
+
 async function getResendApiKey(): Promise<{ key?: string; inWorkers: boolean }> {
   try {
     const mod = await import('cloudflare:workers');
@@ -108,7 +131,7 @@ async function sendViaResend(apiKey: string, to: string, replyTo: string | undef
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ from: FROM, to, subject, text, ...(replyTo ? { reply_to: replyTo } : {}) }),
+    body: JSON.stringify({ from: FROM, to, subject, text, html: textToHtml(text), ...(replyTo ? { reply_to: replyTo } : {}) }),
   });
   if (!res.ok) {
     const detail = await res.text().catch(() => '');
