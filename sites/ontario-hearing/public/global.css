@@ -870,7 +870,7 @@ h2.display, .display {
 }
 .footer__grid {
   display: grid;
-  grid-template-columns: 366px 261px 261px 370px;
+  grid-template-columns: minmax(0, 1.15fr) repeat(2, minmax(0, .82fr)) minmax(0, 1.16fr);
   gap: 48px;
   justify-content: space-between;
   padding-bottom: 36px;

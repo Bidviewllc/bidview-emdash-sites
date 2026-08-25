@@ -1,0 +1,131 @@
+---
+import Interior from "../layouts/Interior.astro";
+import CtaStrip from "../components/CtaStrip.astro";
+import reviewData from "../data/google-reviews.json";
+
+const reviews = reviewData.reviews;
+const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(reviewData.businessName)}&query_place_id=${reviewData.placeId}`;
+const formatDate = (value: string) => {
+  const date = new Date(value);
+  return Number.isNaN(date.valueOf())
+    ? ""
+    : new Intl.DateTimeFormat("en-US", { year: "numeric", month: "short", day: "numeric" }).format(date);
+};
+const initials = (name: string) => name.trim().slice(0, 1).toUpperCase() || "G";
+---
+<Interior
+  title="Google Reviews | Ontario Hearing Center"
+  description="Read patient reviews of Ontario Hearing Center in Rochester, NY."
+  pageTitle="Patient reviews."
+  pageSubtitle="Read what patients say about their experience with our Rochester audiology team."
+  breadcrumbLabel="Reviews"
+  breadcrumbs={[{ label: "Home", href: "/" }]}
+  canonical="https://ontariohearing.com/reviews/"
+>
+  <section class="reviews" data-review-list data-page-size="10">
+    <div class="reviews__head">
+      <div>
+        <p class="eyebrow">Google reviews</p>
+        <h2>Shared by our patients</h2>
+      </div>
+      <a class="google-summary" href={mapsUrl} target="_blank" rel="noopener noreferrer" aria-label="View Ontario Hearing Center reviews on Google">
+        <span class="google-mark" aria-hidden="true">G</span>
+        <span><strong>{reviewData.googleRating.toFixed(1)} out of 5</strong><small>{reviewData.googleReviewCount.toLocaleString("en-US")} Google reviews</small></span>
+      </a>
+    </div>
+
+    <div class="review-grid">
+      {reviews.map((review, index) => (
+        <article class="review-card" data-review-card hidden={index >= 10}>
+          <header class="review-card__header">
+            {review.profileImageUrl ? (
+              <img class="review-card__avatar" src={review.profileImageUrl} alt="" loading="lazy" referrerpolicy="no-referrer" />
+            ) : (
+              <span class="review-card__avatar review-card__avatar--initial" aria-hidden="true">{initials(review.authorName)}</span>
+            )}
+            <div class="review-card__person">
+              <h3>{review.authorName}</h3>
+              <p>{formatDate(review.timestamp) || review.relativeTime}</p>
+            </div>
+            <span class="review-card__source" aria-label="Google review">G</span>
+          </header>
+          <div class="stars" aria-label={`${review.rating} out of 5 stars`}>
+            {Array.from({ length: 5 }, (_, star) => (
+              <span class:list={["star", { "star--empty": star >= Math.round(review.rating) }]} aria-hidden="true">★</span>
+            ))}
+          </div>
+          {review.text && <p class="review-card__text">{review.text}</p>}
+          <footer>
+            <span>Ontario Hearing Center</span>
+            <a href={review.reviewUrl || mapsUrl} target="_blank" rel="noopener noreferrer">View on Google <span aria-hidden="true">↗</span></a>
+          </footer>
+        </article>
+      ))}
+    </div>
+
+    <div class="reviews__actions">
+      <p class="reviews__count" aria-live="polite"><span data-visible-count>10</span> of {reviews.length} reviews</p>
+      <button class="btn btn--navy" type="button" data-load-more>Load more reviews <span class="arrow" aria-hidden="true">↓</span></button>
+    </div>
+  </section>
+
+  <CtaStrip />
+</Interior>
+
+<script>
+  const list = document.querySelector<HTMLElement>("[data-review-list]");
+  if (list) {
+    const cards = Array.from(list.querySelectorAll<HTMLElement>("[data-review-card]"));
+    const button = list.querySelector<HTMLButtonElement>("[data-load-more]");
+    const counter = list.querySelector<HTMLElement>("[data-visible-count]");
+    const pageSize = Number(list.dataset.pageSize || 10);
+    let visible = Math.min(pageSize, cards.length);
+    button?.addEventListener("click", () => {
+      const next = Math.min(visible + pageSize, cards.length);
+      cards.slice(visible, next).forEach((card) => { card.hidden = false; });
+      visible = next;
+      if (counter) counter.textContent = String(visible);
+      if (button && visible >= cards.length) button.hidden = true;
+    });
+  }
+</script>
+
+<style>
+  .reviews { width: min(1180px, calc(100% - 40px)); margin: 0 auto; padding: 72px 0 88px; }
+  .reviews__head { display: flex; align-items: end; justify-content: space-between; gap: 32px; margin-bottom: 36px; }
+  .eyebrow { margin: 0 0 8px; color: var(--green); font-size: 13px; font-weight: 700; letter-spacing: var(--tracking-eyebrow); text-transform: uppercase; }
+  .reviews h2 { margin: 0; color: var(--ink, #0a2540); font-family: var(--font-serif); font-size: clamp(32px, 4vw, 50px); font-weight: 400; line-height: 1.08; }
+  .google-summary { display: flex; align-items: center; gap: 14px; min-width: 250px; padding: 14px 18px; border: 1px solid #d8d4c6; border-radius: 8px; background: #fff; color: var(--ink, #0a2540); text-decoration: none; }
+  .google-summary:hover { border-color: var(--green); }
+  .google-mark, .review-card__source { display: grid; place-items: center; color: #4285f4; font-family: Arial, sans-serif; font-weight: 700; }
+  .google-mark { width: 36px; height: 36px; border-radius: 50%; background: #f5f7fb; font-size: 20px; }
+  .google-summary span:last-child { display: grid; gap: 2px; }
+  .google-summary strong { font-size: 16px; }
+  .google-summary small { color: var(--body); font-size: 13px; }
+  .review-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+  .review-card { display: flex; flex-direction: column; min-width: 0; padding: 28px; border: 1px solid #e1dcc8; border-radius: 10px; background: #fff; box-shadow: 0 8px 28px rgba(10, 37, 64, 0.06); }
+  .review-card[hidden] { display: none; }
+  .review-card__header { display: grid; grid-template-columns: 48px minmax(0, 1fr) 24px; align-items: center; gap: 13px; }
+  .review-card__avatar { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; }
+  .review-card__avatar--initial { display: grid; place-items: center; background: #bfe0cf; color: #174d38; font-size: 18px; font-weight: 700; }
+  .review-card__person { min-width: 0; }
+  .review-card__person h3 { overflow: hidden; margin: 0 0 2px; color: var(--ink, #0a2540); font-family: var(--font-sans); font-size: 17px; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
+  .review-card__person p { margin: 0; color: var(--body); font-size: 13px; }
+  .review-card__source { font-size: 18px; }
+  .stars { display: flex; gap: 2px; margin: 20px 0 14px; }
+  .star { color: #f5aa00; font-size: 19px; }
+  .star--empty { color: #d8d8d8; }
+  .review-card__text { margin: 0 0 24px; color: var(--body); font-size: 16px; line-height: 1.65; white-space: pre-line; }
+  .review-card footer { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: auto; padding-top: 18px; border-top: 1px solid #ece9df; color: #6c746f; font-size: 13px; }
+  .review-card footer a { color: var(--green); font-weight: 700; text-decoration: none; white-space: nowrap; }
+  .reviews__actions { display: grid; justify-items: center; gap: 16px; margin-top: 42px; }
+  .reviews__count { margin: 0; color: var(--body); font-size: 14px; }
+  @media (max-width: 767px) {
+    .reviews { width: min(100% - 28px, 1180px); padding: 48px 0 64px; }
+    .reviews__head { align-items: stretch; flex-direction: column; gap: 24px; margin-bottom: 28px; }
+    .google-summary { min-width: 0; }
+    .review-grid { grid-template-columns: 1fr; gap: 16px; }
+    .review-card { padding: 22px; }
+    .review-card footer { align-items: flex-start; flex-direction: column; gap: 8px; }
+  }
+</style>

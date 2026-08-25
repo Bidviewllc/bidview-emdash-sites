@@ -33,7 +33,11 @@ const changefreq = (type: string, slug: string) => {
 
 export const GET: APIRoute = async () => {
   const today = new Date().toISOString().split("T")[0];
-  const urls = (pagesData as Page[]).map(p => {
+  const sitemapPages = [
+    ...(pagesData as Page[]),
+    { slug: "reviews", url_path: "/reviews/", type: "resource" },
+  ];
+  const urls = sitemapPages.map(p => {
     const loc = SITE + p.url_path;
     return `  <url>
     <loc>${loc}</loc>
