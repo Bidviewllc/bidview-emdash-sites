@@ -173,7 +173,7 @@ export const POST: APIRoute = async ({ request }) => {
 
   const [practiceResult, patientResult] = await Promise.allSettled([
     sendViaResend(key, PRACTICE_EMAIL, email, `Price calculator lead: ${firstName} ${lastName}`, practiceText),
-    sendViaResend(key, email, PRACTICE_EMAIL, 'Your hearing aid estimate from New Leaf Hearing Care', patientText),
+    sendViaResend(key, email, PRACTICE_EMAIL, `Hearing Aid Estimate for ${firstName} from New Leaf Hearing Care`, patientText),
   ]);
 
   // The practice notification is the one that must not be lost silently.
