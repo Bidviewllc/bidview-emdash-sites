@@ -58,13 +58,14 @@ ${FINANCING} Prefer a monthly payment instead? Our ${MEMBERSHIP.name} is $${MEMB
 
 Next step: a hearing evaluation confirms what your hearing actually needs, and this estimate becomes a real treatment plan.
 
-Book online: ${BOOKING_URL}
-Arvada: (303) 639-5323
-Littleton: (720) 689-7989
-
 ${DISCLAIMER}
 
-New Leaf Hearing Care`;
+---
+
+**New Leaf Hearing Care**
+Book online: ${BOOKING_URL}
+Arvada: (303) 639-5323
+Littleton: (720) 689-7989`;
 }
 
 function practiceEmailText(body: LeadBody): string {
@@ -103,8 +104,14 @@ function escapeHtml(s: string): string {
 
 function textToHtml(text: string): string {
   const paragraphs = text.split('\n\n').map(para => {
+    // A paragraph that is just "---" renders as a divider line
+    if (para.trim() === '---') {
+      return '<hr style="border:none;border-top:1px solid #cccccc;margin:1.2em 0;">';
+    }
     const lines = para.split('\n').map(line => {
       let html = escapeHtml(line);
+      // **text** renders bold (the plain-text part strips the asterisks)
+      html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
       // Bold a leading "Label:" phrase — colon must be followed by a space or
       // end the line, so URLs (://) never match.
       html = html.replace(/^(\s*)([A-Za-z][^:]{0,48}):(\s|$)/, '$1<strong>$2:</strong>$3');
@@ -131,7 +138,7 @@ async function sendViaResend(apiKey: string, to: string, replyTo: string | undef
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ from: FROM, to, subject, text, html: textToHtml(text), ...(replyTo ? { reply_to: replyTo } : {}) }),
+    body: JSON.stringify({ from: FROM, to, subject, text: text.replace(/\*\*/g, ''), html: textToHtml(text), ...(replyTo ? { reply_to: replyTo } : {}) }),
   });
   if (!res.ok) {
     const detail = await res.text().catch(() => '');
