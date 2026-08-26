@@ -104,10 +104,6 @@ function escapeHtml(s: string): string {
 
 function textToHtml(text: string): string {
   const paragraphs = text.split('\n\n').map(para => {
-    // A paragraph that is just "---" renders as a divider line
-    if (para.trim() === '---') {
-      return '<hr style="border:none;border-top:1px solid #cccccc;margin:1.2em 0;">';
-    }
     const lines = para.split('\n').map(line => {
       let html = escapeHtml(line);
       // **text** renders bold (the plain-text part strips the asterisks)
@@ -120,7 +116,7 @@ function textToHtml(text: string): string {
     });
     return '<p style="margin:0 0 1em;">' + lines.join('<br>') + '</p>';
   });
-  return '<div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.55;color:#222222;">'
+  return '<div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.55;color:#000000;">'
     + paragraphs.join('') + '</div>';
 }
 
