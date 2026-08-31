@@ -10,6 +10,7 @@ import { TIERS, FINANCING, DISCLAIMER, CONTACT, MEMBERSHIP } from '../../data/pr
 
 const FROM = 'New Leaf Hearing Care <noreply@bidview.net>';
 const PRACTICE_EMAIL = CONTACT.leadEmail;
+const NOTIFY_EMAILS = CONTACT.leadNotify;
 const BOOKING_URL = 'https://newleafhearing.com/schedule-appointment/';
 const MEMBERSHIP_URL = 'https://newleafhearing.com/give-back/hear-it-forward/';
 
@@ -130,7 +131,7 @@ async function getResendApiKey(): Promise<{ key?: string; inWorkers: boolean }> 
   }
 }
 
-async function sendViaResend(apiKey: string, to: string, replyTo: string | undefined, subject: string, text: string) {
+async function sendViaResend(apiKey: string, to: string | string[], replyTo: string | undefined, subject: string, text: string) {
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
@@ -172,7 +173,7 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   const [practiceResult, patientResult] = await Promise.allSettled([
-    sendViaResend(key, PRACTICE_EMAIL, email, `Price calculator lead: ${firstName} ${lastName}`, practiceText),
+    sendViaResend(key, NOTIFY_EMAILS, email, `Price calculator lead: ${firstName} ${lastName}`, practiceText),
     sendViaResend(key, email, PRACTICE_EMAIL, `Hearing Aid Estimate for ${firstName} from New Leaf Hearing Care`, patientText),
   ]);
 

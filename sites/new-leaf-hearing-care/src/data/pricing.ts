@@ -138,6 +138,8 @@ export const DISCLAIMER =
 
 export const CONTACT = {
   leadEmail: 'Littleton@NewLeafHearing.com',
+  // Everyone who receives the lead notification (patient reply-to stays leadEmail)
+  leadNotify: ['Littleton@NewLeafHearing.com', 'liz@bidviewmarketing.com'],
   bookingUrl: '/schedule-appointment/',
   phones: [
     { office: 'Arvada', display: '(303) 639-5323', tel: '3036395323' },
