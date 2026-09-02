@@ -11,3 +11,6 @@ Monorepo for all EmDash CMS websites built by Bidview.
 - `sites/maicoaudio` — maicoaudio.com
 - `sites/rosehearinghealthcarecenters.com` — rosehearinghealthcarecenters.com
 - `sites/thechicagomarketingagency` — thechicagomarketingagency.com
+
+## Static design builds
+- `sites/liberty-hearing-resources` — Liberty Hearing Center static design reference (not an EmDash site, does not deploy from this repo)

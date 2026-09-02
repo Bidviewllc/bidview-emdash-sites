@@ -1,0 +1,48 @@
+/* ==========================================================================
+   Liberty Hearing Center — brand palette
+   --------------------------------------------------------------------------
+   THIS IS THE ONLY PLACE COLORS ARE DEFINED.
+   Change a value here and it updates across all 12 pages.
+   Every page links this file; nothing else hardcodes a color.
+
+   The *-rgb tokens are the same colors as raw "r,g,b" numbers, used where a
+   color needs transparency, e.g. rgba(var(--navy-rgb),.12) for a soft border.
+   If you change a color above, change its -rgb twin below to match.
+   ========================================================================== */
+
+:root{
+  /* --- Brand ------------------------------------------------------------ */
+  --brand-red:#a6192e;        /* primary CTA / links / accents */
+  --brand-red-pale:#f3c9ce;   /* faint red tint */
+  --navy:#13294b;             /* headings + body text, primary dark */
+  --navy-deep:#0b1a33;        /* hero scrims, darkest surfaces */
+  --gold:#b3802f;             /* icons, rules, secondary accent */
+  --gold-light:#e8b55a;       /* lighter gold on dark backgrounds */
+  --cream:#f5f1e9;            /* warm section background */
+  --cream-border:#e3e0d8;     /* border/divider on cream sections */
+  --white:#fff;
+
+  /* --- Text ------------------------------------------------------------- */
+  --text-body:#4a5468;          /* secondary body copy */
+  --text-muted:#5f6b7c;         /* captions, meta, labels - 5.41:1 on white, WCAG AA.
+                                   Matches --muted in the EmDash design system. */
+  --text-muted-on-dark:#9fb0cc; /* muted text over navy */
+
+  /* --- Surfaces --------------------------------------------------------- */
+  --surface:#f5f7fb;          /* default light panel */
+  --surface-alt:#eef1f5;      /* slightly deeper panel */
+  --surface-blue:#ecf0ff;     /* header / nav background */
+
+  /* --- Borders ---------------------------------------------------------- */
+  --border:#dfe5ea;           /* default hairline */
+  --border-strong:#c7d1e4;    /* heavier divider */
+
+  /* --- RGB twins (for transparency) ------------------------------------- */
+  --brand-red-rgb:166,25,46;
+  --navy-rgb:19,41,75;
+  --navy-deep-rgb:11,26,51;
+  --gold-rgb:179,128,47;
+  --gold-light-rgb:232,181,90;
+  --surface-blue-rgb:236,240,255;
+  --white-rgb:255,255,255;
+}
