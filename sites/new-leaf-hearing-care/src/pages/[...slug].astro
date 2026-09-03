@@ -23,6 +23,10 @@ if (requestedSlug === "research-linking-untreated-hearing-loss-to-dementia-risk-
   return Astro.redirect("/resources/research-linking-untreated-hearing-loss/", 301);
 }
 
+if (requestedSlug === "cherry") {
+  return Astro.redirect("/resources/financing-options/", 301);
+}
+
 for (const candidate of collections) {
   const lookupSlug = requestedSlug.replace(/^blog\//, "");
   const result = await getEmDashEntry(candidate, lookupSlug);
