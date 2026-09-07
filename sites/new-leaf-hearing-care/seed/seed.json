@@ -17512,7 +17512,14 @@
                 {
                   "_key": "priceListLink",
                   "_type": "link",
-                  "href": "https://5keys.my.canva.site/2026-pricing-webpage"
+                  "href": "https://5keys.my.canva.site/2026-pricing-webpage",
+                  "className": "link-price-list"
+                },
+                {
+                  "_key": "pricingEstimatorLink",
+                  "_type": "link",
+                  "href": "/hearing-aid-price-calculator/",
+                  "className": "link-pricing-estimator"
                 }
               ],
               "children": [
@@ -17522,6 +17529,20 @@
                   "text": "View Our Price List",
                   "marks": [
                     "priceListLink"
+                  ]
+                },
+                {
+                  "_type": "span",
+                  "_key": "k1t5b",
+                  "text": " ",
+                  "marks": []
+                },
+                {
+                  "_type": "span",
+                  "_key": "k1t5c",
+                  "text": "or Use our Pricing Estimator Tool",
+                  "marks": [
+                    "pricingEstimatorLink"
                   ]
                 }
               ]
@@ -17563,7 +17584,7 @@
                 {
                   "_type": "span",
                   "_key": "k1tb",
-                  "text": "We use a bundled treatment model that includes products, visits, and services for a set amount of time, with three payment options:",
+                  "text": "We use a bundled treatment model that includes products, visits, and services for a set amount of time, with two payment options:",
                   "marks": []
                 }
               ]
@@ -17591,81 +17612,7 @@
                 {
                   "_type": "span",
                   "_key": "k1tf",
-                  "text": "3-Year Treatment Program with Premium Technology and Service: $6,800-$7,400",
-                  "marks": []
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "_key": "k1ti",
-              "style": "normal",
-              "markDefs": [],
-              "children": [
-                {
-                  "_type": "span",
-                  "_key": "k1th",
-                  "text": "1-Year Treatment Program with Economy Technology and Service: $4,800",
-                  "marks": []
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "_key": "k1tk",
-              "style": "h3",
-              "markDefs": [],
-              "children": [
-                {
-                  "_type": "span",
-                  "_key": "k1tj",
-                  "text": "Financed Treatment Program",
-                  "marks": []
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "_key": "k1tm",
-              "style": "normal",
-              "listItem": "bullet",
-              "level": 1,
-              "markDefs": [
-                {
-                  "_key": "cherryFinancingLink",
-                  "_type": "link",
-                  "href": "/cherry/"
-                }
-              ],
-              "children": [
-                {
-                  "_type": "span",
-                  "_key": "cherryFinancingLinka",
-                  "text": "Financing options through ",
-                  "marks": []
-                },
-                {
-                  "_type": "span",
-                  "_key": "cherryFinancingLinkb",
-                  "text": "Cherry",
-                  "marks": [
-                    "cherryFinancingLink"
-                  ]
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "_key": "k1to",
-              "style": "normal",
-              "listItem": "bullet",
-              "level": 1,
-              "markDefs": [],
-              "children": [
-                {
-                  "_type": "span",
-                  "_key": "k1tn",
-                  "text": "Low monthly payments with no interest for 15 months (with approved credit)",
+                  "text": "We offer treatment programs ranging in price from $3200 up to $8600. During your Treatment Consultation, we will work with you to determine the technology level and service plan that best fits your hearing loss, lifestyle, and budget. You may use our Pricing Estimator Tool to receive a preliminary estimate for your treatment program. Our providers will then work with you to fine-tune the program to your specific needs. We also offer flexible financing options - see below for more details.",
                   "marks": []
                 }
               ]
@@ -17778,7 +17725,7 @@
                 {
                   "_key": "cherryFlexibleLink",
                   "_type": "link",
-                  "href": "/cherry/"
+                  "href": "/resources/financing-options/"
                 }
               ],
               "children": [
@@ -17801,6 +17748,29 @@
                   "_key": "cherryFlexibleLinkc",
                   "text": " (with approved credit) so you can choose hearing technology that matches your needs and lifestyle.",
                   "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "financingCtaBlock",
+              "style": "normal",
+              "markDefs": [
+                {
+                  "_key": "financingCtaLink",
+                  "_type": "link",
+                  "href": "/resources/financing-options/",
+                  "className": "btn btn-primary"
+                }
+              ],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "financingCtaSpan",
+                  "text": "Learn More and Apply",
+                  "marks": [
+                    "financingCtaLink"
+                  ]
                 }
               ]
             },
@@ -18663,14 +18633,14 @@
         }
       },
       {
-        "id": "internal_pages-cherry",
-        "slug": "cherry",
+        "id": "internal_pages-resources-financing-options",
+        "slug": "resources/financing-options",
         "status": "published",
         "data": {
-          "page_title": "Cherry",
-          "page_slug": "/cherry/",
-          "meta_title": "Cherry | New Leaf Hearing Care",
-          "meta_description": "Explore Cherry financing options for hearing care at New Leaf Hearing Care.",
+          "page_title": "Financing Options",
+          "page_slug": "/resources/financing-options/",
+          "meta_title": "Financing Options | New Leaf Hearing Care",
+          "meta_description": "Explore flexible financing options for hearing care at New Leaf Hearing Care.",
           "intro_content": [],
           "content": []
         }
