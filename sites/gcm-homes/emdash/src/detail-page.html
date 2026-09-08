@@ -395,7 +395,7 @@ function render(listing, photoUrls, marketIntel, area) {
           ${photos.map((src, i) => `<div class="filmstrip__tile" style="background-image:url('${src}')" onclick="openLightbox(${i})" role="button" tabindex="0" aria-label="Open photo ${i + 1}"></div>`).join("")}
           <button class="filmstrip__cta" onclick="openLightbox(0)">
             <div class="filmstrip__cta__t">View Full<br />Photo Gallery</div>
-            <div class="filmstrip__cta__c">${photos.length} PHOTOS →</div>
+            <div class="filmstrip__cta__c">${photos.length} PHOTOS<span class="cta-arrow" aria-hidden="true">→</span></div>
           </button>
         </div>
       </div>

@@ -151,11 +151,41 @@ img { display: block; max-width: 100%; }
   background: transparent;
 }
 .btn--ghost:hover { background: rgba(255,255,255,0.07); }
-.btn--icon {
+/* .btn.btn--icon, not .btn--icon: responsive.css loads after this file and
+   sets `.btn { padding: 14px 22px; font-size: 12px }` at <=640px, which at
+   equal specificity was winning over the icon button's own padding and size. */
+.btn.btn--icon {
   width: 48px;
   height: 48px;
   padding: 0;
   border-radius: 12px;
+  /* The glyph is a text character, so it was inheriting .btn's 13px inside a
+     48px box. Sized to the button, and letter-spacing zeroed — on a single
+     glyph the trailing 0.14em pushes it off centre. */
+  font-size: 22px;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+/* Trailing arrow on text CTAs. Its own element so it can be sized, coloured
+   and animated apart from the label — the arrow used to be part of the label
+   string ("LEARN MORE →"), which left no way to control it. Flex parents
+   (.btn, .reality__link) already space it with their existing gap. */
+.cta-arrow {
+  display: inline-block;
+  font-size: 1.35em;
+  line-height: 1;
+  transition: transform 200ms ease;
+}
+a:hover .cta-arrow { transform: translateX(4px); }
+
+/* These three were plain inline text — give them the same flex spacing the
+   other CTAs use, so one gap mechanism covers all of them. */
+.blog-card__cta,
+.filmstrip__cta__c {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
 /* ===== Hero ===== */
@@ -386,7 +416,7 @@ img { display: block; max-width: 100%; }
 .reality__p {
   font-size: 17px;
   line-height: 1.7;
-  color: rgba(255,255,255,0.78);
+  color: var(--white);
   margin-bottom: 32px;
 }
 .reality__link {
@@ -531,7 +561,7 @@ img { display: block; max-width: 100%; }
 .emotion-split__p {
   font-size: 16px;
   line-height: 1.7;
-  color: rgba(255,255,255,0.78);
+  color: var(--white);
   max-width: 460px;
 }
 
@@ -1023,7 +1053,7 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
 .micro__p {
   font-size: 17px;
   line-height: 1.65;
-  color: rgba(255,255,255,0.78);
+  color: var(--white);
   padding: 0 32px;
 }
 .micro__stats { display: flex; gap: 56px; padding: 0 32px; margin-top: 4px; }
@@ -1175,7 +1205,7 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
 .footer__links { display: flex; flex-direction: column; gap: 12px; }
 .footer__links a {
   font-size: 14px;
-  color: rgba(255,255,255,0.78);
+  color: var(--white);
   transition: color 160ms ease;
 }
 .footer__links a:hover { color: var(--orange); }

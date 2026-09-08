@@ -194,7 +194,12 @@
   .emotion__h { font-size: 36px; margin-bottom: 24px; }
 
   .emotion-split { grid-template-columns: 1fr; height: auto; }
-  .emotion-split__photo { aspect-ratio: 16/9; min-height: 360px; }
+  /* min-width:0 and width:100% are both load-bearing once this stacks. `min-height`
+     makes the height definite, so `aspect-ratio` runs the other way and sizes the
+     WIDTH from it — 280px tall at 16/9 is 498px wide, which pushed the whole page
+     sideways at 390px. Pinning the width to the track keeps aspect-ratio as the
+     floor it was meant to be and lets min-height win when the frame gets narrow. */
+  .emotion-split__photo { aspect-ratio: 16/9; min-height: 360px; min-width: 0; width: 100%; }
   .emotion-split__panel { padding: 72px 48px; }
   .emotion-split__h { font-size: 40px; }
 
@@ -349,8 +354,14 @@
   /* --- Hero --- */
   .hero { height: 620px; }
   .hero__copy { padding: 0 20px; bottom: 64px; }
-  .hero__title { font-size: 42px; line-height: 1.08; margin-bottom: 18px; }
-  .hero__sub { font-size: 15px; line-height: 1.6; }
+  .hero__title { font-size: 36px; line-height: 1.08; margin-bottom: 18px; }
+  .hero__sub { font-size: 16px; line-height: 1.6; }
+
+  /* Deeper, earlier fade on phones — the card copy sits over much less
+     image height here, so the 50%-start desktop gradient left it thin. */
+  .emotion__veil--bc {
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 45%, rgba(10, 18, 29, 0.5) 57%, rgba(10, 18, 29, 0.85) 100%);
+  }
   .hero__scroll { font-size: 10px; bottom: 18px; }
 
   /* --- Buttons: bigger tap targets --- */

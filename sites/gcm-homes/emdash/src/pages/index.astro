@@ -7,6 +7,7 @@ import GcmLayout from "../layouts/GcmLayout.astro";
 import { getEmDashEntry, getTermsForEntries } from "emdash";
 import { env } from "cloudflare:workers";
 import { firstImageUrl } from "../lib/media";
+import { TESTIMONIALS } from "../lib/testimonials";
 import ContactCta from "../components/ContactCta.astro";
 
 // Load the homepage entry; tolerate it not existing yet (renders from fallbacks).
@@ -33,23 +34,7 @@ try {
 // ---- The Proof ---------------------------------------------------------------
 // The design's template quotes, kept as-is for now: Liz is checking with Vince how
 // real reviews get pulled in, so these are placeholders to be replaced, not claims.
-const TESTIMONIALS = [
-	{
-		q: "Grant's knowledge of Incline Village is encyclopedic. He knew about our dream home before it even hit the market, allowing us to secure it in a cash-only bidding war.",
-		name: "The Harrison Family",
-		loc: "LAKESHORE BOULEVARD",
-	},
-	{
-		q: "Selling a property we had owned for 40 years was emotional. Grant handled the transition with such dignity and achieved a price that far exceeded our expectations.",
-		name: "Dr. Robert Chen",
-		loc: "TYNER WAY",
-	},
-	{
-		q: "Navigating the TRPA requirements and water rights was daunting until Grant stepped in. His legal background and local connections saved us months of delay.",
-		name: "Sarah & James Miller",
-		loc: "CRYSTAL BAY",
-	},
-];
+// Shared with the About page's "In Their Words" grid via src/lib/testimonials.ts.
 
 // ---- Micro-Markets slider ----------------------------------------------------
 // One slide per neighbourhood flagged `featured` in the CMS, so Liz picks what
@@ -325,7 +310,7 @@ const tagOf = (l: any) =>
 				))}
 			</div>
 			<div style="text-align:center;margin-top:48px">
-				<a class="btn btn--dark" href="/listings/">VIEW ALL LISTINGS →</a>
+				<a class="btn btn--dark" href="/listings/">VIEW ALL LISTINGS<span class="cta-arrow" aria-hidden="true">→</span></a>
 			</div>
 		</div>
 	</section>
@@ -371,7 +356,7 @@ const tagOf = (l: any) =>
 									</div>
 								)}
 							</div>
-							<a class="reality__link micro__cta" href={`/neighborhood/${n.slug}/`}>LEARN MORE →</a>
+							<a class="reality__link micro__cta" href={`/neighborhood/${n.slug}/`}>LEARN MORE<span class="cta-arrow" aria-hidden="true">→</span></a>
 						</div>
 					</div>
 				))}
@@ -420,7 +405,7 @@ const tagOf = (l: any) =>
 							<div class="card__body">
 								<h3 class="blog-card__h">{p.title}</h3>
 								<p class="blog-card__p">{p.excerpt}</p>
-								<span class="blog-card__cta">READ ARTICLE →</span>
+								<span class="blog-card__cta">READ ARTICLE<span class="cta-arrow" aria-hidden="true">→</span></span>
 								<div class="blog-card__byline">
 									<div class="blog-card__avatar"></div>
 									<div>
