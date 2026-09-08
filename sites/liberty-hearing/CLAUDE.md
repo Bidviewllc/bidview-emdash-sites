@@ -469,6 +469,95 @@ crawl clean, forms, and the Suno + Cherry widgets.
 Turnstile keypair from Cameron, and decide on the 6 large JPEGs / JSON-LD schema
 / analytics, all still listed under "Still to do".
 
+## LAUNCHED — libertyhearingcentertx.com (2026-09-08)
+
+**LIVE.** Cutover done: Cameron removed the 5 Squarespace records, both hosts
+were bound to worker `liberty-hearing`, SSL provisioned in under a minute.
+
+| | |
+| --- | --- |
+| apex | `libertyhearingcentertx.com` — 200 |
+| www | `www.libertyhearingcentertx.com` — 200, **serves directly** (no redirect) |
+| Custom domain IDs | apex `db9d5099ec7577d89e45c206b3d23153d5204bbd`, www `8a4b32aa2eeef3010d6a89545da24dab90121f02` |
+| Worker version at launch | `5cce9935-9e53-4e73-af33-ba3f0d4cc775` |
+
+Verified after cutover: **57 URLs crawled, 0 broken, 0 redirects**; canonicals
+auto-resolved to the live domain; Suno booking loads the 4 real appointment types
+**on the new origin** (its API is origin-scoped, so this needed re-checking);
+Cherry renders; `GET /api/contact` -> 405; **MX and TXT survived** (email intact).
+
+### Contact form is WIRED and delivering
+`LEAD_TO = info@libertyhearingcentertx.com` set as a worker secret, Ontario-style
+(From `noreply@bidview.net`, BCC `local@bidviewmarketing.com`).
+**Delivery proven, not assumed** — a direct Resend send to that mailbox returned
+`last_event: "delivered"`, so the address exists and accepts mail. Then verified
+end-to-end: direct POST -> 303 -> `/thank-you/`, and a **real browser click** ->
+`/thank-you/` with the row in D1 carrying the right select values. Both QA rows
+deleted; `contact_submissions` back to 0.
+
+### Pushed to GitHub
+`Bidviewllc/bidview-emdash-sites` -> `sites/liberty-hearing/`, commit `b34c6fb`
+on `main` (89 files). **Secrets are worker secrets, never committed** — no `.env`
+in the repo, verified after push. `worker-configuration.d.ts` is gitignored (huge
+generated file; the sibling sites do not track it either).
+`CLAUDE.md` + `LAUNCH-ROLLBACK.md` ship WITH the code so the repo copy is
+self-describing — Ontario's drift came from docs living only on one machine.
+
+**Still open:** Turnstile not enabled (Cameron must create a keypair — the
+`cfat_` token cannot); 6 JPEGs at 313-383 KB; no JSON-LD schema; no analytics;
+emdash setup wizard never run (0 collections / 0 users); "Community Resources"
+and "Accessories" still have no copy.
+
+## Performance pass (2026-09-09) — Vince: "responsiveness seems a little slow"
+
+Measured first. The **server was never the problem** (38-50ms warm). The cost was
+client-side, and one of the causes was mine.
+
+**1. Images — 62% smaller.** They were served 3-4x larger than displayed
+(`hearing-test` 1600px natural vs 549px displayed). Resized to ~2x display width
+and re-encoded WebP q80: **2,459 KB -> 927 KB**. Homepage transfer
+**1,056 KB -> 251 KB**. Note plain JPEG->WebP alone was only 32% and made
+`hearing-test` *bigger* — **the win was resizing, not the codec.**
+Targets are in the script comment; `.jpg`/`.jpeg` originals were deleted and all
+refs updated.
+
+**2. Lazy loading.** 9 images loaded eagerly including `building-from-road`
+(188 KB) and `entrance` (147 KB), both far below the fold. Now only the header
+logo and the hero are eager; 22 images are `loading="lazy" decoding="async"`.
+
+**3. Cherry's fonts were render-blocking — my fault.** Making Cherry sitewide put
+its `<link rel="stylesheet">` for **11 Google font families** on every page,
+stalling first paint (**7.6s FCP measured on /pricing/**). Now loaded async
+(`media="print"` + `onload`, with a `<noscript>` fallback). **Do not revert it to
+a plain stylesheet link** — see the comment in `Base.astro`.
+
+**4. Edge cache added to `src/worker.ts`** (Liberty had none; Ontario has had one
+for ages). Caches HTML/XML/JSON for `s-maxage=3600` +
+`stale-while-revalidate=86400`, **excludes `/_emdash/*`, `/api/*` and non-GET**,
+and bypasses for logged-in editors. The cache key **drops the query string**, so
+`?utm_source=`, `?fbclid=` and cache-busters all share one entry — verified: the
+2nd and 3rd query variants both returned HIT.
+
+**Result:** HIT **42-46ms** on every page; warm FCP ~420-580ms.
+**Bump `CACHE_VERSION` in `src/worker.ts` on any deploy that changes HTML**, or
+the edge serves the old build for up to an hour.
+
+Occasional multi-second first-hit spikes remain — those are Worker cold starts on
+a cold Cloudflare PoP, they move between pages run to run, and the cache means
+only the first visitor per PoP per hour pays it.
+
+### Form recipients
+`LEAD_TO` now holds **`info@libertyhearingcentertx.com,drduhon@libertyhearingcentertx.com`**.
+`contact.ts` splits on commas, so recipients change with
+`wrangler secret put LEAD_TO` — **no code change or redeploy needed**.
+Both addresses verified with a real Resend send: `last_event: "delivered"`.
+
+### Known permanent noise in the QA sweep
+The sweep now reports ~111 "problems" — **all** of them Cherry's *analytics*
+endpoint (`gql.withcherry.com` CORS) plus Cloudflare RUM aborts, on every page
+because Cherry is sitewide. The widget itself works. **Zero structural failures**
+(no overflow, correct h1s, no broken images, meta/canonical present).
+
 ## How this project is put together
 
 - **`src/layouts/Base.astro`** — head (title/description/canonical/OG/Twitter),

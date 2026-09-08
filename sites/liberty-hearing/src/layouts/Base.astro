@@ -36,7 +36,7 @@ const {
 	canonical: canonicalOverride,
 	active,
 	footer = "inner",
-	image = "/assets/hero-team.jpg",
+	image = "/assets/hero-team.webp",
 	ogType = "website",
 	schema,
 	noindex = false,
@@ -129,7 +129,14 @@ const pageCtx = createPublicPageContext({
      Sitewide (Vince, 2026-09-09): it is a floating popup, so it belongs on
      every page rather than just /pricing/.
      Cherry's own written copy lives on /insurance-billing/. -->
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400..900&family=Slabo+27px&family=Lato:wght@100;300;400;700;900&family=Raleway:wght@100..900&family=Montserrat:wght@100..900&family=Oswald:wght@200..700&family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100..900&family=Source+Sans+3:wght@200..900&family=PT+Sans:wght@400;700&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet" />
+<!-- Cherry's widget fonts, loaded ASYNCHRONOUSLY. Shipped by Cherry as a
+     plain render-blocking <link rel="stylesheet"> for 11 families; sitewide
+     that stalled first paint badly (7.6s FCP measured on /pricing/). The
+     widget is a floating popup, so these fonts are not needed to paint the
+     page. Do NOT change this back to a plain stylesheet link. -->
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400..900&family=Slabo+27px&family=Lato:wght@100;300;400;700;900&family=Raleway:wght@100..900&family=Montserrat:wght@100..900&family=Oswald:wght@200..700&family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100..900&family=Source+Sans+3:wght@200..900&family=PT+Sans:wght@400;700&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400..900&family=Slabo+27px&family=Lato:wght@100;300;400;700;900&family=Raleway:wght@100..900&family=Montserrat:wght@100..900&family=Oswald:wght@200..700&family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100..900&family=Source+Sans+3:wght@200..900&family=PT+Sans:wght@400;700&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" media="print" onload="this.media='all';this.onload=null" />
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400..900&family=Slabo+27px&family=Lato:wght@100;300;400;700;900&family=Raleway:wght@100..900&family=Montserrat:wght@100..900&family=Oswald:wght@200..700&family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100..900&family=Source+Sans+3:wght@200..900&family=PT+Sans:wght@400;700&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" /></noscript>
 <script is:inline>
     (function (w, d, s, o, f, js, fjs) {
         w[o] = w[o] || function () {

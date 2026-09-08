@@ -205,13 +205,18 @@ export async function POST({ request }: { request: Request }) {
 		.join("\n");
 
 	const resendKey = (env as any).RESEND_API_KEY;
-	const leadTo = (env as any).LEAD_TO;
+	// LEAD_TO may hold several addresses, comma-separated, so recipients can be
+	// changed with `wrangler secret put LEAD_TO` and no code change or redeploy.
+	const leadTo = String((env as any).LEAD_TO || "")
+		.split(",")
+		.map((a) => a.trim())
+		.filter(Boolean);
 
-	if (!resendKey || !leadTo) {
+	if (!resendKey || leadTo.length === 0) {
 		// Not an error the visitor should ever see — the lead is in D1.
 		console.error(
 			`Email not sent (lead ${saved ? "IS" : "is NOT"} in D1): ` +
-				`${!resendKey ? "RESEND_API_KEY missing. " : ""}${!leadTo ? "LEAD_TO missing." : ""}`,
+				`${!resendKey ? "RESEND_API_KEY missing. " : ""}${leadTo.length === 0 ? "LEAD_TO missing." : ""}`,
 		);
 		return ok();
 	}
@@ -225,7 +230,7 @@ export async function POST({ request }: { request: Request }) {
 			},
 			body: JSON.stringify({
 				from: `${SITE} <${LEAD_FROM}>`,
-				to: [leadTo],
+				to: leadTo,
 				bcc: [LEAD_BCC],
 				reply_to: `${name} <${email}>`,
 				subject: `New appointment request — ${name}`,
