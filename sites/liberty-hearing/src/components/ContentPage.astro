@@ -1,0 +1,145 @@
+---
+/**
+ * Shared layout for the content pages generated from the client's copy doc.
+ *
+ * Follows the existing interior-page pattern used by /phonak-hearing-aids/ and
+ * /hearing-evaluations/ (Vince's call 2026-09-08): a surface-blue intro band,
+ * then a two-column body — table-of-contents accordion + article on the left,
+ * sticky CTA sidebar on the right — then a closing CTA band.
+ *
+ * H2s get slugified ids (plus scroll-margin-top so the sticky header doesn't
+ * cover them) and the table of contents is built from those same ids, so the
+ * two can never drift apart.
+ *
+ * Regenerate the pages with scratchpad/gen-pages.py; hand edits are overwritten.
+ */
+import type { Block } from "../lib/content-blocks";
+
+interface Props {
+	h1: string;
+	crumb: string;
+	takeaways?: string[];
+	blocks: Block[];
+}
+const { h1, crumb, takeaways = [], blocks } = Astro.props;
+
+const slug = (s: string) =>
+	s
+		.toLowerCase()
+		.replace(/&/g, " and ")
+		.replace(/[^a-z0-9]+/g, "-")
+		.replace(/^-|-$/g, "")
+		.slice(0, 48);
+
+// Ids must be unique and non-empty, or several ToC links jump to the same
+// heading (the Oticon page really does repeat an H2) and an unsluggable
+// heading would render id="". Both cases are handled here.
+const seen = new Map<string, number>();
+let hCount = 0;
+const withIds = blocks.map((b) => {
+	if (b.t !== "h2") return b;
+	hCount += 1;
+	let id = slug(b.v || "") || `section-${hCount}`;
+	const n = seen.get(id) ?? 0;
+	seen.set(id, n + 1);
+	if (n > 0) id = `${id}-${n + 1}`;
+	return { ...b, id };
+}) as (Block & { id?: string })[];
+const toc = withIds.filter((b) => b.t === "h2" && b.id).map((b) => ({ id: b.id as string, label: b.v as string }));
+
+const H2 = "margin:48px 0 16px;scroll-margin-top:150px;color:var(--navy);font-size:clamp(26px,3.2vw,34px);font-weight:800;line-height:1.18;letter-spacing:-.03em;text-wrap:pretty";
+const BTN_RED = "display:inline-flex;min-height:52px;align-items:center;justify-content:center;padding:12px 30px;border-radius:999px;background:var(--brand-red);color:var(--white);font-size:16px;font-weight:750;transition:.3s";
+const BTN_GHOST = "display:inline-flex;min-height:52px;align-items:center;justify-content:center;padding:12px 30px;border:1px solid var(--brand-red);border-radius:999px;background:var(--white);color:var(--brand-red);font-size:16px;font-weight:750;transition:.3s";
+---
+
+<section style="background:var(--surface-blue)">
+<div style="max-width:1280px;margin:0 auto;padding:clamp(44px,7vw,80px) clamp(18px,4vw,32px)">
+<div style="display:inline-flex;align-items:center;gap:10px;padding:8px 18px;border-radius:999px;background:var(--white);font-size:13px;font-weight:700;color:var(--text-body)"><a href="/" style="color:var(--brand-red)">Home</a> <span style="opacity:.5">/</span> <span>{crumb}</span></div>
+<h1 style="margin:26px 0 0;max-width:20ch;color:var(--navy);font-size:clamp(36px,5.4vw,58px);font-weight:800;line-height:1.06;letter-spacing:-.035em;text-wrap:pretty">{h1}</h1>
+<div style="display:flex;flex-wrap:wrap;gap:14px;margin-top:30px">
+<a href="/book-appointment/" style={BTN_RED} style-hover="background:var(--navy);transform:translateY(-2px)">Book Your Appointment</a>
+<a href="tel:9794507996" style={BTN_GHOST} style-hover="background:var(--cream)">Call 979-450-7996</a>
+</div>
+</div>
+</section>
+
+<section style="background:var(--white)">
+<div data-stack="2" style="max-width:1280px;margin:0 auto;padding:clamp(42px,8vw,72px) clamp(18px,4vw,32px) clamp(51px,8vw,88px);display:grid;grid-template-columns:minmax(0,1fr) 370px;gap:64px;align-items:start">
+<div>
+
+{toc.length > 2 && (
+<details open style="margin-bottom:44px;padding:26px 30px;border:1px solid var(--border);border-radius:16px;background:var(--white);box-shadow:0 10px 30px rgba(var(--navy-rgb),.06)">
+<summary style="cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:20px;color:var(--navy);font-size:17px;font-weight:750;letter-spacing:-.01em">Table of contents<span aria-hidden="true" style="flex-shrink:0;color:var(--text-muted)">&minus;</span></summary>
+<div style="margin-top:18px;display:flex;flex-direction:column;gap:8px">
+{toc.map((t, i) => (
+<a href={"#" + t.id} style="display:flex;align-items:center;justify-content:space-between;gap:20px;padding:14px 18px;border-radius:10px;background:var(--surface);font-size:14px;font-weight:700;transition:.3s" style-hover="background:var(--surface-blue)">{t.label}<span aria-hidden="true" style="flex-shrink:0;color:var(--text-muted);font-size:12px">{String(i + 1).padStart(2, "0")}</span></a>
+))}
+</div>
+</details>
+)}
+
+{takeaways.length > 0 && (
+<ul style="margin:0 0 44px;padding-left:22px;max-width:760px;display:flex;flex-direction:column;gap:12px;font-size:18px;line-height:1.7">
+{takeaways.map((t) => <li style="text-wrap:pretty;color:var(--text-body)">{t}</li>)}
+</ul>
+)}
+
+{withIds.map((b) =>
+	b.t === "h2" ? (
+		<h2 id={b.id} style={H2}>{b.v}</h2>
+	) : b.t === "h3" ? (
+		<h3 style="margin:30px 0 10px;color:var(--navy);font-size:20px;font-weight:750;line-height:1.3;letter-spacing:-.02em;text-wrap:pretty">{b.v}</h3>
+	) : b.t === "p" ? (
+		<p style="margin:0 0 18px;max-width:760px;color:var(--text-body);font-size:17px;line-height:1.8;text-wrap:pretty">{b.v}</p>
+	) : b.t === "ul" ? (
+		<ul style="margin:0 0 24px;padding-left:22px;max-width:760px;display:flex;flex-direction:column;gap:11px;font-size:17px;line-height:1.7">
+			{b.items?.map((i) => <li style="text-wrap:pretty;color:var(--text-body)">{i}</li>)}
+		</ul>
+	) : (
+		<div style="display:flex;flex-direction:column;gap:12px;margin:8px 0 24px;max-width:760px">
+			{b.qa?.map((x) => (
+				<details style="border:1px solid var(--border);border-radius:14px;background:var(--white)">
+					<summary style="list-style:none;cursor:pointer;display:flex;align-items:flex-start;gap:14px;padding:20px 24px;color:var(--navy);font-size:17px;font-weight:700;line-height:1.45;border-radius:13px"><span aria-hidden="true" style="flex-shrink:0;display:grid;place-items:center;width:26px;height:26px;border:1px solid var(--border);border-radius:999px;color:var(--navy);font-size:15px">+</span>{x.q}</summary>
+					<div style="padding:2px 24px 22px 64px">
+						{x.a.map((p) => <p style="margin:0 0 14px;color:var(--text-body);font-size:16px;line-height:1.75;text-wrap:pretty">{p}</p>)}
+					</div>
+				</details>
+			))}
+		</div>
+	),
+)}
+
+</div>
+
+<aside data-sticky="1" style="position:sticky;top:150px;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;align-items:flex-start;gap:14px;padding:34px;border-radius:16px;background:var(--navy);color:var(--border-strong)">
+<span style="color:var(--gold-light);font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase">Talk to an audiologist</span>
+<h2 style="margin:0;color:var(--white);font-size:27px;font-weight:800;line-height:1.12;letter-spacing:-.035em;text-wrap:balance">Book a visit at our College Station clinic.</h2>
+<p style="margin:0;font-size:15px;line-height:1.7;text-wrap:pretty">Choose a time online, or call and we will find one together. Same-week appointments are usually available.</p>
+<a href="/book-appointment/" style="margin-top:6px;display:inline-flex;min-height:50px;align-items:center;justify-content:center;padding:12px 26px;border-radius:999px;background:var(--white);color:var(--navy);font-size:14px;font-weight:750;transition:.3s" style-hover="background:var(--gold-light)">Book Your Appointment</a>
+</div>
+
+<div style="padding:28px 30px;border:1px solid var(--border);border-radius:16px;background:var(--white)">
+<strong style="display:block;margin-bottom:14px;color:var(--navy);font-size:17px;font-weight:750;letter-spacing:-.01em">Visit us</strong>
+<p style="margin:0 0 14px;color:var(--text-body);font-size:15px;line-height:1.7">2405 Texas Avenue South, Suite 307<br>College Station, TX 77840</p>
+<p style="margin:0 0 4px;font-size:15px;line-height:1.7"><a href="tel:9794507996" style="color:var(--brand-red);font-weight:750">979-450-7996</a></p>
+<p style="margin:0 0 16px;color:var(--text-muted);font-size:14px;line-height:1.7">Mon 7:00 AM &ndash; 6:00 PM<br>Tue &ndash; Thu 8:30 AM &ndash; 4:30 PM<br>Fri closed</p>
+<a href="/contact/" style="display:inline-flex;align-items:center;gap:7px;color:var(--brand-red);font-size:15px;font-weight:750;transition:.3s" style-hover="color:var(--navy)">Directions &amp; contact <span aria-hidden="true">&rarr;</span></a>
+</div>
+</aside>
+
+</div>
+</section>
+
+<section style="background:var(--cream)">
+<div style="max-width:1280px;margin:0 auto;padding:clamp(44px,6vw,76px) clamp(18px,4vw,32px);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:26px">
+<div>
+<h2 style="margin:0;color:var(--navy);font-size:clamp(24px,3vw,32px);font-weight:800;letter-spacing:-.03em;text-wrap:pretty">Ready to take the next step?</h2>
+<p style="margin:10px 0 0;max-width:60ch;color:var(--text-body);font-size:17px;line-height:1.7;text-wrap:pretty">Book online, or call and we will find a time that works. We reply the same business day.</p>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:14px">
+<a href="/book-appointment/" style={BTN_RED} style-hover="background:var(--navy);transform:translateY(-2px)">Book Your Appointment</a>
+<a href="tel:9794507996" style={BTN_GHOST} style-hover="background:var(--navy);border-color:var(--navy);color:var(--white)">Call 979-450-7996</a>
+</div>
+</div>
+</section>

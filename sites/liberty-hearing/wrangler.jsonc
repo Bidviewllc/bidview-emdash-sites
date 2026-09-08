@@ -1,0 +1,43 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "liberty-hearing",
+	"account_id": "239e9d015c7a3a39cdc2e9400312f553",
+	"main": "./src/worker.ts",
+	"compatibility_date": "2026-02-24",
+	"compatibility_flags": ["nodejs_compat"],
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "liberty-hearing-db",
+			"database_id": "c6fbfd7c-5c0f-42fc-9ff2-00dccd78892a",
+		},
+	],
+	"r2_buckets": [
+		{
+			"binding": "MEDIA",
+			"bucket_name": "liberty-hearing-media",
+		},
+	],
+	// Shared SESSION namespace, same as every other Bidview emdash site
+	"kv_namespaces": [
+		{
+			"binding": "SESSION",
+			"id": "028dfa4da881449cb1fcfb8ae46b6e2e",
+		},
+	],
+	// Worker Loader for plugin sandboxing
+	"worker_loaders": [
+		{
+			"binding": "LOADER",
+		},
+	],
+	// General maintenance cron trigger. The scaffold shipped "* * * * *"
+	// (every minute) — dialled back to hourly; emdash only uses this for
+	// housekeeping and per-minute invocations are wasted requests.
+	"triggers": {
+		"crons": ["0 * * * *"],
+	},
+	"observability": { "enabled": true },
+	"placement": { "mode": "smart" },
+	"workers_dev": true,
+}
