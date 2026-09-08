@@ -485,6 +485,286 @@
 					"type": "text"
 				}
 			]
+		},
+		{
+			"slug": "about_page",
+			"label": "About Page",
+			"labelSingular": "About Page",
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "hero_eyebrow",
+					"label": "Hero eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "hero_headline",
+					"label": "Hero headline (allows <em> and <br />)",
+					"type": "text"
+				},
+				{
+					"slug": "hero_sub",
+					"label": "Hero subhead",
+					"type": "text"
+				},
+				{
+					"slug": "hero_image",
+					"label": "Hero background image",
+					"type": "image"
+				},
+				{
+					"slug": "why_heading",
+					"label": "Why Grant — heading (allows <br />)",
+					"type": "text"
+				},
+				{
+					"slug": "why_body",
+					"label": "Why Grant — body",
+					"type": "text"
+				},
+				{
+					"slug": "why_quote",
+					"label": "Why Grant — pull quote",
+					"type": "text"
+				},
+				{
+					"slug": "stat1_num",
+					"label": "Stat 1 — number",
+					"type": "string"
+				},
+				{
+					"slug": "stat1_label",
+					"label": "Stat 1 — label",
+					"type": "string"
+				},
+				{
+					"slug": "stat1_desc",
+					"label": "Stat 1 — description",
+					"type": "text"
+				},
+				{
+					"slug": "stat2_num",
+					"label": "Stat 2 — number",
+					"type": "string"
+				},
+				{
+					"slug": "stat2_label",
+					"label": "Stat 2 — label",
+					"type": "string"
+				},
+				{
+					"slug": "stat2_desc",
+					"label": "Stat 2 — description",
+					"type": "text"
+				},
+				{
+					"slug": "stat3_num",
+					"label": "Stat 3 — number",
+					"type": "string"
+				},
+				{
+					"slug": "stat3_label",
+					"label": "Stat 3 — label",
+					"type": "string"
+				},
+				{
+					"slug": "stat3_desc",
+					"label": "Stat 3 — description",
+					"type": "text"
+				},
+				{
+					"slug": "guide_eyebrow",
+					"label": "The Guide — eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "guide_heading",
+					"label": "The Guide — heading",
+					"type": "text"
+				},
+				{
+					"slug": "cred1_t",
+					"label": "Credential 1 — title",
+					"type": "string"
+				},
+				{
+					"slug": "cred1_d",
+					"label": "Credential 1 — description",
+					"type": "text"
+				},
+				{
+					"slug": "cred2_t",
+					"label": "Credential 2 — title",
+					"type": "string"
+				},
+				{
+					"slug": "cred2_d",
+					"label": "Credential 2 — description",
+					"type": "text"
+				},
+				{
+					"slug": "cred3_t",
+					"label": "Credential 3 — title",
+					"type": "string"
+				},
+				{
+					"slug": "cred3_d",
+					"label": "Credential 3 — description",
+					"type": "text"
+				},
+				{
+					"slug": "cred4_t",
+					"label": "Credential 4 — title",
+					"type": "string"
+				},
+				{
+					"slug": "cred4_d",
+					"label": "Credential 4 — description",
+					"type": "text"
+				},
+				{
+					"slug": "guide_body",
+					"label": "The Guide — first paragraph",
+					"type": "text"
+				},
+				{
+					"slug": "guide_body2",
+					"label": "The Guide — second paragraph",
+					"type": "text"
+				},
+				{
+					"slug": "guide_cta",
+					"label": "The Guide — button label",
+					"type": "string"
+				},
+				{
+					"slug": "pillars_eyebrow",
+					"label": "Road of Trials — eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "pillars_heading",
+					"label": "Road of Trials — heading",
+					"type": "text"
+				},
+				{
+					"slug": "pillar1_title",
+					"label": "Pillar 1 — title",
+					"type": "string"
+				},
+				{
+					"slug": "pillar1_challenge",
+					"label": "Pillar 1 — the challenge",
+					"type": "text"
+				},
+				{
+					"slug": "pillar1_cred",
+					"label": "Pillar 1 — Grant's edge",
+					"type": "text"
+				},
+				{
+					"slug": "pillar2_title",
+					"label": "Pillar 2 — title",
+					"type": "string"
+				},
+				{
+					"slug": "pillar2_challenge",
+					"label": "Pillar 2 — the challenge",
+					"type": "text"
+				},
+				{
+					"slug": "pillar2_cred",
+					"label": "Pillar 2 — Grant's edge",
+					"type": "text"
+				},
+				{
+					"slug": "pillar3_title",
+					"label": "Pillar 3 — title",
+					"type": "string"
+				},
+				{
+					"slug": "pillar3_challenge",
+					"label": "Pillar 3 — the challenge",
+					"type": "text"
+				},
+				{
+					"slug": "pillar3_cred",
+					"label": "Pillar 3 — Grant's edge",
+					"type": "text"
+				},
+				{
+					"slug": "proof_eyebrow",
+					"label": "Proof stories — eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "proof_heading",
+					"label": "Proof stories — heading",
+					"type": "text"
+				},
+				{
+					"slug": "proof1_hook",
+					"label": "Story 1 — hook",
+					"type": "string"
+				},
+				{
+					"slug": "proof1_story",
+					"label": "Story 1 — body",
+					"type": "text"
+				},
+				{
+					"slug": "proof2_hook",
+					"label": "Story 2 — hook",
+					"type": "string"
+				},
+				{
+					"slug": "proof2_story",
+					"label": "Story 2 — body",
+					"type": "text"
+				},
+				{
+					"slug": "proof_transition",
+					"label": "Proof stories — closing line",
+					"type": "text"
+				},
+				{
+					"slug": "return_eyebrow",
+					"label": "The Return — eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "return_heading",
+					"label": "The Return — heading (allows <em>)",
+					"type": "text"
+				},
+				{
+					"slug": "return_body",
+					"label": "The Return — body",
+					"type": "text"
+				},
+				{
+					"slug": "return_cta",
+					"label": "The Return — button label",
+					"type": "string"
+				},
+				{
+					"slug": "return_image",
+					"label": "The Return — photo",
+					"type": "image"
+				},
+				{
+					"slug": "social_eyebrow",
+					"label": "In Their Words — eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "social_heading",
+					"label": "In Their Words — heading",
+					"type": "text"
+				}
+			]
 		}
 	],
 	"taxonomies": [
@@ -1009,6 +1289,68 @@
 					"agent_role": "Coldwell Banker Global Luxury Agent",
 					"submit_label": "SEND INQUIRY",
 					"success_message": "Thanks — Grant will be in touch within 24 hours."
+				}
+			}
+		],
+		"about_page": [
+			{
+				"id": "about",
+				"slug": "about",
+				"status": "published",
+				"data": {
+					"title": "About",
+					"hero_eyebrow": "About Grant C. Meyer",
+					"hero_headline": "You've Found the Place.<br />Now Find the <em>Right Guide.</em>",
+					"hero_sub": "Grant has lived in Incline Village for 35 years. His clients don't just get a realtor — they get someone who is already here, already knows everyone, and isn't going anywhere.",
+					"why_heading": "Most Agents Work Here.<br />Grant Lives Here.",
+					"why_body": "After 35 years in Incline Village, Grant has watched every cycle — what the market looks like before a wave and after one, and the signals that actually matter. That kind of context doesn't live in a database. It lives in the people who never left.",
+					"why_quote": "I've been a resident in this community for 35 years. You learn who you can count on.",
+					"stat1_num": "35 Years",
+					"stat1_label": "A RESIDENT, NOT A VISITOR",
+					"stat1_desc": "Three and a half decades in Incline Village — through every market cycle and every quiet winter.",
+					"stat2_num": "17 Years",
+					"stat2_label": "FULL-TIME REALTOR",
+					"stat2_desc": "Real estate as a profession, not a side job between ski seasons.",
+					"stat3_num": "6 Years",
+					"stat3_label": "#1 IN LOCAL VOLUME",
+					"stat3_desc": "More property sold in this market than any other agent, six consecutive years running.",
+					"guide_eyebrow": "MEETING THE MENTOR",
+					"guide_heading": "35 Years Here. Still the First One to Pick Up the Phone.",
+					"cred1_t": "35-Year Resident",
+					"cred1_d": "Roots that predate most of the neighborhood.",
+					"cred2_t": "Legal Training",
+					"cred2_d": "Reads contracts and contingencies the way most agents can't.",
+					"cred3_t": "Builder's Eye",
+					"cred3_d": "Raised in a contractor's family — he knows what he's looking at.",
+					"cred4_t": "The Network",
+					"cred4_d": "Three decades of trusted trades clients inherit on day one.",
+					"guide_body": "Grant grew up watching his father build things, and learned the restaurant business from his grandparents — earn your customer once, keep them for life. He moved to Incline Village 35 years ago and never left, because once you're here, you understand why people don't.",
+					"guide_body2": "His legal education gives him contract and negotiation depth most agents in this market simply don't have. His father's construction background means he knows what he's looking at when he walks through a property. And his decades of relationships mean he can get the right specialist to your house in 90 minutes when everyone else is on a three-week waitlist.",
+					"guide_cta": "TALK WITH GRANT",
+					"pillars_eyebrow": "THE ROAD OF TRIALS",
+					"pillars_heading": "What You're Actually Up Against — and What It Takes to Win.",
+					"pillar1_title": "The Market Itself",
+					"pillar1_challenge": "A micro-market of ~10,000 parcels with seasonal swings and pricing that can move millions on a handful of sales. Online valuations don't work here.",
+					"pillar1_cred": "35-year resident, 17 years full-time — every cycle, every slow winter.",
+					"pillar2_title": "The Transaction",
+					"pillar2_challenge": "TRPA, impervious coverage, BMP requirements and local MLS nuances — things most agents have never encountered.",
+					"pillar2_cred": "Legal training means Grant reads contracts the way most agents don't. Every offer and contingency handled with precision.",
+					"pillar3_title": "After the Sale",
+					"pillar3_challenge": "You need the electrician who shows up and the crew that arrives in 90 minutes. Good contractors are months out — unless you know the right people.",
+					"pillar3_cred": "Three decades of his father's construction relationships plus 17 years of Grant's own — a network clients inherit on day one.",
+					"proof_eyebrow": "THE TRANSFORMATION",
+					"proof_heading": "What “Going Above and Beyond” Actually Looks Like.",
+					"proof1_hook": "The Tesla",
+					"proof1_story": "A client ran out of gas on Mount Rose Highway. Grant loaded a five-gallon drum into his Tesla — a car that has never had a drop of gas in it. “That's what you do.”",
+					"proof2_hook": "The Move",
+					"proof2_story": "Before a showing, Grant arranged the movers and helped pack the closet himself — carefully, so a client's most valued things were protected before buyers ever walked through.",
+					"proof_transition": "This is what “full service” means in practice — not a tagline, but a standard that holds even when nobody's watching.",
+					"return_eyebrow": "THE RETURN",
+					"return_heading": "When You Buy Here, You're <em>Not a Visitor</em> Anymore.",
+					"return_body": "Incline Village stopped being a place I worked a long time ago. The people I've helped buy and sell homes here have become my neighbors and some of my closest friends — the people I see at the market and on the mountain. I've probably made more real friendships through this work than anything else in my life.",
+					"return_cta": "LET'S TALK",
+					"social_eyebrow": "IN THEIR WORDS",
+					"social_heading": "Clients on Working With Grant."
 				}
 			}
 		]

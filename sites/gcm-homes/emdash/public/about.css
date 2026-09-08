@@ -1,0 +1,166 @@
+/* About page — the few patterns the prototype's About design adds on top of the
+   site's design system. Everything else on /about/ (.hero, .reality/.stat,
+   .guide/.cred, .emotion-split, .testimonial, .section-title, .btn) already ships
+   in styles.css and is reused as-is, exactly as the home page uses it.
+
+   Loaded only by src/pages/about.astro, the same way community.astro loads
+   community.css. Desktop first; the two breakpoints at the bottom match
+   responsive.css (tablet <=1024px, mobile <=640px). */
+
+/* ---- Pull quote --------------------------------------------------------- */
+/* Used inside the dark "Most Agents Work Here" section and again in The Return,
+   where only the attribution line appears. */
+.pullquote {
+	border-left: 3px solid var(--orange);
+	padding: 6px 0 6px 28px;
+	margin: 32px 0 0;
+}
+.pullquote__q {
+	font-family: var(--font-serif);
+	font-style: italic;
+	font-weight: 400;
+	font-size: 26px;
+	line-height: 1.4;
+	color: var(--navy);
+	text-wrap: balance;
+}
+.on-dark .pullquote__q { color: var(--white); }
+.pullquote__a {
+	font-family: var(--font-sans);
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	color: var(--orange);
+	margin-top: 14px;
+}
+
+/* ---- Credential pillars (The Road of Trials) ---------------------------- */
+.pillars {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 32px;
+	margin-top: 64px;
+}
+.pillar {
+	background: var(--white);
+	border: 1px solid rgba(197, 198, 206, 0.45);
+	border-radius: 6px;
+	padding: 40px 36px;
+	display: flex;
+	flex-direction: column;
+	gap: 22px;
+	position: relative;
+}
+.on-dark .pillar {
+	background: rgba(255, 255, 255, 0.035);
+	border-color: rgba(247, 148, 91, 0.28);
+}
+.pillar__mark {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 54px;
+	height: 54px;
+}
+.pillar__numeral {
+	font-family: var(--font-serif);
+	font-weight: 500;
+	font-size: 44px;
+	line-height: 1;
+	color: var(--orange);
+	letter-spacing: -0.01em;
+}
+.pillar__title {
+	font-family: var(--font-serif);
+	font-weight: 500;
+	font-size: 26px;
+	line-height: 1.15;
+	color: var(--navy);
+}
+.on-dark .pillar__title { color: var(--white); }
+.pillar__divider { height: 1px; background: rgba(197, 198, 206, 0.5); }
+.on-dark .pillar__divider { background: rgba(255, 255, 255, 0.12); }
+.pillar__block { display: flex; flex-direction: column; gap: 6px; }
+.pillar__label {
+	font-family: var(--font-sans);
+	font-size: 10.5px;
+	font-weight: 700;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	color: var(--orange);
+}
+.pillar__text {
+	font-size: 14.5px;
+	line-height: 1.62;
+	color: var(--body);
+}
+.on-dark .pillar__text { color: rgba(255, 255, 255, 0.74); }
+
+/* ---- Proof stories ------------------------------------------------------ */
+.proof { margin-top: 56px; }
+.proof--cards {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 32px;
+}
+.proof-card {
+	background: var(--white);
+	border: 1px solid rgba(197, 198, 206, 0.45);
+	border-radius: 6px;
+	padding: 44px 40px;
+	display: flex;
+	flex-direction: column;
+	gap: 18px;
+	box-shadow: 0 10px 30px -22px rgba(21, 36, 59, 0.3);
+}
+.proof-card__hook {
+	font-family: var(--font-sans);
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: var(--orange);
+}
+.proof-card__story {
+	font-family: var(--font-serif);
+	font-weight: 400;
+	font-size: 23px;
+	line-height: 1.45;
+	color: var(--navy);
+	text-wrap: pretty;
+}
+.proof__transition {
+	max-width: 760px;
+	margin: 64px auto 0;
+	text-align: center;
+	font-family: var(--font-serif);
+	font-style: italic;
+	font-size: 22px;
+	line-height: 1.5;
+	color: var(--navy);
+	text-wrap: balance;
+}
+
+/* ---- Tablet ------------------------------------------------------------- */
+@media (max-width: 1024px) {
+	/* Grant sits on the right of the hero photograph, so shift the crop that way
+	   as the frame narrows. Scoped to .hero--about: the home hero must not move. */
+	.hero--about .hero__img { background-position: 70% center; }
+	.pillars { grid-template-columns: 1fr; gap: 24px; margin-top: 48px; }
+	.proof--cards { grid-template-columns: 1fr; gap: 24px; }
+	.pullquote__q { font-size: 23px; }
+	.proof__transition { font-size: 20px; margin-top: 48px; }
+}
+
+/* ---- Mobile ------------------------------------------------------------- */
+@media (max-width: 640px) {
+	.pillar { padding: 32px 24px; gap: 18px; }
+	.pillar__title { font-size: 24px; }
+	.pillar__numeral { font-size: 38px; }
+	.proof-card { padding: 32px 24px; }
+	.proof-card__story { font-size: 20px; }
+	.pullquote { padding-left: 20px; margin-top: 26px; }
+	.pullquote__q { font-size: 20px; }
+	.proof__transition { font-size: 18px; }
+}
