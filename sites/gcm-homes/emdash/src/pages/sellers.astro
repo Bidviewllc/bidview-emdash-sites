@@ -47,7 +47,9 @@ const e = entry?.edit ?? {};
 // the same note in buyers.astro and index.astro. listing-interior-1.jpg, the
 // prototype's obvious pick for the film still, is a stock headshot of a man who
 // is not Grant; listing-interior-3.jpg is 512px AI filler. Neither is used.
-const heroImage = imageUrl(d.hero_image) ?? "/assets/community-hero.jpg";
+// Rubicon Trail at Bliss State Park, looking south toward Emerald Bay — one of
+// the photographs Liz supplied.
+const heroImage = imageUrl(d.hero_image) ?? "/assets/hero-rubicon-emerald-bay.jpg";
 const pricingImage = imageUrl(d.pricing_image) ?? "/assets/listing-hero-exterior.jpg";
 const filmImage = imageUrl(d.film_image) ?? "/assets/gallery-1.jpg";
 const agentPhoto = imageUrl(d.agent_photo) ?? "/assets/grant.jpg";
@@ -69,9 +71,13 @@ const INCLUSIONS = [
 	{ t: "Broker Tours & Open Houses", d: "Getting the local agents who hold the buyers through the door first." },
 ];
 
-// The Process section. No fallbacks: the prototype's copy is a brief for Grant
-// ("Pending Grant's direct account of how he runs each step."), not publishable
-// text, so the section stays off the page until the fields are filled in.
+// The Process section. The design's copy here is written as a brief rather than
+// as prose, so the substantive claims are seeded as real copy (see seed.json)
+// and the meta framing dropped. `process_promise` -- the design's second
+// paragraph, which only describes the response-time promise that should
+// eventually go there -- is left empty on purpose, so the section renders with
+// one paragraph and no divider until Grant answers. Both fields empty hides the
+// section entirely.
 const processBody = (d.process_body ?? "").toString().trim();
 const processPromise = (d.process_promise ?? "").toString().trim();
 const showProcess = Boolean(processBody || processPromise);
@@ -106,7 +112,7 @@ const successMessage = d.val_success ?? "Thanks — Grant will be in touch with 
 
 	{/* 02 THE PRICING READ — the site's copy/photo split, run copy-first. */}
 	<section class="section section--cream" data-screen-label="02 The Pricing Read">
-		<div class="container guide split--rev">
+		<div class="container guide split--rev split--photo-fill">
 			<div class="guide__copy">
 				<div class="eyebrow" {...(e.pricing_eyebrow ?? {})}>{d.pricing_eyebrow ?? "THE PRICING READ"}</div>
 				<h2 class="guide__h" {...(e.pricing_heading ?? {})}>
@@ -262,7 +268,7 @@ const successMessage = d.val_success ?? "Thanks — Grant will be in touch with 
 		<div class="container">
 			<div class="net">
 				<span class="eyebrow" {...(e.network_eyebrow ?? {})}>{d.network_eyebrow ?? "THE NETWORK"}</span>
-				<h2 class="reality__h" style="margin-bottom:0" {...(e.network_heading ?? {})}>
+				<h2 class="net__h" {...(e.network_heading ?? {})}>
 					{d.network_heading ?? "The Network That Gets Your Home Sale-Ready."}
 				</h2>
 				<div class="net__body">
@@ -323,7 +329,7 @@ const successMessage = d.val_success ?? "Thanks — Grant will be in touch with 
 			<div class="container">
 				<div class="process">
 					<div class="process__head">
-						<span class="eyebrow" style="display:block;margin-bottom:16px" {...(e.process_eyebrow ?? {})}>
+						<span class="eyebrow" style="display:block;margin-bottom:18px" {...(e.process_eyebrow ?? {})}>
 							{d.process_eyebrow ?? "THE PROCESS"}
 						</span>
 						<h2 class="h2" {...(e.process_heading ?? {})}>

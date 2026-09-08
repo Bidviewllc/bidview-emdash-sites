@@ -240,15 +240,60 @@
 .comm-card__link svg { transition: transform 220ms ease; }
 .comm-card:hover .comm-card__link svg { transform: translateX(4px); }
 
+/* ---- Closing CTA, slim variant ------------------------------------------ */
+/* The design's .ab-cta--slim: copy on the left, buttons stacked in a fixed
+   320px column on the right, both vertically centred — not a centred stack.
+   Its own breakpoint at 860px, matching the design, because the two columns
+   collide well before the site's 1024px tablet break. */
+.cta-slim { padding: 72px 64px; }
+.cta-slim__inner {
+	max-width: 1120px;
+	margin: 0 auto;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 64px;
+}
+.cta-slim__copy { flex: 1; min-width: 0; }
+.cta-slim__h {
+	font-family: var(--font-serif);
+	font-weight: 500;
+	font-size: 40px;
+	line-height: 1.12;
+	letter-spacing: -0.005em;
+	color: var(--white);
+	text-wrap: balance;
+	max-width: 620px;
+	margin: 0;
+}
+.cta-slim__support {
+	margin: 16px 0 0;
+	font-size: 17px;
+	line-height: 1.7;
+	color: rgba(255, 255, 255, 0.82);
+}
+.cta-slim__btns {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	gap: 14px;
+	width: 320px;
+	flex-shrink: 0;
+}
+.cta-slim__btns .btn {
+	width: 100%;
+	text-align: center;
+}
+
+@media (max-width: 860px) {
+	.cta-slim { padding: 56px 28px; }
+	.cta-slim__inner { flex-direction: column; align-items: flex-start; gap: 32px; }
+	.cta-slim__h { font-size: 32px; }
+	.cta-slim__btns { width: 100%; }
+}
+
 /* ---- Tablet ------------------------------------------------------------- */
 @media (max-width: 1024px) {
-	/* Grant stands at the right of the overlook photograph, so a centred crop
-	   loses him entirely as the frame narrows — the same problem /about/ has,
-	   fixed the same way and at the same 70%. Further right puts the headline
-	   across his head; centred drops him out of shot. Scoped to .hero--buyers
-	   so no other hero moves. */
-	.hero--buyers .hero__img { background-position: 70% center; }
-
 	.tax-intro__body { font-size: 16px; }
 	.tax-intro__turn { font-size: 19px; }
 	.tax-acc { margin-top: 44px; }
@@ -262,9 +307,6 @@
 
 /* ---- Mobile ------------------------------------------------------------- */
 @media (max-width: 640px) {
-	/* Same crop as tablet — see the note there. */
-	.hero--buyers .hero__img { background-position: 70% center; }
-
 	.tax-intro__body { font-size: 15px; }
 	.tax-intro__turn { font-size: 17px; margin-top: 20px; }
 	.tax-acc { margin-top: 36px; }

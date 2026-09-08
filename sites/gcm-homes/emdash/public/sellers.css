@@ -6,6 +6,32 @@
    Loaded only by src/pages/sellers.astro. Desktop first; the two breakpoints at
    the bottom match responsive.css (tablet <=1024px, mobile <=640px). */
 
+/* ---- Hero veil ---------------------------------------------------------- */
+/* The Rubicon Trail photograph is bright and hazy straight through the middle
+   of the frame, which is exactly where this page's hero copy sits — it is the
+   longest hero block on the site, so it reaches higher than the others. The
+   shared .hero__veil does not begin darkening until 30% down, leaving the
+   "SELL WITH ME" eyebrow washed out against pale sky.
+   Starts the darkening at 10% and carries it deeper. The top cream fade is
+   kept verbatim so the nav logo and links still read against the photo. */
+.hero--sellers .hero__veil {
+	background:
+		linear-gradient(
+			180deg,
+			rgba(21, 36, 59, 0) 6%,
+			rgba(21, 36, 59, 0.38) 26%,
+			rgba(21, 36, 59, 0.54) 46%,
+			rgba(21, 36, 59, 0.68) 70%,
+			rgba(10, 18, 29, 0.86) 100%
+		),
+		linear-gradient(
+			180deg,
+			rgba(252, 249, 244, 0.95) 0%,
+			rgba(252, 249, 244, 0.55) 8%,
+			rgba(252, 249, 244, 0) 18%
+		);
+}
+
 /* ---- Seasonal timing ---------------------------------------------------- */
 .timing__head { max-width: 860px; }
 .timing__head .eyebrow { display: block; margin-bottom: 16px; }

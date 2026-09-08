@@ -583,20 +583,18 @@
   .pullquote__q { font-size: 23px; }
 
   /* Copy + photo splits collapse to one column; `order` on .split--rev
-     keeps the copy first either way. */
-  .guide.split--rev .guide__img { aspect-ratio: 16 / 10; }
+     keeps the copy first either way. The filled photo no longer needs to
+     match a tall column, so cap it. */
+  .guide.split--photo-fill .guide__img { min-height: 0; aspect-ratio: 16 / 10; }
 
   .net { max-width: none; }
-  .net__body p { font-size: 16px; }
-  .net-split {
-    grid-template-columns: 1fr;
-    gap: 32px;
-    margin-top: 48px;
-    padding-top: 40px;
-  }
+  .net__h { font-size: 38px; }
+  .net__body { font-size: 17px; margin-top: 22px; }
+  .net-split { grid-template-columns: 1fr; gap: 36px; margin-top: 44px; }
+  .net__story { font-size: 17px; }
 
-  .process { grid-template-columns: 1fr; gap: 32px; }
-  .process__body p { font-size: 16px; }
+  .process__head { margin-bottom: 32px; }
+  .process__body { font-size: 16.5px; }
 }
 
 @media (max-width: 640px) {
@@ -604,13 +602,15 @@
   .pullquote { padding-left: 20px; margin-top: 26px; }
   .pullquote__q { font-size: 20px; }
 
-  .net__body { gap: 14px; margin-top: 20px; }
-  .net-split { gap: 26px; margin-top: 36px; padding-top: 32px; }
-  .net__story { font-size: 15px; }
+  .net__h { font-size: 30px; }
+  .net__body { font-size: 16px; margin-top: 18px; }
+  .net__body p + p { margin-top: 16px; }
+  .net-split { gap: 28px; margin-top: 36px; }
+  .net__story { font-size: 16px; padding-left: 20px; }
 
-  .process { gap: 26px; }
-  .process__body { gap: 20px; }
-  .process__body p { font-size: 15px; }
+  .process__head { margin-bottom: 26px; }
+  .process__body { font-size: 16px; }
+  .process__divider { margin: 30px auto; }
 }
 
 

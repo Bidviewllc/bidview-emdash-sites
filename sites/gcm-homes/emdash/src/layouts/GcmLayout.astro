@@ -16,12 +16,14 @@ interface Props {
 const { title, description, canonical, image, content } = Astro.props;
 await getSiteSettings();
 
+// Drives BOTH the desktop nav and the mobile drawer, so one edit covers both.
+// Concierge was removed 2026-09-08 at Liz's request. The /concierge/ page is
+// still live and still linked from the footer — it is just no longer in the nav.
 const nav = [
 	["Listings", "/listings/"],
 	["Buyers", "/buyers/"],
 	["Sellers", "/sellers/"],
 	["The Community", "/community/"],
-	["Concierge", "/concierge/"],
 	["About", "/about/"],
 ];
 

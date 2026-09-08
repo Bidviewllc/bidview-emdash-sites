@@ -2415,52 +2415,89 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
 .guide.split--rev .guide__copy { order: 1; }
 .guide.split--rev .guide__photo { order: 2; }
 
-/* On the reversed split the photo is a working shot rather than Grant's
-   portrait, so drop the offset orange square that frames the portrait. */
-.guide.split--rev .guide__photo::before { display: none; }
-.guide.split--rev .guide__img { aspect-ratio: 4 / 5; }
+/* ===== Split with a full-height photo =====
+   `.guide__photo` is built for Grant's portrait: square, top-aligned, with an
+   offset orange square behind it. The /buyers/ and /sellers/ splits use
+   landscape working photos that the design runs the full height of the column
+   instead (.ab-split__media — align-self: stretch, min-height: 480px). */
+.guide.split--photo-fill .guide__photo { align-self: stretch; }
+.guide.split--photo-fill .guide__photo::before { display: none; }
+.guide.split--photo-fill .guide__img {
+  height: 100%;
+  aspect-ratio: auto;
+  min-height: 480px;
+  background-position: center;
+}
 
 /* ===== Network statement (dark) =====
    The "network you inherit" block on /buyers/ and the "gets your home
    sale-ready" block on /sellers/. A wide statement column, then a two-up of
    the proof story and the quote. Lives on `.section--dark.on-dark`. */
-.net { max-width: 860px; }
-.net .eyebrow { display: block; margin-bottom: 16px; }
-.net__body { display: flex; flex-direction: column; gap: 18px; margin-top: 26px; }
-.net__body p {
-  font-size: 17px;
-  line-height: 1.7;
-  color: rgba(255, 255, 255, 0.8);
+/* The statement column is CENTRED and the copy runs large (19px), per the
+   design. The proof story below is not plain body text — it carries the same
+   orange left rule as a pull quote. */
+.net {
+  max-width: 860px;
+  margin: 0 auto;
+  text-align: center;
 }
+.net .eyebrow { display: block; margin-bottom: 18px; }
+.net__h {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: 46px;
+  line-height: 1.08;
+  letter-spacing: -0.005em;
+  color: var(--white);
+  text-wrap: balance;
+}
+.net__body {
+  font-size: 19px;
+  line-height: 1.78;
+  color: rgba(255, 255, 255, 0.82);
+  margin-top: 28px;
+}
+.net__body p + p { margin-top: 22px; }
+
+/* Proof story left, Grant's quote right, both vertically centred. */
 .net-split {
+  max-width: 1080px;
+  margin: 56px auto 0;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 64px;
-  align-items: start;
-  margin-top: 64px;
-  padding-top: 56px;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  gap: 72px;
+  align-items: center;
+  text-align: left;
 }
 .net__story {
-  font-size: 16px;
-  line-height: 1.75;
-  color: rgba(255, 255, 255, 0.72);
+  font-size: 19px;
+  line-height: 1.78;
+  color: var(--white);
+  border-left: 3px solid var(--orange);
+  padding: 4px 0 4px 28px;
+  margin: 0;
 }
-.net-split .pullquote { margin-top: 0; }
+.net-split .pullquote { margin: 0; }
+.net-split .pullquote__q { font-size: 26px; line-height: 1.42; }
 
 /* ===== Process column =====
    The editorial "what working with Grant actually looks like" column, shared by
-   /buyers/ and /sellers/. Heading left, a single measured text column right. */
+   /buyers/ and /sellers/. A single narrow centred column with a centred head —
+   not a two-column split — and a short orange rule between the paragraphs. */
 .process {
-  display: grid;
-  grid-template-columns: 0.85fr 1fr;
-  gap: 80px;
-  align-items: start;
+  max-width: 760px;
+  margin: 0 auto;
 }
-.process__body { display: flex; flex-direction: column; gap: 26px; }
-.process__body p {
-  font-size: 17px;
-  line-height: 1.75;
+.process__head { text-align: center; margin-bottom: 44px; }
+.process__body {
+  font-size: 17.5px;
+  line-height: 1.78;
   color: var(--body);
 }
-.process__divider { height: 1px; background: rgba(197, 198, 206, 0.55); }
+.process__body p + p { margin-top: 22px; }
+.process__divider {
+  width: 56px;
+  height: 1px;
+  background: var(--orange);
+  margin: 40px auto;
+}

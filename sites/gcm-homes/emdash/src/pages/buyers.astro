@@ -4,13 +4,13 @@
 // about.astro took):
 //
 //   01 Hero          .hero              — same pattern as the home/About hero
-//   02 The Stakes    .guide.split--rev  — copy + working photo, copy first
+//   02 The Stakes    .guide.split--rev  — copy + full-height photo, copy first
 //   03 The Network   .net               — dark Statement block (styles.css)
 //   04 Tax Advantage .tax-acc           — new, styles in /buyers.css
-//   05 Investment    .guide             — the same split, photo first
+//   05 Investment    .guide             — the same split, photo first (full height)
 //   06 Communities   .communities       — new, styles in /buyers.css
 //   07 The Process   .process           — editorial column (styles.css)
-//   08 CTA           .section--dark     — slim closing band
+//   08 CTA           .cta-slim          — copy left, buttons right
 //   09 Contact       <ContactCta />     — the shared site-wide section
 //
 // The prototype's parallel `.ab-*` layout classes are deliberately NOT ported:
@@ -47,11 +47,10 @@ const e = entry?.edit ?? {};
 // (listing-interior-3.jpg IS listing-local-perspective.png, 512x512;
 // listing-1056.jpg IS listing-hero-exterior.jpg). listing-interior-1.jpg is a
 // stock headshot of a man who is not Grant, so it must never be a fallback here.
-// The design pins this hero to hero-grant-overlook (heroImage: "overlook" in the
-// project's js/buyers.jsx) — Grant at a Tahoe overlook. The file was missing from
-// public/assets, so it was brought over from the design project and re-encoded
-// from a 2.0 MB PNG to a 183 KB progressive JPEG, matching the other heroes.
-const heroImage = imageUrl(d.hero_image) ?? "/assets/hero-grant-overlook.jpg";
+// Eagle Rock, west shore looking south — one of the photographs Liz supplied,
+// replacing the design's hero-grant-overlook pick. That file is still in
+// public/assets if the portrait hero is ever wanted back.
+const heroImage = imageUrl(d.hero_image) ?? "/assets/hero-eagle-rock.jpg";
 const stakesImage = imageUrl(d.stakes_image) ?? "/assets/listing-hero-exterior.jpg";
 const investmentImage = imageUrl(d.investment_image) ?? "/assets/gallery-1.jpg";
 
@@ -155,9 +154,13 @@ const COMMUNITIES = [
 	},
 ];
 
-// The Process section. No fallbacks: the prototype's copy is a brief for Grant
-// ("Pending Grant's direct account of how he runs each step."), not publishable
-// text, so the whole section stays off the page until the fields are filled in.
+// The Process section. The design's copy here is written as a brief rather than
+// as prose, so the substantive claims are seeded as real copy (see seed.json)
+// and the meta framing dropped. `process_promise` -- the design's second
+// paragraph, which only describes the response-time promise that should
+// eventually go there -- is left empty on purpose, so the section renders with
+// one paragraph and no divider until Grant answers. Both fields empty hides the
+// section entirely.
 const processBody = (d.process_body ?? "").toString().trim();
 const processPromise = (d.process_promise ?? "").toString().trim();
 const showProcess = Boolean(processBody || processPromise);
@@ -191,7 +194,7 @@ const showProcess = Boolean(processBody || processPromise);
 
 	{/* 02 THE STAKES — the site's copy/photo split, run copy-first. */}
 	<section class="section section--cream" data-screen-label="02 The Stakes">
-		<div class="container guide split--rev">
+		<div class="container guide split--rev split--photo-fill">
 			<div class="guide__copy">
 				<div class="eyebrow" {...(e.stakes_eyebrow ?? {})}>{d.stakes_eyebrow ?? "THE STAKES"}</div>
 				<h2 class="guide__h" {...(e.stakes_heading ?? {})}>
@@ -229,7 +232,7 @@ const showProcess = Boolean(processBody || processPromise);
 		<div class="container">
 			<div class="net">
 				<span class="eyebrow" {...(e.network_eyebrow ?? {})}>{d.network_eyebrow ?? "THE NETWORK"}</span>
-				<h2 class="reality__h" style="margin-bottom:0" {...(e.network_heading ?? {})}>
+				<h2 class="net__h" {...(e.network_heading ?? {})}>
 					{d.network_heading ?? "The Network You Inherit on Day One."}
 				</h2>
 				<div class="net__body">
@@ -311,7 +314,7 @@ const showProcess = Boolean(processBody || processPromise);
 
 	{/* 05 A HOME AND AN INVESTMENT — the same split, photo first this time. */}
 	<section class="section section--beige" data-screen-label="05 Investment">
-		<div class="container guide">
+		<div class="container guide split--photo-fill">
 			<div class="guide__photo">
 				<div class="guide__img" style={`background-image:url(${investmentImage})`}></div>
 			</div>
@@ -375,7 +378,7 @@ const showProcess = Boolean(processBody || processPromise);
 			<div class="container">
 				<div class="process">
 					<div class="process__head">
-						<span class="eyebrow" style="display:block;margin-bottom:16px" {...(e.process_eyebrow ?? {})}>
+						<span class="eyebrow" style="display:block;margin-bottom:18px" {...(e.process_eyebrow ?? {})}>
 							{d.process_eyebrow ?? "THE PROCESS"}
 						</span>
 						<h2 class="h2" {...(e.process_heading ?? {})}>
@@ -393,15 +396,17 @@ const showProcess = Boolean(processBody || processPromise);
 	)}
 
 	{/* 08 CTA — slim closing band above the contact section. */}
-	<section class="section section--narrow section--dark on-dark" data-screen-label="08 CTA">
-		<div class="container">
-			<div class="section-title on-dark">
-				<h2 {...(e.cta_heading ?? {})}>{d.cta_heading ?? "Ready to Buy in Tahoe the Right Way?"}</h2>
-				<p {...(e.cta_body ?? {})}>
+	<section class="section--dark on-dark cta-slim" data-screen-label="08 CTA">
+		<div class="cta-slim__inner">
+			<div class="cta-slim__copy">
+				<h2 class="cta-slim__h" {...(e.cta_heading ?? {})}>
+					{d.cta_heading ?? "Ready to Buy in Tahoe the Right Way?"}
+				</h2>
+				<p class="cta-slim__support" {...(e.cta_body ?? {})}>
 					{d.cta_body ?? "Reaching out does not commit you to anything. The first conversation is about your goals, your timeline, and whether Tahoe is the right move at all."}
 				</p>
 			</div>
-			<div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-top:36px">
+			<div class="cta-slim__btns">
 				<a class="btn btn--orange" href="#buyers-contact">{d.cta_button1 ?? "START A CONVERSATION WITH GRANT"}</a>
 				<a class="btn btn--ghost-light" href="/listings/">{d.cta_button2 ?? "SEE FEATURED PROPERTIES"}</a>
 			</div>
