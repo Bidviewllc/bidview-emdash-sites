@@ -13,7 +13,7 @@
 .eyebrow--light { color: var(--orange); }
 
 /* 1. Hero */
-.cg-hero { position: relative; height: 620px; overflow: hidden; background: var(--navy); display: flex; align-items: center; }
+.cg-hero { position: relative; height: 620px; overflow: hidden; background: var(--navy); display: flex; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.12); }
 .cg-hero__img { position: absolute; inset: 0; background-size: cover; background-position: center; transform: scale(1.03); }
 .cg-hero__veil {
   position: absolute; inset: 0;

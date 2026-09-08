@@ -88,18 +88,13 @@
     /* Narrow frames (this page is embedded in an iframe on mobile) — the
        300px overlay card and the expanded layer control both overflow. */
     @media (max-width: 560px) {
-      .map-title { top: 12px; left: 60px; max-width: calc(100% - 72px); padding: 11px 14px; }
+      /* Sits low on the map so it clears both the zoom control (top-left) and
+         the expanded layers control (top-right) at every phone width. */
+      .map-title { top: 80%; left: 60px; max-width: calc(100% - 72px); padding: 11px 14px; }
       .map-title h1 { font-size: 16px; }
       .map-title p { font-size: 12px; }
       .leaflet-popup-content { width: 200px !important; margin: 12px 14px; }
       .leaflet-control-layers { font-size: 12px; }
-    }
-
-    /* Phones under ~430px: the title card at left:60px runs into the expanded
-       layers control (top-right, ~103px wide), so drop the card below both
-       controls instead and let it use the full width. */
-    @media (max-width: 430px) {
-      .map-title { top: 96px; left: 12px; max-width: calc(100% - 24px); }
     }
   </style>
 </head>
