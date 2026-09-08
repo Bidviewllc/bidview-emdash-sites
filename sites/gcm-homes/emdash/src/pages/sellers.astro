@@ -1,4 +1,428 @@
 ---
-import ContentPage from "../components/ContentPage.astro";
+// Sell With Me — the Sellers design from the prototype, built out of the
+// sections this site already has rather than new scaffolding (the same approach
+// about.astro and buyers.astro took):
+//
+//   01 Hero            .hero              — same pattern as the home/About hero
+//   02 The Pricing Read .guide.split--rev — copy + working photo, copy first
+//   03 Seasonal Timing .season            — new, styles in /sellers.css
+//   04 The Marketing   .mkt__*            — new, styles in /sellers.css
+//   05 The Network     .net               — dark Statement block (styles.css)
+//   06 Honest Advice   .honesty           — new, styles in /sellers.css
+//   07 The Process     .process           — editorial column (styles.css)
+//   08 Home Valuation  .invite            — the site's contact shell, reused
+//
+// Two deliberate departures from the prototype, both for consistency with the
+// rest of this site:
+//
+//   * The prototype's default hero is the text-only "statement" variant. Every
+//     other page here opens on a full-bleed photograph, so this one does too.
+//   * The valuation form closes the page in place of the shared <ContactCta />.
+//     It IS this page's contact form — two forms on one page would compete — and
+//     it posts to the same /api/contact endpoint through the same shared script,
+//     so leads land in D1 and Grant's inbox exactly like every other enquiry.
+//
+// Editable text comes from the `sellers_page` singleton collection (entry
+// "sellers"): every field falls back to the approved copy below, so the page
+// renders correctly before the collection is seeded.
+//
+// This replaces the four-card ContentPage rendering. The old `page_content`
+// entry with slug "sellers" is left in the CMS but is no longer read by anything.
+import GcmLayout from "../layouts/GcmLayout.astro";
+import InquiryFormScript from "../components/InquiryFormScript.astro";
+import { getEmDashEntry } from "emdash";
+import { imageUrl } from "../lib/media";
+
+let entry: any = null;
+try {
+	const res = await getEmDashEntry("sellers_page", "sellers");
+	entry = res?.entry ?? null;
+} catch {
+	entry = null;
+}
+const d = entry?.data ?? {};
+const e = entry?.edit ?? {};
+
+// Fallback images are restricted to the real photographs in public/assets — see
+// the same note in buyers.astro and index.astro. listing-interior-1.jpg, the
+// prototype's obvious pick for the film still, is a stock headshot of a man who
+// is not Grant; listing-interior-3.jpg is 512px AI filler. Neither is used.
+const heroImage = imageUrl(d.hero_image) ?? "/assets/community-hero.jpg";
+const pricingImage = imageUrl(d.pricing_image) ?? "/assets/listing-hero-exterior.jpg";
+const filmImage = imageUrl(d.film_image) ?? "/assets/gallery-1.jpg";
+const agentPhoto = imageUrl(d.agent_photo) ?? "/assets/grant.jpg";
+
+// The eight-month chart (Mar–Oct). Buyers are here from April; most listings do
+// not surface until June. Columns are 1-indexed within .season__lane, so April
+// is column 2 and June is column 4.
+const SEASON_MONTHS = ["MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT"];
+
+// What a seller gets — the marketing inclusions.
+const INCLUSIONS = [
+	{ t: "Property Film", d: "A walkthrough that opens at the front door, with slow detail pans and a drone pullback that shows the setting." },
+	{ t: "Professional Photography", d: "Shot for the way buyers first meet the home — on a screen, from hundreds of miles away." },
+	{ t: "Drone & Aerials", d: "The setting, the shoreline, the trees, and what is nearby — context a ground photo cannot give." },
+	{ t: "Matterport 3D Tour", d: "A full walkable model of the home, where it fits the buyer, for serious out-of-area shoppers." },
+	{ t: "Written Story", d: "Copy that ties the home to its location instead of listing square footage." },
+	{ t: "Staging Guidance", d: "What to show, what to store, and what is worth fixing before the camera arrives." },
+	{ t: "Print & Digital", d: "Syndication across the platforms relocating buyers actually search, plus considered print." },
+	{ t: "Broker Tours & Open Houses", d: "Getting the local agents who hold the buyers through the door first." },
+];
+
+// The Process section. No fallbacks: the prototype's copy is a brief for Grant
+// ("Pending Grant's direct account of how he runs each step."), not publishable
+// text, so the section stays off the page until the fields are filled in.
+const processBody = (d.process_body ?? "").toString().trim();
+const processPromise = (d.process_promise ?? "").toString().trim();
+const showProcess = Boolean(processBody || processPromise);
+
+const successMessage = d.val_success ?? "Thanks — Grant will be in touch with a considered read within 24 hours.";
 ---
-<ContentPage slug="sellers" />
+
+<GcmLayout
+	title="Sell With Me — Grant C. Meyer Homes"
+	description="Pricing a Tahoe home is read, not calculated. Grant has watched every cycle in Incline Village and Crystal Bay for 35 years. Start with what your home is actually worth."
+	content={entry ? { collection: "sellers_page", id: entry.data.id, slug: "sellers" } : undefined}
+>
+	<link rel="stylesheet" href="/sellers.css" />
+
+	{/* 01 HERO — the site's Hero-Full pattern. */}
+	<section class="hero hero--sellers" data-screen-label="01 Hero">
+		<div class="hero__img" style={`background-image:url(${heroImage})`}></div>
+		<div class="hero__veil"></div>
+		<div class="hero__copy">
+			<span class="eyebrow" style="display:block;margin-bottom:20px" {...(e.hero_eyebrow ?? {})}>
+				{d.hero_eyebrow ?? "Sell With Me"}
+			</span>
+			<h1 class="hero__title" set:html={d.hero_headline ?? "Your Home's Value Here Isn't What an <em>Algorithm</em> Says It Is."} {...(e.hero_headline ?? {})}></h1>
+			<p class="hero__sub" {...(e.hero_sub ?? {})}>
+				{d.hero_sub ?? "In a market of roughly 10,000 parcels, a handful of sales can move prices by millions — and online estimates miss by a wide margin. Pricing a Tahoe home is read, not calculated. Grant has watched every cycle from inside Incline Village and Crystal Bay for 35 years, and he sells more property here than anyone. Start with what your home is actually worth."}
+			</p>
+			<div class="hero__cta">
+				<a class="btn btn--orange" href="#sell-valuation">{d.hero_cta ?? "WHAT'S MY TAHOE HOME WORTH?"}</a>
+			</div>
+		</div>
+	</section>
+
+	{/* 02 THE PRICING READ — the site's copy/photo split, run copy-first. */}
+	<section class="section section--cream" data-screen-label="02 The Pricing Read">
+		<div class="container guide split--rev">
+			<div class="guide__copy">
+				<div class="eyebrow" {...(e.pricing_eyebrow ?? {})}>{d.pricing_eyebrow ?? "THE PRICING READ"}</div>
+				<h2 class="guide__h" {...(e.pricing_heading ?? {})}>
+					{d.pricing_heading ?? "The Hardest Number to Get Right in This Market."}
+				</h2>
+				<p class="guide__p" {...(e.pricing_p1 ?? {})}>
+					{d.pricing_p1 ?? "Pricing a home in Incline Village or Crystal Bay is not a formula. The same micro-market that rewards patient buyers punishes a mispriced listing. Price too high and the home sits while the spring buyers move on; price too low and you hand away equity you cannot get back."}
+				</p>
+				<p class="guide__p" style="padding-top:0" {...(e.pricing_p2 ?? {})}>
+					{d.pricing_p2 ?? "Online valuation tools are built for markets where one sale looks like the next. Here, a single panoramic-lake-view sale can reset a whole tier. Roughly 60% of owners are year-round residents and 40% are second-home and investment owners, so the comparables that matter are not always the ones a database picks."}
+				</p>
+				<p class="guide__p" style="padding-top:0" {...(e.pricing_p3 ?? {})}>
+					{d.pricing_p3 ?? "Grant prices from 35 years of watching what sells, what stalls, and why. He has been wrong on the upside and the downside, and he will tell you which way he thinks your home leans before you list."}
+				</p>
+				<div class="pullquote">
+					<div class="pullquote__q" {...(e.pricing_quote ?? {})}>
+						"{d.pricing_quote ?? "I can only tell you what I expect based on my historical knowledge — and I know what I'm doing. I sell more property than anybody else here. But there are still homes that sell for more than I expected, and some for less, because a buyer doesn't see the same value."}"
+					</div>
+					<div class="pullquote__a">— GRANT C. MEYER</div>
+				</div>
+			</div>
+			<div class="guide__photo">
+				<div class="guide__img" style={`background-image:url(${pricingImage})`}></div>
+			</div>
+		</div>
+	</section>
+
+	{/* 03 SEASONAL TIMING — copy alongside the eight-month chart. */}
+	<section class="section section--beige" data-screen-label="03 Seasonal Timing">
+		<div class="container">
+			<div class="timing__head">
+				<span class="eyebrow" {...(e.timing_eyebrow ?? {})}>{d.timing_eyebrow ?? "SEASONAL TIMING"}</span>
+				<h2 class="h2" {...(e.timing_heading ?? {})}>
+					{d.timing_heading ?? "The Sellers Who Win Here Are Ready Before the Buyers Arrive."}
+				</h2>
+			</div>
+
+			<div class="timing__grid">
+				<div class="timing__copy">
+					<p {...(e.timing_p1 ?? {})}>
+						{d.timing_p1 ?? "Tahoe runs on a calendar most out-of-area agents do not price into a plan. For the last several years, buyers have been here looking in April and May. Most single-family listings do not come on until June or July. That gap is the opportunity."}
+					</p>
+					<p {...(e.timing_p2 ?? {})}>
+						{d.timing_p2 ?? "When a seller is ready early — home prepped, photography and video shot, marketing package built — Grant can bring the listing to market while serious buyers are already searching and competing listings have not surfaced yet. Sellers who wait for listing season arrive into the crowd instead of ahead of it."}
+					</p>
+					<p {...(e.timing_p3 ?? {})}>
+						{d.timing_p3 ?? "This is a secondary-home market, so days on market run longer than a metro area. A well-priced home can still take a happy season or more to find its buyer. Getting the timing and the price right at the start is what shortens that."}
+					</p>
+					<div class="pullquote">
+						<div class="pullquote__q" {...(e.timing_quote ?? {})}>
+							"{d.timing_quote ?? "If I've got sellers who are ready and the marketing package is done, we can come on the market earlier — before everyone else lists. That's a real opportunity."}"
+						</div>
+						<div class="pullquote__a">— GRANT C. MEYER</div>
+					</div>
+				</div>
+
+				{/* The bars carry the meaning rather than the labels, so the whole
+				    chart is one labelled image to a screen reader. */}
+				<div
+					class="season"
+					role="img"
+					aria-label="Buyers begin searching in April and May, while most listings do not appear until June or July — leaving an early-season opportunity."
+				>
+					<div class="season__legend">
+						<span class="season__key season__key--window">The opening</span>
+						<span class="season__key season__key--buyers">Buyers searching</span>
+						<span class="season__key season__key--listings">Most listings appear</span>
+					</div>
+
+					<div class="season__chart">
+						<div class="season__window" aria-hidden="true"></div>
+
+						<div class="season__track">
+							<span class="season__track-label">Buyers searching</span>
+							<div class="season__lane">
+								<div class="season__bar season__bar--buyers" style="grid-column:2 / 8">
+									<span class="season__bar-note">Here and looking from April</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="season__track">
+							<span class="season__track-label">Listings on market</span>
+							<div class="season__lane">
+								<div class="season__bar season__bar--listings" style="grid-column:4 / 8">
+									<span class="season__bar-note">Most don't surface until June–July</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="season__months">
+							<span></span>
+							<div class="season__lane">
+								{SEASON_MONTHS.map((m) => <span class="season__month">{m}</span>)}
+							</div>
+						</div>
+					</div>
+
+					<p class="season__caption">
+						The early weeks — buyers already on the lake, few listings to compete with — are
+						the window a prepared seller can own.
+					</p>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	{/* 04 THE MARKETING — lead copy, the film/reach feature, then inclusions. */}
+	<section class="section section--white" data-screen-label="04 Marketing">
+		<div class="container">
+			<div class="mkt__head">
+				<span class="eyebrow" {...(e.mkt_eyebrow ?? {})}>{d.mkt_eyebrow ?? "THE MARKETING"}</span>
+				<h2 class="h2" {...(e.mkt_heading ?? {})}>
+					{d.mkt_heading ?? "A Listing Built to Be Seen — Locally and Everywhere."}
+				</h2>
+				<div class="mkt__lead">
+					<p {...(e.mkt_p1 ?? {})}>
+						{d.mkt_p1 ?? "A home priced right still needs to reach the right buyer, and most of those buyers are searching from the Bay Area, Sacramento, or Los Angeles before they ever drive up. Grant's marketing is built for that distance."}
+					</p>
+					<p {...(e.mkt_p2 ?? {})}>
+						{d.mkt_p2 ?? "Each listing gets a property film in the format Grant has refined for Tahoe homes: a walkthrough that opens at the front door, slow detail pans the camera catches that photos miss, and a drone pullback that shows the setting and what is nearby. Professional photography, a written story that ties the home to its location, and — where it fits the buyer — a Matterport 3D walkthrough round it out."}
+					</p>
+				</div>
+			</div>
+
+			<div class="mkt__feature">
+				<div class="mkt__film" style={`background-image:url(${filmImage})`}></div>
+				<div class="mkt__reach">
+					<span class="mkt__reach-eyebrow" {...(e.reach_eyebrow ?? {})}>{d.reach_eyebrow ?? "REACH"}</span>
+					<p class="mkt__reach-body" {...(e.reach_body ?? {})}>
+						{d.reach_body ?? "Through Coldwell Banker, the listing reaches a national and international buyer network on top of the local MLS — so a home in Incline Village shows up in front of the relocating buyer in San Francisco and the second-home buyer overseas."}
+					</p>
+				</div>
+			</div>
+
+			<div class="mkt__incl">
+				<div class="mkt__incl-label">{d.incl_label ?? "WHAT A SELLER GETS"}</div>
+				<div class="mkt__grid">
+					{INCLUSIONS.map((m, i) => (
+						<div class="mkt__item">
+							<div class="mkt__item-num">{String(i + 1).padStart(2, "0")}</div>
+							<div class="mkt__item-t" {...(e[`incl${i + 1}_t`] ?? {})}>{d[`incl${i + 1}_t`] ?? m.t}</div>
+							<p class="mkt__item-d" {...(e[`incl${i + 1}_d`] ?? {})}>{d[`incl${i + 1}_d`] ?? m.d}</p>
+						</div>
+					))}
+				</div>
+			</div>
+		</div>
+	</section>
+
+	{/* 05 THE NETWORK — the dark Statement block, sale-ready framing. */}
+	<section class="section section--dark on-dark" data-screen-label="05 The Network">
+		<div class="container">
+			<div class="net">
+				<span class="eyebrow" {...(e.network_eyebrow ?? {})}>{d.network_eyebrow ?? "THE NETWORK"}</span>
+				<h2 class="reality__h" style="margin-bottom:0" {...(e.network_heading ?? {})}>
+					{d.network_heading ?? "The Network That Gets Your Home Sale-Ready."}
+				</h2>
+				<div class="net__body">
+					<p {...(e.network_p1 ?? {})}>
+						{d.network_p1 ?? "In a resort market, the good contractors are booked months out and the right specialist is not in the phone book — unless you already know who to call. Grant has spent 35 years building those relationships, and a seller inherits them the moment they list."}
+					</p>
+					<p {...(e.network_p2 ?? {})}>
+						{d.network_p2 ?? "When a home needs work before it shows well, Grant knows who to bring in and roughly what it should cost, because he came up on job sites — his father was a general contractor for about 30 years, and Grant has built most of his own family's wealth buying, improving, and reselling. He will tell a seller which fixes earn their money back and which to skip."}
+					</p>
+				</div>
+			</div>
+			<div class="net-split">
+				<p class="net__story" {...(e.network_story ?? {})}>
+					{d.network_story ?? "He has earned that response by sending those trades business for years and treating them right, so they pick up when he calls. One recent deal needed a hydronic-heating specialist most plumbers cannot touch; Grant had the right person on it."}
+				</p>
+				<div class="pullquote">
+					<div class="pullquote__q" {...(e.network_quote ?? {})}>
+						"{d.network_quote ?? "We live in a resort market. It's really hard to get an electrician to your house. So you take care of people. When you treat them right, they treat you right."}"
+					</div>
+					<div class="pullquote__a">— GRANT C. MEYER</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	{/* 06 HONEST ADVICE — a narrow editorial column with the quote inside it. */}
+	<section class="section section--cream" data-screen-label="06 Honest Advice">
+		<div class="container">
+			<div class="honesty">
+				<div class="honesty__head">
+					<span class="eyebrow" {...(e.honesty_eyebrow ?? {})}>{d.honesty_eyebrow ?? "HONEST ADVICE"}</span>
+					<h2 class="h2" {...(e.honesty_heading ?? {})}>
+						{d.honesty_heading ?? "Grant Would Rather Keep You for Life Than Win One Deal."}
+					</h2>
+				</div>
+				<div class="honesty__body">
+					<p {...(e.honesty_p1 ?? {})}>
+						{d.honesty_p1 ?? "Some agents will tell a seller whatever it takes to win the listing — a price they cannot get, a timeline that will not hold. Grant runs the opposite way. His business is built on repeat clients and referrals; one has done 23 transactions with him over the years. That only happens when the advice is honest the first time."}
+					</p>
+					<div class="pullquote">
+						<div class="pullquote__q" {...(e.honesty_quote ?? {})}>
+							"{d.honesty_quote ?? "All I can ask is that my clients listen to my advice. At the end of the day, it's their decision — they get to drive the ship."}"
+						</div>
+						<div class="pullquote__a">— GRANT C. MEYER</div>
+					</div>
+					<p {...(e.honesty_p2 ?? {})}>
+						{d.honesty_p2 ?? "For most sellers here, the home is not their only one and they are not moving across the country to start a job, so there is room to be strategic about timing and price instead of forced into a fire sale. Grant will give a seller his real read — what he expects, where the home might surprise on the upside, and where it might not — and then let the seller drive."}
+					</p>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	{/* 07 THE PROCESS — off the page until Grant's own account of the steps is
+	     in the CMS. See the note on `processBody` above. */}
+	{showProcess && (
+		<section class="section section--white" data-screen-label="07 The Process">
+			<div class="container">
+				<div class="process">
+					<div class="process__head">
+						<span class="eyebrow" style="display:block;margin-bottom:16px" {...(e.process_eyebrow ?? {})}>
+							{d.process_eyebrow ?? "THE PROCESS"}
+						</span>
+						<h2 class="h2" {...(e.process_heading ?? {})}>
+							{d.process_heading ?? "What Listing With Grant Actually Looks Like."}
+						</h2>
+					</div>
+					<div class="process__body">
+						{processBody && <p {...(e.process_body ?? {})}>{processBody}</p>}
+						{processBody && processPromise && <div class="process__divider"></div>}
+						{processPromise && <p {...(e.process_promise ?? {})}>{processPromise}</p>}
+					</div>
+				</div>
+			</div>
+		</section>
+	)}
+
+	{/* 08 HOME VALUATION — this page's contact section. Same .invite shell and
+	     same /api/contact endpoint as <ContactCta />, with the property fields
+	     the valuation request needs. `reason` tags the lead so Grant can tell a
+	     valuation request from a general enquiry. */}
+	<section id="sell-valuation" class="section section--cream" data-screen-label="08 Home Valuation">
+		<div class="container">
+			<div class="invite">
+				<div class="invite__left val__left">
+					<span class="eyebrow" {...(e.val_eyebrow ?? {})}>{d.val_eyebrow ?? "HOME VALUATION"}</span>
+					<h2 class="invite__h" {...(e.val_heading ?? {})}>
+						{d.val_heading ?? "Start With What Your Home Is Worth."}
+					</h2>
+					<p class="val__lead" {...(e.val_lead ?? {})}>
+						{d.val_lead ?? "A real number for your home starts a real conversation. Tell Grant about your property and he will come back with a considered read on value and timing — not an automated estimate, and not a pitch."}
+					</p>
+					<a class="btn btn--ghost-light val__talk" href="/contact/">
+						{d.val_talk_label ?? "TALK TO GRANT ABOUT SELLING"}
+					</a>
+					<div class="invite__agent">
+						<img src={agentPhoto} alt={d.agent_name ?? "Grant C. Meyer"} />
+						<div>
+							<div class="invite__agent__name">{d.agent_name ?? "Grant C. Meyer"}</div>
+							<div class="invite__agent__role">{d.agent_role ?? "Coldwell Banker Global Luxury Agent"}</div>
+						</div>
+					</div>
+					<p class="val__reassure" {...(e.val_reassure ?? {})}>
+						{d.val_reassure ?? "Reaching out does not commit you to listing. The first conversation is about your goals, your timeline, and whether now is even the right moment to sell."}
+					</p>
+				</div>
+
+				<form class="invite__form" data-inquiry-form action="/api/contact" method="POST">
+					<h3 class="invite__form__h">{d.val_form_heading ?? "Request your home valuation."}</h3>
+					<div class="form-row">
+						<div class="field">
+							<label class="field__label">FULL NAME</label>
+							<input class="field__input" name="name" placeholder="John Doe" required />
+						</div>
+						<div class="field">
+							<label class="field__label">PHONE NUMBER</label>
+							<input class="field__input" name="phone" placeholder="+1 (555) 000-0000" />
+						</div>
+					</div>
+					<div class="field">
+						<label class="field__label">EMAIL ADDRESS</label>
+						<input class="field__input" type="email" name="email" placeholder="john@example.com" required />
+					</div>
+					{/* Property fields ride along as named extras — /api/contact appends
+					    any field it does not handle itself to the message as a labelled
+					    line, so each answer arrives spelled out. */}
+					<div class="field">
+						<label class="field__label">PROPERTY ADDRESS</label>
+						<input class="field__input" name="property_address" placeholder="123 Lakeshore Blvd, Incline Village, NV" required />
+					</div>
+					<div class="form-row">
+						<div class="field">
+							<label class="field__label">BEDS / BATHS <span class="field__opt">Optional</span></label>
+							<input class="field__input" name="beds_baths" placeholder="4 bd / 3 ba" />
+						</div>
+						<div class="field">
+							<label class="field__label">TIMELINE <span class="field__opt">Optional</span></label>
+							<input class="field__input" name="timeline" placeholder="This spring, just exploring…" />
+						</div>
+					</div>
+					<div class="field">
+						<label class="field__label">RECENT IMPROVEMENTS <span class="field__opt">Optional</span></label>
+						<textarea class="field__input" name="recent_improvements" placeholder="New roof in 2023, remodeled kitchen, added a dock…"></textarea>
+					</div>
+					{/* Honeypot — hidden from humans, bots fill it */}
+					<input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" aria-hidden="true" />
+					{/* `message` is required by the API and every answer here is a labelled
+					    extra, so it carries what kind of enquiry this is. */}
+					<input type="hidden" name="message" value="Home valuation request from the Sell With Me page." />
+					<input type="hidden" name="reason" value="Home valuation request" />
+					<input type="hidden" name="source" value={Astro.url.pathname} />
+					<div class="form-sent" data-inquiry-sent style="display:none">✓ {successMessage}</div>
+					<div class="form-error" data-inquiry-error style="display:none;color:#c0392b;font-size:14px;margin-bottom:12px"></div>
+					<button type="submit" class="btn--submit btn" data-inquiry-submit>
+						{d.val_submit ?? "REQUEST YOUR HOME VALUATION"}
+					</button>
+				</form>
+			</div>
+		</div>
+	</section>
+
+	<InquiryFormScript />
+</GcmLayout>

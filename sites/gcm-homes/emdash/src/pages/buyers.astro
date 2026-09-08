@@ -1,4 +1,414 @@
 ---
-import ContentPage from "../components/ContentPage.astro";
+// For Buyers — the Buyers design from the prototype, built out of the sections
+// this site already has rather than new scaffolding (the same approach
+// about.astro took):
+//
+//   01 Hero          .hero              — same pattern as the home/About hero
+//   02 The Stakes    .guide.split--rev  — copy + working photo, copy first
+//   03 The Network   .net               — dark Statement block (styles.css)
+//   04 Tax Advantage .tax-acc           — new, styles in /buyers.css
+//   05 Investment    .guide             — the same split, photo first
+//   06 Communities   .communities       — new, styles in /buyers.css
+//   07 The Process   .process           — editorial column (styles.css)
+//   08 CTA           .section--dark     — slim closing band
+//   09 Contact       <ContactCta />     — the shared site-wide section
+//
+// The prototype's parallel `.ab-*` layout classes are deliberately NOT ported:
+// they duplicate .hero/.guide/.section-title, which already ship in styles.css.
+// Only the two genuinely new patterns (tax disclosures, community cards) got a
+// stylesheet, and .net/.process/.pullquote/.split--rev moved into styles.css
+// because /sellers/ uses them too.
+//
+// Editable text comes from the `buyers_page` singleton collection (entry
+// "buyers"), the same arrangement as the home and About pages: every field falls
+// back to the approved copy below, so the page renders correctly before the
+// collection is seeded and editing lights up once you are logged into admin.
+//
+// This replaces the four-card ContentPage rendering. The old `page_content`
+// entry with slug "buyers" is left in the CMS but is no longer read by anything.
+import GcmLayout from "../layouts/GcmLayout.astro";
+import ContactCta from "../components/ContactCta.astro";
+import { getEmDashEntry } from "emdash";
+import { imageUrl } from "../lib/media";
+
+let entry: any = null;
+try {
+	const res = await getEmDashEntry("buyers_page", "buyers");
+	entry = res?.entry ?? null;
+} catch {
+	entry = null;
+}
+const d = entry?.data ?? {};
+const e = entry?.edit ?? {};
+
+// Fallback images are restricted to the real photographs in public/assets. Most
+// of that folder is 512px AI filler — see the note in index.astro — and several
+// files are byte-identical duplicates under different names
+// (listing-interior-3.jpg IS listing-local-perspective.png, 512x512;
+// listing-1056.jpg IS listing-hero-exterior.jpg). listing-interior-1.jpg is a
+// stock headshot of a man who is not Grant, so it must never be a fallback here.
+// The design pins this hero to hero-grant-overlook (heroImage: "overlook" in the
+// project's js/buyers.jsx) — Grant at a Tahoe overlook. The file was missing from
+// public/assets, so it was brought over from the design project and re-encoded
+// from a 2.0 MB PNG to a 183 KB progressive JPEG, matching the other heroes.
+const heroImage = imageUrl(d.hero_image) ?? "/assets/hero-grant-overlook.jpg";
+const stakesImage = imageUrl(d.stakes_image) ?? "/assets/listing-hero-exterior.jpg";
+const investmentImage = imageUrl(d.investment_image) ?? "/assets/gallery-1.jpg";
+
+// The Nevada tax advantage — four buyer situations, each one a disclosure.
+// `bullets`/`after` only appear on the business scenario, so the shape is
+// declared rather than inferred (an inferred union makes `s.bullets` an error).
+type TaxScenario = {
+	kicker: string;
+	title: string;
+	paras: string[];
+	bullets?: string[];
+	after?: string;
+};
+const TAX_FALLBACKS: TaxScenario[] = [
+	{
+		kicker: "Retiring here, or planning your estate",
+		title: "Keep what you spent a career building.",
+		paras: [
+			"Nevada charges no personal income tax. Your pension, 401(k) withdrawals, Social Security, and investment income keep their full value at the state level.",
+			"There is also no state estate or inheritance tax. When you pass your home and assets to your children or grandchildren, Nevada takes none of it. (Federal estate tax rules still apply, so your estate planner is still worth a call.)",
+			"For anyone who spent a career building wealth, that combination is the difference between preserving an estate and watching it shrink a little more every year.",
+		],
+	},
+	{
+		kicker: "Earning at the top of your career",
+		title: "Income earned as a resident is not taxed by the state.",
+		paras: [
+			"A high salary or a strong year of capital gains lands very differently here. Against California's top rate, the gap is large enough to factor into where you choose to live.",
+			"The part worth understanding: the benefit follows residency, not the deed. To claim it, you make Nevada your true home — where you live, vote, and spend your time. Plenty of people make exactly that move to Incline Village, and your tax adviser can walk you through what genuine residency requires.",
+		],
+	},
+	{
+		kicker: "Running a business",
+		title: "A structure built to keep overhead low.",
+		paras: ["Nevada earned its business-friendly reputation, and the structure backs it up:"],
+		bullets: [
+			"No corporate income tax",
+			"No franchise tax",
+			"No gross receipts tax for most businesses (a Commerce Tax applies only above $4M in Nevada revenue)",
+			"No inventory tax",
+			"Strong legal protection for company directors and officers",
+			"A high degree of privacy for business owners",
+		],
+		after: "For an entrepreneur relocating a company — or running one from a home office above the lake — those add up to lower overhead and fewer state-level headaches. Whether to restructure an entity in Nevada is a decision for your CPA and attorney, and we are glad to point you toward local professionals who handle it.",
+	},
+	{
+		kicker: "Buying for the lifestyle",
+		title: "Low property taxes, and one fee that opens the lake.",
+		paras: [
+			"Property taxes in Nevada are low by national standards, and well below what most of our buyers leave behind. On a home in Incline Village, that is real money kept every year.",
+			"Incline Village is an unincorporated community of Washoe County. Water and sewer service, the private beaches, Diamond Peak Ski Resort, the championship golf courses, the tennis complex, and the recreation center are all managed by the Incline Village General Improvement District (IVGID).",
+		],
+	},
+];
+
+// Nevada's tax treatment changes and this is the page's legally sensitive copy,
+// so each scenario is editable rather than baked in. `tax{n}_body` holds the
+// paragraphs separated by a blank line; `tax3_bullets` holds one item per line.
+const TAX: TaxScenario[] = TAX_FALLBACKS.map((f, i) => {
+	const n = i + 1;
+	const body = (d[`tax${n}_body`] ?? "").toString().trim();
+	const bullets = (d[`tax${n}_bullets`] ?? "").toString().trim();
+	return {
+		kicker: d[`tax${n}_kicker`] ?? f.kicker,
+		title: d[`tax${n}_title`] ?? f.title,
+		paras: body
+			? body.split(/\n\s*\n/).map((s: string) => s.trim()).filter(Boolean)
+			: f.paras,
+		bullets: bullets
+			? bullets.split(/\n+/).map((s: string) => s.replace(/^[-•*]\s*/, "").trim()).filter(Boolean)
+			: f.bullets,
+		after: d[`tax${n}_after`] ?? f.after,
+	};
+});
+
+// The IVGID Recreation Fee. No fallback on purpose: the prototype carries
+// "roughly $830, to be confirmed before publishing", and an unverified dollar
+// figure should not ship. The sentence reads correctly either way, and names the
+// current-year amount as soon as the field holds one.
+const ivgidFee = (d.ivgid_fee ?? "").toString().trim();
+
+// Two communities, one lake — both link through to the community page. The
+// prototype repeated the community name as the card's eyebrow; a short
+// descriptor earns that line instead.
+const COMMUNITIES = [
+	{
+		kicker: "The North Shore hub",
+		name: d.comm1_name ?? "Incline Village",
+		desc: d.comm1_desc ?? "The beaches, Diamond Peak, the golf and tennis — and the subdivisions Grant has watched trade for three decades.",
+		photo: imageUrl(d.comm1_image) ?? "/assets/community-hero.jpg",
+		en: e.comm1_name ?? {},
+		ed: e.comm1_desc ?? {},
+	},
+	{
+		kicker: "Quieter, just east",
+		name: d.comm2_name ?? "Crystal Bay",
+		desc: d.comm2_desc ?? "Quieter, more wooded, and its own pricing logic. Grant reads the lakefront and the hillside lots block by block.",
+		photo: imageUrl(d.comm2_image) ?? "/assets/community-hero-sand-harbor.jpg",
+		en: e.comm2_name ?? {},
+		ed: e.comm2_desc ?? {},
+	},
+];
+
+// The Process section. No fallbacks: the prototype's copy is a brief for Grant
+// ("Pending Grant's direct account of how he runs each step."), not publishable
+// text, so the whole section stays off the page until the fields are filled in.
+const processBody = (d.process_body ?? "").toString().trim();
+const processPromise = (d.process_promise ?? "").toString().trim();
+const showProcess = Boolean(processBody || processPromise);
 ---
-<ContentPage slug="buyers" />
+
+<GcmLayout
+	title="For Buyers — Grant C. Meyer Homes"
+	description="Incline Village and Crystal Bay do not behave like the market you are coming from. Grant has read this one for 35 years — from your side of the table."
+	content={entry ? { collection: "buyers_page", id: entry.data.id, slug: "buyers" } : undefined}
+>
+	<link rel="stylesheet" href="/buyers.css" />
+
+	{/* 01 HERO — the site's Hero-Full pattern. */}
+	<section class="hero hero--buyers" data-screen-label="01 Hero">
+		<div class="hero__img" style={`background-image:url(${heroImage})`}></div>
+		<div class="hero__veil"></div>
+		<div class="hero__copy">
+			<span class="eyebrow" style="display:block;margin-bottom:20px" {...(e.hero_eyebrow ?? {})}>
+				{d.hero_eyebrow ?? "For Buyers"}
+			</span>
+			<h1 class="hero__title" set:html={d.hero_headline ?? "Find Your Place on the <em>North Shore.</em>"} {...(e.hero_headline ?? {})}></h1>
+			<p class="hero__sub" {...(e.hero_sub ?? {})}>
+				{d.hero_sub ?? "Incline Village and Crystal Bay offer something rare — a true four-season life on one of the most beautiful lakes in the world. Whether you are after a full-time home or a quiet escape, this is where it starts."}
+			</p>
+			<div class="hero__cta">
+				<a class="btn btn--orange" href="/listings/">{d.hero_cta1 ?? "VIEW LISTINGS"}</a>
+				<a class="btn btn--ghost-light" href="#buyers-contact">{d.hero_cta2 ?? "START THE CONVERSATION"}</a>
+			</div>
+		</div>
+	</section>
+
+	{/* 02 THE STAKES — the site's copy/photo split, run copy-first. */}
+	<section class="section section--cream" data-screen-label="02 The Stakes">
+		<div class="container guide split--rev">
+			<div class="guide__copy">
+				<div class="eyebrow" {...(e.stakes_eyebrow ?? {})}>{d.stakes_eyebrow ?? "THE STAKES"}</div>
+				<h2 class="guide__h" {...(e.stakes_heading ?? {})}>
+					{d.stakes_heading ?? "Out-of-Market Instincts Cost Real Money Here."}
+				</h2>
+				<p class="guide__p" {...(e.stakes_p1 ?? {})}>
+					{d.stakes_p1 ?? "Incline Village and Crystal Bay do not behave like the market you are coming from, where an online estimate lands close to the truth and a confident buyer can handle a purchase alone."}
+				</p>
+				{/* A deliberate four-word paragraph in the design — it carries the turn
+				    between the setup and the $3.9M example, so it stays on its own. */}
+				<p class="guide__p" style="padding-top:0" {...(e.stakes_punch ?? {})}>
+					{d.stakes_punch ?? "Tahoe punishes that confidence."}
+				</p>
+				<p class="guide__p" style="padding-top:0" {...(e.stakes_p2 ?? {})}>
+					{d.stakes_p2 ?? "One buyer bought a property off-market, on their own, for $3.9 million. Two years later it was listed at $2.2 million."}
+				</p>
+				<p class="guide__p" style="padding-top:0" {...(e.stakes_p3 ?? {})}>
+					{d.stakes_p3 ?? "A micro-market of roughly 10,000 parcels moves on a handful of sales. The right read on timing, on comparables, on what a property is actually worth — none of it lives in a database. It lives in someone who has watched every cycle from inside the community. Grant has spent 35 years learning to read this market, and he reads it for you, on your side of the table."}
+				</p>
+				<div class="pullquote">
+					<div class="pullquote__q" {...(e.stakes_quote ?? {})}>
+						"{d.stakes_quote ?? "You can avoid making those 50, 60% mistakes by paying 3 to 6%. In our market, that's a fantastic insurance policy."}"
+					</div>
+					<div class="pullquote__a">— GRANT C. MEYER</div>
+				</div>
+			</div>
+			<div class="guide__photo">
+				<div class="guide__img" style={`background-image:url(${stakesImage})`}></div>
+			</div>
+		</div>
+	</section>
+
+	{/* 03 THE NETWORK — the dark Statement block. */}
+	<section class="section section--dark on-dark" data-screen-label="03 The Network">
+		<div class="container">
+			<div class="net">
+				<span class="eyebrow" {...(e.network_eyebrow ?? {})}>{d.network_eyebrow ?? "THE NETWORK"}</span>
+				<h2 class="reality__h" style="margin-bottom:0" {...(e.network_heading ?? {})}>
+					{d.network_heading ?? "The Network You Inherit on Day One."}
+				</h2>
+				<div class="net__body">
+					<p {...(e.network_p1 ?? {})}>
+						{d.network_p1 ?? "In a resort market, the electrician is up on the mountain and the good contractors are booked months out — unless you know who to call."}
+					</p>
+					<p {...(e.network_p2 ?? {})}>
+						{d.network_p2 ?? "Grant has spent 35 years building those relationships: trades, lenders, title, inspectors, appraisers. He has sent them business for years and treated them well, so they pick up when he calls. His clients inherit that the day they close."}
+					</p>
+				</div>
+			</div>
+			<div class="net-split">
+				<p class="net__story" {...(e.network_story ?? {})}>
+					{d.network_story ?? "One recent client needed mold remediation before a deal could go through. Grant made one call. The specialist was at the house within 90 minutes — in a market where that kind of help is usually weeks out."}
+				</p>
+				<div class="pullquote">
+					<div class="pullquote__q" {...(e.network_quote ?? {})}>
+						"{d.network_quote ?? "It took me 35 years to earn those phone calls. The day you close, every one of them is yours too."}"
+					</div>
+					<div class="pullquote__a">— GRANT C. MEYER</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	{/* 04 THE TAX ADVANTAGE — four buyer situations as native <details>
+	     disclosures, so the section needs no JavaScript and every panel is still
+	     findable with the browser's in-page search. */}
+	<section class="section section--cream" data-screen-label="04 Tax Advantage">
+		<div class="container">
+			<div class="tax-intro">
+				<span class="eyebrow" {...(e.tax_eyebrow ?? {})}>{d.tax_eyebrow ?? "THE TAX ADVANTAGE"}</span>
+				<h2 class="h2" {...(e.tax_heading ?? {})}>{d.tax_heading ?? "Why Buyers Choose Nevada"}</h2>
+				<p class="tax-intro__body" {...(e.tax_body ?? {})}>
+					{d.tax_body ?? "Nevada is one of the most tax-friendly states in the country, and that has been true for decades. CPAs, tax advisers, and estate planners send clients here on purpose. For buyers coming from California or another high-tax state, crossing the state line can change your financial picture as much as the home itself."}
+				</p>
+				<p class="tax-intro__turn" {...(e.tax_turn ?? {})}>
+					{d.tax_turn ?? "What that looks like depends on where you are in life."}
+				</p>
+			</div>
+
+			<div class="tax-acc">
+				{TAX.map((s, i) => (
+					<details class="tax-acc__item" open={i === 0}>
+						<summary class="tax-acc__trigger">
+							<span class="tax-acc__kicker">{s.kicker}</span>
+							<span class="tax-acc__icon" aria-hidden="true"></span>
+						</summary>
+						<div class="tax-acc__panel">
+							<div class="tax-acc__title">{s.title}</div>
+							{s.paras.map((p) => <p>{p}</p>)}
+							{s.bullets && (
+								<ul class="tax-bullets">
+									{s.bullets.map((b) => <li>{b}</li>)}
+								</ul>
+							)}
+							{s.after && <p>{s.after}</p>}
+							{/* The IVGID fee closes the lifestyle scenario. It names the
+							    current-year amount only once the field is set. */}
+							{i === 3 && (
+								<p>
+									Access to those resident-only amenities comes through an annual IVGID
+									Recreation Fee, billed alongside your Washoe County property taxes.
+									{ivgidFee
+										? ` The current-year fee is ${ivgidFee}, and it opens the lake's best beaches and the mountain's slopes to your household.`
+										: " It opens the lake's best beaches and the mountain's slopes to your household."}
+								</p>
+							)}
+						</div>
+					</details>
+				))}
+			</div>
+
+			<p class="tax-disclaimer" {...(e.tax_disclaimer ?? {})}>
+				{d.tax_disclaimer ?? "The information on this page is general and current to the best of our knowledge. It is not tax or legal advice, and every situation is different. Before you act on Nevada's tax treatment, talk it through with your own CPA, tax adviser, or attorney — we are happy to recommend local professionals who know the area."}
+			</p>
+		</div>
+	</section>
+
+	{/* 05 A HOME AND AN INVESTMENT — the same split, photo first this time. */}
+	<section class="section section--beige" data-screen-label="05 Investment">
+		<div class="container guide">
+			<div class="guide__photo">
+				<div class="guide__img" style={`background-image:url(${investmentImage})`}></div>
+			</div>
+			<div class="guide__copy">
+				<div class="eyebrow" {...(e.investment_eyebrow ?? {})}>{d.investment_eyebrow ?? "HOME & VALUE"}</div>
+				<h2 class="guide__h" {...(e.investment_heading ?? {})}>
+					{d.investment_heading ?? "A Home. An Investment. Grant Treats It as Both."}
+				</h2>
+				<p class="guide__p" {...(e.investment_p1 ?? {})}>
+					{d.investment_p1 ?? "Buyers here tend to weigh a property like a portfolio decision, even when it is the home they plan to raise a family in. Grant works the same way. He came up on job sites — his father was a general contractor for about 30 years — so he knows what he is looking at when he walks a house, and what it will really cost to bring it up to standard."}
+				</p>
+				<p class="guide__p" style="padding-top:0" {...(e.investment_p2 ?? {})}>
+					{d.investment_p2 ?? "That matters most on the homes that need work. Right now a lot of buyers want fully turnkey, which leaves real equity on the table for anyone willing to take on a project with the right people guiding it. Grant has built most of his own family's wealth doing exactly that, and he will tell you honestly when a property is worth the patience and when it is not."}
+				</p>
+				<div class="pullquote">
+					<div class="pullquote__q" {...(e.investment_quote ?? {})}>
+						"{d.investment_quote ?? "I feel like I'm more a financial advisor when it comes to investing in real estate than a realtor, in many ways."}"
+					</div>
+					<div class="pullquote__a">— GRANT C. MEYER</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	{/* 06 TWO COMMUNITIES, ONE LAKE — photo cards into /community/. */}
+	<section class="section section--cream" data-screen-label="06 Communities">
+		<div class="container">
+			<div class="section-title">
+				<span class="eyebrow" {...(e.comm_eyebrow ?? {})}>{d.comm_eyebrow ?? "TWO COMMUNITIES, ONE LAKE"}</span>
+				<h2 {...(e.comm_heading ?? {})}>{d.comm_heading ?? "Grant Knows Both Block by Block."}</h2>
+				<p {...(e.comm_lead ?? {})}>
+					{d.comm_lead ?? "Incline Village and Crystal Bay each have their own character, their own pricing, and their own quirks. His perspective on each — the beaches, the ski access, the trails, the subdivisions — lives on the community pages."}
+				</p>
+			</div>
+			<div class="communities">
+				{COMMUNITIES.map((c) => (
+					<a class="comm-card" href="/community/">
+						<div class="comm-card__photo" style={`background-image:url(${c.photo})`}></div>
+						<div class="comm-card__veil"></div>
+						<div class="comm-card__body">
+							<span class="comm-card__eyebrow">{c.kicker}</span>
+							<div class="comm-card__name" {...c.en}>{c.name}</div>
+							<p class="comm-card__desc" {...c.ed}>{c.desc}</p>
+							<span class="comm-card__link">
+								Explore {c.name}
+								<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+									<line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
+								</svg>
+							</span>
+						</div>
+					</a>
+				))}
+			</div>
+		</div>
+	</section>
+
+	{/* 07 THE PROCESS — off the page until Grant's own account of the steps is
+	     in the CMS. See the note on `processBody` above. */}
+	{showProcess && (
+		<section class="section section--white" data-screen-label="07 The Process">
+			<div class="container">
+				<div class="process">
+					<div class="process__head">
+						<span class="eyebrow" style="display:block;margin-bottom:16px" {...(e.process_eyebrow ?? {})}>
+							{d.process_eyebrow ?? "THE PROCESS"}
+						</span>
+						<h2 class="h2" {...(e.process_heading ?? {})}>
+							{d.process_heading ?? "What Working With Grant Actually Looks Like."}
+						</h2>
+					</div>
+					<div class="process__body">
+						{processBody && <p {...(e.process_body ?? {})}>{processBody}</p>}
+						{processBody && processPromise && <div class="process__divider"></div>}
+						{processPromise && <p {...(e.process_promise ?? {})}>{processPromise}</p>}
+					</div>
+				</div>
+			</div>
+		</section>
+	)}
+
+	{/* 08 CTA — slim closing band above the contact section. */}
+	<section class="section section--narrow section--dark on-dark" data-screen-label="08 CTA">
+		<div class="container">
+			<div class="section-title on-dark">
+				<h2 {...(e.cta_heading ?? {})}>{d.cta_heading ?? "Ready to Buy in Tahoe the Right Way?"}</h2>
+				<p {...(e.cta_body ?? {})}>
+					{d.cta_body ?? "Reaching out does not commit you to anything. The first conversation is about your goals, your timeline, and whether Tahoe is the right move at all."}
+				</p>
+			</div>
+			<div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-top:36px">
+				<a class="btn btn--orange" href="#buyers-contact">{d.cta_button1 ?? "START A CONVERSATION WITH GRANT"}</a>
+				<a class="btn btn--ghost-light" href="/listings/">{d.cta_button2 ?? "SEE FEATURED PROPERTIES"}</a>
+			</div>
+		</div>
+	</section>
+
+	{/* 09 CONTACT — the shared site-wide section, anchored so the hero and CTA
+	     buttons land on it. */}
+	<ContactCta id="buyers-contact" />
+</GcmLayout>

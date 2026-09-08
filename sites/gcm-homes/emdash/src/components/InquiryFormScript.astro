@@ -1,0 +1,71 @@
+---
+// Client-side wiring for every inquiry form on the page: intercepts the submit,
+// POSTs JSON to /api/contact, and swaps the button for the success message.
+//
+// Extracted from ContactCta.astro so /sellers/ can reuse it. That page closes on
+// the home-valuation form instead of the shared contact section, and without
+// this it would either need a second copy of the script or a duplicate contact
+// form on the page.
+//
+// A form opts in with `data-inquiry-form`, and carries its own
+// `data-inquiry-submit` / `data-inquiry-sent` / `data-inquiry-error` elements.
+// Everything is found relative to the form rather than by id, so any number of
+// forms can coexist on one page.
+//
+// Include it ONCE per page, anywhere — it wires on DOMContentLoaded rather than
+// at parse time, so it does not have to come after the forms in the markup, and
+// the per-form `data-inquiry-wired` flag makes a second include harmless.
+---
+
+<script is:inline>
+	(function () {
+		function wireAll() {
+			document.querySelectorAll("[data-inquiry-form]").forEach(function (f) {
+				// Already wired (a second include on the page, or a re-run).
+				if (f.dataset.inquiryWired) return;
+				f.dataset.inquiryWired = "1";
+
+				var btn = f.querySelector("[data-inquiry-submit]");
+				var sent = f.querySelector("[data-inquiry-sent]");
+				var err = f.querySelector("[data-inquiry-error]");
+				if (!btn || !sent || !err) return;
+				var label = btn.textContent;
+
+				f.addEventListener("submit", async function (ev) {
+					ev.preventDefault();
+					if (!f.checkValidity()) { f.reportValidity(); return; }
+					err.style.display = "none";
+					btn.disabled = true; btn.textContent = "SENDING…";
+					try {
+						var payload = {};
+						new FormData(f).forEach(function (v, k) { payload[k] = v; });
+						var r = await fetch("/api/contact", {
+							method: "POST",
+							headers: { "Content-Type": "application/json", "Accept": "application/json" },
+							body: JSON.stringify(payload),
+						});
+						var data = await r.json();
+						if (!r.ok || !data.ok) throw new Error(data.error || "Something went wrong. Please try again or call directly.");
+						btn.style.display = "none";
+						sent.style.display = "block";
+						f.reset();
+						setTimeout(function () {
+							sent.style.display = "none";
+							btn.style.display = ""; btn.disabled = false; btn.textContent = label;
+						}, 6000);
+					} catch (ex) {
+						err.textContent = ex.message;
+						err.style.display = "block";
+						btn.disabled = false; btn.textContent = label;
+					}
+				});
+			});
+		}
+
+		if (document.readyState === "loading") {
+			document.addEventListener("DOMContentLoaded", wireAll);
+		} else {
+			wireAll();
+		}
+	})();
+</script>

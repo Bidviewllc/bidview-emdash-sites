@@ -93,10 +93,34 @@ export async function POST({ request }: { request: Request }) {
 	// Which page the form was on. The contact section now appears on most pages, so
 	// without this a lead gives no clue what the person was reading.
 	const source  = esc(data.source || "");
-	const message = (data.message || "").trim();
+	let message = (data.message || "").trim();
 
 	if (!name || !email || !message) {
 		return fail("Please complete your name, email, and message.", 400);
+	}
+
+	// Any field a form sends that isn't one of the ones handled above gets
+	// appended to the message rather than dropped. The /sellers/ valuation form
+	// needs this — it asks for beds/baths, timeline and recent improvements, and
+	// without it those answers would never reach Grant. Keys are turned into
+	// readable labels so a new field needs no change here.
+	const HANDLED = new Set([
+		"name", "firstName", "lastName", "email", "phone", "reason", "subject",
+		"source", "message", "website", "cf-turnstile-response",
+	]);
+	// Only for names the derived label reads badly on.
+	const LABELS: Record<string, string> = { beds_baths: "Beds / Baths" };
+	const details = Object.entries(data)
+		.filter(([k, v]) => !HANDLED.has(k) && typeof v === "string" && v.trim() !== "")
+		.map(([k, v]) => {
+			const label = LABELS[k] ?? k
+				.replace(/[_-]+/g, " ")
+				.replace(/([a-z])([A-Z])/g, "$1 $2")
+				.replace(/\b\w/g, (c) => c.toUpperCase());
+			return `${label}: ${esc(v)}`;
+		});
+	if (details.length) {
+		message = `${message}\n\n${details.join("\n")}`;
 	}
 
 	await saveToD1({

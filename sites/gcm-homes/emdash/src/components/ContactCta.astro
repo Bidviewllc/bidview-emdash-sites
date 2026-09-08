@@ -12,6 +12,7 @@
 // block — that one is property-specific and posts a listing-scoped enquiry.
 import { getEmDashEntry } from "emdash";
 import { imageUrl } from "../lib/media";
+import InquiryFormScript from "./InquiryFormScript.astro";
 
 interface Props {
 	/** Override the shared heading on one page without breaking the single source. */
@@ -107,45 +108,5 @@ const rows = [
 	</div>
 </section>
 
-<script is:inline>
-	/* Wires every inquiry form on the page. Elements are found relative to their own
-	   form via data- attributes rather than by id, so two instances on one page work.
-	   The guard matters because this component inlines its script per instance. */
-	if (!window.__gcmInquiryWired) {
-		window.__gcmInquiryWired = true;
-		document.querySelectorAll("[data-inquiry-form]").forEach(function (f) {
-			var btn = f.querySelector("[data-inquiry-submit]");
-			var sent = f.querySelector("[data-inquiry-sent]");
-			var err = f.querySelector("[data-inquiry-error]");
-			var label = btn ? btn.textContent : "SEND INQUIRY";
-			f.addEventListener("submit", async function (ev) {
-				ev.preventDefault();
-				if (!f.checkValidity()) { f.reportValidity(); return; }
-				err.style.display = "none";
-				btn.disabled = true; btn.textContent = "SENDING…";
-				try {
-					var payload = {};
-					new FormData(f).forEach(function (v, k) { payload[k] = v; });
-					var r = await fetch("/api/contact", {
-						method: "POST",
-						headers: { "Content-Type": "application/json", "Accept": "application/json" },
-						body: JSON.stringify(payload),
-					});
-					var data = await r.json();
-					if (!r.ok || !data.ok) throw new Error(data.error || "Something went wrong. Please try again or call directly.");
-					btn.style.display = "none";
-					sent.style.display = "block";
-					f.reset();
-					setTimeout(function () {
-						sent.style.display = "none";
-						btn.style.display = ""; btn.disabled = false; btn.textContent = label;
-					}, 6000);
-				} catch (ex) {
-					err.textContent = ex.message;
-					err.style.display = "block";
-					btn.disabled = false; btn.textContent = label;
-				}
-			});
-		});
-	}
-</script>
+{/* Submit handling — shared with the /sellers/ valuation form. */}
+<InquiryFormScript />

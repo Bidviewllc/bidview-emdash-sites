@@ -2376,3 +2376,91 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   text-wrap: balance;
 }
 .section-title.on-dark p { color: rgba(255,255,255,0.75); }
+
+/* ===== Pull quote =====
+   Moved here from about.css when /buyers/ and /sellers/ started using it too —
+   three pages now share it, so it belongs in the design system rather than in
+   one page's sheet. Responsive sizes live in responsive.css.
+   `.on-dark` flips it for the navy sections. */
+.pullquote {
+  border-left: 3px solid var(--orange);
+  padding: 6px 0 6px 28px;
+  margin: 32px 0 0;
+}
+.pullquote__q {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 26px;
+  line-height: 1.4;
+  color: var(--navy);
+  text-wrap: balance;
+}
+.on-dark .pullquote__q { color: var(--white); }
+.pullquote__a {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-top: 14px;
+}
+
+/* ===== Split reversal =====
+   `.guide` is the site's copy + photo split (photo left, copy right). The
+   Buyers "Stakes" and Sellers "Pricing Read" sections run the other way, so
+   this flips the columns without a second grid definition. Order, not
+   `direction`, so the responsive single-column stack still reads copy-first. */
+.guide.split--rev .guide__copy { order: 1; }
+.guide.split--rev .guide__photo { order: 2; }
+
+/* On the reversed split the photo is a working shot rather than Grant's
+   portrait, so drop the offset orange square that frames the portrait. */
+.guide.split--rev .guide__photo::before { display: none; }
+.guide.split--rev .guide__img { aspect-ratio: 4 / 5; }
+
+/* ===== Network statement (dark) =====
+   The "network you inherit" block on /buyers/ and the "gets your home
+   sale-ready" block on /sellers/. A wide statement column, then a two-up of
+   the proof story and the quote. Lives on `.section--dark.on-dark`. */
+.net { max-width: 860px; }
+.net .eyebrow { display: block; margin-bottom: 16px; }
+.net__body { display: flex; flex-direction: column; gap: 18px; margin-top: 26px; }
+.net__body p {
+  font-size: 17px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.8);
+}
+.net-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: start;
+  margin-top: 64px;
+  padding-top: 56px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+.net__story {
+  font-size: 16px;
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.72);
+}
+.net-split .pullquote { margin-top: 0; }
+
+/* ===== Process column =====
+   The editorial "what working with Grant actually looks like" column, shared by
+   /buyers/ and /sellers/. Heading left, a single measured text column right. */
+.process {
+  display: grid;
+  grid-template-columns: 0.85fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+.process__body { display: flex; flex-direction: column; gap: 26px; }
+.process__body p {
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--body);
+}
+.process__divider { height: 1px; background: rgba(197, 198, 206, 0.55); }

@@ -8,32 +8,9 @@
    responsive.css (tablet <=1024px, mobile <=640px). */
 
 /* ---- Pull quote --------------------------------------------------------- */
-/* Used inside the dark "Most Agents Work Here" section and again in The Return,
-   where only the attribution line appears. */
-.pullquote {
-	border-left: 3px solid var(--orange);
-	padding: 6px 0 6px 28px;
-	margin: 32px 0 0;
-}
-.pullquote__q {
-	font-family: var(--font-serif);
-	font-style: italic;
-	font-weight: 400;
-	font-size: 26px;
-	line-height: 1.4;
-	color: var(--navy);
-	text-wrap: balance;
-}
-.on-dark .pullquote__q { color: var(--white); }
-.pullquote__a {
-	font-family: var(--font-sans);
-	font-size: 12px;
-	font-weight: 700;
-	letter-spacing: 0.16em;
-	text-transform: uppercase;
-	color: var(--orange);
-	margin-top: 14px;
-}
+/* Moved to styles.css (and its responsive sizes to responsive.css) when
+   /buyers/ and /sellers/ started using it too. Kept as a pointer so the
+   section order below still matches about.astro's comment header. */
 
 /* ---- Credential pillars (The Road of Trials) ---------------------------- */
 .pillars {
@@ -149,7 +126,6 @@
 	.hero--about .hero__img { background-position: 70% center; }
 	.pillars { grid-template-columns: 1fr; gap: 24px; margin-top: 48px; }
 	.proof--cards { grid-template-columns: 1fr; gap: 24px; }
-	.pullquote__q { font-size: 23px; }
 	.proof__transition { font-size: 20px; margin-top: 48px; }
 }
 
@@ -160,7 +136,5 @@
 	.pillar__numeral { font-size: 38px; }
 	.proof-card { padding: 32px 24px; }
 	.proof-card__story { font-size: 20px; }
-	.pullquote { padding-left: 20px; margin-top: 26px; }
-	.pullquote__q { font-size: 20px; }
 	.proof__transition { font-size: 18px; }
 }

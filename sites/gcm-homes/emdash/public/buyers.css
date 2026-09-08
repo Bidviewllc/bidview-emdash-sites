@@ -1,0 +1,282 @@
+/* Buyers page — the two patterns the Buyers design adds on top of the site's
+   design system. Everything else on /buyers/ (.hero, .guide/.split--rev,
+   .pullquote, .net, .process, .section-title, .btn) already ships in styles.css
+   and is reused as-is, the same way /about/ reuses it.
+
+   Loaded only by src/pages/buyers.astro, the same way about.astro loads
+   about.css. Desktop first; the two breakpoints at the bottom match
+   responsive.css (tablet <=1024px, mobile <=640px). */
+
+/* ---- The Nevada tax advantage ------------------------------------------- */
+/* Four buyer situations, each one a disclosure. Built on <details>/<summary>
+   rather than a JS accordion: the page ships no script, every panel is
+   findable by in-page search, and it still works before hydration. */
+.tax-intro {
+	max-width: 780px;
+	margin: 0 auto;
+	text-align: center;
+}
+.tax-intro .eyebrow { display: block; margin-bottom: 16px; }
+.tax-intro__body {
+	font-size: 17px;
+	line-height: 1.75;
+	color: var(--body);
+	margin-top: 22px;
+}
+.tax-intro__turn {
+	font-family: var(--font-serif);
+	font-style: italic;
+	font-size: 21px;
+	line-height: 1.5;
+	color: var(--navy);
+	margin-top: 26px;
+	text-wrap: balance;
+}
+
+.tax-acc {
+	max-width: 860px;
+	margin: 56px auto 0;
+	border-top: 1px solid rgba(197, 198, 206, 0.6);
+}
+.tax-acc__item { border-bottom: 1px solid rgba(197, 198, 206, 0.6); }
+
+.tax-acc__trigger {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 24px;
+	width: 100%;
+	padding: 26px 4px;
+	cursor: pointer;
+	list-style: none;
+	transition: color 180ms ease;
+}
+/* Suppress the native disclosure triangle in both engines. */
+.tax-acc__trigger::-webkit-details-marker { display: none; }
+.tax-acc__trigger::marker { content: ""; }
+.tax-acc__trigger:hover .tax-acc__kicker { color: var(--orange); }
+.tax-acc__trigger:focus-visible {
+	outline: 2px solid var(--orange);
+	outline-offset: 4px;
+}
+.tax-acc__kicker {
+	font-family: var(--font-serif);
+	font-weight: 500;
+	font-size: 27px;
+	line-height: 1.2;
+	color: var(--navy);
+	transition: color 180ms ease;
+	text-wrap: balance;
+}
+
+/* Plus that becomes a minus — two bars, the vertical one rotated away. */
+.tax-acc__icon {
+	position: relative;
+	flex-shrink: 0;
+	width: 34px;
+	height: 34px;
+	border: 1px solid rgba(197, 198, 206, 0.9);
+	border-radius: 50%;
+	transition: border-color 180ms ease, background 180ms ease;
+}
+.tax-acc__trigger:hover .tax-acc__icon {
+	border-color: var(--orange);
+	background: rgba(247, 148, 91, 0.08);
+}
+.tax-acc__icon::before,
+.tax-acc__icon::after {
+	content: "";
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 13px;
+	height: 1.5px;
+	background: var(--orange);
+	transform: translate(-50%, -50%);
+	transition: transform 240ms ease, opacity 240ms ease;
+}
+.tax-acc__icon::after { transform: translate(-50%, -50%) rotate(90deg); }
+.tax-acc__item[open] .tax-acc__icon::after {
+	transform: translate(-50%, -50%) rotate(0deg);
+	opacity: 0;
+}
+
+.tax-acc__panel {
+	padding: 0 4px 34px;
+	max-width: 660px;
+}
+.tax-acc__title {
+	font-family: var(--font-serif);
+	font-weight: 500;
+	font-size: 20px;
+	line-height: 1.3;
+	color: var(--navy);
+	margin-bottom: 16px;
+}
+.tax-acc__panel p {
+	font-size: 16px;
+	line-height: 1.75;
+	color: var(--body);
+}
+.tax-acc__panel p + p { margin-top: 16px; }
+
+.tax-bullets {
+	list-style: none;
+	margin: 18px 0;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+.tax-bullets li {
+	position: relative;
+	padding-left: 22px;
+	font-size: 16px;
+	line-height: 1.6;
+	color: var(--body);
+}
+.tax-bullets li::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 10px;
+	width: 7px;
+	height: 1.5px;
+	background: var(--orange);
+}
+
+.tax-disclaimer {
+	max-width: 780px;
+	margin: 64px auto 0;
+	padding-top: 28px;
+	border-top: 1px solid rgba(197, 198, 206, 0.5);
+	font-size: 13.5px;
+	line-height: 1.7;
+	color: var(--muted);
+	text-align: center;
+}
+
+/* ---- Two communities, one lake ------------------------------------------ */
+/* Photo cards that link through to the community page. */
+.communities {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 32px;
+	margin-top: 64px;
+}
+.comm-card {
+	position: relative;
+	display: block;
+	height: 460px;
+	border-radius: 8px;
+	overflow: hidden;
+	box-shadow: 0 25px 50px -18px rgba(21, 36, 59, 0.32);
+	transition: transform 300ms ease, box-shadow 300ms ease;
+}
+.comm-card:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 32px 60px -18px rgba(21, 36, 59, 0.4);
+}
+.comm-card__photo {
+	position: absolute;
+	inset: 0;
+	background-size: cover;
+	background-position: center;
+	transition: transform 600ms ease;
+}
+.comm-card:hover .comm-card__photo { transform: scale(1.04); }
+.comm-card__veil {
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(
+		180deg,
+		rgba(21, 36, 59, 0) 30%,
+		rgba(21, 36, 59, 0.5) 62%,
+		rgba(10, 18, 29, 0.88) 100%
+	);
+}
+.comm-card__body {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	padding: 40px 36px;
+	color: var(--white);
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+.comm-card__eyebrow {
+	font-family: var(--font-sans);
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.2em;
+	text-transform: uppercase;
+	color: var(--orange);
+}
+.comm-card__name {
+	font-family: var(--font-serif);
+	font-weight: 500;
+	font-size: 34px;
+	line-height: 1.1;
+}
+.comm-card__desc {
+	font-size: 15px;
+	line-height: 1.65;
+	color: rgba(255, 255, 255, 0.82);
+	max-width: 420px;
+}
+.comm-card__link {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	margin-top: 6px;
+	font-family: var(--font-sans);
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--orange);
+}
+.comm-card__link svg { transition: transform 220ms ease; }
+.comm-card:hover .comm-card__link svg { transform: translateX(4px); }
+
+/* ---- Tablet ------------------------------------------------------------- */
+@media (max-width: 1024px) {
+	/* Grant stands at the right of the overlook photograph, so a centred crop
+	   loses him entirely as the frame narrows — the same problem /about/ has,
+	   fixed the same way and at the same 70%. Further right puts the headline
+	   across his head; centred drops him out of shot. Scoped to .hero--buyers
+	   so no other hero moves. */
+	.hero--buyers .hero__img { background-position: 70% center; }
+
+	.tax-intro__body { font-size: 16px; }
+	.tax-intro__turn { font-size: 19px; }
+	.tax-acc { margin-top: 44px; }
+	.tax-acc__kicker { font-size: 23px; }
+	.tax-acc__trigger { padding: 22px 2px; }
+	.tax-disclaimer { margin-top: 48px; }
+
+	.communities { grid-template-columns: 1fr; gap: 24px; margin-top: 48px; }
+	.comm-card { height: 400px; }
+}
+
+/* ---- Mobile ------------------------------------------------------------- */
+@media (max-width: 640px) {
+	/* Same crop as tablet — see the note there. */
+	.hero--buyers .hero__img { background-position: 70% center; }
+
+	.tax-intro__body { font-size: 15px; }
+	.tax-intro__turn { font-size: 17px; margin-top: 20px; }
+	.tax-acc { margin-top: 36px; }
+	.tax-acc__trigger { padding: 20px 0; gap: 16px; }
+	.tax-acc__kicker { font-size: 20px; }
+	.tax-acc__icon { width: 30px; height: 30px; }
+	.tax-acc__panel { padding: 0 0 28px; }
+	.tax-acc__panel p, .tax-bullets li { font-size: 15px; }
+	.tax-disclaimer { font-size: 12.5px; margin-top: 40px; }
+
+	.comm-card { height: 360px; }
+	.comm-card__body { padding: 28px 22px; }
+	.comm-card__name { font-size: 28px; }
+	.comm-card__desc { font-size: 14px; }
+}

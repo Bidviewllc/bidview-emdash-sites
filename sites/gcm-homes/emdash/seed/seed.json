@@ -765,6 +765,691 @@
 					"type": "text"
 				}
 			]
+		},
+		{
+			"slug": "buyers_page",
+			"label": "Buyers Page",
+			"labelSingular": "Buyers Page",
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Internal title",
+					"type": "string"
+				},
+				{
+					"slug": "hero_eyebrow",
+					"label": "Hero eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "hero_headline",
+					"label": "Hero headline (allows <em> and <br />)",
+					"type": "text"
+				},
+				{
+					"slug": "hero_sub",
+					"label": "Hero subhead",
+					"type": "text"
+				},
+				{
+					"slug": "hero_image",
+					"label": "Hero background image",
+					"type": "image"
+				},
+				{
+					"slug": "hero_cta1",
+					"label": "Hero button 1 label",
+					"type": "string"
+				},
+				{
+					"slug": "hero_cta2",
+					"label": "Hero button 2 label",
+					"type": "string"
+				},
+				{
+					"slug": "stakes_eyebrow",
+					"label": "Stakes — eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "stakes_heading",
+					"label": "Stakes — heading",
+					"type": "text"
+				},
+				{
+					"slug": "stakes_p1",
+					"label": "Stakes — paragraph 1",
+					"type": "text"
+				},
+				{
+					"slug": "stakes_punch",
+					"label": "Stakes — turn line (its own short paragraph)",
+					"type": "text"
+				},
+				{
+					"slug": "stakes_p2",
+					"label": "Stakes — paragraph 2",
+					"type": "text"
+				},
+				{
+					"slug": "stakes_p3",
+					"label": "Stakes — paragraph 3",
+					"type": "text"
+				},
+				{
+					"slug": "stakes_quote",
+					"label": "Stakes — pull quote",
+					"type": "text"
+				},
+				{
+					"slug": "stakes_image",
+					"label": "Stakes — photo",
+					"type": "image"
+				},
+				{
+					"slug": "network_eyebrow",
+					"label": "Network — eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "network_heading",
+					"label": "Network — heading",
+					"type": "text"
+				},
+				{
+					"slug": "network_p1",
+					"label": "Network — paragraph 1",
+					"type": "text"
+				},
+				{
+					"slug": "network_p2",
+					"label": "Network — paragraph 2",
+					"type": "text"
+				},
+				{
+					"slug": "network_story",
+					"label": "Network — proof story",
+					"type": "text"
+				},
+				{
+					"slug": "network_quote",
+					"label": "Network — pull quote",
+					"type": "text"
+				},
+				{
+					"slug": "tax_eyebrow",
+					"label": "Tax advantage — eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "tax_heading",
+					"label": "Tax advantage — heading",
+					"type": "text"
+				},
+				{
+					"slug": "tax_body",
+					"label": "Tax advantage — intro",
+					"type": "text"
+				},
+				{
+					"slug": "tax_turn",
+					"label": "Tax advantage — turn line",
+					"type": "text"
+				},
+				{
+					"slug": "tax1_kicker",
+					"label": "Tax 1 — situation",
+					"type": "string"
+				},
+				{
+					"slug": "tax1_title",
+					"label": "Tax 1 — title",
+					"type": "text"
+				},
+				{
+					"slug": "tax1_body",
+					"label": "Tax 1 — body (blank line between paragraphs)",
+					"type": "text"
+				},
+				{
+					"slug": "tax2_kicker",
+					"label": "Tax 2 — situation",
+					"type": "string"
+				},
+				{
+					"slug": "tax2_title",
+					"label": "Tax 2 — title",
+					"type": "text"
+				},
+				{
+					"slug": "tax2_body",
+					"label": "Tax 2 — body (blank line between paragraphs)",
+					"type": "text"
+				},
+				{
+					"slug": "tax3_kicker",
+					"label": "Tax 3 — situation",
+					"type": "string"
+				},
+				{
+					"slug": "tax3_title",
+					"label": "Tax 3 — title",
+					"type": "text"
+				},
+				{
+					"slug": "tax3_body",
+					"label": "Tax 3 — body (blank line between paragraphs)",
+					"type": "text"
+				},
+				{
+					"slug": "tax3_bullets",
+					"label": "Tax 3 — bullet list (one per line)",
+					"type": "text"
+				},
+				{
+					"slug": "tax3_after",
+					"label": "Tax 3 — closing paragraph",
+					"type": "text"
+				},
+				{
+					"slug": "tax4_kicker",
+					"label": "Tax 4 — situation",
+					"type": "string"
+				},
+				{
+					"slug": "tax4_title",
+					"label": "Tax 4 — title",
+					"type": "text"
+				},
+				{
+					"slug": "tax4_body",
+					"label": "Tax 4 — body (blank line between paragraphs)",
+					"type": "text"
+				},
+				{
+					"slug": "ivgid_fee",
+					"label": "IVGID Recreation Fee, current year (blank hides the amount)",
+					"type": "string"
+				},
+				{
+					"slug": "tax_disclaimer",
+					"label": "Tax advantage — disclaimer",
+					"type": "text"
+				},
+				{
+					"slug": "investment_eyebrow",
+					"label": "Investment — eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "investment_heading",
+					"label": "Investment — heading",
+					"type": "text"
+				},
+				{
+					"slug": "investment_p1",
+					"label": "Investment — paragraph 1",
+					"type": "text"
+				},
+				{
+					"slug": "investment_p2",
+					"label": "Investment — paragraph 2",
+					"type": "text"
+				},
+				{
+					"slug": "investment_quote",
+					"label": "Investment — pull quote",
+					"type": "text"
+				},
+				{
+					"slug": "investment_image",
+					"label": "Investment — photo",
+					"type": "image"
+				},
+				{
+					"slug": "comm_eyebrow",
+					"label": "Communities — eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "comm_heading",
+					"label": "Communities — heading",
+					"type": "text"
+				},
+				{
+					"slug": "comm_lead",
+					"label": "Communities — lead",
+					"type": "text"
+				},
+				{
+					"slug": "comm1_name",
+					"label": "Community 1 — name",
+					"type": "string"
+				},
+				{
+					"slug": "comm1_desc",
+					"label": "Community 1 — description",
+					"type": "text"
+				},
+				{
+					"slug": "comm1_image",
+					"label": "Community 1 — photo",
+					"type": "image"
+				},
+				{
+					"slug": "comm2_name",
+					"label": "Community 2 — name",
+					"type": "string"
+				},
+				{
+					"slug": "comm2_desc",
+					"label": "Community 2 — description",
+					"type": "text"
+				},
+				{
+					"slug": "comm2_image",
+					"label": "Community 2 — photo",
+					"type": "image"
+				},
+				{
+					"slug": "process_eyebrow",
+					"label": "Process — eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "process_heading",
+					"label": "Process — heading",
+					"type": "text"
+				},
+				{
+					"slug": "process_body",
+					"label": "Process — the steps (blank hides the whole section)",
+					"type": "text"
+				},
+				{
+					"slug": "process_promise",
+					"label": "Process — first-call promise (blank hides it)",
+					"type": "text"
+				},
+				{
+					"slug": "cta_heading",
+					"label": "Closing CTA — heading",
+					"type": "text"
+				},
+				{
+					"slug": "cta_body",
+					"label": "Closing CTA — body",
+					"type": "text"
+				},
+				{
+					"slug": "cta_button1",
+					"label": "Closing CTA — button 1 label",
+					"type": "string"
+				},
+				{
+					"slug": "cta_button2",
+					"label": "Closing CTA — button 2 label",
+					"type": "string"
+				}
+			]
+		},
+		{
+			"slug": "sellers_page",
+			"label": "Sellers Page",
+			"labelSingular": "Sellers Page",
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Internal title",
+					"type": "string"
+				},
+				{
+					"slug": "hero_eyebrow",
+					"label": "Hero eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "hero_headline",
+					"label": "Hero headline (allows <em> and <br />)",
+					"type": "text"
+				},
+				{
+					"slug": "hero_sub",
+					"label": "Hero subhead",
+					"type": "text"
+				},
+				{
+					"slug": "hero_image",
+					"label": "Hero background image",
+					"type": "image"
+				},
+				{
+					"slug": "hero_cta",
+					"label": "Hero button label",
+					"type": "string"
+				},
+				{
+					"slug": "pricing_eyebrow",
+					"label": "Pricing read — eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "pricing_heading",
+					"label": "Pricing read — heading",
+					"type": "text"
+				},
+				{
+					"slug": "pricing_p1",
+					"label": "Pricing read — paragraph 1",
+					"type": "text"
+				},
+				{
+					"slug": "pricing_p2",
+					"label": "Pricing read — paragraph 2",
+					"type": "text"
+				},
+				{
+					"slug": "pricing_p3",
+					"label": "Pricing read — paragraph 3",
+					"type": "text"
+				},
+				{
+					"slug": "pricing_quote",
+					"label": "Pricing read — pull quote",
+					"type": "text"
+				},
+				{
+					"slug": "pricing_image",
+					"label": "Pricing read — photo",
+					"type": "image"
+				},
+				{
+					"slug": "timing_eyebrow",
+					"label": "Seasonal timing — eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "timing_heading",
+					"label": "Seasonal timing — heading",
+					"type": "text"
+				},
+				{
+					"slug": "timing_p1",
+					"label": "Seasonal timing — paragraph 1",
+					"type": "text"
+				},
+				{
+					"slug": "timing_p2",
+					"label": "Seasonal timing — paragraph 2",
+					"type": "text"
+				},
+				{
+					"slug": "timing_p3",
+					"label": "Seasonal timing — paragraph 3",
+					"type": "text"
+				},
+				{
+					"slug": "timing_quote",
+					"label": "Seasonal timing — pull quote",
+					"type": "text"
+				},
+				{
+					"slug": "mkt_eyebrow",
+					"label": "Marketing — eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "mkt_heading",
+					"label": "Marketing — heading",
+					"type": "text"
+				},
+				{
+					"slug": "mkt_p1",
+					"label": "Marketing — paragraph 1",
+					"type": "text"
+				},
+				{
+					"slug": "mkt_p2",
+					"label": "Marketing — paragraph 2",
+					"type": "text"
+				},
+				{
+					"slug": "film_image",
+					"label": "Marketing — property film still",
+					"type": "image"
+				},
+				{
+					"slug": "reach_eyebrow",
+					"label": "Marketing — reach eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "reach_body",
+					"label": "Marketing — reach body",
+					"type": "text"
+				},
+				{
+					"slug": "incl_label",
+					"label": "Marketing — inclusions label",
+					"type": "string"
+				},
+				{
+					"slug": "incl1_t",
+					"label": "Inclusion 1 — title",
+					"type": "string"
+				},
+				{
+					"slug": "incl1_d",
+					"label": "Inclusion 1 — description",
+					"type": "text"
+				},
+				{
+					"slug": "incl2_t",
+					"label": "Inclusion 2 — title",
+					"type": "string"
+				},
+				{
+					"slug": "incl2_d",
+					"label": "Inclusion 2 — description",
+					"type": "text"
+				},
+				{
+					"slug": "incl3_t",
+					"label": "Inclusion 3 — title",
+					"type": "string"
+				},
+				{
+					"slug": "incl3_d",
+					"label": "Inclusion 3 — description",
+					"type": "text"
+				},
+				{
+					"slug": "incl4_t",
+					"label": "Inclusion 4 — title",
+					"type": "string"
+				},
+				{
+					"slug": "incl4_d",
+					"label": "Inclusion 4 — description",
+					"type": "text"
+				},
+				{
+					"slug": "incl5_t",
+					"label": "Inclusion 5 — title",
+					"type": "string"
+				},
+				{
+					"slug": "incl5_d",
+					"label": "Inclusion 5 — description",
+					"type": "text"
+				},
+				{
+					"slug": "incl6_t",
+					"label": "Inclusion 6 — title",
+					"type": "string"
+				},
+				{
+					"slug": "incl6_d",
+					"label": "Inclusion 6 — description",
+					"type": "text"
+				},
+				{
+					"slug": "incl7_t",
+					"label": "Inclusion 7 — title",
+					"type": "string"
+				},
+				{
+					"slug": "incl7_d",
+					"label": "Inclusion 7 — description",
+					"type": "text"
+				},
+				{
+					"slug": "incl8_t",
+					"label": "Inclusion 8 — title",
+					"type": "string"
+				},
+				{
+					"slug": "incl8_d",
+					"label": "Inclusion 8 — description",
+					"type": "text"
+				},
+				{
+					"slug": "network_eyebrow",
+					"label": "Network — eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "network_heading",
+					"label": "Network — heading",
+					"type": "text"
+				},
+				{
+					"slug": "network_p1",
+					"label": "Network — paragraph 1",
+					"type": "text"
+				},
+				{
+					"slug": "network_p2",
+					"label": "Network — paragraph 2",
+					"type": "text"
+				},
+				{
+					"slug": "network_story",
+					"label": "Network — proof story",
+					"type": "text"
+				},
+				{
+					"slug": "network_quote",
+					"label": "Network — pull quote",
+					"type": "text"
+				},
+				{
+					"slug": "honesty_eyebrow",
+					"label": "Honest advice — eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "honesty_heading",
+					"label": "Honest advice — heading",
+					"type": "text"
+				},
+				{
+					"slug": "honesty_p1",
+					"label": "Honest advice — paragraph 1",
+					"type": "text"
+				},
+				{
+					"slug": "honesty_quote",
+					"label": "Honest advice — pull quote",
+					"type": "text"
+				},
+				{
+					"slug": "honesty_p2",
+					"label": "Honest advice — paragraph 2",
+					"type": "text"
+				},
+				{
+					"slug": "process_eyebrow",
+					"label": "Process — eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "process_heading",
+					"label": "Process — heading",
+					"type": "text"
+				},
+				{
+					"slug": "process_body",
+					"label": "Process — the steps (blank hides the whole section)",
+					"type": "text"
+				},
+				{
+					"slug": "process_promise",
+					"label": "Process — first-call promise (blank hides it)",
+					"type": "text"
+				},
+				{
+					"slug": "val_eyebrow",
+					"label": "Valuation — eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "val_heading",
+					"label": "Valuation — heading",
+					"type": "text"
+				},
+				{
+					"slug": "val_lead",
+					"label": "Valuation — lead",
+					"type": "text"
+				},
+				{
+					"slug": "val_talk_label",
+					"label": "Valuation — secondary button label",
+					"type": "string"
+				},
+				{
+					"slug": "val_form_heading",
+					"label": "Valuation — form heading",
+					"type": "string"
+				},
+				{
+					"slug": "val_submit",
+					"label": "Valuation — submit button label",
+					"type": "string"
+				},
+				{
+					"slug": "val_success",
+					"label": "Valuation — success message",
+					"type": "text"
+				},
+				{
+					"slug": "val_reassure",
+					"label": "Valuation — reassurance line",
+					"type": "text"
+				},
+				{
+					"slug": "agent_name",
+					"label": "Valuation — agent name",
+					"type": "string"
+				},
+				{
+					"slug": "agent_role",
+					"label": "Valuation — agent role",
+					"type": "string"
+				},
+				{
+					"slug": "agent_photo",
+					"label": "Valuation — agent photo",
+					"type": "image"
+				}
+			]
 		}
 	],
 	"taxonomies": [
@@ -1351,6 +2036,148 @@
 					"return_cta": "LET'S TALK",
 					"social_eyebrow": "IN THEIR WORDS",
 					"social_heading": "Clients on Working With Grant."
+				}
+			}
+		],
+		"buyers_page": [
+			{
+				"id": "buyers",
+				"slug": "buyers",
+				"status": "published",
+				"data": {
+					"title": "Buyers",
+					"hero_eyebrow": "For Buyers",
+					"hero_headline": "Find Your Place on the <em>North Shore.</em>",
+					"hero_sub": "Incline Village and Crystal Bay offer something rare — a true four-season life on one of the most beautiful lakes in the world. Whether you are after a full-time home or a quiet escape, this is where it starts.",
+					"hero_cta1": "VIEW LISTINGS",
+					"hero_cta2": "START THE CONVERSATION",
+					"stakes_eyebrow": "THE STAKES",
+					"stakes_heading": "Out-of-Market Instincts Cost Real Money Here.",
+					"stakes_p1": "Incline Village and Crystal Bay do not behave like the market you are coming from, where an online estimate lands close to the truth and a confident buyer can handle a purchase alone.",
+					"stakes_punch": "Tahoe punishes that confidence.",
+					"stakes_p2": "One buyer bought a property off-market, on their own, for $3.9 million. Two years later it was listed at $2.2 million.",
+					"stakes_p3": "A micro-market of roughly 10,000 parcels moves on a handful of sales. The right read on timing, on comparables, on what a property is actually worth — none of it lives in a database. It lives in someone who has watched every cycle from inside the community. Grant has spent 35 years learning to read this market, and he reads it for you, on your side of the table.",
+					"stakes_quote": "You can avoid making those 50, 60% mistakes by paying 3 to 6%. In our market, that's a fantastic insurance policy.",
+					"network_eyebrow": "THE NETWORK",
+					"network_heading": "The Network You Inherit on Day One.",
+					"network_p1": "In a resort market, the electrician is up on the mountain and the good contractors are booked months out — unless you know who to call.",
+					"network_p2": "Grant has spent 35 years building those relationships: trades, lenders, title, inspectors, appraisers. He has sent them business for years and treated them well, so they pick up when he calls. His clients inherit that the day they close.",
+					"network_story": "One recent client needed mold remediation before a deal could go through. Grant made one call. The specialist was at the house within 90 minutes — in a market where that kind of help is usually weeks out.",
+					"network_quote": "It took me 35 years to earn those phone calls. The day you close, every one of them is yours too.",
+					"tax_eyebrow": "THE TAX ADVANTAGE",
+					"tax_heading": "Why Buyers Choose Nevada",
+					"tax_body": "Nevada is one of the most tax-friendly states in the country, and that has been true for decades. CPAs, tax advisers, and estate planners send clients here on purpose. For buyers coming from California or another high-tax state, crossing the state line can change your financial picture as much as the home itself.",
+					"tax_turn": "What that looks like depends on where you are in life.",
+					"tax1_kicker": "Retiring here, or planning your estate",
+					"tax1_title": "Keep what you spent a career building.",
+					"tax1_body": "Nevada charges no personal income tax. Your pension, 401(k) withdrawals, Social Security, and investment income keep their full value at the state level.\n\nThere is also no state estate or inheritance tax. When you pass your home and assets to your children or grandchildren, Nevada takes none of it. (Federal estate tax rules still apply, so your estate planner is still worth a call.)\n\nFor anyone who spent a career building wealth, that combination is the difference between preserving an estate and watching it shrink a little more every year.",
+					"tax2_kicker": "Earning at the top of your career",
+					"tax2_title": "Income earned as a resident is not taxed by the state.",
+					"tax2_body": "A high salary or a strong year of capital gains lands very differently here. Against California's top rate, the gap is large enough to factor into where you choose to live.\n\nThe part worth understanding: the benefit follows residency, not the deed. To claim it, you make Nevada your true home — where you live, vote, and spend your time. Plenty of people make exactly that move to Incline Village, and your tax adviser can walk you through what genuine residency requires.",
+					"tax3_kicker": "Running a business",
+					"tax3_title": "A structure built to keep overhead low.",
+					"tax3_body": "Nevada earned its business-friendly reputation, and the structure backs it up:",
+					"tax3_bullets": "No corporate income tax\nNo franchise tax\nNo gross receipts tax for most businesses (a Commerce Tax applies only above $4M in Nevada revenue)\nNo inventory tax\nStrong legal protection for company directors and officers\nA high degree of privacy for business owners",
+					"tax3_after": "For an entrepreneur relocating a company — or running one from a home office above the lake — those add up to lower overhead and fewer state-level headaches. Whether to restructure an entity in Nevada is a decision for your CPA and attorney, and we are glad to point you toward local professionals who handle it.",
+					"tax4_kicker": "Buying for the lifestyle",
+					"tax4_title": "Low property taxes, and one fee that opens the lake.",
+					"tax4_body": "Property taxes in Nevada are low by national standards, and well below what most of our buyers leave behind. On a home in Incline Village, that is real money kept every year.\n\nIncline Village is an unincorporated community of Washoe County. Water and sewer service, the private beaches, Diamond Peak Ski Resort, the championship golf courses, the tennis complex, and the recreation center are all managed by the Incline Village General Improvement District (IVGID).",
+					"ivgid_fee": "",
+					"tax_disclaimer": "The information on this page is general and current to the best of our knowledge. It is not tax or legal advice, and every situation is different. Before you act on Nevada's tax treatment, talk it through with your own CPA, tax adviser, or attorney — we are happy to recommend local professionals who know the area.",
+					"investment_eyebrow": "HOME & VALUE",
+					"investment_heading": "A Home. An Investment. Grant Treats It as Both.",
+					"investment_p1": "Buyers here tend to weigh a property like a portfolio decision, even when it is the home they plan to raise a family in. Grant works the same way. He came up on job sites — his father was a general contractor for about 30 years — so he knows what he is looking at when he walks a house, and what it will really cost to bring it up to standard.",
+					"investment_p2": "That matters most on the homes that need work. Right now a lot of buyers want fully turnkey, which leaves real equity on the table for anyone willing to take on a project with the right people guiding it. Grant has built most of his own family's wealth doing exactly that, and he will tell you honestly when a property is worth the patience and when it is not.",
+					"investment_quote": "I feel like I'm more a financial advisor when it comes to investing in real estate than a realtor, in many ways.",
+					"comm_eyebrow": "TWO COMMUNITIES, ONE LAKE",
+					"comm_heading": "Grant Knows Both Block by Block.",
+					"comm_lead": "Incline Village and Crystal Bay each have their own character, their own pricing, and their own quirks. His perspective on each — the beaches, the ski access, the trails, the subdivisions — lives on the community pages.",
+					"comm1_name": "Incline Village",
+					"comm1_desc": "The beaches, Diamond Peak, the golf and tennis — and the subdivisions Grant has watched trade for three decades.",
+					"comm2_name": "Crystal Bay",
+					"comm2_desc": "Quieter, more wooded, and its own pricing logic. Grant reads the lakefront and the hillside lots block by block.",
+					"process_eyebrow": "THE PROCESS",
+					"process_heading": "What Working With Grant Actually Looks Like.",
+					"process_body": "",
+					"process_promise": "",
+					"cta_heading": "Ready to Buy in Tahoe the Right Way?",
+					"cta_body": "Reaching out does not commit you to anything. The first conversation is about your goals, your timeline, and whether Tahoe is the right move at all.",
+					"cta_button1": "START A CONVERSATION WITH GRANT",
+					"cta_button2": "SEE FEATURED PROPERTIES"
+				}
+			}
+		],
+		"sellers_page": [
+			{
+				"id": "sellers",
+				"slug": "sellers",
+				"status": "published",
+				"data": {
+					"title": "Sellers",
+					"hero_eyebrow": "Sell With Me",
+					"hero_headline": "Your Home's Value Here Isn't What an <em>Algorithm</em> Says It Is.",
+					"hero_sub": "In a market of roughly 10,000 parcels, a handful of sales can move prices by millions — and online estimates miss by a wide margin. Pricing a Tahoe home is read, not calculated. Grant has watched every cycle from inside Incline Village and Crystal Bay for 35 years, and he sells more property here than anyone. Start with what your home is actually worth.",
+					"hero_cta": "WHAT'S MY TAHOE HOME WORTH?",
+					"pricing_eyebrow": "THE PRICING READ",
+					"pricing_heading": "The Hardest Number to Get Right in This Market.",
+					"pricing_p1": "Pricing a home in Incline Village or Crystal Bay is not a formula. The same micro-market that rewards patient buyers punishes a mispriced listing. Price too high and the home sits while the spring buyers move on; price too low and you hand away equity you cannot get back.",
+					"pricing_p2": "Online valuation tools are built for markets where one sale looks like the next. Here, a single panoramic-lake-view sale can reset a whole tier. Roughly 60% of owners are year-round residents and 40% are second-home and investment owners, so the comparables that matter are not always the ones a database picks.",
+					"pricing_p3": "Grant prices from 35 years of watching what sells, what stalls, and why. He has been wrong on the upside and the downside, and he will tell you which way he thinks your home leans before you list.",
+					"pricing_quote": "I can only tell you what I expect based on my historical knowledge — and I know what I'm doing. I sell more property than anybody else here. But there are still homes that sell for more than I expected, and some for less, because a buyer doesn't see the same value.",
+					"timing_eyebrow": "SEASONAL TIMING",
+					"timing_heading": "The Sellers Who Win Here Are Ready Before the Buyers Arrive.",
+					"timing_p1": "Tahoe runs on a calendar most out-of-area agents do not price into a plan. For the last several years, buyers have been here looking in April and May. Most single-family listings do not come on until June or July. That gap is the opportunity.",
+					"timing_p2": "When a seller is ready early — home prepped, photography and video shot, marketing package built — Grant can bring the listing to market while serious buyers are already searching and competing listings have not surfaced yet. Sellers who wait for listing season arrive into the crowd instead of ahead of it.",
+					"timing_p3": "This is a secondary-home market, so days on market run longer than a metro area. A well-priced home can still take a happy season or more to find its buyer. Getting the timing and the price right at the start is what shortens that.",
+					"timing_quote": "If I've got sellers who are ready and the marketing package is done, we can come on the market earlier — before everyone else lists. That's a real opportunity.",
+					"mkt_eyebrow": "THE MARKETING",
+					"mkt_heading": "A Listing Built to Be Seen — Locally and Everywhere.",
+					"mkt_p1": "A home priced right still needs to reach the right buyer, and most of those buyers are searching from the Bay Area, Sacramento, or Los Angeles before they ever drive up. Grant's marketing is built for that distance.",
+					"mkt_p2": "Each listing gets a property film in the format Grant has refined for Tahoe homes: a walkthrough that opens at the front door, slow detail pans the camera catches that photos miss, and a drone pullback that shows the setting and what is nearby. Professional photography, a written story that ties the home to its location, and — where it fits the buyer — a Matterport 3D walkthrough round it out.",
+					"reach_eyebrow": "REACH",
+					"reach_body": "Through Coldwell Banker, the listing reaches a national and international buyer network on top of the local MLS — so a home in Incline Village shows up in front of the relocating buyer in San Francisco and the second-home buyer overseas.",
+					"incl_label": "WHAT A SELLER GETS",
+					"network_eyebrow": "THE NETWORK",
+					"network_heading": "The Network That Gets Your Home Sale-Ready.",
+					"network_p1": "In a resort market, the good contractors are booked months out and the right specialist is not in the phone book — unless you already know who to call. Grant has spent 35 years building those relationships, and a seller inherits them the moment they list.",
+					"network_p2": "When a home needs work before it shows well, Grant knows who to bring in and roughly what it should cost, because he came up on job sites — his father was a general contractor for about 30 years, and Grant has built most of his own family's wealth buying, improving, and reselling. He will tell a seller which fixes earn their money back and which to skip.",
+					"network_story": "He has earned that response by sending those trades business for years and treating them right, so they pick up when he calls. One recent deal needed a hydronic-heating specialist most plumbers cannot touch; Grant had the right person on it.",
+					"network_quote": "We live in a resort market. It's really hard to get an electrician to your house. So you take care of people. When you treat them right, they treat you right.",
+					"honesty_eyebrow": "HONEST ADVICE",
+					"honesty_heading": "Grant Would Rather Keep You for Life Than Win One Deal.",
+					"honesty_p1": "Some agents will tell a seller whatever it takes to win the listing — a price they cannot get, a timeline that will not hold. Grant runs the opposite way. His business is built on repeat clients and referrals; one has done 23 transactions with him over the years. That only happens when the advice is honest the first time.",
+					"honesty_quote": "All I can ask is that my clients listen to my advice. At the end of the day, it's their decision — they get to drive the ship.",
+					"honesty_p2": "For most sellers here, the home is not their only one and they are not moving across the country to start a job, so there is room to be strategic about timing and price instead of forced into a fire sale. Grant will give a seller his real read — what he expects, where the home might surprise on the upside, and where it might not — and then let the seller drive.",
+					"process_eyebrow": "THE PROCESS",
+					"process_heading": "What Listing With Grant Actually Looks Like.",
+					"process_body": "",
+					"process_promise": "",
+					"val_eyebrow": "HOME VALUATION",
+					"val_heading": "Start With What Your Home Is Worth.",
+					"val_lead": "A real number for your home starts a real conversation. Tell Grant about your property and he will come back with a considered read on value and timing — not an automated estimate, and not a pitch.",
+					"val_talk_label": "TALK TO GRANT ABOUT SELLING",
+					"val_form_heading": "Request your home valuation.",
+					"val_submit": "REQUEST YOUR HOME VALUATION",
+					"val_success": "Thanks — Grant will be in touch with a considered read within 24 hours.",
+					"val_reassure": "Reaching out does not commit you to listing. The first conversation is about your goals, your timeline, and whether now is even the right moment to sell.",
+					"agent_name": "Grant C. Meyer",
+					"agent_role": "Coldwell Banker Global Luxury Agent",
+					"incl1_t": "Property Film",
+					"incl1_d": "A walkthrough that opens at the front door, with slow detail pans and a drone pullback that shows the setting.",
+					"incl2_t": "Professional Photography",
+					"incl2_d": "Shot for the way buyers first meet the home — on a screen, from hundreds of miles away.",
+					"incl3_t": "Drone & Aerials",
+					"incl3_d": "The setting, the shoreline, the trees, and what is nearby — context a ground photo cannot give.",
+					"incl4_t": "Matterport 3D Tour",
+					"incl4_d": "A full walkable model of the home, where it fits the buyer, for serious out-of-area shoppers.",
+					"incl5_t": "Written Story",
+					"incl5_d": "Copy that ties the home to its location instead of listing square footage.",
+					"incl6_t": "Staging Guidance",
+					"incl6_d": "What to show, what to store, and what is worth fixing before the camera arrives.",
+					"incl7_t": "Print & Digital",
+					"incl7_d": "Syndication across the platforms relocating buyers actually search, plus considered print.",
+					"incl8_t": "Broker Tours & Open Houses",
+					"incl8_d": "Getting the local agents who hold the buyers through the door first."
 				}
 			}
 		]
