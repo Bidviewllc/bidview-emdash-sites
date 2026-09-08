@@ -13,15 +13,15 @@
 .eyebrow--light { color: var(--orange); }
 
 /* 1. Hero */
-.cg-hero { position: relative; height: 620px; overflow: hidden; background: var(--navy); display: flex; align-items: center; }
+.cg-hero { position: relative; height: 620px; overflow: hidden; background: var(--navy); display: flex; align-items: flex-end; }
 .cg-hero__img { position: absolute; inset: 0; background-size: cover; background-position: center; transform: scale(1.03); }
 .cg-hero__veil {
   position: absolute; inset: 0;
   background:
-    linear-gradient(180deg, rgba(21,36,59,0.55) 0%, rgba(21,36,59,0.35) 45%, rgba(10,18,29,0.72) 100%),
+    linear-gradient(180deg, rgba(21,36,59,0.55) 0%, rgba(21,36,59,0.35) 45%, rgba(10,18,29,0.92) 100%),
     linear-gradient(180deg, rgba(252,249,244,0.9) 0%, rgba(252,249,244,0) 16%);
 }
-.cg-hero__copy { position: relative; text-align: center; width: 100%; padding: 0 96px; color: #fff; }
+.cg-hero__copy { position: relative; text-align: center; width: 100%; padding: 0 96px; padding-bottom: 5vh; color: #fff; }
 .cg-hero__title {
   font-family: var(--font-serif); font-weight: 400; font-size: 64px; line-height: 1.06;
   letter-spacing: -0.01em; text-wrap: balance; max-width: 960px; margin: 14px auto 22px;
