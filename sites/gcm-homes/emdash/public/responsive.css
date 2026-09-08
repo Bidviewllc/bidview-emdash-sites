@@ -433,9 +433,6 @@
   /* --- Blog --- */
   .blog { grid-template-columns: 1fr; gap: 32px; }
   .blog-card__h { font-size: 22px; }
-  /* Inline-styled "Market Insights" h2 — override the inline 60px */
-  .section--cream .section-title h2[style*="font-size: 60px"] { font-size: 30px !important; }
-
   /* --- Footer --- */
   .footer { padding: 48px 24px 24px; }
   .footer__cols { grid-template-columns: 1fr 1fr; gap: 28px 24px; padding-bottom: 40px; }
