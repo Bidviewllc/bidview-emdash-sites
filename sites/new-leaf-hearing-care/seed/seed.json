@@ -3001,10 +3001,10 @@
         "slug": "audiology-services/custom-earmolds",
         "status": "published",
         "data": {
-          "page_title": "Custom Earmolds in Arvada & Littleton, CO",
+          "page_title": "Custom Earmolds & Earplugs in Arvada & Littleton, CO",
           "page_slug": "/audiology-services/custom-earmolds/",
-          "meta_title": "Custom Earmolds in Arvada & Littleton, CO | New Leaf Hearing Care",
-          "meta_description": "Get custom earmolds in Arvada or Littleton. Improve comfort and performance for hearing aids or protection. Schedule your fitting today.",
+          "meta_title": "Custom Earmolds & Earplugs in Arvada & Littleton, CO | New Leaf Hearing Care",
+          "meta_description": "Custom earmolds and earplugs in Arvada and Littleton, CO for hearing aids, hearing protection, water protection, and more. Schedule a custom fitting.",
           "intro_content": [
             {
               "_type": "block",
@@ -3058,12 +3058,32 @@
               "_type": "block",
               "_key": "kah",
               "style": "normal",
-              "markDefs": [],
+              "markDefs": [
+                {
+                  "_key": "lnkHearProt",
+                  "_type": "link",
+                  "href": "https://newleafhearing.com/hearing-loss/protecting-your-hearing/"
+                }
+              ],
               "children": [
                 {
                   "_type": "span",
-                  "_key": "kag",
-                  "text": "Custom earmolds solve problems that generic tips and plugs cannot fix. A poor fit can lead to discomfort, feedback, weak sound, or a plug that falls out at the worst time.",
+                  "_key": "op1",
+                  "text": "Custom earmolds and custom earplugs solve problems that generic tips and plugs cannot fix. A custom fit can improve comfort, reduce slipping, support better hearing aid performance, and provide reliable ",
+                  "marks": []
+                },
+                {
+                  "_type": "span",
+                  "_key": "op2",
+                  "text": "hearing protection",
+                  "marks": [
+                    "lnkHearProt"
+                  ]
+                },
+                {
+                  "_type": "span",
+                  "_key": "op3",
+                  "text": ".",
                   "marks": []
                 }
               ]
@@ -3233,7 +3253,7 @@
                 {
                   "_type": "span",
                   "_key": "kb4",
-                  "text": "Common Uses for Custom Earmolds",
+                  "text": "Common Uses for Custom Earmolds and Earplugs",
                   "marks": []
                 }
               ]
@@ -3541,7 +3561,7 @@
                 {
                   "_type": "span",
                   "_key": "kcc",
-                  "text": "What to Expect at Your Earmold Visit",
+                  "text": "What to Expect at Your Earmold or Earplug Visit",
                   "marks": []
                 }
               ]
@@ -3905,7 +3925,7 @@
                 {
                   "_type": "span",
                   "_key": "kds",
-                  "text": "Schedule Your Custom Earmold Visit",
+                  "text": "Schedule Your Custom Earmold or Earplug Visit",
                   "marks": []
                 }
               ]
@@ -3928,12 +3948,26 @@
               "_type": "block",
               "_key": "kdx",
               "style": "normal",
-              "markDefs": [],
+              "markDefs": [
+                {
+                  "_key": "lnkSched",
+                  "_type": "link",
+                  "href": "https://newleafhearing.com/schedule-appointment/"
+                }
+              ],
               "children": [
                 {
                   "_type": "span",
-                  "_key": "kdw",
-                  "text": "Schedule an appointment with New Leaf Hearing Care in Arvada, CO or Littleton, CO.",
+                  "_key": "sa1",
+                  "text": "Schedule an appointment",
+                  "marks": [
+                    "lnkSched"
+                  ]
+                },
+                {
+                  "_type": "span",
+                  "_key": "sa2",
+                  "text": " with New Leaf Hearing Care in Arvada, CO or Littleton, CO.",
                   "marks": []
                 }
               ]
