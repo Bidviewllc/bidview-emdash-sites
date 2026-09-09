@@ -102,10 +102,42 @@
 
 /* 5 & sub-page split layout */
 .cg-split { display: grid; grid-template-columns: 1.3fr 1fr; gap: 56px; align-items: start; }
-.cg-glance { background: var(--beige); border-radius: 8px; padding: 30px; }
-.cg-glance__h { margin-bottom: 18px; }
-.cg-glance__row { display: flex; align-items: flex-start; gap: 10px; font-size: 15px; color: var(--body); padding: 9px 0; line-height: 1.5; }
-.cg-glance__row svg { color: var(--orange); flex-shrink: 0; margin-top: 3px; }
+/* The glance panel -- "At a Glance" on a neighborhood page, "In One Glance"
+   in the Community index's Schools section. A white card on the beige field:
+   a navy eyebrow, then one checked row per fact.
+   Every row carries a top border and none carries a bottom, so the first
+   row's border doubles as the rule under the eyebrow and there is no stray
+   line under the last fact. */
+.cg-glance {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 34px 38px;
+  box-shadow: 0 18px 40px -24px rgba(21, 36, 59, 0.18);
+}
+.cg-glance__h { margin-bottom: 22px; }
+.cg-glance__row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 15px 0;
+  border-top: 1px solid rgba(197, 198, 206, 0.5);
+  font-size: 16px;
+  line-height: 1.45;
+  color: var(--navy);
+}
+/* The check sits in its own pale disc, so the rows read as a checklist rather
+   than as a bulleted list. */
+.cg-glance__tick {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(247, 148, 91, 0.13);
+  color: var(--orange);
+}
 
 /* 6. History */
 .cg-history { padding: 90px 48px; background: var(--navy); text-align: center; }
@@ -135,7 +167,7 @@
 /* Neighborhood sub-page */
 .nb-hero { position: relative; padding: 150px 0 70px; background: var(--navy); overflow: hidden; }
 .nb-hero__veil { position: absolute; inset: 0; background: linear-gradient(120deg, #15243b 0%, #1d3050 100%); }
-.nb-hero__copy { position: relative; color: #fff; }
+.nb-hero__copy { position: relative; text-align: center; color: #fff; }
 .nb-hero__back { display: inline-block; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.7); margin-bottom: 20px; }
 .nb-hero__back:hover { color: var(--orange); }
 .nb-take { margin-top: 32px; padding: 26px 28px; background: var(--beige); border-left: 3px solid var(--orange); border-radius: 0 6px 6px 0; }
@@ -169,4 +201,6 @@
   /* Tracks .section's own mobile padding in responsive.css (64px 20px). */
   .cg-facts { padding: 64px 20px; }
   .cg-history { padding: 68px 20px; }
+  .cg-glance { padding: 26px 24px; }
+  .cg-glance__row { padding: 13px 0; font-size: 15px; gap: 12px; }
 }
