@@ -55,13 +55,17 @@
    dodge the zoom and layers controls. It is a real header now, attached to the
    top of the frame: shared border, radius only on the top corners, so the two
    read as one object. Removed from public/map/index.html in the same change. */
+/* The header and the frame share one 1px navy outline: the header's bottom
+   border is the only line at the seam (the frame has border-top: none), so the
+   pair reads as a single bordered object with a divider under the label.
+   Per Liz's spec the header carries no left border. */
 .nbhd__maphead {
-  border: 1px solid rgba(21,36,59,0.12);
-  border-bottom: none;
-  border-left: 3px solid var(--orange);
+  border: 1px solid var(--navy);
+  border-left: none;
   border-radius: 8px 8px 0 0;
   background: #fff;
   padding: 16px 22px;
+  text-align: center;
 }
 .nbhd__maphead h3 {
   font-family: var(--font-serif); font-weight: 500; font-size: 19px;
@@ -72,7 +76,7 @@
 .nbhd__mapframe {
   position: relative; height: 520px; overflow: hidden;
   border-radius: 0 0 8px 8px;
-  box-shadow: 0 18px 40px -24px rgba(6,34,58,0.5); border: 1px solid rgba(21,36,59,0.12);
+  box-shadow: 0 18px 40px -24px rgba(6,34,58,0.5); border: 1px solid var(--navy);
   border-top: none;
   margin-bottom: 48px; background: var(--beige);
 }

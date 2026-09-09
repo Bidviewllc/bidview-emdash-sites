@@ -2625,18 +2625,19 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   text-wrap: balance;
 }
 
-/* Plus that becomes a minus -- two bars, the vertical one rotated away. */
+/* Plus that becomes a minus -- two bars, the vertical one rotated away. No ring
+   around it: the bars carry the state on their own, and the circle was competing
+   with the hairline row divider. The 34px box and the radius stay, so the mark
+   keeps its hit area and the hover tint is still a circle. */
 .acc__icon {
   position: relative;
   flex-shrink: 0;
   width: 34px;
   height: 34px;
-  border: 1px solid rgba(197, 198, 206, 0.9);
   border-radius: 50%;
-  transition: border-color 180ms ease, background 180ms ease;
+  transition: background 180ms ease;
 }
 .acc__trigger:hover .acc__icon {
-  border-color: var(--orange);
   background: rgba(247, 148, 91, 0.08);
 }
 .acc__icon::before,
