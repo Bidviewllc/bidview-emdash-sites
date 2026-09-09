@@ -9,6 +9,7 @@ import { env } from "cloudflare:workers";
 import { firstImageUrl } from "../lib/media";
 import { TESTIMONIALS } from "../lib/testimonials";
 import ContactCta from "../components/ContactCta.astro";
+import GrantIntro from "../components/GrantIntro.astro";
 
 // Load the homepage entry; tolerate it not existing yet (renders from fallbacks).
 let entry: any = null;
@@ -226,32 +227,14 @@ const tagOf = (l: any) =>
 		</div>
 	</section>
 
-	{/* THE GUIDE — Grant */}
-	<section class="section section--beige" data-screen-label="04 The Guide">
-		<div class="container guide">
-			<div class="guide__photo">
-				<div class="guide__img"></div>
-				<div class="guide__name">Grant C. Meyer</div>
-			</div>
-			<div class="guide__copy">
-				<div class="eyebrow" {...(e.guide_eyebrow ?? {})}>{d.guide_eyebrow ?? "YOUR NEIGHBOR BEFORE YOU EVEN ARRIVE"}</div>
-				<h2 class="guide__h" {...(e.guide_heading ?? {})}>{d.guide_heading ?? "This Is Where 35 Years Makes the Difference."}</h2>
-				<div class="guide__creds">
-					<div class="cred"><div class="cred__icon">✓</div><div><div class="cred__t">35-Year Resident</div><div class="cred__d">Unmatched local knowledge and community roots</div></div></div>
-					<div class="cred"><div class="cred__icon">✓</div><div><div class="cred__t">17 Years Realtor</div><div class="cred__d">Navigating every market cycle since 2007.</div></div></div>
-					<div class="cred"><div class="cred__icon">✓</div><div><div class="cred__t">Volume Leader</div><div class="cred__d">Consistently ranked in the top 1% of Sierra agents.</div></div></div>
-					<div class="cred"><div class="cred__icon">✓</div><div><div class="cred__t">Legal Training</div><div class="cred__d">Expertise in complex zoning and water rights.</div></div></div>
-				</div>
-				<p class="guide__p" {...(e.guide_body ?? {})}>
-					{d.guide_body ?? "Buying here is not the same as buying anywhere else. The lot lines, the lake rights, the TRPA coverage rules, the difference one street makes to a view — those are the things that decide whether a house is worth what it's listed at. Thirty-five years of living here is how you learn them."}
-				</p>
-				<a class="btn btn--dark btn--start" href="/about/">{d.guide_cta ?? "MORE ABOUT GRANT"}</a>
-			</div>
-		</div>
-		{/* The design also has a logos strip here. Not built: its headline is still
-		    placeholder ("Nice Headline About Benefit of These Logos") and we have
-		    neither the logo files nor confirmation we can display them. */}
-	</section>
+	{/* THE GUIDE — Grant. Shared with every listing page; the copy lives on the
+	    `grant_intro` singleton, so one edit covers both. The home entry's old
+	    guide_eyebrow / guide_heading / guide_body / guide_cta fields are no
+	    longer read here.
+	    The design also has a logos strip after this. Not built: its headline is
+	    still placeholder ("Nice Headline About Benefit of These Logos") and we
+	    have neither the logo files nor permission to display them. */}
+	<GrantIntro bg="beige" label="04 The Guide" />
 
 	{/* 05 THE PROOF — testimonials are the design's template copy for now; Liz is
 	     checking with Vince how real reviews get pulled in. */}

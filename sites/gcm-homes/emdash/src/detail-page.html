@@ -11,7 +11,7 @@
   <!-- The site design system. This page used to re-implement ~300 lines of it in an
        inline <style> block, which is why it drifted from the design. Everything the
        listing sections need — .listing-hero--fl, .aside-fl, .filmstrip, .feat-card,
-       .guide-fl, .invite, .lb — already lives in these two files. -->
+       .grant-intro, .invite, .lb — already lives in these two files. -->
   <link rel="stylesheet" href="/styles.css" />
   <link rel="stylesheet" href="/responsive.css" />
 
@@ -140,7 +140,7 @@
       /* --- Everything that is navigation, marketing or interactive --- */
       .nav, .nav__drawer, .nav__scrim, .back-bar, .footer,
       .listing-hero, .filmstrip-section, .section--features .features-nav,
-      .matterport, .section--market, .section--community, .section--guide-fl,
+      .matterport, .section--market, .section--community, .section--grant-intro,
       #listing-contact, .lightbox, .listing-hero__share,
       .grant-note__btn, .grant-note__editor, .grant-note__status,
       .prop-desc__flag, .aside-fl__cta, .cta-arrow {
@@ -545,7 +545,7 @@ function featShift(dir) {
 window.addEventListener("resize", () => featShift(0));
 
 /* ---------------- Render ---------------- */
-function render(listing, photoUrls, marketIntel, area, contact) {
+function render(listing, photoUrls, marketIntel, area, contact, grantIntro) {
   // Only ever a genuine number: the API's realPhone() returns null for the
   // placeholders still sitting in the CMS, and the footer line is omitted
   // rather than printing something a buyer might dial.
@@ -757,13 +757,21 @@ function render(listing, photoUrls, marketIntel, area, contact) {
       </div>
     </section>` : "";
 
-  const guideCreds = [
-    ["35-Year Resident", "Unmatched local knowledge and community roots"],
-    ["17 Years Realtor", "Navigating every market cycle since 2007"],
-    ["Volume Leader", "Consistently ranked in the top 1% of Sierra agents"],
-    ["Legal Training", "Expertise in complex zoning and water rights"],
-  ];
-  const check = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12" /></svg>`;
+  /* The "Your Neighbor Before You Even Arrive" section. Everything in it comes
+     from the `grant_intro` singleton via the API, which is the same entry and
+     the same reader the home page's <GrantIntro> component uses -- so the copy
+     cannot drift between the two. The classes are shared too (.grant-intro* in
+     styles.css). If the markup below changes, change the component to match.
+     The fallback keeps the section rendering if the API response predates the
+     field, or the collection has not been pushed. */
+  const gi = grantIntro || {};
+  const giEyebrow = gi.eyebrow || "Your Neighbor Before You Even Arrive";
+  const giHeadline = gi.headline || "Grant C. Meyer";
+  const giPhoto = gi.photo || "/assets/grant.jpg";
+  const giBody = gi.body || "";
+  const giCta = gi.listingCtaLabel || "LET'S TALK ABOUT THIS PROPERTY";
+  const guideCreds = (gi.creds && gi.creds.length ? gi.creds : []);
+  const check = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12" /></svg>`;
 
   // The table wrapper exists for one reason: Chrome repeats a real <tfoot>
   // at the foot of every printed page and reserves its height in the flow.
@@ -923,30 +931,26 @@ function render(listing, photoUrls, marketIntel, area, contact) {
       </div>
     </section>
 
-    <section class="section--guide-fl">
-      <div class="guide-fl">
-        <div class="guide-fl__photo" style="background-image:url('/assets/grant.jpg')"></div>
-        <div class="guide-fl__copy">
+    <section class="section--grant-intro">
+      <div class="grant-intro">
+        <div class="grant-intro__photo" style="background-image:url('${escapeHtml(giPhoto)}')"></div>
+        <div class="grant-intro__copy">
           <div>
-            <div class="eyebrow">Your Neighbor Before You Even Arrive.</div>
-            <h2 class="guide-fl__name">Grant C. Meyer</h2>
+            <div class="eyebrow">${escapeHtml(giEyebrow)}</div>
+            <h2 class="grant-intro__h">${escapeHtml(giHeadline)}</h2>
           </div>
-          <div class="guide-fl__creds">
-            ${guideCreds.map(([h, p]) => `
-              <div class="guide-fl__cred">
-                <span class="guide-fl__cred__icon">${check}</span>
+          <div class="grant-intro__creds">
+            ${guideCreds.map((c) => `
+              <div class="cred">
+                <span class="check-disc" aria-hidden="true">${check}</span>
                 <div>
-                  <div class="guide-fl__cred__h">${h}</div>
-                  <div class="guide-fl__cred__p">${p}</div>
+                  <div class="cred__t">${escapeHtml(c.t)}</div>
+                  ${c.d ? `<div class="cred__d">${escapeHtml(c.d)}</div>` : ""}
                 </div>
               </div>`).join("")}
           </div>
-          <p class="guide-fl__body">
-            Grant doesn't just sell homes — he curates the Tahoe lifestyle. With a deep understanding of the
-            local micro-climates, community nuances, and the intricate legal landscape of Lake Tahoe property,
-            he provides a level of counsel that goes beyond the sale.
-          </p>
-          <a class="guide-fl__cta" href="#listing-contact">Let's Talk About This Property</a>
+          <p class="grant-intro__body">${escapeHtml(giBody)}</p>
+          <a class="btn btn--dark btn--start" href="#listing-contact">${escapeHtml(giCta)}</a>
         </div>
       </div>
     </section>
@@ -1131,7 +1135,7 @@ async function load() {
     const data = await resp.json();
     if (data.error) throw new Error(data.error);
     canEdit = !!data.canEdit;
-    render(data.listing, data.photos || [], data.marketIntel || null, data.area || null, data.contact || null);
+    render(data.listing, data.photos || [], data.marketIntel || null, data.area || null, data.contact || null, data.grantIntro || null);
   } catch (e) {
     document.getElementById("app").innerHTML = `<div class="loading">Failed to load listing: ${escapeHtml(e.message)}</div>`;
   }

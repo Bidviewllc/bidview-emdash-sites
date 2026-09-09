@@ -819,9 +819,15 @@ a:hover .cta-arrow { transform: translateX(4px); }
   gap: 14px;
   align-items: flex-start;
 }
+/* A check in a pale orange disc. Was written four ways: .cred__icon at 32px
+   with a "✓" text glyph, a bare 22px SVG on the listing page, and
+   .cg-glance__tick at 26px. One class now, and an SVG rather than a glyph so
+   it does not depend on the system font.
+   .cred__icon is kept as an alias because /about/ still uses it. */
+.check-disc,
 .cred__icon {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   background: rgba(247,148,91,0.12);
   color: var(--orange);
@@ -1889,19 +1895,26 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
 }
 
 /* --- The Guide Appears (Grant) --- */
-.section--guide-fl {
-  padding: 96px 48px;
-  background: var(--cream);
-}
-.guide-fl {
-  max-width: 1280px;
-  margin: 0 auto;
+/* ===== Grant intro =======================================================
+   "Your Neighbor Before You Even Arrive" -- ONE section, on the home page and
+   on every listing page. It used to be two: .guide on the home page (a 1:1
+   grid, a name plate under the photo, a 48px sentence for a headline) and
+   .guide-fl here (1/3 - 2/3, Grant's name as the headline, bare check marks).
+   The layout below is the listing page's, the check discs are the home page's,
+   and the copy comes from the `grant_intro` singleton so it is written once.
+
+   The photo has no name plate any more: the headline is his name.
+
+   /about/'s "Meeting the Mentor" block still uses the older .guide* classes.
+   That is a different section -- his bio on his own page, with its own four
+   credentials -- and is deliberately left on its own layout. */
+.grant-intro {
   display: grid;
-  grid-template-columns: 328px 1fr;
+  grid-template-columns: 1fr 2fr;
   gap: 64px;
   align-items: start;
 }
-.guide-fl__photo {
+.grant-intro__photo {
   width: 100%;
   aspect-ratio: 328 / 414;
   border-radius: 5px;
@@ -1909,8 +1922,8 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   background-position: center 20%;
   box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
 }
-.guide-fl__copy { display: flex; flex-direction: column; gap: 24px; }
-.guide-fl__name {
+.grant-intro__copy { display: flex; flex-direction: column; gap: 24px; }
+.grant-intro__h {
   font-family: var(--font-serif);
   font-weight: 400;
   font-size: 48px;
@@ -1918,62 +1931,32 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   line-height: 1;
   margin-top: 8px;
 }
-.guide-fl__creds {
+.grant-intro__creds {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 28px 32px;
   margin: 8px 0 0;
 }
-.guide-fl__cred {
-  display: flex;
-  gap: 14px;
-  align-items: flex-start;
-}
-.guide-fl__cred__icon {
-  width: 22px;
-  height: 22px;
-  flex-shrink: 0;
-  color: var(--orange);
-  margin-top: 2px;
-}
-.guide-fl__cred__h {
-  font-family: var(--font-sans);
-  font-weight: 700;
-  font-size: 16px;
-  color: var(--navy);
-  line-height: 1.5;
-}
-.guide-fl__cred__p {
-  font-family: var(--font-sans);
-  font-size: 14px;
-  line-height: 1.4;
-  color: var(--body);
-  margin-top: 2px;
-}
-.guide-fl__body {
+.grant-intro__body {
   font-family: var(--font-sans);
   font-size: 16px;
   line-height: 1.625;
   color: var(--body);
   margin-top: 8px;
 }
-.guide-fl__cta {
-  display: inline-flex;
-  align-self: flex-start;
-  background: var(--navy);
-  color: var(--white);
-  font-family: var(--font-sans);
-  font-weight: 500;
-  font-size: 14px;
-  letter-spacing: 0.1em;
-  padding: 16px 32px;
-  border-radius: 4px;
-  cursor: pointer;
-  text-transform: uppercase;
-  transition: background 200ms ease;
+/* The listing page's own wrapper: it is not inside .section/.container, so it
+   carries its own padding and tone. */
+.section--grant-intro {
+  padding: 96px 48px;
+  background: var(--cream);
 }
-.guide-fl__cta:hover { background: #1c3050; }
-
+/* Same measure as .container, so the section is literally identical on the
+   home page and on a listing page rather than merely the same proportions.
+   Its neighbours on the listing page run 1200-1280px; the 16px is invisible. */
+.section--grant-intro .grant-intro {
+  max-width: 1184px;
+  margin: 0 auto;
+}
 /* --- Market Intelligence --- */
 .section--market {
   padding: 96px 40px;

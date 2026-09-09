@@ -292,10 +292,10 @@
   .local-card__body p { font-size: 16px; }
 
   /* Guide Appears */
-  .section--guide-fl { padding: 72px 32px; }
-  .guide-fl { grid-template-columns: 1fr; gap: 40px; }
-  .guide-fl__photo { max-width: 360px; }
-  .guide-fl__name { font-size: 40px; }
+  .section--grant-intro { padding: 72px 32px; }
+  .grant-intro { grid-template-columns: 1fr; gap: 40px; }
+  .grant-intro__photo { max-width: 360px; }
+  .grant-intro__h { font-size: 40px; }
 
   /* Market Intelligence */
   .section--market { padding: 72px 24px; }
@@ -507,11 +507,11 @@
   .local-card__photo { height: 240px; }
 
   /* Guide Appears */
-  .section--guide-fl { padding: 56px 20px; }
-  .guide-fl__photo { max-width: 100%; aspect-ratio: 4/5; }
-  .guide-fl__name { font-size: 32px; }
-  .guide-fl__creds { grid-template-columns: 1fr; gap: 18px; }
-  .guide-fl__body { font-size: 15px; }
+  .section--grant-intro { padding: 56px 20px; }
+  .grant-intro__photo { max-width: 100%; aspect-ratio: 4/5; }
+  .grant-intro__h { font-size: 32px; }
+  .grant-intro__creds { grid-template-columns: 1fr; gap: 18px; }
+  .grant-intro__body { font-size: 15px; }
 
   /* Market Intelligence */
   .section--market { padding: 56px 20px; }

@@ -126,18 +126,8 @@
   color: var(--navy);
 }
 /* The check sits in its own pale disc, so the rows read as a checklist rather
-   than as a bulleted list. */
-.cg-glance__tick {
-  flex-shrink: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  background: rgba(247, 148, 91, 0.13);
-  color: var(--orange);
-}
+   than as a bulleted list. The disc itself is .check-disc in styles.css --
+   the same one the Grant intro credentials use. */
 
 /* 6. History */
 .cg-history { padding: 90px 48px; background: var(--navy); text-align: center; }

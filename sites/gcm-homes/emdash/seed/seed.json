@@ -157,16 +157,6 @@
 					"type": "text"
 				},
 				{
-					"slug": "guide_eyebrow",
-					"label": "Guide eyebrow",
-					"type": "string"
-				},
-				{
-					"slug": "guide_heading",
-					"label": "Guide heading",
-					"type": "text"
-				},
-				{
 					"slug": "featured_eyebrow",
 					"label": "Featured eyebrow",
 					"type": "string"
@@ -205,16 +195,6 @@
 					"slug": "emotion_image",
 					"label": "Emotion background image",
 					"type": "image"
-				},
-				{
-					"slug": "guide_body",
-					"label": "Guide closing paragraph",
-					"type": "text"
-				},
-				{
-					"slug": "guide_cta",
-					"label": "Guide button label",
-					"type": "string"
 				},
 				{
 					"slug": "proof_heading",
@@ -320,6 +300,91 @@
 					"slug": "success_message",
 					"label": "Message shown after sending",
 					"type": "text"
+				}
+			]
+		},
+		{
+			"slug": "grant_intro",
+			"label": "Grant intro (site-wide)",
+			"labelSingular": "Grant intro",
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "eyebrow",
+					"label": "Eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "headline",
+					"label": "Headline",
+					"type": "string"
+				},
+				{
+					"slug": "body",
+					"label": "Body",
+					"type": "text"
+				},
+				{
+					"slug": "photo",
+					"label": "Photo",
+					"type": "image"
+				},
+				{
+					"slug": "cta_label",
+					"label": "Button label",
+					"type": "string"
+				},
+				{
+					"slug": "cta_href",
+					"label": "Button link",
+					"type": "string"
+				},
+				{
+					"slug": "listing_cta_label",
+					"label": "Button label on a listing page",
+					"type": "string"
+				},
+				{
+					"slug": "cred1_t",
+					"label": "Credential 1 — title",
+					"type": "string"
+				},
+				{
+					"slug": "cred1_d",
+					"label": "Credential 1 — detail",
+					"type": "string"
+				},
+				{
+					"slug": "cred2_t",
+					"label": "Credential 2 — title",
+					"type": "string"
+				},
+				{
+					"slug": "cred2_d",
+					"label": "Credential 2 — detail",
+					"type": "string"
+				},
+				{
+					"slug": "cred3_t",
+					"label": "Credential 3 — title",
+					"type": "string"
+				},
+				{
+					"slug": "cred3_d",
+					"label": "Credential 3 — detail",
+					"type": "string"
+				},
+				{
+					"slug": "cred4_t",
+					"label": "Credential 4 — title",
+					"type": "string"
+				},
+				{
+					"slug": "cred4_d",
+					"label": "Credential 4 — detail",
+					"type": "string"
 				}
 			]
 		},
@@ -1717,8 +1782,6 @@
 					"stat3_num": "20–40%",
 					"stat3_label": "ONLINE VALUATION INACCURACY",
 					"stat3_desc": "Algorithm-based estimates fail to account for Tahoe's specific micro-locations and lot features.",
-					"guide_eyebrow": "YOUR NEIGHBOR BEFORE YOU EVEN ARRIVE",
-					"guide_heading": "This Is Where 35 Years Makes the Difference.",
 					"featured_eyebrow": "CURATED LAKE TAHOE PROPERTIES",
 					"featured_heading": "Featured Listings",
 					"cta_heading": "Your Tahoe Story Starts With One Conversation.",
@@ -2047,6 +2110,30 @@
 					"office_note": "By appointment, always welcome",
 					"hours": "Mon – Sat · 8am – 7pm PT\nReplies within 24 hours\nAfter-hours by request",
 					"service_area": "Incline Village · Crystal Bay\nGlenbrook · Zephyr Cove\n& the greater North Shore"
+				}
+			}
+		],
+		"grant_intro": [
+			{
+				"id": "default",
+				"slug": "default",
+				"status": "published",
+				"data": {
+					"title": "Grant intro",
+					"eyebrow": "Your Neighbor Before You Even Arrive",
+					"headline": "Grant C. Meyer",
+					"body": "Buying here is not the same as buying anywhere else. The lot lines, the lake rights, the TRPA coverage rules, the difference one street makes to a view — those are the things that decide whether a house is worth what it's listed at. Thirty-five years of living here is how you learn them.",
+					"cta_label": "MORE ABOUT GRANT",
+					"cta_href": "/about/",
+					"listing_cta_label": "LET'S TALK ABOUT THIS PROPERTY",
+					"cred1_t": "35-Year Resident",
+					"cred1_d": "Unmatched local knowledge and community roots.",
+					"cred2_t": "17 Years Realtor",
+					"cred2_d": "Navigating every market cycle since 2007.",
+					"cred3_t": "Volume Leader",
+					"cred3_d": "Consistently ranked in the top 1% of Sierra agents.",
+					"cred4_t": "Legal Training",
+					"cred4_d": "Expertise in complex zoning and water rights."
 				}
 			}
 		],

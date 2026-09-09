@@ -7,6 +7,9 @@ import { getEmDashEntry } from "emdash";
 // Shared with ContactCta: the print sheet must not carry a number a buyer
 // might dial, and the site must not display one either.
 import { realPhone } from "../../../lib/contact-details";
+// The "Your Neighbor Before You Even Arrive" section is shared with the home
+// page. Same singleton, same reader, so the two cannot drift.
+import { getGrantIntro } from "../../../lib/grant-intro";
 export const prerender = false;
 
 export const GET: APIRoute = async ({ params, locals }) => {
@@ -63,7 +66,8 @@ export const GET: APIRoute = async ({ params, locals }) => {
 			contact = { phone: realPhone((cta as any)?.entry?.data?.phone) };
 		} catch { contact = { phone: null }; }
 
-		return new Response(JSON.stringify({ ...result, listing, marketIntel, area: areaInfo, canEdit, contact }), { headers: { "Content-Type": "application/json", "Cache-Control": cache } });
+		const grantIntro = await getGrantIntro();
+		return new Response(JSON.stringify({ ...result, listing, marketIntel, area: areaInfo, canEdit, contact, grantIntro }), { headers: { "Content-Type": "application/json", "Cache-Control": cache } });
 	} catch (e: any) {
 		return new Response(JSON.stringify({ error: e.message }), { status: 500, headers: { "Content-Type": "application/json" } });
 	}
