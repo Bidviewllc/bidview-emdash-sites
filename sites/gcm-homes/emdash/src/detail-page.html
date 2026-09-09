@@ -118,10 +118,23 @@
          turned "background graphics" on.
        - Colour is inverted where the screen uses white-on-navy, so the ink is
          dark on white rather than a solid navy block. */
-    .print-sheet, .print-foot { display: none; }
+    .print-sheet, .print-foot, .print-extras { display: none; }
+    /* The print-only table wrapper must not behave like a table on screen. */
+    .print-doc, .print-doc__body,
+    .print-doc > tbody > tr, .print-doc > tbody > tr > td { display: block; }
+    .print-doc { width: 100%; border-collapse: collapse; }
 
     @media print {
-      @page { size: letter portrait; margin: 14mm 14mm 16mm; }
+      @page { size: letter portrait; margin: 14mm; }
+
+      /* Back to a real table so the <tfoot> repeats -- see the note where
+         the markup is generated. */
+      .print-doc { display: table; width: 100%; table-layout: fixed; }
+      .print-doc__body { display: table-row-group; }
+      .print-doc > tbody > tr, .print-doc > tfoot > tr { display: table-row; }
+      .print-doc > tbody > tr > td, .print-doc > tfoot > tr > td {
+        display: table-cell; padding: 0; vertical-align: top;
+      }
 
       html, body { background: #fff !important; padding-top: 0 !important; }
       body { font-size: 11pt; color: #000; }
@@ -139,8 +152,10 @@
       /* --- The print-only header sheet --- */
       .print-sheet { display: block; page-break-after: avoid; }
       .print-sheet__img {
-        width: 100%; height: 78mm; object-fit: cover;
-        border-radius: 2mm; margin-bottom: 6mm;
+        /* 78mm pushed the condensed stats onto page two and left the foot of
+           page one blank. */
+        width: 100%; height: 64mm; object-fit: cover;
+        border-radius: 2mm; margin-bottom: 5mm;
       }
       .print-sheet__head {
         display: flex; align-items: center; justify-content: space-between;
@@ -165,40 +180,90 @@
         font-weight: 400; letter-spacing: 0; color: #15243b; margin-left: auto;
       }
 
-      /* --- Description + Quick Statistics: one column, then the other --- */
+      /* --- Condensed stats + Grant's note, side by side --- */
+      .print-extras { display: block; }
+      .print-cols {
+        display: grid; grid-template-columns: 1fr 1fr; gap: 6mm;
+        margin-top: 7mm; page-break-inside: avoid;
+      }
+      /* With no note there is nothing to sit beside, so the stats run the full
+         measure in two columns instead of leaving half the page blank. */
+      .print-cols--solo { grid-template-columns: 1fr; }
+      .print-cols--solo .print-stats__list {
+        display: grid; grid-template-columns: 1fr 1fr; column-gap: 8mm;
+      }
+
+      .print-stats, .print-note {
+        border: 0.4mm solid #c5c6ce; padding: 4mm 5mm; page-break-inside: avoid;
+      }
+      .print-stats__h, .print-note__h {
+        font-family: 'Manrope', sans-serif; font-size: 8pt; font-weight: 700;
+        letter-spacing: 0.16em; text-transform: uppercase; color: #15243b;
+        padding-bottom: 2mm; margin-bottom: 2mm; border-bottom: 0.3mm solid #c5c6ce;
+      }
+      .print-stats__list { margin: 0; }
+      .print-stats__row {
+        display: flex; justify-content: space-between; gap: 4mm;
+        padding: 1.1mm 0; border-bottom: 0.2mm solid #eceae6;
+        break-inside: avoid;
+      }
+      .print-stats__row:last-child { border-bottom: none; }
+      .print-stats__row dt {
+        font-family: 'Manrope', sans-serif; font-size: 8pt; color: #44474d;
+      }
+      .print-stats__row dd {
+        margin: 0; font-family: 'Manrope', sans-serif; font-size: 8pt;
+        font-weight: 600; color: #15243b; text-align: right;
+      }
+      .print-note { border-left: 1mm solid #f7945b; }
+      .print-note__body {
+        font-family: 'Source Serif 4', Georgia, serif; font-size: 9.5pt;
+        line-height: 1.55; color: #15243b;
+      }
+      .print-note__body p { margin: 0 0 2mm; }
+      .print-note__attr {
+        font-family: 'Manrope', sans-serif; font-size: 7pt; font-weight: 700;
+        letter-spacing: 0.14em; color: #f7945b; margin-top: 2.5mm;
+      }
+
+      /* Grant's credentials -- the screen's .section--guide-fl without the
+         portrait (a background image, which print drops) or the CTA button. */
+      .print-guide {
+        margin-top: 7mm; padding-top: 4mm; border-top: 0.4mm solid #c5c6ce;
+        page-break-inside: avoid;
+      }
+      .print-guide__eyebrow {
+        font-family: 'Manrope', sans-serif; font-size: 7.5pt; font-weight: 700;
+        letter-spacing: 0.16em; text-transform: uppercase; color: #f7945b;
+      }
+      .print-guide__name {
+        font-family: 'Noto Serif', Georgia, serif; font-size: 15pt;
+        color: #15243b; margin: 1.5mm 0 3mm;
+      }
+      .print-guide__creds {
+        display: grid; grid-template-columns: 1fr 1fr; gap: 2.5mm 8mm;
+      }
+      .print-guide__cred__h {
+        font-family: 'Manrope', sans-serif; font-size: 8.5pt; font-weight: 700;
+        color: #15243b;
+      }
+      .print-guide__cred__p {
+        font-family: 'Manrope', sans-serif; font-size: 8pt; color: #44474d;
+      }
+
+      /* --- Description; the screen's own stats aside and note band are
+             replaced by .print-extras above --- */
+      .aside-fl, .aside-fl--dark, .section--local, .grant-note { display: none !important; }
       .listing-body { padding: 0 !important; background: #fff !important; }
       .listing-body__grid { display: block !important; }
       .listing-body__h--figma { font-size: 15pt; margin-top: 8mm; }
       .listing-body__rule--figma { height: 1mm; width: 22mm; margin: 4mm 0; }
       .prop-desc__body { font-size: 10.5pt; line-height: 1.65; color: #26282d; }
 
-      /* The stats panel is white-on-navy on screen. Print it as a bordered
-         table instead of a solid navy rectangle. */
-      .aside-fl, .aside-fl--dark {
-        background: #fff !important; border: 0.4mm solid #c5c6ce;
-        margin-top: 8mm; padding: 5mm 6mm; page-break-inside: avoid;
-      }
-      .aside-fl--dark .aside-fl__h {
-        color: #15243b !important; border-bottom-color: #c5c6ce !important;
-      }
-      .aside-fl--dark .aside-fl__row { border-bottom-color: #e4e2dd !important; }
-      .aside-fl--dark .aside-fl__row__l { color: #44474d !important; }
-      .aside-fl--dark .aside-fl__row__v { color: #15243b !important; }
-      .aside-fl__stats { display: block !important; }
-
-      /* Grant's note keeps its orange rule -- a border prints where a
-         background does not. */
-      .grant-note {
-        background: #fff !important; border-left: 1mm solid #f7945b;
-        page-break-inside: avoid; margin-top: 6mm; padding: 4mm 6mm;
-      }
-      .grant-note--empty { display: none !important; }
-      .grant-note__body { font-size: 11pt; color: #15243b; }
-
       /* --- Features: the carousel becomes a plain three-across list --- */
       .section--features { padding: 0 !important; background: #fff !important; }
       .features-wrap { max-width: none !important; padding: 0 !important; }
-      .features-h { font-size: 15pt; color: #15243b; margin: 9mm 0 4mm; }
+      .features-h { font-size: 14pt; color: #15243b; margin: 7mm 0 3mm; }
       .features-viewport { overflow: visible !important; }
       .features-track {
         display: grid !important; grid-template-columns: 1fr 1fr;
@@ -213,18 +278,59 @@
         border: 0.4mm solid #c5c6ce; padding: 4mm 5mm; background: #fff !important;
         page-break-inside: avoid;
       }
-      .feat-card__h { font-size: 9pt; color: #15243b; }
-      .feat-card__row { font-size: 9.5pt; }
+      /* The screen metrics (26px heading, 28px bottom margin, 12px row
+         padding) spilled two of the four cards onto a third, near-empty page. */
+      .feat-card__h {
+        font-size: 9pt; color: #15243b;
+        padding-bottom: 1.5mm; margin-bottom: 2mm;
+        border-bottom-color: #e5e7eb;
+      }
+      .feat-card__row { font-size: 9pt; padding: 1.1mm 0; gap: 4mm; }
       .feat-card__row__l { color: #44474d; }
       .feat-card__row__v { color: #15243b; }
 
-      /* --- Closing line: who to call, and the URL this sheet came from --- */
+      /* --- Footer, on every printed page ---
+             position: fixed repeats an element on each page of print output, and
+             @page's bottom margin is sized to reserve room for it so no content
+             runs underneath. The logo file is the site's white one; brightness(0)
+             flattens it to black while keeping its transparency, the same trick
+             styles.css already uses in reverse for the transparent nav. */
+      /* Repeated at the bottom of every printed page, with its height
+         reserved in the flow so it never covers content. `position: fixed`
+         repeats too but reserves nothing -- it painted over the stats block --
+         and pushing it into the @page margin got it clipped away entirely.
+         A footer group is laid out as a row group, so the flex row lives on
+         .print-foot__inner rather than here. */
       .print-foot {
-        display: block; margin-top: 10mm; padding-top: 3mm;
-        border-top: 0.4mm solid #c5c6ce;
+        display: table-footer-group;
         font-family: 'Manrope', sans-serif; font-size: 8.5pt; color: #44474d;
       }
-      .print-foot__url { margin-top: 1.5mm; color: #75777e; word-break: break-all; }
+      /* Every page gets the footer, so the rule above it should not also carry
+         a big top margin on the pages where content runs right up to it. */
+      .print-doc > tfoot .print-foot__inner { margin-top: 4mm; }
+      .print-foot__inner {
+        display: flex; align-items: center; gap: 7mm;
+        padding-top: 2.5mm; margin-top: 6mm;
+        border-top: 0.4mm solid #c5c6ce;
+      }
+      .print-foot__logo {
+        height: 11mm; width: auto; flex-shrink: 0;
+        /* The site's logo file is the white one. brightness(0) flattens it to
+           black and keeps its transparency -- the same trick styles.css uses in
+           reverse to make the colour logo white over the transparent nav. */
+        filter: brightness(0);
+      }
+      .print-foot__mid { flex: 1 1 auto; min-width: 0; }
+      .print-foot__cta {
+        font-family: 'Source Serif 4', Georgia, serif; font-size: 11pt;
+        color: #15243b; line-height: 1.25;
+      }
+      .print-foot__who { font-size: 7.5pt; color: #75777e; margin-top: 1mm; }
+      .print-foot__contact { text-align: right; flex: 0 0 auto; }
+      .print-foot__phone {
+        font-family: 'Noto Serif', Georgia, serif; font-size: 13pt; color: #15243b;
+      }
+      .print-foot__site { font-size: 9.5pt; font-weight: 600; color: #15243b; margin-top: 0.8mm; }
 
       /* Never split a heading off from what follows it. */
       h1, h2, h3, .features-h, .listing-body__h--figma { page-break-after: avoid; }
@@ -470,7 +576,11 @@ function featShift(dir) {
 window.addEventListener("resize", () => featShift(0));
 
 /* ---------------- Render ---------------- */
-function render(listing, photoUrls, marketIntel, area) {
+function render(listing, photoUrls, marketIntel, area, contact) {
+  // Only ever a genuine number: the API's realPhone() returns null for the
+  // placeholders still sitting in the CMS, and the footer line is omitted
+  // rather than printing something a buyer might dial.
+  const contactPhone = (contact && contact.phone) || "";
   photos = photoUrls;
   lbIndex = null;
 
@@ -686,7 +796,12 @@ function render(listing, photoUrls, marketIntel, area) {
   ];
   const check = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12" /></svg>`;
 
+  // The table wrapper exists for one reason: Chrome repeats a real <tfoot>
+  // at the foot of every printed page and reserves its height in the flow.
+  // Nothing else does both. On screen the table, row group, row and cell are
+  // all display: block and the tfoot is hidden, so the layout is unchanged.
   document.getElementById("app").innerHTML = `
+    <table class="print-doc"><tbody class="print-doc__body"><tr><td>
     <div class="print-sheet" aria-hidden="true">
       ${photos[0] ? `<img class="print-sheet__img" src="${photos[0]}" alt="" />` : ""}
       <div class="print-sheet__head">
@@ -771,6 +886,49 @@ function render(listing, photoUrls, marketIntel, area) {
         </aside>
       </div>
     </section>
+
+    <div class="print-extras" aria-hidden="true">
+      <div class="print-cols${note ? "" : " print-cols--solo"}">
+        <div class="print-stats">
+          <div class="print-stats__h">Quick Statistics</div>
+          <dl class="print-stats__list">
+            ${[
+              ["Status", listing.status],
+              ["Type", listing.subType || listing.type],
+              ["Year Built", listing.yearBuilt],
+              ["Living Area", fmtSqft(listing.sqft)],
+              ["Lot Size", listing.lotAcres ? listing.lotAcres + " acres" : "\u2014"],
+              ["Garage", listing.garage ? listing.garage + " spaces" : "\u2014"],
+              ["View", listing.view || "\u2014"],
+              ["Annual Taxes", listing.taxes ? fmt(listing.taxes) : "\u2014"],
+              ["Days on Market", listing.daysOnMarket ?? "\u2014"],
+            ].map(([l, v]) => `
+              <div class="print-stats__row">
+                <dt>${l}</dt>
+                <dd>${v || v === 0 ? escapeHtml(v) : "\u2014"}</dd>
+              </div>`).join("")}
+          </dl>
+        </div>
+        ${note ? `
+        <div class="print-note">
+          <div class="print-note__h">A Note From Grant</div>
+          <div class="print-note__body">${noteToHtml(note)}</div>
+          <div class="print-note__attr">\u2014 GRANT C. MEYER</div>
+        </div>` : ""}
+      </div>
+
+      <div class="print-guide">
+        <div class="print-guide__eyebrow">Your Neighbor Before You Even Arrive.</div>
+        <div class="print-guide__name">Grant C. Meyer</div>
+        <div class="print-guide__creds">
+          ${guideCreds.map(([h, p]) => `
+            <div class="print-guide__cred">
+              <div class="print-guide__cred__h">${h}</div>
+              <div class="print-guide__cred__p">${p}</div>
+            </div>`).join("")}
+        </div>
+      </div>
+    </div>
 
     ${filmstrip}
 
@@ -885,10 +1043,21 @@ function render(listing, photoUrls, marketIntel, area) {
       </div>
     </section>
 
-    <div class="print-foot" aria-hidden="true">
-      <div><strong>Grant C. Meyer</strong> · Coldwell Banker Global Luxury Agent</div>
-      <div class="print-foot__url" id="printFootUrl"></div>
-    </div>
+    </td></tr></tbody>
+
+    <tfoot class="print-foot" aria-hidden="true"><tr><td>
+      <div class="print-foot__inner">
+        <img class="print-foot__logo" src="/assets/logo-white.png" alt="Grant C. Meyer Homes" />
+        <div class="print-foot__mid">
+          <div class="print-foot__cta">Ready to learn more? Let's start with a conversation.</div>
+          <div class="print-foot__who">Grant C. Meyer · Coldwell Banker Global Luxury Agent</div>
+        </div>
+        <div class="print-foot__contact">
+          ${contactPhone ? `<div class="print-foot__phone">${escapeHtml(contactPhone)}</div>` : ""}
+          <div class="print-foot__site" id="printFootSite"></div>
+        </div>
+      </div>
+    </td></tr></tfoot></table>
 
     <footer class="footer">
       <div class="footer__cols">
@@ -937,8 +1106,11 @@ function render(listing, photoUrls, marketIntel, area) {
   // The print sheet's closing line carries the URL it came from, so a printed
   // page leads back to the live listing. Set here rather than in the template
   // because the template is a string built before anything is in the document.
-  const pf = document.getElementById("printFootUrl");
-  if (pf) pf.textContent = location.origin + location.pathname;
+  // The website address for the print footer. Taken from the host actually
+  // serving the page rather than hardcoded, so it is correct on the workers.dev
+  // preview and on the real domain once one is attached.
+  const site = document.getElementById("printFootSite");
+  if (site) site.textContent = location.host;
 }
 
 /* ---- Saved homes ----------------------------------------------------------
@@ -1002,7 +1174,7 @@ async function load() {
     const data = await resp.json();
     if (data.error) throw new Error(data.error);
     canEdit = !!data.canEdit;
-    render(data.listing, data.photos || [], data.marketIntel || null, data.area || null);
+    render(data.listing, data.photos || [], data.marketIntel || null, data.area || null, data.contact || null);
   } catch (e) {
     document.getElementById("app").innerHTML = `<div class="loading">Failed to load listing: ${escapeHtml(e.message)}</div>`;
   }

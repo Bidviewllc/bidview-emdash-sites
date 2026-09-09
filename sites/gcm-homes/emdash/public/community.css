@@ -57,11 +57,9 @@
    read as one object. Removed from public/map/index.html in the same change. */
 /* The header and the frame share one 1px navy outline: the header's bottom
    border is the only line at the seam (the frame has border-top: none), so the
-   pair reads as a single bordered object with a divider under the label.
-   Per Liz's spec the header carries no left border. */
+   pair reads as a single bordered object with a divider under the label. */
 .nbhd__maphead {
   border: 1px solid var(--navy);
-  border-left: none;
   border-radius: 8px 8px 0 0;
   background: #fff;
   padding: 16px 22px;
@@ -167,6 +165,9 @@
   .cg-hero__copy { padding: 128px 24px 5vh; }
   .cg-h2 { font-size: 32px; }
   .cg-todo, .cg-featured, .cg-eras, .cg-facts__grid { grid-template-columns: 1fr; }
+  /* One per row on a phone: the orange rule reads as a stray vertical mark
+     next to centred text instead of an accent across a row of figures. */
+  .cg-fact { border-left: none; padding-left: 0; }
   /* Tracks .section's own mobile padding in responsive.css (64px 20px). */
   .cg-facts { padding: 64px 20px; }
   .cg-history { padding: 68px 20px; }

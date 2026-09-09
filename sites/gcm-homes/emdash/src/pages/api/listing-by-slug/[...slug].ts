@@ -3,7 +3,33 @@ import { bySlug } from "../../../lib/listings";
 import { neighborhoodForPoint } from "../../../lib/neighborhoods";
 import { imageUrl } from "../../../lib/media";
 import { env } from "cloudflare:workers";
+import { getEmDashEntry } from "emdash";
 export const prerender = false;
+
+/**
+ * Grant's phone, for the printable property sheet -- but only if it is real.
+ *
+ * The shared `contact_cta` entry still holds a placeholder (333-333-3333), and
+ * the design it came from used (775) 555-0192. A property sheet gets printed
+ * and handed to a buyer, so a fake number on it is worse than no number: the
+ * line is simply omitted until someone sets a genuine one in the dashboard.
+ * Same principle as ContactCta, which hides a contact row until its field has
+ * a real value.
+ */
+function realPhone(v: unknown): string | null {
+	const raw = String(v ?? "").trim();
+	if (!raw) return null;
+	const digits = raw.replace(/\D/g, "");
+	if (digits.length < 10) return null;
+	const ten = digits.slice(-10);
+	const area = ten.slice(0, 3);
+	const exchange = ten.slice(3, 6);
+	if (new Set(ten).size === 1) return null;                // 3333333333
+	if (area === exchange) return null;                      // 333-333-3333
+	if (area === "555" || exchange === "555") return null;   // reserved for fiction
+	if (ten.slice(3) === "0000000") return null;             // ...-000-0000
+	return raw;
+}
 export const GET: APIRoute = async ({ params, locals }) => {
 	try {
 		const slug = String(params.slug || "").replace(/\/+$/, "");
@@ -49,7 +75,16 @@ export const GET: APIRoute = async ({ params, locals }) => {
 				map_image: imageUrl((areaInfo as any).map_image),
 			};
 		}
-		return new Response(JSON.stringify({ ...result, listing, marketIntel, area: areaInfo, canEdit }), { headers: { "Content-Type": "application/json", "Cache-Control": cache } });
+		// Grant's contact details for the print sheet's repeating footer. Read from
+		// the same `contact_cta` singleton the site footer and every contact block
+		// use, so there is one place to change it.
+		let contact: { phone: string | null } = { phone: null };
+		try {
+			const cta = await getEmDashEntry("contact_cta", "default");
+			contact = { phone: realPhone((cta as any)?.entry?.data?.phone) };
+		} catch { contact = { phone: null }; }
+
+		return new Response(JSON.stringify({ ...result, listing, marketIntel, area: areaInfo, canEdit, contact }), { headers: { "Content-Type": "application/json", "Cache-Control": cache } });
 	} catch (e: any) {
 		return new Response(JSON.stringify({ error: e.message }), { status: 500, headers: { "Content-Type": "application/json" } });
 	}
