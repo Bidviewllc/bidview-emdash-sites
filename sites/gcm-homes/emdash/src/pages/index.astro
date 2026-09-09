@@ -230,7 +230,7 @@ const tagOf = (l: any) =>
 	<section class="section section--beige" data-screen-label="04 The Guide">
 		<div class="container guide">
 			<div class="guide__photo">
-				<div class="guide__img" style="background-image:url(/assets/grant.jpg);background-size:cover;background-position:center"></div>
+				<div class="guide__img"></div>
 				<div class="guide__name">Grant C. Meyer</div>
 			</div>
 			<div class="guide__copy">
@@ -245,7 +245,7 @@ const tagOf = (l: any) =>
 				<p class="guide__p" {...(e.guide_body ?? {})}>
 					{d.guide_body ?? "Buying here is not the same as buying anywhere else. The lot lines, the lake rights, the TRPA coverage rules, the difference one street makes to a view — those are the things that decide whether a house is worth what it's listed at. Thirty-five years of living here is how you learn them."}
 				</p>
-				<a class="btn btn--dark" href="/about/" style="align-self:flex-start;margin-top:8px">{d.guide_cta ?? "MORE ABOUT GRANT"}</a>
+				<a class="btn btn--dark btn--start" href="/about/">{d.guide_cta ?? "MORE ABOUT GRANT"}</a>
 			</div>
 		</div>
 		{/* The design also has a logos strip here. Not built: its headline is still
@@ -281,11 +281,11 @@ const tagOf = (l: any) =>
 	{/* FEATURED LISTINGS — live from D1 */}
 	<section class="section section--beige" data-screen-label="07 Featured Listings">
 		<div class="container">
-			<div style="text-align:center;max-width:640px;margin:0 auto 48px">
+			<div class="section-title section-title--nolead">
 				<span class="eyebrow" {...(e.featured_eyebrow ?? {})}>{d.featured_eyebrow ?? "CURATED LAKE TAHOE PROPERTIES"}</span>
-				<h2 class="reality__h" style="color:var(--navy);margin-top:12px" {...(e.featured_heading ?? {})}>{d.featured_heading ?? "Featured Listings"}</h2>
+				<h2 {...(e.featured_heading ?? {})}>{d.featured_heading ?? "Featured Listings"}</h2>
 			</div>
-			<div class="listings-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:32px">
+			<div class="listings-grid">
 				{featured.map((l) => (
 					<a class="card" href={`/homes/${l.slug}/`}>
 						<div class="card__media">
@@ -309,7 +309,7 @@ const tagOf = (l: any) =>
 					</a>
 				))}
 			</div>
-			<div style="text-align:center;margin-top:48px">
+			<div class="section-end-cta">
 				<a class="btn btn--dark" href="/listings/">VIEW ALL LISTINGS<span class="cta-arrow" aria-hidden="true">→</span></a>
 			</div>
 		</div>
@@ -320,10 +320,10 @@ const tagOf = (l: any) =>
 	     plain slider, one slide each, showing that neighbourhood's own map image.
 	     The whole section is absent when nothing is flagged. */}
 	{micro.length > 0 && (
-		<section class="section section--dark" style="position:relative;overflow:hidden" data-screen-label="08 Micro-Markets">
-			<div aria-hidden="true" style="position:absolute;right:0;top:50%;transform:translateY(-50%);width:427px;height:910px;opacity:0.1;color:var(--orange);pointer-events:none;display:flex;flex-direction:column;justify-content:center;gap:40px">
-				<img src="/assets/decoration-wave.svg" alt="" style="width:100%" />
-				<img src="/assets/decoration-wave.svg" alt="" style="width:100%;transform:translateY(-40px)" />
+		<section class="section section--dark section--clip" data-screen-label="08 Micro-Markets">
+			<div class="micro__decor" aria-hidden="true">
+				<img src="/assets/decoration-wave.svg" alt="" />
+				<img src="/assets/decoration-wave.svg" alt="" />
 			</div>
 			<div class="container">
 				<div class="section-title on-dark">
@@ -335,12 +335,10 @@ const tagOf = (l: any) =>
 					<div class="micro" data-micro-slide={i} style={i === 0 ? "" : "display:none"}>
 						<div class="micro__map">
 							<div class="micro__map__img" style={`background-image:url('${n.image}')`}></div>
-							<div style="position:absolute;left:24px;bottom:24px;color:rgba(255,255,255,0.6);font-size:11px;letter-spacing:0.18em;text-transform:uppercase">
-								LAKE TAHOE · NEVADA SIDE
-							</div>
+							<div class="micro__map__caption">LAKE TAHOE · NEVADA SIDE</div>
 						</div>
 						<div class="micro__content">
-							<h3 class="micro__h" style="border-width:0 0 0 2px">{n.title}</h3>
+							<h3 class="micro__h">{n.title}</h3>
 							<p class="micro__p">{n.body}</p>
 							<div class="micro__stats">
 								{n.avgPrice && (
@@ -364,12 +362,12 @@ const tagOf = (l: any) =>
 				{micro.length > 1 && (
 					<div class="micro__nav">
 						<button class="btn btn--icon btn--ghost" id="microPrev" aria-label="Previous neighborhood">←</button>
-						<div style="display:flex;align-items:center;gap:6px;padding:0 14px">
+						<div class="micro__dots">
 							{micro.map((n: any, i: number) => (
-								<button data-micro-dot={i} aria-label={n.title} style="width:6px;height:6px;border-radius:3px;background:rgba(255,255,255,0.3);transition:all 200ms ease"></button>
+								<button class="micro__dot" data-micro-dot={i} aria-label={n.title}></button>
 							))}
 						</div>
-						<button class="btn btn--icon" id="microNext" style="background:var(--orange)" aria-label="Next neighborhood">→</button>
+						<button class="btn btn--icon micro__next" id="microNext" aria-label="Next neighborhood">→</button>
 					</div>
 				)}
 			</div>

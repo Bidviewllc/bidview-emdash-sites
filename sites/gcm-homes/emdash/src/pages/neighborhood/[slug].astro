@@ -60,8 +60,8 @@ const meta = (l: any) => [l.beds && `${l.beds} BD`, l.baths && `${l.baths} BA`, 
 		<section class="nb-hero" data-screen-label="Neighborhood Hero">
 			<div class="nb-hero__veil"></div>
 			<div class="container nb-hero__copy">
-				<a class="nb-hero__back" href="/community/" style="display:inline-block;margin-bottom:20px">← The Community</a>
-				<span class="eyebrow eyebrow--light" style="display:block" {...(e.tag ?? {})}>{d.tag ?? area.tag}</span>
+				<a class="nb-hero__back" href="/community/">← The Community</a>
+				<span class="eyebrow eyebrow--light" {...(e.tag ?? {})}>{d.tag ?? area.tag}</span>
 				<h1 class="cg-hero__title" {...(e.title ?? {})}>{d.title ?? area.name}</h1>
 				<p class="cg-hero__sub" {...(e.hero_sub ?? {})}>{heroSub}</p>
 			</div>
@@ -120,23 +120,23 @@ const meta = (l: any) => [l.beds && `${l.beds} BD`, l.baths && `${l.baths} BA`, 
 							))}
 						</div>
 						{homes.length > 6 && (
-							<div style="text-align:center;margin-top:44px">
+							<div class="section-end-cta">
 								<a class="btn btn--dark" href="/listings/">SEE ALL {homes.length} HOMES<span class="cta-arrow" aria-hidden="true">→</span></a>
 							</div>
 						)}
 					</>
 				) : (
-					<div style="text-align:center">
+					<div class="u-center">
 						<a class="btn btn--orange" href="/contact/">Ask Grant what's available</a>
 					</div>
 				)}
 			</div>
 		</section>
 
-		<section class="section section--dark" style="text-align:center">
-			<div class="container" style="max-width:720px">
-				<h2 class="reality__h" style="color:#fff">Thinking About {area.name}?</h2>
-				<a class="btn btn--orange" href="/contact/" style="margin-top:24px;display:inline-block">INQUIRE NOW</a>
+		<section class="section section--dark u-center">
+			<div class="container container--narrow">
+				<h2 class="reality__h">Thinking About {area.name}?</h2>
+				<a class="btn btn--orange btn--spaced" href="/contact/">INQUIRE NOW</a>
 			</div>
 		</section>
 	</div>

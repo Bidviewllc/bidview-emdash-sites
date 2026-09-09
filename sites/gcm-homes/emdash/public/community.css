@@ -2,10 +2,10 @@
    Community Guide page + neighborhood sub-pages  (js/community.jsx)
    Loaded only by index.html (the SPA); listings/detail pages don't need it.
    =================================================================== */
-.cg-h2 {
-  font-family: var(--font-serif); font-weight: 400; font-size: 44px; line-height: 1.1;
-  color: var(--navy); letter-spacing: -0.01em; margin: 14px 0 0; text-wrap: balance;
-}
+/* Type comes from the shared section-heading rule in styles.css. This was its
+   own 44px at weight 400 with -0.01em tracking, which made every Community
+   heading visibly lighter and tighter than the same heading elsewhere. */
+.cg-h2 { color: var(--navy); margin: 14px 0 0; }
 .cg-h2--light { color: #fff; }
 .cg-intro { font-size: 17px; line-height: 1.7; color: var(--body); max-width: 620px; margin: 16px auto 0; }
 .cg-body { font-size: 16px; line-height: 1.8; color: var(--body); margin-bottom: 18px; }
@@ -94,7 +94,8 @@
 .cg-todo { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
 .cg-todo__card { position: relative; background: #fff; border: 1px solid rgba(197,198,206,0.45); border-radius: 6px; padding: 36px 30px; }
 .cg-todo__pick { position: absolute; top: 20px; right: 20px; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; color: var(--orange); background: rgba(247,148,91,0.12); padding: 4px 10px; border-radius: 999px; }
-.cg-todo__h { font-family: var(--font-serif); font-size: 24px; color: var(--navy); font-weight: 500; margin-bottom: 12px; padding-right: 40px; }
+/* Type comes from the shared card-heading rule in styles.css. */
+.cg-todo__h { color: var(--navy); margin-bottom: 12px; padding-right: 40px; }
 .cg-todo__p { font-size: 15px; line-height: 1.7; color: var(--body); }
 .cg-quote { max-width: 820px; margin: 56px auto 0; text-align: center; }
 .cg-quote p { font-family: var(--font-serif); font-style: italic; font-size: 26px; line-height: 1.5; color: var(--navy); }
@@ -137,6 +138,9 @@
 .nb-hero { position: relative; padding: 150px 0 70px; background: var(--navy); overflow: hidden; }
 .nb-hero__veil { position: absolute; inset: 0; background: linear-gradient(120deg, #15243b 0%, #1d3050 100%); }
 .nb-hero__copy { position: relative; color: #fff; }
+/* .cg-hero__title supplies the space below, so the eyebrow only needs to be
+   a block. Was `display:block` inline. */
+.nb-hero__copy .eyebrow { display: block; }
 .nb-hero__back { display: inline-block; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.7); margin-bottom: 20px; }
 .nb-hero__back:hover { color: var(--orange); }
 .nb-take { margin-top: 32px; padding: 26px 28px; background: var(--beige); border-left: 3px solid var(--orange); border-radius: 0 6px 6px 0; }
@@ -163,7 +167,6 @@
 @media (max-width: 640px) {
   .cg-hero__title { font-size: 40px; }
   .cg-hero__copy { padding: 128px 24px 5vh; }
-  .cg-h2 { font-size: 32px; }
   .cg-todo, .cg-featured, .cg-eras, .cg-facts__grid { grid-template-columns: 1fr; }
   /* One per row on a phone: the orange rule reads as a stray vertical mark
      next to centred text instead of an accent across a row of figures. */

@@ -424,13 +424,9 @@ a:hover .cta-arrow { transform: translateX(4px); }
   letter-spacing: -0.005em;
   color: var(--navy);
 }
-.h2 {
-  font-family: var(--font-serif);
-  font-weight: 500;
-  font-size: 48px;
-  line-height: 1.05;
-  color: var(--navy);
-}
+/* Type comes from the shared section-heading rule above; each of these keeps
+   only what is specific to it. */
+.h2 { color: var(--navy); }
 .h3 {
   font-family: var(--font-noto);
   font-weight: 400;
@@ -444,6 +440,72 @@ a:hover .cta-arrow { transform: translateX(4px); }
   color: var(--body);
 }
 
+/* ===== Heading scale =====
+   Every heading here is the same typeface, weight, tracking and balanced wrap;
+   only the size and the colour change. Those declarations used to be repeated
+   in a dozen rules that each picked a slightly different size and line-height
+   -- the section tier alone ran 44/46/48/50/52px at three different weights --
+   because they were written one section at a time.
+
+   Two tiers are shared, and they are the two that repeat across pages:
+
+     --h-section  a content section's heading: the "H2" tier
+     --h-card     a card or panel heading
+
+   Both are redefined once per breakpoint at the top of responsive.css, so the
+   whole scale moves together. Change either number and every heading in that
+   tier follows, at every width.
+
+   Colour is deliberately NOT in the base rule: whether a heading sits on cream
+   or on navy is a per-section decision, not a property of the tier.
+
+   Four groups are sized per context on purpose and should stay that way:
+
+     * Page heroes -- .hero__title (76px), .cg-hero__title (64), .chero__h (62),
+       .listing-hero__title. Each is set over a different photograph with a
+       different amount of copy, and they are weight 400, not 500.
+     * Full-bleed statement bands -- .emotion__h / .emotion-split__h /
+       .emotion-bc__h. Sized to the image behind them.
+     * .cta-slim__h (40px) -- the design specifies 40 for the slim closing band.
+     * The listing detail page's own face, --font-noto: .features-h,
+       .listing-body__h, .feat-card__h. A page-level type choice, not a drift. */
+:root {
+  --h-section: 48px;
+  --h-card: 26px;
+}
+
+.h2,
+.section-title h2,
+.reality__h,
+.guide__h,
+.net__h,
+.cg-h2,
+.invite__h,
+.micro__h,
+.content-hero__h {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: var(--h-section);
+  line-height: 1.06;
+  letter-spacing: -0.005em;
+  text-wrap: balance;
+}
+
+.invite__form__h,
+.blog-card__h,
+.pillar__title,
+.cg-todo__h,
+.acc__label,
+.content-card__h {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: var(--h-card);
+  line-height: 1.15;
+  letter-spacing: -0.005em;
+  text-wrap: balance;
+}
+
+
 /* ===== Reality Check ===== */
 .reality {
   display: grid;
@@ -452,14 +514,8 @@ a:hover .cta-arrow { transform: translateX(4px); }
   align-items: center;
 }
 .reality__h {
-  font-family: var(--font-serif);
-  font-weight: 500;
-  font-size: 50px;
-  line-height: 1.08;
-  letter-spacing: -0.005em;
   color: var(--white);
   margin-bottom: 28px;
-  text-wrap: balance;
 }
 .reality__p {
   font-size: 17px;
@@ -714,7 +770,10 @@ a:hover .cta-arrow { transform: translateX(4px); }
   aspect-ratio: 1 / 1;
   background-image: url("/assets/grant.jpg");
   background-size: cover;
-  background-position: center 22%;
+  /* Was `center 22%`, overridden back to `center` by an inline style on
+     /about/ and / and by .split--photo-fill on the other three users -- so it
+     never actually applied anywhere. */
+  background-position: center;
 }
 .guide__name {
   background: var(--navy);
@@ -728,15 +787,7 @@ a:hover .cta-arrow { transform: translateX(4px); }
   letter-spacing: 0.01em;
 }
 .guide__copy { display: flex; flex-direction: column; gap: 18px; padding-top: 10px; }
-.guide__h {
-  font-family: var(--font-serif);
-  font-weight: 500;
-  font-size: 46px;
-  line-height: 1.08;
-  color: var(--navy);
-  letter-spacing: -0.005em;
-  text-wrap: balance;
-}
+.guide__h { color: var(--navy); }
 .guide__creds {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -776,6 +827,10 @@ a:hover .cta-arrow { transform: translateX(4px); }
   color: var(--body);
   padding: 8px 0;
 }
+/* Only the first paragraph of a block wants the 8px above it; a run of them
+   should read as one column of text. Was `padding-top:0` inline on all seven
+   continuation paragraphs across /about/, /buyers/ and /sellers/. */
+.guide__p + .guide__p { padding-top: 0; }
 
 /* Logos strip */
 .logos-strip {
@@ -861,15 +916,36 @@ a:hover .cta-arrow { transform: translateX(4px); }
   flex-direction: column;
   gap: 28px;
 }
-.invite__h {
-  font-family: var(--font-serif);
-  font-weight: 500;
-  font-size: 44px;
-  line-height: 1.05;
-  letter-spacing: -0.005em;
-  text-wrap: balance;
+/* Colour is inherited from .invite__left, which is navy. */
+.invite__h { margin: 0; }
+.invite__rows {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 10px;
 }
 .invite__row { display: flex; align-items: flex-start; gap: 14px; }
+
+/* Bot-bait field: present in the DOM and reachable by a script, out of the
+   layout and out of the accessibility tree. Both inquiry forms use it. */
+.honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+/* Validation message. .form-error was a class name with nothing behind it --
+   the colour and spacing were written inline on both inquiry forms. The
+   `display:none` initial state stays inline: InquiryFormScript toggles
+   element.style.display directly. */
+.form-error {
+  color: #c0392b;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
 .invite__row svg { color: var(--orange); flex-shrink: 0; margin-top: 2px; }
 .invite__row__label {
   font-size: 11px;
@@ -893,10 +969,6 @@ a:hover .cta-arrow { transform: translateX(4px); }
 
 .invite__form { padding: 64px; display: flex; flex-direction: column; gap: 26px; }
 .invite__form__h {
-  font-family: var(--font-serif);
-  font-weight: 500;
-  font-size: 26px;
-  line-height: 1.15;
   color: var(--navy);
   margin-bottom: 4px;
 }
@@ -1090,15 +1162,13 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   gap: 28px;
   padding: 28px 0;
 }
+/* An orange rule down the left edge, not a box: the markup was overriding
+   `border: 1px` to `border-width: 0 0 0 2px` inline on the only element that
+   uses this class, so the class now says what it actually is. */
 .micro__h {
-  font-family: var(--font-serif);
-  font-weight: 500;
-  font-size: 44px;
-  line-height: 1;
   color: var(--white);
   padding: 16px 32px;
-  border: 1px solid var(--orange);
-  letter-spacing: -0.005em;
+  border-left: 2px solid var(--orange);
   align-self: flex-start;
 }
 .micro__p {
@@ -1126,6 +1196,9 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   margin-top: 10px;
 }
 .micro__nav { display: flex; gap: 16px; justify-content: center; margin-top: 56px; }
+/* The forward button is filled; .btn--orange would also recolour the arrow
+   and add a shadow, so only the fill is taken. */
+.micro__next { background: var(--orange); }
 
 /* ===== Asymmetric photo gallery ===== */
 .gallery {
@@ -1175,14 +1248,7 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
 /* The article-card shell is .card / .card--post above; what follows is the
    typography used inside its body. .blog-card__meta is gone — the category is
    now the same .card__tag pill the listing cards use. */
-.blog-card__h {
-  font-family: var(--font-serif);
-  font-weight: 500;
-  font-size: 26px;
-  line-height: 1.15;
-  color: var(--navy);
-  text-wrap: balance;
-}
+.blog-card__h { color: var(--navy); }
 .blog-card__p {
   font-size: 14px;
   line-height: 1.6;
@@ -2423,15 +2489,7 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   margin: 0 auto 16px;
 }
 .section-title .eyebrow { display: block; margin-bottom: 16px; }
-.section-title h2 {
-  font-family: var(--font-serif);
-  font-weight: 500;
-  font-size: 52px;
-  line-height: 1.05;
-  color: var(--navy);
-  letter-spacing: -0.005em;
-  text-wrap: balance;
-}
+.section-title h2 { color: var(--navy); }
 .section-title.on-dark h2 { color: var(--white); }
 .section-title p {
   font-size: 17px;
@@ -2491,7 +2549,6 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   height: 100%;
   aspect-ratio: auto;
   min-height: 480px;
-  background-position: center;
 }
 
 /* ===== Network statement (dark) =====
@@ -2507,15 +2564,7 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   text-align: center;
 }
 .net .eyebrow { display: block; margin-bottom: 18px; }
-.net__h {
-  font-family: var(--font-serif);
-  font-weight: 500;
-  font-size: 46px;
-  line-height: 1.08;
-  letter-spacing: -0.005em;
-  color: var(--white);
-  text-wrap: balance;
-}
+.net__h { color: var(--white); }
 .net__body {
   font-size: 19px;
   line-height: 1.78;
@@ -2616,13 +2665,8 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   outline-offset: 4px;
 }
 .acc__label {
-  font-family: var(--font-serif);
-  font-weight: 500;
-  font-size: 27px;
-  line-height: 1.2;
   color: var(--navy);
   transition: color 180ms ease;
-  text-wrap: balance;
 }
 
 /* Plus that becomes a minus -- two bars, the vertical one rotated away. No ring
@@ -2668,3 +2712,177 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   color: var(--body);
 }
 .acc__panel p + p { margin-top: 16px; }
+
+/* ===== Small shared utilities =====
+   These exist because the same handful of declarations were being written
+   inline on element after element. A class means one place to change them and
+   one place to look. */
+
+/* An eyebrow above a heading. Inline as `display:block;margin-bottom:20px` on
+   five hero eyebrows and `…18px` on two more -- the difference was not
+   deliberate. */
+.eyebrow--block {
+  display: block;
+  margin-bottom: 20px;
+}
+
+/* A section that continues the one above it rather than starting a new field:
+   the heading and its top padding belong to the previous section. Was
+   `padding-top:0` inline in six places. */
+.section--flush-top { padding-top: 0; }
+
+/* A centred "see everything" link closing a grid. Was
+   `text-align:center;margin-top:48px` (and once 44px) inline. */
+.section-end-cta {
+  text-align: center;
+  margin-top: 48px;
+}
+
+/* A button that should not stretch to the width of its flex column. */
+.btn--start {
+  align-self: flex-start;
+  margin-top: 8px;
+}
+
+/* ===== Simple content pages (Concierge, and any other page_content entry) ==
+   The whole page used to be built from inline styles on the elements, which is
+   why its hero heading was 56px at weight 600 -- the only weight-600 heading on
+   the site -- and its card headings 32px. Both now come from the shared
+   heading tiers. */
+.content-hero {
+  padding: 160px 80px 80px;
+  text-align: center;
+  background: var(--navy);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+.content-hero__h {
+  color: var(--white);
+  margin: 16px auto 0;
+  max-width: 880px;
+}
+.content-hero__sub {
+  max-width: 560px;
+  margin: 16px auto 0;
+  font-size: 17px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.75);
+}
+.content-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 56px;
+}
+.content-card {
+  position: relative;
+  background: var(--white);
+  padding: 44px 40px;
+  border-radius: 6px;
+  border: 1px solid rgba(197, 198, 206, 0.4);
+  box-shadow: 0 8px 16px -12px rgba(0, 0, 0, 0.08);
+}
+/* The orange tick over the top edge of each card. */
+.content-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 40px;
+  width: 40px;
+  height: 3px;
+  background: var(--orange);
+}
+.content-card .eyebrow {
+  font-size: 11px;
+  margin-top: 12px;
+}
+.content-card__h {
+  color: var(--navy);
+  margin: 12px 0 16px;
+}
+.content-card__p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--body);
+}
+
+/* ===== Footer text ===== */
+.footer__brand img { height: 100px; }
+.footer__brand__blurb {
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 24px;
+  max-width: 280px;
+}
+.footer__disclaimer {
+  font-size: 12px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.45);
+  max-width: 640px;
+}
+
+/* A section head with no lead paragraph beneath it still needs air before the
+   content it introduces; .section-title's own 16px assumes a <p> follows. */
+.section-title--nolead { margin-bottom: 48px; }
+
+/* Centre a block's inline content. Earns a name: it was written inline in
+   four places. */
+.u-center { text-align: center; }
+
+/* A narrower measure than .container's 1184px, for a short centred statement. */
+.container--narrow { max-width: 720px; }
+
+/* The decorative wave pair bleeding off the right edge of the Micro-Markets
+   band. Was ten declarations inline on the wrapper plus two on the images. */
+.micro__decor {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 427px;
+  height: 910px;
+  opacity: 0.1;
+  color: var(--orange);
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 40px;
+}
+.micro__decor img { width: 100%; }
+/* The second wave is offset so the pair reads as one continuous form. */
+.micro__decor img + img { transform: translateY(-40px); }
+
+/* The caption over the bottom-left of a micro-market map. */
+.micro__map__caption {
+  position: absolute;
+  left: 24px;
+  bottom: 24px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.micro__dots {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 14px;
+}
+.micro__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.3);
+  transition: background 200ms ease;
+}
+
+/* Statement panel: the flex column's own 24px gap does the spacing, so the
+   eyebrow and attribution need no margins of their own. */
+.emotion-split__panel .eyebrow { display: block; }
+.emotion-split__panel .pullquote__a { margin-top: 4px; }
+
+/* Clip a band's decorative bleed. */
+.section--clip { position: relative; overflow: hidden; }
+
+/* A button standing alone under a centred statement. */
+.btn--spaced { margin-top: 24px; }

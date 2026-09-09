@@ -104,7 +104,7 @@ const STORY_FALLBACKS = [
 		<div class="hero__img" style={`background-image:url(${heroImage})`}></div>
 		<div class="hero__veil"></div>
 		<div class="hero__copy">
-			<span class="eyebrow" style="display:block;margin-bottom:20px" {...(e.hero_eyebrow ?? {})}>
+			<span class="eyebrow eyebrow--block" {...(e.hero_eyebrow ?? {})}>
 				{d.hero_eyebrow ?? "About Grant C. Meyer"}
 			</span>
 			<h1 class="hero__title" set:html={d.hero_headline ?? "You've Found the Place.<br />Now Find the <em>Right Guide.</em>"} {...(e.hero_headline ?? {})}></h1>
@@ -155,7 +155,7 @@ const STORY_FALLBACKS = [
 	<section id="about-guide" class="section section--beige" data-screen-label="03 The Guide">
 		<div class="container guide">
 			<div class="guide__photo">
-				<div class="guide__img" style="background-image:url(/assets/grant.jpg);background-size:cover;background-position:center"></div>
+				<div class="guide__img"></div>
 				<div class="guide__name">Grant C. Meyer</div>
 			</div>
 			<div class="guide__copy">
@@ -177,10 +177,10 @@ const STORY_FALLBACKS = [
 				<p class="guide__p" {...(e.guide_body ?? {})}>
 					{d.guide_body ?? "Grant grew up watching his father build things, and learned the restaurant business from his grandparents — earn your customer once, keep them for life. He moved to Incline Village 35 years ago and never left, because once you're here, you understand why people don't."}
 				</p>
-				<p class="guide__p" style="padding-top:0" {...(e.guide_body2 ?? {})}>
+				<p class="guide__p" {...(e.guide_body2 ?? {})}>
 					{d.guide_body2 ?? "His legal education gives him contract and negotiation depth most agents in this market simply don't have. His father's construction background means he knows what he's looking at when he walks through a property. And his decades of relationships mean he can get the right specialist to your house in 90 minutes when everyone else is on a three-week waitlist."}
 				</p>
-				<a class="btn btn--dark" href="#about-contact" style="align-self:flex-start;margin-top:8px">
+				<a class="btn btn--dark btn--start" href="#about-contact">
 					{d.guide_cta ?? "TALK WITH GRANT"}
 				</a>
 			</div>
@@ -243,15 +243,15 @@ const STORY_FALLBACKS = [
 	<section class="emotion-split" data-screen-label="06 The Return">
 		<div class="emotion-split__photo" style={`background-image:url(${returnImage})`}></div>
 		<div class="emotion-split__panel">
-			<span class="eyebrow" style="display:block;margin-bottom:4px" {...(e.return_eyebrow ?? {})}>
+			<span class="eyebrow" {...(e.return_eyebrow ?? {})}>
 				{d.return_eyebrow ?? "THE RETURN"}
 			</span>
 			<h2 class="emotion-split__h" set:html={d.return_heading ?? "When You Buy Here, You're <em>Not a Visitor</em> Anymore."} {...(e.return_heading ?? {})}></h2>
 			<p class="emotion-split__p" {...(e.return_body ?? {})}>
 				{d.return_body ?? "Incline Village stopped being a place I worked a long time ago. The people I've helped buy and sell homes here have become my neighbors and some of my closest friends — the people I see at the market and on the mountain. I've probably made more real friendships through this work than anything else in my life."}
 			</p>
-			<div class="pullquote__a" style="margin-top:4px">— GRANT C. MEYER</div>
-			<a class="btn btn--orange" href="#about-contact" style="align-self:flex-start;margin-top:20px">
+			<div class="pullquote__a">— GRANT C. MEYER</div>
+			<a class="btn btn--orange btn--start" href="#about-contact">
 				{d.return_cta ?? "LET'S TALK"}
 			</a>
 		</div>

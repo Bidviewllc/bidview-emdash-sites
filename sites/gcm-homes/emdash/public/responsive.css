@@ -174,9 +174,12 @@
   .section--narrow  { padding: 72px 32px; }
   .container        { max-width: 100%; }
 
-  /* --- Headings --- */
-  .h1, .h2 { font-size: 40px; }
-  .section-title h2 { font-size: 42px; }
+  /* --- Headings ---
+     The two shared tiers, redefined once. Everything using --h-section or
+     --h-card in styles.css follows, so there is no per-class list here any
+     more -- it used to run 36/38/40/42px for the same tier. */
+  :root { --h-section: 40px; --h-card: 23px; }
+  .h1 { font-size: 40px; }
 
   /* --- Hero --- */
   .hero { min-height: 720px; }
@@ -186,7 +189,7 @@
 
   /* --- Reality Check (Section 2) --- */
   .reality { grid-template-columns: 1fr; gap: 48px; }
-  .reality__h { font-size: 40px; margin-bottom: 22px; }
+  .reality__h { margin-bottom: 22px; }
 
   /* --- Emotional Weight variants --- */
   .emotion { height: 640px; }
@@ -214,7 +217,6 @@
   /* --- Guide (Grant) on Home --- */
   .guide { grid-template-columns: 1fr; gap: 48px; }
   .guide__photo { max-width: 480px; }
-  .guide__h { font-size: 38px; }
   .guide__creds { gap: 22px 28px; }
   .logos-strip { margin-top: 48px; }
   .logos-strip__row { flex-wrap: wrap; gap: 24px; }
@@ -226,7 +228,6 @@
   /* --- Contact / Invite --- */
   .invite { grid-template-columns: 1fr; border-radius: 12px; }
   .invite__left { padding: 48px 40px; }
-  .invite__h { font-size: 36px; }
   .invite__form { padding: 48px 40px; }
   .invite__agent { padding-top: 24px; }
 
@@ -237,14 +238,13 @@
   .micro { grid-template-columns: 1fr; gap: 40px; margin-top: 48px; }
   .micro__map { aspect-ratio: 16/10; }
   .micro__content { padding: 0; }
-  .micro__h { font-size: 36px; padding: 14px 24px; }
+  .micro__h { padding: 14px 24px; }
   .micro__p { padding: 0 4px; font-size: 16px; }
   .micro__stats { padding: 0 4px; gap: 40px; }
   .micro__cta { padding: 0 4px; }
 
   /* --- Blog --- */
   .blog { grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 48px; }
-  .blog-card__h { font-size: 22px; }
 
   /* --- Footer --- */
   .footer { padding: 64px 40px 32px; }
@@ -320,8 +320,12 @@
   /* ===== Accordion (site default, .acc in styles.css) =====
      Moved here from buyers.css when the accordion became site-wide. */
   .acc { margin-top: 44px; }
-  .acc__label { font-size: 23px; }
   .acc__trigger { padding: 22px 2px; }
+
+  /* ===== Simple content pages (page_content) ===== */
+  .content-hero { padding: 128px 32px 64px; }
+  .content-grid { grid-template-columns: 1fr; gap: 24px; }
+  .content-card { padding: 32px 28px; }
 
   /* ===== Content pages (Buyers / Sellers / etc.) ===== */
   /* The 2-col card grid is set inline via style, override with high specificity */
@@ -352,9 +356,9 @@
   .section          { padding: 64px 20px; }
   .section--narrow  { padding: 48px 20px; }
 
-  /* --- Headings --- */
-  .h1, .h2 { font-size: 30px; }
-  .section-title h2 { font-size: 30px; }
+  /* --- Headings --- see the tablet block above. */
+  :root { --h-section: 30px; --h-card: 22px; }
+  .h1 { font-size: 30px; }
   .section-title p { font-size: 15px; }
 
   /* --- Hero --- */
@@ -375,7 +379,6 @@
   .btn--submit { padding: 18px 22px; }
 
   /* --- Reality Check --- */
-  .reality__h { font-size: 30px; }
   .reality__p { font-size: 15px; }
   .stat { padding: 4px 0 4px 20px; }
   .stat__num { font-size: 32px; }
@@ -408,7 +411,6 @@
 
   /* --- Guide on Home --- */
   .guide__photo { max-width: 100%; }
-  .guide__h { font-size: 30px; }
   .guide__creds { grid-template-columns: 1fr; gap: 18px; }
   .guide__name { font-size: 22px; padding: 14px; }
   .guide__p { font-size: 15px; }
@@ -421,8 +423,6 @@
 
   /* --- Contact form --- */
   .invite__left, .invite__form { padding: 32px 22px; }
-  .invite__h { font-size: 28px; }
-  .invite__form__h { font-size: 22px; }
   .form-row { grid-template-columns: 1fr; gap: 18px; }
   .invite__agent img { width: 48px; height: 48px; }
 
@@ -431,14 +431,13 @@
 
   /* --- Micro-Markets --- */
   .micro__map { aspect-ratio: 4/3; }
-  .micro__h { font-size: 28px; padding: 12px 20px; }
+  .micro__h { padding: 12px 20px; }
   .micro__p { font-size: 15px; }
   .micro__stats { gap: 28px; flex-wrap: wrap; }
   .micro__stat__v { font-size: 22px; }
 
   /* --- Blog --- */
   .blog { grid-template-columns: 1fr; gap: 32px; }
-  .blog-card__h { font-size: 22px; }
   /* --- Footer --- */
   .footer { padding: 48px 24px 24px; }
   .footer__cols { grid-template-columns: 1fr 1fr; gap: 28px 24px; padding-bottom: 40px; }
@@ -556,10 +555,13 @@
   /* ===== Accordion (site default, .acc in styles.css) ===== */
   .acc { margin-top: 36px; }
   .acc__trigger { padding: 20px 0; gap: 16px; }
-  .acc__label { font-size: 20px; }
   .acc__icon { width: 30px; height: 30px; }
   .acc__panel { padding: 0 0 28px; }
   .acc__panel p { font-size: 15px; }
+
+  /* ===== Simple content pages (page_content) ===== */
+  .content-hero { padding: 104px 20px 48px; }
+  .content-card { padding: 28px 22px; }
 
   /* ===== Content pages ===== */
   .section.section--cream > .container[style*="grid-template-columns"] {
@@ -602,7 +604,6 @@
   .guide.split--photo-fill .guide__img { min-height: 0; aspect-ratio: 16 / 10; }
 
   .net { max-width: none; }
-  .net__h { font-size: 38px; }
   .net__body { font-size: 17px; margin-top: 22px; }
   .net-split { grid-template-columns: 1fr; gap: 36px; margin-top: 44px; }
   .net__story { font-size: 17px; }
@@ -616,7 +617,6 @@
   .pullquote { padding-left: 20px; margin-top: 26px; }
   .pullquote__q { font-size: 20px; }
 
-  .net__h { font-size: 30px; }
   .net__body { font-size: 16px; margin-top: 18px; }
   .net__body p + p { margin-top: 16px; }
   .net-split { gap: 28px; margin-top: 36px; }

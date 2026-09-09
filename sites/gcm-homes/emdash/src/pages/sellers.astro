@@ -97,7 +97,7 @@ const successMessage = d.val_success ?? "Thanks — Grant will be in touch with 
 		<div class="hero__img" style={`background-image:url(${heroImage})`}></div>
 		<div class="hero__veil"></div>
 		<div class="hero__copy">
-			<span class="eyebrow" style="display:block;margin-bottom:20px" {...(e.hero_eyebrow ?? {})}>
+			<span class="eyebrow eyebrow--block" {...(e.hero_eyebrow ?? {})}>
 				{d.hero_eyebrow ?? "Sell With Me"}
 			</span>
 			<h1 class="hero__title" set:html={d.hero_headline ?? "Your Home's Value Here Isn't What an <em>Algorithm</em> Says It Is."} {...(e.hero_headline ?? {})}></h1>
@@ -121,10 +121,10 @@ const successMessage = d.val_success ?? "Thanks — Grant will be in touch with 
 				<p class="guide__p" {...(e.pricing_p1 ?? {})}>
 					{d.pricing_p1 ?? "Pricing a home in Incline Village or Crystal Bay is not a formula. The same micro-market that rewards patient buyers punishes a mispriced listing. Price too high and the home sits while the spring buyers move on; price too low and you hand away equity you cannot get back."}
 				</p>
-				<p class="guide__p" style="padding-top:0" {...(e.pricing_p2 ?? {})}>
+				<p class="guide__p" {...(e.pricing_p2 ?? {})}>
 					{d.pricing_p2 ?? "Online valuation tools are built for markets where one sale looks like the next. Here, a single panoramic-lake-view sale can reset a whole tier. Roughly 60% of owners are year-round residents and 40% are second-home and investment owners, so the comparables that matter are not always the ones a database picks."}
 				</p>
-				<p class="guide__p" style="padding-top:0" {...(e.pricing_p3 ?? {})}>
+				<p class="guide__p" {...(e.pricing_p3 ?? {})}>
 					{d.pricing_p3 ?? "Grant prices from 35 years of watching what sells, what stalls, and why. He has been wrong on the upside and the downside, and he will tell you which way he thinks your home leans before you list."}
 				</p>
 				<div class="pullquote">
@@ -329,7 +329,7 @@ const successMessage = d.val_success ?? "Thanks — Grant will be in touch with 
 			<div class="container">
 				<div class="process">
 					<div class="process__head">
-						<span class="eyebrow" style="display:block;margin-bottom:18px" {...(e.process_eyebrow ?? {})}>
+						<span class="eyebrow eyebrow--block" {...(e.process_eyebrow ?? {})}>
 							{d.process_eyebrow ?? "THE PROCESS"}
 						</span>
 						<h2 class="h2" {...(e.process_heading ?? {})}>
@@ -414,14 +414,14 @@ const successMessage = d.val_success ?? "Thanks — Grant will be in touch with 
 						<textarea class="field__input" name="recent_improvements" placeholder="New roof in 2023, remodeled kitchen, added a dock…"></textarea>
 					</div>
 					{/* Honeypot — hidden from humans, bots fill it */}
-					<input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" aria-hidden="true" />
+					<input class="honeypot" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
 					{/* `message` is required by the API and every answer here is a labelled
 					    extra, so it carries what kind of enquiry this is. */}
 					<input type="hidden" name="message" value="Home valuation request from the Sell With Me page." />
 					<input type="hidden" name="reason" value="Home valuation request" />
 					<input type="hidden" name="source" value={Astro.url.pathname} />
 					<div class="form-sent" data-inquiry-sent style="display:none">✓ {successMessage}</div>
-					<div class="form-error" data-inquiry-error style="display:none;color:#c0392b;font-size:14px;margin-bottom:12px"></div>
+					<div class="form-error" data-inquiry-error style="display:none"></div>
 					<button type="submit" class="btn--submit btn" data-inquiry-submit>
 						{d.val_submit ?? "REQUEST YOUR HOME VALUATION"}
 					</button>
