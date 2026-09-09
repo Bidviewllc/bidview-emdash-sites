@@ -226,31 +226,6 @@
         letter-spacing: 0.14em; color: #f7945b; margin-top: 2.5mm;
       }
 
-      /* Grant's credentials -- the screen's .section--guide-fl without the
-         portrait (a background image, which print drops) or the CTA button. */
-      .print-guide {
-        margin-top: 7mm; padding-top: 4mm; border-top: 0.4mm solid #c5c6ce;
-        page-break-inside: avoid;
-      }
-      .print-guide__eyebrow {
-        font-family: 'Manrope', sans-serif; font-size: 7.5pt; font-weight: 700;
-        letter-spacing: 0.16em; text-transform: uppercase; color: #f7945b;
-      }
-      .print-guide__name {
-        font-family: 'Noto Serif', Georgia, serif; font-size: 15pt;
-        color: #15243b; margin: 1.5mm 0 3mm;
-      }
-      .print-guide__creds {
-        display: grid; grid-template-columns: 1fr 1fr; gap: 2.5mm 8mm;
-      }
-      .print-guide__cred__h {
-        font-family: 'Manrope', sans-serif; font-size: 8.5pt; font-weight: 700;
-        color: #15243b;
-      }
-      .print-guide__cred__p {
-        font-family: 'Manrope', sans-serif; font-size: 8pt; color: #44474d;
-      }
-
       /* --- Description; the screen's own stats aside and note band are
              replaced by .print-extras above --- */
       .aside-fl, .aside-fl--dark, .section--local, .grant-note { display: none !important; }
@@ -262,8 +237,11 @@
 
       /* --- Features: the carousel becomes a plain three-across list --- */
       .section--features { padding: 0 !important; background: #fff !important; }
-      .features-wrap { max-width: none !important; padding: 0 !important; }
-      .features-h { font-size: 14pt; color: #15243b; margin: 7mm 0 3mm; }
+      .features-wrap {
+        max-width: none !important; padding: 0 !important;
+        gap: 3mm !important;
+      }
+      .features-h { font-size: 14pt; color: #15243b; margin: 6mm 0 0; }
       .features-viewport { overflow: visible !important; }
       .features-track {
         display: grid !important; grid-template-columns: 1fr 1fr;
@@ -312,13 +290,6 @@
         display: flex; align-items: center; gap: 7mm;
         padding-top: 2.5mm; margin-top: 6mm;
         border-top: 0.4mm solid #c5c6ce;
-      }
-      .print-foot__logo {
-        height: 11mm; width: auto; flex-shrink: 0;
-        /* The site's logo file is the white one. brightness(0) flattens it to
-           black and keeps its transparency -- the same trick styles.css uses in
-           reverse to make the colour logo white over the transparent nav. */
-        filter: brightness(0);
       }
       .print-foot__mid { flex: 1 1 auto; min-width: 0; }
       .print-foot__cta {
@@ -917,17 +888,6 @@ function render(listing, photoUrls, marketIntel, area, contact) {
         </div>` : ""}
       </div>
 
-      <div class="print-guide">
-        <div class="print-guide__eyebrow">Your Neighbor Before You Even Arrive.</div>
-        <div class="print-guide__name">Grant C. Meyer</div>
-        <div class="print-guide__creds">
-          ${guideCreds.map(([h, p]) => `
-            <div class="print-guide__cred">
-              <div class="print-guide__cred__h">${h}</div>
-              <div class="print-guide__cred__p">${p}</div>
-            </div>`).join("")}
-        </div>
-      </div>
     </div>
 
     ${filmstrip}
@@ -1047,7 +1007,6 @@ function render(listing, photoUrls, marketIntel, area, contact) {
 
     <tfoot class="print-foot" aria-hidden="true"><tr><td>
       <div class="print-foot__inner">
-        <img class="print-foot__logo" src="/assets/logo-white.png" alt="Grant C. Meyer Homes" />
         <div class="print-foot__mid">
           <div class="print-foot__cta">Ready to learn more? Let's start with a conversation.</div>
           <div class="print-foot__who">Grant C. Meyer · Coldwell Banker Global Luxury Agent</div>
