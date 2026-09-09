@@ -53,10 +53,19 @@ const agentPhoto = imageUrl(cta.agent_photo) ?? "/assets/grant.jpg";
 // invented can ship. The test lives in lib/contact-details.ts — see the note
 // there for why "non-empty" was not enough once the CMS entry got filled in
 // with stand-ins.
+//
+// The address field is multi-line, because /contact/'s office column lists it
+// line by line. Here it is a single row, so the lines join back up.
+const addressOneLine = (realAddress(cta.address) ?? "")
+	.split("\n")
+	.map((l) => l.trim())
+	.filter(Boolean)
+	.join(", ");
+
 const rows = [
 	["CALL DIRECTLY", realPhone(cta.phone), "phone"],
 	["EMAIL GRANT", realEmail(cta.email), "mail"],
-	["MAILING ADDRESS", realAddress(cta.address), "pin"],
+	["MAILING ADDRESS", addressOneLine, "pin"],
 ].filter(([, v]) => v) as [string, string, string][];
 
 // The design's Icon.Phone / Icon.Mail / Icon.Pin, inlined. styles.css already

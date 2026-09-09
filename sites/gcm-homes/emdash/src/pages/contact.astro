@@ -16,13 +16,23 @@
 // site-wide "Contact CTA" CMS entry, so the home page, /community/ and the
 // content pages all stay in step with this page.
 //
-// Editable text comes from the `contact_page` singleton (entry "contact"), the
-// same arrangement as the home, About, Buyers and Sellers pages: every field
-// falls back to the approved design copy below, so the page renders correctly
-// before the collection is seeded and editing lights up once logged in.
+// Two CMS entries feed this page, split by what the text actually is:
+//
+//   contact_page          — page copy: hero, SEO, the three column labels
+//   contact_cta           — the site-wide contact facts: phone, email, mailing
+//                           address, office note, hours, service area
+//
+// The facts live in contact_cta because they are not specific to this page:
+// the form block below reads the same entry, so does /listings/'s property
+// sheet footer, and so does every other page carrying the contact section.
+// Change the phone or the address once, there, and all of them follow.
+//
+// Every field falls back to the approved design copy below, so the page renders
+// correctly before the collection is seeded and editing lights up once logged in.
 import GcmLayout from "../layouts/GcmLayout.astro";
 import ContactCta from "../components/ContactCta.astro";
 import { getEmDashEntry } from "emdash";
+import { realAddress } from "../lib/contact-details";
 
 let entry: any = null;
 try {
@@ -34,34 +44,49 @@ try {
 const d = entry?.data ?? {};
 const e = entry?.edit ?? {};
 
-// Each column is a label plus up to three lines. Stored as one text field per
-// column and split on newlines rather than as three separate fields, so a
-// column can carry two lines or four without a schema change. The first line
-// takes the darker ink (.cinfo__line--lead).
+// The office address, hours and service area are contact facts, not page copy,
+// so they come from the site-wide "Contact details" entry — the same one the
+// form block beside them and the printable property sheet read. Editing it in
+// one place updates every one of them. This page holds only the column labels.
+let cta: any = {};
+try {
+	const res = await getEmDashEntry("contact_cta", "default");
+	cta = res?.entry?.data ?? {};
+} catch {
+	cta = {};
+}
+
+// Each multi-line field is one text value split on newlines, so a column can
+// carry two lines or four without a schema change. The first line takes the
+// darker ink (.cinfo__line--lead).
 const lines = (v: unknown, fallback: string[]): string[] => {
 	const s = (v ?? "").toString().trim();
 	if (!s) return fallback;
 	return s.split(/\n+/).map((l) => l.trim()).filter(Boolean);
 };
 
+// realAddress() returns null for a placeholder as well as for a blank, so a
+// stand-in in the CMS falls back to the approved copy rather than publishing
+// itself — and rather than disagreeing with the form block, which hides its
+// address row on exactly the same test.
+const officeLines = lines(realAddress(cta.address), [
+	"923 Tahoe Boulevard",
+	"Incline Village, NV 89451",
+]);
+const officeNote = (cta.office_note ?? "By appointment, always welcome").toString().trim();
+
 const INFO = [
 	{
 		key: "office",
 		icon: "pin",
 		label: d.info1_label ?? "The Office",
-		edit: e.info1_lines ?? {},
-		lines: lines(d.info1_lines, [
-			"923 Tahoe Boulevard",
-			"Incline Village, NV 89451",
-			"By appointment, always welcome",
-		]),
+		lines: officeNote ? [...officeLines, officeNote] : officeLines,
 	},
 	{
 		key: "hours",
 		icon: "phone",
 		label: d.info2_label ?? "Hours & Response",
-		edit: e.info2_lines ?? {},
-		lines: lines(d.info2_lines, [
+		lines: lines(cta.hours, [
 			"Mon – Sat · 8am – 7pm PT",
 			"Replies within 24 hours",
 			"After-hours by request",
@@ -71,8 +96,7 @@ const INFO = [
 		key: "area",
 		icon: "mail",
 		label: d.info3_label ?? "Service Area",
-		edit: e.info3_lines ?? {},
-		lines: lines(d.info3_lines, [
+		lines: lines(cta.service_area, [
 			"Incline Village · Crystal Bay",
 			"Glenbrook · Zephyr Cove",
 			"& the greater North Shore",
@@ -137,7 +161,7 @@ const seo = {
 							</span>
 							<div class="cinfo__label">{col.label}</div>
 						</div>
-						<div class="cinfo__lines" {...col.edit}>
+						<div class="cinfo__lines">
 							{col.lines.map((l, i) => (
 								<div class={`cinfo__line${i === 0 ? " cinfo__line--lead" : ""}`}>{l}</div>
 							))}
