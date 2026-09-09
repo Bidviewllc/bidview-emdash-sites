@@ -309,6 +309,76 @@
 			]
 		},
 		{
+			"slug": "contact_page",
+			"label": "Contact page",
+			"labelSingular": "Contact page",
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Internal title",
+					"type": "string"
+				},
+				{
+					"slug": "seo_title",
+					"label": "SEO title",
+					"type": "string"
+				},
+				{
+					"slug": "seo_description",
+					"label": "SEO description",
+					"type": "text"
+				},
+				{
+					"slug": "hero_eyebrow",
+					"label": "Hero eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "hero_headline",
+					"label": "Hero headline (wrap the italic orange part in <em>)",
+					"type": "text"
+				},
+				{
+					"slug": "hero_sub",
+					"label": "Hero paragraph",
+					"type": "text"
+				},
+				{
+					"slug": "info1_label",
+					"label": "Info column 1 — label",
+					"type": "string"
+				},
+				{
+					"slug": "info1_lines",
+					"label": "Info column 1 — lines (one per line; the first is emphasised)",
+					"type": "text"
+				},
+				{
+					"slug": "info2_label",
+					"label": "Info column 2 — label",
+					"type": "string"
+				},
+				{
+					"slug": "info2_lines",
+					"label": "Info column 2 — lines (one per line; the first is emphasised)",
+					"type": "text"
+				},
+				{
+					"slug": "info3_label",
+					"label": "Info column 3 — label",
+					"type": "string"
+				},
+				{
+					"slug": "info3_lines",
+					"label": "Info column 3 — lines (one per line; the first is emphasised)",
+					"type": "text"
+				}
+			]
+		},
+		{
 			"slug": "page_content",
 			"label": "Content Pages",
 			"labelSingular": "Content Page",
@@ -1974,6 +2044,27 @@
 					"agent_role": "Coldwell Banker Global Luxury Agent",
 					"submit_label": "SEND INQUIRY",
 					"success_message": "Thanks — Grant will be in touch within 24 hours."
+				}
+			}
+		],
+		"contact_page": [
+			{
+				"id": "contact",
+				"slug": "contact",
+				"status": "published",
+				"data": {
+					"title": "Contact page",
+					"seo_title": "Contact — Grant C. Meyer Homes",
+					"seo_description": "Every Tahoe story begins with one conversation. Reach Grant C. Meyer directly about Lake Tahoe luxury real estate in Incline Village & Crystal Bay.",
+					"hero_eyebrow": "Get in Touch",
+					"hero_headline": "Every Tahoe story begins with <em>one conversation.</em>",
+					"hero_sub": "Whether you're considering a move to the North Shore, weighing the sale of a treasured property, or simply have a question about the market — Grant reads every note personally and replies within a day.",
+					"info1_label": "The Office",
+					"info1_lines": "923 Tahoe Boulevard\nIncline Village, NV 89451\nBy appointment, always welcome",
+					"info2_label": "Hours & Response",
+					"info2_lines": "Mon – Sat · 8am – 7pm PT\nReplies within 24 hours\nAfter-hours by request",
+					"info3_label": "Service Area",
+					"info3_lines": "Incline Village · Crystal Bay\nGlenbrook · Zephyr Cove\n& the greater North Shore"
 				}
 			}
 		],

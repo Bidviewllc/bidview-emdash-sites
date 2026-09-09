@@ -4,32 +4,11 @@ import { neighborhoodForPoint } from "../../../lib/neighborhoods";
 import { imageUrl } from "../../../lib/media";
 import { env } from "cloudflare:workers";
 import { getEmDashEntry } from "emdash";
+// Shared with ContactCta: the print sheet must not carry a number a buyer
+// might dial, and the site must not display one either.
+import { realPhone } from "../../../lib/contact-details";
 export const prerender = false;
 
-/**
- * Grant's phone, for the printable property sheet -- but only if it is real.
- *
- * The shared `contact_cta` entry still holds a placeholder (333-333-3333), and
- * the design it came from used (775) 555-0192. A property sheet gets printed
- * and handed to a buyer, so a fake number on it is worse than no number: the
- * line is simply omitted until someone sets a genuine one in the dashboard.
- * Same principle as ContactCta, which hides a contact row until its field has
- * a real value.
- */
-function realPhone(v: unknown): string | null {
-	const raw = String(v ?? "").trim();
-	if (!raw) return null;
-	const digits = raw.replace(/\D/g, "");
-	if (digits.length < 10) return null;
-	const ten = digits.slice(-10);
-	const area = ten.slice(0, 3);
-	const exchange = ten.slice(3, 6);
-	if (new Set(ten).size === 1) return null;                // 3333333333
-	if (area === exchange) return null;                      // 333-333-3333
-	if (area === "555" || exchange === "555") return null;   // reserved for fiction
-	if (ten.slice(3) === "0000000") return null;             // ...-000-0000
-	return raw;
-}
 export const GET: APIRoute = async ({ params, locals }) => {
 	try {
 		const slug = String(params.slug || "").replace(/\/+$/, "");

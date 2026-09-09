@@ -1,19 +1,156 @@
 ---
-// Contact / Inquiry page — target of every "INQUIRE NOW" and "Ask Grant" CTA.
-// The section itself is the shared ContactCta component, so this page, the home
-// page, /community/ and the four content pages all render one source from one CMS
-// entry ("Contact CTA (site-wide)"). Submissions POST to /api/contact, which saves
-// to D1 and emails via Resend.
+// Contact page — ported from the Claude Design project's contact.html
+// (js/contact.jsx + js/contact-sections.jsx), which composes:
 //
-// The phone, email and mailing address used to be hardcoded here as the design's
-// placeholders. They now come from the CMS and each row stays hidden until filled.
+//   01 Hero   .chero   — dark statement hero, centred (design's ContactHero)
+//   02 Info   .cinfo   — office / hours / service area (design's ContactInfo)
+//   03 Form   <ContactCta />  — the design's own ContactSection, already the
+//                              site-wide component here
+//
+// The design's tweaks default to heroAlign "center", info strip shown and
+// positioned "above" the form, so that is what is built. The alternates (left
+// hero, info below) were tweak-panel options, not part of the chosen design.
+//
+// The form section is NOT re-implemented: the design's ContactSection is the
+// same `.invite` block that already ships as ContactCta.astro, driven by the
+// site-wide "Contact CTA" CMS entry, so the home page, /community/ and the
+// content pages all stay in step with this page.
+//
+// Editable text comes from the `contact_page` singleton (entry "contact"), the
+// same arrangement as the home, About, Buyers and Sellers pages: every field
+// falls back to the approved design copy below, so the page renders correctly
+// before the collection is seeded and editing lights up once logged in.
 import GcmLayout from "../layouts/GcmLayout.astro";
 import ContactCta from "../components/ContactCta.astro";
+import { getEmDashEntry } from "emdash";
+
+let entry: any = null;
+try {
+	const res = await getEmDashEntry("contact_page", "contact");
+	entry = res?.entry ?? null;
+} catch {
+	entry = null;
+}
+const d = entry?.data ?? {};
+const e = entry?.edit ?? {};
+
+// Each column is a label plus up to three lines. Stored as one text field per
+// column and split on newlines rather than as three separate fields, so a
+// column can carry two lines or four without a schema change. The first line
+// takes the darker ink (.cinfo__line--lead).
+const lines = (v: unknown, fallback: string[]): string[] => {
+	const s = (v ?? "").toString().trim();
+	if (!s) return fallback;
+	return s.split(/\n+/).map((l) => l.trim()).filter(Boolean);
+};
+
+const INFO = [
+	{
+		key: "office",
+		icon: "pin",
+		label: d.info1_label ?? "The Office",
+		edit: e.info1_lines ?? {},
+		lines: lines(d.info1_lines, [
+			"923 Tahoe Boulevard",
+			"Incline Village, NV 89451",
+			"By appointment, always welcome",
+		]),
+	},
+	{
+		key: "hours",
+		icon: "phone",
+		label: d.info2_label ?? "Hours & Response",
+		edit: e.info2_lines ?? {},
+		lines: lines(d.info2_lines, [
+			"Mon – Sat · 8am – 7pm PT",
+			"Replies within 24 hours",
+			"After-hours by request",
+		]),
+	},
+	{
+		key: "area",
+		icon: "mail",
+		label: d.info3_label ?? "Service Area",
+		edit: e.info3_lines ?? {},
+		lines: lines(d.info3_lines, [
+			"Incline Village · Crystal Bay",
+			"Glenbrook · Zephyr Cove",
+			"& the greater North Shore",
+		]),
+	},
+];
+
+// The design's Icon.Pin / Icon.Phone / Icon.Mail, inlined. Same geometry and
+// stroke weight as the icons in ContactCta's contact rows.
+const ICONS: Record<string, string> = {
+	pin: '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>',
+	phone: '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>',
+	mail: '<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>',
+};
+
+const seo = {
+	title: d.seo_title ?? "Contact — Grant C. Meyer Homes",
+	description:
+		d.seo_description ??
+		"Every Tahoe story begins with one conversation. Reach Grant C. Meyer directly about Lake Tahoe luxury real estate in Incline Village & Crystal Bay.",
+};
 ---
 
-<GcmLayout
-	title="Contact — Grant C. Meyer Homes"
-	description="Start with a conversation, not a transaction. Reach Grant C. Meyer directly about Lake Tahoe luxury real estate in Incline Village & Crystal Bay."
->
-	<ContactCta first />
+<GcmLayout title={seo.title} description={seo.description}>
+	<link rel="stylesheet" href="/contact.css" />
+
+	{/* 01 HERO — the design's ContactHero, centred variant. */}
+	<section class="section section--dark chero" data-screen-label="01 Hero">
+		<div class="container chero__inner">
+			<span class="eyebrow" {...(e.hero_eyebrow ?? {})}>{d.hero_eyebrow ?? "Get in Touch"}</span>
+			<h1
+				class="h1 chero__h"
+				set:html={d.hero_headline ?? "Every Tahoe story begins with <em>one conversation.</em>"}
+				{...(e.hero_headline ?? {})}
+			></h1>
+			<p class="section-lead chero__lead" {...(e.hero_sub ?? {})}>
+				{d.hero_sub ??
+					"Whether you're considering a move to the North Shore, weighing the sale of a treasured property, or simply have a question about the market — Grant reads every note personally and replies within a day."}
+			</p>
+		</div>
+	</section>
+
+	{/* 02 INFO — office / hours / service area, directly above the form. */}
+	<section class="section section--cream cinfo" data-screen-label="02 Info">
+		<div class="container">
+			<div class="cinfo__grid">
+				{INFO.map((col) => (
+					<div class="cinfo__col">
+						<div class="cinfo__head">
+							<span class="cinfo__icon" aria-hidden="true">
+								<svg
+									width="20"
+									height="20"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="1.6"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									set:html={ICONS[col.icon]}
+								></svg>
+							</span>
+							<div class="cinfo__label">{col.label}</div>
+						</div>
+						<div class="cinfo__lines" {...col.edit}>
+							{col.lines.map((l, i) => (
+								<div class={`cinfo__line${i === 0 ? " cinfo__line--lead" : ""}`}>{l}</div>
+							))}
+						</div>
+					</div>
+				))}
+			</div>
+		</div>
+	</section>
+
+	{/* 03 FORM — the shared section. `first` is deliberately NOT set: the hero
+	    is the first section now, so the extra top padding that used to clear the
+	    nav on this page would only add a gap under the info strip. Cream keeps
+	    it continuous with that strip, which ends with no bottom padding. */}
+	<ContactCta bg="cream" />
 </GcmLayout>
