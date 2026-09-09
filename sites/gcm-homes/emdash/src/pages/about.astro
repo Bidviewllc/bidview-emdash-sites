@@ -126,7 +126,7 @@ const STORY_FALLBACKS = [
 					<div class="pullquote__q" {...(e.why_quote ?? {})}>
 						"{d.why_quote ?? "I've been a resident in this community for 35 years. You learn who you can count on."}"
 					</div>
-					<div class="pullquote__a">— GRANT C. MEYER</div>
+					<div class="eyebrow pullquote__a">— GRANT C. MEYER</div>
 				</div>
 			</div>
 			<div class="stats">
@@ -135,7 +135,7 @@ const STORY_FALLBACKS = [
 						<div class="stat__num" {...(e[`stat${i}_num`] ?? {})}>
 							{d[`stat${i}_num`] ?? ["35 Years", "17 Years", "6 Years"][i - 1]}
 						</div>
-						<div class="stat__label" {...(e[`stat${i}_label`] ?? {})}>
+						<div class="eyebrow" {...(e[`stat${i}_label`] ?? {})}>
 							{d[`stat${i}_label`] ?? ["A RESIDENT, NOT A VISITOR", "FULL-TIME REALTOR", "#1 IN LOCAL VOLUME"][i - 1]}
 						</div>
 						<div class="stat__desc" {...(e[`stat${i}_desc`] ?? {})}>
@@ -203,11 +203,11 @@ const STORY_FALLBACKS = [
 						<h3 class="pillar__title" {...p.e.title}>{p.title ?? PILLAR_FALLBACKS[i].title}</h3>
 						<div class="pillar__divider"></div>
 						<div class="pillar__block">
-							<span class="pillar__label">The Challenge</span>
+							<span class="eyebrow">The Challenge</span>
 							<p class="pillar__text" {...p.e.challenge}>{p.challenge ?? PILLAR_FALLBACKS[i].challenge}</p>
 						</div>
 						<div class="pillar__block">
-							<span class="pillar__label">Grant's Edge</span>
+							<span class="eyebrow">Grant's Edge</span>
 							<p class="pillar__text" {...p.e.cred}>{p.cred ?? PILLAR_FALLBACKS[i].cred}</p>
 						</div>
 					</div>
@@ -228,7 +228,7 @@ const STORY_FALLBACKS = [
 			<div class="proof proof--cards">
 				{STORIES.map((s, i) => (
 					<div class="proof-card">
-						<div class="proof-card__hook" {...s.e.hook}>{s.hook ?? STORY_FALLBACKS[i].hook}</div>
+						<div class="eyebrow" {...s.e.hook}>{s.hook ?? STORY_FALLBACKS[i].hook}</div>
 						<p class="proof-card__story" {...s.e.story}>{s.story ?? STORY_FALLBACKS[i].story}</p>
 					</div>
 				))}
@@ -250,7 +250,7 @@ const STORY_FALLBACKS = [
 			<p class="emotion-split__p" {...(e.return_body ?? {})}>
 				{d.return_body ?? "Incline Village stopped being a place I worked a long time ago. The people I've helped buy and sell homes here have become my neighbors and some of my closest friends — the people I see at the market and on the mountain. I've probably made more real friendships through this work than anything else in my life."}
 			</p>
-			<div class="pullquote__a">— GRANT C. MEYER</div>
+			<div class="eyebrow pullquote__a">— GRANT C. MEYER</div>
 			<a class="btn btn--orange btn--start" href="#about-contact">
 				{d.return_cta ?? "LET'S TALK"}
 			</a>
@@ -274,7 +274,7 @@ const STORY_FALLBACKS = [
 						<p class="testimonial__q">"{t.q}"</p>
 						<div class="testimonial__attr">
 							<div class="testimonial__name">{t.name}</div>
-							<div class="testimonial__loc">{t.loc}</div>
+							<div class="eyebrow eyebrow--muted">{t.loc}</div>
 						</div>
 					</div>
 				))}

@@ -13,7 +13,7 @@
 
 /* ---- Seasonal timing ---------------------------------------------------- */
 .timing__head { max-width: 860px; }
-.timing__head .eyebrow { display: block; margin-bottom: 16px; }
+.timing__head .eyebrow { margin-bottom: 16px; }
 .timing__grid {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
@@ -160,7 +160,7 @@
 
 /* ---- Marketing built to be seen ----------------------------------------- */
 .mkt__head { max-width: 860px; }
-.mkt__head .eyebrow { display: block; margin-bottom: 16px; }
+.mkt__head .eyebrow { margin-bottom: 16px; }
 .mkt__lead { display: flex; flex-direction: column; gap: 18px; margin-top: 26px; }
 .mkt__lead p {
 	font-size: 17px;
@@ -193,14 +193,6 @@
 	justify-content: center;
 	gap: 16px;
 }
-.mkt__reach-eyebrow {
-	font-family: var(--font-sans);
-	font-size: 11px;
-	font-weight: 700;
-	letter-spacing: 0.2em;
-	text-transform: uppercase;
-	color: var(--orange);
-}
 .mkt__reach-body {
 	font-size: 16px;
 	line-height: 1.75;
@@ -208,13 +200,8 @@
 }
 
 .mkt__incl { margin-top: 72px; }
+/* Type from .eyebrow; this owns the rule beneath the label. */
 .mkt__incl-label {
-	font-family: var(--font-sans);
-	font-size: 11px;
-	font-weight: 700;
-	letter-spacing: 0.2em;
-	text-transform: uppercase;
-	color: var(--orange);
 	padding-bottom: 20px;
 	border-bottom: 1px solid rgba(197, 198, 206, 0.6);
 }
@@ -248,7 +235,7 @@
 /* ---- Honest advice ------------------------------------------------------ */
 .honesty { max-width: 820px; margin: 0 auto; }
 .honesty__head { text-align: center; }
-.honesty__head .eyebrow { display: block; margin-bottom: 16px; }
+.honesty__head .eyebrow { margin-bottom: 16px; }
 .honesty__body { display: flex; flex-direction: column; gap: 26px; margin-top: 34px; }
 .honesty__body p {
 	font-size: 17px;

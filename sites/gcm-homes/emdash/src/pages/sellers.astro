@@ -131,7 +131,7 @@ const successMessage = d.val_success ?? "Thanks — Grant will be in touch with 
 					<div class="pullquote__q" {...(e.pricing_quote ?? {})}>
 						"{d.pricing_quote ?? "I can only tell you what I expect based on my historical knowledge — and I know what I'm doing. I sell more property than anybody else here. But there are still homes that sell for more than I expected, and some for less, because a buyer doesn't see the same value."}"
 					</div>
-					<div class="pullquote__a">— GRANT C. MEYER</div>
+					<div class="eyebrow pullquote__a">— GRANT C. MEYER</div>
 				</div>
 			</div>
 			<div class="guide__photo">
@@ -165,7 +165,7 @@ const successMessage = d.val_success ?? "Thanks — Grant will be in touch with 
 						<div class="pullquote__q" {...(e.timing_quote ?? {})}>
 							"{d.timing_quote ?? "If I've got sellers who are ready and the marketing package is done, we can come on the market earlier — before everyone else lists. That's a real opportunity."}"
 						</div>
-						<div class="pullquote__a">— GRANT C. MEYER</div>
+						<div class="eyebrow pullquote__a">— GRANT C. MEYER</div>
 					</div>
 				</div>
 
@@ -241,7 +241,7 @@ const successMessage = d.val_success ?? "Thanks — Grant will be in touch with 
 			<div class="mkt__feature">
 				<div class="mkt__film" style={`background-image:url(${filmImage})`}></div>
 				<div class="mkt__reach">
-					<span class="mkt__reach-eyebrow" {...(e.reach_eyebrow ?? {})}>{d.reach_eyebrow ?? "REACH"}</span>
+					<span class="eyebrow" {...(e.reach_eyebrow ?? {})}>{d.reach_eyebrow ?? "REACH"}</span>
 					<p class="mkt__reach-body" {...(e.reach_body ?? {})}>
 						{d.reach_body ?? "Through Coldwell Banker, the listing reaches a national and international buyer network on top of the local MLS — so a home in Incline Village shows up in front of the relocating buyer in San Francisco and the second-home buyer overseas."}
 					</p>
@@ -249,7 +249,7 @@ const successMessage = d.val_success ?? "Thanks — Grant will be in touch with 
 			</div>
 
 			<div class="mkt__incl">
-				<div class="mkt__incl-label">{d.incl_label ?? "WHAT A SELLER GETS"}</div>
+				<div class="eyebrow mkt__incl-label">{d.incl_label ?? "WHAT A SELLER GETS"}</div>
 				<div class="mkt__grid">
 					{INCLUSIONS.map((m, i) => (
 						<div class="mkt__item">
@@ -288,7 +288,7 @@ const successMessage = d.val_success ?? "Thanks — Grant will be in touch with 
 					<div class="pullquote__q" {...(e.network_quote ?? {})}>
 						"{d.network_quote ?? "We live in a resort market. It's really hard to get an electrician to your house. So you take care of people. When you treat them right, they treat you right."}"
 					</div>
-					<div class="pullquote__a">— GRANT C. MEYER</div>
+					<div class="eyebrow pullquote__a">— GRANT C. MEYER</div>
 				</div>
 			</div>
 		</div>
@@ -312,7 +312,7 @@ const successMessage = d.val_success ?? "Thanks — Grant will be in touch with 
 						<div class="pullquote__q" {...(e.honesty_quote ?? {})}>
 							"{d.honesty_quote ?? "All I can ask is that my clients listen to my advice. At the end of the day, it's their decision — they get to drive the ship."}"
 						</div>
-						<div class="pullquote__a">— GRANT C. MEYER</div>
+						<div class="eyebrow pullquote__a">— GRANT C. MEYER</div>
 					</div>
 					<p {...(e.honesty_p2 ?? {})}>
 						{d.honesty_p2 ?? "For most sellers here, the home is not their only one and they are not moving across the country to start a job, so there is room to be strategic about timing and price instead of forced into a fire sale. Grant will give a seller his real read — what he expects, where the home might surprise on the upside, and where it might not — and then let the seller drive."}

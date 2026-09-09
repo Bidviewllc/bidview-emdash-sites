@@ -1166,8 +1166,13 @@ function wire() {
 
 function initMap() {
   map = L.map("map", { zoomControl: true, scrollWheelZoom: true }).setView(TAHOE, 11);
-  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+  // CARTO's light_all was the basemap here. CARTO has since put its basemaps
+  // behind an API key and it does not fail with an error: every tile still
+  // returns HTTP 200, but the image is a grey square stamped "API KEY
+  // REQUIRED / carto.com/basemaps/apikey". Esri's World_Street_Map instead --
+  // the same one /map/ moved to, so both maps come from one provider.
+  L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}", {
+    attribution: 'Tiles &copy; Esri, &copy; OpenStreetMap contributors',
     maxZoom: 19,
   }).addTo(map);
 

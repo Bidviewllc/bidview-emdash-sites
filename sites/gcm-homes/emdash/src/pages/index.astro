@@ -182,17 +182,17 @@ const tagOf = (l: any) =>
 			<div class="stats">
 				<div class="stat">
 					<div class="stat__num" {...(e.stat1_num ?? {})}>{d.stat1_num ?? "11+ Months"}</div>
-					<div class="stat__label" {...(e.stat1_label ?? {})}>{d.stat1_label ?? "AVERAGE DAYS ON MARKET"}</div>
+					<div class="eyebrow" {...(e.stat1_label ?? {})}>{d.stat1_label ?? "AVERAGE DAYS ON MARKET"}</div>
 					<div class="stat__desc" {...(e.stat1_desc ?? {})}>{d.stat1_desc ?? "Luxury homes often wait for the perfect buyer. Patience is as critical as the price tag."}</div>
 				</div>
 				<div class="stat">
 					<div class="stat__num" {...(e.stat2_num ?? {})}>{d.stat2_num ?? "~50%"}</div>
-					<div class="stat__label" {...(e.stat2_label ?? {})}>{d.stat2_label ?? "CASH PURCHASES"}</div>
+					<div class="eyebrow" {...(e.stat2_label ?? {})}>{d.stat2_label ?? "CASH PURCHASES"}</div>
 					<div class="stat__desc" {...(e.stat2_desc ?? {})}>{d.stat2_desc ?? "Competition is fierce. Half of all transactions are liquidity-driven, requiring rapid negotiation."}</div>
 				</div>
 				<div class="stat">
 					<div class="stat__num" {...(e.stat3_num ?? {})}>{d.stat3_num ?? "20–40%"}</div>
-					<div class="stat__label" {...(e.stat3_label ?? {})}>{d.stat3_label ?? "ONLINE VALUATION INACCURACY"}</div>
+					<div class="eyebrow" {...(e.stat3_label ?? {})}>{d.stat3_label ?? "ONLINE VALUATION INACCURACY"}</div>
 					<div class="stat__desc" {...(e.stat3_desc ?? {})}>{d.stat3_desc ?? "Algorithm-based estimates fail to account for Tahoe's specific micro-locations and lot features."}</div>
 				</div>
 			</div>
@@ -270,7 +270,7 @@ const tagOf = (l: any) =>
 						<p class="testimonial__q">"{t.q}"</p>
 						<div class="testimonial__attr">
 							<div class="testimonial__name">{t.name}</div>
-							<div class="testimonial__loc">{t.loc}</div>
+							<div class="eyebrow eyebrow--muted">{t.loc}</div>
 						</div>
 					</div>
 				))}
@@ -335,7 +335,7 @@ const tagOf = (l: any) =>
 					<div class="micro" data-micro-slide={i} style={i === 0 ? "" : "display:none"}>
 						<div class="micro__map">
 							<div class="micro__map__img" style={`background-image:url('${n.image}')`}></div>
-							<div class="micro__map__caption">LAKE TAHOE · NEVADA SIDE</div>
+							<div class="eyebrow eyebrow--dim micro__map__caption">LAKE TAHOE · NEVADA SIDE</div>
 						</div>
 						<div class="micro__content">
 							<h3 class="micro__h">{n.title}</h3>
@@ -343,13 +343,13 @@ const tagOf = (l: any) =>
 							<div class="micro__stats">
 								{n.avgPrice && (
 									<div>
-										<div class="micro__stat__label">AVERAGE PRICE</div>
+										<div class="eyebrow micro__stat__label">AVERAGE PRICE</div>
 										<div class="micro__stat__v">{n.avgPrice}</div>
 									</div>
 								)}
 								{n.trend && (
 									<div>
-										<div class="micro__stat__label">INVENTORY TREND</div>
+										<div class="eyebrow micro__stat__label">INVENTORY TREND</div>
 										<div class="micro__stat__v">{n.trend}</div>
 									</div>
 								)}

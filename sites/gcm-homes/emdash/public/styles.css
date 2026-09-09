@@ -400,14 +400,41 @@ a:hover .cta-arrow { transform: translateX(4px); }
 .section--cream { background: var(--cream); }
 .container { max-width: 1184px; margin: 0 auto; }
 
+/* ===== Eyebrow ===========================================================
+   The small uppercase letterspaced label that introduces a heading, a stat,
+   a card or a panel. ONE type definition; the modifiers change colour only.
+
+   It used to be fifteen classes -- .eyebrow, .stat__label, .pillar__label,
+   .proof-card__hook, .comm-card__eyebrow, .mkt__reach-eyebrow,
+   .mkt__incl-label, .guide-fl__eyebrow, .community__eyebrow, .cinfo__label,
+   .cg-glance__h, .cg-fcard__tag, .nb-take__l, .nb-stat__l, .metric__label,
+   .filmstrip__header__c, .micro__stat__label, .micro__map__caption,
+   .cg-fact__label, .invite__row__label, .nbhd__card__tag, .grant-note__label,
+   .testimonial__loc, .pullquote__a -- each re-stating the same five
+   properties. The sizes ran 10 / 10.5 / 11 / 12 / 14 / 16px and the tracking
+   0.0875 / 0.1 / 0.12 / 0.13 / 0.14 / 0.16 / 0.18 / 0.2em, in five greys.
+   None of that was a decision; it was the order the sections got built in.
+
+   To restyle every eyebrow on the site, change this rule. To add one, write
+   class="eyebrow" -- do not write a new label class.
+
+   `display: block` lives here because every eyebrow on the site is a
+   standalone line above something; it was being re-declared in eight places. */
 .eyebrow {
+  display: block;
   font-family: var(--font-sans);
-  font-size: 12px;
+  font-size: var(--eyebrow-size);
   font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--orange);
+  color: var(--orange);      /* the default -- orange reads on cream and navy */
 }
+/* Colour only. --light and --dim are for dark sections, --navy and --muted for
+   light ones. The greys collapsed from three (--ink, --body, --muted) to one. */
+.eyebrow--light { color: var(--white); }
+.eyebrow--dim { color: rgba(255, 255, 255, 0.6); }
+.eyebrow--navy { color: var(--navy); }
+.eyebrow--muted { color: var(--muted); }
 .h-rule {
   width: 64px;
   height: 1px;
@@ -470,6 +497,7 @@ a:hover .cta-arrow { transform: translateX(4px); }
      * The listing detail page's own face, --font-noto: .features-h,
        .listing-body__h, .feat-card__h. A page-level type choice, not a drift. */
 :root {
+  --eyebrow-size: 12px;
   --h-section: 48px;
   --h-card: 26px;
 }
@@ -553,14 +581,6 @@ a:hover .cta-arrow { transform: translateX(4px); }
   line-height: 1;
   color: var(--white);
   letter-spacing: -0.005em;
-}
-.stat__label {
-  font-family: var(--font-sans);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  color: var(--orange);
-  text-transform: uppercase;
 }
 .stat__desc {
   font-size: 14px;
@@ -897,7 +917,6 @@ a:hover .cta-arrow { transform: translateX(4px); }
 }
 .testimonial__attr { display: flex; flex-direction: column; gap: 2px; }
 .testimonial__name { font-weight: 700; font-size: 15px; color: var(--ink); }
-.testimonial__loc { font-size: 11px; letter-spacing: 0.16em; color: var(--body); text-transform: uppercase; }
 
 /* ===== Contact / Invitation ===== */
 .invite {
@@ -947,13 +966,8 @@ a:hover .cta-arrow { transform: translateX(4px); }
 }
 
 .invite__row svg { color: var(--orange); flex-shrink: 0; margin-top: 2px; }
-.invite__row__label {
-  font-size: 11px;
-  letter-spacing: 0.16em;
-  color: rgba(255,255,255,0.6);
-  text-transform: uppercase;
-  margin-bottom: 4px;
-}
+/* Type from .eyebrow eyebrow--dim; this owns the gap to the value below. */
+.invite__row__label { margin-bottom: 4px; }
 .invite__row__v { font-size: 15px; color: var(--white); }
 .invite__agent {
   display: flex;
@@ -1178,13 +1192,7 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   padding: 0 32px;
 }
 .micro__stats { display: flex; gap: 56px; padding: 0 32px; margin-top: 4px; }
-.micro__stat__label {
-  font-size: 11px;
-  letter-spacing: 0.16em;
-  color: var(--orange);
-  text-transform: uppercase;
-  margin-bottom: 8px;
-}
+.micro__stat__label { margin-bottom: 8px; }
 .micro__stat__v {
   font-family: var(--font-serif);
   font-weight: 500;
@@ -1563,12 +1571,8 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   flex-direction: column;
   gap: 24px;
 }
+/* Type from `eyebrow eyebrow--muted`; this is the rule under the header. */
 .aside-fl__h {
-  font-family: var(--font-sans);
-  font-weight: 500;
-  font-size: 16px;
-  letter-spacing: 0.075em;
-  color: var(--body);
   padding-bottom: 16px;
   border-bottom: 1px solid rgba(197,198,206,0.3);
 }
@@ -1841,12 +1845,14 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   flex-direction: column;
   gap: 6px;
 }
-.local-card__eyebrow {
+/* NOT an eyebrow, despite what it used to be called: a title-case orange
+   lead-in line above the card title, at reading size. Renamed from
+   .local-card__eyebrow so the name matches what it is. */
+.local-card__lead {
   font-family: var(--font-sans);
   font-size: 14px;
   letter-spacing: 0.1em;
   font-weight: 600;
-  text-transform: none;
   color: var(--orange);
 }
 .local-card__title {
@@ -1904,14 +1910,6 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
 }
 .guide-fl__copy { display: flex; flex-direction: column; gap: 24px; }
-.guide-fl__eyebrow {
-  font-family: var(--font-sans);
-  font-size: 16px;
-  letter-spacing: 0.0875em;
-  font-weight: 600;
-  color: var(--orange);
-  text-transform: uppercase;
-}
 .guide-fl__name {
   font-family: var(--font-serif);
   font-weight: 400;
@@ -2033,13 +2031,6 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   justify-content: space-between;
   align-items: flex-end;
 }
-.metric__label {
-  font-family: var(--font-sans);
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  color: var(--ink);
-  text-transform: uppercase;
-}
 .metric__v {
   font-family: var(--font-noto);
   font-weight: 400;
@@ -2099,13 +2090,6 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   display: flex;
   flex-direction: column;
   gap: 8px;
-}
-.community__eyebrow {
-  font-family: var(--font-sans);
-  font-size: 12px;
-  letter-spacing: 0.2em;
-  color: var(--white);
-  text-transform: uppercase;
 }
 .community__title {
   font-family: var(--font-noto);
@@ -2212,13 +2196,6 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   font-weight: 400;
   font-size: 22px;
   color: var(--navy);
-}
-.filmstrip__header__c {
-  font-family: var(--font-sans);
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  color: var(--muted);
-  text-transform: uppercase;
 }
 .filmstrip {
   display: flex;
@@ -2488,7 +2465,10 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   max-width: 800px;
   margin: 0 auto 16px;
 }
-.section-title .eyebrow { display: block; margin-bottom: 16px; }
+/* Spacing under a section-head eyebrow. Two values site-wide, on purpose:
+   16px in a section head, 20px in a page hero (.eyebrow--block). `display`
+   is on .eyebrow itself now. */
+.section-title .eyebrow { margin-bottom: 16px; }
 .section-title h2 { color: var(--navy); }
 .section-title.on-dark h2 { color: var(--white); }
 .section-title p {
@@ -2520,13 +2500,10 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   text-wrap: balance;
 }
 .on-dark .pullquote__q { color: var(--white); }
+/* The attribution under a pullquote. Its own name because it means something
+   different, but it is an eyebrow and now carries the class: only the spacing
+   above it belongs here. */
 .pullquote__a {
-  font-family: var(--font-sans);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--orange);
   margin-top: 14px;
 }
 
@@ -2563,7 +2540,7 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   margin: 0 auto;
   text-align: center;
 }
-.net .eyebrow { display: block; margin-bottom: 18px; }
+.net .eyebrow { margin-bottom: 16px; }
 .net__h { color: var(--white); }
 .net__body {
   font-size: 19px;
@@ -2718,13 +2695,10 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
    inline on element after element. A class means one place to change them and
    one place to look. */
 
-/* An eyebrow above a heading. Inline as `display:block;margin-bottom:20px` on
-   five hero eyebrows and `…18px` on two more -- the difference was not
-   deliberate. */
-.eyebrow--block {
-  display: block;
-  margin-bottom: 20px;
-}
+/* A hero eyebrow: the same 20px gap under all of them. Was written inline as
+   `display:block;margin-bottom:20px` on five and `…18px` on two more -- the
+   difference was not deliberate. */
+.eyebrow--block { margin-bottom: 20px; }
 
 /* A section that continues the one above it rather than starting a new field:
    the heading and its top padding belong to the previous section. Was
@@ -2790,10 +2764,7 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   height: 3px;
   background: var(--orange);
 }
-.content-card .eyebrow {
-  font-size: 11px;
-  margin-top: 12px;
-}
+.content-card .eyebrow { margin-top: 12px; }
 .content-card__h {
   color: var(--navy);
   margin: 12px 0 16px;
@@ -2852,15 +2823,12 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
 /* The second wave is offset so the pair reads as one continuous form. */
 .micro__decor img + img { transform: translateY(-40px); }
 
-/* The caption over the bottom-left of a micro-market map. */
+/* The caption over the bottom-left of a micro-market map. Type and colour
+   come from `eyebrow eyebrow--dim`; this is only where it sits. */
 .micro__map__caption {
   position: absolute;
   left: 24px;
   bottom: 24px;
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
 }
 .micro__dots {
   display: flex;
@@ -2878,7 +2846,6 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
 
 /* Statement panel: the flex column's own 24px gap does the spacing, so the
    eyebrow and attribution need no margins of their own. */
-.emotion-split__panel .eyebrow { display: block; }
 .emotion-split__panel .pullquote__a { margin-top: 4px; }
 
 /* Clip a band's decorative bleed. */

@@ -10,7 +10,6 @@
 .cg-intro { font-size: 17px; line-height: 1.7; color: var(--body); max-width: 620px; margin: 16px auto 0; }
 .cg-body { font-size: 16px; line-height: 1.8; color: var(--body); margin-bottom: 18px; }
 .cg-head { text-align: center; max-width: 760px; margin: 0 auto 48px; }
-.eyebrow--light { color: var(--orange); }
 
 /* 1. Hero */
 /* min-height, not height: the hero grows past 620px if the copy needs it
@@ -37,7 +36,6 @@
    flush to the screen edge on phones -- .container has a max-width but no
    padding of its own to fall back on. */
 .cg-facts { padding: 84px 48px; background: var(--navy); text-align: center; }
-.cg-facts .eyebrow { color: var(--orange); }
 .cg-facts .cg-h2 { color: #fff; }
 .cg-facts__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; margin-top: 48px; }
 /* Liz's spec. The faint white hairline became the site's orange accent rule,
@@ -47,7 +45,8 @@
 .cg-fact { border-left: 3px solid var(--orange); padding-left: 24px; text-align: center; }
 .cg-fact__num { font-family: var(--font-serif); font-size: 40px; color: #fff; line-height: 1; }
 .cg-fact__num span { font-size: 18px; color: var(--orange); margin-left: 6px; }
-.cg-fact__label { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-top: 12px; }
+/* Type from `eyebrow eyebrow--dim`; the gap above is this rule's. */
+.cg-fact__label { margin-top: 12px; }
 
 /* 3. Neighborhood explorer — embedded Leaflet map + card grid (Liz's build) */
 /* The map's title used to be a floating white card inside the Leaflet canvas,
@@ -86,7 +85,7 @@
 }
 .nbhd__card:hover { transform: translateY(-2px); box-shadow: 0 10px 22px -16px rgba(6,34,58,0.45); }
 .nbhd__card__name { font-family: var(--font-serif); font-size: 19px; color: var(--navy); margin-bottom: 4px; }
-.nbhd__card__tag { font-size: 12.5px; color: var(--muted); margin-bottom: 10px; }
+.nbhd__card__tag { margin-bottom: 10px; }
 .nbhd__card__go { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--orange); }
 @media (max-width: 640px) { .nbhd__mapframe { height: 420px; } }
 
@@ -104,7 +103,7 @@
 /* 5 & sub-page split layout */
 .cg-split { display: grid; grid-template-columns: 1.3fr 1fr; gap: 56px; align-items: start; }
 .cg-glance { background: var(--beige); border-radius: 8px; padding: 30px; }
-.cg-glance__h { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--orange); font-weight: 700; margin-bottom: 18px; }
+.cg-glance__h { margin-bottom: 18px; }
 .cg-glance__row { display: flex; align-items: flex-start; gap: 10px; font-size: 15px; color: var(--body); padding: 9px 0; line-height: 1.5; }
 .cg-glance__row svg { color: var(--orange); flex-shrink: 0; margin-top: 3px; }
 
@@ -129,7 +128,6 @@
 @keyframes cgsh { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 .cg-fcard__media { height: 240px; background-size: cover; background-position: center; background-color: var(--beige); }
 .cg-fcard__body { padding: 24px; }
-.cg-fcard__tag { font-size: 10px; letter-spacing: 0.13em; text-transform: uppercase; font-weight: 700; color: var(--muted); }
 .cg-fcard__addr { font-family: var(--font-serif); font-size: 20px; color: var(--navy); font-weight: 500; margin: 8px 0 6px; }
 .cg-fcard__meta { font-size: 12px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
 .cg-fcard__price { font-family: var(--font-serif); font-size: 24px; color: var(--navy); }
@@ -138,19 +136,16 @@
 .nb-hero { position: relative; padding: 150px 0 70px; background: var(--navy); overflow: hidden; }
 .nb-hero__veil { position: absolute; inset: 0; background: linear-gradient(120deg, #15243b 0%, #1d3050 100%); }
 .nb-hero__copy { position: relative; color: #fff; }
-/* .cg-hero__title supplies the space below, so the eyebrow only needs to be
-   a block. Was `display:block` inline. */
-.nb-hero__copy .eyebrow { display: block; }
 .nb-hero__back { display: inline-block; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.7); margin-bottom: 20px; }
 .nb-hero__back:hover { color: var(--orange); }
 .nb-take { margin-top: 32px; padding: 26px 28px; background: var(--beige); border-left: 3px solid var(--orange); border-radius: 0 6px 6px 0; }
-.nb-take__l { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; color: var(--orange); margin-bottom: 10px; }
+.nb-take__l { margin-bottom: 10px; }
 .nb-take p { font-size: 16px; line-height: 1.7; color: var(--navy); font-style: italic; }
 .nb-side { position: sticky; top: 100px; display: flex; flex-direction: column; gap: 20px; }
 .nb-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
 .nb-stat { background: #fff; padding: 20px; text-align: center; }
 .nb-stat__v { font-family: var(--font-serif); font-size: 22px; color: var(--navy); }
-.nb-stat__l { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 6px; }
+.nb-stat__l { margin-top: 6px; }
 .nb-cta { width: 100%; }
 
 /* Community responsive */

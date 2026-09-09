@@ -61,7 +61,7 @@ const meta = (l: any) => [l.beds && `${l.beds} BD`, l.baths && `${l.baths} BA`, 
 			<div class="nb-hero__veil"></div>
 			<div class="container nb-hero__copy">
 				<a class="nb-hero__back" href="/community/">← The Community</a>
-				<span class="eyebrow eyebrow--light" {...(e.tag ?? {})}>{d.tag ?? area.tag}</span>
+				<span class="eyebrow" {...(e.tag ?? {})}>{d.tag ?? area.tag}</span>
 				<h1 class="cg-hero__title" {...(e.title ?? {})}>{d.title ?? area.name}</h1>
 				<p class="cg-hero__sub" {...(e.hero_sub ?? {})}>{heroSub}</p>
 			</div>
@@ -73,18 +73,18 @@ const meta = (l: any) => [l.beds && `${l.beds} BD`, l.baths && `${l.baths} BA`, 
 					<h2 class="cg-h2">Living in {area.name}</h2>
 					<p class="cg-body" {...(e.overview ?? {})}>{overview}</p>
 					<div class="nb-take">
-						<div class="nb-take__l">Grant's Take</div>
+						<div class="eyebrow nb-take__l">Grant's Take</div>
 						<p {...(e.take ?? {})}>{take}</p>
 					</div>
 				</div>
 				<aside class="nb-side">
 					<div class="cg-glance">
-						<div class="cg-glance__h">At a Glance</div>
+						<div class="eyebrow cg-glance__h">At a Glance</div>
 						{glance.map((g) => <div class="cg-glance__row"><span>✓</span> <span>{g}</span></div>)}
 					</div>
 					<div class="nb-stats">
 						{stats.map(([v, l]) => (
-							<div class="nb-stat"><div class="nb-stat__v">{v}</div><div class="nb-stat__l">{l}</div></div>
+							<div class="nb-stat"><div class="nb-stat__v">{v}</div><div class="eyebrow eyebrow--muted nb-stat__l">{l}</div></div>
 						))}
 					</div>
 					<a class="btn btn--orange nb-cta" href="/contact/">Ask Grant About {area.name}</a>
@@ -111,7 +111,7 @@ const meta = (l: any) => [l.beds && `${l.beds} BD`, l.baths && `${l.baths} BA`, 
 								<a class="cg-fcard" href={`/homes/${l.slug}/`}>
 									<div class="cg-fcard__media" style={l.photo ? `background-image:url(${l.photo})` : ""}></div>
 									<div class="cg-fcard__body">
-										<div class="cg-fcard__tag">{l.category || l.type || "Residential"}</div>
+										<div class="eyebrow eyebrow--muted">{l.category || l.type || "Residential"}</div>
 										<h3 class="cg-fcard__addr">{l.address}</h3>
 										<div class="cg-fcard__meta">{meta(l)}</div>
 										<div class="cg-fcard__price">{fmt(l.price)}</div>

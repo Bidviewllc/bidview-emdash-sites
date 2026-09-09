@@ -357,7 +357,7 @@
   .section--narrow  { padding: 48px 20px; }
 
   /* --- Headings --- see the tablet block above. */
-  :root { --h-section: 30px; --h-card: 22px; }
+  :root { --eyebrow-size: 11px; --h-section: 30px; --h-card: 22px; }
   .h1 { font-size: 30px; }
   .section-title p { font-size: 15px; }
 
