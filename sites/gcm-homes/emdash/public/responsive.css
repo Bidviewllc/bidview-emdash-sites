@@ -179,8 +179,8 @@
   .section-title h2 { font-size: 42px; }
 
   /* --- Hero --- */
-  .hero { height: 720px; }
-  .hero__copy { padding: 0 48px; bottom: 88px; }
+  .hero { min-height: 720px; }
+  .hero__copy { padding: 152px 48px 88px; }
   .hero__title { font-size: 60px; max-width: 760px; margin-bottom: 24px; }
   .hero__sub { font-size: 16px; max-width: 580px; }
 
@@ -256,8 +256,8 @@
   /* ===== Listing detail ===== */
 
   /* Cinematic hero */
-  .listing-hero, .listing-hero--fl { height: 680px; }
-  .listing-hero--fl .listing-hero__bottom { padding: 0 32px 56px; flex-direction: column; align-items: stretch; gap: 32px; }
+  .listing-hero, .listing-hero--fl { min-height: 680px; }
+  .listing-hero--fl .listing-hero__bottom { padding: 176px 32px 56px; flex-direction: column; align-items: stretch; gap: 32px; }
   .listing-hero--fl .listing-hero__title { font-size: 44px; }
   .listing-hero--fl .listing-hero__stats { gap: 36px; flex-wrap: wrap; padding: 0; }
   .listing-hero--fl .listing-hero__stat__v { font-size: 24px; }
@@ -317,6 +317,12 @@
   .listings-filters > div:last-child { width: 100%; justify-content: flex-end; margin-left: 0; }
   .listings-grid { grid-template-columns: 1fr 1fr; gap: 24px; padding: 32px; }
 
+  /* ===== Accordion (site default, .acc in styles.css) =====
+     Moved here from buyers.css when the accordion became site-wide. */
+  .acc { margin-top: 44px; }
+  .acc__label { font-size: 23px; }
+  .acc__trigger { padding: 22px 2px; }
+
   /* ===== Content pages (Buyers / Sellers / etc.) ===== */
   /* The 2-col card grid is set inline via style, override with high specificity */
   .section.section--cream > .container[style*="grid-template-columns"] {
@@ -352,8 +358,8 @@
   .section-title p { font-size: 15px; }
 
   /* --- Hero --- */
-  .hero { height: 620px; }
-  .hero__copy { padding: 0 20px; bottom: 64px; }
+  .hero { min-height: 620px; }
+  .hero__copy { padding: 128px 20px 64px; }
   .hero__title { font-size: 36px; line-height: 1.08; margin-bottom: 18px; }
   .hero__sub { font-size: 16px; line-height: 1.6; }
 
@@ -446,8 +452,8 @@
   /* ===== Listing detail ===== */
 
   /* Cinematic hero */
-  .listing-hero, .listing-hero--fl { height: 580px; }
-  .listing-hero--fl .listing-hero__bottom { padding: 0 20px 40px; gap: 24px; }
+  .listing-hero, .listing-hero--fl { min-height: 580px; }
+  .listing-hero--fl .listing-hero__bottom { padding: 150px 20px 40px; gap: 24px; }
   .listing-hero--fl .listing-hero__title { font-size: 30px; }
   .listing-hero--fl .listing-hero__crumb { font-size: 11px; }
   .listing-hero--fl .listing-hero__stats { gap: 20px 28px; padding: 16px 0 0; }
@@ -546,6 +552,14 @@
   }
   .chip { padding: 10px 16px; flex-shrink: 0; }
   .listings-grid { grid-template-columns: 1fr; gap: 20px; padding: 32px 20px; }
+
+  /* ===== Accordion (site default, .acc in styles.css) ===== */
+  .acc { margin-top: 36px; }
+  .acc__trigger { padding: 20px 0; gap: 16px; }
+  .acc__label { font-size: 20px; }
+  .acc__icon { width: 30px; height: 30px; }
+  .acc__panel { padding: 0 0 28px; }
+  .acc__panel p { font-size: 15px; }
 
   /* ===== Content pages ===== */
   .section.section--cream > .container[style*="grid-template-columns"] {

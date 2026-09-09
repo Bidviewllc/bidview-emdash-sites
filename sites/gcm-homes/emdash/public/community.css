@@ -13,7 +13,9 @@
 .eyebrow--light { color: var(--orange); }
 
 /* 1. Hero */
-.cg-hero { position: relative; height: 620px; overflow: hidden; background: var(--navy); display: flex; align-items: flex-end; }
+/* min-height, not height: the hero grows past 620px if the copy needs it
+   rather than crowding up under the nav. Matches .hero in styles.css. */
+.cg-hero { position: relative; min-height: 620px; overflow: hidden; background: var(--navy); display: flex; align-items: flex-end; }
 .cg-hero__img { position: absolute; inset: 0; background-size: cover; background-position: center; transform: scale(1.03); }
 .cg-hero__veil {
   position: absolute; inset: 0;
@@ -21,7 +23,7 @@
     linear-gradient(180deg, rgba(21,36,59,0.55) 0%, rgba(21,36,59,0.35) 45%, rgba(10,18,29,0.92) 100%),
     linear-gradient(180deg, rgba(252,249,244,0.9) 0%, rgba(252,249,244,0) 16%);
 }
-.cg-hero__copy { position: relative; text-align: center; width: 100%; padding: 0 96px; padding-bottom: 5vh; color: #fff; }
+.cg-hero__copy { position: relative; text-align: center; width: 100%; padding: 176px 96px 5vh; color: #fff; }
 .cg-hero__title {
   font-family: var(--font-serif); font-weight: 400; font-size: 64px; line-height: 1.06;
   letter-spacing: -0.01em; text-wrap: balance; max-width: 960px; margin: 14px auto 22px;
@@ -30,20 +32,48 @@
 .cg-hero__sub { font-size: 18px; line-height: 1.65; max-width: 700px; margin: 0 auto; opacity: 0.94; font-weight: 300; }
 
 /* 2. Lake facts strip */
-.cg-facts { padding: 84px 0; background: var(--navy); text-align: center; }
+/* 48px sides, matching .section in styles.css. These two navy bands were
+   `padding: 84px 0` / `90px 0` with no horizontal padding, so their content ran
+   flush to the screen edge on phones -- .container has a max-width but no
+   padding of its own to fall back on. */
+.cg-facts { padding: 84px 48px; background: var(--navy); text-align: center; }
 .cg-facts .eyebrow { color: var(--orange); }
 .cg-facts .cg-h2 { color: #fff; }
 .cg-facts__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; margin-top: 48px; }
-.cg-fact { border-left: 1px solid rgba(255,255,255,0.16); padding-left: 24px; text-align: left; }
-.cg-fact:first-child { border-left: none; }
+/* Liz's spec. The faint white hairline became the site's orange accent rule,
+   so these read as the same kind of mark as .pullquote and .stat__desc. The
+   old `:first-child { border-left: none }` exception is gone with it -- the
+   rule is now a deliberate accent on every figure, not a divider between them. */
+.cg-fact { border-left: 3px solid var(--orange); padding-left: 24px; text-align: center; }
 .cg-fact__num { font-family: var(--font-serif); font-size: 40px; color: #fff; line-height: 1; }
 .cg-fact__num span { font-size: 18px; color: var(--orange); margin-left: 6px; }
 .cg-fact__label { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-top: 12px; }
 
 /* 3. Neighborhood explorer — embedded Leaflet map + card grid (Liz's build) */
+/* The map's title used to be a floating white card inside the Leaflet canvas,
+   where it covered the polygons and had to be shoved down to 80% on phones to
+   dodge the zoom and layers controls. It is a real header now, attached to the
+   top of the frame: shared border, radius only on the top corners, so the two
+   read as one object. Removed from public/map/index.html in the same change. */
+.nbhd__maphead {
+  border: 1px solid rgba(21,36,59,0.12);
+  border-bottom: none;
+  border-left: 3px solid var(--orange);
+  border-radius: 8px 8px 0 0;
+  background: #fff;
+  padding: 16px 22px;
+}
+.nbhd__maphead h3 {
+  font-family: var(--font-serif); font-weight: 500; font-size: 19px;
+  line-height: 1.2; color: var(--navy); margin: 0 0 4px;
+}
+.nbhd__maphead p { font-size: 13px; line-height: 1.45; color: var(--muted); margin: 0; }
+
 .nbhd__mapframe {
-  position: relative; height: 520px; border-radius: 8px; overflow: hidden;
+  position: relative; height: 520px; overflow: hidden;
+  border-radius: 0 0 8px 8px;
   box-shadow: 0 18px 40px -24px rgba(6,34,58,0.5); border: 1px solid rgba(21,36,59,0.12);
+  border-top: none;
   margin-bottom: 48px; background: var(--beige);
 }
 .nbhd__mapframe iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
@@ -76,20 +106,17 @@
 .cg-glance__row svg { color: var(--orange); flex-shrink: 0; margin-top: 3px; }
 
 /* 6. History */
-.cg-history { padding: 90px 0; background: var(--navy); text-align: center; }
+.cg-history { padding: 90px 48px; background: var(--navy); text-align: center; }
 .cg-eras { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-top: 52px; text-align: left; }
 .cg-era__mark { font-family: var(--font-serif); font-size: 40px; color: rgba(247,148,91,0.55); line-height: 1; }
 .cg-era__title { font-family: var(--font-serif); font-size: 22px; color: #fff; margin: 14px 0 12px; }
 .cg-era__title span { color: rgba(255,255,255,0.5); font-size: 15px; }
 .cg-era__p { font-size: 15px; line-height: 1.75; color: rgba(255,255,255,0.72); }
 
-/* 7. Living Here accordion */
-.cg-acc { max-width: 820px; margin: 0 auto; }
-.cg-acc__item { border-bottom: 1px solid var(--line); }
-.cg-acc__head { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 26px 4px; font-family: var(--font-serif); font-size: 22px; color: var(--navy); background: none; border: none; cursor: pointer; text-align: left; }
-.cg-acc__sign { font-size: 26px; color: var(--orange); font-family: var(--font-sans); font-weight: 300; }
-.cg-acc__body { padding: 0 4px 28px; }
-.cg-acc__body p { font-size: 16px; line-height: 1.8; color: var(--body); margin-bottom: 14px; }
+/* 7. Living Here accordion — uses the site-wide `.acc` in styles.css (the
+   Buyers tax accordion, promoted to the house style). The only difference here
+   is the looser paragraph leading this page uses everywhere else. */
+.acc--loose .acc__panel p { line-height: 1.8; }
 
 /* 8. Featured (live) */
 .cg-featured { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
@@ -122,6 +149,8 @@
 
 /* Community responsive */
 @media (max-width: 1024px) {
+  .cg-facts { padding: 84px 32px; }
+  .cg-history { padding: 90px 32px; }
   .nbhd { grid-template-columns: 1fr; }
   .nbhd__panel { position: static; }
   .cg-split { grid-template-columns: 1fr; gap: 36px; }
@@ -131,8 +160,10 @@
 }
 @media (max-width: 640px) {
   .cg-hero__title { font-size: 40px; }
-  .cg-hero__copy { padding-left: 24px; padding-right: 24px; }
+  .cg-hero__copy { padding: 128px 24px 5vh; }
   .cg-h2 { font-size: 32px; }
   .cg-todo, .cg-featured, .cg-eras, .cg-facts__grid { grid-template-columns: 1fr; }
-  .cg-fact { border-left: none; padding-left: 0; }
+  /* Tracks .section's own mobile padding in responsive.css (64px 20px). */
+  .cg-facts { padding: 64px 20px; }
+  .cg-history { padding: 68px 20px; }
 }

@@ -279,9 +279,14 @@
     }
 
     /* --nav-h must track .nav's real height in responsive.css, or the sticky filter
-       bar and sticky map detach from it. Last in the file so nothing overrides. */
+       bar and sticky map detach from it. Last in the file so nothing overrides.
+       .nav is 96px at desktop and 80px at BOTH mobile breakpoints -- responsive.css
+       sets `height: 80px` at 1024px and again at 640px. This used to drop to 64px
+       at 640px, which is where the fixed header overlapped the filter bar by 16px
+       on phones: the bar goes position:static at 900px, so it sits in normal flow
+       directly under body's padding-top and any shortfall shows as an overlap.
+       If .nav's height ever changes, change it here in the same commit. */
     @media (max-width: 1024px) { :root { --nav-h: 80px; } }
-    @media (max-width: 640px)  { :root { --nav-h: 64px; } }
     @media (max-width: 460px) {
       .grid { grid-template-columns: 1fr; }
       .results__head { flex-wrap: wrap; }

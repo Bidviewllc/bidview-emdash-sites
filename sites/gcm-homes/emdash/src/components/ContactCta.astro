@@ -21,8 +21,15 @@ interface Props {
 	id?: string;
 	/** Set when this is the first section on a page: adds top room for the fixed nav. */
 	first?: boolean;
+	/**
+	 * Which of the two light section tones this instance sits on. The site's
+	 * non-blue sections alternate beige/cream down each page, and this is the last
+	 * section on four different pages, so it cannot be pinned to one tone -- each
+	 * page passes whichever one continues its own rhythm. Defaults to cream.
+	 */
+	bg?: "cream" | "beige";
 }
-const { heading: headingOverride = null, id = "contact", first = false } = Astro.props;
+const { heading: headingOverride = null, id = "contact", first = false, bg = "cream" } = Astro.props;
 
 let cta: any = {};
 try {
@@ -50,7 +57,7 @@ const rows = [
 ].filter(([, v]) => v) as [string, string][];
 ---
 
-<section id={id} class="section section--cream" data-screen-label="Contact" style={first ? "padding-top:140px" : undefined}>
+<section id={id} class={`section section--${bg}`} data-screen-label="Contact" style={first ? "padding-top:140px" : undefined}>
 	<div class="container">
 		<div class="invite">
 			<div class="invite__left">

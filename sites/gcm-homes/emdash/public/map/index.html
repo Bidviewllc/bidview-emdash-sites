@@ -34,23 +34,13 @@
       font-family: 'Manrope', system-ui, sans-serif;
     }
 
-    /* Title card, top-left */
-    .map-title {
-      position: absolute; top: 12px; left: 60px; z-index: 1000;
-      background: rgba(255,255,255,0.94);
-      border-left: 4px solid var(--orange);
-      padding: 14px 18px; border-radius: 4px;
-      box-shadow: 0 2px 12px rgba(6,34,58,0.18);
-      max-width: 300px;
-    }
-    .map-title h1 {
-      font-family: 'Source Serif 4', Georgia, serif;
-      font-size: 19px; line-height: 1.2; margin: 0 0 4px; color: var(--navy);
-    }
-    .map-title p {
-      font-family: 'Manrope', sans-serif;
-      font-size: 12.5px; line-height: 1.45; margin: 0; color: #44607a;
-    }
+    /* No title card here any more. It was an absolutely positioned white panel
+       floating over the polygons, and on phones it had to be pushed down to
+       top: 80% to dodge the zoom control (top-left) and the layers control
+       (top-right) -- which put it over the map's south end instead. The title
+       now lives outside the iframe as .nbhd__maphead, attached above the frame
+       (src/pages/community.astro + public/community.css), so it covers nothing
+       and the whole map is usable. */
 
     /* Neighborhood name labels drawn on the polygons */
     .area-label {
@@ -86,13 +76,8 @@
     .pop .explore:hover { background: #f9a168; }
 
     /* Narrow frames (this page is embedded in an iframe on mobile) — the
-       300px overlay card and the expanded layer control both overflow. */
+       expanded layer control and the popups both overflow. */
     @media (max-width: 560px) {
-      /* Sits low on the map so it clears both the zoom control (top-left) and
-         the expanded layers control (top-right) at every phone width. */
-      .map-title { top: 80%; left: 60px; max-width: calc(100% - 72px); padding: 11px 14px; }
-      .map-title h1 { font-size: 16px; }
-      .map-title p { font-size: 12px; }
       .leaflet-popup-content { width: 200px !important; margin: 12px 14px; }
       .leaflet-control-layers { font-size: 12px; }
     }
@@ -100,10 +85,6 @@
 </head>
 <body>
   <div id="map"></div>
-  <div class="map-title">
-    <h1>Incline Village Neighborhoods</h1>
-    <p>Tap any area to explore the neighborhood.</p>
-  </div>
 
   <script>
     // --- Neighborhood descriptions (source: Coldwell Banker Select Real Estate) ---
@@ -143,17 +124,33 @@
 
     var map = L.map('map', { scrollWheelZoom: true });
 
-    // --- Base layers (all free, no API key). Voyager is the default. ---
-    var voyager = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-      attribution: '&copy; OpenStreetMap, &copy; CARTO', subdomains: 'abcd', maxZoom: 19 });
+    // --- Base layers (all free, no API key) ---
+    // The default WAS CARTO's Voyager style. CARTO has since put its basemaps
+    // behind an API key, and it does not fail with an error: every tile still
+    // returns HTTP 200, but the image is a light grey square stamped
+    // "API KEY REQUIRED / carto.com/basemaps/apikey". That watermark was
+    // repeating right across the live map.
+    //
+    // Replaced with Esri's World_Street_Map — the same keyless provider this
+    // page already uses for Satellite and Terrain, so no new dependency. Picked
+    // over Esri's quieter Light Gray Canvas because that one renders water grey,
+    // and this is a map of a lake community: Tahoe needs to read as Tahoe.
+    // If Voyager is wanted back it needs a CARTO account and a key appended to
+    // the URL; nothing else about the layer has to change. For a quieter base
+    // that makes the polygons pop harder, swap this one URL to
+    //   Canvas/World_Light_Gray_Base   (plus Canvas/World_Light_Gray_Reference
+    //   in an L.layerGroup for the labels, and maxZoom 16 — that service stops
+    //   there, where World_Street_Map goes to 19).
+    var street = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+      attribution: 'Tiles &copy; Esri, &copy; OpenStreetMap contributors', maxZoom: 19 });
     var satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
       attribution: 'Imagery &copy; Esri, Maxar, Earthstar Geographics', maxZoom: 19 });
     var terrain = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {
       attribution: 'Tiles &copy; Esri', maxZoom: 19 });
 
-    voyager.addTo(map);
+    street.addTo(map);
     L.control.layers(
-      { 'Map': voyager, 'Satellite': satellite, 'Terrain': terrain },
+      { 'Map': street, 'Satellite': satellite, 'Terrain': terrain },
       null,
       { position: 'topright', collapsed: false }
     ).addTo(map);

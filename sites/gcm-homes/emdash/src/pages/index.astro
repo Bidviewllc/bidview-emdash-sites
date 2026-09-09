@@ -255,7 +255,7 @@ const tagOf = (l: any) =>
 
 	{/* 05 THE PROOF — testimonials are the design's template copy for now; Liz is
 	     checking with Vince how real reviews get pulled in. */}
-	<section class="section section--white" data-screen-label="05 The Proof">
+	<section class="section section--cream" data-screen-label="05 The Proof">
 		<div class="container">
 			<div class="section-title">
 				<h2 {...(e.proof_heading ?? {})}>{d.proof_heading ?? "Hundreds of Clients. Thousands of Negotiations. One Market."}</h2>
@@ -279,7 +279,7 @@ const tagOf = (l: any) =>
 	</section>
 
 	{/* FEATURED LISTINGS — live from D1 */}
-	<section class="section section--cream" data-screen-label="07 Featured Listings">
+	<section class="section section--beige" data-screen-label="07 Featured Listings">
 		<div class="container">
 			<div style="text-align:center;max-width:640px;margin:0 auto 48px">
 				<span class="eyebrow" {...(e.featured_eyebrow ?? {})}>{d.featured_eyebrow ?? "CURATED LAKE TAHOE PROPERTIES"}</span>
@@ -425,7 +425,7 @@ const tagOf = (l: any) =>
 	    /contact/, /community/ and the four content pages, so it is edited in one
 	    place. Liz's design renders it twice on the home page (mid-page and at the
 	    end); built once at the end. */}
-	<ContactCta />
+	<ContactCta bg="beige" />
 
 	<script is:inline>
 		/* Micro-markets slider. Plain show/hide rather than a transform track: the

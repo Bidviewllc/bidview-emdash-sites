@@ -1,7 +1,8 @@
 ---
 // Community Guide — ported from the prototype's community.jsx into emdash SSR.
-// Nine sections: hero, lake facts, neighborhood map (Liz's Leaflet iframe /map/),
-// things-to-do, schools, history, living-here accordion, featured (live D1), CTA.
+// Nine sections: hero, lake facts, neighborhood map (Liz's Leaflet iframe /map/,
+// with its title as an attached header above the frame), things-to-do, schools,
+// history, living-here accordion (the shared .acc), featured (live D1), CTA.
 // The neighborhood grid links to /neighborhood/:slug/ (editable copy per area).
 import GcmLayout from "../layouts/GcmLayout.astro";
 import ContactCta from "../components/ContactCta.astro";
@@ -93,7 +94,7 @@ const meta = (l: any) => [l.beds && `${l.beds} BD`, l.baths && `${l.baths} BA`, 
 		</section>
 
 		{/* 3. Explore the Neighborhoods — map + grid */}
-		<section class="section" data-screen-label="Neighborhoods">
+		<section class="section section--beige" data-screen-label="Neighborhoods">
 			<div class="container">
 				<div class="cg-head">
 					<span class="eyebrow">Explore the Neighborhoods</span>
@@ -101,6 +102,13 @@ const meta = (l: any) => [l.beds && `${l.beds} BD`, l.baths && `${l.baths} BA`, 
 					<p class="cg-intro">Tap an area on the map to see its character, or pick a neighborhood below. Each opens its own guide, with the homes currently for sale there.</p>
 				</div>
 				<div class="nbhd">
+					{/* The map's title was a floating card inside the Leaflet canvas, sitting
+					    on top of the polygons. It is an attached header now — the matching
+					    .map-title was removed from public/map/index.html. */}
+					<div class="nbhd__maphead">
+						<h3>Incline Village Neighborhoods</h3>
+						<p>Tap any area on the map to explore that neighborhood.</p>
+					</div>
 					<div class="nbhd__mapframe">
 						<iframe title="Incline Village neighborhood map" src="/map/" loading="lazy"></iframe>
 					</div>
@@ -142,7 +150,7 @@ const meta = (l: any) => [l.beds && `${l.beds} BD`, l.baths && `${l.baths} BA`, 
 		</section>
 
 		{/* 5. Schools */}
-		<section class="section" data-screen-label="Schools">
+		<section class="section section--beige" data-screen-label="Schools">
 			<div class="container cg-split">
 				<div>
 					<span class="eyebrow">Schools</span>
@@ -183,11 +191,17 @@ const meta = (l: any) => [l.beds && `${l.beds} BD`, l.baths && `${l.baths} BA`, 
 					<h2 class="cg-h2">Settling Into Incline Village</h2>
 					<p class="cg-intro">The practical side of the move — how you get here, what residency opens up, and what the year actually feels like.</p>
 				</div>
-				<div class="cg-acc">
+				{/* The site-wide accordion (.acc in styles.css) — the same one the Buyers
+				    tax section uses. `--loose` only widens the paragraph leading to the
+				    1.8 this page uses elsewhere. */}
+				<div class="acc acc--loose">
 					{LIVING_HERE.map((item, i) => (
-						<details class="cg-acc__item" open={i === 0}>
-							<summary class="cg-acc__head"><span>{item.h}</span><span class="cg-acc__sign"></span></summary>
-							<div class="cg-acc__body">{item.body.map((p) => <p>{p}</p>)}</div>
+						<details class="acc__item" open={i === 0}>
+							<summary class="acc__trigger">
+								<span class="acc__label">{item.h}</span>
+								<span class="acc__icon" aria-hidden="true"></span>
+							</summary>
+							<div class="acc__panel">{item.body.map((p) => <p>{p}</p>)}</div>
 						</details>
 					))}
 				</div>
@@ -195,7 +209,7 @@ const meta = (l: any) => [l.beds && `${l.beds} BD`, l.baths && `${l.baths} BA`, 
 		</section>
 
 		{/* 8. Featured (live) */}
-		<section class="section section--cream" data-screen-label="Featured Properties">
+		<section class="section section--beige" data-screen-label="Featured Properties">
 			<div class="container">
 				<div class="cg-head">
 					<span class="eyebrow">Currently on the Market</span>
@@ -222,7 +236,7 @@ const meta = (l: any) => [l.beds && `${l.beds} BD`, l.baths && `${l.baths} BA`, 
 		</section>
 
 		{/* 9. Contact — the shared section, keeping this page's own heading. */}
-		<ContactCta heading="Ready to Know the North Shore From the Inside?" />
+		<ContactCta heading="Ready to Know the North Shore From the Inside?" bg="cream" />
 	</div>
 
 	<script is:inline>

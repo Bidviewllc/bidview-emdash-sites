@@ -6,7 +6,7 @@
 //   01 Hero          .hero              — same pattern as the home/About hero
 //   02 The Stakes    .guide.split--rev  — copy + full-height photo, copy first
 //   03 The Network   .net               — dark Statement block (styles.css)
-//   04 Tax Advantage .tax-acc           — new, styles in /buyers.css
+//   04 Tax Advantage .acc               — the site-wide accordion (styles.css)
 //   05 Investment    .guide             — the same split, photo first (full height)
 //   06 Communities   .communities       — new, styles in /buyers.css
 //   07 The Process   .process           — editorial column (styles.css)
@@ -174,7 +174,7 @@ const showProcess = Boolean(processBody || processPromise);
 	<link rel="stylesheet" href="/buyers.css" />
 
 	{/* 01 HERO — the site's Hero-Full pattern. */}
-	<section class="hero hero--buyers" data-screen-label="01 Hero">
+	<section class="hero hero--buyers hero--deep-veil" data-screen-label="01 Hero">
 		<div class="hero__img" style={`background-image:url(${heroImage})`}></div>
 		<div class="hero__veil"></div>
 		<div class="hero__copy">
@@ -193,7 +193,7 @@ const showProcess = Boolean(processBody || processPromise);
 	</section>
 
 	{/* 02 THE STAKES — the site's copy/photo split, run copy-first. */}
-	<section class="section section--cream" data-screen-label="02 The Stakes">
+	<section class="section section--beige" data-screen-label="02 The Stakes">
 		<div class="container guide split--rev split--photo-fill">
 			<div class="guide__copy">
 				<div class="eyebrow" {...(e.stakes_eyebrow ?? {})}>{d.stakes_eyebrow ?? "THE STAKES"}</div>
@@ -274,14 +274,17 @@ const showProcess = Boolean(processBody || processPromise);
 				</p>
 			</div>
 
-			<div class="tax-acc">
+			{/* The site-wide accordion (.acc in styles.css). This is where the
+			    pattern started as `.tax-acc`; it moved into the design system when
+			    it became the house style, so /community/ uses the same classes. */}
+			<div class="acc">
 				{TAX.map((s, i) => (
-					<details class="tax-acc__item" open={i === 0}>
-						<summary class="tax-acc__trigger">
-							<span class="tax-acc__kicker">{s.kicker}</span>
-							<span class="tax-acc__icon" aria-hidden="true"></span>
+					<details class="acc__item" open={i === 0}>
+						<summary class="acc__trigger">
+							<span class="acc__label">{s.kicker}</span>
+							<span class="acc__icon" aria-hidden="true"></span>
 						</summary>
-						<div class="tax-acc__panel">
+						<div class="acc__panel">
 							<div class="tax-acc__title">{s.title}</div>
 							{s.paras.map((p) => <p>{p}</p>)}
 							{s.bullets && (
@@ -374,7 +377,7 @@ const showProcess = Boolean(processBody || processPromise);
 	{/* 07 THE PROCESS — off the page until Grant's own account of the steps is
 	     in the CMS. See the note on `processBody` above. */}
 	{showProcess && (
-		<section class="section section--white" data-screen-label="07 The Process">
+		<section class="section section--beige" data-screen-label="07 The Process">
 			<div class="container">
 				<div class="process">
 					<div class="process__head">
@@ -415,5 +418,5 @@ const showProcess = Boolean(processBody || processPromise);
 
 	{/* 09 CONTACT — the shared site-wide section, anchored so the hero and CTA
 	     buttons land on it. */}
-	<ContactCta id="buyers-contact" />
+	<ContactCta id="buyers-contact" bg="cream" />
 </GcmLayout>

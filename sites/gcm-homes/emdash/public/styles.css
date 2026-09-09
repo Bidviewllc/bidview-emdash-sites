@@ -194,12 +194,19 @@ a:hover .cta-arrow { transform: translateX(4px); }
 }
 
 /* ===== Hero ===== */
+/* min-height, not height. The copy used to be absolutely positioned inside a
+   fixed 826px box, so a long hero block (Sellers has the longest on the site)
+   was squeezed toward the nav with no room to breathe. Now the copy sits in
+   normal flow, bottom-aligned by the flex container, and the section grows past
+   826px when it needs to -- short heroes look exactly as before. */
 .hero {
   position: relative;
   width: 100%;
-  height: 826px;
+  min-height: 826px;
   overflow: hidden;
   background: #15243b;
+  display: flex;
+  align-items: flex-end;
 }
 .hero__img {
   position: absolute;
@@ -219,6 +226,35 @@ a:hover .cta-arrow { transform: translateX(4px); }
     linear-gradient(180deg, rgba(21, 36, 59, 0) 30%, rgba(21, 36, 59, 0.45) 60%, rgba(10, 18, 29, 0.78) 100%),
     /* Top: cream fade into nav so blue nav text + full-color logo read */
     linear-gradient(180deg, rgba(252, 249, 244, 0.95) 0%, rgba(252, 249, 244, 0.55) 8%, rgba(252, 249, 244, 0) 18%);
+}
+
+/* ===== Deep hero veil =====
+   Moved here from sellers.css, where it was `.hero--sellers .hero__veil`. Liz
+   asked for /buyers/ to match /sellers/, so it is a shared class now.
+
+   The shared .hero__veil above does not begin darkening until 30% down, which
+   works over the dusk-animated lake on the home page but not over the two
+   photographs Liz supplied for these pages: Rubicon Trail and Eagle Rock are
+   both bright and hazy straight through the middle of the frame — exactly where
+   the hero eyebrow and headline sit. This starts the darkening at 6% and carries
+   it deeper. The top cream fade is kept verbatim so the nav logo and links still
+   read against the photo. */
+.hero--deep-veil .hero__veil {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(21, 36, 59, 0) 6%,
+      rgba(21, 36, 59, 0.38) 26%,
+      rgba(21, 36, 59, 0.54) 46%,
+      rgba(21, 36, 59, 0.68) 70%,
+      rgba(10, 18, 29, 0.86) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(252, 249, 244, 0.95) 0%,
+      rgba(252, 249, 244, 0.55) 8%,
+      rgba(252, 249, 244, 0) 18%
+    );
 }
 
 /* Ambient dusk→night hero overlay (Liz's approved prototype). Three layers,
@@ -283,11 +319,12 @@ a:hover .cta-arrow { transform: translateX(4px); }
   .hero__stars { animation: none; opacity: 0; }
 }
 .hero__copy {
-  position: absolute;
-  left: 0; right: 0;
-  bottom: 100px;
+  position: relative;
+  width: 100%;
   text-align: center;
-  padding: 0 96px;
+  /* Top clears the fixed 96px nav with room to spare; the 100px bottom is the
+     old `bottom: 100px` offset, so nothing moves on the short heroes. */
+  padding: 176px 96px 100px;
   color: var(--white);
 }
 .hero__title {
@@ -352,8 +389,14 @@ a:hover .cta-arrow { transform: translateX(4px); }
 .section { padding: 128px 48px; }
 .section--narrow { padding: 96px 48px; }
 .section--dark { background: var(--navy); color: var(--white); }
+/* Kept, but no page uses it any more: the site's light sections alternate
+   beige/cream down the page, and pure white broke that two-tone rhythm.
+   Prefer --beige or --cream so the alternation stays intact. */
 .section--white { background: var(--white); }
 .section--beige { background: var(--beige); }
+/* Same value as `body`, so a bare `.section` and `.section--cream` render
+   identically -- but always state it, so the alternation is readable in the
+   markup rather than depending on the body default. */
 .section--cream { background: var(--cream); }
 .container { max-width: 1184px; margin: 0 auto; }
 
@@ -460,11 +503,16 @@ a:hover .cta-arrow { transform: translateX(4px); }
   color: var(--orange);
   text-transform: uppercase;
 }
+/* The supporting line under each figure carries the same orange left rule as
+   .pullquote, so the "here is the reading of it" voice looks the same wherever
+   it appears on the site (home page Reality Check, About credential stats). */
 .stat__desc {
   font-size: 14px;
   line-height: 1.55;
   color: rgba(255,255,255,0.7);
-  margin-top: 6px;
+  margin-top: 10px;
+  border-left: 3px solid var(--orange);
+  padding: 2px 0 2px 16px;
 }
 
 /* ===== Emotional Weight ===== */
@@ -1237,8 +1285,10 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
 .listing-hero {
   position: relative;
   width: 100%;
-  height: 820px;
+  min-height: 820px;
   overflow: hidden;
+  display: flex;
+  align-items: flex-end;
 }
 .listing-hero__img {
   position: absolute;
@@ -1253,9 +1303,9 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   background: linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0) 60%, rgba(0,0,0,0.7) 100%);
 }
 .listing-hero__bottom {
-  position: absolute;
-  left: 0; right: 0; bottom: 0;
-  padding: 0 64px 64px;
+  position: relative;
+  width: 100%;
+  padding: 200px 64px 64px;
   color: var(--white);
   display: flex;
   align-items: flex-end;
@@ -1425,7 +1475,10 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   width: 48px;
   height: 4px;
   background: var(--orange);
-  margin: 23px 0 0;
+  /* Even above and below. Nothing after the rule adds a top margin -- the
+     description is .prop-desc > .prop-desc__body > p, whose margin-top is 0, so
+     margins collapse through and this margin-bottom is the real gap. */
+  margin: 15px 0;
 }
 .listing-body__p--figma {
   font-family: var(--font-sans);
@@ -2228,7 +2281,7 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
 
 /* --- Cinematic Hero (Figma-faithful refinement) --- */
 .listing-hero--fl {
-  height: 800px;
+  min-height: 800px;
 }
 .listing-hero--fl .listing-hero__veil {
   background:
@@ -2236,7 +2289,7 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
     linear-gradient(180deg, rgba(0,0,0,0) 45%, rgba(0,0,0,0.55) 78%, rgba(0,0,0,0.85) 100%);
 }
 .listing-hero--fl .listing-hero__bottom {
-  padding: 0 32px 80px;
+  padding: 220px 32px 80px;
   align-items: flex-end;
   gap: 80px;
 }
@@ -2515,3 +2568,104 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   background: var(--orange);
   margin: 40px auto;
 }
+
+/* ===== Accordion (site default) =====
+   Moved here from buyers.css, where it started life as `.tax-acc` on the Buyers
+   tax-advantage section. That is the accordion Liz picked as the house style, so
+   it now lives in the design system and every accordion on the site uses it:
+   /buyers/ (tax disclosures) and /community/ ("Living Here").
+
+   Built on <details>/<summary>, not a JS accordion -- the pages ship no script
+   for it, every panel is findable by in-page browser search, and it works with
+   JavaScript off. Markup:
+
+     <div class="acc">
+       <details class="acc__item" open>
+         <summary class="acc__trigger">
+           <span class="acc__label">Heading</span>
+           <span class="acc__icon" aria-hidden="true"></span>
+         </summary>
+         <div class="acc__panel"> ...paragraphs... </div>
+       </details>
+     </div>
+
+   Page-specific extras (the Buyers panel sub-title and bullet list) stay in
+   buyers.css and hang off .acc__panel. */
+.acc {
+  max-width: 860px;
+  margin: 56px auto 0;
+  border-top: 1px solid rgba(197, 198, 206, 0.6);
+}
+.acc__item { border-bottom: 1px solid rgba(197, 198, 206, 0.6); }
+
+.acc__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  width: 100%;
+  padding: 26px 4px;
+  cursor: pointer;
+  list-style: none;
+  transition: color 180ms ease;
+}
+/* Suppress the native disclosure triangle in both engines. */
+.acc__trigger::-webkit-details-marker { display: none; }
+.acc__trigger::marker { content: ""; }
+.acc__trigger:hover .acc__label { color: var(--orange); }
+.acc__trigger:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 4px;
+}
+.acc__label {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: 27px;
+  line-height: 1.2;
+  color: var(--navy);
+  transition: color 180ms ease;
+  text-wrap: balance;
+}
+
+/* Plus that becomes a minus -- two bars, the vertical one rotated away. */
+.acc__icon {
+  position: relative;
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(197, 198, 206, 0.9);
+  border-radius: 50%;
+  transition: border-color 180ms ease, background 180ms ease;
+}
+.acc__trigger:hover .acc__icon {
+  border-color: var(--orange);
+  background: rgba(247, 148, 91, 0.08);
+}
+.acc__icon::before,
+.acc__icon::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 13px;
+  height: 1.5px;
+  background: var(--orange);
+  transform: translate(-50%, -50%);
+  transition: transform 240ms ease, opacity 240ms ease;
+}
+.acc__icon::after { transform: translate(-50%, -50%) rotate(90deg); }
+.acc__item[open] .acc__icon::after {
+  transform: translate(-50%, -50%) rotate(0deg);
+  opacity: 0;
+}
+
+.acc__panel {
+  padding: 0 4px 34px;
+  max-width: 660px;
+}
+.acc__panel p {
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--body);
+}
+.acc__panel p + p { margin-top: 16px; }

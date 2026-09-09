@@ -33,79 +33,12 @@
 	text-wrap: balance;
 }
 
-.tax-acc {
-	max-width: 860px;
-	margin: 56px auto 0;
-	border-top: 1px solid rgba(197, 198, 206, 0.6);
-}
-.tax-acc__item { border-bottom: 1px solid rgba(197, 198, 206, 0.6); }
-
-.tax-acc__trigger {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: 24px;
-	width: 100%;
-	padding: 26px 4px;
-	cursor: pointer;
-	list-style: none;
-	transition: color 180ms ease;
-}
-/* Suppress the native disclosure triangle in both engines. */
-.tax-acc__trigger::-webkit-details-marker { display: none; }
-.tax-acc__trigger::marker { content: ""; }
-.tax-acc__trigger:hover .tax-acc__kicker { color: var(--orange); }
-.tax-acc__trigger:focus-visible {
-	outline: 2px solid var(--orange);
-	outline-offset: 4px;
-}
-.tax-acc__kicker {
-	font-family: var(--font-serif);
-	font-weight: 500;
-	font-size: 27px;
-	line-height: 1.2;
-	color: var(--navy);
-	transition: color 180ms ease;
-	text-wrap: balance;
-}
-
-/* Plus that becomes a minus — two bars, the vertical one rotated away. */
-.tax-acc__icon {
-	position: relative;
-	flex-shrink: 0;
-	width: 34px;
-	height: 34px;
-	border: 1px solid rgba(197, 198, 206, 0.9);
-	border-radius: 50%;
-	transition: border-color 180ms ease, background 180ms ease;
-}
-.tax-acc__trigger:hover .tax-acc__icon {
-	border-color: var(--orange);
-	background: rgba(247, 148, 91, 0.08);
-}
-.tax-acc__icon::before,
-.tax-acc__icon::after {
-	content: "";
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	width: 13px;
-	height: 1.5px;
-	background: var(--orange);
-	transform: translate(-50%, -50%);
-	transition: transform 240ms ease, opacity 240ms ease;
-}
-.tax-acc__icon::after { transform: translate(-50%, -50%) rotate(90deg); }
-.tax-acc__item[open] .tax-acc__icon::after {
-	transform: translate(-50%, -50%) rotate(0deg);
-	opacity: 0;
-}
-
-.tax-acc__panel {
-	padding: 0 4px 34px;
-	max-width: 660px;
-}
-.tax-acc__title {
+/* The accordion itself is the site-wide `.acc` in styles.css -- it started here
+   as `.tax-acc` and moved into the design system when it became the house
+   accordion style (see "Accordion (site default)" there). What is left below is
+   only what this page adds inside a panel: the scenario sub-title and the
+   dash-bulleted list. */
+.acc__panel .tax-acc__title {
 	font-family: var(--font-serif);
 	font-weight: 500;
 	font-size: 20px;
@@ -113,12 +46,6 @@
 	color: var(--navy);
 	margin-bottom: 16px;
 }
-.tax-acc__panel p {
-	font-size: 16px;
-	line-height: 1.75;
-	color: var(--body);
-}
-.tax-acc__panel p + p { margin-top: 16px; }
 
 .tax-bullets {
 	list-style: none;
@@ -296,9 +223,6 @@
 @media (max-width: 1024px) {
 	.tax-intro__body { font-size: 16px; }
 	.tax-intro__turn { font-size: 19px; }
-	.tax-acc { margin-top: 44px; }
-	.tax-acc__kicker { font-size: 23px; }
-	.tax-acc__trigger { padding: 22px 2px; }
 	.tax-disclaimer { margin-top: 48px; }
 
 	.communities { grid-template-columns: 1fr; gap: 24px; margin-top: 48px; }
@@ -309,12 +233,7 @@
 @media (max-width: 640px) {
 	.tax-intro__body { font-size: 15px; }
 	.tax-intro__turn { font-size: 17px; margin-top: 20px; }
-	.tax-acc { margin-top: 36px; }
-	.tax-acc__trigger { padding: 20px 0; gap: 16px; }
-	.tax-acc__kicker { font-size: 20px; }
-	.tax-acc__icon { width: 30px; height: 30px; }
-	.tax-acc__panel { padding: 0 0 28px; }
-	.tax-acc__panel p, .tax-bullets li { font-size: 15px; }
+	.tax-bullets li { font-size: 15px; }
 	.tax-disclaimer { font-size: 12.5px; margin-top: 40px; }
 
 	.comm-card { height: 360px; }

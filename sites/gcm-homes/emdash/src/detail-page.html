@@ -97,14 +97,150 @@
     .loading__spinner { width: 40px; height: 40px; border: 3px solid var(--line); border-top-color: var(--navy); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* padding-top tracks .nav's own height at each breakpoint (96 / 80 / 64px).
-       Everything else about the header and drawer is handled by responsive.css. */
+    /* ======================================================================
+       PRINT — a two-page property sheet, not a screenshot of the web page
+       ======================================================================
+       The printer button (window.print()) used to hand over the page as-is:
+       an 800px photo hero with white text on a background image the printer
+       drops, then the filmstrip, the 3D-tour panel, the horizontally-scrolled
+       features carousel (only the first card visible), the guide portrait, the
+       market card and the whole inquiry form and footer.
+
+       What prints now: a header sheet with the primary photo, address and the
+       headline numbers; the description; Quick Statistics; every feature card
+       as a plain list (no carousel); and Grant's note if there is one. That is
+       the set a buyer or an agent actually wants on paper.
+
+       Two things drive most of the rules below:
+       - Browsers omit CSS background-images from print by default, so anything
+         that is a background on screen either gets a real <img> for print
+         (.print-sheet__img) or is hidden. Nothing relies on the reader having
+         turned "background graphics" on.
+       - Colour is inverted where the screen uses white-on-navy, so the ink is
+         dark on white rather than a solid navy block. */
+    .print-sheet, .print-foot { display: none; }
+
+    @media print {
+      @page { size: letter portrait; margin: 14mm 14mm 16mm; }
+
+      html, body { background: #fff !important; padding-top: 0 !important; }
+      body { font-size: 11pt; color: #000; }
+
+      /* --- Everything that is navigation, marketing or interactive --- */
+      .nav, .nav__drawer, .nav__scrim, .back-bar, .footer,
+      .listing-hero, .filmstrip-section, .section--features .features-nav,
+      .matterport, .section--market, .section--community, .section--guide-fl,
+      #listing-contact, .lightbox, .listing-hero__share,
+      .grant-note__btn, .grant-note__editor, .grant-note__status,
+      .prop-desc__flag, .aside-fl__cta, .cta-arrow {
+        display: none !important;
+      }
+
+      /* --- The print-only header sheet --- */
+      .print-sheet { display: block; page-break-after: avoid; }
+      .print-sheet__img {
+        width: 100%; height: 78mm; object-fit: cover;
+        border-radius: 2mm; margin-bottom: 6mm;
+      }
+      .print-sheet__head {
+        display: flex; align-items: center; justify-content: space-between;
+        gap: 8mm; padding-bottom: 3mm; border-bottom: 0.4mm solid #c5c6ce;
+      }
+      .print-sheet__logo { height: 16mm; width: auto; }
+      .print-sheet__crumb {
+        font-family: 'Manrope', sans-serif; font-size: 8pt; letter-spacing: 0.18em;
+        text-transform: uppercase; color: #44474d; text-align: right;
+      }
+      .print-sheet__addr {
+        font-family: 'Noto Serif', Georgia, serif; font-weight: 400;
+        font-size: 24pt; line-height: 1.12; color: #15243b; margin: 5mm 0 3mm;
+      }
+      .print-sheet__facts {
+        display: flex; align-items: baseline; gap: 6mm; flex-wrap: wrap;
+        font-family: 'Manrope', sans-serif; font-size: 10pt; font-weight: 600;
+        letter-spacing: 0.1em; color: #44474d;
+      }
+      .print-sheet__price {
+        font-family: 'Noto Serif', Georgia, serif; font-size: 16pt;
+        font-weight: 400; letter-spacing: 0; color: #15243b; margin-left: auto;
+      }
+
+      /* --- Description + Quick Statistics: one column, then the other --- */
+      .listing-body { padding: 0 !important; background: #fff !important; }
+      .listing-body__grid { display: block !important; }
+      .listing-body__h--figma { font-size: 15pt; margin-top: 8mm; }
+      .listing-body__rule--figma { height: 1mm; width: 22mm; margin: 4mm 0; }
+      .prop-desc__body { font-size: 10.5pt; line-height: 1.65; color: #26282d; }
+
+      /* The stats panel is white-on-navy on screen. Print it as a bordered
+         table instead of a solid navy rectangle. */
+      .aside-fl, .aside-fl--dark {
+        background: #fff !important; border: 0.4mm solid #c5c6ce;
+        margin-top: 8mm; padding: 5mm 6mm; page-break-inside: avoid;
+      }
+      .aside-fl--dark .aside-fl__h {
+        color: #15243b !important; border-bottom-color: #c5c6ce !important;
+      }
+      .aside-fl--dark .aside-fl__row { border-bottom-color: #e4e2dd !important; }
+      .aside-fl--dark .aside-fl__row__l { color: #44474d !important; }
+      .aside-fl--dark .aside-fl__row__v { color: #15243b !important; }
+      .aside-fl__stats { display: block !important; }
+
+      /* Grant's note keeps its orange rule -- a border prints where a
+         background does not. */
+      .grant-note {
+        background: #fff !important; border-left: 1mm solid #f7945b;
+        page-break-inside: avoid; margin-top: 6mm; padding: 4mm 6mm;
+      }
+      .grant-note--empty { display: none !important; }
+      .grant-note__body { font-size: 11pt; color: #15243b; }
+
+      /* --- Features: the carousel becomes a plain three-across list --- */
+      .section--features { padding: 0 !important; background: #fff !important; }
+      .features-wrap { max-width: none !important; padding: 0 !important; }
+      .features-h { font-size: 15pt; color: #15243b; margin: 9mm 0 4mm; }
+      .features-viewport { overflow: visible !important; }
+      .features-track {
+        display: grid !important; grid-template-columns: 1fr 1fr;
+        gap: 5mm !important; transform: none !important; width: auto !important;
+      }
+      .feat-card {
+        width: auto !important; min-width: 0 !important; flex: none !important;
+        /* The screen card is min-height 520px so all three stay level in the
+           carousel. On paper that is three inches of blank card, so let each one
+           shrink to its own rows. */
+        min-height: 0 !important;
+        border: 0.4mm solid #c5c6ce; padding: 4mm 5mm; background: #fff !important;
+        page-break-inside: avoid;
+      }
+      .feat-card__h { font-size: 9pt; color: #15243b; }
+      .feat-card__row { font-size: 9.5pt; }
+      .feat-card__row__l { color: #44474d; }
+      .feat-card__row__v { color: #15243b; }
+
+      /* --- Closing line: who to call, and the URL this sheet came from --- */
+      .print-foot {
+        display: block; margin-top: 10mm; padding-top: 3mm;
+        border-top: 0.4mm solid #c5c6ce;
+        font-family: 'Manrope', sans-serif; font-size: 8.5pt; color: #44474d;
+      }
+      .print-foot__url { margin-top: 1.5mm; color: #75777e; word-break: break-all; }
+
+      /* Never split a heading off from what follows it. */
+      h1, h2, h3, .features-h, .listing-body__h--figma { page-break-after: avoid; }
+      a { text-decoration: none !important; color: inherit !important; }
+    }
+
+    /* padding-top tracks .nav's own height at each breakpoint. That is 96px at
+       desktop and 80px at BOTH mobile breakpoints -- responsive.css sets
+       `height: 80px` at 1024px and again at 640px, it never goes to 64px. The
+       64px here was reserving too little and let the fixed header sit 16px over
+       the top of the hero on phones. Change both together if .nav ever changes. */
     @media (max-width: 1024px) {
       body { padding-top: 80px; }
       .back-bar { padding: 18px 24px; }
     }
     @media (max-width: 640px) {
-      body { padding-top: 64px; }
       .back-bar { padding: 14px 20px; }
       .grant-note { padding: 20px; }
       .grant-note__body { font-size: 16px; }
@@ -551,11 +687,26 @@ function render(listing, photoUrls, marketIntel, area) {
   const check = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12" /></svg>`;
 
   document.getElementById("app").innerHTML = `
+    <div class="print-sheet" aria-hidden="true">
+      ${photos[0] ? `<img class="print-sheet__img" src="${photos[0]}" alt="" />` : ""}
+      <div class="print-sheet__head">
+        <img class="print-sheet__logo" src="/assets/logo.png" alt="Grant C. Meyer Homes" />
+        <div class="print-sheet__crumb">${escapeHtml(crumb)}</div>
+      </div>
+      <h1 class="print-sheet__addr">${escapeHtml(listing.address)}</h1>
+      <div class="print-sheet__facts">
+        <span>${listing.beds || "—"} BD</span>
+        <span>${listing.baths || "—"} BA</span>
+        ${listing.sqft ? `<span>${fmtSqft(listing.sqft)}</span>` : ""}
+        <span class="print-sheet__price">${fmt(listing.price)}</span>
+      </div>
+    </div>
+
     <section class="listing-hero listing-hero--fl">
       ${heroLayer}
       <div class="listing-hero__veil"></div>
       <div class="listing-hero__share">
-        <button aria-label="Save" title="Save" onclick="this.style.color='var(--orange)'">
+        <button id="saveBtn" aria-label="Save this home" aria-pressed="false" title="Save" onclick="toggleSaved()">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21.2l8.8-8.8a5.5 5.5 0 0 0 0-7.8z"/></svg>
         </button>
         <button aria-label="Share" title="Share" onclick="navigator.share ? navigator.share({title:document.title,url:location.href}) : navigator.clipboard.writeText(location.href)">
@@ -734,6 +885,11 @@ function render(listing, photoUrls, marketIntel, area) {
       </div>
     </section>
 
+    <div class="print-foot" aria-hidden="true">
+      <div><strong>Grant C. Meyer</strong> · Coldwell Banker Global Luxury Agent</div>
+      <div class="print-foot__url" id="printFootUrl"></div>
+    </div>
+
     <footer class="footer">
       <div class="footer__cols">
         <div class="footer__brand">
@@ -776,6 +932,56 @@ function render(listing, photoUrls, marketIntel, area) {
 
   document.title = `${listing.address} — Grant C. Meyer Homes`;
   featShift(0);
+  syncSaved();
+
+  // The print sheet's closing line carries the URL it came from, so a printed
+  // page leads back to the live listing. Set here rather than in the template
+  // because the template is a string built before anything is in the document.
+  const pf = document.getElementById("printFootUrl");
+  if (pf) pf.textContent = location.origin + location.pathname;
+}
+
+/* ---- Saved homes ----------------------------------------------------------
+   The heart marks a home in this browser and nothing more: the slug goes into
+   localStorage under gcm:saved, and syncSaved() restores the filled state when
+   the page is opened again. There is no account behind it and no "saved homes"
+   page to view the list on yet -- if that gets built, this is the key it reads.
+   Wrapped in try/catch throughout: localStorage throws outright in Safari
+   private mode rather than returning null. */
+const SAVED_KEY = "gcm:saved";
+
+function readSaved() {
+  try {
+    const raw = localStorage.getItem(SAVED_KEY);
+    const list = raw ? JSON.parse(raw) : [];
+    return Array.isArray(list) ? list : [];
+  } catch (e) { return []; }
+}
+
+function syncSaved() {
+  const btn = document.getElementById("saveBtn");
+  if (!btn || !currentSlug) return;
+  const on = readSaved().indexOf(currentSlug) > -1;
+  btn.setAttribute("aria-pressed", on ? "true" : "false");
+  btn.setAttribute("aria-label", on ? "Saved — click to remove" : "Save this home");
+  btn.title = on ? "Saved" : "Save";
+  // Fill the heart as well as colour it, so the state reads at a glance.
+  const svg = btn.querySelector("svg");
+  if (svg) {
+    svg.setAttribute("fill", on ? "currentColor" : "none");
+    btn.style.color = on ? "var(--orange)" : "";
+  }
+}
+
+function toggleSaved() {
+  if (!currentSlug) return;
+  try {
+    const list = readSaved();
+    const i = list.indexOf(currentSlug);
+    if (i > -1) list.splice(i, 1); else list.push(currentSlug);
+    localStorage.setItem(SAVED_KEY, JSON.stringify(list));
+  } catch (e) { /* private mode — the button still reflects nothing, honestly */ }
+  syncSaved();
 }
 
 async function load() {
