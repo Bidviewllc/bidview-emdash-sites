@@ -131,7 +131,7 @@ const STORY_FALLBACKS = [
 			</div>
 			<div class="stats">
 				{[1, 2, 3].map((i) => (
-					<div class="stat" style="border-style:solid;border-width:0 0 0 1px;border-color:rgba(247,148,91,0.5)">
+					<div class="stat">
 						<div class="stat__num" {...(e[`stat${i}_num`] ?? {})}>
 							{d[`stat${i}_num`] ?? ["35 Years", "17 Years", "6 Years"][i - 1]}
 						</div>

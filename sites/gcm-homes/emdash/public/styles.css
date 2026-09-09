@@ -480,9 +480,12 @@ a:hover .cta-arrow { transform: translateX(4px); }
 .reality__link:hover svg { transform: translateX(4px); }
 
 .stats { display: flex; flex-direction: column; gap: 24px; }
+/* Each figure is marked the same way .pullquote is -- an orange left rule, not
+   a box. Same 3px/orange border and the same 28px indent, so a stat and a pull
+   quote read as the same kind of mark wherever they sit on the site. */
 .stat {
-  border: 1px solid rgba(247, 148, 91, 0.32);
-  padding: 28px 32px;
+  border-left: 3px solid var(--orange);
+  padding: 6px 0 6px 28px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -503,16 +506,11 @@ a:hover .cta-arrow { transform: translateX(4px); }
   color: var(--orange);
   text-transform: uppercase;
 }
-/* The supporting line under each figure carries the same orange left rule as
-   .pullquote, so the "here is the reading of it" voice looks the same wherever
-   it appears on the site (home page Reality Check, About credential stats). */
 .stat__desc {
   font-size: 14px;
   line-height: 1.55;
   color: rgba(255,255,255,0.7);
-  margin-top: 10px;
-  border-left: 3px solid var(--orange);
-  padding: 2px 0 2px 16px;
+  margin-top: 6px;
 }
 
 /* ===== Emotional Weight ===== */

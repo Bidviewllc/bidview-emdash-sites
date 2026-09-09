@@ -377,7 +377,7 @@
   /* --- Reality Check --- */
   .reality__h { font-size: 30px; }
   .reality__p { font-size: 15px; }
-  .stat { padding: 22px 22px; }
+  .stat { padding: 4px 0 4px 20px; }
   .stat__num { font-size: 32px; }
   .stat__desc { font-size: 13px; }
 

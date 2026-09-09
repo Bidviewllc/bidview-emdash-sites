@@ -41,7 +41,7 @@
 .cg-facts .cg-h2 { color: #fff; }
 .cg-facts__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; margin-top: 48px; }
 /* Liz's spec. The faint white hairline became the site's orange accent rule,
-   so these read as the same kind of mark as .pullquote and .stat__desc. The
+   so these read as the same kind of mark as .pullquote and .stat. The
    old `:first-child { border-left: none }` exception is gone with it -- the
    rule is now a deliberate accent on every figure, not a divider between them. */
 .cg-fact { border-left: 3px solid var(--orange); padding-left: 24px; text-align: center; }
