@@ -69,8 +69,13 @@ img { display: block; max-width: 100%; }
   pointer-events: none;
   z-index: -1;
 }
+/* Constrained to the same 1184px measure as .container, so the logo and nav
+   links line up with the page content below instead of sitting out at the
+   bar's own 48px edge padding. */
 .nav__inner {
   width: 100%;
+  max-width: 1184px;
+  margin: auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1174,10 +1179,14 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   color: var(--white);
   padding: 80px 112px 40px;
 }
+/* Same 1184px measure as .nav__inner and .container. The brand column takes
+   1.5fr so the blurb under the logo has room without crowding the link lists. */
 .footer__cols {
   display: grid;
-  grid-template-columns: 1.3fr repeat(3, 1fr);
+  grid-template-columns: 1.5fr repeat(3, 1fr);
   gap: 64px;
+  max-width: 1184px;
+  margin: auto;
   padding-bottom: 56px;
   border-bottom: 1px solid rgba(255,255,255,0.08);
 }
@@ -1209,8 +1218,13 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   transition: color 160ms ease;
 }
 .footer__links a:hover { color: var(--orange); }
+/* max-width matches .footer__cols above. Without it `margin: auto` does
+   nothing horizontally on a block, and this bar would run full-bleed while the
+   columns and their bottom rule stopped at 1184px. */
 .footer__bottom {
-  margin-top: 32px;
+  max-width: 1184px;
+  margin: auto;
+  padding-top: 32px;
   display: flex;
   justify-content: space-between;
   align-items: center;
