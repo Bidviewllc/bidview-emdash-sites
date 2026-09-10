@@ -1,0 +1,112 @@
+/* Contact page — the two sections the Contact design adds on top of the site's
+   design system: a dark statement hero and the office/hours/service-area strip
+   that sits between it and the form. The form itself is the shared
+   <ContactCta /> (the design's own ContactSection, already in production), and
+   .section/.container/.eyebrow/.h1/.section-lead all ship in styles.css.
+
+   Loaded only by src/pages/contact.astro, the same way about.astro loads
+   about.css. Desktop first; the two breakpoints at the bottom match
+   responsive.css (tablet <=1024px, mobile <=640px).
+
+   Why these are real classes and not the design's inline styles: the design
+   sets `fontSize: 62` and `gridTemplateColumns: repeat(3, 1fr)` inline on the
+   elements, and its responsive.css has no rules for either section. Inline
+   styles outrank any stylesheet, so on a phone that headline stays 62px and the
+   three columns never stack. Same trap that kept .stat's border at 1px until
+   the inline style came off index.astro. */
+
+/* ---- Hero --------------------------------------------------------------- */
+/* Top padding clears the fixed nav (96px desktop, 80px at both mobile
+   breakpoints) with room to breathe. */
+.chero {
+	padding: 168px 48px 112px;
+}
+.chero__inner {
+	max-width: 880px;
+	margin-inline: auto;
+	text-align: center;
+}
+.chero__h {
+	font-size: 62px;
+	line-height: 1.02;
+	margin-top: 18px;
+	text-wrap: balance;
+	color: var(--white);
+}
+/* The design's second clause — italic, and the one place orange appears up here. */
+.chero__h em {
+	font-style: italic;
+	font-weight: 400;
+	color: var(--orange);
+}
+.chero__lead {
+	margin: 24px auto 0;
+	max-width: 600px;
+	color: rgba(255, 255, 255, 0.85);
+}
+
+/* ---- Office / hours / service area ------------------------------------- */
+/* Sits directly above the form with no bottom padding, so the strip and the
+   form read as one continuous cream field rather than two stacked sections.
+   That is deliberate in the design, and it is why the tone check treats this
+   pair as a single light block. */
+.cinfo {
+	padding-top: 80px;
+	padding-bottom: 0;
+}
+.cinfo__grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 48px;
+}
+.cinfo__col {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+.cinfo__head {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding-bottom: 16px;
+	border-bottom: 1px solid rgba(21, 36, 59, 0.12);
+}
+.cinfo__icon {
+	color: var(--orange);
+	display: flex;
+	flex-shrink: 0;
+}
+.cinfo__lines {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+.cinfo__line {
+	font-family: var(--font-serif);
+	font-size: 17px;
+	line-height: 1.5;
+	color: var(--body);
+}
+/* The first line of each column is the headline fact — the street, the hours,
+   the core of the service area — so it takes the darker ink. */
+.cinfo__line--lead { color: var(--navy); }
+
+/* ---- Tablet ------------------------------------------------------------- */
+@media (max-width: 1024px) {
+	.chero { padding: 140px 32px 88px; }
+	.chero__h { font-size: 44px; }
+	.chero__lead { font-size: 16px; }
+	.cinfo { padding-top: 64px; }
+	.cinfo__grid { gap: 32px; }
+	.cinfo__line { font-size: 16px; }
+}
+
+/* ---- Mobile ------------------------------------------------------------- */
+@media (max-width: 640px) {
+	.chero { padding: 116px 20px 64px; }
+	.chero__h { font-size: 34px; line-height: 1.08; margin-top: 14px; }
+	.chero__lead { font-size: 16px; margin-top: 20px; }
+	.cinfo { padding-top: 48px; }
+	/* One per row: three 17px serif columns do not survive a 390px screen. */
+	.cinfo__grid { grid-template-columns: 1fr; gap: 32px; }
+}

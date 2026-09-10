@@ -1,4 +1,288 @@
 ---
-import ContentPage from "../components/ContentPage.astro";
+// About Grant — the design from the prototype (grant-meyer-homes.vercel.app/#about),
+// built out of the sections this site already has rather than new scaffolding:
+//
+//   01 Hero            .hero            — same pattern as the home page hero
+//   02 Why Grant       .reality/.stat   — the home page's Reality Check split
+//   03 The Guide       .guide/.cred     — the home page's bio split, long version
+//   04 Road of Trials  .pillars         — new, styles in /about.css
+//   05 Proof stories   .proof--cards    — new, styles in /about.css
+//   06 The Return      .emotion-split   — the Statement pattern from styles.css
+//   07 In Their Words  .testimonials    — the home page's proof grid, same quotes
+//   08 Contact         <ContactCta />   — the shared site-wide section
+//
+// Editable text comes from the `about_page` singleton collection (entry "about"),
+// the same arrangement as the home page: every field falls back to the approved
+// copy below, so the page renders correctly before the collection is seeded and
+// editing lights up once you're logged into admin.
+//
+// This replaces the four-card ContentPage rendering. The old `page_content`
+// entry with slug "about" is left in the CMS but is no longer read by anything.
+import GcmLayout from "../layouts/GcmLayout.astro";
+import ContactCta from "../components/ContactCta.astro";
+import { TESTIMONIALS } from "../lib/testimonials";
+import { getEmDashEntry } from "emdash";
+import { imageUrl } from "../lib/media";
+
+let entry: any = null;
+try {
+	const res = await getEmDashEntry("about_page", "about");
+	entry = res?.entry ?? null;
+} catch {
+	entry = null;
+}
+const d = entry?.data ?? {};
+const e = entry?.edit ?? {};
+
+const heroImage = imageUrl(d.hero_image) ?? "/assets/hero-grant-sunset.jpg";
+const returnImage = imageUrl(d.return_image) ?? "/assets/listing-hero-exterior.jpg";
+
+// Grant's credentials, the About-page set (the home page carries a shorter one).
+const CREDS = [
+	{ t: "35-Year Resident", d: "Roots that predate most of the neighborhood." },
+	{ t: "Legal Training", d: "Reads contracts and contingencies the way most agents can't." },
+	{ t: "Builder's Eye", d: "Raised in a contractor's family — he knows what he's looking at." },
+	{ t: "The Network", d: "Three decades of trusted trades clients inherit on day one." },
+];
+
+// The Road of Trials — one challenge in this market, and what answers it.
+const PILLARS = [1, 2, 3].map((i) => ({
+	title: d[`pillar${i}_title`],
+	challenge: d[`pillar${i}_challenge`],
+	cred: d[`pillar${i}_cred`],
+	e: {
+		title: e[`pillar${i}_title`] ?? {},
+		challenge: e[`pillar${i}_challenge`] ?? {},
+		cred: e[`pillar${i}_cred`] ?? {},
+	},
+}));
+const PILLAR_FALLBACKS = [
+	{
+		title: "The Market Itself",
+		challenge: "A micro-market of ~10,000 parcels with seasonal swings and pricing that can move millions on a handful of sales. Online valuations don't work here.",
+		cred: "35-year resident, 17 years full-time — every cycle, every slow winter.",
+	},
+	{
+		title: "The Transaction",
+		challenge: "TRPA, impervious coverage, BMP requirements and local MLS nuances — things most agents have never encountered.",
+		cred: "Legal training means Grant reads contracts the way most agents don't. Every offer and contingency handled with precision.",
+	},
+	{
+		title: "After the Sale",
+		challenge: "You need the electrician who shows up and the crew that arrives in 90 minutes. Good contractors are months out — unless you know the right people.",
+		cred: "Three decades of his father's construction relationships plus 17 years of Grant's own — a network clients inherit on day one.",
+	},
+];
+
+// Two short stories, told the way Grant tells them.
+const STORIES = [1, 2].map((i) => ({
+	hook: d[`proof${i}_hook`],
+	story: d[`proof${i}_story`],
+	e: { hook: e[`proof${i}_hook`] ?? {}, story: e[`proof${i}_story`] ?? {} },
+}));
+const STORY_FALLBACKS = [
+	{
+		hook: "The Tesla",
+		story: "A client ran out of gas on Mount Rose Highway. Grant loaded a five-gallon drum into his Tesla — a car that has never had a drop of gas in it. “That's what you do.”",
+	},
+	{
+		hook: "The Move",
+		story: "Before a showing, Grant arranged the movers and helped pack the closet himself — carefully, so a client's most valued things were protected before buyers ever walked through.",
+	},
+];
 ---
-<ContentPage slug="about" />
+
+<GcmLayout
+	title="About Grant C. Meyer — Grant C. Meyer Homes"
+	description="Thirty-five years in Incline Village, seventeen as a full-time realtor. Why Grant's clients get a neighbor, not just an agent."
+	content={entry ? { collection: "about_page", id: entry.data.id, slug: "about" } : undefined}
+>
+	<link rel="stylesheet" href="/about.css" />
+
+	{/* 01 HERO — the site's Hero-Full pattern, sunset photograph instead of the lake. */}
+	<section class="hero hero--about" data-screen-label="01 Hero">
+		<div class="hero__img" style={`background-image:url(${heroImage})`}></div>
+		<div class="hero__veil"></div>
+		<div class="hero__copy">
+			<span class="eyebrow eyebrow--block" {...(e.hero_eyebrow ?? {})}>
+				{d.hero_eyebrow ?? "About Grant C. Meyer"}
+			</span>
+			<h1 class="hero__title" set:html={d.hero_headline ?? "You've Found the Place.<br />Now Find the <em>Right Guide.</em>"} {...(e.hero_headline ?? {})}></h1>
+			<p class="hero__sub" {...(e.hero_sub ?? {})}>
+				{d.hero_sub ?? "Grant has lived in Incline Village for 35 years. His clients don't just get a realtor — they get someone who is already here, already knows everyone, and isn't going anywhere."}
+			</p>
+		</div>
+	</section>
+
+	{/* 02 WHY GRANT — the home page's Reality Check split, carrying his numbers. */}
+	<section class="section section--dark" data-screen-label="02 Why Grant">
+		<div class="container reality">
+			<div>
+				<h2 class="reality__h" set:html={d.why_heading ?? "Most Agents Work Here.<br />Grant Lives Here."} {...(e.why_heading ?? {})}></h2>
+				<p class="reality__p" {...(e.why_body ?? {})}>
+					{d.why_body ?? "After 35 years in Incline Village, Grant has watched every cycle — what the market looks like before a wave and after one, and the signals that actually matter. That kind of context doesn't live in a database. It lives in the people who never left."}
+				</p>
+				<div class="pullquote on-dark">
+					<div class="pullquote__q" {...(e.why_quote ?? {})}>
+						"{d.why_quote ?? "I've been a resident in this community for 35 years. You learn who you can count on."}"
+					</div>
+					<div class="eyebrow pullquote__a">— GRANT C. MEYER</div>
+				</div>
+			</div>
+			<div class="stats">
+				{[1, 2, 3].map((i) => (
+					<div class="stat">
+						<div class="stat__num" {...(e[`stat${i}_num`] ?? {})}>
+							{d[`stat${i}_num`] ?? ["35 Years", "17 Years", "6 Years"][i - 1]}
+						</div>
+						<div class="eyebrow" {...(e[`stat${i}_label`] ?? {})}>
+							{d[`stat${i}_label`] ?? ["A RESIDENT, NOT A VISITOR", "FULL-TIME REALTOR", "#1 IN LOCAL VOLUME"][i - 1]}
+						</div>
+						<div class="stat__desc" {...(e[`stat${i}_desc`] ?? {})}>
+							{d[`stat${i}_desc`] ?? [
+								"Three and a half decades in Incline Village — through every market cycle and every quiet winter.",
+								"Real estate as a profession, not a side job between ski seasons.",
+								"More property sold in this market than any other agent, six consecutive years running.",
+							][i - 1]}
+						</div>
+					</div>
+				))}
+			</div>
+		</div>
+	</section>
+
+	{/* 03 THE GUIDE — same Bio-Split as the home page, the full-length version. */}
+	<section id="about-guide" class="section section--beige" data-screen-label="03 The Guide">
+		<div class="container guide">
+			<div class="guide__photo">
+				<div class="guide__img"></div>
+				<div class="guide__name">Grant C. Meyer</div>
+			</div>
+			<div class="guide__copy">
+				<div class="eyebrow" {...(e.guide_eyebrow ?? {})}>{d.guide_eyebrow ?? "MEETING THE MENTOR"}</div>
+				<h2 class="guide__h" {...(e.guide_heading ?? {})}>
+					{d.guide_heading ?? "35 Years Here. Still the First One to Pick Up the Phone."}
+				</h2>
+				<div class="guide__creds">
+					{CREDS.map((c, i) => (
+						<div class="cred">
+							<span class="check-disc" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12" /></svg></span>
+							<div>
+								<div class="cred__t" {...(e[`cred${i + 1}_t`] ?? {})}>{d[`cred${i + 1}_t`] ?? c.t}</div>
+								<div class="cred__d" {...(e[`cred${i + 1}_d`] ?? {})}>{d[`cred${i + 1}_d`] ?? c.d}</div>
+							</div>
+						</div>
+					))}
+				</div>
+				<p class="guide__p" {...(e.guide_body ?? {})}>
+					{d.guide_body ?? "Grant grew up watching his father build things, and learned the restaurant business from his grandparents — earn your customer once, keep them for life. He moved to Incline Village 35 years ago and never left, because once you're here, you understand why people don't."}
+				</p>
+				<p class="guide__p" {...(e.guide_body2 ?? {})}>
+					{d.guide_body2 ?? "His legal education gives him contract and negotiation depth most agents in this market simply don't have. His father's construction background means he knows what he's looking at when he walks through a property. And his decades of relationships mean he can get the right specialist to your house in 90 minutes when everyone else is on a three-week waitlist."}
+				</p>
+				<a class="btn btn--dark btn--start" href="#about-contact">
+					{d.guide_cta ?? "TALK WITH GRANT"}
+				</a>
+			</div>
+		</div>
+	</section>
+
+	{/* 04 THE ROAD OF TRIALS — three challenges of this market, and the answer to each. */}
+	<section class="section section--dark on-dark" data-screen-label="04 Credential Pillars">
+		<div class="container">
+			<div class="section-title on-dark">
+				<span class="eyebrow" {...(e.pillars_eyebrow ?? {})}>{d.pillars_eyebrow ?? "THE ROAD OF TRIALS"}</span>
+				<h2 {...(e.pillars_heading ?? {})}>
+					{d.pillars_heading ?? "What You're Actually Up Against — and What It Takes to Win."}
+				</h2>
+			</div>
+			<div class="pillars">
+				{PILLARS.map((p, i) => (
+					<div class="pillar">
+						<div class="pillar__mark"><span class="pillar__numeral">0{i + 1}</span></div>
+						<h3 class="pillar__title" {...p.e.title}>{p.title ?? PILLAR_FALLBACKS[i].title}</h3>
+						<div class="pillar__divider"></div>
+						<div class="pillar__block">
+							<span class="eyebrow">The Challenge</span>
+							<p class="pillar__text" {...p.e.challenge}>{p.challenge ?? PILLAR_FALLBACKS[i].challenge}</p>
+						</div>
+						<div class="pillar__block">
+							<span class="eyebrow">Grant's Edge</span>
+							<p class="pillar__text" {...p.e.cred}>{p.cred ?? PILLAR_FALLBACKS[i].cred}</p>
+						</div>
+					</div>
+				))}
+			</div>
+		</div>
+	</section>
+
+	{/* 05 PROOF STORIES */}
+	<section class="section section--cream" data-screen-label="05 Proof Stories">
+		<div class="container">
+			<div class="section-title">
+				<span class="eyebrow" {...(e.proof_eyebrow ?? {})}>{d.proof_eyebrow ?? "THE TRANSFORMATION"}</span>
+				<h2 {...(e.proof_heading ?? {})}>
+					{d.proof_heading ?? "What “Going Above and Beyond” Actually Looks Like."}
+				</h2>
+			</div>
+			<div class="proof proof--cards">
+				{STORIES.map((s, i) => (
+					<div class="proof-card">
+						<div class="eyebrow" {...s.e.hook}>{s.hook ?? STORY_FALLBACKS[i].hook}</div>
+						<p class="proof-card__story" {...s.e.story}>{s.story ?? STORY_FALLBACKS[i].story}</p>
+					</div>
+				))}
+			</div>
+			<p class="proof__transition" {...(e.proof_transition ?? {})}>
+				{d.proof_transition ?? "This is what “full service” means in practice — not a tagline, but a standard that holds even when nobody's watching."}
+			</p>
+		</div>
+	</section>
+
+	{/* 06 THE RETURN — the Statement pattern (photo + navy panel) from styles.css. */}
+	<section class="emotion-split" data-screen-label="06 The Return">
+		<div class="emotion-split__photo" style={`background-image:url(${returnImage})`}></div>
+		<div class="emotion-split__panel">
+			<span class="eyebrow" {...(e.return_eyebrow ?? {})}>
+				{d.return_eyebrow ?? "THE RETURN"}
+			</span>
+			<h2 class="emotion-split__h" set:html={d.return_heading ?? "When You Buy Here, You're <em>Not a Visitor</em> Anymore."} {...(e.return_heading ?? {})}></h2>
+			<p class="emotion-split__p" {...(e.return_body ?? {})}>
+				{d.return_body ?? "Incline Village stopped being a place I worked a long time ago. The people I've helped buy and sell homes here have become my neighbors and some of my closest friends — the people I see at the market and on the mountain. I've probably made more real friendships through this work than anything else in my life."}
+			</p>
+			<div class="eyebrow pullquote__a">— GRANT C. MEYER</div>
+			<a class="btn btn--orange btn--start" href="#about-contact">
+				{d.return_cta ?? "LET'S TALK"}
+			</a>
+		</div>
+	</section>
+
+	{/* 07 IN THEIR WORDS — the same proof grid and the same quotes as the home page.
+	     Still the design's template copy: Liz is checking with Vince how the real
+	     reviews get pulled in. Shared from src/lib/testimonials.ts so there is one
+	     place to swap them. */}
+	<section class="section section--beige" data-screen-label="07 Social Proof">
+		<div class="container">
+			<div class="section-title">
+				<span class="eyebrow" {...(e.social_eyebrow ?? {})}>{d.social_eyebrow ?? "IN THEIR WORDS"}</span>
+				<h2 {...(e.social_heading ?? {})}>{d.social_heading ?? "Clients on Working With Grant."}</h2>
+			</div>
+			<div class="testimonials">
+				{TESTIMONIALS.map((t) => (
+					<div class="testimonial">
+						<div class="stars">{[0, 1, 2, 3, 4].map(() => <span>★</span>)}</div>
+						<p class="testimonial__q">"{t.q}"</p>
+						<div class="testimonial__attr">
+							<div class="testimonial__name">{t.name}</div>
+							<div class="eyebrow eyebrow--muted">{t.loc}</div>
+						</div>
+					</div>
+				))}
+			</div>
+		</div>
+	</section>
+
+	{/* 08 CONTACT — the shared site-wide section, anchored so the two buttons above
+	     land on it. */}
+	<ContactCta id="about-contact" bg="cream" />
+</GcmLayout>

@@ -1,0 +1,54 @@
+---
+// The "Your Neighbor Before You Even Arrive" section — ONE source, shared with
+// every listing page. Content comes from the `grant_intro` singleton (Grant
+// intro (site-wide) in the dashboard), read through lib/grant-intro.ts.
+//
+// The listing page cannot import this component: it is src/detail-page.html,
+// served raw and built in the browser. It reads the same entry through the same
+// function via /api/listing-by-slug and emits the same .grant-intro* classes,
+// so the two stay in step on both the copy and the look. If you change the
+// markup here, change it there in the same commit.
+//
+// NOT the same section as /about/'s "Meeting the Mentor" block. That one is
+// Grant's own bio on his own page, with its own eyebrow, headline and a
+// different set of four credentials, all editable on the about_page entry. It
+// shares the older .guide* layout and is deliberately left alone.
+import { getGrantIntro } from "../lib/grant-intro";
+
+interface Props {
+	/** Which light section tone this sits on, so it continues the page's
+	 *  beige/cream alternation. */
+	bg?: "cream" | "beige";
+	/** Screen label for the design-review overlay. */
+	label?: string;
+}
+const { bg = "beige", label = "The Guide" } = Astro.props;
+const g = await getGrantIntro();
+---
+
+<section class={`section section--${bg}`} data-screen-label={label}>
+	<div class="container grant-intro">
+		<div class="grant-intro__photo" style={`background-image:url('${g.photo}')`}></div>
+		<div class="grant-intro__copy">
+			<div>
+				<div class="eyebrow">{g.eyebrow}</div>
+				<h2 class="grant-intro__h">{g.headline}</h2>
+			</div>
+			<div class="grant-intro__creds">
+				{g.creds.map((c) => (
+					<div class="cred">
+						<span class="check-disc" aria-hidden="true">
+							<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+						</span>
+						<div>
+							<div class="cred__t">{c.t}</div>
+							{c.d && <div class="cred__d">{c.d}</div>}
+						</div>
+					</div>
+				))}
+			</div>
+			<p class="grant-intro__body">{g.body}</p>
+			<a class="btn btn--dark btn--start" href={g.ctaHref}>{g.ctaLabel}</a>
+		</div>
+	</div>
+</section>

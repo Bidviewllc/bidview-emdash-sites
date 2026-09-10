@@ -6,35 +6,47 @@
   <title>Listing Detail — Grant C. Meyer Homes</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --cream: #FCF9F4; --beige: #F6F3EE; --beige-2: #F0EDE8;
-      --navy: #15243B; --orange: #F7945B; --ink: #1C1C19;
-      --body: #44474D; --muted: #75777E; --line: #C5C6CE;
-      --serif: "Source Serif 4", Georgia, serif;
-      --sans: "Manrope", sans-serif;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: var(--cream); font-family: var(--sans); color: var(--body); -webkit-font-smoothing: antialiased; }
-    a { color: inherit; text-decoration: none; }
-    button { font-family: inherit; cursor: pointer; border: none; background: none; }
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400&family=Noto+Serif:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
 
-    /* Owner note ("A Note From Grant") */
+  <!-- The site design system. This page used to re-implement ~300 lines of it in an
+       inline <style> block, which is why it drifted from the design. Everything the
+       listing sections need — .listing-hero--fl, .aside-fl, .filmstrip, .feat-card,
+       .grant-intro, .invite, .lb — already lives in these two files. -->
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="/responsive.css" />
+
+  <style>
+    /* Only what is genuinely specific to this page and NOT in styles.css. */
+
+    /* --- Nav: none of it lives here any more. The header is .nav from styles.css
+           and the drawer is .nav__drawer from responsive.css, the same as every
+           other page. The old bar was position:sticky so the hero started beneath
+           it; .nav is fixed, so body padding reserves that space instead — same
+           result, and the photo still starts below the bar rather than under it.
+           A bare `nav {}` rule must never come back here: the drawer's link list
+           is a <nav> and it inherited the positioning last time. --- */
+    body { padding-top: 96px; }
+
+    /* --- "Back to all listings" bar. No design counterpart; kept because it is the
+           way back for anyone arriving from the listings grid. --- */
+    .back-bar { padding: 20px 48px; border-bottom: 1px solid var(--line); background: var(--cream); }
+    .back-btn { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; color: var(--muted); display: inline-flex; align-items: center; gap: 8px; }
+    .back-btn:hover { color: var(--navy); }
+
+    /* --- "A Note From Grant" + its inline admin editor. Not part of the design, so
+           not in styles.css. Public when a note exists; editable when logged in. --- */
     .grant-note {
       margin-top: 32px; padding: 24px 28px; background: var(--beige);
       border-left: 3px solid var(--orange); border-radius: 4px;
     }
     .grant-note--empty { background: #fff; border-left-color: var(--line); }
-    .grant-note__label {
-      font-family: var(--sans); font-size: 11px; font-weight: 700; letter-spacing: 0.14em;
-      text-transform: uppercase; color: var(--orange); margin-bottom: 10px;
-    }
+    /* Type from .eyebrow in styles.css; this owns the gap to the body. */
+    .grant-note__label { margin-bottom: 10px; }
     .grant-note--empty .grant-note__label { color: var(--muted); }
-    .grant-note__body { font-family: var(--serif); font-size: 18px; line-height: 1.7; color: var(--navy); }
+    .grant-note__body { font-family: var(--font-serif); font-size: 18px; line-height: 1.7; color: var(--navy); }
     .grant-note__body em { color: var(--muted); font-size: 15px; }
     .grant-note__btn {
-      margin-top: 14px; font-family: var(--sans); font-size: 12px; font-weight: 600;
+      margin-top: 14px; font-family: var(--font-sans); font-size: 12px; font-weight: 600;
       letter-spacing: 0.06em; text-transform: uppercase; color: var(--navy);
       border: 1px solid var(--line); border-radius: 3px; padding: 8px 16px; background: #fff;
     }
@@ -42,188 +54,351 @@
     .grant-note__btn--save { background: var(--navy); color: #fff; border-color: var(--navy); }
     .grant-note__editor { margin-top: 14px; }
     .grant-note__editor textarea {
-      width: 100%; font-family: var(--sans); font-size: 15px; line-height: 1.6; color: var(--ink);
+      width: 100%; font-family: var(--font-sans); font-size: 15px; line-height: 1.6; color: var(--ink);
       border: 1px solid var(--line); border-radius: 4px; padding: 12px 14px; resize: vertical; background: #fff;
     }
     .grant-note__editor textarea:focus { outline: none; border-color: var(--orange); }
     .grant-note__actions { display: flex; align-items: center; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
-    .grant-note__status { font-family: var(--sans); font-size: 12px; }
+    .grant-note__status { font-family: var(--font-sans); font-size: 12px; }
 
-    /* Property description (rich text) */
-    .prop-desc__body { font-size: 16px; line-height: 1.8; color: var(--body); }
+    /* --- Rich-text property description (Portable Text from the CMS). --- */
+    .prop-desc__body { font-size: 17px; line-height: 1.8; color: var(--body); }
     .prop-desc__body p { margin: 0 0 16px; }
     .prop-desc__body p:last-child { margin-bottom: 0; }
-    .prop-desc__body h1, .prop-desc__body h2, .prop-desc__body h3, .prop-desc__body h4 { font-family: var(--serif); color: var(--navy); margin: 24px 0 12px; line-height: 1.25; }
+    .prop-desc__body h1, .prop-desc__body h2, .prop-desc__body h3, .prop-desc__body h4 { font-family: var(--font-serif); color: var(--navy); margin: 24px 0 12px; line-height: 1.25; }
     .prop-desc__body h3 { font-size: 22px; } .prop-desc__body h4 { font-size: 18px; }
     .prop-desc__body ul, .prop-desc__body ol { margin: 0 0 16px; padding-left: 22px; }
     .prop-desc__body li { margin: 4px 0; }
     .prop-desc__body blockquote { margin: 16px 0; padding: 8px 18px; border-left: 3px solid var(--orange); color: var(--navy); font-style: italic; }
     .prop-desc__body a { color: var(--orange); text-decoration: underline; }
-    .prop-desc__flag { margin-top: 12px; font-family: var(--sans); font-size: 12px; font-weight: 600; color: var(--orange); }
-    .prop-desc__editor { margin-top: 14px; }
-    .prop-desc__editor textarea {
-      width: 100%; font-family: var(--sans); font-size: 15px; line-height: 1.7; color: var(--ink);
-      border: 1px solid var(--line); border-radius: 4px; padding: 12px 14px; resize: vertical; background: #fff;
+    .prop-desc__flag { margin-top: 12px; font-family: var(--font-sans); font-size: 12px; font-weight: 600; color: var(--orange); }
+
+    /* --- .aside-fl__cta was authored for a <button>; used here as a link, which is
+           inline by default, so it needs an explicit box. --- */
+    a.aside-fl__cta { display: block; text-align: center; text-decoration: none; }
+
+    /* --- Quick Statistics: dark panel, design typography. ONLY colours are
+           overridden here. Every size, weight, letter-spacing and gap still comes
+           from .aside-fl in styles.css, so the type now matches the design while
+           the panel stays dark. --- */
+    .aside-fl--dark { background: var(--navy); }
+    .aside-fl--dark .aside-fl__h {
+      color: rgba(255, 255, 255, 0.55);
+      border-bottom-color: rgba(255, 255, 255, 0.14);
     }
-    .prop-desc__editor textarea:focus { outline: none; border-color: var(--orange); }
-    .prop-desc__hint { margin-top: 8px; font-family: var(--sans); font-size: 12px; color: var(--muted); }
-    #descEditBtn { margin-top: 14px; }
+    .aside-fl--dark .aside-fl__row { border-bottom-color: rgba(255, 255, 255, 0.10); }
+    .aside-fl--dark .aside-fl__row__l { color: rgba(255, 255, 255, 0.62); }
+    .aside-fl--dark .aside-fl__row__v { color: var(--white); }
 
-    /* NAV */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; height: 80px; z-index: 50;
-      display: flex; align-items: center; padding: 0 48px;
-      background: transparent; transition: background 280ms ease;
-      justify-content: space-between;
-    }
-    nav.scrolled { background: rgba(252,249,244,0.96); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(21,36,59,0.08); }
-    nav.scrolled .nav-links a { color: var(--navy); }
-    /* Same logo asset + sizing as the homepage nav (styles.css .nav__logo img).
-       Over the hero the nav is transparent, so the logo is inverted to white —
-       exactly how the homepage handles its transparent state — then restored to
-       full colour once the cream nav background fades in on scroll. */
-    .nav-logo { display: flex; align-items: center; flex-shrink: 0; }
-    .nav-logo img { height: 60px; width: auto; display: block; filter: brightness(0) invert(1); transition: filter 280ms ease; }
-    nav.scrolled .nav-logo img { filter: none; }
-    .nav-links { display: flex; gap: 32px; align-items: center; }
-    .nav-links a { font-size: 13px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255,255,255,0.9); transition: color 280ms; }
-    .nav-links a:hover { color: var(--orange); }
-    /* Matches listings.html. Stays navy-on-white in both nav states, so it reads
-       as a button over the hero photo and over the cream scrolled background. */
-    .nav-cta { background: var(--navy); color: #fff !important; padding: 10px 22px; border-radius: 2px; font-size: 12px !important; letter-spacing: 0.1em !important; }
-    .nav-cta:hover { background: var(--orange); }
-
-    /* HERO */
-    .listing-hero { position: relative; height: 85vh; min-height: 600px; overflow: hidden; }
-    .listing-hero__img { width: 100%; height: 100%; object-fit: cover; }
-    .listing-hero__placeholder { width: 100%; height: 100%; background: var(--navy); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.2); font-size: 80px; }
-    .listing-hero__veil { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 40%, rgba(0,0,0,0.55) 100%); }
-    .listing-hero__actions { position: absolute; top: 96px; right: 48px; display: flex; gap: 12px; }
-    .hero-action-btn {
-      width: 42px; height: 42px; border-radius: 50%; background: rgba(255,255,255,0.15);
-      backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center;
-      color: #fff; font-size: 18px; transition: background 200ms;
-    }
-    .hero-action-btn:hover { background: rgba(255,255,255,0.25); }
-    .listing-hero__bottom {
-      position: absolute; bottom: 0; left: 0; right: 0;
-      padding: 48px; display: flex; justify-content: space-between; align-items: flex-end;
-    }
-    .listing-hero__addr { font-family: var(--serif); font-size: 42px; font-weight: 600; color: #fff; line-height: 1.15; margin-bottom: 6px; }
-    .listing-hero__crumb { font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.65); }
-    .listing-hero__stats { display: flex; gap: 0; }
-    .hero-stat { padding: 16px 28px; background: rgba(255,255,255,0.1); backdrop-filter: blur(12px); border-left: 1px solid rgba(255,255,255,0.15); text-align: center; }
-    .hero-stat:first-child { border-left: none; border-radius: 4px 0 0 4px; }
-    .hero-stat:last-child { border-radius: 0 4px 4px 0; }
-    .hero-stat__l { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.65); margin-bottom: 4px; }
-    .hero-stat__v { font-family: var(--serif); font-size: 20px; color: #fff; font-weight: 600; }
-    .hero-stat__v--price { color: var(--orange); font-size: 22px; }
-
-    /* BACK */
-    .back-bar { padding: 20px 48px; border-bottom: 1px solid var(--line); }
-    .back-btn { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; color: var(--muted); display: inline-flex; align-items: center; gap: 8px; }
-    .back-btn:hover { color: var(--navy); }
-
-    /* BODY */
-    .listing-body { padding: 64px 80px; display: grid; grid-template-columns: 1fr 360px; gap: 80px; max-width: 1400px; margin: 0 auto; }
-    .listing-body h2 { font-family: var(--serif); font-size: 32px; color: var(--navy); font-weight: 600; margin-bottom: 20px; line-height: 1.3; }
-    .rule { height: 2px; background: var(--orange); width: 48px; margin-bottom: 24px; }
-    .listing-body p { font-size: 16px; line-height: 1.8; color: var(--body); }
-
-    /* ASIDE */
-    .aside { background: var(--navy); color: #fff; border-radius: 4px; padding: 32px; align-self: start; }
-    .aside__h { font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 24px; }
-    .aside__row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 13px; }
-    .aside__row:last-of-type { border-bottom: none; }
-    .aside__row__l { color: rgba(255,255,255,0.55); }
-    .aside__row__v { font-weight: 600; color: #fff; text-align: right; }
-    .aside__cta { width: 100%; margin-top: 28px; padding: 14px; background: var(--orange); color: #fff; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; border-radius: 2px; }
-    .aside__cta:hover { background: #f28c4e; }
-
-    /* GALLERY */
-    .gallery-section { padding: 0 0 80px; }
-    .gallery-header { padding: 0 80px 20px; display: flex; justify-content: space-between; align-items: center; }
-    .gallery-header h3 { font-family: var(--serif); font-size: 24px; color: var(--navy); font-weight: 600; }
-    .gallery-header span { font-size: 12px; color: var(--muted); letter-spacing: 0.08em; }
-    .filmstrip { display: flex; gap: 8px; overflow-x: auto; padding: 0 80px; scroll-snap-type: x mandatory; scrollbar-width: none; }
-    .filmstrip::-webkit-scrollbar { display: none; }
-    .film-tile { width: 320px; height: 220px; flex-shrink: 0; cursor: pointer; overflow: hidden; border-radius: 2px; scroll-snap-align: start; background: var(--beige); }
-    .film-tile img { width: 100%; height: 100%; object-fit: cover; transition: transform 300ms ease; }
-    .film-tile:hover img { transform: scale(1.05); }
-
-    /* LIGHTBOX */
-    .lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 999; display: flex; align-items: center; justify-content: center; }
-    .lightbox img { max-width: 90vw; max-height: 90vh; object-fit: contain; }
-    .lb-close { position: absolute; top: 24px; right: 24px; color: #fff; font-size: 28px; background: none; border: none; cursor: pointer; opacity: 0.7; }
-    .lb-close:hover { opacity: 1; }
-    .lb-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); color: #fff; border: none; cursor: pointer; width: 48px; height: 48px; border-radius: 50%; font-size: 20px; display: flex; align-items: center; justify-content: center; }
-    .lb-prev { left: 24px; }
-    .lb-next { right: 24px; }
-    .lb-counter { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.6); font-size: 12px; letter-spacing: 0.1em; }
-
-    /* FEATURES */
-    .features-section { background: var(--beige-2); padding: 80px; }
-    .features-section h2 { font-family: var(--serif); font-size: 32px; color: var(--navy); font-weight: 600; margin-bottom: 40px; }
-    .features-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-    .feat-card { background: #fff; padding: 28px; border-radius: 4px; }
-    .feat-card__h { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 700; color: var(--orange); margin-bottom: 20px; }
-    .feat-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 12px; gap: 12px; }
-    .feat-row:last-child { border-bottom: none; }
-    .feat-row__l { color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; flex-shrink: 0; }
-    .feat-row__v { font-weight: 600; color: var(--navy); text-align: right; }
-
-    /* AGENT */
-    .agent-section { background: var(--navy); padding: 80px; display: grid; grid-template-columns: 300px 1fr; gap: 80px; align-items: center; }
-    .agent-photo { width: 100%; aspect-ratio: 3/4; object-fit: cover; border-radius: 2px; background: rgba(255,255,255,0.05); }
-    .agent-photo-placeholder { width: 100%; aspect-ratio: 3/4; background: rgba(255,255,255,0.05); border-radius: 2px; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.2); font-size: 60px; }
-    .agent-eyebrow { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--orange); margin-bottom: 12px; }
-    .agent-name { font-family: var(--serif); font-size: 40px; color: #fff; font-weight: 600; margin-bottom: 24px; }
-    .agent-creds { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px; }
-    .cred { display: flex; gap: 12px; align-items: flex-start; }
-    .cred-icon { width: 22px; height: 22px; background: var(--orange); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; color: #fff; font-size: 11px; }
-    .cred-h { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 2px; }
-    .cred-p { font-size: 12px; color: rgba(255,255,255,0.5); }
-    .agent-p { font-size: 15px; line-height: 1.7; color: rgba(255,255,255,0.65); margin-bottom: 28px; }
-    .agent-cta { display: inline-block; padding: 14px 32px; background: var(--orange); color: #fff; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; border-radius: 2px; cursor: pointer; }
-
-    /* CONTACT */
-    .contact-section { padding: 100px 80px; text-align: center; background: var(--cream); }
-    .contact-section h2 { font-family: var(--serif); font-size: 44px; color: var(--navy); font-weight: 600; margin-bottom: 16px; }
-    .contact-section p { max-width: 520px; margin: 0 auto 48px; font-size: 16px; line-height: 1.7; color: var(--muted); }
-    .contact-form { max-width: 560px; margin: 0 auto; display: grid; gap: 16px; }
-    .contact-form input, .contact-form textarea {
-      width: 100%; padding: 14px 18px; border: 1px solid var(--line); background: #fff;
-      font-family: inherit; font-size: 14px; color: var(--navy); border-radius: 2px;
-    }
-    .contact-form textarea { height: 120px; resize: none; }
-    .contact-form button { background: var(--navy); color: #fff; padding: 16px; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; border-radius: 2px; cursor: pointer; }
-
-    /* FOOTER */
-    footer { background: var(--navy); color: rgba(255,255,255,0.5); padding: 48px 80px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
-    .footer-brand { font-family: var(--serif); font-size: 16px; color: #fff; font-weight: 600; }
-
-    /* LOADING */
-    .loading { text-align: center; padding: 200px 40px; }
+    /* --- Loading state --- */
+    .loading { text-align: center; padding: 220px 40px; color: var(--muted); }
     .loading__spinner { width: 40px; height: 40px; border: 3px solid var(--line); border-top-color: var(--navy); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px; }
     @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ======================================================================
+       PRINT — a two-page property sheet, not a screenshot of the web page
+       ======================================================================
+       The printer button (window.print()) used to hand over the page as-is:
+       an 800px photo hero with white text on a background image the printer
+       drops, then the filmstrip, the 3D-tour panel, the horizontally-scrolled
+       features carousel (only the first card visible), the guide portrait, the
+       market card and the whole inquiry form and footer.
+
+       What prints now: a header sheet with the primary photo, address and the
+       headline numbers; the description; Quick Statistics; every feature card
+       as a plain list (no carousel); and Grant's note if there is one. That is
+       the set a buyer or an agent actually wants on paper.
+
+       Two things drive most of the rules below:
+       - Browsers omit CSS background-images from print by default, so anything
+         that is a background on screen either gets a real <img> for print
+         (.print-sheet__img) or is hidden. Nothing relies on the reader having
+         turned "background graphics" on.
+       - Colour is inverted where the screen uses white-on-navy, so the ink is
+         dark on white rather than a solid navy block. */
+    .print-sheet, .print-foot, .print-extras { display: none; }
+    /* The print-only table wrapper must not behave like a table on screen. */
+    .print-doc, .print-doc__body,
+    .print-doc > tbody > tr, .print-doc > tbody > tr > td { display: block; }
+    .print-doc { width: 100%; border-collapse: collapse; }
+
+    @media print {
+      @page { size: letter portrait; margin: 14mm; }
+
+      /* Back to a real table so the <tfoot> repeats -- see the note where
+         the markup is generated. */
+      .print-doc { display: table; width: 100%; table-layout: fixed; }
+      .print-doc__body { display: table-row-group; }
+      .print-doc > tbody > tr, .print-doc > tfoot > tr { display: table-row; }
+      .print-doc > tbody > tr > td, .print-doc > tfoot > tr > td {
+        display: table-cell; padding: 0; vertical-align: top;
+      }
+
+      html, body { background: #fff !important; padding-top: 0 !important; }
+      body { font-size: 11pt; color: #000; }
+
+      /* --- Everything that is navigation, marketing or interactive --- */
+      .nav, .nav__drawer, .nav__scrim, .back-bar, .footer,
+      .listing-hero, .filmstrip-section, .section--features .features-nav,
+      .matterport, .section--market, .section--community, .section--grant-intro,
+      #listing-contact, .lightbox, .listing-hero__share,
+      .grant-note__btn, .grant-note__editor, .grant-note__status,
+      .prop-desc__flag, .aside-fl__cta, .cta-arrow {
+        display: none !important;
+      }
+
+      /* --- The print-only header sheet --- */
+      .print-sheet { display: block; page-break-after: avoid; }
+      .print-sheet__img {
+        /* 78mm pushed the condensed stats onto page two and left the foot of
+           page one blank. */
+        width: 100%; height: 64mm; object-fit: cover;
+        border-radius: 2mm; margin-bottom: 5mm;
+      }
+      .print-sheet__head {
+        display: flex; align-items: center; justify-content: space-between;
+        gap: 8mm; padding-bottom: 3mm; border-bottom: 0.4mm solid #c5c6ce;
+      }
+      .print-sheet__logo { height: 16mm; width: auto; }
+      .print-sheet__crumb {
+        font-family: 'Manrope', sans-serif; font-size: 8pt; letter-spacing: 0.18em;
+        text-transform: uppercase; color: #44474d; text-align: right;
+      }
+      .print-sheet__addr {
+        font-family: 'Noto Serif', Georgia, serif; font-weight: 400;
+        font-size: 24pt; line-height: 1.12; color: #15243b; margin: 5mm 0 3mm;
+      }
+      .print-sheet__facts {
+        display: flex; align-items: baseline; gap: 6mm; flex-wrap: wrap;
+        font-family: 'Manrope', sans-serif; font-size: 10pt; font-weight: 600;
+        letter-spacing: 0.1em; color: #44474d;
+      }
+      .print-sheet__price {
+        font-family: 'Noto Serif', Georgia, serif; font-size: 16pt;
+        font-weight: 400; letter-spacing: 0; color: #15243b; margin-left: auto;
+      }
+
+      /* --- Condensed stats + Grant's note, side by side --- */
+      .print-extras { display: block; }
+      .print-cols {
+        display: grid; grid-template-columns: 1fr 1fr; gap: 6mm;
+        margin-top: 7mm; page-break-inside: avoid;
+      }
+      /* With no note there is nothing to sit beside, so the stats run the full
+         measure in two columns instead of leaving half the page blank. */
+      .print-cols--solo { grid-template-columns: 1fr; }
+      .print-cols--solo .print-stats__list {
+        display: grid; grid-template-columns: 1fr 1fr; column-gap: 8mm;
+      }
+
+      .print-stats, .print-note {
+        border: 0.4mm solid #c5c6ce; padding: 4mm 5mm; page-break-inside: avoid;
+      }
+      .print-stats__h, .print-note__h {
+        font-family: 'Manrope', sans-serif; font-size: 8pt; font-weight: 700;
+        letter-spacing: 0.16em; text-transform: uppercase; color: #15243b;
+        padding-bottom: 2mm; margin-bottom: 2mm; border-bottom: 0.3mm solid #c5c6ce;
+      }
+      .print-stats__list { margin: 0; }
+      .print-stats__row {
+        display: flex; justify-content: space-between; gap: 4mm;
+        padding: 1.1mm 0; border-bottom: 0.2mm solid #eceae6;
+        break-inside: avoid;
+      }
+      .print-stats__row:last-child { border-bottom: none; }
+      .print-stats__row dt {
+        font-family: 'Manrope', sans-serif; font-size: 8pt; color: #44474d;
+      }
+      .print-stats__row dd {
+        margin: 0; font-family: 'Manrope', sans-serif; font-size: 8pt;
+        font-weight: 600; color: #15243b; text-align: right;
+      }
+      .print-note { border-left: 1mm solid #f7945b; }
+      .print-note__body {
+        font-family: 'Source Serif 4', Georgia, serif; font-size: 9.5pt;
+        line-height: 1.55; color: #15243b;
+      }
+      .print-note__body p { margin: 0 0 2mm; }
+      .print-note__attr {
+        font-family: 'Manrope', sans-serif; font-size: 7pt; font-weight: 700;
+        letter-spacing: 0.14em; color: #f7945b; margin-top: 2.5mm;
+      }
+
+      /* --- Description; the screen's own stats aside and note band are
+             replaced by .print-extras above --- */
+      .aside-fl, .aside-fl--dark, .section--local, .grant-note { display: none !important; }
+      .listing-body { padding: 0 !important; background: #fff !important; }
+      .listing-body__grid { display: block !important; }
+      .listing-body__h--figma { font-size: 15pt; margin-top: 8mm; }
+      .listing-body__rule--figma { height: 1mm; width: 22mm; margin: 4mm 0; }
+      .prop-desc__body { font-size: 10.5pt; line-height: 1.65; color: #26282d; }
+
+      /* --- Features: the carousel becomes a plain three-across list --- */
+      .section--features { padding: 0 !important; background: #fff !important; }
+      .features-wrap {
+        max-width: none !important; padding: 0 !important;
+        gap: 3mm !important;
+      }
+      .features-h { font-size: 14pt; color: #15243b; margin: 6mm 0 0; }
+      .features-viewport { overflow: visible !important; }
+      .features-track {
+        display: grid !important; grid-template-columns: 1fr 1fr;
+        gap: 5mm !important; transform: none !important; width: auto !important;
+      }
+      .feat-card {
+        width: auto !important; min-width: 0 !important; flex: none !important;
+        /* The screen card is min-height 520px so all three stay level in the
+           carousel. On paper that is three inches of blank card, so let each one
+           shrink to its own rows. */
+        min-height: 0 !important;
+        border: 0.4mm solid #c5c6ce; padding: 4mm 5mm; background: #fff !important;
+        page-break-inside: avoid;
+      }
+      /* The screen metrics (26px heading, 28px bottom margin, 12px row
+         padding) spilled two of the four cards onto a third, near-empty page. */
+      .feat-card__h {
+        font-size: 9pt; color: #15243b;
+        padding-bottom: 1.5mm; margin-bottom: 2mm;
+        border-bottom-color: #e5e7eb;
+      }
+      .feat-card__row { font-size: 9pt; padding: 1.1mm 0; gap: 4mm; }
+      .feat-card__row__l { color: #44474d; }
+      .feat-card__row__v { color: #15243b; }
+
+      /* --- Footer, on every printed page ---
+             position: fixed repeats an element on each page of print output, and
+             @page's bottom margin is sized to reserve room for it so no content
+             runs underneath. The logo file is the site's white one; brightness(0)
+             flattens it to black while keeping its transparency, the same trick
+             styles.css already uses in reverse for the transparent nav. */
+      /* Repeated at the bottom of every printed page, with its height
+         reserved in the flow so it never covers content. `position: fixed`
+         repeats too but reserves nothing -- it painted over the stats block --
+         and pushing it into the @page margin got it clipped away entirely.
+         A footer group is laid out as a row group, so the flex row lives on
+         .print-foot__inner rather than here. */
+      .print-foot {
+        display: table-footer-group;
+        font-family: 'Manrope', sans-serif; font-size: 8.5pt; color: #44474d;
+      }
+      /* Every page gets the footer, so the rule above it should not also carry
+         a big top margin on the pages where content runs right up to it. */
+      .print-doc > tfoot .print-foot__inner { margin-top: 4mm; }
+      .print-foot__inner {
+        display: flex; align-items: center; gap: 7mm;
+        padding-top: 2.5mm; margin-top: 6mm;
+        border-top: 0.4mm solid #c5c6ce;
+      }
+      .print-foot__mid { flex: 1 1 auto; min-width: 0; }
+      .print-foot__cta {
+        font-family: 'Source Serif 4', Georgia, serif; font-size: 11pt;
+        color: #15243b; line-height: 1.25;
+      }
+      .print-foot__who { font-size: 7.5pt; color: #75777e; margin-top: 1mm; }
+      .print-foot__contact { text-align: right; flex: 0 0 auto; }
+      .print-foot__phone {
+        font-family: 'Noto Serif', Georgia, serif; font-size: 13pt; color: #15243b;
+      }
+      .print-foot__site { font-size: 9.5pt; font-weight: 600; color: #15243b; margin-top: 0.8mm; }
+
+      /* Never split a heading off from what follows it. */
+      h1, h2, h3, .features-h, .listing-body__h--figma { page-break-after: avoid; }
+      a { text-decoration: none !important; color: inherit !important; }
+    }
+
+    /* padding-top tracks .nav's own height at each breakpoint. That is 96px at
+       desktop and 80px at BOTH mobile breakpoints -- responsive.css sets
+       `height: 80px` at 1024px and again at 640px, it never goes to 64px. The
+       64px here was reserving too little and let the fixed header sit 16px over
+       the top of the hero on phones. Change both together if .nav ever changes. */
+    @media (max-width: 1024px) {
+      body { padding-top: 80px; }
+      .back-bar { padding: 18px 24px; }
+    }
+    @media (max-width: 640px) {
+      .back-bar { padding: 14px 20px; }
+      .grant-note { padding: 20px; }
+      .grant-note__body { font-size: 16px; }
+      .prop-desc__body { font-size: 15px; }
+    }
   </style>
 </head>
 <body>
 
-<nav id="nav">
-  <a class="nav-logo" href="/"><img src="/assets/logo.png" alt="Grant C. Meyer Homes" /></a>
-  <!-- Keep in sync with the SPA nav (js/chrome.jsx) and listings.html.
-       "Back to All Listings" still lives in the back-bar under the hero. -->
-  <div class="nav-links">
-    <a href="/listings/">Listings</a>
-    <a href="/buyers/">Buyers</a>
-    <a href="/sellers/">Sellers</a>
-    <a href="/community/">The Community</a>
-    <a href="/concierge/">Concierge</a>
-    <a href="/about/">About</a>
-    <a href="/contact/" class="nav-cta">Contact</a>
+<!-- Site header. Same markup as GcmLayout.astro and /listings/. -->
+<header class="nav">
+  <div class="nav__inner">
+    <a class="nav__logo" href="/"><img src="/assets/logo.png" alt="Grant C. Meyer Homes" /></a>
+    <nav class="nav__links">
+      <a class="nav__link" href="/listings/">Listings</a>
+      <a class="nav__link" href="/buyers/">Buyers</a>
+      <a class="nav__link" href="/sellers/">Sellers</a>
+      <a class="nav__link" href="/community/">The Community</a>
+      <a class="nav__link" href="/concierge/">Concierge</a>
+      <a class="nav__link" href="/about/">About</a>
+    </nav>
+    <a class="btn btn--orange nav__cta" href="/contact/">INQUIRE NOW</a>
+    <button class="nav__hamburger" id="navHamburger" aria-label="Open menu" aria-expanded="false" aria-controls="navDrawer">
+      <span></span><span></span><span></span>
+    </button>
   </div>
-</nav>
+</header>
+
+<!-- MUST be a sibling of <header class="nav">, not a child of it: .nav has a
+     backdrop-filter, and a filtered ancestor becomes the containing block for its
+     position:fixed descendants. Nested, the drawer gets trapped in the nav bar. -->
+<div class="nav__drawer" id="navDrawer" aria-hidden="true">
+  <div class="nav__drawer__scrim" data-drawer-close></div>
+  <aside class="nav__drawer__panel" role="dialog" aria-modal="true" aria-label="Site menu">
+    <div class="nav__drawer__head">
+      <a class="nav__drawer__logo" href="/"><img src="/assets/logo-white.png" alt="Grant C. Meyer Homes" /></a>
+      <button class="nav__drawer__close" aria-label="Close menu" data-drawer-close>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+          <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </button>
+    </div>
+    <nav class="nav__drawer__links">
+      <a class="nav__drawer__link" href="/listings/"><span>Listings</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg></a>
+      <a class="nav__drawer__link" href="/buyers/"><span>Buyers</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg></a>
+      <a class="nav__drawer__link" href="/sellers/"><span>Sellers</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg></a>
+      <a class="nav__drawer__link" href="/community/"><span>The Community</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg></a>
+      <a class="nav__drawer__link" href="/concierge/"><span>Concierge</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg></a>
+      <a class="nav__drawer__link" href="/about/"><span>About</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg></a>
+    </nav>
+    <div class="nav__drawer__foot">
+      <a class="btn btn--orange nav__drawer__cta" href="/contact/">INQUIRE NOW</a>
+    </div>
+  </aside>
+</div>
+
+<script>
+  /* Same behaviour as the layout's inline script. Standalone because this page is
+     served as static HTML, not rendered through the Astro layout. */
+  (function () {
+    var burger = document.getElementById("navHamburger");
+    var drawer = document.getElementById("navDrawer");
+    if (!burger || !drawer) return;
+    function setOpen(open) {
+      burger.classList.toggle("is-open", open);
+      drawer.classList.toggle("is-open", open);
+      burger.setAttribute("aria-expanded", open ? "true" : "false");
+      burger.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+      drawer.setAttribute("aria-hidden", open ? "false" : "true");
+      document.body.style.overflow = open ? "hidden" : "";
+    }
+    burger.addEventListener("click", function () { setOpen(!drawer.classList.contains("is-open")); });
+    drawer.querySelectorAll("[data-drawer-close]").forEach(function (el) {
+      el.addEventListener("click", function () { setOpen(false); });
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && drawer.classList.contains("is-open")) setOpen(false);
+    });
+    window.addEventListener("resize", function () {
+      if (window.innerWidth > 1024 && drawer.classList.contains("is-open")) setOpen(false);
+    });
+  })();
+</script>
 
 <div id="app">
   <div class="loading">
@@ -232,124 +407,152 @@
   </div>
 </div>
 
-<!-- Lightbox -->
-<div class="lightbox" id="lightbox" style="display:none">
-  <img id="lb-img" src="" alt="" />
-  <button class="lb-close" onclick="closeLightbox()">✕</button>
-  <button class="lb-nav lb-prev" onclick="lbNav(-1)">‹</button>
-  <button class="lb-nav lb-next" onclick="lbNav(1)">›</button>
-  <div class="lb-counter" id="lb-counter"></div>
-</div>
+<!-- Lightbox, built on demand into this host -->
+<div id="lbHost"></div>
 
 <script>
 const API = "";
 let photos = [];
-let lbIdx = 0;
-let canEdit = false;      // set true when a logged-in admin is viewing
-let currentSlug = "";     // slug of the listing on screen (for note saves)
+let lbIndex = 0;
+let canEdit = false;
+let currentSlug = "";
+let featPage = 0;
+let featCount = 0;
 
 function fmt(price) { return price ? "$" + Number(price).toLocaleString() : "—"; }
 function fmtSqft(n) { return n ? Number(n).toLocaleString() + " sq.ft." : "—"; }
+function escapeHtml(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+function noteToHtml(s) { return escapeHtml(s).replace(/\n/g, "<br>"); }
 
-// Listing-detail inquiry form -> /api/contact (saves to D1 + emails via Resend).
+/* ---------------- Contact form ---------------- */
 async function submitListingInquiry(e) {
   e.preventDefault();
-  const form = e.target, btn = form.querySelector("button"), msg = document.getElementById("listingInquiryMsg");
-  if (!form.checkValidity()) { form.reportValidity(); return false; }
-  btn.disabled = true; const orig = btn.textContent; btn.textContent = "Sending…";
-  msg.textContent = ""; msg.style.color = "";
+  const f = e.target;
+  if (!f.checkValidity()) { f.reportValidity(); return false; }
+  const btn = f.querySelector("button[type=submit]");
+  const msg = document.getElementById("listingInquiryMsg");
+  msg.textContent = "";
+  btn.disabled = true;
+  const label = btn.textContent;
+  btn.textContent = "SENDING…";
   try {
-    const payload = {}; new FormData(form).forEach((v, k) => payload[k] = v);
-    const r = await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" }, body: JSON.stringify(payload) });
+    const payload = {};
+    new FormData(f).forEach((v, k) => { payload[k] = v; });
+    const r = await fetch("/api/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify(payload),
+    });
     const data = await r.json();
-    if (!r.ok || !data.ok) throw new Error(data.error || "Please try again or call Grant directly.");
-    form.reset();
-    msg.style.color = "#2e7d32"; msg.textContent = "✓ Thanks — Grant will be in touch within 24 hours.";
-    btn.style.display = "none";
-  } catch (ex) {
-    msg.style.color = "#c0392b"; msg.textContent = ex.message;
-    btn.disabled = false; btn.textContent = orig;
+    if (!r.ok || !data.ok) throw new Error(data.error || "Something went wrong. Please try again.");
+    f.style.display = "none";
+    msg.className = "form-sent";
+    msg.style.display = "block";
+    msg.textContent = "✓ Thanks — Grant will be in touch within 24 hours.";
+  } catch (err) {
+    msg.style.color = "#c0392b";
+    msg.textContent = err.message;
+    btn.disabled = false;
+    btn.textContent = label;
   }
   return false;
 }
-function escapeHtml(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
 
-// Property description is rich text (Portable Text) edited in the emdash admin
-// (WYSIWYG). The site renders the server-serialized HTML; no inline editor here.
-function noteToHtml(s) { return escapeHtml(s).replace(/\n/g, "<br>"); }
-
-// --- Owner note (per-listing, admin-editable) --------------------------------
+/* ---------------- Owner note (admin inline edit) ---------------- */
 function toggleNoteEdit() {
   const ed = document.getElementById("noteEditor");
   const btn = document.getElementById("noteEditBtn");
   if (!ed) return;
-  const showing = ed.style.display !== "none";
-  ed.style.display = showing ? "none" : "block";
-  if (btn) btn.style.display = showing ? "" : "none";
-  if (!showing) { const t = document.getElementById("noteText"); if (t) t.focus(); }
+  const open = ed.style.display === "none";
+  ed.style.display = open ? "block" : "none";
+  if (btn) btn.style.display = open ? "none" : "inline-block";
 }
 async function saveNote() {
-  const t = document.getElementById("noteText");
+  const ta = document.getElementById("noteText");
   const status = document.getElementById("noteStatus");
-  if (!t) return;
-  const note = t.value;
-  if (status) { status.textContent = "Saving…"; status.style.color = "var(--muted)"; }
+  if (!ta) return;
+  status.textContent = "Saving…";
   try {
     const r = await fetch("/api/listing-note", {
-      method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ slug: currentSlug, note }),
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ slug: currentSlug, note: ta.value }),
     });
     const data = await r.json();
-    if (!r.ok || data.error) throw new Error(data.error || ("HTTP " + r.status));
-    // Update the visible note body + editor state in place.
+    if (!r.ok || data.error) throw new Error(data.error || "Save failed");
     const body = document.getElementById("grantNoteBody");
-    const wrap = document.getElementById("grantNote");
-    if (body) body.innerHTML = data.note ? noteToHtml(data.note) : "<em>No note yet — add a personal note about this property.</em>";
-    if (wrap) wrap.classList.toggle("grant-note--empty", !data.note);
+    body.innerHTML = ta.value ? noteToHtml(ta.value) : "<em>No note yet — add a personal note about this property.</em>";
+    document.getElementById("grantNote").classList.toggle("grant-note--empty", !ta.value);
+    status.textContent = "Saved.";
+    toggleNoteEdit();
     const btn = document.getElementById("noteEditBtn");
-    if (btn) btn.textContent = data.note ? "Edit note" : "Add note";
-    if (status) { status.textContent = "Saved ✓"; status.style.color = "#2e7d32"; }
-    setTimeout(() => { toggleNoteEdit(); if (status) status.textContent = ""; }, 900);
+    if (btn) btn.textContent = ta.value ? "Edit note" : "Add note";
   } catch (e) {
-    if (status) { status.textContent = "Failed: " + e.message; status.style.color = "#c0392b"; }
+    status.textContent = e.message;
   }
 }
 
-function openLightbox(i) {
-  lbIdx = i;
-  document.getElementById("lb-img").src = photos[i];
-  document.getElementById("lb-counter").textContent = `${i + 1} / ${photos.length}`;
-  document.getElementById("lightbox").style.display = "flex";
+/* ---------------- Lightbox (.lb — styles live in styles.css) ---------------- */
+function renderLightbox() {
+  const host = document.getElementById("lbHost");
+  if (lbIndex === null) { host.innerHTML = ""; document.body.style.overflow = ""; return; }
+  const total = photos.length;
+  host.innerHTML = `
+    <div class="lb" onclick="closeLightbox()" role="dialog" aria-modal="true">
+      <img class="lb__img" src="${photos[lbIndex]}" alt="Photo ${lbIndex + 1}" onclick="event.stopPropagation()" />
+      <button class="lb__close" onclick="event.stopPropagation();closeLightbox()" aria-label="Close">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+      </button>
+      <button class="lb__nav lb__nav--prev" onclick="event.stopPropagation();lbNav(-1)" aria-label="Previous">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></svg>
+      </button>
+      <button class="lb__nav lb__nav--next" onclick="event.stopPropagation();lbNav(1)" aria-label="Next">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
+      </button>
+      <div class="lb__counter">${String(lbIndex + 1).padStart(2, "0")} / ${String(total).padStart(2, "0")}</div>
+    </div>`;
   document.body.style.overflow = "hidden";
 }
-function closeLightbox() {
-  document.getElementById("lightbox").style.display = "none";
-  document.body.style.overflow = "";
-}
+function openLightbox(i) { lbIndex = i; renderLightbox(); }
+function closeLightbox() { lbIndex = null; renderLightbox(); }
 function lbNav(dir) {
-  lbIdx = (lbIdx + dir + photos.length) % photos.length;
-  document.getElementById("lb-img").src = photos[lbIdx];
-  document.getElementById("lb-counter").textContent = `${lbIdx + 1} / ${photos.length}`;
+  if (lbIndex === null || !photos.length) return;
+  lbIndex = (lbIndex + dir + photos.length) % photos.length;
+  renderLightbox();
 }
 document.addEventListener("keydown", e => {
-  if (document.getElementById("lightbox").style.display !== "none") {
-    if (e.key === "Escape") closeLightbox();
-    if (e.key === "ArrowLeft") lbNav(-1);
-    if (e.key === "ArrowRight") lbNav(1);
-  }
+  if (lbIndex === null) return;
+  if (e.key === "Escape") closeLightbox();
+  if (e.key === "ArrowLeft") lbNav(-1);
+  if (e.key === "ArrowRight") lbNav(1);
 });
 
-// Sticky nav
-window.addEventListener("scroll", () => {
-  document.getElementById("nav").classList.toggle("scrolled", window.scrollY > 80);
-});
+/* ---------------- Features carousel ----------------
+   .features-viewport clips and .features-track translates, so the arrows are
+   required — without them only the first three cards would ever be reachable.
+   Transform matches the design's maths: 3 cards visible, 28px gap.            */
+function featShift(dir) {
+  const visible = window.innerWidth <= 640 ? 1 : (window.innerWidth <= 1024 ? 2 : 3);
+  const maxPage = Math.max(0, featCount - visible);
+  featPage = Math.min(maxPage, Math.max(0, featPage + dir));
+  const track = document.getElementById("featTrack");
+  if (track) track.style.transform = `translateX(calc(${-featPage} * (100% / ${visible}) - ${featPage} * 28px / ${visible}))`;
+  const prev = document.getElementById("featPrev");
+  const next = document.getElementById("featNext");
+  if (prev) prev.disabled = featPage === 0;
+  if (next) next.disabled = featPage >= maxPage;
+}
+window.addEventListener("resize", () => featShift(0));
 
-function render(listing, photoUrls) {
+/* ---------------- Render ---------------- */
+function render(listing, photoUrls, marketIntel, area, contact, grantIntro) {
+  // Only ever a genuine number: the API's realPhone() returns null for the
+  // placeholders still sitting in the CMS, and the footer line is omitted
+  // rather than printing something a buyer might dial.
+  const contactPhone = (contact && contact.phone) || "";
   photos = photoUrls;
+  lbIndex = null;
 
-  // Property description — rich text (Portable Text), edited in the emdash admin
-  // WYSIWYG. Rendered here from server-serialized HTML. Admins get a quick link to
-  // edit it in the backend.
   const descHtml = listing.descriptionHtml || "<p>Contact Grant for full details on this exceptional Incline Village property.</p>";
   const descBlock = `
     <div class="prop-desc" id="propDesc">
@@ -357,12 +560,10 @@ function render(listing, photoUrls) {
       ${canEdit ? `<div class="prop-desc__flag">${listing.descriptionIsCustom ? "✎ Custom description (edited). " : ""}<a href="/_emdash/admin/content/listings/${listing.id}?locale=en" target="_blank" rel="noopener">Edit description in the backend →</a></div>` : ""}
     </div>`;
 
-  // Owner note block — visible to everyone when a note exists; editable inline
-  // when a logged-in admin is viewing (canEdit).
   const note = listing.ownerNote || "";
   const noteBlock = (note || canEdit) ? `
     <div class="grant-note${note ? "" : " grant-note--empty"}" id="grantNote">
-      <div class="grant-note__label">A Note From Grant</div>
+      <div class="eyebrow grant-note__label">A Note From Grant</div>
       <div class="grant-note__body" id="grantNoteBody">${note ? noteToHtml(note) : "<em>No note yet — add a personal note about this property.</em>"}</div>
       ${canEdit ? `
       <button class="grant-note__btn" id="noteEditBtn" onclick="toggleNoteEdit()">${note ? "Edit note" : "Add note"}</button>
@@ -375,154 +576,554 @@ function render(listing, photoUrls) {
         </div>
       </div>` : ""}
     </div>` : "";
-  const heroPhoto = photos[0]
-    ? `<img class="listing-hero__img" src="${photos[0]}" alt="${listing.address}" />`
-    : `<div class="listing-hero__placeholder">⌂</div>`;
 
-  const gallery = photos.length > 0 ? `
-    <div class="gallery-section">
-      <div class="gallery-header">
-        <h3>Property Gallery</h3>
-        <span>${photos.length} Photos · Scroll →</span>
-      </div>
-      <div class="filmstrip">
-        ${photos.map((src, i) => `
-          <div class="film-tile" onclick="openLightbox(${i})">
-            <img src="${src}" alt="Photo ${i+1}" loading="lazy" />
-          </div>`).join("")}
-      </div>
-    </div>` : "";
+  // .listing-hero__img is a background-image layer in styles.css, not an <img>.
+  const heroLayer = photos[0]
+    ? `<div class="listing-hero__img" style="background-image:url('${photos[0]}')"></div>`
+    : `<div class="listing-hero__img" style="background:var(--navy)"></div>`;
 
+  // The neighbourhood is derived per listing by point-in-polygon matching; fall
+  // back to city/state when a listing sits outside every traced area.
+  const crumb = listing.neighborhood || [listing.city, listing.state].filter(Boolean).join(", ");
+
+  // Return the visitor to the search they came from, filters intact. The listings
+  // page stashes its current URL (including the filter query string) on every
+  // change; fall back to the unfiltered index when there is nothing stored.
+  let backHref = "/listings/";
+  let backLabel = "Back to All Listings";
+  try {
+    const stored = sessionStorage.getItem("gcm:listingsUrl");
+    if (stored) {
+      backHref = stored;
+      if (stored.indexOf("?") > -1) backLabel = "Back to Your Search";
+    }
+  } catch (e) { /* private mode — keep the default */ }
+
+  const filmstrip = photos.length > 0 ? `
+    <section class="filmstrip-section">
+      <div class="filmstrip-wrap">
+        <div class="filmstrip__header">
+          <div class="filmstrip__header__t">Property Gallery</div>
+          <div class="eyebrow eyebrow--muted">${photos.length} Photos · Scroll →</div>
+        </div>
+        <div class="filmstrip">
+          ${photos.map((src, i) => `<div class="filmstrip__tile" style="background-image:url('${src}')" onclick="openLightbox(${i})" role="button" tabindex="0" aria-label="Open photo ${i + 1}"></div>`).join("")}
+          <button class="filmstrip__cta" onclick="openLightbox(0)">
+            <div class="filmstrip__cta__t">View Full<br />Photo Gallery</div>
+            <div class="filmstrip__cta__c">${photos.length} PHOTOS<span class="cta-arrow" aria-hidden="true">→</span></div>
+          </button>
+        </div>
+      </div>
+    </section>` : "";
+
+  // Real MLS fields, in the design's card treatment.
+  const featureCards = [
+    ["Bedrooms & Baths", [
+      ["Bedrooms", listing.beds], ["Bathrooms Total", listing.baths],
+      ["Full Baths", listing.bathsFull], ["Half Baths", listing.bathsHalf],
+    ]],
+    ["Area & Lot", [
+      ["Living Area", fmtSqft(listing.sqft)],
+      ["Lot Size", listing.lotAcres ? listing.lotAcres + " acres" : "—"],
+      ["Year Built", listing.yearBuilt], ["Type", listing.type],
+    ]],
+    ["Property Info", [
+      ["Garage", listing.garage ? listing.garage + " spaces" : "—"],
+      ["View", listing.view || "—"], ["Sub-Type", listing.subType || "—"], ["Status", listing.status],
+    ]],
+    ["Financial", [
+      ["List Price", fmt(listing.price)],
+      ["Annual Taxes", listing.taxes ? fmt(listing.taxes) : "—"],
+      ["Days on Market", listing.daysOnMarket ?? "—"],
+      ["Agent", listing.agent || "Grant C. Meyer"],
+    ]],
+  ];
+  featCount = featureCards.length;
+  featPage = 0;
+
+  // ---- B3: Note From Grant as its own section, in the design's .local-card ----
+  // Shown to everyone whenever a note exists. The inline editor stays in the body
+  // column for logged-in admins so editing still happens in one place.
+  const localSection = note ? `
+    <section class="section--local">
+      <div class="local-card">
+        <div class="local-card__copy">
+          <div class="local-card__head">
+            <div class="local-card__lead">Where 35 Years Makes the Difference</div>
+            <div class="local-card__title">A Note From Grant</div>
+          </div>
+          <div class="local-card__body">
+            <p>${noteToHtml(note)}</p>
+          </div>
+          <div class="local-card__attr" style="color:var(--orange)">&mdash; GRANT C. MEYER</div>
+        </div>
+        ${listing.noteImage ? `<div class="local-card__photo" style="background-image:url('${listing.noteImage}')"></div>` : ""}
+      </div>
+    </section>` : "";
+
+  // ---- B2: 3D tour. Hidden entirely when no tour URL is set. ----
+  const tourSection = listing.tourUrl ? `
+    <section style="padding:0 0 96px">
+      <div class="matterport">
+        ${photos[0] ? `<div class="matterport__bg" style="background-image:url('${photos[0]}')"></div>` : ""}
+        <div class="matterport__inner">
+          <div class="matterport__play">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="color:#fff;margin-left:3px"><path d="M8 5v14l11-7z" /></svg>
+          </div>
+          <h3 class="matterport__h">Experience ${escapeHtml(listing.address)} in 3D</h3>
+          <p class="matterport__p">Take a virtual walk through every room of this residence before you set foot in Tahoe.</p>
+          <a class="matterport__cta" href="${listing.tourUrl}" target="_blank" rel="noopener">Launch 3D Tour</a>
+        </div>
+      </div>
+    </section>` : "";
+
+  // ---- B4: Market Intelligence. Hidden until a post exists for this area, so no
+  //      invented figures can ever ship. Bars are omitted when a percentage cannot
+  //      be parsed, rather than drawn at an arbitrary width. ----
+  const mi = marketIntel;
+  const ratioPct = mi && mi.list_to_sale ? (String(mi.list_to_sale).match(/([\d.]+)\s*%/) || [])[1] : null;
+  const marketSection = mi ? `
+    <section class="section--market">
+      <div class="market-card">
+        <div class="market-card__top">
+          <h3 class="market-card__h">Market Intelligence: ${escapeHtml(mi.title || listing.neighborhood || "")}</h3>
+          ${mi.period ? `<div class="market-card__chip">${escapeHtml(mi.period)}</div>` : ""}
+        </div>
+        ${mi.summary ? `<p class="market-card__desc">${escapeHtml(mi.summary)}</p>` : ""}
+        <div class="market-card__metrics">
+          ${mi.list_to_sale ? `
+          <div class="metric">
+            <div class="metric__head">
+              <div class="eyebrow eyebrow--navy">AVG. LIST-TO-SALE RATIO</div>
+              <div class="metric__v">${escapeHtml(mi.list_to_sale)}</div>
+            </div>
+            ${ratioPct ? `<div class="metric__bar"><div class="metric__bar__fill" style="width:${ratioPct}%"></div></div>` : ""}
+            ${mi.list_to_sale_note ? `<div class="metric__note">${escapeHtml(mi.list_to_sale_note)}</div>` : ""}
+          </div>` : ""}
+          ${mi.avg_dom ? `
+          <div class="metric">
+            <div class="metric__head">
+              <div class="eyebrow eyebrow--navy">AVG. DAYS ON MARKET</div>
+              <div class="metric__v">${escapeHtml(mi.avg_dom)}</div>
+            </div>
+            ${mi.avg_dom_note ? `<div class="metric__note">${escapeHtml(mi.avg_dom_note)}</div>` : ""}
+          </div>` : ""}
+        </div>
+        ${mi.source ? `<div class="metric__note" style="margin-top:20px">${escapeHtml(mi.source)}</div>` : ""}
+      </div>
+    </section>` : "";
+
+  // ---- B5: Community Insights, from the neighbourhood entry. ----
+  // Two guards, both deliberate:
+  //  1. The seeded neighbourhood entries still carry placeholder copy ("...goes here
+  //     once we capture it"). Publishing that on every listing page would be worse
+  //     than showing nothing, so placeholder paragraphs are dropped.
+  //  2. The section is gated on having an image, because supplying one is the whole
+  //     reason the featured/map image fields were added. No image = not ready = hidden.
+  const PLACEHOLDER = /goes here once we capture it/i;
+  const areaOverview = area && area.overview && !PLACEHOLDER.test(area.overview) ? area.overview : null;
+  const areaTake = area && area.take && !PLACEHOLDER.test(area.take) ? area.take : null;
+  const areaImage = area ? (area.map_image || area.featured_image) : null;
+  const communitySection = (areaImage && (areaOverview || areaTake)) ? `
+    <section class="section--community">
+      <div class="community">
+        <div class="community__copy">
+          <div>
+            <div class="community__head">
+              <div class="eyebrow eyebrow--light">${escapeHtml(area.tag || listing.neighborhood || "")}</div>
+              <div class="community__title">Community Insights</div>
+            </div>
+          </div>
+          <div class="community__body">
+            ${areaOverview ? `<p>${escapeHtml(areaOverview)}</p>` : ""}
+            ${areaTake ? `<p>${escapeHtml(areaTake)}</p>` : ""}
+          </div>
+          ${listing.neighborhoodSlug ? `
+          <div class="community__rows">
+            <div class="community__row">
+              <span class="community__row__icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+              </span>
+              <div>
+                <div class="community__row__h">${escapeHtml(area.title || "This area")}</div>
+                <div class="community__row__p">Read the full neighborhood guide &mdash; <a href="/neighborhood/${listing.neighborhoodSlug}/" style="color:var(--orange)">explore ${escapeHtml(area.title || "the area")}</a></div>
+              </div>
+            </div>
+          </div>` : ""}
+        </div>
+        <div class="community__map">
+          <div class="community__map__img" style="background-image:url('${areaImage}')"></div>
+        </div>
+      </div>
+    </section>` : "";
+
+  /* The "Your Neighbor Before You Even Arrive" section. Everything in it comes
+     from the `grant_intro` singleton via the API, which is the same entry and
+     the same reader the home page's <GrantIntro> component uses -- so the copy
+     cannot drift between the two. The classes are shared too (.grant-intro* in
+     styles.css). If the markup below changes, change the component to match.
+     The fallback keeps the section rendering if the API response predates the
+     field, or the collection has not been pushed. */
+  const gi = grantIntro || {};
+  const giEyebrow = gi.eyebrow || "Your Neighbor Before You Even Arrive";
+  const giHeadline = gi.headline || "Grant C. Meyer";
+  const giPhoto = gi.photo || "/assets/grant.jpg";
+  const giBody = gi.body || "";
+  const giCta = gi.listingCtaLabel || "LET'S TALK ABOUT THIS PROPERTY";
+  const guideCreds = (gi.creds && gi.creds.length ? gi.creds : []);
+  const check = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12" /></svg>`;
+
+  // The table wrapper exists for one reason: Chrome repeats a real <tfoot>
+  // at the foot of every printed page and reserves its height in the flow.
+  // Nothing else does both. On screen the table, row group, row and cell are
+  // all display: block and the tfoot is hidden, so the layout is unchanged.
   document.getElementById("app").innerHTML = `
-    <!-- HERO -->
-    <section class="listing-hero">
-      ${heroPhoto}
+    <table class="print-doc"><tbody class="print-doc__body"><tr><td>
+    <div class="print-sheet" aria-hidden="true">
+      ${photos[0] ? `<img class="print-sheet__img" src="${photos[0]}" alt="" />` : ""}
+      <div class="print-sheet__head">
+        <img class="print-sheet__logo" src="/assets/logo.png" alt="Grant C. Meyer Homes" />
+        <div class="print-sheet__crumb">${escapeHtml(crumb)}</div>
+      </div>
+      <h1 class="print-sheet__addr">${escapeHtml(listing.address)}</h1>
+      <div class="print-sheet__facts">
+        <span>${listing.beds || "—"} BD</span>
+        <span>${listing.baths || "—"} BA</span>
+        ${listing.sqft ? `<span>${fmtSqft(listing.sqft)}</span>` : ""}
+        <span class="print-sheet__price">${fmt(listing.price)}</span>
+      </div>
+    </div>
+
+    <section class="listing-hero listing-hero--fl">
+      ${heroLayer}
       <div class="listing-hero__veil"></div>
-      <div class="listing-hero__actions">
-        <button class="hero-action-btn" title="Save">♡</button>
-        <button class="hero-action-btn" title="Share">↗</button>
-        <button class="hero-action-btn" title="Print" onclick="window.print()">⎙</button>
+      <div class="listing-hero__share">
+        <button id="saveBtn" aria-label="Save this home" aria-pressed="false" title="Save" onclick="toggleSaved()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21.2l8.8-8.8a5.5 5.5 0 0 0 0-7.8z"/></svg>
+        </button>
+        <button aria-label="Share" title="Share" onclick="navigator.share ? navigator.share({title:document.title,url:location.href}) : navigator.clipboard.writeText(location.href)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="10.7" x2="15.4" y2="6.3"/><line x1="8.6" y1="13.3" x2="15.4" y2="17.7"/></svg>
+        </button>
+        <button aria-label="Print" title="Print" onclick="window.print()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        </button>
       </div>
       <div class="listing-hero__bottom">
         <div>
-          <div class="listing-hero__addr">${listing.address}</div>
-          <div class="listing-hero__crumb">${listing.city}, ${listing.state} ${listing.zip || ""}</div>
+          <h1 class="listing-hero__title">${escapeHtml(listing.address)}</h1>
+          <div class="listing-hero__crumb">${escapeHtml(crumb)}</div>
         </div>
         <div class="listing-hero__stats">
-          <div class="hero-stat"><div class="hero-stat__l">Bedrooms</div><div class="hero-stat__v">${listing.beds || "—"} BD</div></div>
-          <div class="hero-stat"><div class="hero-stat__l">Bathrooms</div><div class="hero-stat__v">${listing.baths || "—"} BA</div></div>
-          <div class="hero-stat"><div class="hero-stat__l">List Price</div><div class="hero-stat__v hero-stat__v--price">${fmt(listing.price)}</div></div>
+          <div class="listing-hero__stat">
+            <div class="listing-hero__stat__l">BEDROOMS</div>
+            <div class="listing-hero__stat__v">${listing.beds || "—"} BD</div>
+          </div>
+          <div class="listing-hero__stat">
+            <div class="listing-hero__stat__l">BATHROOMS</div>
+            <div class="listing-hero__stat__v">${listing.baths || "—"} BA</div>
+          </div>
+          <div class="listing-hero__stat">
+            <div class="listing-hero__stat__l">LIST PRICE</div>
+            <div class="listing-hero__stat__v listing-hero__stat__v--price">${fmt(listing.price)}</div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- BACK -->
-    <div class="back-bar"><a class="back-btn" href="/listings/">← Back to All Listings</a></div>
+    <div class="back-bar"><a class="back-btn" href="${backHref}">← ${backLabel}</a></div>
 
-    <!-- BODY -->
-    <div class="listing-body">
-      <div>
-        <h2>${listing.address}, ${listing.city}</h2>
-        <div class="rule"></div>
-        ${descBlock}
-        ${noteBlock}
+    <section class="listing-body">
+      <div class="listing-body__grid">
+        <div>
+          <h2 class="listing-body__h listing-body__h--figma">${escapeHtml(listing.headline || (listing.address + (listing.city ? ", " + listing.city : "")))}</h2>
+          <div class="listing-body__rule listing-body__rule--figma"></div>
+          ${descBlock}
+          ${canEdit ? noteBlock : ""}
+        </div>
+        <aside class="aside-fl aside-fl--dark">
+          <div class="eyebrow eyebrow--muted aside-fl__h">QUICK STATISTICS</div>
+          <div class="aside-fl__stats">
+            ${[
+              ["Status", listing.status],
+              ["Property Type", listing.subType || listing.type],
+              ["Year Built", listing.yearBuilt],
+              ["Living Area", fmtSqft(listing.sqft)],
+              ["Lot Size", listing.lotAcres ? listing.lotAcres + " acres" : "—"],
+              ["Garage", listing.garage ? listing.garage + " spaces" : "—"],
+              ["View", listing.view || "—"],
+              ["Annual Taxes", listing.taxes ? fmt(listing.taxes) : "—"],
+              ["Days on Market", listing.daysOnMarket ?? "—"],
+            ].map(([l, v]) => `
+              <div class="aside-fl__row">
+                <span class="aside-fl__row__l">${l}</span>
+                <span class="aside-fl__row__v">${v || v === 0 ? escapeHtml(v) : "—"}</span>
+              </div>`).join("")}
+          </div>
+          <a class="aside-fl__cta" href="#listing-contact">SCHEDULE A PRIVATE TOUR</a>
+        </aside>
       </div>
-      <aside class="aside">
-        <div class="aside__h">Quick Statistics</div>
-        ${[
-          ["Status", listing.status],
-          ["Property Type", listing.subType || listing.type],
-          ["Year Built", listing.yearBuilt],
-          ["Living Area", fmtSqft(listing.sqft)],
-          ["Lot Size", listing.lotAcres ? listing.lotAcres + " acres" : "—"],
-          ["Garage", listing.garage ? listing.garage + " spaces" : "—"],
-          ["View", listing.view || "—"],
-          ["Annual Taxes", listing.taxes ? fmt(listing.taxes) : "—"],
-          ["Days on Market", listing.daysOnMarket ?? "—"],
-        ].map(([l,v]) => `
-          <div class="aside__row">
-            <span class="aside__row__l">${l}</span>
-            <span class="aside__row__v">${v || "—"}</span>
-          </div>`).join("")}
-        <button class="aside__cta">Schedule a Private Tour</button>
-      </aside>
+    </section>
+
+    <div class="print-extras" aria-hidden="true">
+      <div class="print-cols${note ? "" : " print-cols--solo"}">
+        <div class="print-stats">
+          <div class="print-stats__h">Quick Statistics</div>
+          <dl class="print-stats__list">
+            ${[
+              ["Status", listing.status],
+              ["Type", listing.subType || listing.type],
+              ["Year Built", listing.yearBuilt],
+              ["Living Area", fmtSqft(listing.sqft)],
+              ["Lot Size", listing.lotAcres ? listing.lotAcres + " acres" : "\u2014"],
+              ["Garage", listing.garage ? listing.garage + " spaces" : "\u2014"],
+              ["View", listing.view || "\u2014"],
+              ["Annual Taxes", listing.taxes ? fmt(listing.taxes) : "\u2014"],
+              ["Days on Market", listing.daysOnMarket ?? "\u2014"],
+            ].map(([l, v]) => `
+              <div class="print-stats__row">
+                <dt>${l}</dt>
+                <dd>${v || v === 0 ? escapeHtml(v) : "\u2014"}</dd>
+              </div>`).join("")}
+          </dl>
+        </div>
+        ${note ? `
+        <div class="print-note">
+          <div class="print-note__h">A Note From Grant</div>
+          <div class="print-note__body">${noteToHtml(note)}</div>
+          <div class="print-note__attr">\u2014 GRANT C. MEYER</div>
+        </div>` : ""}
+      </div>
+
     </div>
 
-    <!-- GALLERY -->
-    ${gallery}
+    ${filmstrip}
 
-    <!-- FEATURES -->
-    <div class="features-section">
-      <h2>Features &amp; Details</h2>
-      <div class="features-grid">
-        <div class="feat-card">
-          <div class="feat-card__h">Bedrooms &amp; Baths</div>
-          ${[["Bedrooms", listing.beds], ["Bathrooms Total", listing.baths], ["Full Baths", listing.bathsFull], ["Half Baths", listing.bathsHalf]].map(([l,v]) => `<div class="feat-row"><span class="feat-row__l">${l}</span><span class="feat-row__v">${v ?? "—"}</span></div>`).join("")}
+    ${tourSection}
+
+    ${localSection}
+
+    <section class="section--features">
+      <div class="features-wrap">
+        <h2 class="features-h">Features &amp; Amenities</h2>
+        <div class="features-viewport">
+          <div class="features-track" id="featTrack">
+            ${featureCards.map(([h, rows]) => `
+              <div class="feat-card">
+                <div class="feat-card__h">${h}</div>
+                <div class="feat-card__list">
+                  ${rows.map(([l, v]) => `
+                    <div class="feat-card__row">
+                      <span class="feat-card__row__l">${l}</span>
+                      <span class="feat-card__row__v">${v || v === 0 ? escapeHtml(v) : "—"}</span>
+                    </div>`).join("")}
+                </div>
+              </div>`).join("")}
+          </div>
         </div>
-        <div class="feat-card">
-          <div class="feat-card__h">Area &amp; Lot</div>
-          ${[["Living Area", fmtSqft(listing.sqft)], ["Lot Size", listing.lotAcres ? listing.lotAcres + " ac." : "—"], ["Year Built", listing.yearBuilt], ["Type", listing.type]].map(([l,v]) => `<div class="feat-row"><span class="feat-row__l">${l}</span><span class="feat-row__v">${v ?? "—"}</span></div>`).join("")}
-        </div>
-        <div class="feat-card">
-          <div class="feat-card__h">Property Info</div>
-          ${[["Garage", listing.garage ? listing.garage + " spaces" : "—"], ["View", listing.view || "—"], ["Sub-Type", listing.subType || "—"], ["Status", listing.status]].map(([l,v]) => `<div class="feat-row"><span class="feat-row__l">${l}</span><span class="feat-row__v">${v ?? "—"}</span></div>`).join("")}
-        </div>
-        <div class="feat-card">
-          <div class="feat-card__h">Financial</div>
-          ${[["List Price", fmt(listing.price)], ["Annual Taxes", listing.taxes ? fmt(listing.taxes) : "—"], ["Days on Market", listing.daysOnMarket ?? "—"], ["Agent", listing.agent || "Grant C. Meyer"]].map(([l,v]) => `<div class="feat-row"><span class="feat-row__l">${l}</span><span class="feat-row__v">${v ?? "—"}</span></div>`).join("")}
+        <div class="features-nav">
+          <button id="featPrev" onclick="featShift(-1)" aria-label="Previous features" disabled>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></svg>
+          </button>
+          <button id="featNext" onclick="featShift(1)" aria-label="More features">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
+          </button>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- AGENT -->
-    <div class="agent-section">
-      <div class="agent-photo-placeholder">⌂</div>
-      <div>
-        <div class="agent-eyebrow">Your Neighbor Before You Even Arrive</div>
-        <div class="agent-name">Grant C. Meyer</div>
-        <div class="agent-creds">
-          ${[["35-Year Resident","Unmatched local knowledge"],["17 Years Realtor","Every market cycle since 2007"],["Volume Leader","Top 1% of Sierra agents"],["Legal Training","Zoning & water rights expertise"]].map(([h,p]) => `
-          <div class="cred"><div class="cred-icon">✓</div><div><div class="cred-h">${h}</div><div class="cred-p">${p}</div></div></div>`).join("")}
+    <section class="section--grant-intro">
+      <div class="grant-intro">
+        <div class="grant-intro__photo" style="background-image:url('${escapeHtml(giPhoto)}')"></div>
+        <div class="grant-intro__copy">
+          <div>
+            <div class="eyebrow">${escapeHtml(giEyebrow)}</div>
+            <h2 class="grant-intro__h">${escapeHtml(giHeadline)}</h2>
+          </div>
+          <div class="grant-intro__creds">
+            ${guideCreds.map((c) => `
+              <div class="cred">
+                <span class="check-disc" aria-hidden="true">${check}</span>
+                <div>
+                  <div class="cred__t">${escapeHtml(c.t)}</div>
+                  ${c.d ? `<div class="cred__d">${escapeHtml(c.d)}</div>` : ""}
+                </div>
+              </div>`).join("")}
+          </div>
+          <p class="grant-intro__body">${escapeHtml(giBody)}</p>
+          <a class="btn btn--dark btn--start" href="#listing-contact">${escapeHtml(giCta)}</a>
         </div>
-        <p class="agent-p">Grant doesn't just sell homes — he curates the Tahoe lifestyle. With deep understanding of local micro-climates, community nuances, and the intricate legal landscape of Lake Tahoe property, he provides counsel that goes beyond the sale.</p>
-        <a href="#contact" class="agent-cta">Let's Talk About This Property</a>
       </div>
-    </div>
+    </section>
 
-    <!-- CONTACT -->
-    <div class="contact-section" id="contact">
-      <h2>Schedule a Private Showing</h2>
-      <p>Interested in ${listing.address}? Contact Grant to arrange a private tour at your convenience.</p>
-      <form class="contact-form" id="listingInquiry" onsubmit="return submitListingInquiry(event)">
-        <input type="text" name="name" placeholder="Your Name" required />
-        <input type="email" name="email" placeholder="Email Address" required />
-        <input type="tel" name="phone" placeholder="Phone Number" />
-        <textarea name="message" placeholder="Message — mention if you'd like to schedule a tour" required></textarea>
-        <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0" aria-hidden="true" />
-        <input type="hidden" name="reason" value="Listing inquiry: ${listing.address}, ${listing.city}" />
-        <div id="listingInquiryMsg" style="font-size:14px"></div>
-        <button type="submit">Send Message to Grant</button>
-      </form>
-    </div>
+    ${marketSection}
 
-    <!-- FOOTER -->
-    <footer>
-      <div class="footer-brand">Grant C. Meyer Homes</div>
-      <div>Incline Village · Lake Tahoe · Nevada</div>
-      <div>Data via Trestle MLS · Incline Village Realtors®</div>
+    ${communitySection}
+
+    <section class="section section--cream" id="listing-contact">
+      <div class="container">
+        <div class="invite">
+          <div class="invite__left">
+            <h2 class="invite__h">Schedule a Private Showing.</h2>
+            <p style="font-size:16px;line-height:1.7;color:var(--muted);margin-top:12px;max-width:38ch">
+              Interested in ${escapeHtml(listing.address)}? Reach out and Grant will arrange a private tour at your convenience.
+            </p>
+            <div class="invite__agent">
+              <img src="/assets/grant.jpg" alt="Grant C. Meyer" />
+              <div>
+                <div class="invite__agent__name">Grant C. Meyer</div>
+                <div class="invite__agent__role">Coldwell Banker Global Luxury Agent</div>
+              </div>
+            </div>
+          </div>
+
+          <form class="invite__form" id="listingInquiry" onsubmit="return submitListingInquiry(event)">
+            <h3 class="invite__form__h">Let's begin with a conversation.</h3>
+            <div class="form-row">
+              <div class="field">
+                <label class="field__label">FULL NAME</label>
+                <input class="field__input" name="name" placeholder="John Doe" required />
+              </div>
+              <div class="field">
+                <label class="field__label">EMAIL ADDRESS</label>
+                <input class="field__input" type="email" name="email" placeholder="john@example.com" required />
+              </div>
+            </div>
+            <div class="field">
+              <label class="field__label">PHONE NUMBER</label>
+              <input class="field__input" name="phone" />
+            </div>
+            <div class="field">
+              <label class="field__label">HOW CAN WE HELP?</label>
+              <textarea class="field__input" name="message" placeholder="I'd like to arrange a tour of this property…" required></textarea>
+            </div>
+            <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" aria-hidden="true" />
+            <input type="hidden" name="reason" value="Listing inquiry: ${escapeHtml(listing.address)}${listing.city ? ", " + escapeHtml(listing.city) : ""}" />
+            <div id="listingInquiryMsg" style="font-size:14px;margin-bottom:12px"></div>
+            <button type="submit" class="btn btn--submit">SEND INQUIRY</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    </td></tr></tbody>
+
+    <tfoot class="print-foot" aria-hidden="true"><tr><td>
+      <div class="print-foot__inner">
+        <div class="print-foot__mid">
+          <div class="print-foot__cta">Ready to learn more? Let's start with a conversation.</div>
+          <div class="print-foot__who">Grant C. Meyer · Coldwell Banker Global Luxury Agent</div>
+        </div>
+        <div class="print-foot__contact">
+          ${contactPhone ? `<div class="print-foot__phone">${escapeHtml(contactPhone)}</div>` : ""}
+          <div class="print-foot__site" id="printFootSite"></div>
+        </div>
+      </div>
+    </td></tr></tfoot></table>
+
+    <footer class="footer">
+      <div class="footer__cols">
+        <div class="footer__brand">
+          <img src="/assets/logo-white.png" alt="Grant C. Meyer Homes" style="height:100px" />
+          <p style="font-size:14px;line-height:1.6;color:rgba(255,255,255,0.7);margin-bottom:24px;max-width:280px">
+            Three decades of expertise in Lake Tahoe luxury real estate. Curated representation, quiet sales, lasting relationships.
+          </p>
+        </div>
+        <div>
+          <h4 class="footer__h">Properties</h4>
+          <div class="footer__links">
+            <a href="/listings/">Search Listings</a>
+            <a href="/buyers/">For Buyers</a>
+            <a href="/sellers/">For Sellers</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer__h">Tahoe</h4>
+          <div class="footer__links">
+            <a href="/community/">The Community</a>
+            <a href="/concierge/">Concierge</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer__h">About</h4>
+          <div class="footer__links">
+            <a href="/about/">About Grant</a>
+            <a href="/contact/">Contact</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span style="font-size:12px;line-height:1.6;color:rgba(255,255,255,0.45);max-width:640px">
+          Listing data via Trestle (Cotality), courtesy of Incline Village Realtors&reg;. Information is deemed reliable but not guaranteed and should be independently verified.
+        </span>
+        <span>&copy; 2026 Grant C. Meyer Homes.</span>
+      </div>
     </footer>
   `;
+
   document.title = `${listing.address} — Grant C. Meyer Homes`;
+  featShift(0);
+  syncSaved();
+
+  // The print sheet's closing line carries the URL it came from, so a printed
+  // page leads back to the live listing. Set here rather than in the template
+  // because the template is a string built before anything is in the document.
+  // The website address for the print footer. Taken from the host actually
+  // serving the page rather than hardcoded, so it is correct on the workers.dev
+  // preview and on the real domain once one is attached.
+  const site = document.getElementById("printFootSite");
+  if (site) site.textContent = location.host;
+}
+
+/* ---- Saved homes ----------------------------------------------------------
+   The heart marks a home in this browser and nothing more: the slug goes into
+   localStorage under gcm:saved, and syncSaved() restores the filled state when
+   the page is opened again. There is no account behind it and no "saved homes"
+   page to view the list on yet -- if that gets built, this is the key it reads.
+   Wrapped in try/catch throughout: localStorage throws outright in Safari
+   private mode rather than returning null. */
+const SAVED_KEY = "gcm:saved";
+
+function readSaved() {
+  try {
+    const raw = localStorage.getItem(SAVED_KEY);
+    const list = raw ? JSON.parse(raw) : [];
+    return Array.isArray(list) ? list : [];
+  } catch (e) { return []; }
+}
+
+function syncSaved() {
+  const btn = document.getElementById("saveBtn");
+  if (!btn || !currentSlug) return;
+  const on = readSaved().indexOf(currentSlug) > -1;
+  btn.setAttribute("aria-pressed", on ? "true" : "false");
+  btn.setAttribute("aria-label", on ? "Saved — click to remove" : "Save this home");
+  btn.title = on ? "Saved" : "Save";
+  // Fill the heart as well as colour it, so the state reads at a glance.
+  const svg = btn.querySelector("svg");
+  if (svg) {
+    svg.setAttribute("fill", on ? "currentColor" : "none");
+    btn.style.color = on ? "var(--orange)" : "";
+  }
+}
+
+function toggleSaved() {
+  if (!currentSlug) return;
+  try {
+    const list = readSaved();
+    const i = list.indexOf(currentSlug);
+    if (i > -1) list.splice(i, 1); else list.push(currentSlug);
+    localStorage.setItem(SAVED_KEY, JSON.stringify(list));
+  } catch (e) { /* private mode — the button still reflects nothing, honestly */ }
+  syncSaved();
 }
 
 async function load() {
-  // Support both SEO URL (/homes/city/address) and legacy (?id=key)
-  // URLs are canonically trailing-slashed (/homes/city/address/), so strip it —
-  // the API resolves slugs in their bare "city/address" form.
+  // Support both the SEO URL (/homes/city/address) and legacy (?id=key). URLs are
+  // canonically trailing-slashed, so strip it — the API resolves bare slugs.
   const slug = location.pathname.match(/^\/homes\/(.+?)\/?$/)?.[1];
   const legacyId = new URLSearchParams(location.search).get("id");
 
-  if (!slug && !legacyId) { location.href = "/listings.html"; return; }
+  if (!slug && !legacyId) { location.href = "/listings/"; return; }
   currentSlug = slug || "";
 
   const endpoint = slug
@@ -534,9 +1135,9 @@ async function load() {
     const data = await resp.json();
     if (data.error) throw new Error(data.error);
     canEdit = !!data.canEdit;
-    render(data.listing, data.photos || []);
+    render(data.listing, data.photos || [], data.marketIntel || null, data.area || null, data.contact || null, data.grantIntro || null);
   } catch (e) {
-    document.getElementById("app").innerHTML = `<div style="text-align:center;padding:200px 40px;color:var(--muted)">Failed to load listing: ${e.message}</div>`;
+    document.getElementById("app").innerHTML = `<div class="loading">Failed to load listing: ${escapeHtml(e.message)}</div>`;
   }
 }
 

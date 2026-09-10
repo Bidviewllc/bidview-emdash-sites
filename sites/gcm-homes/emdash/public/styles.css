@@ -31,7 +31,9 @@ html, body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-feature-settings: "kern";
-  min-width: 1280px;
+  /* No min-width: the responsive overlay (responsive.css) reflows the layout
+     below 1024px. A hard min-width here would force mobile browsers to zoom
+     out to a 1280px viewport instead. */
 }
 
 a { color: inherit; text-decoration: none; }
@@ -67,8 +69,13 @@ img { display: block; max-width: 100%; }
   pointer-events: none;
   z-index: -1;
 }
+/* Constrained to the same 1184px measure as .container, so the logo and nav
+   links line up with the page content below instead of sitting out at the
+   bar's own 48px edge padding. */
 .nav__inner {
   width: 100%;
+  max-width: 1184px;
+  margin: auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -79,7 +86,7 @@ img { display: block; max-width: 100%; }
   align-items: center;
   flex-shrink: 0;
 }
-.nav__logo img { height: 60px; width: auto; transition: filter 240ms ease; }
+.nav__logo img { height: 80px; width: auto; transition: filter 240ms ease; }
 .nav.transparent .nav__logo img { filter: brightness(0) invert(1); }
 .nav__links {
   display: flex;
@@ -149,25 +156,63 @@ img { display: block; max-width: 100%; }
   background: transparent;
 }
 .btn--ghost:hover { background: rgba(255,255,255,0.07); }
-.btn--icon {
+/* .btn.btn--icon, not .btn--icon: responsive.css loads after this file and
+   sets `.btn { padding: 14px 22px; font-size: 12px }` at <=640px, which at
+   equal specificity was winning over the icon button's own padding and size. */
+.btn.btn--icon {
   width: 48px;
   height: 48px;
   padding: 0;
   border-radius: 12px;
+  /* The glyph is a text character, so it was inheriting .btn's 13px inside a
+     48px box. Sized to the button, and letter-spacing zeroed — on a single
+     glyph the trailing 0.14em pushes it off centre. */
+  font-size: 22px;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+/* Trailing arrow on text CTAs. Its own element so it can be sized, coloured
+   and animated apart from the label — the arrow used to be part of the label
+   string ("LEARN MORE →"), which left no way to control it. Flex parents
+   (.btn, .reality__link) already space it with their existing gap. */
+.cta-arrow {
+  display: inline-block;
+  font-size: 1.35em;
+  line-height: 1;
+  transition: transform 200ms ease;
+}
+a:hover .cta-arrow { transform: translateX(4px); }
+
+/* These three were plain inline text — give them the same flex spacing the
+   other CTAs use, so one gap mechanism covers all of them. */
+.blog-card__cta,
+.filmstrip__cta__c {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
 /* ===== Hero ===== */
+/* min-height, not height. The copy used to be absolutely positioned inside a
+   fixed 826px box, so a long hero block (Sellers has the longest on the site)
+   was squeezed toward the nav with no room to breathe. Now the copy sits in
+   normal flow, bottom-aligned by the flex container, and the section grows past
+   826px when it needs to -- short heroes look exactly as before. */
 .hero {
   position: relative;
   width: 100%;
-  height: 826px;
+  min-height: 826px;
   overflow: hidden;
   background: #15243b;
+  display: flex;
+  align-items: flex-end;
 }
 .hero__img {
   position: absolute;
   inset: 0;
-  background-image: url("https://images.unsplash.com/photo-1577756620835-c0fe2902103e?fm=jpg&q=80&w=2800&auto=format&fit=crop");
+  /* Self-hosted rather than hotlinked from images.unsplash.com — see .emotion__bg. */
+  background-image: url("/assets/hero-lake.jpg");
   background-size: cover;
   background-position: center 55%;
   filter: brightness(0.92);
@@ -181,6 +226,35 @@ img { display: block; max-width: 100%; }
     linear-gradient(180deg, rgba(21, 36, 59, 0) 30%, rgba(21, 36, 59, 0.45) 60%, rgba(10, 18, 29, 0.78) 100%),
     /* Top: cream fade into nav so blue nav text + full-color logo read */
     linear-gradient(180deg, rgba(252, 249, 244, 0.95) 0%, rgba(252, 249, 244, 0.55) 8%, rgba(252, 249, 244, 0) 18%);
+}
+
+/* ===== Deep hero veil =====
+   Moved here from sellers.css, where it was `.hero--sellers .hero__veil`. Liz
+   asked for /buyers/ to match /sellers/, so it is a shared class now.
+
+   The shared .hero__veil above does not begin darkening until 30% down, which
+   works over the dusk-animated lake on the home page but not over the two
+   photographs Liz supplied for these pages: Rubicon Trail and Eagle Rock are
+   both bright and hazy straight through the middle of the frame — exactly where
+   the hero eyebrow and headline sit. This starts the darkening at 6% and carries
+   it deeper. The top cream fade is kept verbatim so the nav logo and links still
+   read against the photo. */
+.hero--deep-veil .hero__veil {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(21, 36, 59, 0) 6%,
+      rgba(21, 36, 59, 0.38) 26%,
+      rgba(21, 36, 59, 0.54) 46%,
+      rgba(21, 36, 59, 0.68) 70%,
+      rgba(10, 18, 29, 0.86) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(252, 249, 244, 0.95) 0%,
+      rgba(252, 249, 244, 0.55) 8%,
+      rgba(252, 249, 244, 0) 18%
+    );
 }
 
 /* Ambient dusk→night hero overlay (Liz's approved prototype). Three layers,
@@ -245,11 +319,12 @@ img { display: block; max-width: 100%; }
   .hero__stars { animation: none; opacity: 0; }
 }
 .hero__copy {
-  position: absolute;
-  left: 0; right: 0;
-  bottom: 100px;
+  position: relative;
+  width: 100%;
   text-align: center;
-  padding: 0 96px;
+  /* Top clears the fixed 96px nav with room to spare; the 100px bottom is the
+     old `bottom: 100px` offset, so nothing moves on the short heroes. */
+  padding: 176px 96px 100px;
   color: var(--white);
 }
 .hero__title {
@@ -314,19 +389,52 @@ img { display: block; max-width: 100%; }
 .section { padding: 128px 48px; }
 .section--narrow { padding: 96px 48px; }
 .section--dark { background: var(--navy); color: var(--white); }
+/* Kept, but no page uses it any more: the site's light sections alternate
+   beige/cream down the page, and pure white broke that two-tone rhythm.
+   Prefer --beige or --cream so the alternation stays intact. */
 .section--white { background: var(--white); }
 .section--beige { background: var(--beige); }
+/* Same value as `body`, so a bare `.section` and `.section--cream` render
+   identically -- but always state it, so the alternation is readable in the
+   markup rather than depending on the body default. */
 .section--cream { background: var(--cream); }
 .container { max-width: 1184px; margin: 0 auto; }
 
+/* ===== Eyebrow ===========================================================
+   The small uppercase letterspaced label that introduces a heading, a stat,
+   a card or a panel. ONE type definition; the modifiers change colour only.
+
+   It used to be fifteen classes -- .eyebrow, .stat__label, .pillar__label,
+   .proof-card__hook, .comm-card__eyebrow, .mkt__reach-eyebrow,
+   .mkt__incl-label, .guide-fl__eyebrow, .community__eyebrow, .cinfo__label,
+   .cg-glance__h, .cg-fcard__tag, .nb-take__l, .nb-stat__l, .metric__label,
+   .filmstrip__header__c, .micro__stat__label, .micro__map__caption,
+   .cg-fact__label, .invite__row__label, .nbhd__card__tag, .grant-note__label,
+   .testimonial__loc, .pullquote__a -- each re-stating the same five
+   properties. The sizes ran 10 / 10.5 / 11 / 12 / 14 / 16px and the tracking
+   0.0875 / 0.1 / 0.12 / 0.13 / 0.14 / 0.16 / 0.18 / 0.2em, in five greys.
+   None of that was a decision; it was the order the sections got built in.
+
+   To restyle every eyebrow on the site, change this rule. To add one, write
+   class="eyebrow" -- do not write a new label class.
+
+   `display: block` lives here because every eyebrow on the site is a
+   standalone line above something; it was being re-declared in eight places. */
 .eyebrow {
+  display: block;
   font-family: var(--font-sans);
-  font-size: 12px;
+  font-size: var(--eyebrow-size);
   font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--orange);
+  color: var(--orange);      /* the default -- orange reads on cream and navy */
 }
+/* Colour only. --light and --dim are for dark sections, --navy and --muted for
+   light ones. The greys collapsed from three (--ink, --body, --muted) to one. */
+.eyebrow--light { color: var(--white); }
+.eyebrow--dim { color: rgba(255, 255, 255, 0.6); }
+.eyebrow--navy { color: var(--navy); }
+.eyebrow--muted { color: var(--muted); }
 .h-rule {
   width: 64px;
   height: 1px;
@@ -343,13 +451,9 @@ img { display: block; max-width: 100%; }
   letter-spacing: -0.005em;
   color: var(--navy);
 }
-.h2 {
-  font-family: var(--font-serif);
-  font-weight: 500;
-  font-size: 48px;
-  line-height: 1.05;
-  color: var(--navy);
-}
+/* Type comes from the shared section-heading rule above; each of these keeps
+   only what is specific to it. */
+.h2 { color: var(--navy); }
 .h3 {
   font-family: var(--font-noto);
   font-weight: 400;
@@ -363,6 +467,73 @@ img { display: block; max-width: 100%; }
   color: var(--body);
 }
 
+/* ===== Heading scale =====
+   Every heading here is the same typeface, weight, tracking and balanced wrap;
+   only the size and the colour change. Those declarations used to be repeated
+   in a dozen rules that each picked a slightly different size and line-height
+   -- the section tier alone ran 44/46/48/50/52px at three different weights --
+   because they were written one section at a time.
+
+   Two tiers are shared, and they are the two that repeat across pages:
+
+     --h-section  a content section's heading: the "H2" tier
+     --h-card     a card or panel heading
+
+   Both are redefined once per breakpoint at the top of responsive.css, so the
+   whole scale moves together. Change either number and every heading in that
+   tier follows, at every width.
+
+   Colour is deliberately NOT in the base rule: whether a heading sits on cream
+   or on navy is a per-section decision, not a property of the tier.
+
+   Four groups are sized per context on purpose and should stay that way:
+
+     * Page heroes -- .hero__title (76px), .cg-hero__title (64), .chero__h (62),
+       .listing-hero__title. Each is set over a different photograph with a
+       different amount of copy, and they are weight 400, not 500.
+     * Full-bleed statement bands -- .emotion__h / .emotion-split__h /
+       .emotion-bc__h. Sized to the image behind them.
+     * .cta-slim__h (40px) -- the design specifies 40 for the slim closing band.
+     * The listing detail page's own face, --font-noto: .features-h,
+       .listing-body__h, .feat-card__h. A page-level type choice, not a drift. */
+:root {
+  --eyebrow-size: 12px;
+  --h-section: 48px;
+  --h-card: 26px;
+}
+
+.h2,
+.section-title h2,
+.reality__h,
+.guide__h,
+.net__h,
+.cg-h2,
+.invite__h,
+.micro__h,
+.content-hero__h {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: var(--h-section);
+  line-height: 1.06;
+  letter-spacing: -0.005em;
+  text-wrap: balance;
+}
+
+.invite__form__h,
+.blog-card__h,
+.pillar__title,
+.cg-todo__h,
+.acc__label,
+.content-card__h {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: var(--h-card);
+  line-height: 1.15;
+  letter-spacing: -0.005em;
+  text-wrap: balance;
+}
+
+
 /* ===== Reality Check ===== */
 .reality {
   display: grid;
@@ -371,19 +542,13 @@ img { display: block; max-width: 100%; }
   align-items: center;
 }
 .reality__h {
-  font-family: var(--font-serif);
-  font-weight: 500;
-  font-size: 50px;
-  line-height: 1.08;
-  letter-spacing: -0.005em;
   color: var(--white);
   margin-bottom: 28px;
-  text-wrap: balance;
 }
 .reality__p {
   font-size: 17px;
   line-height: 1.7;
-  color: rgba(255,255,255,0.78);
+  color: var(--white);
   margin-bottom: 32px;
 }
 .reality__link {
@@ -399,9 +564,12 @@ img { display: block; max-width: 100%; }
 .reality__link:hover svg { transform: translateX(4px); }
 
 .stats { display: flex; flex-direction: column; gap: 24px; }
+/* Each figure is marked the same way .pullquote is -- an orange left rule, not
+   a box. Same 3px/orange border and the same 28px indent, so a stat and a pull
+   quote read as the same kind of mark wherever they sit on the site. */
 .stat {
-  border: 1px solid rgba(247, 148, 91, 0.32);
-  padding: 28px 32px;
+  border-left: 3px solid var(--orange);
+  padding: 6px 0 6px 28px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -413,14 +581,6 @@ img { display: block; max-width: 100%; }
   line-height: 1;
   color: var(--white);
   letter-spacing: -0.005em;
-}
-.stat__label {
-  font-family: var(--font-sans);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  color: var(--orange);
-  text-transform: uppercase;
 }
 .stat__desc {
   font-size: 14px;
@@ -442,7 +602,11 @@ img { display: block; max-width: 100%; }
 .emotion__bg {
   position: absolute;
   inset: 0;
-  background-image: url("https://images.unsplash.com/photo-1578624495146-f78dc655eae6?fm=jpg&q=80&w=2800&auto=format&fit=crop");
+  /* Same photograph the design uses, downloaded and served from our own origin
+     rather than hotlinked from images.unsplash.com — no third-party dependency,
+     and it cannot disappear from under us. Unsplash's licence permits commercial
+     use without attribution. */
+  background-image: url("/assets/emotion-lifestyle.jpg");
   background-size: cover;
   background-position: center 50%;
 }
@@ -524,7 +688,7 @@ img { display: block; max-width: 100%; }
 .emotion-split__p {
   font-size: 16px;
   line-height: 1.7;
-  color: rgba(255,255,255,0.78);
+  color: var(--white);
   max-width: 460px;
 }
 
@@ -626,7 +790,10 @@ img { display: block; max-width: 100%; }
   aspect-ratio: 1 / 1;
   background-image: url("/assets/grant.jpg");
   background-size: cover;
-  background-position: center 22%;
+  /* Was `center 22%`, overridden back to `center` by an inline style on
+     /about/ and / and by .split--photo-fill on the other three users -- so it
+     never actually applied anywhere. */
+  background-position: center;
 }
 .guide__name {
   background: var(--navy);
@@ -640,15 +807,7 @@ img { display: block; max-width: 100%; }
   letter-spacing: 0.01em;
 }
 .guide__copy { display: flex; flex-direction: column; gap: 18px; padding-top: 10px; }
-.guide__h {
-  font-family: var(--font-serif);
-  font-weight: 500;
-  font-size: 46px;
-  line-height: 1.08;
-  color: var(--navy);
-  letter-spacing: -0.005em;
-  text-wrap: balance;
-}
+.guide__h { color: var(--navy); }
 .guide__creds {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -660,9 +819,15 @@ img { display: block; max-width: 100%; }
   gap: 14px;
   align-items: flex-start;
 }
+/* A check in a pale orange disc. Was written four ways: .cred__icon at 32px
+   with a "✓" text glyph, a bare 22px SVG on the listing page, and
+   .cg-glance__tick at 26px. One class now, and an SVG rather than a glyph so
+   it does not depend on the system font.
+   .cred__icon is kept as an alias because /about/ still uses it. */
+.check-disc,
 .cred__icon {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   background: rgba(247,148,91,0.12);
   color: var(--orange);
@@ -688,6 +853,10 @@ img { display: block; max-width: 100%; }
   color: var(--body);
   padding: 8px 0;
 }
+/* Only the first paragraph of a block wants the 8px above it; a run of them
+   should read as one column of text. Was `padding-top:0` inline on all seven
+   continuation paragraphs across /about/, /buyers/ and /sellers/. */
+.guide__p + .guide__p { padding-top: 0; }
 
 /* Logos strip */
 .logos-strip {
@@ -754,7 +923,6 @@ img { display: block; max-width: 100%; }
 }
 .testimonial__attr { display: flex; flex-direction: column; gap: 2px; }
 .testimonial__name { font-weight: 700; font-size: 15px; color: var(--ink); }
-.testimonial__loc { font-size: 11px; letter-spacing: 0.16em; color: var(--body); text-transform: uppercase; }
 
 /* ===== Contact / Invitation ===== */
 .invite {
@@ -773,23 +941,39 @@ img { display: block; max-width: 100%; }
   flex-direction: column;
   gap: 28px;
 }
-.invite__h {
-  font-family: var(--font-serif);
-  font-weight: 500;
-  font-size: 44px;
-  line-height: 1.05;
-  letter-spacing: -0.005em;
-  text-wrap: balance;
+/* Colour is inherited from .invite__left, which is navy. */
+.invite__h { margin: 0; }
+.invite__rows {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 10px;
 }
 .invite__row { display: flex; align-items: flex-start; gap: 14px; }
-.invite__row svg { color: var(--orange); flex-shrink: 0; margin-top: 2px; }
-.invite__row__label {
-  font-size: 11px;
-  letter-spacing: 0.16em;
-  color: rgba(255,255,255,0.6);
-  text-transform: uppercase;
-  margin-bottom: 4px;
+
+/* Bot-bait field: present in the DOM and reachable by a script, out of the
+   layout and out of the accessibility tree. Both inquiry forms use it. */
+.honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
 }
+
+/* Validation message. .form-error was a class name with nothing behind it --
+   the colour and spacing were written inline on both inquiry forms. The
+   `display:none` initial state stays inline: InquiryFormScript toggles
+   element.style.display directly. */
+.form-error {
+  color: #c0392b;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.invite__row svg { color: var(--orange); flex-shrink: 0; margin-top: 2px; }
+/* Type from .eyebrow eyebrow--dim; this owns the gap to the value below. */
+.invite__row__label { margin-bottom: 4px; }
 .invite__row__v { font-size: 15px; color: var(--white); }
 .invite__agent {
   display: flex;
@@ -805,10 +989,6 @@ img { display: block; max-width: 100%; }
 
 .invite__form { padding: 64px; display: flex; flex-direction: column; gap: 26px; }
 .invite__form__h {
-  font-family: var(--font-serif);
-  font-weight: 500;
-  font-size: 26px;
-  line-height: 1.15;
   color: var(--navy);
   margin-bottom: 4px;
 }
@@ -855,80 +1035,93 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
 
 /* ===== Property Cards ===== */
 .props { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 64px; }
-.prop-card {
-  background: var(--white);
+/* ===== Cards =====
+   ONE card design, shared by three places: the /listings/ search results, the
+   home page Featured Listings grid and the home page Market Insights blog cards.
+   It started life inside /listings/index.html's own <style> block; that page now
+   loads it from here, so changing the card changes it everywhere.
+
+   The blog cards use the same shell and the same .card__tag pill for their
+   category, with .card--post supplying the editorial spacing in the body. */
+.card {
+  background: #fff;
   border-radius: 4px;
   overflow: hidden;
-  border: 1px solid rgba(197,198,206,0.35);
-  box-shadow: 0 8px 16px -10px rgba(0,0,0,0.12);
-  display: flex;
-  flex-direction: column;
   cursor: pointer;
-  transition: transform 260ms ease, box-shadow 260ms ease;
-}
-.prop-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 30px 50px -20px rgba(0,0,0,0.22);
-}
-.prop-card__media {
-  aspect-ratio: 4 / 3;
-  position: relative;
-  overflow: hidden;
-}
-.prop-card__img {
-  position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-position: center;
-  transition: transform 700ms ease;
-}
-.prop-card:hover .prop-card__img { transform: scale(1.05); }
-.prop-card__tag {
-  position: absolute;
-  top: 0; right: 0;
-  background: var(--orange);
-  color: var(--white);
-  padding: 8px 14px;
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  font-weight: 600;
-}
-.prop-card__body {
-  background: var(--cream);
-  padding: 28px;
-  text-align: center;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  flex: 1;
+  transition: transform 220ms ease, box-shadow 220ms ease;
+  border: 1px solid transparent;
 }
-.prop-card__addr {
-  font-family: var(--font-serif);
-  font-size: 22px;
-  font-weight: 500;
-  color: var(--navy);
-  line-height: 1.2;
+.card:hover, .card.is-active { transform: translateY(-4px); box-shadow: 0 16px 44px rgba(21,36,59,0.13); }
+.card.is-active { border-color: var(--orange); }
+.card__media { position: relative; aspect-ratio: 4/3; overflow: hidden; background: var(--beige); }
+.card__img { width: 100%; height: 100%; object-fit: cover; transition: transform 500ms ease; display: block; }
+.card:hover .card__img { transform: scale(1.045); }
+.card__ph { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--line); font-size: 34px; }
+/* One row rather than two absolutely-positioned corners. Pinned to opposite
+   corners they overlapped as soon as the cards got narrow: three columns in the
+   56%-wide results pane gives ~204px cards at 1280px, not enough for
+   "SINGLE FAMILY" and "WATERFRONT" to pass each other. Now they wrap. */
+.card__badges {
+  position: absolute;
+  top: 14px; left: 14px; right: 14px;
+  /* space-between (not margin-left:auto on the Waterfront badge) so that when
+     both fit on one line the Waterfront badge sits right, as designed, but a
+     wrapped one stays left-aligned on its own line instead of being shoved to
+     the far edge. CSS can't detect wrapping; this needs no detection. */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: flex-start;
+  justify-content: space-between;
 }
-.prop-card__meta {
-  font-size: 12px;
-  letter-spacing: 0.16em;
-  color: var(--body);
+.card__tag, .card__wf {
+  font-size: 9px;
+  letter-spacing: 0.13em;
   text-transform: uppercase;
-}
-.prop-card__price {
-  font-family: var(--font-serif);
-  font-size: 22px;
-  color: var(--navy);
-  font-weight: 500;
-}
-.prop-card__cta {
-  font-size: 12px;
-  letter-spacing: 0.18em;
   font-weight: 700;
-  color: var(--orange);
-  text-transform: uppercase;
-  margin-top: 4px;
+  padding: 5px 10px;
+  border-radius: 2px;
+  color: #fff;
+  white-space: nowrap;
 }
+.card__tag { background: rgba(21,36,59,0.92); backdrop-filter: blur(4px); }
+.card__wf { background: var(--orange); }
+.card__count {
+  position: absolute;
+  bottom: 12px; right: 12px;
+  background: rgba(0,0,0,0.55);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 4px 9px;
+  border-radius: 2px;
+  letter-spacing: 0.04em;
+  backdrop-filter: blur(4px);
+}
+.card__body { padding: 18px 20px 20px; display: flex; flex-direction: column; flex: 1; }
+.card__price { font-family: var(--font-serif); font-size: 22px; font-weight: 600; color: var(--navy); line-height: 1.1; }
+.card__addr { font-size: 14px; font-weight: 600; color: var(--ink); margin-top: 7px; line-height: 1.35; }
+.card__city { font-size: 11px; color: var(--muted); letter-spacing: 0.07em; text-transform: uppercase; margin-top: 3px; }
+.card__meta {
+  display: flex;
+  gap: 14px;
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-top: 14px;
+  padding-top: 13px;
+  border-top: 1px solid var(--line);
+}
+.card__meta b { color: var(--navy); font-weight: 700; }
+
+/* Post variant. A listing card's body is a tight stack of facts; an article's
+   needs air between the headline, the standfirst and the byline, and the byline
+   sits on the bottom edge so a row of cards lines up whatever the excerpt length. */
+.card--post .card__body { gap: 14px; padding: 22px 22px 20px; }
+.card--post .blog-card__byline { margin-top: auto; }
 
 /* ===== Micro Markets ===== */
 .micro {
@@ -989,31 +1182,23 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   gap: 28px;
   padding: 28px 0;
 }
+/* An orange rule down the left edge, not a box: the markup was overriding
+   `border: 1px` to `border-width: 0 0 0 2px` inline on the only element that
+   uses this class, so the class now says what it actually is. */
 .micro__h {
-  font-family: var(--font-serif);
-  font-weight: 500;
-  font-size: 44px;
-  line-height: 1;
   color: var(--white);
   padding: 16px 32px;
-  border: 1px solid var(--orange);
-  letter-spacing: -0.005em;
+  border-left: 2px solid var(--orange);
   align-self: flex-start;
 }
 .micro__p {
   font-size: 17px;
   line-height: 1.65;
-  color: rgba(255,255,255,0.78);
+  color: var(--white);
   padding: 0 32px;
 }
 .micro__stats { display: flex; gap: 56px; padding: 0 32px; margin-top: 4px; }
-.micro__stat__label {
-  font-size: 11px;
-  letter-spacing: 0.16em;
-  color: var(--orange);
-  text-transform: uppercase;
-  margin-bottom: 8px;
-}
+.micro__stat__label { margin-bottom: 8px; }
 .micro__stat__v {
   font-family: var(--font-serif);
   font-weight: 500;
@@ -1025,6 +1210,9 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   margin-top: 10px;
 }
 .micro__nav { display: flex; gap: 16px; justify-content: center; margin-top: 56px; }
+/* The forward button is filled; .btn--orange would also recolour the arrow
+   and add a shadow, so only the fill is taken. */
+.micro__next { background: var(--orange); }
 
 /* ===== Asymmetric photo gallery ===== */
 .gallery {
@@ -1071,36 +1259,10 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
 
 /* ===== Blog ===== */
 .blog { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 64px; }
-.blog-card {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  cursor: pointer;
-}
-.blog-card__media {
-  aspect-ratio: 16/12;
-  border-radius: 4px;
-  overflow: hidden;
-  background-size: cover;
-  background-position: center;
-  transition: transform 280ms ease;
-}
-.blog-card:hover .blog-card__media { transform: translateY(-4px); }
-.blog-card__meta {
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  color: var(--orange);
-  text-transform: uppercase;
-  font-weight: 700;
-}
-.blog-card__h {
-  font-family: var(--font-serif);
-  font-weight: 500;
-  font-size: 26px;
-  line-height: 1.15;
-  color: var(--navy);
-  text-wrap: balance;
-}
+/* The article-card shell is .card / .card--post above; what follows is the
+   typography used inside its body. .blog-card__meta is gone — the category is
+   now the same .card__tag pill the listing cards use. */
+.blog-card__h { color: var(--navy); }
 .blog-card__p {
   font-size: 14px;
   line-height: 1.6;
@@ -1143,10 +1305,14 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   color: var(--white);
   padding: 80px 112px 40px;
 }
+/* Same 1184px measure as .nav__inner and .container. The brand column takes
+   1.5fr so the blurb under the logo has room without crowding the link lists. */
 .footer__cols {
   display: grid;
-  grid-template-columns: 1.3fr repeat(3, 1fr);
+  grid-template-columns: 1.5fr repeat(3, 1fr);
   gap: 64px;
+  max-width: 1184px;
+  margin: auto;
   padding-bottom: 56px;
   border-bottom: 1px solid rgba(255,255,255,0.08);
 }
@@ -1174,12 +1340,17 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
 .footer__links { display: flex; flex-direction: column; gap: 12px; }
 .footer__links a {
   font-size: 14px;
-  color: rgba(255,255,255,0.78);
+  color: var(--white);
   transition: color 160ms ease;
 }
 .footer__links a:hover { color: var(--orange); }
+/* max-width matches .footer__cols above. Without it `margin: auto` does
+   nothing horizontally on a block, and this bar would run full-bleed while the
+   columns and their bottom rule stopped at 1184px. */
 .footer__bottom {
-  margin-top: 32px;
+  max-width: 1184px;
+  margin: auto;
+  padding-top: 32px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -1192,8 +1363,10 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
 .listing-hero {
   position: relative;
   width: 100%;
-  height: 820px;
+  min-height: 820px;
   overflow: hidden;
+  display: flex;
+  align-items: flex-end;
 }
 .listing-hero__img {
   position: absolute;
@@ -1208,9 +1381,9 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   background: linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0) 60%, rgba(0,0,0,0.7) 100%);
 }
 .listing-hero__bottom {
-  position: absolute;
-  left: 0; right: 0; bottom: 0;
-  padding: 0 64px 64px;
+  position: relative;
+  width: 100%;
+  padding: 200px 64px 64px;
   color: var(--white);
   display: flex;
   align-items: flex-end;
@@ -1380,7 +1553,10 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   width: 48px;
   height: 4px;
   background: var(--orange);
-  margin: 23px 0 0;
+  /* Even above and below. Nothing after the rule adds a top margin -- the
+     description is .prop-desc > .prop-desc__body > p, whose margin-top is 0, so
+     margins collapse through and this margin-bottom is the real gap. */
+  margin: 15px 0;
 }
 .listing-body__p--figma {
   font-family: var(--font-sans);
@@ -1401,12 +1577,8 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   flex-direction: column;
   gap: 24px;
 }
+/* Type from `eyebrow eyebrow--muted`; this is the rule under the header. */
 .aside-fl__h {
-  font-family: var(--font-sans);
-  font-weight: 500;
-  font-size: 16px;
-  letter-spacing: 0.075em;
-  color: var(--body);
   padding-bottom: 16px;
   border-bottom: 1px solid rgba(197,198,206,0.3);
 }
@@ -1679,12 +1851,14 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   flex-direction: column;
   gap: 6px;
 }
-.local-card__eyebrow {
+/* NOT an eyebrow, despite what it used to be called: a title-case orange
+   lead-in line above the card title, at reading size. Renamed from
+   .local-card__eyebrow so the name matches what it is. */
+.local-card__lead {
   font-family: var(--font-sans);
   font-size: 14px;
   letter-spacing: 0.1em;
   font-weight: 600;
-  text-transform: none;
   color: var(--orange);
 }
 .local-card__title {
@@ -1721,19 +1895,26 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
 }
 
 /* --- The Guide Appears (Grant) --- */
-.section--guide-fl {
-  padding: 96px 48px;
-  background: var(--cream);
-}
-.guide-fl {
-  max-width: 1280px;
-  margin: 0 auto;
+/* ===== Grant intro =======================================================
+   "Your Neighbor Before You Even Arrive" -- ONE section, on the home page and
+   on every listing page. It used to be two: .guide on the home page (a 1:1
+   grid, a name plate under the photo, a 48px sentence for a headline) and
+   .guide-fl here (1/3 - 2/3, Grant's name as the headline, bare check marks).
+   The layout below is the listing page's, the check discs are the home page's,
+   and the copy comes from the `grant_intro` singleton so it is written once.
+
+   The photo has no name plate any more: the headline is his name.
+
+   /about/'s "Meeting the Mentor" block still uses the older .guide* classes.
+   That is a different section -- his bio on his own page, with its own four
+   credentials -- and is deliberately left on its own layout. */
+.grant-intro {
   display: grid;
-  grid-template-columns: 328px 1fr;
+  grid-template-columns: 1fr 2fr;
   gap: 64px;
   align-items: start;
 }
-.guide-fl__photo {
+.grant-intro__photo {
   width: 100%;
   aspect-ratio: 328 / 414;
   border-radius: 5px;
@@ -1741,16 +1922,8 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   background-position: center 20%;
   box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
 }
-.guide-fl__copy { display: flex; flex-direction: column; gap: 24px; }
-.guide-fl__eyebrow {
-  font-family: var(--font-sans);
-  font-size: 16px;
-  letter-spacing: 0.0875em;
-  font-weight: 600;
-  color: var(--orange);
-  text-transform: uppercase;
-}
-.guide-fl__name {
+.grant-intro__copy { display: flex; flex-direction: column; gap: 24px; }
+.grant-intro__h {
   font-family: var(--font-serif);
   font-weight: 400;
   font-size: 48px;
@@ -1758,62 +1931,32 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   line-height: 1;
   margin-top: 8px;
 }
-.guide-fl__creds {
+.grant-intro__creds {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 28px 32px;
   margin: 8px 0 0;
 }
-.guide-fl__cred {
-  display: flex;
-  gap: 14px;
-  align-items: flex-start;
-}
-.guide-fl__cred__icon {
-  width: 22px;
-  height: 22px;
-  flex-shrink: 0;
-  color: var(--orange);
-  margin-top: 2px;
-}
-.guide-fl__cred__h {
-  font-family: var(--font-sans);
-  font-weight: 700;
-  font-size: 16px;
-  color: var(--navy);
-  line-height: 1.5;
-}
-.guide-fl__cred__p {
-  font-family: var(--font-sans);
-  font-size: 14px;
-  line-height: 1.4;
-  color: var(--body);
-  margin-top: 2px;
-}
-.guide-fl__body {
+.grant-intro__body {
   font-family: var(--font-sans);
   font-size: 16px;
   line-height: 1.625;
   color: var(--body);
   margin-top: 8px;
 }
-.guide-fl__cta {
-  display: inline-flex;
-  align-self: flex-start;
-  background: var(--navy);
-  color: var(--white);
-  font-family: var(--font-sans);
-  font-weight: 500;
-  font-size: 14px;
-  letter-spacing: 0.1em;
-  padding: 16px 32px;
-  border-radius: 4px;
-  cursor: pointer;
-  text-transform: uppercase;
-  transition: background 200ms ease;
+/* The listing page's own wrapper: it is not inside .section/.container, so it
+   carries its own padding and tone. */
+.section--grant-intro {
+  padding: 96px 48px;
+  background: var(--cream);
 }
-.guide-fl__cta:hover { background: #1c3050; }
-
+/* Same measure as .container, so the section is literally identical on the
+   home page and on a listing page rather than merely the same proportions.
+   Its neighbours on the listing page run 1200-1280px; the 16px is invisible. */
+.section--grant-intro .grant-intro {
+  max-width: 1184px;
+  margin: 0 auto;
+}
 /* --- Market Intelligence --- */
 .section--market {
   padding: 96px 40px;
@@ -1870,13 +2013,6 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-}
-.metric__label {
-  font-family: var(--font-sans);
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  color: var(--ink);
-  text-transform: uppercase;
 }
 .metric__v {
   font-family: var(--font-noto);
@@ -1937,13 +2073,6 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   display: flex;
   flex-direction: column;
   gap: 8px;
-}
-.community__eyebrow {
-  font-family: var(--font-sans);
-  font-size: 12px;
-  letter-spacing: 0.2em;
-  color: var(--white);
-  text-transform: uppercase;
 }
 .community__title {
   font-family: var(--font-noto);
@@ -2050,13 +2179,6 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   font-weight: 400;
   font-size: 22px;
   color: var(--navy);
-}
-.filmstrip__header__c {
-  font-family: var(--font-sans);
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  color: var(--muted);
-  text-transform: uppercase;
 }
 .filmstrip {
   display: flex;
@@ -2183,7 +2305,7 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
 
 /* --- Cinematic Hero (Figma-faithful refinement) --- */
 .listing-hero--fl {
-  height: 800px;
+  min-height: 800px;
 }
 .listing-hero--fl .listing-hero__veil {
   background:
@@ -2191,7 +2313,7 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
     linear-gradient(180deg, rgba(0,0,0,0) 45%, rgba(0,0,0,0.55) 78%, rgba(0,0,0,0.85) 100%);
 }
 .listing-hero--fl .listing-hero__bottom {
-  padding: 0 32px 80px;
+  padding: 220px 32px 80px;
   align-items: flex-end;
   gap: 80px;
 }
@@ -2306,7 +2428,7 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 32px;
-  padding: 64px 48px 128px;
+  padding: 32px 48px;
   background: var(--cream);
   max-width: 1280px;
   margin: 0 auto;
@@ -2326,16 +2448,11 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   max-width: 800px;
   margin: 0 auto 16px;
 }
-.section-title .eyebrow { display: block; margin-bottom: 16px; }
-.section-title h2 {
-  font-family: var(--font-serif);
-  font-weight: 500;
-  font-size: 52px;
-  line-height: 1.05;
-  color: var(--navy);
-  letter-spacing: -0.005em;
-  text-wrap: balance;
-}
+/* Spacing under a section-head eyebrow. Two values site-wide, on purpose:
+   16px in a section head, 20px in a page hero (.eyebrow--block). `display`
+   is on .eyebrow itself now. */
+.section-title .eyebrow { margin-bottom: 16px; }
+.section-title h2 { color: var(--navy); }
 .section-title.on-dark h2 { color: var(--white); }
 .section-title p {
   font-size: 17px;
@@ -2345,3 +2462,377 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   text-wrap: balance;
 }
 .section-title.on-dark p { color: rgba(255,255,255,0.75); }
+
+/* ===== Pull quote =====
+   Moved here from about.css when /buyers/ and /sellers/ started using it too —
+   three pages now share it, so it belongs in the design system rather than in
+   one page's sheet. Responsive sizes live in responsive.css.
+   `.on-dark` flips it for the navy sections. */
+.pullquote {
+  border-left: 3px solid var(--orange);
+  padding: 6px 0 6px 28px;
+  margin: 32px 0 0;
+}
+.pullquote__q {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 26px;
+  line-height: 1.4;
+  color: var(--navy);
+  text-wrap: balance;
+}
+.on-dark .pullquote__q { color: var(--white); }
+/* The attribution under a pullquote. Its own name because it means something
+   different, but it is an eyebrow and now carries the class: only the spacing
+   above it belongs here. */
+.pullquote__a {
+  margin-top: 14px;
+}
+
+/* ===== Split reversal =====
+   `.guide` is the site's copy + photo split (photo left, copy right). The
+   Buyers "Stakes" and Sellers "Pricing Read" sections run the other way, so
+   this flips the columns without a second grid definition. Order, not
+   `direction`, so the responsive single-column stack still reads copy-first. */
+.guide.split--rev .guide__copy { order: 1; }
+.guide.split--rev .guide__photo { order: 2; }
+
+/* ===== Split with a full-height photo =====
+   `.guide__photo` is built for Grant's portrait: square, top-aligned, with an
+   offset orange square behind it. The /buyers/ and /sellers/ splits use
+   landscape working photos that the design runs the full height of the column
+   instead (.ab-split__media — align-self: stretch, min-height: 480px). */
+.guide.split--photo-fill .guide__photo { align-self: stretch; }
+.guide.split--photo-fill .guide__photo::before { display: none; }
+.guide.split--photo-fill .guide__img {
+  height: 100%;
+  aspect-ratio: auto;
+  min-height: 480px;
+}
+
+/* ===== Network statement (dark) =====
+   The "network you inherit" block on /buyers/ and the "gets your home
+   sale-ready" block on /sellers/. A wide statement column, then a two-up of
+   the proof story and the quote. Lives on `.section--dark.on-dark`. */
+/* The statement column is CENTRED and the copy runs large (19px), per the
+   design. The proof story below is not plain body text — it carries the same
+   orange left rule as a pull quote. */
+.net {
+  max-width: 860px;
+  margin: 0 auto;
+  text-align: center;
+}
+.net .eyebrow { margin-bottom: 16px; }
+.net__h { color: var(--white); }
+.net__body {
+  font-size: 19px;
+  line-height: 1.78;
+  color: rgba(255, 255, 255, 0.82);
+  margin-top: 28px;
+}
+.net__body p + p { margin-top: 22px; }
+
+/* Proof story left, Grant's quote right, both vertically centred. */
+.net-split {
+  max-width: 1080px;
+  margin: 56px auto 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 72px;
+  align-items: center;
+  text-align: left;
+}
+.net__story {
+  font-size: 19px;
+  line-height: 1.78;
+  color: var(--white);
+  border-left: 3px solid var(--orange);
+  padding: 4px 0 4px 28px;
+  margin: 0;
+}
+.net-split .pullquote { margin: 0; }
+.net-split .pullquote__q { font-size: 26px; line-height: 1.42; }
+
+/* ===== Process column =====
+   The editorial "what working with Grant actually looks like" column, shared by
+   /buyers/ and /sellers/. A single narrow centred column with a centred head —
+   not a two-column split — and a short orange rule between the paragraphs. */
+.process {
+  max-width: 760px;
+  margin: 0 auto;
+}
+.process__head { text-align: center; margin-bottom: 44px; }
+.process__body {
+  font-size: 17.5px;
+  line-height: 1.78;
+  color: var(--body);
+}
+.process__body p + p { margin-top: 22px; }
+.process__divider {
+  width: 56px;
+  height: 1px;
+  background: var(--orange);
+  margin: 40px auto;
+}
+
+/* ===== Accordion (site default) =====
+   Moved here from buyers.css, where it started life as `.tax-acc` on the Buyers
+   tax-advantage section. That is the accordion Liz picked as the house style, so
+   it now lives in the design system and every accordion on the site uses it:
+   /buyers/ (tax disclosures) and /community/ ("Living Here").
+
+   Built on <details>/<summary>, not a JS accordion -- the pages ship no script
+   for it, every panel is findable by in-page browser search, and it works with
+   JavaScript off. Markup:
+
+     <div class="acc">
+       <details class="acc__item" open>
+         <summary class="acc__trigger">
+           <span class="acc__label">Heading</span>
+           <span class="acc__icon" aria-hidden="true"></span>
+         </summary>
+         <div class="acc__panel"> ...paragraphs... </div>
+       </details>
+     </div>
+
+   Page-specific extras (the Buyers panel sub-title and bullet list) stay in
+   buyers.css and hang off .acc__panel. */
+.acc {
+  max-width: 860px;
+  margin: 56px auto 0;
+  border-top: 1px solid rgba(197, 198, 206, 0.6);
+}
+.acc__item { border-bottom: 1px solid rgba(197, 198, 206, 0.6); }
+
+.acc__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  width: 100%;
+  padding: 26px 4px;
+  cursor: pointer;
+  list-style: none;
+  transition: color 180ms ease;
+}
+/* Suppress the native disclosure triangle in both engines. */
+.acc__trigger::-webkit-details-marker { display: none; }
+.acc__trigger::marker { content: ""; }
+.acc__trigger:hover .acc__label { color: var(--orange); }
+.acc__trigger:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 4px;
+}
+.acc__label {
+  color: var(--navy);
+  transition: color 180ms ease;
+}
+
+/* Plus that becomes a minus -- two bars, the vertical one rotated away. No ring
+   around it: the bars carry the state on their own, and the circle was competing
+   with the hairline row divider. The 34px box and the radius stay, so the mark
+   keeps its hit area and the hover tint is still a circle. */
+.acc__icon {
+  position: relative;
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  transition: background 180ms ease;
+}
+.acc__trigger:hover .acc__icon {
+  background: rgba(247, 148, 91, 0.08);
+}
+.acc__icon::before,
+.acc__icon::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 13px;
+  height: 1.5px;
+  background: var(--orange);
+  transform: translate(-50%, -50%);
+  transition: transform 240ms ease, opacity 240ms ease;
+}
+.acc__icon::after { transform: translate(-50%, -50%) rotate(90deg); }
+.acc__item[open] .acc__icon::after {
+  transform: translate(-50%, -50%) rotate(0deg);
+  opacity: 0;
+}
+
+.acc__panel {
+  padding: 0 4px 34px;
+  max-width: 660px;
+}
+.acc__panel p {
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--body);
+}
+.acc__panel p + p { margin-top: 16px; }
+
+/* ===== Small shared utilities =====
+   These exist because the same handful of declarations were being written
+   inline on element after element. A class means one place to change them and
+   one place to look. */
+
+/* A hero eyebrow: the same 20px gap under all of them. Was written inline as
+   `display:block;margin-bottom:20px` on five and `…18px` on two more -- the
+   difference was not deliberate. */
+.eyebrow--block { margin-bottom: 20px; }
+
+/* A section that continues the one above it rather than starting a new field:
+   the heading and its top padding belong to the previous section. Was
+   `padding-top:0` inline in six places. */
+.section--flush-top { padding-top: 0; }
+
+/* A centred "see everything" link closing a grid. Was
+   `text-align:center;margin-top:48px` (and once 44px) inline. */
+.section-end-cta {
+  text-align: center;
+  margin-top: 48px;
+}
+
+/* A button that should not stretch to the width of its flex column. */
+.btn--start {
+  align-self: flex-start;
+  margin-top: 8px;
+}
+
+/* ===== Simple content pages (Concierge, and any other page_content entry) ==
+   The whole page used to be built from inline styles on the elements, which is
+   why its hero heading was 56px at weight 600 -- the only weight-600 heading on
+   the site -- and its card headings 32px. Both now come from the shared
+   heading tiers. */
+.content-hero {
+  padding: 160px 80px 80px;
+  text-align: center;
+  background: var(--navy);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+.content-hero__h {
+  color: var(--white);
+  margin: 16px auto 0;
+  max-width: 880px;
+}
+.content-hero__sub {
+  max-width: 560px;
+  margin: 16px auto 0;
+  font-size: 17px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.75);
+}
+.content-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 56px;
+}
+.content-card {
+  position: relative;
+  background: var(--white);
+  padding: 44px 40px;
+  border-radius: 6px;
+  border: 1px solid rgba(197, 198, 206, 0.4);
+  box-shadow: 0 8px 16px -12px rgba(0, 0, 0, 0.08);
+}
+/* The orange tick over the top edge of each card. */
+.content-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 40px;
+  width: 40px;
+  height: 3px;
+  background: var(--orange);
+}
+.content-card .eyebrow { margin-top: 12px; }
+.content-card__h {
+  color: var(--navy);
+  margin: 12px 0 16px;
+}
+.content-card__p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--body);
+}
+
+/* ===== Footer text ===== */
+.footer__brand img { height: 100px; }
+.footer__brand__blurb {
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 24px;
+  max-width: 280px;
+}
+.footer__disclaimer {
+  font-size: 12px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.45);
+  max-width: 640px;
+}
+
+/* A section head with no lead paragraph beneath it still needs air before the
+   content it introduces; .section-title's own 16px assumes a <p> follows. */
+.section-title--nolead { margin-bottom: 48px; }
+
+/* Centre a block's inline content. Earns a name: it was written inline in
+   four places. */
+.u-center { text-align: center; }
+
+/* A narrower measure than .container's 1184px, for a short centred statement. */
+.container--narrow { max-width: 720px; }
+
+/* The decorative wave pair bleeding off the right edge of the Micro-Markets
+   band. Was ten declarations inline on the wrapper plus two on the images. */
+.micro__decor {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 427px;
+  height: 910px;
+  opacity: 0.1;
+  color: var(--orange);
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 40px;
+}
+.micro__decor img { width: 100%; }
+/* The second wave is offset so the pair reads as one continuous form. */
+.micro__decor img + img { transform: translateY(-40px); }
+
+/* The caption over the bottom-left of a micro-market map. Type and colour
+   come from `eyebrow eyebrow--dim`; this is only where it sits. */
+.micro__map__caption {
+  position: absolute;
+  left: 24px;
+  bottom: 24px;
+}
+.micro__dots {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 14px;
+}
+.micro__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.3);
+  transition: background 200ms ease;
+}
+
+/* Statement panel: the flex column's own 24px gap does the spacing, so the
+   eyebrow and attribution need no margins of their own. */
+.emotion-split__panel .pullquote__a { margin-top: 4px; }
+
+/* Clip a band's decorative bleed. */
+.section--clip { position: relative; overflow: hidden; }
+
+/* A button standing alone under a centred statement. */
+.btn--spaced { margin-top: 24px; }

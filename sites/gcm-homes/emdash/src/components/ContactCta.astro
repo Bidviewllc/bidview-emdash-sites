@@ -1,0 +1,152 @@
+---
+// The "Your Tahoe Story Starts With One Conversation." section — ONE source, used
+// on every page that needs it. Content comes from the `contact_cta` singleton
+// (Contact CTA (site-wide) in the dashboard, entry "default"), so editing it there
+// updates every page at once.
+//
+// Before this existed the section was duplicated: hardcoded on /contact/ (carrying
+// the placeholder phone and email) and again on the home page. Anything that needs
+// it now imports this component instead of copying the markup.
+//
+// NOT the same thing as the listing detail page's "Schedule a Private Showing"
+// block — that one is property-specific and posts a listing-scoped enquiry.
+import { getEmDashEntry } from "emdash";
+import { imageUrl } from "../lib/media";
+import { realPhone, realEmail, realAddress } from "../lib/contact-details";
+import InquiryFormScript from "./InquiryFormScript.astro";
+
+interface Props {
+	/** Override the shared heading on one page without breaking the single source. */
+	heading?: string | null;
+	/** Anchor id, so a page can link to #contact. Only set one per page. */
+	id?: string;
+	/** Set when this is the first section on a page: adds top room for the fixed nav. */
+	first?: boolean;
+	/**
+	 * Which of the two light section tones this instance sits on. The site's
+	 * non-blue sections alternate beige/cream down each page, and this is the last
+	 * section on four different pages, so it cannot be pinned to one tone -- each
+	 * page passes whichever one continues its own rhythm. Defaults to cream.
+	 */
+	bg?: "cream" | "beige";
+}
+const { heading: headingOverride = null, id = "contact", first = false, bg = "cream" } = Astro.props;
+
+let cta: any = {};
+try {
+	const res = await getEmDashEntry("contact_cta", "default");
+	cta = res?.entry?.data ?? {};
+} catch {
+	cta = {};
+}
+
+const heading = headingOverride ?? cta.heading ?? "Your Tahoe Story Starts With One Conversation.";
+const formHeading = cta.form_heading ?? "Let's begin with a conversation.";
+const submitLabel = cta.submit_label ?? "SEND INQUIRY";
+const successMessage = cta.success_message ?? "Thanks — Grant will be in touch within 24 hours.";
+const agentName = cta.agent_name ?? "Grant C. Meyer";
+const agentRole = cta.agent_role ?? "Coldwell Banker Global Luxury Agent";
+const agentPhoto = imageUrl(cta.agent_photo) ?? "/assets/grant.jpg";
+
+// No fallbacks on these three on purpose, and no placeholders either: a row
+// stays hidden until its field holds a value that reads as real, so nothing
+// invented can ship. The test lives in lib/contact-details.ts — see the note
+// there for why "non-empty" was not enough once the CMS entry got filled in
+// with stand-ins.
+//
+// The address field is multi-line, because /contact/'s office column lists it
+// line by line. Here it is a single row, so the lines join back up.
+const addressOneLine = (realAddress(cta.address) ?? "")
+	.split("\n")
+	.map((l) => l.trim())
+	.filter(Boolean)
+	.join(", ");
+
+const rows = [
+	["CALL DIRECTLY", realPhone(cta.phone), "phone"],
+	["EMAIL GRANT", realEmail(cta.email), "mail"],
+	["MAILING ADDRESS", addressOneLine, "pin"],
+].filter(([, v]) => v) as [string, string, string][];
+
+// The design's Icon.Phone / Icon.Mail / Icon.Pin, inlined. styles.css already
+// carries the rule these were authored for -- `.invite__row svg { color:
+// var(--orange) }` -- it just had nothing to colour until now.
+const ROW_ICONS: Record<string, string> = {
+	phone: '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>',
+	mail: '<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>',
+	pin: '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>',
+};
+---
+
+<section id={id} class={`section section--${bg}`} data-screen-label="Contact" style={first ? "padding-top:140px" : undefined}>
+	<div class="container">
+		<div class="invite">
+			<div class="invite__left">
+				<h2 class="invite__h">{heading}</h2>
+				{rows.length > 0 && (
+					<div class="invite__rows">
+						{rows.map(([label, value, icon]) => (
+							<div class="invite__row">
+								<svg
+									width="18"
+									height="18"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="1.6"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									aria-hidden="true"
+									set:html={ROW_ICONS[icon]}
+								></svg>
+								<div>
+									<div class="eyebrow eyebrow--dim invite__row__label">{label}</div>
+									<div class="invite__row__v">{value}</div>
+								</div>
+							</div>
+						))}
+					</div>
+				)}
+				<div class="invite__agent">
+					<img src={agentPhoto} alt={agentName} />
+					<div>
+						<div class="invite__agent__name">{agentName}</div>
+						<div class="invite__agent__role">{agentRole}</div>
+					</div>
+				</div>
+			</div>
+
+			<form class="invite__form" data-inquiry-form action="/api/contact" method="POST">
+				<h3 class="invite__form__h">{formHeading}</h3>
+				<div class="form-row">
+					<div class="field">
+						<label class="field__label">FULL NAME</label>
+						<input class="field__input" name="name" placeholder="John Doe" required />
+					</div>
+					<div class="field">
+						<label class="field__label">EMAIL ADDRESS</label>
+						<input class="field__input" type="email" name="email" placeholder="john@example.com" required />
+					</div>
+				</div>
+				<div class="field">
+					<label class="field__label">PHONE NUMBER</label>
+					<input class="field__input" name="phone" placeholder="+1 (555) 000-0000" />
+				</div>
+				<div class="field">
+					<label class="field__label">HOW CAN WE HELP?</label>
+					<textarea class="field__input" name="message" placeholder="I'm interested in viewing current listings in Crystal Bay..." required></textarea>
+				</div>
+				{/* Honeypot — hidden from humans, bots fill it */}
+				<input class="honeypot" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+				{/* Which page the lead came from, so enquiries are traceable. */}
+				<input type="hidden" name="source" value={Astro.url.pathname} />
+				<div class="form-sent" data-inquiry-sent style="display:none">✓ {successMessage}</div>
+				<div class="form-error" data-inquiry-error style="display:none"></div>
+				<button type="submit" class="btn--submit btn" data-inquiry-submit>{submitLabel}</button>
+			</form>
+		</div>
+	</div>
+</section>
+
+{/* Submit handling — shared with the /sellers/ valuation form. */}
+<InquiryFormScript />

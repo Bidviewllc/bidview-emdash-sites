@@ -8,14 +8,26 @@
  * emdash's schema (mirrors the Ontario generate-setup pattern). Idempotent:
  * deterministic ids + INSERT OR REPLACE, and it never touches pages/posts.
  *
- * Run:  CF_API_TOKEN=<cameron> node seed/push-collections.mjs
+ * Run:  node --env-file=.env seed/push-collections.mjs   (reads GCM_D1_TOKEN)
+ *
+ * Edit-safe: content entries already edited in the emdash admin are preserved, so
+ * re-running this to add a field will not revert anyone's copy. Add --force to
+ * overwrite them from seed.json deliberately.
  */
 import fs from "node:fs";
 
 const CF_ACCOUNT = process.env.CF_ACCOUNT_ID || "239e9d015c7a3a39cdc2e9400312f553";
 const CF_DB      = process.env.CF_D1_DATABASE_ID || "614044b7-3e0c-41ee-ac78-7805cbab6d99";
 const D1_URL = `https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT}/d1/database/${CF_DB}/query`;
-const TOKEN = process.env.CF_API_TOKEN;
+// NOTE: do NOT name this CF_API_TOKEN in a .env file — wrangler auto-loads .env
+// and treats CF_API_TOKEN as an alias for CLOUDFLARE_API_TOKEN, which then
+// overrides the OAuth login and breaks `wrangler deploy` from this folder.
+const TOKEN = process.env.GCM_D1_TOKEN || process.env.CF_API_TOKEN;
+
+// By default, content entries that have been edited in the emdash admin are left
+// alone — collections and fields are still (re)registered either way. Pass --force
+// to overwrite CMS edits with whatever seed.json says.
+const FORCE = process.argv.includes("--force");
 
 // Which seed collections to push (skip the starter defaults).
 const SKIP = new Set(["pages", "posts"]);
@@ -85,7 +97,25 @@ async function pushEntries(col) {
 	const entries = (seed.content && seed.content[col.slug]) || [];
 	const fieldSlugs = (col.fields || []).map((f) => f.slug);
 	const jsonFields = new Set((col.fields || []).filter((f) => colType(f.type) === "json").map((f) => f.slug));
+
+	// Which rows has a human edited? emdash's admin stamps updated_at as ISO-8601
+	// with a trailing Z; this script writes SQLite's "YYYY-MM-DD HH:MM:SS". Anything
+	// matching the former was last written by a person, not by seeding.
+	const edited = new Set();
+	if (!FORCE) {
+		try {
+			const res = await d1(`SELECT id FROM ec_${col.slug} WHERE updated_at LIKE '%T%Z'`);
+			for (const r of res?.[0]?.results || []) edited.add(String(r.id));
+		} catch { /* table may not exist on the first run */ }
+	}
+
+	let skipped = 0;
 	for (const e of entries) {
+		if (edited.has(String(e.id))) {
+			skipped++;
+			console.log(`  · skipped ${col.slug}/${e.slug || e.id} — edited in the CMS (use --force to overwrite)`);
+			continue;
+		}
 		const data = e.data || {};
 		const cols = ["id", "slug", "status", "locale", "version", "title", "published_at", "updated_at"];
 		const vals = [S(e.id), S(e.slug), S(e.status || "published"), "'en'", "1", S(data.title || ""), "datetime('now')", "datetime('now')"];
@@ -97,7 +127,7 @@ async function pushEntries(col) {
 		}
 		await d1(`INSERT OR REPLACE INTO ec_${col.slug} (${cols.join(",")}) VALUES (${vals.join(",")})`);
 	}
-	return entries.length;
+	return { written: entries.length - skipped, skipped };
 }
 
 async function main() {
@@ -105,8 +135,8 @@ async function main() {
 	const cols = (seed.collections || []).filter((c) => !SKIP.has(c.slug));
 	for (const col of cols) {
 		await pushCollection(col);
-		const n = await pushEntries(col);
-		console.log(`✓ ${col.slug}: ${col.fields.length} fields, ${n} entries`);
+		const { written, skipped } = await pushEntries(col);
+		console.log(`✓ ${col.slug}: ${col.fields.length} fields, ${written} entries written${skipped ? `, ${skipped} preserved` : ""}`);
 	}
 	console.log(`Done. Pushed ${cols.length} collection(s).`);
 }

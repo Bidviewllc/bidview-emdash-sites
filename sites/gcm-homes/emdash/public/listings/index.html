@@ -22,6 +22,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+  <!-- Shared site chrome. The real .nav header, mobile drawer and .footer all come
+       from these two, so this page matches every other page instead of carrying its
+       own copy. responsive.css must load after styles.css; the page's own <style>
+       below stays last so its search-app rules still win. -->
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="/responsive.css" />
   <style>
     :root {
       --cream: #FCF9F4; --beige: #F6F3EE; --navy: #15243B;
@@ -29,34 +35,29 @@
       --muted: #75777E; --line: #C5C6CE;
       --serif: "Source Serif 4", Georgia, serif;
       --sans: "Manrope", sans-serif;
-      --nav-h: 80px; --filter-h: 68px;
+      /* Tracks .nav in styles.css / responsive.css: 96 / 80 / 64px. Kept in a
+         variable because the sticky filter bar and sticky map both hang off it. */
+      --nav-h: 96px; --filter-h: 68px;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; }
+    /* .nav is fixed, so reserve its height. Every width, not just mobile. */
+    body { padding-top: var(--nav-h); }
     body { background: var(--cream); font-family: var(--sans); color: var(--body); -webkit-font-smoothing: antialiased; }
     a { color: inherit; text-decoration: none; }
     button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
     input, select { font-family: inherit; }
 
-    /* ---------------------------------------------------------------- NAV */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h); z-index: 900;
-      display: flex; align-items: center; padding: 0 48px;
-      background: rgba(252,249,244,0.96); backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(21,36,59,0.08);
-      justify-content: space-between;
-    }
-    /* Same logo asset + sizing as the homepage nav (styles.css .nav__logo img). */
-    .nav-logo { display: flex; align-items: center; flex-shrink: 0; }
-    .nav-logo img { height: 60px; width: auto; display: block; }
-    .nav-links { display: flex; gap: 32px; align-items: center; }
-    .nav-links a { font-size: 13px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--navy); }
-    .nav-links a:hover { color: var(--orange); }
-    .nav-cta { background: var(--navy); color: #fff !important; padding: 10px 22px; border-radius: 2px; font-size: 12px !important; letter-spacing: 0.1em !important; }
+    /* ---------------------------------------------------------------- NAV
+       No nav rules here on purpose. The header is .nav from styles.css and the
+       drawer is .nav__drawer from responsive.css, exactly as the rest of the site.
+       A bare `nav {}` rule in particular must never come back: the drawer's link
+       list is a <nav>, and it inherited the fixed positioning last time. */
 
     /* ------------------------------------------------------------ FILTERS */
     .filterbar {
-      position: fixed; top: var(--nav-h); left: 0; right: 0; z-index: 800;
+      /* Sticky, not fixed: it now occupies flow space under the fixed nav, which is
+         what lets the page scroll as one document down to the footer. */
+      position: sticky; top: var(--nav-h); z-index: 800;
       height: var(--filter-h);
       display: flex; align-items: center; gap: 10px; padding: 0 48px;
       background: var(--cream); border-bottom: 1px solid var(--line);
@@ -118,17 +119,19 @@
     .clear-all.show { display: inline-block; }
     .filterbar__right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
 
-    /* --------------------------------------------------------------- BODY */
+    /* --------------------------------------------------------------- BODY
+       The document scrolls as one, like every other page, so the real footer sits
+       at the bottom where you'd expect it. The results column used to be its own
+       scroll container with the split locked to 100vh -- that left nowhere
+       reachable for a footer, because Leaflet swallows the wheel over the map so
+       the page itself barely scrolled. The map is sticky instead. */
     .split {
       display: grid; grid-template-columns: 1fr 44%;
-      padding-top: calc(var(--nav-h) + var(--filter-h));
-      height: 100vh;
+      align-items: start;
     }
-    .results {
-      overflow-y: auto; padding: 0 32px 60px; scroll-behavior: smooth;
-    }
+    .results { padding: 0 32px 60px; scroll-behavior: smooth; }
     .results__head {
-      position: sticky; top: 0; z-index: 5; background: var(--cream);
+      position: sticky; top: calc(var(--nav-h) + var(--filter-h)); z-index: 5; background: var(--cream);
       padding: 20px 0 14px; display: flex; align-items: baseline; gap: 12px;
       border-bottom: 1px solid rgba(21,36,59,0.07); margin-bottom: 22px;
     }
@@ -143,45 +146,13 @@
       box-shadow: 0 0 0 3px rgba(34,197,94,0.18);
     }
 
-    .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    /* Three across. The gap is tighter than the old two-column layout because the
+       results column is only 56% of the window, so every pixel goes to the cards. */
+    .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
 
-    .card {
-      background: #fff; border-radius: 4px; overflow: hidden; cursor: pointer;
-      display: flex; flex-direction: column;
-      transition: transform 220ms ease, box-shadow 220ms ease;
-      border: 1px solid transparent;
-    }
-    .card:hover, .card.is-active { transform: translateY(-4px); box-shadow: 0 16px 44px rgba(21,36,59,0.13); }
-    .card.is-active { border-color: var(--orange); }
-    .card__media { position: relative; aspect-ratio: 4/3; overflow: hidden; background: var(--beige); }
-    .card__img { width: 100%; height: 100%; object-fit: cover; transition: transform 500ms ease; display: block; }
-    .card:hover .card__img { transform: scale(1.045); }
-    .card__ph { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--line); font-size: 34px; }
-    .card__tag {
-      position: absolute; top: 14px; left: 14px; background: rgba(21,36,59,0.92); color: #fff;
-      font-size: 9px; letter-spacing: 0.13em; text-transform: uppercase; font-weight: 700;
-      padding: 5px 10px; border-radius: 2px; backdrop-filter: blur(4px);
-    }
-    .card__wf {
-      position: absolute; top: 14px; right: 14px; background: var(--orange); color: #fff;
-      font-size: 9px; letter-spacing: 0.13em; text-transform: uppercase; font-weight: 700;
-      padding: 5px 10px; border-radius: 2px;
-    }
-    .card__count {
-      position: absolute; bottom: 12px; right: 12px; background: rgba(0,0,0,0.55); color: #fff;
-      font-size: 10px; font-weight: 600; padding: 4px 9px; border-radius: 2px; letter-spacing: 0.04em;
-      backdrop-filter: blur(4px);
-    }
-    .card__body { padding: 18px 20px 20px; display: flex; flex-direction: column; flex: 1; }
-    .card__price { font-family: var(--serif); font-size: 22px; font-weight: 600; color: var(--navy); line-height: 1.1; }
-    .card__addr { font-size: 14px; font-weight: 600; color: var(--ink); margin-top: 7px; line-height: 1.35; }
-    .card__city { font-size: 11px; color: var(--muted); letter-spacing: 0.07em; text-transform: uppercase; margin-top: 3px; }
-    .card__meta {
-      display: flex; gap: 14px; font-size: 11px; color: var(--muted); letter-spacing: 0.05em;
-      text-transform: uppercase; margin-top: 14px; padding-top: 13px;
-      border-top: 1px solid var(--line);
-    }
-    .card__meta b { color: var(--navy); font-weight: 700; }
+    /* The .card rules used to live here. They are now in /styles.css, so this page,
+       the home page Featured Listings grid and the blog cards share one design.
+       styles.css is loaded above; nothing else is needed here. */
 
     .empty, .error-msg {
       grid-column: 1/-1; text-align: center; padding: 70px 30px; color: var(--muted);
@@ -195,6 +166,21 @@
     }
     .empty button:hover { background: var(--orange); }
 
+    /* --- Load more --- */
+    .loadmore {
+      grid-column: 1/-1; display: flex; flex-direction: column; align-items: center; gap: 12px;
+      padding: 40px 0 8px;
+    }
+    .loadmore__btn {
+      background: var(--navy); color: #fff; padding: 15px 38px; border-radius: 2px;
+      font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700;
+      transition: background 200ms ease;
+    }
+    .loadmore__btn:hover { background: var(--orange); }
+    .loadmore__note {
+      font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
+    }
+
     /* skeletons keep the grid from collapsing while the feed loads */
     .sk { background: #fff; border-radius: 4px; overflow: hidden; }
     .sk__media { aspect-ratio: 4/3; background: linear-gradient(90deg, #efece7 25%, #f7f5f1 50%, #efece7 75%); background-size: 200% 100%; animation: sh 1.4s infinite; }
@@ -203,7 +189,14 @@
     @keyframes sh { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
     /* ---------------------------------------------------------------- MAP */
-    .mapwrap { position: relative; border-left: 1px solid var(--line); background: var(--beige); }
+    /* z-index (rather than auto) makes this a stacking context, which keeps
+       Leaflet's own z-index:1000 controls contained instead of painting over the
+       nav and filter bar. */
+    .mapwrap {
+      position: sticky; top: calc(var(--nav-h) + var(--filter-h)); z-index: 1;
+      height: calc(100vh - var(--nav-h) - var(--filter-h));
+      border-left: 1px solid var(--line); background: var(--beige);
+    }
     #map { position: absolute; inset: 0; }
     .map-note {
       position: absolute; z-index: 500; top: 14px; left: 50%; transform: translateX(-50%);
@@ -267,19 +260,15 @@
     /* --------------------------------------------------------- RESPONSIVE */
     @media (max-width: 1200px) {
       .split { grid-template-columns: 1fr 40%; }
-      .grid { grid-template-columns: 1fr; }
+      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       nav, .filterbar { padding: 0 28px; }
       .results { padding: 0 22px 60px; }
     }
     @media (max-width: 900px) {
-      :root { --filter-h: auto; }
-      nav { padding: 0 20px; height: 64px; }
-      .nav-links a:not(.nav-cta) { display: none; }
-      :root { --nav-h: 64px; }
-      /* The nav is fixed (out of flow), so the first in-flow element would sit
-         behind it — body padding reserves that space. The bar then scrolls away
-         with the content, which is the intended mobile behaviour. */
-      body { padding-top: var(--nav-h); }
+      /* 0, not auto: the sticky offsets below are calc()s, and `auto` inside one
+         invalidates the whole declaration. The bar scrolls away with the content
+         here, which is the intended mobile behaviour, so it contributes nothing. */
+      :root { --filter-h: 0px; }
       .filterbar {
         position: static;
         height: auto; flex-wrap: nowrap; overflow-x: auto; padding: 12px 20px;
@@ -289,38 +278,207 @@
       .filterbar__right { margin-left: 0; }
       .search { flex: 0 0 210px; }
       .fsel select, .toggle { white-space: nowrap; }
-      .split { display: block; height: auto; padding-top: 0; }
-      .results { overflow: visible; padding: 0 20px 90px; height: auto; }
+      .split { display: block; }
+      .results { padding: 0 20px 90px; }
       .grid { grid-template-columns: 1fr; gap: 20px; }
       .mapwrap {
-        position: fixed; inset: var(--nav-h) 0 0 0; z-index: 700; border-left: none;
-        display: none;
+        position: fixed; inset: var(--nav-h) 0 0 0; height: auto; z-index: 700;
+        border-left: none; display: none;
       }
       body.map-open .mapwrap { display: block; }
       body.map-open { overflow: hidden; }
       .viewtoggle { display: inline-flex; }
     }
+
+    /* --nav-h must track .nav's real height in responsive.css, or the sticky filter
+       bar and sticky map detach from it. Last in the file so nothing overrides.
+       .nav is 96px at desktop and 80px at BOTH mobile breakpoints -- responsive.css
+       sets `height: 80px` at 1024px and again at 640px. This used to drop to 64px
+       at 640px, which is where the fixed header overlapped the filter bar by 16px
+       on phones: the bar goes position:static at 900px, so it sits in normal flow
+       directly under body's padding-top and any shortfall shows as an overlap.
+       If .nav's height ever changes, change it here in the same commit. */
+    @media (max-width: 1024px) { :root { --nav-h: 80px; } }
     @media (max-width: 460px) {
       .grid { grid-template-columns: 1fr; }
       .results__head { flex-wrap: wrap; }
+    }
+
+    /* ===== Condensed filter bar =====
+       All seven pill controls in one row need roughly 1,380px. Below that the
+       bar used to turn into a horizontal scroller you had to drag sideways to
+       reach Waterfront and Sort. Instead the row keeps search + a Filters
+       button, and layoutFilters() moves the controls into the sheet below --
+       moved, not duplicated, so every id, listener and .is-set class still
+       applies to the same nodes. Hidden by default: the desktop row is
+       unchanged. */
+    .fb-more { display: none; }
+    .fsheet { display: none; }
+
+    .fb-more {
+      align-items: center; gap: 8px; flex-shrink: 0;
+      padding: 9px 15px; font-size: 12px; font-weight: 600; letter-spacing: 0.04em;
+      color: var(--navy); background: #fff; border: 1px solid var(--line);
+      border-radius: 999px; white-space: nowrap; transition: all 160ms ease;
+    }
+    .fb-more:hover { border-color: var(--navy); }
+    .fb-more svg { display: block; width: 14px; height: 14px; }
+    .fb-more__n {
+      display: none; min-width: 19px; height: 19px; padding: 0 5px; border-radius: 999px;
+      background: var(--orange); color: #fff; font-size: 11px; font-weight: 700;
+      align-items: center; justify-content: center;
+    }
+    .fb-more.is-set { background: var(--navy); color: #fff; border-color: var(--navy); }
+    .fb-more.is-set .fb-more__n { display: inline-flex; }
+
+    /* Above Leaflet's own controls, which sit at z-index 1000 and come later in
+       the DOM, so an equal z-index let the zoom buttons paint over the sheet. */
+    .fsheet { position: fixed; inset: 0; z-index: 1200; pointer-events: none; }
+    .fsheet.is-open { pointer-events: auto; }
+    .fsheet__scrim { position: absolute; inset: 0; background: rgba(10,18,29,0); transition: background 240ms ease; }
+    .fsheet.is-open .fsheet__scrim { background: rgba(10,18,29,0.5); }
+    .fsheet__panel {
+      position: absolute; left: 50%; bottom: 0; width: min(520px, 100%);
+      max-height: 88vh; display: flex; flex-direction: column;
+      background: var(--cream); border-radius: 14px 14px 0 0;
+      box-shadow: 0 -20px 50px -20px rgba(10,18,29,0.45);
+      transform: translate(-50%, 100%);
+      transition: transform 300ms cubic-bezier(0.22,0.7,0.2,1);
+    }
+    .fsheet.is-open .fsheet__panel { transform: translate(-50%, 0); }
+    .fsheet__head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 20px 14px; border-bottom: 1px solid var(--line);
+    }
+    .fsheet__title { font-family: var(--serif); font-size: 21px; color: var(--navy); }
+    .fsheet__close {
+      width: 36px; height: 36px; border-radius: 50%; font-size: 20px; line-height: 1;
+      color: var(--navy); background: #fff; border: 1px solid var(--line);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .fsheet__body { flex: 1 1 auto; overflow-y: auto; padding: 2px 20px 22px; -webkit-overflow-scrolling: touch; }
+    .fsheet__row { padding-top: 18px; }
+    .fsheet__lab {
+      display: block; font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+    }
+    .fsheet__pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    /* The same controls, sized for thumbs. */
+    .fsheet .fsel { display: flex; width: 100%; }
+    .fsheet .fsel select { width: 100%; border-radius: 4px; padding: 14px 34px 14px 14px; font-size: 14px; }
+    .fsheet .fsel::after { right: 14px; }
+    .fsheet .toggle { width: 100%; justify-content: center; border-radius: 4px; padding: 15px 16px; font-size: 14px; }
+    .fsheet__foot {
+      flex-shrink: 0; display: flex; align-items: center; gap: 12px;
+      padding: 14px 20px calc(14px + env(safe-area-inset-bottom));
+      border-top: 1px solid var(--line);
+    }
+    .fsheet__reset {
+      font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700;
+      color: var(--orange); padding: 14px 4px; white-space: nowrap;
+    }
+    .fsheet__apply {
+      flex: 1; padding: 16px 20px; background: var(--navy); color: #fff; border-radius: 2px;
+      font-size: 13px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+    }
+    body.fsheet-open { overflow: hidden; }
+    body.fsheet-open .viewtoggle { display: none; }
+
+    /* Measured, not guessed: the full pill row needs 1,392px, so anything narrower
+       than ~1400 pushed the Sort select past the edge of the window and gave the
+       whole page a horizontal scrollbar. Above this the row fits as designed. */
+    @media (max-width: 1400px) {
+      .fb-more { display: inline-flex; }
+      .fsheet { display: block; }
+      .filterbar { overflow: visible; flex-wrap: nowrap; }
+      .search { flex: 1 1 auto; min-width: 0; }
+      /* Clear all lives in the sheet footer down here, and the right-hand group
+         is left empty once Sort moves out. */
+      .filterbar .clear-all.show { display: none; }
+      .filterbar__right { margin-left: 0; }
+      .filterbar__right:empty { display: none; }
     }
   </style>
 </head>
 <body>
 
-<nav>
-  <a class="nav-logo" href="/"><img src="/assets/logo.png" alt="Grant C. Meyer Homes" /></a>
-  <!-- Keep in sync with the SPA nav (js/chrome.jsx) and listing.html. -->
-  <div class="nav-links">
-    <a href="/listings/">Listings</a>
-    <a href="/buyers/">Buyers</a>
-    <a href="/sellers/">Sellers</a>
-    <a href="/community/">The Community</a>
-    <a href="/concierge/">Concierge</a>
-    <a href="/about/">About</a>
-    <a href="/contact/" class="nav-cta">Contact</a>
+<!-- Site header. Same markup as GcmLayout.astro so this page reads as part of
+     the site rather than a bolted-on search tool. -->
+<header class="nav">
+  <div class="nav__inner">
+    <a class="nav__logo" href="/"><img src="/assets/logo.png" alt="Grant C. Meyer Homes" /></a>
+    <nav class="nav__links">
+      <a class="nav__link active" href="/listings/">Listings</a>
+      <a class="nav__link" href="/buyers/">Buyers</a>
+      <a class="nav__link" href="/sellers/">Sellers</a>
+      <a class="nav__link" href="/community/">The Community</a>
+      <a class="nav__link" href="/concierge/">Concierge</a>
+      <a class="nav__link" href="/about/">About</a>
+    </nav>
+    <a class="btn btn--orange nav__cta" href="/contact/">INQUIRE NOW</a>
+    <button class="nav__hamburger" id="navHamburger" aria-label="Open menu" aria-expanded="false" aria-controls="navDrawer">
+      <span></span><span></span><span></span>
+    </button>
   </div>
-</nav>
+</header>
+
+<!-- MUST be a sibling of <header class="nav">, not a child of it: .nav has a
+     backdrop-filter, and a filtered ancestor becomes the containing block for its
+     position:fixed descendants. Nested, the drawer gets trapped in the nav bar. -->
+<div class="nav__drawer" id="navDrawer" aria-hidden="true">
+  <div class="nav__drawer__scrim" data-drawer-close></div>
+  <aside class="nav__drawer__panel" role="dialog" aria-modal="true" aria-label="Site menu">
+    <div class="nav__drawer__head">
+      <a class="nav__drawer__logo" href="/"><img src="/assets/logo-white.png" alt="Grant C. Meyer Homes" /></a>
+      <button class="nav__drawer__close" aria-label="Close menu" data-drawer-close>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+          <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </button>
+    </div>
+    <nav class="nav__drawer__links">
+      <a class="nav__drawer__link" href="/listings/"><span>Listings</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg></a>
+      <a class="nav__drawer__link" href="/buyers/"><span>Buyers</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg></a>
+      <a class="nav__drawer__link" href="/sellers/"><span>Sellers</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg></a>
+      <a class="nav__drawer__link" href="/community/"><span>The Community</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg></a>
+      <a class="nav__drawer__link" href="/concierge/"><span>Concierge</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg></a>
+      <a class="nav__drawer__link" href="/about/"><span>About</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg></a>
+    </nav>
+    <div class="nav__drawer__foot">
+      <a class="btn btn--orange nav__drawer__cta" href="/contact/">INQUIRE NOW</a>
+    </div>
+  </aside>
+</div>
+
+<script>
+  /* Same behaviour as the layout's inline script. Standalone because this page is
+     static HTML in public/, not an Astro page. */
+  (function () {
+    var burger = document.getElementById("navHamburger");
+    var drawer = document.getElementById("navDrawer");
+    if (!burger || !drawer) return;
+    function setOpen(open) {
+      burger.classList.toggle("is-open", open);
+      drawer.classList.toggle("is-open", open);
+      burger.setAttribute("aria-expanded", open ? "true" : "false");
+      burger.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+      drawer.setAttribute("aria-hidden", open ? "false" : "true");
+      document.body.style.overflow = open ? "hidden" : "";
+    }
+    burger.addEventListener("click", function () {
+      setOpen(!drawer.classList.contains("is-open"));
+    });
+    drawer.querySelectorAll("[data-drawer-close]").forEach(function (el) {
+      el.addEventListener("click", function () { setOpen(false); });
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && drawer.classList.contains("is-open")) setOpen(false);
+    });
+    window.addEventListener("resize", function () {
+      if (window.innerWidth > 1024 && drawer.classList.contains("is-open")) setOpen(false);
+    });
+  })();
+</script>
 
 <div class="filterbar" id="filterbar">
   <div class="search" id="searchWrap">
@@ -345,6 +503,64 @@
   <div class="filterbar__right">
     <div class="fsel"><select id="sort" aria-label="Sort listings"></select></div>
   </div>
+
+  <!-- Mobile/tablet only. Last in the row so it pins to the right of it. -->
+  <button class="fb-more" id="fbMore" aria-expanded="false" aria-controls="fsheet">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+      <path d="M3 6h18M6 12h12M10 18h4" />
+    </svg>
+    Filters
+    <span class="fb-more__n" id="fbMoreN"></span>
+  </button>
+</div>
+
+<!-- Filter sheet. The slots are empty on purpose: layoutFilters() moves the real
+     controls out of the bar and into them below 1024px, and back out above. -->
+<div class="fsheet" id="fsheet" role="dialog" aria-modal="true" aria-label="Filters" aria-hidden="true">
+  <div class="fsheet__scrim" data-fsheet-close></div>
+  <div class="fsheet__panel">
+    <div class="fsheet__head">
+      <span class="fsheet__title">Filters</span>
+      <button class="fsheet__close" data-fsheet-close aria-label="Close filters">&times;</button>
+    </div>
+    <div class="fsheet__body">
+      <div class="fsheet__row">
+        <span class="fsheet__lab">Price</span>
+        <div class="fsheet__pair">
+          <div data-slot="priceMin"></div>
+          <div data-slot="priceMax"></div>
+        </div>
+      </div>
+      <div class="fsheet__row">
+        <span class="fsheet__lab">Bedrooms</span>
+        <div data-slot="beds"></div>
+      </div>
+      <div class="fsheet__row">
+        <span class="fsheet__lab">Bathrooms</span>
+        <div data-slot="baths"></div>
+      </div>
+      <div class="fsheet__row">
+        <span class="fsheet__lab">Property type</span>
+        <div data-slot="ptype"></div>
+      </div>
+      <div class="fsheet__row">
+        <span class="fsheet__lab">City</span>
+        <div data-slot="city"></div>
+      </div>
+      <div class="fsheet__row">
+        <span class="fsheet__lab">Features</span>
+        <div data-slot="waterfront"></div>
+      </div>
+      <div class="fsheet__row">
+        <span class="fsheet__lab">Sort by</span>
+        <div data-slot="sort"></div>
+      </div>
+    </div>
+    <div class="fsheet__foot">
+      <button class="fsheet__reset" id="fsheetReset">Clear all</button>
+      <button class="fsheet__apply" id="fsheetApply">Show homes</button>
+    </div>
+  </div>
 </div>
 
 <div class="split">
@@ -355,11 +571,9 @@
       <span class="results__live" id="live" hidden>Live MLS</span>
     </div>
     <div class="grid" id="grid"></div>
-    <div class="disclaimer">
-      <strong>Grant C. Meyer Homes</strong> · Incline Village · Lake Tahoe · Nevada<br />
-      Listing data via Trestle (Cotality) courtesy of <strong>Incline Village Realtors®</strong>.
-      Information is deemed reliable but not guaranteed and should be independently verified.
-      Data last refreshed <span id="stamp">—</span>.
+    <div class="loadmore" id="loadMoreWrap" hidden>
+      <button class="loadmore__btn" id="loadMore">Load more listings</button>
+      <span class="loadmore__note" id="loadMoreNote"></span>
     </div>
   </main>
 
@@ -370,6 +584,48 @@
     </div>
   </div>
 </div>
+
+<!-- Site footer, same markup as GcmLayout.astro. The MLS attribution the old
+     inline disclaimer carried already lives in footer__bottom, so only the
+     data-freshness stamp is added here — #stamp is still written to by load(). -->
+<footer class="footer">
+  <div class="footer__cols">
+    <div class="footer__brand">
+      <img src="/assets/logo-white.png" alt="Grant C. Meyer Homes" style="height:72px" />
+      <p style="font-size:14px;line-height:1.6;color:rgba(255,255,255,0.7);margin-bottom:24px;max-width:280px">
+        Three decades of expertise in Lake Tahoe luxury real estate. Curated representation, quiet sales, lasting relationships.
+      </p>
+    </div>
+    <div>
+      <h4 class="footer__h">Properties</h4>
+      <div class="footer__links">
+        <a href="/listings/">Search Listings</a>
+        <a href="/buyers/">For Buyers</a>
+        <a href="/sellers/">For Sellers</a>
+      </div>
+    </div>
+    <div>
+      <h4 class="footer__h">Tahoe</h4>
+      <div class="footer__links">
+        <a href="/community/">The Community</a>
+        <a href="/concierge/">Concierge</a>
+      </div>
+    </div>
+    <div>
+      <h4 class="footer__h">About</h4>
+      <div class="footer__links">
+        <a href="/about/">About Grant</a>
+        <a href="/contact/">Contact</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <span style="font-size:12px;line-height:1.6;color:rgba(255,255,255,0.45);max-width:640px">
+      Listing data via Trestle (Cotality), courtesy of Incline Village Realtors®. Information is deemed reliable but not guaranteed and should be independently verified. Data last refreshed <span id="stamp">—</span>.
+    </span>
+    <span>© 2026 Grant C. Meyer Homes.</span>
+  </div>
+</footer>
 
 <button class="viewtoggle" id="viewToggle">◗ Map</button>
 
@@ -422,6 +678,43 @@ const state = {
   q: "", priceMin: "", priceMax: "", beds: "", baths: "",
   ptype: "", city: "", waterfront: false, sort: "featured", mapSync: false,
 };
+
+/* ------------------------------------------------- filter state <-> URL ----
+   Filters used to live only in `state`, so opening a listing and coming back
+   reset the search. Mirroring them into the query string means: the URL is
+   shareable, browser Back restores the search, and the listing page can link
+   straight back to it via the copy stashed in sessionStorage.               */
+const URL_KEYS = ["q", "priceMin", "priceMax", "beds", "baths", "ptype", "city", "sort"];
+const LISTINGS_URL_KEY = "gcm:listingsUrl";
+
+function writeStateToUrl() {
+  const p = new URLSearchParams();
+  URL_KEYS.forEach(k => {
+    // "featured" is the default sort, so it stays out of the URL.
+    if (state[k] && !(k === "sort" && state[k] === "featured")) p.set(k, state[k]);
+  });
+  if (state.waterfront) p.set("waterfront", "1");
+  const qs = p.toString();
+  const url = location.pathname + (qs ? "?" + qs : "");
+  history.replaceState(null, "", url);
+  try { sessionStorage.setItem(LISTINGS_URL_KEY, url); } catch (e) { /* private mode */ }
+}
+
+function readStateFromUrl() {
+  const p = new URLSearchParams(location.search);
+  if (![...p.keys()].length) return;
+  URL_KEYS.forEach(k => {
+    if (!p.has(k)) return;
+    state[k] = p.get(k);
+    const el = document.getElementById(k);
+    if (el) el.value = state[k];
+  });
+  if (p.get("waterfront") === "1") {
+    state.waterfront = true;
+    const wf = document.getElementById("waterfront");
+    if (wf) wf.checked = true;
+  }
+}
 
 function opt(value, label, selected) {
   return `<option value="${esc(value)}"${selected ? " selected" : ""}>${esc(label)}</option>`;
@@ -521,8 +814,10 @@ function cardHTML(l) {
     <article class="card" data-id="${esc(l.id)}" onclick="location.href='/homes/${esc(l.slug)}/'">
       <div class="card__media">
         ${media}
-        <div class="card__tag">${esc(l.category || "Property")}</div>
-        ${l.waterfront ? `<div class="card__wf">Waterfront</div>` : ""}
+        <div class="card__badges">
+          <div class="card__tag">${esc(l.category || "Property")}</div>
+          ${l.waterfront ? `<div class="card__wf">Waterfront</div>` : ""}
+        </div>
         ${l.photosCount ? `<div class="card__count">${l.photosCount} photos</div>` : ""}
       </div>
       <div class="card__body">
@@ -546,6 +841,41 @@ function skeletons(n = 6) {
     </div>`).join("");
 }
 
+/* Cards arrive in pages rather than all at once. `shown` is how many of VIEW are
+   in the DOM; it resets whenever the filtered set changes. The map deliberately
+   ignores this and plots all of VIEW, so the pin count always matches the result
+   count rather than however much has been loaded. */
+const PAGE_SIZE = 24;
+let shown = PAGE_SIZE;
+
+/** Hovering a card lights its pin, so list and map stay legible together. */
+function wireCards(cards) {
+  cards.forEach(el => {
+    el.addEventListener("mouseenter", () => highlight(el.dataset.id, false));
+    el.addEventListener("mouseleave", () => highlight(null, false));
+  });
+}
+
+function syncLoadMore() {
+  const wrap = document.getElementById("loadMoreWrap");
+  const loaded = Math.min(shown, VIEW.length);
+  const left = Math.max(0, VIEW.length - loaded);
+  wrap.hidden = left === 0;
+  document.getElementById("loadMore").textContent =
+    left > PAGE_SIZE ? "Load more listings" : `Load ${left} more listing${left === 1 ? "" : "s"}`;
+  document.getElementById("loadMoreNote").textContent = `Showing ${loaded} of ${VIEW.length}`;
+}
+
+/** Appends the next page in place, so cards already on screen don't move. */
+function loadMore() {
+  const from = Math.min(shown, VIEW.length);
+  shown = Math.min(from + PAGE_SIZE, VIEW.length);
+  const grid = document.getElementById("grid");
+  grid.insertAdjacentHTML("beforeend", VIEW.slice(from, shown).map(cardHTML).join(""));
+  wireCards([...grid.querySelectorAll(".card")].slice(from));
+  syncLoadMore();
+}
+
 function renderGrid() {
   const grid = document.getElementById("grid");
   const count = document.getElementById("count");
@@ -563,15 +893,12 @@ function renderGrid() {
         <p>Try widening the price range, clearing the map area, or removing a filter.</p>
         <button onclick="clearAll()">Clear all filters</button>
       </div>`;
+    syncLoadMore();
     return;
   }
-  grid.innerHTML = VIEW.map(cardHTML).join("");
-
-  // Hovering a card lights its pin, so list and map stay legible together.
-  grid.querySelectorAll(".card").forEach(el => {
-    el.addEventListener("mouseenter", () => highlight(el.dataset.id, false));
-    el.addEventListener("mouseleave", () => highlight(null, false));
-  });
+  grid.innerHTML = VIEW.slice(0, shown).map(cardHTML).join("");
+  wireCards(grid.querySelectorAll(".card"));
+  syncLoadMore();
 }
 
 function popupHTML(l) {
@@ -655,6 +982,7 @@ function highlight(id, fromMap) {
 
 function apply() {
   VIEW = sortView(ALL.filter(matches));
+  shown = PAGE_SIZE;
   renderGrid();
   renderMap();
   syncChips();
@@ -663,6 +991,7 @@ function apply() {
 /** Re-render the list only — used when the map moves under "search this area". */
 function applyListOnly() {
   VIEW = sortView(ALL.filter(matches));
+  shown = PAGE_SIZE;
   renderGrid();
   syncChips();
 }
@@ -678,6 +1007,11 @@ function syncChips() {
   const dirty = !!(state.q || state.priceMin || state.priceMax || state.beds ||
                    state.baths || state.ptype || state.city || state.waterfront || state.mapSync);
   document.getElementById("clearAll").classList.toggle("show", dirty);
+
+  syncSheet();
+
+  // Every filter change lands here, so this is where the URL gets kept in step.
+  writeStateToUrl();
 }
 
 function clearAll() {
@@ -693,6 +1027,97 @@ function clearAll() {
   apply();
 }
 window.clearAll = clearAll;
+
+/* ------------------------------------------------------- condensed filters --
+   Below 1024px the pill row doesn't fit, so the controls live in a sheet. They
+   are moved, not copied: the same nodes, ids and listeners, so none of the
+   filter logic above needs to know which layout is on screen.               */
+
+/* Must stay in step with the @media (max-width: 1400px) block above. */
+const CONDENSED = window.matchMedia("(max-width: 1400px)");
+const SHEET_IDS = ["priceMin", "priceMax", "beds", "baths", "ptype", "city", "waterfront", "sort"];
+const filterHome = [];   // [node, parent, nextSibling] as the bar had them
+
+/* In the bar a select has to name itself, because there are no labels. In the
+   sheet the row label already does, so [bar text, sheet text]. */
+const DEFAULT_OPTION_TEXT = {
+  priceMin: ["Price: Any", "No min"],
+  priceMax: ["No max", "No max"],
+  beds: ["Beds: Any", "Any"],
+  baths: ["Baths: Any", "Any"],
+  ptype: ["Type: All", "All types"],
+  city: ["City: All", "All cities"],
+  sort: ["Sort: Featured", "Featured"],
+};
+
+/** Runs after buildDataControls() too: rebuilding ptype/city resets their text. */
+function relabelDefaults() {
+  const i = CONDENSED.matches ? 1 : 0;
+  for (const [id, text] of Object.entries(DEFAULT_OPTION_TEXT)) {
+    const first = (document.getElementById(id) || {}).options;
+    if (first && first[0]) first[0].textContent = text[i];
+  }
+}
+
+/** The pill a control sits in: .fsel for the selects, .toggle for the checkbox. */
+function groupFor(id) {
+  const el = document.getElementById(id);
+  return el.closest(".fsel") || el.closest(".toggle") || el;
+}
+
+function layoutFilters() {
+  if (!filterHome.length) {
+    SHEET_IDS.forEach(id => {
+      const g = groupFor(id);
+      filterHome.push([g, g.parentNode, g.nextSibling]);
+    });
+  }
+  const sheet = document.getElementById("fsheet");
+  if (CONDENSED.matches) {
+    SHEET_IDS.forEach(id => {
+      const slot = sheet.querySelector('[data-slot="' + id + '"]');
+      const g = groupFor(id);
+      if (slot && g.parentNode !== slot) slot.appendChild(g);
+    });
+  } else {
+    closeSheet();
+    // Reverse order, so each stored nextSibling is already back in place.
+    for (let i = filterHome.length - 1; i >= 0; i--) {
+      const [node, parent, next] = filterHome[i];
+      if (node.parentNode === parent) continue;
+      parent.insertBefore(node, next && next.parentNode === parent ? next : null);
+    }
+  }
+  relabelDefaults();
+}
+
+function openSheet() {
+  const sheet = document.getElementById("fsheet");
+  sheet.classList.add("is-open");
+  sheet.setAttribute("aria-hidden", "false");
+  document.getElementById("fbMore").setAttribute("aria-expanded", "true");
+  document.body.classList.add("fsheet-open");
+  syncSheet();
+}
+
+function closeSheet() {
+  const sheet = document.getElementById("fsheet");
+  if (!sheet.classList.contains("is-open")) return;
+  sheet.classList.remove("is-open");
+  sheet.setAttribute("aria-hidden", "true");
+  document.getElementById("fbMore").setAttribute("aria-expanded", "false");
+  document.body.classList.remove("fsheet-open");
+}
+
+/** Badge count on the Filters button, live result count on the sheet's CTA. */
+function syncSheet() {
+  const n = [state.priceMin || state.priceMax, state.beds, state.baths,
+             state.ptype, state.city, state.waterfront].filter(Boolean).length;
+  document.getElementById("fbMore").classList.toggle("is-set", n > 0);
+  document.getElementById("fbMoreN").textContent = n || "";
+  document.getElementById("fsheetApply").textContent =
+    VIEW.length === 1 ? "Show 1 home" : "Show " + VIEW.length + " homes";
+}
 
 /* ----------------------------------------------------------------- wiring */
 
@@ -734,6 +1159,15 @@ function wire() {
   });
 
   document.getElementById("clearAll").addEventListener("click", clearAll);
+  document.getElementById("loadMore").addEventListener("click", loadMore);
+
+  document.getElementById("fbMore").addEventListener("click", openSheet);
+  document.getElementById("fsheetApply").addEventListener("click", closeSheet);
+  document.getElementById("fsheetReset").addEventListener("click", clearAll);
+  document.querySelectorAll("[data-fsheet-close]").forEach(el =>
+    el.addEventListener("click", closeSheet));
+  document.addEventListener("keydown", e => { if (e.key === "Escape") closeSheet(); });
+  CONDENSED.addEventListener("change", layoutFilters);
 
   document.getElementById("viewToggle").addEventListener("click", () => {
     const open = document.body.classList.toggle("map-open");
@@ -744,8 +1178,13 @@ function wire() {
 
 function initMap() {
   map = L.map("map", { zoomControl: true, scrollWheelZoom: true }).setView(TAHOE, 11);
-  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+  // CARTO's light_all was the basemap here. CARTO has since put its basemaps
+  // behind an API key and it does not fail with an error: every tile still
+  // returns HTTP 200, but the image is a grey square stamped "API KEY
+  // REQUIRED / carto.com/basemaps/apikey". Esri's World_Street_Map instead --
+  // the same one /map/ moved to, so both maps come from one provider.
+  L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}", {
+    attribution: 'Tiles &copy; Esri, &copy; OpenStreetMap contributors',
     maxZoom: 19,
   }).addTo(map);
 
@@ -772,6 +1211,10 @@ async function load() {
     ALL = data.listings || [];
 
     buildDataControls();
+    relabelDefaults();
+    // After the data-driven options exist, restore any filters from the URL so a
+    // shared link — or a return trip from a listing — reopens the same search.
+    readStateFromUrl();
     document.getElementById("live").hidden = false;
     document.getElementById("stamp").textContent =
       new Date().toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
@@ -788,6 +1231,7 @@ async function load() {
 
 buildControls();
 wire();
+layoutFilters();
 initMap();
 load();
 </script>

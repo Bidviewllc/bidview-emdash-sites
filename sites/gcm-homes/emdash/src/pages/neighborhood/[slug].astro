@@ -60,31 +60,36 @@ const meta = (l: any) => [l.beds && `${l.beds} BD`, l.baths && `${l.baths} BA`, 
 		<section class="nb-hero" data-screen-label="Neighborhood Hero">
 			<div class="nb-hero__veil"></div>
 			<div class="container nb-hero__copy">
-				<a class="nb-hero__back" href="/community/" style="display:inline-block;margin-bottom:20px">← The Community</a>
-				<span class="eyebrow eyebrow--light" style="display:block" {...(e.tag ?? {})}>{d.tag ?? area.tag}</span>
+				<a class="nb-hero__back" href="/community/">← The Community</a>
+				<span class="eyebrow" {...(e.tag ?? {})}>{d.tag ?? area.tag}</span>
 				<h1 class="cg-hero__title" {...(e.title ?? {})}>{d.title ?? area.name}</h1>
 				<p class="cg-hero__sub" {...(e.hero_sub ?? {})}>{heroSub}</p>
 			</div>
 		</section>
 
-		<section class="section">
+		<section class="section section--beige">
 			<div class="container cg-split">
 				<div>
 					<h2 class="cg-h2">Living in {area.name}</h2>
 					<p class="cg-body" {...(e.overview ?? {})}>{overview}</p>
 					<div class="nb-take">
-						<div class="nb-take__l">Grant's Take</div>
+						<div class="eyebrow nb-take__l">Grant's Take</div>
 						<p {...(e.take ?? {})}>{take}</p>
 					</div>
 				</div>
 				<aside class="nb-side">
 					<div class="cg-glance">
-						<div class="cg-glance__h">At a Glance</div>
-						{glance.map((g) => <div class="cg-glance__row"><span>✓</span> <span>{g}</span></div>)}
+						<div class="eyebrow eyebrow--navy cg-glance__h">At a Glance</div>
+						{glance.map((g) => (
+							<div class="cg-glance__row">
+								<span class="check-disc" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12" /></svg></span>
+								<span>{g}</span>
+							</div>
+						))}
 					</div>
 					<div class="nb-stats">
 						{stats.map(([v, l]) => (
-							<div class="nb-stat"><div class="nb-stat__v">{v}</div><div class="nb-stat__l">{l}</div></div>
+							<div class="nb-stat"><div class="nb-stat__v">{v}</div><div class="eyebrow eyebrow--muted nb-stat__l">{l}</div></div>
 						))}
 					</div>
 					<a class="btn btn--orange nb-cta" href="/contact/">Ask Grant About {area.name}</a>
@@ -111,7 +116,7 @@ const meta = (l: any) => [l.beds && `${l.beds} BD`, l.baths && `${l.baths} BA`, 
 								<a class="cg-fcard" href={`/homes/${l.slug}/`}>
 									<div class="cg-fcard__media" style={l.photo ? `background-image:url(${l.photo})` : ""}></div>
 									<div class="cg-fcard__body">
-										<div class="cg-fcard__tag">{l.category || l.type || "Residential"}</div>
+										<div class="eyebrow eyebrow--muted">{l.category || l.type || "Residential"}</div>
 										<h3 class="cg-fcard__addr">{l.address}</h3>
 										<div class="cg-fcard__meta">{meta(l)}</div>
 										<div class="cg-fcard__price">{fmt(l.price)}</div>
@@ -120,23 +125,23 @@ const meta = (l: any) => [l.beds && `${l.beds} BD`, l.baths && `${l.baths} BA`, 
 							))}
 						</div>
 						{homes.length > 6 && (
-							<div style="text-align:center;margin-top:44px">
-								<a class="btn btn--dark" href="/listings/">SEE ALL {homes.length} HOMES →</a>
+							<div class="section-end-cta">
+								<a class="btn btn--dark" href="/listings/">SEE ALL {homes.length} HOMES<span class="cta-arrow" aria-hidden="true">→</span></a>
 							</div>
 						)}
 					</>
 				) : (
-					<div style="text-align:center">
+					<div class="u-center">
 						<a class="btn btn--orange" href="/contact/">Ask Grant what's available</a>
 					</div>
 				)}
 			</div>
 		</section>
 
-		<section class="section section--dark" style="text-align:center">
-			<div class="container" style="max-width:720px">
-				<h2 class="reality__h" style="color:#fff">Thinking About {area.name}?</h2>
-				<a class="btn btn--orange" href="/contact/" style="margin-top:24px;display:inline-block">INQUIRE NOW</a>
+		<section class="section section--dark u-center">
+			<div class="container container--narrow">
+				<h2 class="reality__h">Thinking About {area.name}?</h2>
+				<a class="btn btn--orange btn--spaced" href="/contact/">INQUIRE NOW</a>
 			</div>
 		</section>
 	</div>

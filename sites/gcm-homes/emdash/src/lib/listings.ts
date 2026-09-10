@@ -65,6 +65,11 @@ export async function bySlug(slug: string) {
 			descriptionHtml,
 			descriptionIsCustom: ov.isOverride,
 			ownerNote: ov.note,
+			// Empty headline falls back to the address at render time, so a corrected
+			// address keeps flowing through rather than being frozen into a field.
+			headline: ov.headline,
+			tourUrl: ov.tourUrl,
+			noteImage: ov.noteImage,
 		},
 		photos: (results ?? []).map((p: any) => p.url),
 	};
@@ -77,14 +82,14 @@ export async function bySlug(slug: string) {
 // both land here and show on the site. The Trestle sync's mirror updates only the
 // MLS columns (ON CONFLICT DO UPDATE), never these two, so overrides survive every
 // sync. A set description REPLACES the MLS remarks; clearing it reverts to MLS.
-export async function getOverride(listingKey: string): Promise<{ note: string | null; description: string | null; mlsDescription: string | null; isOverride: boolean }> {
+export async function getOverride(listingKey: string): Promise<{ note: string | null; description: string | null; mlsDescription: string | null; isOverride: boolean; headline: string | null; tourUrl: string | null; noteImage: string | null }> {
 	try {
-		const row = await DB().prepare('SELECT owner_note, description, "_mls_description" AS mls_description FROM ec_listings WHERE id = ?').bind(listingKey).first();
+		const row = await DB().prepare('SELECT owner_note, description, headline, tour_url, note_image, "_mls_description" AS mls_description FROM ec_listings WHERE id = ?').bind(listingKey).first();
 		const clean = (v: any) => { const s = (v ?? "").toString().trim(); return s === "" ? null : s; };
 		const description = clean((row as any)?.description);
 		const mlsDescription = clean((row as any)?.mls_description);
-		return { note: clean((row as any)?.owner_note), description, mlsDescription, isOverride: !!(description && description !== mlsDescription) };
-	} catch { return { note: null, description: null, mlsDescription: null, isOverride: false }; }
+		return { note: clean((row as any)?.owner_note), description, mlsDescription, isOverride: !!(description && description !== mlsDescription), headline: clean((row as any)?.headline), tourUrl: clean((row as any)?.tour_url), noteImage: clean((row as any)?.note_image) };
+	} catch { return { note: null, description: null, mlsDescription: null, isOverride: false, headline: null, tourUrl: null, noteImage: null }; }
 }
 export async function getNote(listingKey: string): Promise<string | null> {
 	return (await getOverride(listingKey)).note;

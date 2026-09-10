@@ -16,7 +16,10 @@
 const CF_ACCOUNT = process.env.CF_ACCOUNT_ID || "239e9d015c7a3a39cdc2e9400312f553";
 const CF_DB      = process.env.CF_D1_DATABASE_ID || "614044b7-3e0c-41ee-ac78-7805cbab6d99";
 const D1_URL = `https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT}/d1/database/${CF_DB}/query`;
-const TOKEN = process.env.CF_API_TOKEN || process.env.TOKEN;
+// GCM_D1_TOKEN, not CF_API_TOKEN: wrangler auto-loads .env and treats
+// CF_API_TOKEN as an alias for CLOUDFLARE_API_TOKEN, which would override the
+// OAuth login and break every wrangler deploy from this folder.
+const TOKEN = process.env.GCM_D1_TOKEN || process.env.CF_API_TOKEN || process.env.TOKEN;
 
 async function d1(sql) {
 	const r = await fetch(D1_URL, {
@@ -43,8 +46,14 @@ function plainToPortableText(plain) {
 		children: [{ _type: "span", _key: "s" + i, text: p, marks: [] }],
 	})));
 }
-// emdash field type per slug: description is rich text (WYSIWYG); the rest are plain.
-const FIELD_TYPE = (slug) => slug === "description" ? ["portableText", "json"] : ["string", "text"];
+// emdash field type per slug. description is rich text (WYSIWYG); owner_note and
+// local_perspective are paragraphs (textarea); *_image fields store JSON.
+const FIELD_TYPE = (slug) => {
+	if (slug === "description") return ["portableText", "json"];
+	if (slug.endsWith("_image")) return ["image", "json"];
+	if (slug === "owner_note" || slug === "local_perspective") return ["text", "text"];
+	return ["string", "text"];
+};
 
 // MLS_FIELDS are refreshed from the feed on every sync (display/reference — editing
 // them in admin is overwritten). OWNER_FIELDS are owner-authored and PRESERVED across
@@ -65,8 +74,11 @@ const MLS_FIELDS = [
 	["condition", "Condition"], ["lot_sqft", "Lot (sq ft)"],
 ];
 const OWNER_FIELDS = [
+	["headline", "Property Headline (leave empty to use the street address)"],
 	["description", "Description (editable — overrides the MLS remarks)"],
-	["owner_note", "Note From Grant (private)"],
+	["owner_note", "Note From Grant — paragraph (shown publicly)"],
+	["note_image", "Note From Grant — image"],
+	["tour_url", "3D Tour URL (section is hidden when empty)"],
 ];
 const FIELDS = [...MLS_FIELDS, ...OWNER_FIELDS];
 const BASE_COLS = [

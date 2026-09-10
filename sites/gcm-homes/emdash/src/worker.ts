@@ -21,7 +21,11 @@
 import emdashWorker, { PluginBridge } from "@emdash-cms/cloudflare/worker";
 export { PluginBridge };
 
-const CACHE_VERSION = "v2";
+// v3 (2026-09-10): Liz's design pass changed the markup of every page --
+// most sharply the community accordion, which moved from .cg-acc to the
+// shared .acc. Cached v2 HTML against the new stylesheet would render that
+// section unstyled, so this has to move with the deploy.
+const CACHE_VERSION = "v3";
 const CACHEABLE_TYPE = /^(?:text\/html|application\/xml|text\/xml|text\/plain)/i;
 const ADMIN_COOKIE = /emdash[-_](session|edit-mode|admin)/i;
 
