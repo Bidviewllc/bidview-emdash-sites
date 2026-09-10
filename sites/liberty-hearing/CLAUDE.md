@@ -904,3 +904,22 @@ deploy did not take.**
 access by default. Use a sandbox/read-only flag, or point it at a copy of the
 files outside the deployable tree, and **always check `git status` + the
 Cloudflare version list after a Codex run.**
+
+### FINAL STATE (2026-09-10)
+
+**Live worker version: `0a1040f4-0c34-4d9b-bc8e-23446d4c3a28`** (deployment
+`86bf0d86`, active 100%). Built from the exact source pushed to
+`Bidviewllc/bidview-emdash-sites` as **`718f55c`** on `main` (44 files) — local
+deploy tree and repo verified byte-identical apart from git's CRLF conversion.
+
+Final live verification on this version:
+- **39 pages cache-busted (worst case): p50 94ms, p90 103ms, max 288ms, 0 over 2s.**
+- 57 URLs crawled — 0 broken, 0 redirects.
+- All 40 content pages serve with the **worker BYPASSED** (no `X-Cache-Status`).
+- All 10 contact-form cases pass; 3 QA rows written to D1 then deleted (back to 0).
+- `GET /api/contact` 405, `/_emdash/admin` 200 — dynamic routes unaffected.
+- 0 occurrences of the content Codex invented (TRICARE / "ABR / ASSR").
+
+**Rollback points:** `1e50fe1f` (same code, earlier deploy) and `005f1142`
+(pre-prerender SSR build). **Do NOT roll back to `ae866dce`** — that is Codex's
+unreviewed deploy containing invented pricing and insurance content.
