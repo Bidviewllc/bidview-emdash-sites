@@ -31,11 +31,15 @@
 			"binding": "LOADER",
 		},
 	],
-	// General maintenance cron trigger. The scaffold shipped "* * * * *"
-	// (every minute) — dialled back to hourly; emdash only uses this for
-	// housekeeping and per-minute invocations are wasted requests.
+	// Every minute — KEEP-WARM, not housekeeping (Vince's call 2026-09-10).
+	// `/api/contact` is the only user-facing route that still runs this Worker,
+	// and on a cold isolate that POST took ~5s. src/worker.ts runs emdash's real
+	// housekeeping ONLY at :00; the other 59 ticks return immediately and exist
+	// purely to keep an isolate alive. Note this reverses the earlier "dialled
+	// back to hourly" decision, which predates the form being the only live
+	// worker route. Only warms ONE location — see the comment in worker.ts.
 	"triggers": {
-		"crons": ["0 * * * *"],
+		"crons": ["* * * * *"],
 	},
 	"observability": { "enabled": true },
 	// Smart Placement REMOVED 2026-09-10 (Vince's call). It runs the worker near
