@@ -422,6 +422,14 @@ let featCount = 0;
 function fmt(price) { return price ? "$" + Number(price).toLocaleString() : "—"; }
 function fmtSqft(n) { return n ? Number(n).toLocaleString() + " sq.ft." : "—"; }
 function escapeHtml(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+// "Total Days on Market" (cumulative across relists) only earns a row when the
+// property has actually been relisted -- otherwise it just repeats the number
+// directly above it. The 2-day margin is because the two figures come from
+// different anchors: see liveDom / liveCumDom in src/lib/listings.ts.
+function totalDomRows(listing) {
+  const cur = listing.daysOnMarket, tot = listing.cumulativeDaysOnMarket;
+  return (tot != null && cur != null && tot - cur >= 2) ? [["Total Days on Market", tot]] : [];
+}
 function noteToHtml(s) { return escapeHtml(s).replace(/\n/g, "<br>"); }
 
 /* ---------------- Contact form ---------------- */
@@ -635,6 +643,7 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro) {
       ["List Price", fmt(listing.price)],
       ["Annual Taxes", listing.taxes ? fmt(listing.taxes) : "—"],
       ["Days on Market", listing.daysOnMarket ?? "—"],
+      ...totalDomRows(listing),
       ["Agent", listing.agent || "Grant C. Meyer"],
     ]],
   ];
@@ -853,6 +862,7 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro) {
               ["View", listing.view || "—"],
               ["Annual Taxes", listing.taxes ? fmt(listing.taxes) : "—"],
               ["Days on Market", listing.daysOnMarket ?? "—"],
+              ...totalDomRows(listing),
             ].map(([l, v]) => `
               <div class="aside-fl__row">
                 <span class="aside-fl__row__l">${l}</span>
@@ -879,6 +889,7 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro) {
               ["View", listing.view || "\u2014"],
               ["Annual Taxes", listing.taxes ? fmt(listing.taxes) : "\u2014"],
               ["Days on Market", listing.daysOnMarket ?? "\u2014"],
+              ...totalDomRows(listing),
             ].map(([l, v]) => `
               <div class="print-stats__row">
                 <dt>${l}</dt>
