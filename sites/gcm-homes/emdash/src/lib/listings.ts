@@ -6,6 +6,51 @@ import { portableTextToHtml, plainToPortableText } from "./portabletext";
 
 const DB = () => (env as any).DB as any;
 
+// ── Days on market ───────────────────────────────────────────────────────────
+// Trestle does NOT recompute DaysOnMarket daily. The MLS writes it when the
+// record changes and then leaves it, so the feed hands us a number that is
+// already stale. Measured 2026-09-10 across 28 listings: `listing_date + dom`
+// lands within a day of `updated` (the ModificationTimestamp) every single
+// time, while drift against real elapsed days ran 5-69 days — 580 Gonowabie
+// Road had been listed 69 days and the feed still said dom = 0.
+//
+// So neither figure is printable as-is. Both are recomputed here on read. The
+// API is only edge-cached for 120s, so a render-time calculation stays correct.
+const DAY_MS = 86_400_000;
+
+function daysSince(date: string | null | undefined): number | null {
+	if (!date) return null;
+	// Date-only values (listing_date) are anchored to UTC midnight; full
+	// timestamps (updated) parse as-is.
+	const ms = Date.parse(date.length <= 10 ? `${date}T00:00:00Z` : date);
+	if (Number.isNaN(ms)) return null;
+	return Math.max(0, Math.floor((Date.now() - ms) / DAY_MS));
+}
+
+/**
+ * Days on the CURRENT listing contract, from ListingContractDate (100%
+ * populated). A fixed date can't go stale, so this is right on every request
+ * whether or not the sync has run. Falls back to the frozen feed value only if
+ * the date is missing.
+ */
+export function liveDom(r: any): number | null {
+	return daysSince(r.listing_date) ?? (r.dom ?? null);
+}
+
+/**
+ * Total days across relists. CumulativeDaysOnMarket spans earlier contracts, so
+ * unlike dom there is no single date to derive it from — take the feed's
+ * snapshot and add the time elapsed since that snapshot was taken. `updated` is
+ * the right anchor rather than our sync time, because the freeze happens at the
+ * MLS, not in our pipeline. Never reports less than the current-contract count.
+ */
+export function liveCumDom(r: any): number | null {
+	if (r.cum_dom == null) return null;
+	const total = Number(r.cum_dom) + (daysSince(r.updated) ?? 0);
+	const current = liveDom(r);
+	return current == null ? total : Math.max(total, current);
+}
+
 export function toListing(r: any) {
 	return {
 		id: r.id, slug: r.slug, address: r.address,
@@ -14,7 +59,7 @@ export function toListing(r: any) {
 		sqft: r.sqft, lotAcres: r.lot_acres, yearBuilt: r.year_built,
 		type: r.type, subType: r.sub_type, category: r.category, status: r.status,
 		lat: r.lat, lng: r.lng, view: r.view, waterfront: r.waterfront === 1,
-		dom: r.dom, photosCount: r.photos_count, agent: r.agent, office: r.office,
+		dom: liveDom(r), photosCount: r.photos_count, agent: r.agent, office: r.office,
 		updated: r.updated, photo: r.photo,
 	};
 }
@@ -25,7 +70,7 @@ export function toDetail(r: any) {
 		sqft: r.sqft, lotAcres: r.lot_acres, yearBuilt: r.year_built, garage: r.garage,
 		view: r.view, description: r.description, status: r.status,
 		type: r.type, subType: r.sub_type, category: r.category,
-		taxes: r.taxes, daysOnMarket: r.dom, agent: r.agent, office: r.office,
+		taxes: r.taxes, daysOnMarket: liveDom(r), agent: r.agent, office: r.office,
 		lat: r.lat, lng: r.lng, hoaFee: r.hoa_fee, heating: r.heating, cooling: r.cooling,
 		parking: r.parking, appliances: r.appliances, updated: r.updated, slug: r.slug,
 		// Added 2026-08-19 (Liz's field request — for the Features/Amenities cards + 3D tour):
@@ -35,6 +80,8 @@ export function toDetail(r: any) {
 		tourUrlMls: r.tour_url_mls, mlsNumber: r.mls_number, stories: r.stories,
 		archStyle: r.arch_style, construction: r.construction, lotFeatures: r.lot_features,
 		condition: r.condition, lotSqft: r.lot_sqft,
+		// Added 2026-09-10: total days across relists (null when the feed has none).
+		cumulativeDaysOnMarket: liveCumDom(r),
 	};
 }
 

@@ -42,6 +42,10 @@ const FULL_SELECT = [
   "Utilities", "PoolFeatures", "ListingContractDate", "AssociationFeeFrequency",
   "VirtualTourURLUnbranded", "ListingId", "Stories", "ArchitecturalStyle",
   "ConstructionMaterials", "LotFeatures", "PropertyCondition",
+  // Added 2026-09-10: total days across relists. DaysOnMarket resets on a new
+  // listing contract; this one does not. Both are frozen at ModificationTimestamp
+  // in the feed — see toDetail() in emdash/src/lib/listings.ts for the live maths.
+  "CumulativeDaysOnMarket",
 ].join(",");
 
 /* ---------------------------------------------------------------- helpers */
@@ -249,6 +253,8 @@ async function main() {
       l.ListingId || null, l.Stories ?? null, flat(l.ArchitecturalStyle) || null, flat(l.ConstructionMaterials) || null,
       flat(l.LotFeatures) || null, l.PropertyCondition ? flat(l.PropertyCondition) : null,
       l.LotSizeAcres != null ? Math.round(Number(l.LotSizeAcres) * 43560) : null,
+      // Added 2026-09-10:
+      l.CumulativeDaysOnMarket ?? null,
     ];
   });
   const photoRows = [];
@@ -261,7 +267,9 @@ async function main() {
   await d1("DELETE FROM listings");
   const LCOLS = ["id","slug","address","city","state","zip","price","beds","baths","baths_full","baths_half","sqft","lot_acres","year_built","garage","type","sub_type","category","status","lat","lng","view","waterfront","dom","photos_count","agent","office","taxes","hoa_fee","heating","cooling","parking","appliances","description","photo","updated",
     // Added 2026-08-19 (Liz's field request):
-    "flooring","fireplaces","fireplace_yn","fireplace_features","roof","utilities","pool_features","listing_date","hoa_frequency","tour_url_mls","mls_number","stories","arch_style","construction","lot_features","condition","lot_sqft"];
+    "flooring","fireplaces","fireplace_yn","fireplace_features","roof","utilities","pool_features","listing_date","hoa_frequency","tour_url_mls","mls_number","stories","arch_style","construction","lot_features","condition","lot_sqft",
+    // Added 2026-09-10:
+    "cum_dom"];
   await insertRows("listings", LCOLS, listingRows, 25);
   await insertRows("listing_photos", ["listing_key","ord","url"], photoRows, 300);
   await d1(`INSERT OR REPLACE INTO sync_meta (id,last_synced_at,count) VALUES (1,${sqlVal(new Date().toISOString())},${listingRows.length})`);

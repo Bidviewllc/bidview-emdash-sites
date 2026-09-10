@@ -39,7 +39,31 @@ CREATE TABLE IF NOT EXISTS listings (
   appliances    TEXT,
   description   TEXT,               -- PublicRemarks
   photo         TEXT,               -- primary MediaURL (Order 1)
-  updated       TEXT                -- ModificationTimestamp
+  updated       TEXT,               -- ModificationTimestamp
+  -- Added 2026-08-19 (Liz's field request). These went into the live DB by
+  -- ALTER TABLE and were never backfilled here, so a database rebuilt from this
+  -- file alone used to break the sync on its first insert. Recorded 2026-09-10.
+  flooring           TEXT,
+  fireplaces         INTEGER,
+  fireplace_yn       INTEGER,          -- 0/1
+  fireplace_features TEXT,
+  roof               TEXT,
+  utilities          TEXT,
+  pool_features      TEXT,
+  listing_date       TEXT,             -- ListingContractDate (100% populated)
+  hoa_frequency      TEXT,
+  tour_url_mls       TEXT,             -- VirtualTourURLUnbranded
+  mls_number         TEXT,             -- ListingId
+  stories            INTEGER,
+  arch_style         TEXT,
+  construction       TEXT,
+  lot_features       TEXT,
+  condition          TEXT,
+  lot_sqft           INTEGER,          -- derived: LotSizeAcres * 43560
+  -- Added 2026-09-10: total days across relists (DaysOnMarket resets on a new
+  -- listing contract, this does not). Like dom, the feed freezes it at
+  -- ModificationTimestamp -- both are recomputed live in lib/listings.ts.
+  cum_dom            INTEGER
 );
 CREATE INDEX IF NOT EXISTS idx_listings_slug   ON listings(slug);
 CREATE INDEX IF NOT EXISTS idx_listings_status ON listings(status);
