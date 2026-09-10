@@ -1,9 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "cleanUrls": true,
-  "crons": [
-    { "path": "/api/sync", "schedule": "0 15 * * *" }
-  ],
   "redirects": [
     { "source": "/listings", "destination": "/listings/", "permanent": true },
     { "source": "/buyers", "destination": "/buyers/", "permanent": true },

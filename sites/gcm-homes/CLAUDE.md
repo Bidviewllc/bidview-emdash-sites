@@ -247,6 +247,38 @@ collection (his earlier "listings as custom post types" idea), read-only by natu
 - **Note:** `mirror-listings.mjs` must be run ONCE to register the collection/table (done). The sync steps only keep
   ROWS fresh (they assume the table exists). If the D1 is ever rebuilt from scratch, run mirror-listings.mjs again.
 
+### 2026-09-10 — Sync MOVED to GitHub Actions (Vercel cron OFF) + fixed a real mirror bug it exposed
+Vince: "Lets give Liz Github actions. NO vercel. For her to decide" (cadence is Liz's).
+- **`.github/workflows/gcm-homes-trestle-sync.yml`** (in the monorepo, PR #127). Runs
+  `sites/gcm-homes/trestle-test/cf-worker/sync/sync.mjs` — dependency-free (global fetch), so **no npm install**;
+  `actions/checkout` with `sparse-checkout: sites/gcm-homes/trestle-test` + `filter: blob:none` keeps runs fast.
+  `workflow_dispatch` for on-demand runs. **`concurrency` group** so two syncs can never interleave the
+  DELETE + re-INSERT. Logs are piped to `$GITHUB_STEP_SUMMARY` so Liz can read counts without opening logs.
+- **✅ VERIFIED GitHub runners are NOT WAF-blocked by Trestle** — this was the make-or-break unknown (Cloudflare's
+  egress IS blocked). Triggered the workflow for real: `fetched 196 active listings`, `6670 photos`, success.
+- **Secrets set on the repo:** `GCM_TRESTLE_CLIENT_ID`, `GCM_TRESTLE_CLIENT_SECRET`, `GCM_CF_API_TOKEN` (GCM_ prefix
+  because the monorepo is shared). Set via `gh secret set` (account has repo admin).
+- **Cadence = Liz's call.** Default `0 */2 * * *` (every 2 h). The cron line carries a comment with the trade-off
+  (every Trestle query is BILLED; each run is a full pull) + reference crons for 6 h / 30 min / daily.
+- **Vercel cron REMOVED** (`crons` block deleted from `trestle-test/vercel/vercel.json`, redeployed) so we don't
+  double-sync and double-pay Trestle. **The `/api/sync` endpoint still exists as a manual fallback** (CRON_SECRET
+  bearer) — only the schedule is gone.
+
+**🐞 BUG the workflow exposed (and why running it mattered):** the first run "succeeded" but the log showed
+`emdash mirror (non-fatal): UNIQUE constraint failed: ec_listings.slug, ec_listings.locale`, and `ec_listings` held
+**213 rows vs 196 live** — i.e. 17 sold/withdrawn listings were still showing in the admin.
+- **Cause:** the mirror upserted FIRST and deleted departed rows AFTER. A **re-listed property gets a NEW ListingKey
+  but the SAME address → the same slug**; while the stale row still held that slug the insert tripped
+  `unique(slug,locale)`, which threw, aborted the whole mirror (it's wrapped non-fatal so the sync still reported
+  success), and the delete never ran. Re-listings are routine in real estate, so this would recur.
+- **Fix (all three sync paths — `mirror-listings.mjs`, `cf-worker/sync/sync.mjs`, `vercel/api/sync.js`):** delete
+  departed rows **BEFORE** the upsert, freeing the slug. PR #128.
+- **Verified:** re-ran the workflow → `emdash mirror: ec_listings upserted 196 listings (owner cols preserved)`, no
+  UNIQUE error; `ec_listings` 196 == `listings` 196; the 2 owner description overrides preserved; new Trestle fields
+  still populated (flooring 168, tour 107).
+- **LESSON: the mirror is wrapped in try/catch as non-fatal, so a broken mirror does NOT fail the sync.** Don't trust
+  a green sync — grep the log for `emdash mirror:` (success) vs `emdash mirror (non-fatal):` (silent failure).
+
 ### 2026-09-10 — EDGE CACHE added (home page 386ms → 86ms) + Community copy fully CMS-editable
 Two of the three open "ready to work on" items, done + verified.
 
