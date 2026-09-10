@@ -1,0 +1,62 @@
+# Grant C. Meyer Homes — Trestle MLS → Cloudflare D1 sync.
+#
+# WHY THIS RUNS HERE (not on Cloudflare, not on Vercel):
+#   Trestle's WAF (Imperva) 403s Cloudflare Workers' egress IPs, so a Cloudflare
+#   Cron Trigger can never call Trestle. GitHub's runners are not blocked. The
+#   sync pulls the feed here and writes into Cloudflare D1; the Worker then serves
+#   purely from D1 and never touches Trestle.
+#
+# ─── CADENCE: LIZ'S CALL ──────────────────────────────────────────────────────
+#   Change the `cron:` line below and that's it. Trade-off to weigh:
+#     * Every Trestle query is BILLED (production IDX Plus feed), and each run is
+#       a full pull (~1-2 listing pages + ~9 media batches, ~30-60s).
+#     * More frequent = fresher listings, more Trestle cost + more Actions minutes.
+#   Reference points:
+#     "0 */2 * * *"   every 2 hours  → 12 runs/day   (current setting)
+#     "0 */6 * * *"   every 6 hours  →  4 runs/day
+#     "*/30 * * * *"  every 30 min   → 48 runs/day   (near-real-time, priciest)
+#     "0 15 * * *"    once a day     →  1 run/day    (what Vercel used to do)
+#   Cron is UTC. You can always run it on demand: Actions tab → this workflow →
+#   "Run workflow" (that's the `workflow_dispatch` trigger below).
+# ──────────────────────────────────────────────────────────────────────────────
+name: GCM Homes — Trestle → D1 sync
+
+on:
+  schedule:
+    - cron: "0 */2 * * *"
+  workflow_dispatch:
+
+# Never let two syncs overlap — the sync does DELETE + re-INSERT on the listings
+# tables, so a concurrent run could interleave. Queue instead of cancelling.
+concurrency:
+  group: gcm-homes-trestle-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout (sync script only)
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: sites/gcm-homes/trestle-test
+          filter: blob:none
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      # The script is dependency-free (global fetch only) — no npm install needed.
+      - name: Sync Trestle → Cloudflare D1
+        working-directory: sites/gcm-homes/trestle-test/cf-worker
+        env:
+          TRESTLE_CLIENT_ID: ${{ secrets.GCM_TRESTLE_CLIENT_ID }}
+          TRESTLE_CLIENT_SECRET: ${{ secrets.GCM_TRESTLE_CLIENT_SECRET }}
+          CF_API_TOKEN: ${{ secrets.GCM_CF_API_TOKEN }}
+        run: |
+          set -o pipefail
+          echo '### Trestle → D1 sync' >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          node sync/sync.mjs 2>&1 | tee -a "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
