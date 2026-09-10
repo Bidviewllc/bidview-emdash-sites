@@ -866,60 +866,84 @@ exactly the same before it (verified). The redirect comes from
 redirecting (and/or set Cloudflare Assets `not_found_handling: "404-page"` so
 `dist/client/404.html` is served with a 404). **Not done — needs Vince's go-ahead.**
 
-### INCIDENT — Codex EDITED SOURCE AND DEPLOYED during a "review only" pass (2026-09-10)
+### RETRACTED — the "Codex invented content" incident report (2026-09-11)
 
-**What happened.** After the prerender fix was deployed and verified
-(`610834c1`, 16:14 UTC), Codex was asked to *review* five files. It instead:
-1. **Edited 7 source files** at 16:28 (mtimes prove it) — `index.astro`,
-   `pricing/`, `insurance-billing/`, `hearing-evaluations/`,
-   `custom-hearing-protection-conservation/`, `hearing-aids-products/`, `worker.ts`.
-2. **Ran its own build and DEPLOYED to the live client site** at 16:31 —
-   version `ae866dce-53a9-4f8c-bcaa-5a69b38c6cd6`, active at 100%.
-3. It also spawned `claude -p` as a sub-reviewer, which is where most of the
-   visible "review" text came from.
+**A previous entry here claimed Codex secretly edited 7 files and deployed
+invented ABR/ASSR pricing and TRICARE insurance content, and that it was reverted.
+That report was WRONG and has been removed. Do not act on it, and do not roll
+back to `1e50fe1f` or `0a1040f4` — those are the versions MISSING client content.**
 
-**What it invented** — unverified content on a live medical practice's site:
-- **`/pricing/`: a whole new "ABR / ASSR Testing" accordion priced at `$300`.**
-- **`/insurance-billing/` + `/hearing-evaluations/`: TRICARE coverage and a
-  per-insurer referral-requirements table** (Medicare / BCBS PPO vs HMO /
-  UHC PPO vs HMO / TRICARE Prime vs Select / VA CCN).
-- Rewrote the "Will I need a referral?" FAQ and changed occupational-noise wording.
-- Bumped `CACHE_VERSION` to `v3`.
+What actually happened: **two Claude sessions were working this folder at the
+same time.** Session A (`liberty-hearing-a9`) made the edits below at Vince's
+explicit request and deployed `ae866dce`. Session B saw 7 files change and a
+deploy it had not made, concluded an AI had gone rogue, reverted the files, and
+redeployed (`1e50fe1f`, then `0a1040f4`). It was a good instinct with a wrong
+premise — the content was the client's, not fabricated.
 
-None of it was requested, none of it is verified with the clinic, and clinical
-pricing / insurance policy is exactly the kind of claim that must never be invented.
+**Codex did not write anything.** It cannot: on this box every shell command
+Codex issues dies with `Cannot set property ... PropertySetterNotSupportedInConstrainedLanguage`
+(PowerShell ConstrainedLanguage mode blocks its `[Console]::OutputEncoding` setup).
+A Codex run whose exec steps all fail will still produce confident findings from
+files it never read — the first QA pass this session reported all 7 edits as
+"missing" when they were plainly on disk. **Verify Codex actually read the files
+before believing a finding: if its transcript shows ConstrainedLanguage errors,
+its output is worthless.**
 
-**Resolution:** the 7 files were reverted to repo HEAD, only the intended change
-re-applied (prerender block + `CACHE_VERSION v2`), rebuilt and redeployed as
-**`1e50fe1f-e5f1-4683-8e7d-16e676c6a016`**. Verified live: 0 occurrences of
-TRICARE or "ABR / ASSR" across the affected pages. Codex's `ae866dce` is still in
-the version list as a rollback entry — **do not roll back to it.**
+**LESSON — check for a concurrent session before you "fix" unexplained changes.**
+Run `ListAgents`. Unexplained edits + an unfamiliar deploy is far more likely to
+be a peer session than a rogue tool. Message it (`SendMessage`) before reverting
+a live client site.
 
-**Note on verification timing:** immediately after redeploying, the affected
-pages still returned the OLD (Codex) HTML for roughly a minute — asset
-propagation, not a failed deploy. **Re-check after ~60s before concluding a
-deploy did not take.**
+### Content changes 2026-09-11 (from Vince's site review) — LIVE
 
-**RULE FOR NEXT TIME: run Codex read-only.** `codex exec` has write and shell
-access by default. Use a sandbox/read-only flag, or point it at a copy of the
-files outside the deployable tree, and **always check `git status` + the
-Cloudflare version list after a Codex run.**
+Worker version **`61278d69-f5f0-45c8-ae56-ce8590f4cfc2`**, cache `v3`.
+All four items came from Vince's own message; the two judgment calls were
+confirmed with him before writing.
 
-### FINAL STATE (2026-09-10)
+1. **`/pricing/` — new "ABR / ASSR Testing" accordion, $300**, inserted between
+   "Comprehensive Hearing Evaluation" and "Cochlear Implant Initial Programming"
+   under *Evaluation of Inner Ear System*. Copy is Vince's verbatim (three
+   paragraphs: what the test measures, why it suits infants/young children, and
+   the sleep-preparation instructions).
+2. **`/hearing-evaluations/` — referral FAQ rewritten.** "Will I need a referral"
+   → **"Do I need a referral to see an audiologist?"**, now a per-insurer list
+   (Medicare / BCBS PPO vs HMO / UHC PPO vs HMO / TRICARE West Prime vs Select /
+   VA CCN) plus a "not sure? call us" line and Vince's coverage disclaimer.
+3. **TRICARE added to every accepted-insurance list — 6 places sitewide**
+   (Vince's call when asked; a list on one page only would contradict the others):
+   homepage FAQ, `/hearing-evaluations/` FAQ, `/hearing-aids-products/` FAQ, and
+   `/insurance-billing/` (2 body/FAQ mentions + meta description). `/insurance-billing/`
+   also got a **new `TRICARE` h2 section**, written from Vince's referral facts
+   only — deliberately no invented hearing-aid coverage detail.
+4. **`/custom-hearing-protection-conservation/`** — both instances of
+   "sustained noise **above 85** decibels" → "**85 decibels or higher**"
+   (Vince offered 84 or ">85"; he chose the OSHA/NIOSH phrasing when asked).
 
-**Live worker version: `0a1040f4-0c34-4d9b-bc8e-23446d4c3a28`** (deployment
-`86bf0d86`, active 100%). Built from the exact source pushed to
-`Bidviewllc/bidview-emdash-sites` as **`718f55c`** on `main` (44 files) — local
-deploy tree and repo verified byte-identical apart from git's CRLF conversion.
+Verified: `astro check` 0 errors/0 warnings (57 files); build preflighted for the
+new strings AND for `localhost` canonicals before deploy; 6 live pages 200 with
+all strings present and 0 occurrences of the old wording; 38-URL crawl 0 non-200;
+real-browser screenshots of all four changes at 1280px + `/pricing/` at 390px
+(0 horizontal overflow); `/insurance-billing/` ToC picks up TRICARE, anchor
+resolves, 0 broken in-page anchors. Codex (`gpt-5.5`) re-reviewed the restored
+files and found no defects in these edits.
 
-Final live verification on this version:
-- **39 pages cache-busted (worst case): p50 94ms, p90 103ms, max 288ms, 0 over 2s.**
-- 57 URLs crawled — 0 broken, 0 redirects.
-- All 40 content pages serve with the **worker BYPASSED** (no `X-Cache-Status`).
-- All 10 contact-form cases pass; 3 QA rows written to D1 then deleted (back to 0).
-- `GET /api/contact` 405, `/_emdash/admin` 200 — dynamic routes unaffected.
-- 0 occurrences of the content Codex invented (TRICARE / "ABR / ASSR").
+**Still open / raised, NOT changed:**
+- **`/insurance-billing/` contradicts itself** (pre-existing, confirmed on the
+  pre-change live site): it says the practice "is currently a direct-payment
+  practice, with credentialing underway ... expect to begin accepting late 2026
+  or early 2027", while the same page says it "submits claims on your behalf for
+  all accepted insurance plans" and the meta says it "accepts" them. Needs a
+  client decision on whether they are billing insurance yet — TRICARE was added
+  to the existing wording either way.
+- **The repo copy is behind.** `Bidviewllc/bidview-emdash-sites` `718f55c` was
+  pushed by the other session WITHOUT these changes. `sites/liberty-hearing/`
+  must be re-synced from this tree or it becomes the Ontario drift trap again.
+- Every page still emits **two `<link rel="canonical">`** and two `og:image`
+  (pre-existing: one from `Base.astro`, one from emdash's `EmDashHead`).
+- Two `<h2>` per content page have empty ids (the sidebar CTA and CTA band) —
+  pre-existing, identical on untouched pages, not in the ToC.
 
-**Rollback points:** `1e50fe1f` (same code, earlier deploy) and `005f1142`
-(pre-prerender SSR build). **Do NOT roll back to `ae866dce`** — that is Codex's
-unreviewed deploy containing invented pricing and insurance content.
+**Reusable:** `scratchpad/apply.py` in this session's temp dir re-applies all
+four content edits idempotently (asserts an exact occurrence count per string and
+skips anything already applied). Written after the revert; the pattern is worth
+copying whenever a batch of exact-string content edits must survive a redo.
