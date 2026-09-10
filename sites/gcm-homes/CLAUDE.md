@@ -247,6 +247,65 @@ collection (his earlier "listings as custom post types" idea), read-only by natu
 - **Note:** `mirror-listings.mjs` must be run ONCE to register the collection/table (done). The sync steps only keep
   ROWS fresh (they assume the table exists). If the D1 is ever rebuilt from scratch, run mirror-listings.mjs again.
 
+### 2026-09-10 — Listing-page SEO metadata + real sitemap (Liz's "Two Pages Outside Astro" doc; Option A + sitemap)
+Liz flagged (verified true against prod): the `/homes/:slug/` detail pages ship a STATIC `<head>` → every listing
+delivered the same generic `<title>` ("Listing Detail — Grant C. Meyer Homes") and **no description / og:title /
+og:image / canonical / JSON-LD** — bad for search snippets + link previews on the pages Grant most shares. And
+`/sitemap.xml` was emdash's default index → **1 loc (sitemap-posts.xml only)**, omitting every listing + page.
+Vince chose **Option A (metadata) + sitemap fix now, HOLD B/C** (the Astro conversions) — because the detail page is
+still actively changing (Liz's Features/Amenities cards + 3D-tour build on the Aug-19 fields), so converting now would
+churn against her work.
+- **Detail head injected server-side, page still served raw** (`src/pages/homes/[...slug].astro`): the route now
+  `bySlug()`-looks-up the listing, builds a per-listing `<title>` (`<address>, <city>, <state> — <price> | Grant C.
+  Meyer Homes`) + description + og/twitter (og:image = **the listing's first Trestle photo**) + canonical + a
+  `RealEstateListing` JSON-LD (offers price/USD), then **replaces the static `<title>` and injects before `</head>`**.
+  Body still built client-side (unchanged — `#app` + `/api/listing-by-slug` fetch intact). Origin from the request →
+  correct on workers.dev now + grantcmeyer.com after cutover, no code change. Falls back to raw HTML on any error.
+- **Real sitemap** (`src/pages/sitemap.xml.ts`, overrides emdash default): main pages (8) + 15 neighborhoods + **every
+  active listing from D1** (`allActive()`). **1 → 220 URLs** (197 listings + 15 nb + 8 pages). Plus `robots.txt.ts`
+  → `Sitemap: <origin>/sitemap.xml`, disallow `/_emdash/` + `/api/`.
+- **Listings hub** (`public/listings/index.html`, static, one URL): added og:image (hero-tahoe.jpg) + canonical +
+  twitter tags. **⚠️ hardcoded workers.dev absolute URLs — find/replace the origin here at grantcmeyer.com cutover**
+  (detail pages are dynamic, hub is static so can't self-resolve origin).
+- **Verified (fetch, all PASS):** 777 Rodeo Drive title = "777 Rodeo Drive, Glenbrook, NV — $125,000,000 | …", 1011
+  Lakeshore shows its OWN title (not static); description/og:title/canonical/`RealEstateListing` present; og:image =
+  real Trestle photo; body `#app`+fetch intact; sitemap 220 URLs; robots points at sitemap; hub has og:image+canonical.
+  emdash cache/version `0afaa89a`.
+- **NOT pixel-screenshotted** — chrome-devtools was locked to Vince's open Chrome (profile lock); change is head-only
+  so the body render is unchanged from prior verified sessions. **Codex/Gemini QA NOT run — both CLIs still broken on
+  this box** (Codex model-reject, Gemini free-tier discontinued; see the resources.astro note).
+- **HELD (Liz's Options B/C — Astro conversion of the detail page + hub):** deferred until Liz's Features/3D-tour build
+  settles. When ready: detail page's `render()` template-literal (118 `${}`) → Astro markup fed by the same lib the
+  API uses; move the two `<style>` blocks into styles.css; keep lightbox/filmstrip/owner-note/print-sheet client-side.
+- **Answered Liz's Qs:** raw-serve was a pragmatic staging step (dodges `${}`/`{}` collision), nothing lost by
+  converting; detail page IS still changing weekly (→ hold B); no objection to A alone (handled the dup-`<title>` by
+  replacing it); sitemap is ours + was a bug, now fixed. **NOT done — repo push + reply to Liz pending Vince.**
+
+### 2026-08-19 — Added 16 populated Trestle fields to the sync (Liz's field request)
+Liz asked for 9+ missing fields (listing Features/Amenities cards + 3D tour) and, more importantly, the definitive
+list of fields the feed ACTUALLY populates. **Probed the live feed** (`scratchpad/probe.mjs` — all 210 active
+listings, no `$select`, counted non-null per field) → 205 fields populated. Findings + field-by-field verdicts written
+to **`TRESTLE-FIELD-AVAILABILITY.md`** (also in the repo). Key: several requested fields are **0% in this feed** →
+substitutes: `Stories` (84%) not `StoriesTotal` (0%); `ListingContractDate` (100%) not `OnMarketDate` (0%); derive lot
+sqft from `LotSizeAcres`. **Not in feed at all:** WaterSource, all School fields, BuyerAgencyCompensation (moot),
+SubdivisionName (still null → keep polygons), VirtualTourURLBranded.
+- **Added (populated + useful):** flooring, fireplaces, fireplace_yn, fireplace_features, roof, utilities,
+  pool_features, listing_date, hoa_frequency (**the HOA-period bug**), tour_url_mls (VirtualTourURLUnbranded, 54%),
+  mls_number (ListingId), stories, arch_style, construction, lot_features, condition, + derived **lot_sqft**.
+- **Wired through 5 places:** `FULL_SELECT` + row map + `LCOLS` in BOTH sync files (`vercel/api/sync.js` deployed +
+  `cf-worker/sync/sync.mjs`); **D1 `ALTER TABLE listings ADD COLUMN`** (17 cols); detail API via `lib/listings.ts`
+  `toDetail` (camelCase keys: flooring, roof, mlsNumber, hoaFrequency, tourUrlMls, lotSqft, listingDate, …); admin
+  mirror via `EMDASH_MLS_FIELDS` (both syncs) + `MLS_FIELDS` in `mirror-listings.mjs` (registered as read-only MLS
+  fields — kept OUT of OWNER_FIELDS per Liz).
+- **`tour_url`:** exposed `tourUrlMls` in the API; Liz wires the site to prefer it and fall back to the owner's manual
+  `tour_url`. OWNER_FIELDS (headline, tour_url, note_image, owner_note) untouched by the sync.
+- **Verified (all PASS):** ran one manual sync (210 listings) → D1 coverage **matches the probe exactly** (flooring
+  178/85%, roof 156/74%, tour 113/54%, hoa_freq 118/56%, mls_no 210/100%, stories 176/84%, lot_features 173/82%,
+  lot_sqft 131/62%); detail API returns the new fields; admin mirror registered + populated; owner override preserved
+  across the sync. emdash cache `6a24a456`, Vercel redeployed. **Merged to monorepo — PR #108 (`afd2455c1`).**
+- **Note for Liz's front-end:** the fields are live in the detail API now; the listing design just needs to read the
+  new `toDetail` keys. Array-type MLS values (Flooring/Utilities/LotFeatures/etc.) are stored comma-joined.
+
 ### 2026-08-13 — Contact form backend DONE (D1 + Resend), all forms wired
 Every inquiry form now saves to D1 **and** emails via Resend. Modeled on the Ontario/onePHG handler.
 - **`src/pages/api/contact.ts`** — POST: honeypot (`website`), optional Turnstile (fail-open, only enforced if a
