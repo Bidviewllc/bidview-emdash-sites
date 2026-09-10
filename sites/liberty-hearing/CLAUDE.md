@@ -880,14 +880,22 @@ deploy it had not made, concluded an AI had gone rogue, reverted the files, and
 redeployed (`1e50fe1f`, then `0a1040f4`). It was a good instinct with a wrong
 premise — the content was the client's, not fabricated.
 
-**Codex did not write anything.** It cannot: on this box every shell command
-Codex issues dies with `Cannot set property ... PropertySetterNotSupportedInConstrainedLanguage`
-(PowerShell ConstrainedLanguage mode blocks its `[Console]::OutputEncoding` setup).
-A Codex run whose exec steps all fail will still produce confident findings from
-files it never read — the first QA pass this session reported all 7 edits as
-"missing" when they were plainly on disk. **Verify Codex actually read the files
-before believing a finding: if its transcript shows ConstrainedLanguage errors,
-its output is worthless.**
+**Authorship is established by session A's own edit logs and by the content
+matching Vince's message verbatim** — not by any claim about what Codex can or
+cannot do. (An earlier version of this retraction asserted Codex's shell is
+entirely broken here and therefore it "cannot edit files at all." That is
+overstated and should not be relied on: Codex's file reads DO succeed on this
+box, and it can spawn `claude -p`. Some of its commands fail with
+`PropertySetterNotSupportedInConstrainedLanguage`, but that is not proof of
+incapacity.)
+
+**Correction worth more than the incident itself: a Codex QA pass reported all 7
+edits "missing", and that report was RIGHT.** The files had been reverted 11
+minutes earlier (revert 00:32:38 local, Codex run 00:43:45); session A saw the
+tool's failed-looking transcript and dismissed the finding as hallucination
+before checking. **Never dismiss a QA finding because the tool looks broken —
+`grep` the claim yourself.** A one-line check would have surfaced the revert
+immediately instead of after a full verification pass.
 
 **LESSON — check for a concurrent session before you "fix" unexplained changes.**
 Run `ListAgents`. Unexplained edits + an unfamiliar deploy is far more likely to
