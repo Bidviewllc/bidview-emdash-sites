@@ -155,6 +155,11 @@ function ptFromPlain(plain) {
 async function mirrorEmdashListings() {
   const lr = await d1("SELECT * FROM listings");
   const rows = lr?.[0]?.results ?? [];
+  // Drop departed listings FIRST — must precede the upsert. A re-listed property
+  // gets a NEW ListingKey but the SAME address/slug; if the stale row still holds
+  // that slug the insert trips unique(slug,locale) and aborts the whole mirror.
+  const liveIds = rows.map(r => "'" + String(r.id).replace(/'/g, "''") + "'");
+  if (liveIds.length) await d1(`DELETE FROM ec_listings WHERE id NOT IN (${liveIds.join(",")})`);
   const insertCols = ["id","slug","status","locale","version","title","published_at","updated_at", ...EMDASH_MLS_FIELDS.map(s => '"' + s + '"'), "description", "_mls_description"];
   const trackedCols = ["slug","title","updated_at", ...EMDASH_MLS_FIELDS, "_mls_description"];
   const setClause = [
@@ -185,8 +190,7 @@ async function mirrorEmdashListings() {
     batch.push(tuple); len += tuple.length + 1;
   }
   await flush();
-  const ids = rows.map(r => "'" + String(r.id).replace(/'/g, "''") + "'");
-  if (ids.length) await d1(`DELETE FROM ec_listings WHERE id NOT IN (${ids.join(",")})`);
+  // (departed listings were removed before the upsert — see the note above)
   console.log("emdash mirror: ec_listings upserted", rows.length, "listings (owner cols preserved)");
 }
 async function insertRows(table, cols, rows, perBatch) {
