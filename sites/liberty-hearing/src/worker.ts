@@ -13,7 +13,7 @@ export { PluginBridge };
  * Bump CACHE_VERSION on any deploy that changes HTML, or the edge will keep
  * serving the previous build until the TTL expires.
  */
-const CACHE_VERSION = "v1";
+const CACHE_VERSION = "v2";
 
 /** Never cache: the CMS admin, the API, and anything non-GET. */
 function isCacheable(url: URL, req: Request): boolean {

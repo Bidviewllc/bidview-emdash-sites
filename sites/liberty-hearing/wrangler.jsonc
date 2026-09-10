@@ -38,6 +38,9 @@
 		"crons": ["0 * * * *"],
 	},
 	"observability": { "enabled": true },
-	"placement": { "mode": "smart" },
+	// Smart Placement REMOVED 2026-09-10 (Vince's call). It runs the worker near
+	// backend services rather than near the visitor, so a cold start is paid at a
+	// remote location. This site makes almost no D1 calls and its pages are now
+	// prerendered static, so placement was pure added latency. See CLAUDE.md.
 	"workers_dev": true,
 }

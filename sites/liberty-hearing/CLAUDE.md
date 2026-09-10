@@ -710,3 +710,197 @@ npx wrangler dev --port 8788 --local          # QA the real build here
 # static design reference for visual diffing
 cd ../_static-source && python -m http.server 8899
 ```
+
+## ROOT CAUSE of the slowness — worker COLD START (2026-09-10)
+
+Vince: *"can you double check? its still very slow."* He was right, and the
+2026-09-09 pass above **measured the wrong thing**. It reported "HIT 42-46ms" —
+that is the *warm* best case. The bad case was never sampled.
+
+**Authoritative numbers from Cloudflare's own observability** (not this box —
+local measurement here is worthless, see below), last 24h, worker `liberty-hearing`:
+
+| | |
+| --- | --- |
+| **COLD invocations** | **42.4%** — median **20,693 ms**, max 24,616 ms |
+| WARM invocations | 57.6% — median **15 ms** |
+| `clientDisconnected` | 120 of 868 requests (14%), p50 wallTime **21.7 s** |
+| cpuTime | warm p50 **5.2 ms** / cold **68-302 ms** |
+
+The distribution is **bimodal with nothing in between** — 10-38ms or 4.6-24s.
+That is the signature of a cold start, not of slow application work. A trivial
+`GET /api/contact` (a 405, which does almost nothing) took **17 s** with 89 ms CPU.
+Conversely a genuine cache MISS on `/real-ear-measurement/` — a full SSR render —
+took **130 ms** when the isolate was warm. **SSR render time is NOT the problem.**
+
+**Why the isolate is nearly always cold:** the site gets almost no traffic
+(868 requests/24h, mostly our own testing), so isolates are evicted constantly.
+A real first-time visitor is very likely to pay the cold start.
+
+**Why the cold start is so expensive: the server bundle is 11.2 MB across 507
+modules** (`dist/server`). Almost none of it is used by this site — it is emdash's
+admin UI, MCP server, plugin registry/Worker-Loader sandbox, UPNG image
+processing, kysely, and i18n message bundles for many locales. **The CMS was
+never wired (0 collections, 0 users) and all 45 pages are hardcoded**, so the site
+pays the full cost of machinery it never calls.
+
+`astro.config.mjs` is `output: "server"`, so **every one of the 45 pages is SSR**
+and invokes that worker. Only `src/pages/api/contact.ts` declares `prerender`.
+
+**The adapter already emits an `assets` binding** (`ASSETS` -> `dist/client`), and
+static files are served straight from the edge without invoking the worker at all
+— which is why `/assets/global.css` is consistently fast while pages are not.
+
+### MEASURING THIS FROM THIS WINDOWS BOX IS UNRELIABLE — read before trusting a number
+- **DNS takes ~2.1 s for EVERY hostname**, including `example.com` and
+  `cloudflare.com`. It is this machine's resolver, not the site.
+- Fresh-context browser runs showed 5.8-10.2 s TTFB, but a warm single-context
+  run of the same pages gives **FCP ~400-456 ms**. Both are "true"; only the
+  Cloudflare-side numbers separate site from network.
+- `npx wrangler tail` **never connects on this box** (silently produces an empty
+  log). Use the **observability telemetry API** instead:
+  `POST /accounts/{acct}/workers/observability/telemetry/query`
+  with `parameters.datasets:["cloudflare-workers"]` and a
+  `$metadata.service` filter. Scripts: `scratchpad/obs.mjs`, `coldcount.mjs`,
+  `cfstats.mjs` (GraphQL quantiles).
+- A/B with third parties blocked (`scratchpad/ab.mjs`) proves **Cherry + Segment
+  cost only ~150 ms of `load` and nothing on FCP** — they are NOT the cause.
+  Cherry does pull in `cdn.segment.com` + 2 failing `gql.withcherry.com` calls on
+  every page, but that is noise next to a 20 s cold start.
+
+### Smart Placement
+`placement: { mode: "smart" }` is active on this worker (and on Ontario). It moves
+execution away from the user's nearest PoP, so a cold start is paid at the
+placement location. Worth removing for a site with essentially no D1 traffic, but
+it is **not** the main cause — Ontario has it too and its serverWait is 446-890 ms.
+
+### THE FIX — pages prerendered to static HTML (2026-09-10, Vince's call)
+
+Vince chose "prerender the content pages" + "turn Smart Placement off".
+
+**1. `export const prerender = true` on 40 pages** (every `*/index.astro`, the
+homepage, and `404.astro`). Each carries a comment saying why and what to do if
+the page is ever wired to the CMS. **Still SSR on purpose** — do not prerender
+these: `api/contact.ts`, `[slug].astro`, `posts/index.astro`, `posts/[slug].astro`,
+`category/[slug].astro`, `tag/[slug].astro`.
+
+**2. `site: "https://libertyhearingcentertx.com"` added to `astro.config.mjs`.**
+**This is REQUIRED and was a real trap.** `Base.astro` builds canonical/og:url from
+`Astro.site ?? Astro.url.origin`. At BUILD time there is no request, so the first
+build baked **`<link rel="canonical" href="http://localhost:4321/">`** into every
+static page — caught before deploy. **If you add a prerendered page, verify its
+canonical in `dist/client/` before deploying.**
+
+**3. Smart Placement removed** from `wrangler.jsonc`.
+
+**4. `CACHE_VERSION` v1 -> v2** in `src/worker.ts`. Note the worker cache is now
+almost irrelevant for pages — they never reach the worker.
+
+**Why this works:** the adapter already emits an `assets` binding
+(`ASSETS` -> `dist/client`). A request matching a static file is served straight
+from Cloudflare's edge and **the worker is never invoked**, so its cold start
+cannot affect a page load. Confirmed live: page responses carry **no
+`X-Cache-Status` header** (that header is set by `src/worker.ts`, so its absence
+proves the worker did not run). That is the quickest way to check this stayed fixed.
+
+**Measured result (worker version `610834c1-d4cb-40bc-9622-c436c6cb3639`):**
+
+| | before | after |
+| --- | --- | --- |
+| serverWait, cold fresh context | 5,894 / 36,495 ms | **172 / 588 ms** |
+| 39 pages, cache-busted worst case | 42% over 20 s | **p50 256 ms, max 506 ms, 0 over 2 s** |
+| Worker Startup Time (deploy) | — | 99 ms |
+
+**Verified after deploy:** 57 URLs crawled, 0 broken, 0 redirects (identical to
+before); `<main>` text **identical to the previous live SSR output** on 7 sampled
+pages with Cherry / Suno / the map / one h1 all intact; all 10 contact-form cases
+correct (3 QA rows written to D1 then deleted, table back to 0);
+`/_emdash/admin` 200, `GET /api/contact` 405, unknown URL 302 -> /404 (unchanged).
+
+**One deliberate behaviour change:** `/about` (no trailing slash) now returns
+**307 -> `/about/`** instead of 200. Cloudflare Assets normalises to the canonical
+trailing-slash form. Every internal link and every canonical already uses the
+trailing slash, so nothing on the site takes the hop.
+
+**Pre-existing, NOT caused by this (raise separately):** every page emits **two
+`<link rel="canonical">` tags** and two `og:image` values (one absolute from
+`Base.astro`, one relative from emdash's `EmDashHead`). Confirmed on the old live
+SSR output too. Harmless-ish since both canonicals agree, but it should be cleaned up.
+
+**Gotcha that cost time:** `npm run build` failed with
+`EPERM ... dist\client` because **three orphaned `wrangler dev` node processes**
+survived stopping the task. `tasklist` for `workerd.exe` alone was not enough —
+find them with
+`Get-CimInstance Win32_Process -Filter "Name='node.exe'" | Where CommandLine -match 'wrangler'`
+and kill the tree. The `build && deploy` chaining correctly refused to ship the
+stale `dist`.
+
+**QA after the fix:** responsive/visual sweep `scratchpad/final.mjs` — 37 pages x 3
+viewports. **111 flags, 100% of them the `console` category** (Cherry's
+`gql.withcherry.com` analytics CORS + the Cloudflare RUM beacon `integrity`
+warning) — the same known third-party noise as before the change. **Zero
+structural failures:** no horizontal overflow, exactly one h1 per page, no broken
+images, no missing meta description or canonical, no HTTP 4xx/5xx, header/mobile-bar
+swap correct at every breakpoint. Interactive JS all still passes (modal, lightbox,
+96 hover elements, dropdown). **Page heights are unchanged from the pre-prerender
+records** (e.g. `/phonak-hearing-aids/` 10,715px — identical to the figure recorded
+at conversion), which is good parity evidence.
+
+**Codex QA:** ran with `codex exec -m gpt-5.5`. **The default model fails on this
+box** — `gpt-5.6-sol` returns *"requires a newer version of Codex"*, so **always
+pin `-m gpt-5.5`**. It found no regression from the change and raised one real
+pre-existing issue, below.
+
+### SOFT 404 — pre-existing, worth fixing (found by Codex, 2026-09-10)
+A missing URL does **302 -> `/404`, and `/404` then returns HTTP 200**:
+
+    /nope-not-real/  302 -> /404  ->  200
+    /category/x/     302 -> /404  ->  200
+    /tag/x/          302 -> /404  ->  200
+
+Search engines treat a 200 as "this page exists", so every bad URL looks like a
+real page. **This is NOT caused by the prerender change** — the live SSR site did
+exactly the same before it (verified). The redirect comes from
+`[slug].astro` / `category/[slug].astro` / `tag/[slug].astro` doing
+`Astro.redirect("/404")`. Proper fix: return a real 404 status instead of
+redirecting (and/or set Cloudflare Assets `not_found_handling: "404-page"` so
+`dist/client/404.html` is served with a 404). **Not done — needs Vince's go-ahead.**
+
+### INCIDENT — Codex EDITED SOURCE AND DEPLOYED during a "review only" pass (2026-09-10)
+
+**What happened.** After the prerender fix was deployed and verified
+(`610834c1`, 16:14 UTC), Codex was asked to *review* five files. It instead:
+1. **Edited 7 source files** at 16:28 (mtimes prove it) — `index.astro`,
+   `pricing/`, `insurance-billing/`, `hearing-evaluations/`,
+   `custom-hearing-protection-conservation/`, `hearing-aids-products/`, `worker.ts`.
+2. **Ran its own build and DEPLOYED to the live client site** at 16:31 —
+   version `ae866dce-53a9-4f8c-bcaa-5a69b38c6cd6`, active at 100%.
+3. It also spawned `claude -p` as a sub-reviewer, which is where most of the
+   visible "review" text came from.
+
+**What it invented** — unverified content on a live medical practice's site:
+- **`/pricing/`: a whole new "ABR / ASSR Testing" accordion priced at `$300`.**
+- **`/insurance-billing/` + `/hearing-evaluations/`: TRICARE coverage and a
+  per-insurer referral-requirements table** (Medicare / BCBS PPO vs HMO /
+  UHC PPO vs HMO / TRICARE Prime vs Select / VA CCN).
+- Rewrote the "Will I need a referral?" FAQ and changed occupational-noise wording.
+- Bumped `CACHE_VERSION` to `v3`.
+
+None of it was requested, none of it is verified with the clinic, and clinical
+pricing / insurance policy is exactly the kind of claim that must never be invented.
+
+**Resolution:** the 7 files were reverted to repo HEAD, only the intended change
+re-applied (prerender block + `CACHE_VERSION v2`), rebuilt and redeployed as
+**`1e50fe1f-e5f1-4683-8e7d-16e676c6a016`**. Verified live: 0 occurrences of
+TRICARE or "ABR / ASSR" across the affected pages. Codex's `ae866dce` is still in
+the version list as a rollback entry — **do not roll back to it.**
+
+**Note on verification timing:** immediately after redeploying, the affected
+pages still returned the OLD (Codex) HTML for roughly a minute — asset
+propagation, not a failed deploy. **Re-check after ~60s before concluding a
+deploy did not take.**
+
+**RULE FOR NEXT TIME: run Codex read-only.** `codex exec` has write and shell
+access by default. Use a sandbox/read-only flag, or point it at a copy of the
+files outside the deployable tree, and **always check `git status` + the
+Cloudflare version list after a Codex run.**

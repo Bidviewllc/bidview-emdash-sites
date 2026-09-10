@@ -1,4 +1,10 @@
 ---
+// Prerendered to STATIC HTML on purpose (2026-09-10). This page has no
+// per-request data — everything on it is hardcoded. Static output is served
+// straight from Cloudflare's edge via the ASSETS binding WITHOUT invoking the
+// worker, which is what removes the 20s cold start (see CLAUDE.md).
+// If this page is ever wired to the CMS, delete this line so it returns to SSR.
+export const prerender = true;
 /**
  * Generated from the client's copy doc by scratchpad/gen-pages.py.
  * Source section: /hearing-aids/unitron

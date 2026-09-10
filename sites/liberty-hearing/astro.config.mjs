@@ -5,6 +5,11 @@ import { defineConfig } from "astro/config";
 import emdash from "emdash/astro";
 
 export default defineConfig({
+	// REQUIRED now that pages are prerendered (2026-09-10). Base.astro builds the
+	// canonical/og:url from `Astro.site ?? Astro.url.origin`; at BUILD time there is
+	// no request, so without `site` every static page bakes in
+	// `http://localhost:4321/`. Verified: it did exactly that before this was set.
+	site: "https://libertyhearingcentertx.com",
 	output: "server",
 	adapter: cloudflare(),
 	// The design build serves every page as /path/ (root-absolute, directory style),
