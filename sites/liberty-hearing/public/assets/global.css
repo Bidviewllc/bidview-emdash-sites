@@ -1,0 +1,126 @@
+/* ==========================================================================
+   Liberty Hearing Center — global stylesheet
+   --------------------------------------------------------------------------
+   Superset of the per-page <style> blocks from the static design build.
+   Colors live in brand.css and nowhere else.
+
+   The layout system is data-attribute driven:
+     [data-stack="N"]  a grid that collapses to 2 cols <=1080px, 1 col <=700px
+     [data-hdrgrid]    the desktop header grid (hidden <=1050px)
+     [data-mobilebar]  the mobile header bar (shown <=1050px)
+     [data-hero-*]     hero photo/copy/scrim behaviour at <=1050px
+     [data-sticky]     sticky sidebars, released to static <=1050px
+     [data-dd]         nav dropdown; [data-ddpanel] is its panel
+   ========================================================================== */
+
+body{margin:0;background:var(--white);color:var(--navy);font:400 16px/1.7 Inter,"Segoe UI",system-ui,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+a{color:inherit;text-decoration:none}
+a:hover{color:var(--brand-red)}
+img,iframe{max-width:100%}
+input,select,textarea{min-width:0;max-width:100%}
+input,textarea,select,button{font:inherit;color:inherit}
+input:focus,textarea:focus{outline:2px solid var(--gold);outline-offset:1px}
+summary::-webkit-details-marker{display:none}
+details{box-shadow:0 10px 30px rgba(var(--navy-rgb),.10)}
+
+/* nav dropdowns — hover and keyboard focus both open the panel */
+[data-ddpanel]{display:none}
+[data-dd]:hover>[data-ddpanel],[data-dd]:focus-within>[data-ddpanel]{display:block}
+
+@media (max-width:1080px){
+  [data-stack="3"],[data-stack="4"],[data-stack="5"],[data-stack="6"]{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+
+@media (max-width:1050px){
+  [data-stack="2"]{grid-template-columns:minmax(0,1fr)!important}
+  [data-stack="2"]>*{grid-column:auto!important;grid-row:auto!important}
+  [data-sticky]{position:static!important;top:auto!important}
+  [data-hdrgrid]{display:none!important}
+  [data-hero-photo]{display:flex!important;flex-direction:column!important}
+  [data-hero-img]{position:relative!important;width:100%!important;height:auto!important;aspect-ratio:2009/1227;object-fit:contain!important;object-position:center bottom!important}
+  [data-hero-copy]{max-width:100%!important}
+  [data-hero-scrim]>div{min-height:0!important}
+  [data-hero-scrim="dark"]{background:var(--navy-deep)!important}
+  [data-hero-scrim="light"]{background:var(--cream)!important}
+  [data-mobilebar]{display:block!important}
+}
+
+@media (max-width:700px){
+  [data-stack]{grid-template-columns:minmax(0,1fr)!important}
+  [data-stack]>*{grid-column:auto!important;grid-row:auto!important}
+}
+
+/* --- Pricing accordion (only used on /pricing/) -------------------------- */
+.pricing-accordion{border:1px solid var(--border);border-radius:14px;background:var(--white);transition:box-shadow .3s,border-color .3s}
+.pricing-accordion:hover,.pricing-accordion[open]{box-shadow:0 18px 45px rgba(var(--navy-rgb),.11)}
+.pricing-accordion--featured{border-color:var(--gold);background:var(--white)}
+.pricing-accordion-title-bar{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:14px 20px;flex-wrap:wrap;padding:22px 30px;border-radius:13px}
+.pricing-accordion-title-bar::marker,.pricing-accordion-title-bar::-webkit-details-marker{display:none;content:""}
+.pricing-accordion-heading{flex:1 1 240px;min-width:0}
+.pricing-accordion-title{display:block;color:var(--navy);font-size:20px;font-weight:750;line-height:1.25;letter-spacing:-.02em}
+.pricing-accordion-note{color:var(--text-muted);font-size:14px;font-weight:600}
+.pricing-accordion-flag{color:var(--gold);font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+.pricing-accordion-meta{flex-shrink:0;display:flex;align-items:center;gap:14px}
+.pricing-accordion-price{padding:6px 16px;border-radius:999px;background:var(--surface-blue);color:var(--navy);font-size:16px;font-weight:800;letter-spacing:-.01em;white-space:nowrap}
+.pricing-accordion-price--free{background:var(--cream);color:var(--gold)}
+.pricing-accordion-price--gold{background:var(--gold);color:var(--white)}
+.pricing-accordion-icon{flex-shrink:0;display:grid;place-items:center;width:30px;height:30px;border:1px solid var(--border);border-radius:999px;background:var(--surface);color:var(--navy);transition:transform .3s,background .3s,border-color .3s,color .3s}
+.pricing-accordion-title-bar:hover .pricing-accordion-icon{border-color:var(--border-strong);background:var(--surface-blue)}
+.pricing-accordion[open] .pricing-accordion-icon{transform:rotate(180deg);border-color:var(--navy);background:var(--navy);color:var(--white)}
+.pricing-accordion-content{padding:18px 30px 26px;border-top:1px solid var(--surface-alt)}
+.pricing-accordion--featured .pricing-accordion-content{border-top-color:var(--cream-border)}
+@media (max-width:700px){
+  .pricing-accordion-title-bar{padding:18px 20px}
+  .pricing-accordion-title{font-size:18px}
+  .pricing-accordion-meta{flex:1 1 100%;justify-content:space-between}
+  .pricing-accordion-content{padding:16px 20px 22px}
+}
+
+/* screen-reader-only utility */
+.u-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* active nav item — set by <SiteHeader active="..."> */
+[data-nav-active="home"] [data-navkey="home"],
+[data-nav-active="about"] [data-navkey="about"],
+[data-nav-active="services"] [data-navkey="services"],
+[data-nav-active="aids"] [data-navkey="aids"],
+[data-nav-active="resources"] [data-navkey="resources"],
+[data-nav-active="contact"] [data-navkey="contact"]{color:var(--brand-red)}
+
+/* --- Sudden-hearing-loss urgent banner + modal (homepage) ----------------
+   Moved out of the page's inline <style> on conversion: Astro extracted it
+   but emitted no stylesheet link, so the section shipped unstyled. */
+.lhc-urgent { background:var(--brand-red); }
+.lhc-urgent__inner { max-width:1280px; margin:0 auto; padding:clamp(48px,6vw,72px) clamp(18px,4vw,32px);
+  display:grid; grid-template-columns:.85fr 1.15fr; gap:70px; align-items:start; }
+.lhc-urgent__eyebrow { display:block; margin-bottom:10px; color:var(--white); font-size:12px; font-weight:800; letter-spacing:.18em; text-transform:uppercase; }
+.lhc-urgent__title { margin:0; color:var(--white); font-size:30px; font-weight:750; line-height:1.15; letter-spacing:-.03em; text-wrap:pretty; }
+.lhc-urgent__body { display:flex; flex-direction:column; align-items:flex-start; gap:22px; }
+.lhc-urgent__text { margin:0; color:var(--white); font-size:18px; line-height:1.8; text-wrap:pretty; }
+.lhc-urgent__link { display:inline-flex; align-items:center; gap:7px; padding:0; border:0; background:transparent;
+  color:var(--white); font:inherit; font-size:14px; font-weight:750; cursor:pointer; transition:.3s; }
+.lhc-urgent__link:hover { color:var(--brand-red-pale); }
+@media (max-width:860px) { .lhc-urgent__inner { grid-template-columns:1fr; gap:28px; } }
+
+.lhc-modal[hidden] { display:none; }
+.lhc-modal { position:fixed; inset:0; z-index:70; display:grid; place-items:center; padding:clamp(16px,4vw,48px); }
+.lhc-modal__backdrop { position:absolute; inset:0; background:rgba(var(--navy-deep-rgb),.86); }
+.lhc-modal__dialog { position:relative; width:min(760px,100%); max-height:86vh; overflow:auto;
+  padding:clamp(28px,4vw,52px); border-radius:24px; background:var(--white);
+  box-shadow:0 30px 80px rgba(var(--navy-deep-rgb),.35); border-top:5px solid var(--brand-red); }
+.lhc-modal__close { position:absolute; top:20px; right:22px; display:grid; place-items:center; width:40px; height:40px;
+  border:1px solid var(--border); border-radius:999px; background:var(--white); color:var(--navy); font-size:18px; cursor:pointer; transition:.3s; }
+.lhc-modal__close:hover { background:var(--cream); }
+.lhc-modal__eyebrow { display:block; margin-bottom:12px; color:var(--brand-red); font-size:12px; font-weight:800; letter-spacing:.18em; text-transform:uppercase; }
+.lhc-modal__title { margin:0; color:var(--navy); font-size:clamp(26px,3vw,36px); font-weight:800; line-height:1.1; letter-spacing:-.03em; text-wrap:pretty; }
+.lhc-modal__body { display:flex; flex-direction:column; gap:18px; margin-top:24px; color:var(--text-body); font-size:17px; line-height:1.8; text-wrap:pretty; }
+.lhc-modal__body p { margin:0; }
+.lhc-modal__body strong { color:var(--navy); }
+.lhc-modal__actions { display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin-top:30px; }
+.lhc-btn { display:inline-flex; min-height:50px; align-items:center; justify-content:center; padding:12px 24px;
+  border-radius:999px; font-size:15px; font-weight:750; text-decoration:none; transition:.3s; }
+.lhc-btn--primary { border:1px solid transparent; background:var(--brand-red); color:var(--white); }
+.lhc-btn--primary:hover { background:var(--navy); color:var(--white); }
+.lhc-btn--ghost { border:1px solid var(--brand-red); background:var(--white); color:var(--brand-red); }
+.lhc-btn--ghost:hover { background:var(--cream); }

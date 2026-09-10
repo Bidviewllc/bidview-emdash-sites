@@ -580,10 +580,10 @@
         "@context": "https://schema.org",
         "@type": "Service",
         "@id": "https://newleafhearing.com/audiology-services/hearing-assessments/#service",
-        "name": "Hearing Assessments",
-        "serviceType": "Hearing Assessments",
+        "name": "Hearing Tests and Hearing Evaluations",
+        "serviceType": "Hearing Test",
         "url": "https://newleafhearing.com/audiology-services/hearing-assessments/",
-        "description": "Hearing assessments are in-office evaluations that measure how well you hear sounds and understand speech.",
+        "description": "Hearing tests and hearing evaluations are in-office exams that measure how well you hear sounds and understand speech, producing an audiogram and a plan.",
         "category": "Audiology",
         "provider": [
           {
@@ -615,23 +615,63 @@
             "name": "What is a hearing test?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "A hearing test is an in-office exam that measures what sounds you hear and how well you understand speech, then turns those results into a clear care plan."
+              "text": "A hearing test, or hearing evaluation, is an in-office exam that measures what sounds you hear and how well you understand speech. It combines a look in the ear, tone testing by air and bone, speech testing, and a middle-ear check, and it produces an audiogram you take away with you."
             }
           },
           {
             "@type": "Question",
-            "name": "How does a hearing test work at New Leaf Hearing Care?",
+            "name": "How long does a hearing test take?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Your visit includes a health review, an ear check, hearing testing in a quiet room, and a results review with an audiologist who explains what the findings mean."
+              "text": "One appointment, including your case history at the start and the results discussion at the end. The testing itself is roughly half of that. A recheck for an established patient is shorter."
             }
           },
           {
             "@type": "Question",
-            "name": "How do I know which hearing test I need?",
+            "name": "Does a hearing test hurt?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "If you want a basic check, a Basic Hearing Exam fits that goal. If you have trouble in daily talks and want treatment options, a Functional Hearing Assessment gives a deeper review."
+              "text": "No. You listen to tones and repeat words through headphones. Tympanometry adds a few seconds of light air pressure per ear, which feels like a small change in altitude and stops as soon as the reading is done. Nothing enters the ear beyond the outer canal."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Do I need a referral to get a hearing test?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Not to book with us. You can schedule directly. Some insurance plans require a physician referral for the visit to be covered, so it is worth one call to your plan first."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is a hearing test covered by insurance?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Many medical plans cover a diagnostic hearing evaluation when there is a documented hearing concern. Coverage for hearing aids themselves is a separate question and varies widely by plan. Our insurance page has the details."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How often should I be tested?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Every year if you are over 60, have noise exposure, have tinnitus, or already wear hearing aids. Every two to three years for adults under 60 with no risk factors and no symptoms. Right away if hearing changes suddenly in one ear."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What should I bring to the appointment?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Your insurance card, a list of your medications, any previous audiograms you have, and someone who talks with you regularly. If you wear hearing aids now, bring them and the charger."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can children be tested here?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "We test adults and older children at both offices. Call us to talk through your child's age and what they will be asked to do before you book."
             }
           }
         ]

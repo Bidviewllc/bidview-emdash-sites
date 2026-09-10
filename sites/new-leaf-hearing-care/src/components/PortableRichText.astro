@@ -18,7 +18,10 @@ const renderSpans = (children = [], markDefs = []) => children.map((span) => {
   let text = escapeHtml(span.text || "");
   for (const mark of span.marks || []) {
     const def = markDefs.find((item) => item._key === mark);
-    if (def?._type === "link") text = '<a href="' + escapeHtml(def.href || "#") + '">' + text + '</a>';
+    if (def?._type === "link") {
+      const classAttr = def.className ? ' class="' + escapeHtml(def.className) + '"' : "";
+      text = '<a href="' + escapeHtml(def.href || "#") + '"' + classAttr + '>' + text + '</a>';
+    }
     else if (mark === "strong") text = '<strong>' + text + '</strong>';
     else if (mark === "em") text = '<em>' + text + '</em>';
   }
@@ -48,6 +51,11 @@ for (const block of value || []) {
   if (block._type === "gallery") {
     closeList();
     html.push(renderGallery(block));
+    continue;
+  }
+  if (block._type === "html") {
+    closeList();
+    html.push(block.html || "");
     continue;
   }
   if (block._type !== "block") continue;

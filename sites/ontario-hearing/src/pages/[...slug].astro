@@ -93,7 +93,8 @@ if (!fallback) {
   return Astro.redirect("/404");
 }
 
-const UNIQUE = new Set(["about-us", "contact-us", "blog", "resources", "dr-adam-sheppard", "dr-andrea-segmond", "dr-elizabeth-orlando"]);
+const UNIQUE = new Set(["about-us", "contact-us", "blog", "resources", "dr-adam-sheppard", "dr-andrea-segmond", "dr-elizabeth-orlando",
+  "brighton-reviews", "fairport-reviews", "greece-reviews", "pittsford-reviews"]);
 if (UNIQUE.has(fallback.slug)) {
   return Astro.redirect("/404");
 }

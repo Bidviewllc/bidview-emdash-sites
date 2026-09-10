@@ -1,0 +1,49 @@
+---
+/**
+ * Appointment-request confirmation. `src/pages/api/contact.ts` 303s here after
+ * a successful submission. Styling follows the design's existing page-intro
+ * pattern (see /pricing/) so it does not look bolted on.
+ *
+ * noindex: a thank-you page has no search value and shouldn't be a landing page.
+ */
+import Base from "../../layouts/Base.astro";
+---
+
+<Base
+	title="Thank You"
+	description="Thank you for contacting Liberty Hearing Center. We will follow up the same business day."
+	active="contact"
+	footer="inner"
+	noindex={true}
+>
+<section style="background:var(--surface-blue)">
+<div style="max-width:1280px;margin:0 auto;padding:clamp(56px,8vw,96px) clamp(18px,4vw,32px)">
+<div style="display:inline-flex;align-items:center;gap:10px;padding:8px 18px;border-radius:999px;background:var(--white);font-size:13px;font-weight:700;color:var(--text-body)"><a href="/" style="color:var(--brand-red)">Home</a> <span style="opacity:.5">/</span> <span>Thank You</span></div>
+<h1 style="margin:26px 0 0;color:var(--navy);font-size:clamp(38px,6vw,62px);font-weight:800;line-height:1.04;letter-spacing:-.035em;text-wrap:pretty">Thank you — your request is in.</h1>
+<p style="margin:22px 0 0;max-width:720px;color:var(--text-body);font-size:19px;line-height:1.8;text-wrap:pretty">We have received your appointment request and will follow up the <strong style="color:var(--navy)">same business day</strong>. If your hearing changed suddenly, please call us instead of waiting — sudden hearing loss is time-sensitive.</p>
+<div style="display:flex;flex-wrap:wrap;gap:14px;margin-top:34px">
+<a href="tel:9794507996" style="display:inline-flex;min-height:52px;align-items:center;justify-content:center;padding:12px 30px;border:1px solid transparent;border-radius:999px;background:var(--brand-red);color:var(--white);font-size:16px;font-weight:750;transition:.3s" style-hover="background:var(--navy)">Call 979-450-7996</a>
+<a href="/" style="display:inline-flex;min-height:52px;align-items:center;justify-content:center;padding:12px 30px;border:1px solid var(--brand-red);border-radius:999px;background:var(--white);color:var(--brand-red);font-size:16px;font-weight:750;transition:.3s" style-hover="background:var(--cream)">Back to home</a>
+</div>
+</div>
+</section>
+
+<section style="background:var(--white)">
+<div style="max-width:1280px;margin:0 auto;padding:clamp(48px,7vw,80px) clamp(18px,4vw,32px)">
+<div data-stack="3" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:34px">
+<div>
+<h2 style="margin:0 0 10px;color:var(--navy);font-size:20px;font-weight:750;letter-spacing:-.02em">Our office</h2>
+<p style="margin:0;color:var(--text-body);font-size:16px;line-height:1.7">2405 Texas Avenue South, Suite 307<br>College Station, TX 77840</p>
+</div>
+<div>
+<h2 style="margin:0 0 10px;color:var(--navy);font-size:20px;font-weight:750;letter-spacing:-.02em">Phone &amp; fax</h2>
+<p style="margin:0;color:var(--text-body);font-size:16px;line-height:1.7"><a href="tel:9794507996" style="color:var(--brand-red);font-weight:700">979-450-7996</a><br>F: 979-426-8260</p>
+</div>
+<div>
+<h2 style="margin:0 0 10px;color:var(--navy);font-size:20px;font-weight:750;letter-spacing:-.02em">While you wait</h2>
+<p style="margin:0;color:var(--text-body);font-size:16px;line-height:1.7"><a href="/hearing-evaluations/" style="color:var(--brand-red);font-weight:700">What to expect</a> at a hearing evaluation, or read our <a href="/resources/" style="color:var(--brand-red);font-weight:700">patient resources</a>.</p>
+</div>
+</div>
+</div>
+</section>
+</Base>

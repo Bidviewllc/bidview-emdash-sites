@@ -2,20 +2,27 @@
 // Community Guide — ported from the prototype's community.jsx into emdash SSR.
 // Nine sections: hero, lake facts, neighborhood map (Liz's Leaflet iframe /map/,
 // with its title as an attached header above the frame), things-to-do, schools,
-// history, living-here accordion (the shared .acc), featured (live D1), CTA.
+// history, living-here accordion (the shared .acc), featured (live D1), contact.
 // The neighborhood grid links to /neighborhood/:slug/ (editable copy per area).
+//
+// 2026-09-10 — ALL section copy is now owner-editable via the `community`
+// singleton collection (entry id "main", 79 fields). Every DEF_* constant below
+// is the fallback, so the page renders identically even if the collection is
+// missing, and nothing changed visually when this was wired. Markup/loops are
+// unchanged — only the data source moved.
 import GcmLayout from "../layouts/GcmLayout.astro";
 import ContactCta from "../components/ContactCta.astro";
+import { getEmDashEntry } from "emdash";
 import { env } from "cloudflare:workers";
 import { NEIGHBORHOODS } from "../lib/neighborhoods";
 
-const LAKE_FACTS = [
+const DEF_FACTS = [
 	{ num: "6,225–7,700", unit: "ft", label: "Elevation range" },
 	{ num: "290", unit: "days", label: "Of sunshine a year" },
 	{ num: "216", unit: "in", label: "Average snowfall" },
 	{ num: "72", unit: "miles", label: "Of shoreline" },
 ];
-const THINGS_TODO = [
+const DEF_TODO = [
 	{ h: "Diamond Peak", pick: true, p: "A community-owned ski resort with some of the best lake-view runs on the North Shore — and short lift lines compared with the bigger Tahoe resorts." },
 	{ h: "The Private Beaches", pick: false, p: "Incline, Burnt Cedar, and Ski Beach are reserved for residents and their guests — swimming, picnics, and boat access through the summer." },
 	{ h: "Two Golf Courses", pick: false, p: "The Robert Trent Jones championship course and the shorter mountain course, both run by the community improvement district." },
@@ -23,27 +30,54 @@ const THINGS_TODO = [
 	{ h: "On the Water", pick: false, p: "Boating, paddleboarding, and kayaking on the clearest large lake in the country, with full-service marinas a short drive away." },
 	{ h: "Thunderbird Lodge", pick: false, p: "Captain Whittell's stone lakeside castle south of Sand Harbor, open for docent-led tours through the summer months." },
 ];
-const SCHOOLS_GLANCE = [
+const DEF_SCHOOLS = [
 	"Public elementary, middle & high schools",
 	"Private K–8 options within the village",
 	"A newer elementary campus completed in 2009",
 	"Reno–Tahoe universities within an hour",
 ];
-const HISTORY_ERAS = [
+const DEF_ERAS = [
 	{ era: "Logging era", year: "1880s", p: "The North Shore began as timber country, feeding the Comstock silver mines of Virginia City. Through the 1800s a narrow-gauge line hauled logs up the mountain to a V-flume — the scars of that era still trace the ridgelines between Mill Creek and Sand Harbor." },
 	{ era: "Thunderbird Lodge", year: "1930s", p: "By the early 1900s the lake had become a summer escape. Captain George Whittell bought some 40,000 acres and built a stone castle south of Sand Harbor — the Thunderbird Lodge — where he was known for legendary parties and a private menagerie that included lions and an elephant." },
 	{ era: "Crystal Bay Development Co.", year: "1960s", p: "In the 1960s the Crystal Bay Development Company acquired Whittell's holdings and set out to build a master-planned community. Robert Trent Jones designed the golf course, the name Incline Village was chosen, and the first school opened in 1964 — the framework of the village you see today." },
 ];
-const LIVING_HERE = [
+const DEF_LIVE = [
 	{ h: "Getting here", body: ["Reno–Tahoe International Airport sits about 45 minutes down Highway 431, which makes Incline Village one of the more reachable luxury markets in the Sierra.", "Sacramento and the Bay Area are an easy weekend drive, and most of the village is only a few minutes from Highway 28 along the shore."] },
 	{ h: "Amenities & IVGID", body: ["The Incline Village General Improvement District runs the private beaches, Diamond Peak, both golf courses, the tennis complex, and the recreation center.", "Access comes through an annual recreation fee billed alongside your Washoe County property taxes — one of the things that makes residency here distinct."] },
 	{ h: "Climate & the seasons", body: ["Incline sits between roughly 6,225 and 7,700 feet, which gives it four genuine seasons: deep, snowy winters and dry, mild summers, with around 290 days of sunshine across the year.", "Snow piles up through the winter — well over a hundred inches in a typical year — then gives way to long, clear summers ideal for the lake."] },
 	{ h: "Day-to-day essentials", body: ["The village covers the basics close to home — Raley's and the Village shopping center for groceries, the recreation center and library at the core, and the local public and private schools all within a few minutes.", "For specialized care and bigger errands, Tahoe Forest Health System is over the hill in Truckee, and Reno's hospitals and shopping are about 45 minutes away."] },
 ];
+// Sand Harbor with people on the beach -- one of the photographs Liz
+// supplied, replacing an Unsplash stand-in. Still editable via `hero_image`.
+const DEF_HERO_IMG = "/assets/hero-sand-harbor-people.jpg";
 
-// Sand Harbor with people on the beach — one of the photographs Liz supplied,
-// replacing the earlier Sand Harbor shot (still in public/assets).
-const HERO_IMG = "/assets/hero-sand-harbor-people.jpg";
+// Editable copy from the `community` singleton (falls back to the DEF_* above).
+let entry: any = null;
+try { entry = (await getEmDashEntry("community", "main"))?.entry ?? null; } catch { entry = null; }
+const d: any = entry?.data ?? {};
+const e: any = entry?.edit ?? {};
+const t = (k: string, fb: string) => (d[k] ?? fb);
+
+const HERO_IMG = t("hero_image", DEF_HERO_IMG);
+const LAKE_FACTS = DEF_FACTS.map((f, i) => ({
+	num: t(`fact${i + 1}_num`, f.num), unit: t(`fact${i + 1}_unit`, f.unit), label: t(`fact${i + 1}_label`, f.label),
+}));
+const pickOf = (i: number, def: boolean) => {
+	const v = d[`todo${i}_pick`];
+	return v === undefined || v === null ? def : String(v).trim().toLowerCase() === "yes";
+};
+const THINGS_TODO = DEF_TODO.map((x, i) => ({
+	h: t(`todo${i + 1}_h`, x.h), pick: pickOf(i + 1, x.pick), p: t(`todo${i + 1}_p`, x.p),
+}));
+const SCHOOLS_GLANCE = DEF_SCHOOLS.map((s, i) => t(`school${i + 1}`, s));
+const HISTORY_ERAS = DEF_ERAS.map((x, i) => ({
+	era: t(`h${i + 1}_era`, x.era), year: t(`h${i + 1}_year`, x.year), p: t(`h${i + 1}_p`, x.p),
+}));
+const LIVING_HERE = DEF_LIVE.map((x, i) => {
+	const raw = d[`live${i + 1}_p`];
+	const body = raw ? String(raw).split(/\n{2,}/).map((s) => s.trim()).filter(Boolean) : x.body;
+	return { h: t(`live${i + 1}_h`, x.h), body };
+});
 
 // Featured — live top 3 from the Trestle-synced D1 tables.
 let featured: any[] = [];
@@ -63,6 +97,7 @@ const meta = (l: any) => [l.beds && `${l.beds} BD`, l.baths && `${l.baths} BA`, 
 <GcmLayout
 	title="The Community — Grant C. Meyer Homes"
 	description="A 35-year resident's guide to life on Lake Tahoe's North Shore — Incline Village & Crystal Bay neighborhoods, schools, history, and things to do."
+	content={entry ? { collection: "community", id: "main" } : undefined}
 >
 	<link rel="stylesheet" href="/community.css" />
 	<div class="cg">
@@ -71,17 +106,17 @@ const meta = (l: any) => [l.beds && `${l.beds} BD`, l.baths && `${l.baths} BA`, 
 			<div class="cg-hero__img" style={`background-image:url(${HERO_IMG})`}></div>
 			<div class="cg-hero__veil"></div>
 			<div class="cg-hero__copy">
-				<span class="eyebrow">Incline Village &amp; Crystal Bay</span>
-				<h1 class="cg-hero__title">A Guide to Life on Tahoe's <em>North Shore.</em></h1>
-				<p class="cg-hero__sub">Sixteen distinct neighborhoods, one extraordinary lake, and the details that make this corner of Nevada worth the move — mapped out from a 35-year resident's point of view.</p>
+				<span class="eyebrow" {...(e.hero_eyebrow ?? {})}>{t("hero_eyebrow", "Incline Village & Crystal Bay")}</span>
+				<h1 class="cg-hero__title" set:html={t("hero_headline", "A Guide to Life on Tahoe's <em>North Shore.</em>")} {...(e.hero_headline ?? {})}></h1>
+				<p class="cg-hero__sub" {...(e.hero_sub ?? {})}>{t("hero_sub", "Sixteen distinct neighborhoods, one extraordinary lake, and the details that make this corner of Nevada worth the move — mapped out from a 35-year resident's point of view.")}</p>
 			</div>
 		</section>
 
 		{/* 2. Lake facts */}
 		<section class="cg-facts" data-screen-label="Quick Facts">
 			<div class="container">
-				<span class="eyebrow">Incline at a Glance</span>
-				<h2 class="cg-h2">The Lake, By the Numbers</h2>
+				<span class="eyebrow" {...(e.facts_eyebrow ?? {})}>{t("facts_eyebrow", "Incline at a Glance")}</span>
+				<h2 class="cg-h2" {...(e.facts_heading ?? {})}>{t("facts_heading", "The Lake, By the Numbers")}</h2>
 				<div class="cg-facts__grid">
 					{LAKE_FACTS.map((f) => (
 						<div class="cg-fact">
@@ -97,9 +132,9 @@ const meta = (l: any) => [l.beds && `${l.beds} BD`, l.baths && `${l.baths} BA`, 
 		<section class="section section--beige" data-screen-label="Neighborhoods">
 			<div class="container">
 				<div class="cg-head">
-					<span class="eyebrow">Explore the Neighborhoods</span>
-					<h2 class="cg-h2">Sixteen Areas, One Community</h2>
-					<p class="cg-intro">Tap an area on the map to see its character, or pick a neighborhood below. Each opens its own guide, with the homes currently for sale there.</p>
+					<span class="eyebrow" {...(e.nb_eyebrow ?? {})}>{t("nb_eyebrow", "Explore the Neighborhoods")}</span>
+					<h2 class="cg-h2" {...(e.nb_heading ?? {})}>{t("nb_heading", "Sixteen Areas, One Community")}</h2>
+					<p class="cg-intro" {...(e.nb_intro ?? {})}>{t("nb_intro", "Tap an area on the map to see its character, or pick a neighborhood below. Each opens its own guide, with the homes currently for sale there.")}</p>
 				</div>
 				<div class="nbhd">
 					{/* The map's title was a floating card inside the Leaflet canvas, sitting
@@ -129,22 +164,22 @@ const meta = (l: any) => [l.beds && `${l.beds} BD`, l.baths && `${l.baths} BA`, 
 		<section class="section section--cream" data-screen-label="Things To Do">
 			<div class="container">
 				<div class="cg-head">
-					<span class="eyebrow">Things to Do</span>
-					<h2 class="cg-h2">What Living on the North Shore Looks Like</h2>
-					<p class="cg-intro">Skiing in the morning, the beach by afternoon — the calendar here runs on the seasons.</p>
+					<span class="eyebrow" {...(e.todo_eyebrow ?? {})}>{t("todo_eyebrow", "Things to Do")}</span>
+					<h2 class="cg-h2" {...(e.todo_heading ?? {})}>{t("todo_heading", "What Living on the North Shore Looks Like")}</h2>
+					<p class="cg-intro" {...(e.todo_intro ?? {})}>{t("todo_intro", "Skiing in the morning, the beach by afternoon — the calendar here runs on the seasons.")}</p>
 				</div>
 				<div class="cg-todo">
-					{THINGS_TODO.map((t) => (
+					{THINGS_TODO.map((x) => (
 						<div class="cg-todo__card">
-							{t.pick && <div class="cg-todo__pick">Grant's pick</div>}
-							<h3 class="cg-todo__h">{t.h}</h3>
-							<p class="cg-todo__p">{t.p}</p>
+							{x.pick && <div class="cg-todo__pick">Grant's pick</div>}
+							<h3 class="cg-todo__h">{x.h}</h3>
+							<p class="cg-todo__p">{x.p}</p>
 						</div>
 					))}
 				</div>
 				<blockquote class="cg-quote">
-					<p>Ask any local where the lake is best and you'll get a different answer for every month — the cove in July, the East Shore Trail in October, Diamond Peak in February. That's the whole secret of living here: there's a season for all of it.</p>
-					<cite>Grant C. Meyer · 35 years on the lake</cite>
+					<p {...(e.quote_text ?? {})}>{t("quote_text", "Ask any local where the lake is best and you'll get a different answer for every month — the cove in July, the East Shore Trail in October, Diamond Peak in February. That's the whole secret of living here: there's a season for all of it.")}</p>
+					<cite {...(e.quote_cite ?? {})}>{t("quote_cite", "Grant C. Meyer · 35 years on the lake")}</cite>
 				</blockquote>
 			</div>
 		</section>
@@ -153,12 +188,12 @@ const meta = (l: any) => [l.beds && `${l.beds} BD`, l.baths && `${l.baths} BA`, 
 		<section class="section section--beige" data-screen-label="Schools">
 			<div class="container cg-split">
 				<div>
-					<span class="eyebrow">Schools</span>
-					<h2 class="cg-h2">Learning, a Few Minutes From Home</h2>
-					<p class="cg-body">Incline Village built its first elementary school in 1964 and its high school as the community itself took shape. Today families choose between the local public schools and a handful of private options — all within the village, none more than a short drive away.</p>
+					<span class="eyebrow" {...(e.schools_eyebrow ?? {})}>{t("schools_eyebrow", "Schools")}</span>
+					<h2 class="cg-h2" {...(e.schools_heading ?? {})}>{t("schools_heading", "Learning, a Few Minutes From Home")}</h2>
+					<p class="cg-body" {...(e.schools_body ?? {})}>{t("schools_body", "Incline Village built its first elementary school in 1964 and its high school as the community itself took shape. Today families choose between the local public schools and a handful of private options — all within the village, none more than a short drive away.")}</p>
 				</div>
 				<div class="cg-glance">
-					<div class="eyebrow eyebrow--navy cg-glance__h">In One Glance</div>
+					<div class="eyebrow eyebrow--navy cg-glance__h" {...(e.glance_title ?? {})}>{t("glance_title", "In One Glance")}</div>
 					{SCHOOLS_GLANCE.map((s) => (
 						<div class="cg-glance__row">
 							<span class="check-disc" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12" /></svg></span>
@@ -172,14 +207,14 @@ const meta = (l: any) => [l.beds && `${l.beds} BD`, l.baths && `${l.baths} BA`, 
 		{/* 6. History */}
 		<section class="cg-history" data-screen-label="History">
 			<div class="container">
-				<span class="eyebrow">A Short History</span>
-				<h2 class="cg-h2 cg-h2--light">From Logging Camp to Master-Planned Village</h2>
+				<span class="eyebrow" {...(e.history_eyebrow ?? {})}>{t("history_eyebrow", "A Short History")}</span>
+				<h2 class="cg-h2 cg-h2--light" {...(e.history_heading ?? {})}>{t("history_heading", "From Logging Camp to Master-Planned Village")}</h2>
 				<div class="cg-eras">
-					{HISTORY_ERAS.map((e, i) => (
+					{HISTORY_ERAS.map((era, i) => (
 						<div class="cg-era">
 							<div class="cg-era__mark">{String(i + 1).padStart(2, "0")}</div>
-							<div class="cg-era__title">{e.era}<span> · {e.year}</span></div>
-							<p class="cg-era__p">{e.p}</p>
+							<div class="cg-era__title">{era.era}<span> · {era.year}</span></div>
+							<p class="cg-era__p">{era.p}</p>
 						</div>
 					))}
 				</div>
@@ -190,9 +225,9 @@ const meta = (l: any) => [l.beds && `${l.beds} BD`, l.baths && `${l.baths} BA`, 
 		<section class="section section--cream" data-screen-label="Living Here">
 			<div class="container">
 				<div class="cg-head">
-					<span class="eyebrow">Living Here</span>
-					<h2 class="cg-h2">Settling Into Incline Village</h2>
-					<p class="cg-intro">The practical side of the move — how you get here, what residency opens up, and what the year actually feels like.</p>
+					<span class="eyebrow" {...(e.living_eyebrow ?? {})}>{t("living_eyebrow", "Living Here")}</span>
+					<h2 class="cg-h2" {...(e.living_heading ?? {})}>{t("living_heading", "Settling Into Incline Village")}</h2>
+					<p class="cg-intro" {...(e.living_intro ?? {})}>{t("living_intro", "The practical side of the move — how you get here, what residency opens up, and what the year actually feels like.")}</p>
 				</div>
 				{/* The site-wide accordion (.acc in styles.css) — the same one the Buyers
 				    tax section uses. `--loose` only widens the paragraph leading to the
@@ -204,7 +239,7 @@ const meta = (l: any) => [l.beds && `${l.beds} BD`, l.baths && `${l.baths} BA`, 
 								<span class="acc__label">{item.h}</span>
 								<span class="acc__icon" aria-hidden="true"></span>
 							</summary>
-							<div class="acc__panel">{item.body.map((p) => <p>{p}</p>)}</div>
+							<div class="acc__panel">{item.body.map((p: string) => <p>{p}</p>)}</div>
 						</details>
 					))}
 				</div>
@@ -215,9 +250,9 @@ const meta = (l: any) => [l.beds && `${l.beds} BD`, l.baths && `${l.baths} BA`, 
 		<section class="section section--beige" data-screen-label="Featured Properties">
 			<div class="container">
 				<div class="cg-head">
-					<span class="eyebrow">Currently on the Market</span>
-					<h2 class="cg-h2">Featured Properties</h2>
-					<p class="cg-intro">Homes Grant is representing right now across Incline Village and Crystal Bay.</p>
+					<span class="eyebrow" {...(e.featured_eyebrow ?? {})}>{t("featured_eyebrow", "Currently on the Market")}</span>
+					<h2 class="cg-h2" {...(e.featured_heading ?? {})}>{t("featured_heading", "Featured Properties")}</h2>
+					<p class="cg-intro" {...(e.featured_intro ?? {})}>{t("featured_intro", "Homes Grant is representing right now across Incline Village and Crystal Bay.")}</p>
 				</div>
 				<div class="cg-featured">
 					{featured.map((l) => (
@@ -238,8 +273,10 @@ const meta = (l: any) => [l.beds && `${l.beds} BD`, l.baths && `${l.baths} BA`, 
 			</div>
 		</section>
 
-		{/* 9. Contact — the shared section, keeping this page's own heading. */}
-		<ContactCta heading="Ready to Know the North Shore From the Inside?" bg="cream" />
+		{/* 9. Contact — the shared section, keeping this page's own heading.
+		    The heading still comes from the `community` entry's cta_heading field,
+		    so it stays editable; `cta_body` has no slot in the shared block. */}
+		<ContactCta heading={t("cta_heading", "Ready to Know the North Shore From the Inside?")} bg="cream" />
 	</div>
 
 	<script is:inline>

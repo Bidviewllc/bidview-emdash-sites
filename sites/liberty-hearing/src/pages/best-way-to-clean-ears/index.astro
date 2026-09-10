@@ -1,0 +1,151 @@
+---
+/**
+ * Blog post generated from the client's 2-post doc by scratchpad/gen-blog.py.
+ * Source section: "best way to clean ears"
+ * Listed on /resources/. Edit the doc (or the generator), not this file.
+ */
+import Base from "../../layouts/Base.astro";
+import ContentPage from "../../components/ContentPage.astro";
+import type { Block } from "../../lib/content-blocks";
+
+const takeaways: string[] = [
+ "The best way to clean ears is to let the outer ear clean itself with occasional gentle wiping, while a trained professional handles any wax buildup deeper in the canal.",
+ "Cotton swabs and ear candles don't remove wax. They pack it tighter against the eardrum, which is how simple buildup turns into hearing loss, infection, or a punctured eardrum.",
+ "Liberty Hearing Center provides safe, professional earwax removal for patients across College Station and the greater Brazos Valley."
+];
+const blocks: Block[] = [
+ {
+  "t": "p",
+  "v": "Nine out of ten people reach for a cotton swab the moment their ear feels itchy or full. It feels productive. You see wax on the tip and assume the job's done."
+ },
+ {
+  "t": "p",
+  "v": "It isn't."
+ },
+ {
+  "t": "p",
+  "v": "That swab just pushed most of the wax further down the canal, right up against your eardrum. Audiologists have a name for what happens next: cerumen impaction. It's one of the most common, most preventable causes of temporary hearing loss, and cotton swabs cause the majority of cases."
+ },
+ {
+  "t": "p",
+  "v": "The best way to clean ears has almost nothing to do with digging around inside them."
+ },
+ {
+  "t": "h2",
+  "v": "What Your Ears Are Actually Designed to Do"
+ },
+ {
+  "t": "p",
+  "v": "Earwax isn't dirt. It's a protective coating your body produces to trap dust, repel water, and fight off bacteria before it reaches your eardrum."
+ },
+ {
+  "t": "p",
+  "v": "Your ears already have a built-in cleaning system. Jaw movement from talking and chewing slowly pushes old wax toward the opening, where it dries out and falls away on its own. In most people, this happens without any help at all."
+ },
+ {
+  "t": "p",
+  "v": "The only cleaning your outer ear needs is a damp washcloth wiped around the visible parts after a shower. Nothing goes inside the canal. Not a swab, not a bobby pin, not a rolled-up tissue."
+ },
+ {
+  "t": "h2",
+  "v": "Why Ear Candles and Swabs Both Fail"
+ },
+ {
+  "t": "p",
+  "v": "Ear candling promises to draw wax out through suction and heat. Burn tests and clinical studies have found no evidence that it removes wax at all. What it does reliably produce is dripping wax residue, and in some cases, burns to the ear canal or eardrum."
+ },
+ {
+  "t": "p",
+  "v": "Cotton swabs fail for a simpler reason: physics. The canal narrows as it goes deeper, so anything you insert acts like a plunger, compacting wax instead of extracting it."
+ },
+ {
+  "t": "p",
+  "v": "Neither method solves the actual problem. Both carry a real risk of injury."
+ },
+ {
+  "t": "h2",
+  "v": "When It's Time to Stop DIY-ing It"
+ },
+ {
+  "t": "p",
+  "v": "Some signs mean the situation is past the washcloth stage:"
+ },
+ {
+  "t": "ul",
+  "items": [
+   "A feeling of fullness or pressure that doesn't go away",
+   "Muffled hearing in one or both ears",
+   "Ringing, itching, or mild pain deep in the canal",
+   "Visible wax buildup you can't safely reach"
+  ]
+ },
+ {
+  "t": "p",
+  "v": "At that point, the safest and most effective option is professional removal. Audiologists use tools built for the job, including microsuction and specialized irrigation, that clear impacted wax without damaging the eardrum or the sensitive skin of the canal."
+ },
+ {
+  "t": "h2",
+  "v": "How Liberty Hearing Center Handles Ear Cleaning"
+ },
+ {
+  "t": "p",
+  "v": "Liberty Hearing Center is locally owned and based in College Station, serving patients across the Brazos Valley. Our team removes impacted earwax using safe, in-office methods, then checks your hearing to confirm nothing else is contributing to the fullness or muffled sound you've been dealing with."
+ },
+ {
+  "t": "p",
+  "v": "Wax buildup and hearing loss share a lot of the same symptoms. The only way to know which one you're dealing with is a proper exam, not another trip to the pharmacy aisle."
+ },
+ {
+  "t": "p",
+  "v": "If your ears have felt off for more than a few days, skip the swab. Let someone who does this every day take a look."
+ },
+ {
+  "t": "p",
+  "v": "Ready for real relief? Schedule an earwax evaluation with Liberty Hearing Center in College Station, TX, and find out what your ears have been trying to tell you."
+ },
+ {
+  "t": "h2",
+  "v": "Frequently Asked Questions"
+ },
+ {
+  "t": "faq",
+  "qa": [
+   {
+    "q": "What is the best way to clean ears without causing damage?",
+    "a": [
+     "The safest method is wiping the outer ear with a damp washcloth after a shower and letting the canal clear itself naturally through jaw movement. Nothing should be inserted into the ear canal, including cotton swabs."
+    ]
+   },
+   {
+    "q": "Is it safe to use ear candles to remove wax?",
+    "a": [
+     "No. Clinical studies have found that ear candles do not remove earwax and can cause burns to the ear canal or eardrum from dripping wax. Professional removal methods are the safer, proven alternative."
+    ]
+   },
+   {
+    "q": "How do I know if I have earwax buildup instead of hearing loss?",
+    "a": [
+     "Common signs of buildup include a feeling of fullness, muffled hearing, mild itching, or ringing in the ear. An audiologist can determine the exact cause with a quick in-office exam and hearing check."
+    ]
+   },
+   {
+    "q": "How often should earwax be professionally removed?",
+    "a": [
+     "Most people never need professional removal, but those who produce excess wax or wear hearing aids may need it every 6 to 12 months. Liberty Hearing Center can recommend a schedule based on your individual ear health."
+    ]
+   }
+  ]
+ }
+];
+---
+
+<Base
+	title={"Best Way to Clean Ears: What Actually Works"}
+	description={"Cotton swabs push wax deeper. Learn the best way to clean ears safely, and when it's time to see an audiologist. Liberty Hearing Center, TX."}
+	active="resources"
+	footer="resources"
+	image={"/assets/hearing-test.webp"}
+	ogType="article"
+>
+<ContentPage h1={"Best Way to Clean Ears: What Actually Works"} crumb={"Best Way to Clean Ears: What Actually Works"} takeaways={takeaways} blocks={blocks} />
+</Base>

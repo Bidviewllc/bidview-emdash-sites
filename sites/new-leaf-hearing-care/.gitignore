@@ -6,6 +6,6 @@ dist/
 .astro-dev*.log
 *.log
 *.err.log
-data/
+/data/
 uploads/
 qa/

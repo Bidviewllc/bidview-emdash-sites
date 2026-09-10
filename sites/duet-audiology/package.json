@@ -7,7 +7,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "deploy": "wrangler deploy"
+    "deploy": "wrangler deploy",
+    "reviews:pull": "node scripts/fetch-google-reviews.mjs"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^13.1.6",

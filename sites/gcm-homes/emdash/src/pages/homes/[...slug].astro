@@ -1,9 +1,66 @@
 ---
-// Listing detail — serves the prototype's self-contained detail page verbatim for
-// any /homes/:city/:address path. Its client JS reads the slug from the URL and
-// fetches /api/listing-by-slug/... (this worker's route, backed by D1). Returned
-// as a raw Response so Astro doesn't try to parse the page's ${}/{} JS.
+// Listing detail — serves the prototype's self-contained detail page. The page's
+// client JS still reads the slug and fetches /api/listing-by-slug/... to build the
+// body. But because that page ships a STATIC <head>, every listing used to deliver
+// the same generic <title> and no og/description/canonical/JSON-LD (bad for search
+// results + link previews on the exact pages Grant shares). So here we look the
+// listing up server-side and inject a real per-listing <head> before returning the
+// raw HTML. The page body is still built client-side (unchanged); this only fixes
+// the crawlable/shareable head. Returned raw so Astro doesn't parse the page's ${}.
 export const prerender = false;
-import html from "../../detail-page.html?raw";
-return new Response(html, { headers: { "content-type": "text/html; charset=utf-8" } });
+import rawHtml from "../../detail-page.html?raw";
+import { bySlug } from "../../lib/listings";
+
+const attr = (s: any) => String(s ?? "").replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+const slug = String(Astro.params.slug || "").replace(/\/+$/, "");
+const origin = new URL(Astro.request.url).origin;
+let head = "";
+try {
+	const result = await bySlug(slug);
+	const l = result?.listing as any;
+	if (l) {
+		const url = `${origin}/homes/${slug}/`;
+		const cityState = [l.city, l.state].filter(Boolean).join(", ");
+		const priceStr = l.price ? "$" + Number(l.price).toLocaleString("en-US") : "";
+		const title = `${l.address}${cityState ? ", " + cityState : ""}${priceStr ? " — " + priceStr : ""} | Grant C. Meyer Homes`;
+		const meta = [
+			l.beds && `${l.beds} bd`, l.baths && `${l.baths} ba`,
+			l.sqft && `${Number(l.sqft).toLocaleString("en-US")} sq ft`,
+		].filter(Boolean).join(" · ");
+		const kind = (l.subType || l.type || "Property").replace(/([a-z])([A-Z])/g, "$1 $2");
+		const desc = (`${l.address}, ${cityState}. ${priceStr}${meta ? " · " + meta : ""}. ${kind} presented by Grant C. Meyer — Lake Tahoe luxury real estate in Incline Village & Crystal Bay.`).replace(/\s+/g, " ").trim().slice(0, 300);
+		const photos: string[] = Array.isArray(result?.photos) ? result!.photos : [];
+		const ogImage = photos[0] || `${origin}/assets/hero-tahoe.jpg`;
+		const ld: any = {
+			"@context": "https://schema.org", "@type": "RealEstateListing",
+			name: `${l.address}${cityState ? ", " + cityState : ""}`, url, description: desc,
+			image: photos.slice(0, 6),
+		};
+		if (l.listingDate) ld.datePosted = l.listingDate;
+		if (l.price) ld.offers = { "@type": "Offer", price: Number(l.price), priceCurrency: "USD", availability: "https://schema.org/InStock", url };
+		head = [
+			`<meta name="description" content="${attr(desc)}" />`,
+			`<link rel="canonical" href="${attr(url)}" />`,
+			`<meta property="og:type" content="website" />`,
+			`<meta property="og:site_name" content="Grant C. Meyer Homes" />`,
+			`<meta property="og:title" content="${attr(title)}" />`,
+			`<meta property="og:description" content="${attr(desc)}" />`,
+			`<meta property="og:url" content="${attr(url)}" />`,
+			`<meta property="og:image" content="${attr(ogImage)}" />`,
+			`<meta name="twitter:card" content="summary_large_image" />`,
+			`<meta name="twitter:title" content="${attr(title)}" />`,
+			`<meta name="twitter:description" content="${attr(desc)}" />`,
+			`<meta name="twitter:image" content="${attr(ogImage)}" />`,
+			`<script type="application/ld+json">${JSON.stringify(ld).replace(/</g, "\\u003c")}</script>`,
+		].join("\n  ");
+		// Replace the static <title> with the real one, then inject the rest before </head>.
+		var outHtml = rawHtml
+			.replace(/<title>[^<]*<\/title>/, `<title>${attr(title)}</title>`)
+			.replace("</head>", `  ${head}\n</head>`);
+	}
+} catch { /* fall back to the raw page (client JS still sets a title) */ }
+
+const finalHtml = (typeof outHtml !== "undefined" && outHtml) ? outHtml : rawHtml;
+return new Response(finalHtml, { headers: { "content-type": "text/html; charset=utf-8", "Cache-Control": "public, s-maxage=300" } });
 ---

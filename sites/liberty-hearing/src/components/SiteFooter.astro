@@ -1,0 +1,280 @@
+---
+/**
+ * Site footer.
+ *
+ * The design build ships SEVEN different footers across the 11 pages — they
+ * differ in tagline, column order, column headings and links. Vince asked for
+ * exact parity with the Vercel demo, so each variant is reproduced verbatim
+ * here rather than unified.
+ *
+ * NOTE: this deliberately preserves the design's dead href="#" links
+ * (5 on inner/services, 7 on aids). Do not 'fix' them without asking — they
+ * are intentional parity with the demo. See CLAUDE.md.
+ *
+ * Variant -> pages:
+ *   home      home
+ *   inner     about, hearing-evaluations, contact
+ *   services  services
+ *   aids      phonak-hearing-aids
+ *   pricing   pricing
+ *   resources resources
+ *   staff     dr-carly-hall, dr-chris-duhon, rocio-zarandona
+ */
+interface Props {
+	variant?: "home" | "inner" | "services" | "aids" | "pricing" | "resources" | "staff";
+}
+const { variant = "inner" } = Astro.props;
+---
+
+{variant === "home" && (
+<footer style="background:var(--navy-deep);color:var(--border-strong)">
+<div style="max-width:1280px;margin:0 auto;padding:clamp(39px,8vw,68px) clamp(18px,4vw,32px) 30px">
+<div data-stack="4" style="display:grid;grid-template-columns:1.2fr repeat(3,1fr);gap:50px">
+<div>
+<img src="/assets/logo-white.webp" alt="Liberty Hearing Center" style="display:block;width:auto;height:104px;margin-bottom:20px" loading="lazy" decoding="async">
+<p style="margin:0;font-size:14px;max-width:280px">Independent hearing care in Central Texas — we provide evaluations, hearing aids, and follow-up, and we listen first.</p>
+</div>
+<div style="display:flex;flex-direction:column;align-items:flex-start;gap:8px">
+<strong style="margin-bottom:7px;color:var(--gold);font-size:11px;letter-spacing:.14em;text-transform:uppercase">Services</strong>
+<a href="/hearing-evaluations/" style="transition:.3s" style-hover="color:var(--white)">Audiology Services</a>
+<a href="/phonak-hearing-aids/" style="transition:.3s" style-hover="color:var(--white)">Hearing Aid Services</a>
+<a href="/pricing/" style="transition:.3s" style-hover="color:var(--white)">Pricing</a>
+<a href="/hearing-evaluations/" style="transition:.3s" style-hover="color:var(--white)">Hearing Evaluations</a>
+<a href="/services/" style="transition:.3s" style-hover="color:var(--white)">Tinnitus Care</a>
+</div>
+<div style="display:flex;flex-direction:column;align-items:flex-start;gap:8px">
+<strong style="margin-bottom:7px;color:var(--gold);font-size:11px;letter-spacing:.14em;text-transform:uppercase">Practice</strong>
+<a href="/about/" style="transition:.3s" style-hover="color:var(--white)">About Liberty</a>
+<a href="/about/" style="transition:.3s" style-hover="color:var(--white)">Meet the team</a>
+<a href="/resources/" style="transition:.3s" style-hover="color:var(--white)">Patient resources</a>
+</div>
+<div style="display:flex;flex-direction:column;align-items:flex-start;gap:8px">
+<strong style="margin-bottom:7px;color:var(--gold);font-size:11px;letter-spacing:.14em;text-transform:uppercase">Visit</strong>
+<a href="/contact/" style="transition:.3s" style-hover="color:var(--white)">College Station, TX</a>
+<a href="tel:9794507996" style="transition:.3s" style-hover="color:var(--white)">P: 979-450-7996</a>
+<span>F: 979-426-8260</span>
+<a href="/contact/" style="transition:.3s" style-hover="color:var(--white)">Contact our team</a>
+</div>
+</div>
+<div style="display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-top:55px;padding-top:24px;border-top:1px solid rgba(var(--white-rgb),.12);font-size:12px">
+<span>© 2026 Liberty Hearing Center. All rights reserved.</span>
+<span>Privacy · Accessibility</span>
+</div>
+</div>
+</footer>
+)}
+{variant === "inner" && (
+<footer style="background:var(--navy-deep);color:var(--border-strong);border-top:1px solid rgba(var(--white-rgb),.12)">
+<div style="max-width:1280px;margin:0 auto;padding:clamp(39px,8vw,68px) clamp(18px,4vw,32px) 30px">
+<div data-stack="4" style="display:grid;grid-template-columns:1.2fr repeat(3,1fr);gap:50px">
+<div>
+<img src="/assets/logo-white.webp" alt="Liberty Hearing Center" style="display:block;width:auto;height:104px;margin-bottom:20px" loading="lazy" decoding="async">
+<p style="margin:0;font-size:14px;max-width:280px">Independent, patient-centered hearing care for Central Texas.</p>
+</div>
+<div style="display:flex;flex-direction:column;align-items:flex-start;gap:8px">
+<strong style="margin-bottom:7px;color:var(--gold);font-size:11px;letter-spacing:.14em;text-transform:uppercase">Practice</strong>
+<a href="/about/" style="transition:.3s" style-hover="color:var(--white)">About Us</a>
+<a href="/about/#team" style="transition:.3s" style-hover="color:var(--white)">Our Providers</a>
+<a href="/contact/" style="transition:.3s" style-hover="color:var(--white)">Contact</a>
+</div>
+<div style="display:flex;flex-direction:column;align-items:flex-start;gap:8px">
+<strong style="margin-bottom:7px;color:var(--gold);font-size:11px;letter-spacing:.14em;text-transform:uppercase">Services</strong>
+<a href="/services/" style="transition:.3s" style-hover="color:var(--white)">All Services</a>
+<a href="/hearing-evaluations/" style="transition:.3s" style-hover="color:var(--white)">Hearing Evaluations</a>
+<a href="/phonak-hearing-aids/" style="transition:.3s" style-hover="color:var(--white)">Hearing Aid Services</a>
+<a href="/pricing/" style="transition:.3s" style-hover="color:var(--white)">Pricing</a>
+</div>
+<div style="display:flex;flex-direction:column;align-items:flex-start;gap:8px">
+<strong style="margin-bottom:7px;color:var(--gold);font-size:11px;letter-spacing:.14em;text-transform:uppercase">Visit</strong>
+<a href="/contact/" style="transition:.3s" style-hover="color:var(--white)">College Station Clinic</a>
+<a href="tel:9794507996" style="transition:.3s" style-hover="color:var(--white)">P: 979-450-7996</a>
+<span>F: 979-426-8260</span>
+<a href="/resources/" style="transition:.3s" style-hover="color:var(--white)">Hearing Resources</a>
+</div>
+</div>
+<div style="display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-top:55px;padding-top:24px;border-top:1px solid rgba(var(--white-rgb),.12);font-size:12px">
+<span>© 2026 Liberty Hearing Center. All rights reserved.</span>
+<span>Privacy · Accessibility</span>
+</div>
+</div>
+</footer>
+)}
+{variant === "services" && (
+<footer style="background:var(--navy-deep);color:var(--border-strong)">
+<div style="max-width:1280px;margin:0 auto;padding:clamp(39px,8vw,68px) clamp(18px,4vw,32px) 30px">
+<div data-stack="4" style="display:grid;grid-template-columns:1.2fr repeat(3,1fr);gap:50px">
+<div>
+<img src="/assets/logo-white.webp" alt="Liberty Hearing Center" style="display:block;width:auto;height:104px;margin-bottom:20px" loading="lazy" decoding="async">
+<p style="margin:0;font-size:14px;max-width:280px">Independent, patient-centered hearing care for Central Texas.</p>
+</div>
+<div style="display:flex;flex-direction:column;align-items:flex-start;gap:8px">
+<strong style="margin-bottom:7px;color:var(--gold);font-size:11px;letter-spacing:.14em;text-transform:uppercase">Practice</strong>
+<a href="/about/" style="transition:.3s" style-hover="color:var(--white)">About Us</a>
+<a href="/about/#team" style="transition:.3s" style-hover="color:var(--white)">Our Providers</a>
+<a href="/contact/" style="transition:.3s" style-hover="color:var(--white)">Contact</a>
+</div>
+<div style="display:flex;flex-direction:column;align-items:flex-start;gap:8px">
+<strong style="margin-bottom:7px;color:var(--gold);font-size:11px;letter-spacing:.14em;text-transform:uppercase">Services</strong>
+<a href="/services/" style="transition:.3s" style-hover="color:var(--white)">All Services</a>
+<a href="/hearing-evaluations/" style="transition:.3s" style-hover="color:var(--white)">Audiology Services</a>
+<a href="/phonak-hearing-aids/" style="transition:.3s" style-hover="color:var(--white)">Hearing Aid Services</a>
+<a href="/pricing/" style="transition:.3s" style-hover="color:var(--white)">Pricing</a>
+</div>
+<div style="display:flex;flex-direction:column;align-items:flex-start;gap:8px">
+<strong style="margin-bottom:7px;color:var(--gold);font-size:11px;letter-spacing:.14em;text-transform:uppercase">Visit</strong>
+<a href="/contact/" style="transition:.3s" style-hover="color:var(--white)">College Station Clinic</a>
+<a href="tel:9794507996" style="transition:.3s" style-hover="color:var(--white)">P: 979-450-7996</a>
+<span>F: 979-426-8260</span>
+<a href="/resources/" style="transition:.3s" style-hover="color:var(--white)">Hearing Resources</a>
+</div>
+</div>
+<div style="display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-top:55px;padding-top:24px;border-top:1px solid rgba(var(--white-rgb),.12);font-size:12px">
+<span>&copy; 2026 Liberty Hearing Center. All rights reserved.</span>
+<span>Privacy · Accessibility</span>
+</div>
+</div>
+</footer>
+)}
+{variant === "aids" && (
+<footer style="background:var(--navy-deep);color:var(--border-strong);border-top:1px solid rgba(var(--white-rgb),.12)">
+<div style="max-width:1280px;margin:0 auto;padding:clamp(39px,8vw,68px) clamp(18px,4vw,32px) 30px">
+<div data-stack="4" style="display:grid;grid-template-columns:1.2fr repeat(3,1fr);gap:50px">
+<div>
+<img src="/assets/logo-white.webp" alt="Liberty Hearing Center" style="display:block;width:auto;height:104px;margin-bottom:20px" loading="lazy" decoding="async">
+<p style="margin:0;font-size:14px;max-width:280px">Independent, patient-centered hearing care for Central Texas.</p>
+</div>
+<div style="display:flex;flex-direction:column;align-items:flex-start;gap:8px">
+<strong style="margin-bottom:7px;color:var(--gold);font-size:11px;letter-spacing:.14em;text-transform:uppercase">Practice</strong>
+<a href="/about/" style="transition:.3s" style-hover="color:var(--white)">About Us</a>
+<a href="/about/#team" style="transition:.3s" style-hover="color:var(--white)">Our Providers</a>
+<a href="/contact/" style="transition:.3s" style-hover="color:var(--white)">Contact</a>
+<a href="/pricing/" style="transition:.3s" style-hover="color:var(--white)">Pricing</a>
+</div>
+<div style="display:flex;flex-direction:column;align-items:flex-start;gap:8px">
+<strong style="margin-bottom:7px;color:var(--gold);font-size:11px;letter-spacing:.14em;text-transform:uppercase">Hearing Aids</strong>
+<a href="/hearing-aids-products/" style="transition:.3s" style-hover="color:var(--white)">All Brands</a>
+<a href="/phonak-hearing-aids/" style="transition:.3s" style-hover="color:var(--white)">Phonak</a>
+<a href="#" style="transition:.3s" style-hover="color:var(--white)">Accessories</a>
+</div>
+<div style="display:flex;flex-direction:column;align-items:flex-start;gap:8px">
+<strong style="margin-bottom:7px;color:var(--gold);font-size:11px;letter-spacing:.14em;text-transform:uppercase">Visit</strong>
+<a href="/contact/" style="transition:.3s" style-hover="color:var(--white)">College Station Clinic</a>
+<a href="tel:9794507996" style="transition:.3s" style-hover="color:var(--white)">P: 979-450-7996</a>
+<span>F: 979-426-8260</span>
+<a href="/resources/" style="transition:.3s" style-hover="color:var(--white)">Hearing Resources</a>
+</div>
+</div>
+<div style="display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-top:55px;padding-top:24px;border-top:1px solid rgba(var(--white-rgb),.12);font-size:12px">
+<span>© 2026 Liberty Hearing Center. All rights reserved.</span>
+<span>Privacy · Accessibility</span>
+</div>
+</div>
+</footer>
+)}
+{variant === "pricing" && (
+<footer style="background:var(--navy-deep);color:var(--border-strong);border-top:1px solid rgba(var(--white-rgb),.12)">
+<div style="max-width:1280px;margin:0 auto;padding:clamp(39px,8vw,68px) clamp(18px,4vw,32px) 30px">
+<div data-stack="4" style="display:grid;grid-template-columns:1.2fr repeat(3,1fr);gap:50px">
+<div>
+<img src="/assets/logo-white.webp" alt="Liberty Hearing Center" style="display:block;width:auto;height:104px;margin-bottom:20px" loading="lazy" decoding="async">
+<p style="margin:0;font-size:14px;max-width:280px">Independent, patient-centered hearing care for Central Texas.</p>
+</div>
+<div style="display:flex;flex-direction:column;align-items:flex-start;gap:8px">
+<strong style="margin-bottom:7px;color:var(--gold);font-size:11px;letter-spacing:.14em;text-transform:uppercase">Practice</strong>
+<a href="/about/" style="transition:.3s" style-hover="color:var(--white)">About Us</a>
+<a href="/about/" style="transition:.3s" style-hover="color:var(--white)">Our Providers</a>
+<a href="/contact/" style="transition:.3s" style-hover="color:var(--white)">Contact</a>
+</div>
+<div style="display:flex;flex-direction:column;align-items:flex-start;gap:8px">
+<strong style="margin-bottom:7px;color:var(--gold);font-size:11px;letter-spacing:.14em;text-transform:uppercase">Services</strong>
+<a href="/hearing-evaluations/" style="transition:.3s" style-hover="color:var(--white)">Hearing Evaluations</a>
+<a href="/phonak-hearing-aids/" style="transition:.3s" style-hover="color:var(--white)">Hearing Aid Services</a>
+<a href="/pricing/" style="transition:.3s" style-hover="color:var(--white)">Pricing</a>
+</div>
+<div style="display:flex;flex-direction:column;align-items:flex-start;gap:8px">
+<strong style="margin-bottom:7px;color:var(--gold);font-size:11px;letter-spacing:.14em;text-transform:uppercase">Visit</strong>
+<a href="/contact/" style="transition:.3s" style-hover="color:var(--white)">College Station Clinic</a>
+<a href="tel:9794507996" style="transition:.3s" style-hover="color:var(--white)">P: 979-450-7996</a>
+<span>F: 979-426-8260</span>
+<a href="/resources/" style="transition:.3s" style-hover="color:var(--white)">Hearing Resources</a>
+</div>
+</div>
+<div style="display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-top:55px;padding-top:24px;border-top:1px solid rgba(var(--white-rgb),.12);font-size:12px">
+<span>© 2026 Liberty Hearing Center. All rights reserved.</span>
+<span>Privacy · Accessibility</span>
+</div>
+</div>
+</footer>
+)}
+{variant === "resources" && (
+<footer style="background:var(--navy-deep);color:var(--border-strong);border-top:1px solid rgba(var(--white-rgb),.12)">
+<div style="max-width:1280px;margin:0 auto;padding:clamp(39px,8vw,68px) clamp(18px,4vw,32px) 30px">
+<div data-stack="4" style="display:grid;grid-template-columns:1.2fr repeat(3,1fr);gap:50px">
+<div>
+<img src="/assets/logo-white.webp" alt="Liberty Hearing Center" style="display:block;width:auto;height:104px;margin-bottom:20px" loading="lazy" decoding="async">
+<p style="margin:0;font-size:14px;max-width:280px">Independent, patient-centered hearing care for Central Texas.</p>
+</div>
+<div style="display:flex;flex-direction:column;align-items:flex-start;gap:8px">
+<strong style="margin-bottom:7px;color:var(--gold);font-size:11px;letter-spacing:.14em;text-transform:uppercase">Practice</strong>
+<a href="/about/" style="transition:.3s" style-hover="color:var(--white)">About Us</a>
+<a href="/about/#team" style="transition:.3s" style-hover="color:var(--white)">Our Providers</a>
+<a href="/contact/" style="transition:.3s" style-hover="color:var(--white)">Contact</a>
+</div>
+<div style="display:flex;flex-direction:column;align-items:flex-start;gap:8px">
+<strong style="margin-bottom:7px;color:var(--gold);font-size:11px;letter-spacing:.14em;text-transform:uppercase">Services</strong>
+<a href="/services/" style="transition:.3s" style-hover="color:var(--white)">All Services</a>
+<a href="/hearing-evaluations/" style="transition:.3s" style-hover="color:var(--white)">Hearing Evaluations</a>
+<a href="/phonak-hearing-aids/" style="transition:.3s" style-hover="color:var(--white)">Hearing Aid Services</a>
+<a href="/pricing/" style="transition:.3s" style-hover="color:var(--white)">Pricing</a>
+</div>
+<div style="display:flex;flex-direction:column;align-items:flex-start;gap:8px">
+<strong style="margin-bottom:7px;color:var(--gold);font-size:11px;letter-spacing:.14em;text-transform:uppercase">Visit</strong>
+<a href="/contact/" style="transition:.3s" style-hover="color:var(--white)">College Station Clinic</a>
+<a href="tel:9794507996" style="transition:.3s" style-hover="color:var(--white)">P: 979-450-7996</a>
+<span>F: 979-426-8260</span>
+<a href="/resources/" style="transition:.3s" style-hover="color:var(--white)">Hearing Resources</a>
+</div>
+</div>
+<div style="display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-top:55px;padding-top:24px;border-top:1px solid rgba(var(--white-rgb),.12);font-size:12px">
+<span>© 2026 Liberty Hearing Center. All rights reserved.</span>
+<span>Privacy · Accessibility</span>
+</div>
+</div>
+</footer>
+)}
+{variant === "staff" && (
+<footer style="background:var(--navy-deep);color:var(--border-strong);border-top:1px solid rgba(var(--white-rgb),.12)">
+<div style="max-width:1280px;margin:0 auto;padding:clamp(39px,8vw,68px) clamp(18px,4vw,32px) 30px">
+<div data-stack="4" style="display:grid;grid-template-columns:1.2fr repeat(3,1fr);gap:50px">
+<div>
+<img src="/assets/logo-white.webp" alt="Liberty Hearing Center" style="display:block;width:auto;height:104px;margin-bottom:20px" loading="lazy" decoding="async">
+<p style="margin:0;font-size:14px;max-width:280px">Independent, patient-centered hearing care for Central Texas.</p>
+</div>
+<div style="display:flex;flex-direction:column;align-items:flex-start;gap:8px">
+<strong style="margin-bottom:7px;color:var(--gold);font-size:11px;letter-spacing:.14em;text-transform:uppercase">Practice</strong>
+<a href="/about/" style="transition:.3s" style-hover="color:var(--white)">About Us</a>
+<a href="/dr-chris-duhon/" style="transition:.3s" style-hover="color:var(--white)">Our Providers</a>
+<a href="/contact/" style="transition:.3s" style-hover="color:var(--white)">Contact</a>
+</div>
+<div style="display:flex;flex-direction:column;align-items:flex-start;gap:8px">
+<strong style="margin-bottom:7px;color:var(--gold);font-size:11px;letter-spacing:.14em;text-transform:uppercase">Services</strong>
+<a href="/services/" style="transition:.3s" style-hover="color:var(--white)">All Services</a>
+<a href="/hearing-evaluations/" style="transition:.3s" style-hover="color:var(--white)">Hearing Evaluations</a>
+<a href="/phonak-hearing-aids/" style="transition:.3s" style-hover="color:var(--white)">Hearing Aid Services</a>
+<a href="/pricing/" style="transition:.3s" style-hover="color:var(--white)">Pricing</a>
+</div>
+<div style="display:flex;flex-direction:column;align-items:flex-start;gap:8px">
+<strong style="margin-bottom:7px;color:var(--gold);font-size:11px;letter-spacing:.14em;text-transform:uppercase">Visit</strong>
+<a href="/contact/" style="transition:.3s" style-hover="color:var(--white)">College Station Clinic</a>
+<a href="tel:9794507996" style="transition:.3s" style-hover="color:var(--white)">P: 979-450-7996</a>
+<span>F: 979-426-8260</span>
+<a href="/resources/" style="transition:.3s" style-hover="color:var(--white)">Hearing Resources</a>
+</div>
+</div>
+<div style="display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-top:55px;padding-top:24px;border-top:1px solid rgba(var(--white-rgb),.12);font-size:12px">
+<span>© 2026 Liberty Hearing Center. All rights reserved.</span>
+<span>Privacy · Accessibility</span>
+</div>
+</div>
+</footer>
+)}

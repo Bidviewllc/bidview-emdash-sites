@@ -282,8 +282,8 @@
         "data": {
           "page_title": "Audiology Services",
           "page_slug": "/audiology-services/",
-          "meta_title": "Audiology Services | New Leaf Hearing Care",
-          "meta_description": "Learn more about our audiology services provided by our trusted audiologists in Arvada, CO, and Littleton, CO.",
+          "meta_title": "Audiology Services in Arvada & Littleton, CO | New Leaf Hearing Care",
+          "meta_description": "Hearing tests, tinnitus care, and earwax removal in Arvada and Littleton, CO. Book an audiology appointment with New Leaf Hearing Care.",
           "intro_content": [
             {
               "_type": "block",
@@ -1524,12 +1524,26 @@
               "_type": "block",
               "_key": "k4n",
               "style": "normal",
-              "markDefs": [],
+              "markDefs": [
+                {
+                  "_type": "link",
+                  "_key": "phonaklink",
+                  "href": "/phonak-hearing-aids/"
+                }
+              ],
               "children": [
                 {
                   "_type": "span",
-                  "_key": "k4m",
-                  "text": "Rechargeable models reduce battery changes and can be simpler day to day. Disposable batteries work well for people who want quick swaps and longer storage.",
+                  "_key": "k4m_lnk",
+                  "text": "Rechargeable models",
+                  "marks": [
+                    "phonaklink"
+                  ]
+                },
+                {
+                  "_type": "span",
+                  "_key": "k4m_c",
+                  "text": " reduce battery changes and can be simpler day to day. Disposable batteries work well for people who want quick swaps and longer storage.",
                   "marks": []
                 }
               ]
@@ -2987,10 +3001,10 @@
         "slug": "audiology-services/custom-earmolds",
         "status": "published",
         "data": {
-          "page_title": "Custom Earmolds in Arvada & Littleton, CO",
+          "page_title": "Custom Earmolds & Earplugs in Arvada & Littleton, CO",
           "page_slug": "/audiology-services/custom-earmolds/",
-          "meta_title": "Custom Earmolds in Arvada & Littleton, CO | New Leaf Hearing Care",
-          "meta_description": "Get custom earmolds in Arvada or Littleton. Improve comfort and performance for hearing aids or protection. Schedule your fitting today.",
+          "meta_title": "Custom Earmolds & Earplugs in Arvada & Littleton, CO | New Leaf Hearing Care",
+          "meta_description": "Custom earmolds and earplugs in Arvada and Littleton, CO for hearing aids, hearing protection, water protection, and more. Schedule a custom fitting.",
           "intro_content": [
             {
               "_type": "block",
@@ -3044,12 +3058,32 @@
               "_type": "block",
               "_key": "kah",
               "style": "normal",
-              "markDefs": [],
+              "markDefs": [
+                {
+                  "_key": "lnkHearProt",
+                  "_type": "link",
+                  "href": "https://newleafhearing.com/hearing-loss/protecting-your-hearing/"
+                }
+              ],
               "children": [
                 {
                   "_type": "span",
-                  "_key": "kag",
-                  "text": "Custom earmolds solve problems that generic tips and plugs cannot fix. A poor fit can lead to discomfort, feedback, weak sound, or a plug that falls out at the worst time.",
+                  "_key": "op1",
+                  "text": "Custom earmolds and custom earplugs solve problems that generic tips and plugs cannot fix. A custom fit can improve comfort, reduce slipping, support better hearing aid performance, and provide reliable ",
+                  "marks": []
+                },
+                {
+                  "_type": "span",
+                  "_key": "op2",
+                  "text": "hearing protection",
+                  "marks": [
+                    "lnkHearProt"
+                  ]
+                },
+                {
+                  "_type": "span",
+                  "_key": "op3",
+                  "text": ".",
                   "marks": []
                 }
               ]
@@ -3219,7 +3253,7 @@
                 {
                   "_type": "span",
                   "_key": "kb4",
-                  "text": "Common Uses for Custom Earmolds",
+                  "text": "Common Uses for Custom Earmolds and Earplugs",
                   "marks": []
                 }
               ]
@@ -3527,7 +3561,7 @@
                 {
                   "_type": "span",
                   "_key": "kcc",
-                  "text": "What to Expect at Your Earmold Visit",
+                  "text": "What to Expect at Your Earmold or Earplug Visit",
                   "marks": []
                 }
               ]
@@ -3891,7 +3925,7 @@
                 {
                   "_type": "span",
                   "_key": "kds",
-                  "text": "Schedule Your Custom Earmold Visit",
+                  "text": "Schedule Your Custom Earmold or Earplug Visit",
                   "marks": []
                 }
               ]
@@ -3914,12 +3948,26 @@
               "_type": "block",
               "_key": "kdx",
               "style": "normal",
-              "markDefs": [],
+              "markDefs": [
+                {
+                  "_key": "lnkSched",
+                  "_type": "link",
+                  "href": "https://newleafhearing.com/schedule-appointment/"
+                }
+              ],
               "children": [
                 {
                   "_type": "span",
-                  "_key": "kdw",
-                  "text": "Schedule an appointment with New Leaf Hearing Care in Arvada, CO or Littleton, CO.",
+                  "_key": "sa1",
+                  "text": "Schedule an appointment",
+                  "marks": [
+                    "lnkSched"
+                  ]
+                },
+                {
+                  "_type": "span",
+                  "_key": "sa2",
+                  "text": " with New Leaf Hearing Care in Arvada, CO or Littleton, CO.",
                   "marks": []
                 }
               ]
@@ -5481,19 +5529,42 @@
               "style": "h2",
               "markDefs": [],
               "children": [
-                { "_type": "span", "_key": "kjt-heading-span", "text": "Giving Back in Action", "marks": [] }
+                {
+                  "_type": "span",
+                  "_key": "kjt-heading-span",
+                  "text": "Giving Back in Action",
+                  "marks": []
+                }
               ]
             },
             {
               "_type": "gallery",
               "_key": "kjt-gallery",
               "images": [
-                { "src": "/assets/new-leaf-give-back-gallery-01.jpg", "alt": "New Leaf Hearing Care team giving back in the community" },
-                { "src": "/assets/new-leaf-give-back-gallery-02.jpg", "alt": "New Leaf Hearing Care volunteering with a local charity partner" },
-                { "src": "/assets/new-leaf-give-back-gallery-03.jpg", "alt": "New Leaf Hearing Care staff at a community outreach event" },
-                { "src": "/assets/new-leaf-give-back-gallery-04.jpg", "alt": "New Leaf Hearing Care supporting a Hearing the Call mission" },
-                { "src": "/assets/new-leaf-give-back-gallery-05.jpg", "alt": "New Leaf Hearing Care giving back to the Arvada and Littleton community" },
-                { "src": "/assets/new-leaf-give-back-gallery-06.jpg", "alt": "New Leaf Hearing Care team with a rescue dog from Paws on the Ground Colorado" }
+                {
+                  "src": "/assets/new-leaf-give-back-gallery-01.jpg",
+                  "alt": "New Leaf Hearing Care team giving back in the community"
+                },
+                {
+                  "src": "/assets/new-leaf-give-back-gallery-02.jpg",
+                  "alt": "New Leaf Hearing Care volunteering with a local charity partner"
+                },
+                {
+                  "src": "/assets/new-leaf-give-back-gallery-03.jpg",
+                  "alt": "New Leaf Hearing Care staff at a community outreach event"
+                },
+                {
+                  "src": "/assets/new-leaf-give-back-gallery-04.jpg",
+                  "alt": "New Leaf Hearing Care supporting a Hearing the Call mission"
+                },
+                {
+                  "src": "/assets/new-leaf-give-back-gallery-05.jpg",
+                  "alt": "New Leaf Hearing Care giving back to the Arvada and Littleton community"
+                },
+                {
+                  "src": "/assets/new-leaf-give-back-gallery-06.jpg",
+                  "alt": "New Leaf Hearing Care team with a rescue dog from Paws on the Ground Colorado"
+                }
               ]
             }
           ]
@@ -6675,12 +6746,27 @@
               "style": "normal",
               "listItem": "bullet",
               "level": 1,
-              "markDefs": [],
+              "markDefs": [
+                {
+                  "_type": "link",
+                  "_key": "phonaklink",
+                  "href": "/phonak-hearing-aids/"
+                }
+              ],
               "children": [
                 {
                   "_type": "span",
-                  "_key": "koa",
-                  "text": "Performance Accessories (Hear Better in Real Life)",
+                  "_key": "koa_lnk",
+                  "text": "Performance Accessories",
+                  "marks": [
+                    "strong",
+                    "phonaklink"
+                  ]
+                },
+                {
+                  "_type": "span",
+                  "_key": "koa_c",
+                  "text": " (Hear Better in Real Life)",
                   "marks": [
                     "strong"
                   ]
@@ -10216,8 +10302,8 @@
         "data": {
           "page_title": "Hearing Aid Services",
           "page_slug": "/hearing-aid-services/",
-          "meta_title": "Hearing Aid Services | New Leaf Hearing Care",
-          "meta_description": "New Leaf Hearing Care provides expert hearing aid services in Arvada, CO, and Littleton, CO. Schedule an appointment today!",
+          "meta_title": "Hearing Aid Services in Arvada & Littleton, CO | New Leaf Hearing Care",
+          "meta_description": "Hearing aid fittings, adjustments, and repairs in Arvada and Littleton, CO. New Leaf Hearing Care helps you get more from the hearing aids you wear.",
           "intro_content": [
             {
               "_type": "block",
@@ -10585,12 +10671,32 @@
               "_type": "block",
               "_key": "k133",
               "style": "normal",
-              "markDefs": [],
+              "markDefs": [
+                {
+                  "_type": "link",
+                  "_key": "phonaklink",
+                  "href": "/phonak-hearing-aids/"
+                }
+              ],
               "children": [
                 {
                   "_type": "span",
-                  "_key": "k132",
-                  "text": "Better hearing should feel natural and fit your life. At New Leaf Hearing Care, you’ll find modern hearing solutions selected for your hearing needs, lifestyle, and comfort preferences (never a one-size-fits-all recommendation). From style and features to fitting and fine-tuning, we focus on helping you hear clearly in the situations that matter most: conversations, family gatherings, restaurants, and everyday moments.",
+                  "_key": "k132_a",
+                  "text": "Better hearing should feel natural and fit your life. At New Leaf Hearing Care, you’ll find ",
+                  "marks": []
+                },
+                {
+                  "_type": "span",
+                  "_key": "k132_lnk",
+                  "text": "modern hearing solutions",
+                  "marks": [
+                    "phonaklink"
+                  ]
+                },
+                {
+                  "_type": "span",
+                  "_key": "k132_c",
+                  "text": " selected for your hearing needs, lifestyle, and comfort preferences (never a one-size-fits-all recommendation). From style and features to fitting and fine-tuning, we focus on helping you hear clearly in the situations that matter most: conversations, family gatherings, restaurants, and everyday moments.",
                   "marks": []
                 }
               ]
@@ -11456,13 +11562,21 @@
               "_type": "block",
               "_key": "k16f",
               "style": "h3",
-              "markDefs": [],
+              "markDefs": [
+                {
+                  "_type": "link",
+                  "_key": "phonaklink",
+                  "href": "/phonak-hearing-aids/"
+                }
+              ],
               "children": [
                 {
                   "_type": "span",
-                  "_key": "k16e",
+                  "_key": "k16e_lnk",
                   "text": "Bluetooth streaming",
-                  "marks": []
+                  "marks": [
+                    "phonaklink"
+                  ]
                 }
               ]
             },
@@ -11928,8 +12042,8 @@
         "data": {
           "page_title": "Hearing Aids and Products in Arvada & Littleton, CO",
           "page_slug": "/hearing-aids-products/",
-          "meta_title": "Hearing Aids & Products | New Leaf Hearing Care",
-          "meta_description": "Explore hearing aids and products in Arvada or Littleton. Get expert help choosing the right fit. Schedule a consultation with New Leaf Hearing Care.",
+          "meta_title": "Hearing Aids & Products in Arvada & Littleton, CO | New Leaf Hearing Care",
+          "meta_description": "Compare hearing aids and accessories at New Leaf Hearing Care in Arvada and Littleton, CO. Find the right fit with guidance from our team.",
           "intro_content": [
             {
               "_type": "block",
@@ -12313,12 +12427,26 @@
               "style": "normal",
               "listItem": "bullet",
               "level": 1,
-              "markDefs": [],
+              "markDefs": [
+                {
+                  "_type": "link",
+                  "_key": "phonaklink",
+                  "href": "/phonak-hearing-aids/"
+                }
+              ],
               "children": [
                 {
                   "_type": "span",
-                  "_key": "k19l",
-                  "text": "Bluetooth streaming for phone calls, music, and TV audio.",
+                  "_key": "k19l_lnk",
+                  "text": "Bluetooth streaming",
+                  "marks": [
+                    "phonaklink"
+                  ]
+                },
+                {
+                  "_type": "span",
+                  "_key": "k19l_c",
+                  "text": " for phone calls, music, and TV audio.",
                   "marks": []
                 }
               ]
@@ -17418,7 +17546,14 @@
                 {
                   "_key": "priceListLink",
                   "_type": "link",
-                  "href": "https://5keys.my.canva.site/2026-pricing-webpage"
+                  "href": "https://5keys.my.canva.site/2026-pricing-webpage",
+                  "className": "link-price-list"
+                },
+                {
+                  "_key": "pricingEstimatorLink",
+                  "_type": "link",
+                  "href": "/hearing-aid-price-calculator/",
+                  "className": "link-pricing-estimator"
                 }
               ],
               "children": [
@@ -17428,6 +17563,20 @@
                   "text": "View Our Price List",
                   "marks": [
                     "priceListLink"
+                  ]
+                },
+                {
+                  "_type": "span",
+                  "_key": "k1t5b",
+                  "text": " ",
+                  "marks": []
+                },
+                {
+                  "_type": "span",
+                  "_key": "k1t5c",
+                  "text": "or Use our Pricing Estimator Tool",
+                  "marks": [
+                    "pricingEstimatorLink"
                   ]
                 }
               ]
@@ -17469,7 +17618,7 @@
                 {
                   "_type": "span",
                   "_key": "k1tb",
-                  "text": "We use a bundled treatment model that includes products, visits, and services for a set amount of time, with three payment options:",
+                  "text": "We use a bundled treatment model that includes products, visits, and services for a set amount of time, with two payment options:",
                   "marks": []
                 }
               ]
@@ -17497,81 +17646,7 @@
                 {
                   "_type": "span",
                   "_key": "k1tf",
-                  "text": "3-Year Treatment Program with Premium Technology and Service: $6,800-$7,400",
-                  "marks": []
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "_key": "k1ti",
-              "style": "normal",
-              "markDefs": [],
-              "children": [
-                {
-                  "_type": "span",
-                  "_key": "k1th",
-                  "text": "1-Year Treatment Program with Economy Technology and Service: $4,800",
-                  "marks": []
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "_key": "k1tk",
-              "style": "h3",
-              "markDefs": [],
-              "children": [
-                {
-                  "_type": "span",
-                  "_key": "k1tj",
-                  "text": "Financed Treatment Program",
-                  "marks": []
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "_key": "k1tm",
-              "style": "normal",
-              "listItem": "bullet",
-              "level": 1,
-              "markDefs": [
-                {
-                  "_key": "cherryFinancingLink",
-                  "_type": "link",
-                  "href": "/cherry/"
-                }
-              ],
-              "children": [
-                {
-                  "_type": "span",
-                  "_key": "cherryFinancingLinka",
-                  "text": "Financing options through ",
-                  "marks": []
-                },
-                {
-                  "_type": "span",
-                  "_key": "cherryFinancingLinkb",
-                  "text": "Cherry",
-                  "marks": [
-                    "cherryFinancingLink"
-                  ]
-                }
-              ]
-            },
-            {
-              "_type": "block",
-              "_key": "k1to",
-              "style": "normal",
-              "listItem": "bullet",
-              "level": 1,
-              "markDefs": [],
-              "children": [
-                {
-                  "_type": "span",
-                  "_key": "k1tn",
-                  "text": "Low monthly payments with no interest for 15 months (with approved credit)",
+                  "text": "We offer treatment programs ranging in price from $3200 up to $8600. During your Treatment Consultation, we will work with you to determine the technology level and service plan that best fits your hearing loss, lifestyle, and budget. You may use our Pricing Estimator Tool to receive a preliminary estimate for your treatment program. Our providers will then work with you to fine-tune the program to your specific needs. We also offer flexible financing options - see below for more details.",
                   "marks": []
                 }
               ]
@@ -17684,7 +17759,7 @@
                 {
                   "_key": "cherryFlexibleLink",
                   "_type": "link",
-                  "href": "/cherry/"
+                  "href": "/resources/financing-options/"
                 }
               ],
               "children": [
@@ -17707,6 +17782,29 @@
                   "_key": "cherryFlexibleLinkc",
                   "text": " (with approved credit) so you can choose hearing technology that matches your needs and lifestyle.",
                   "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "financingCtaBlock",
+              "style": "normal",
+              "markDefs": [
+                {
+                  "_key": "financingCtaLink",
+                  "_type": "link",
+                  "href": "/resources/financing-options/",
+                  "className": "btn btn-primary"
+                }
+              ],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "financingCtaSpan",
+                  "text": "Learn More and Apply",
+                  "marks": [
+                    "financingCtaLink"
+                  ]
                 }
               ]
             },
@@ -18569,14 +18667,14 @@
         }
       },
       {
-        "id": "internal_pages-cherry",
-        "slug": "cherry",
+        "id": "internal_pages-resources-financing-options",
+        "slug": "resources/financing-options",
         "status": "published",
         "data": {
-          "page_title": "Cherry",
-          "page_slug": "/cherry/",
-          "meta_title": "Cherry | New Leaf Hearing Care",
-          "meta_description": "Explore Cherry financing options for hearing care at New Leaf Hearing Care.",
+          "page_title": "Financing Options",
+          "page_slug": "/resources/financing-options/",
+          "meta_title": "Financing Options | New Leaf Hearing Care",
+          "meta_description": "Explore flexible financing options for hearing care at New Leaf Hearing Care.",
           "intro_content": [],
           "content": []
         }

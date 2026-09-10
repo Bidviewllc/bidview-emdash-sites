@@ -116,6 +116,13 @@ export async function mirrorListings(log = console.log) {
 	const lr = await d1("SELECT * FROM listings");
 	const rows = lr[0]?.results ?? [];
 
+	// 2b) Drop rows no longer in the feed FIRST — this must happen BEFORE the
+	// upsert. A re-listed property gets a NEW ListingKey but the SAME address,
+	// hence the same slug; if the stale row still holds that slug the insert trips
+	// unique(slug,locale) and the whole mirror aborts. (Hit for real 2026-09-10.)
+	const liveIds = rows.map((r) => `'${String(r.id).replace(/'/g, "''")}'`);
+	if (liveIds.length) await d1(`DELETE FROM ec_listings WHERE id NOT IN (${liveIds.join(",")})`);
+
 	// 3) UPSERT that PRESERVES owner edits. New listings insert with description +
 	//    _mls_description = the MLS remarks (so the admin box is pre-filled). Existing
 	//    listings: MLS columns + _mls_description always refresh; `description` follows
@@ -152,11 +159,7 @@ export async function mirrorListings(log = console.log) {
 	}
 	await flush();
 
-	// 4) drop listings no longer in the feed (sold/expired) — but keep their owner
-	//    edits out of the admin too. IDs are inlined (D1 param cap is 100).
-	const ids = rows.map((r) => `'${String(r.id).replace(/'/g, "''")}'`);
-	if (ids.length) await d1(`DELETE FROM ec_listings WHERE id NOT IN (${ids.join(",")})`);
-
+	// (departed listings were already removed in step 2b, before the upsert)
 	log(`✓ mirrored ${rows.length} listings into ec_listings (owner description/note preserved)`);
 	return rows.length;
 }

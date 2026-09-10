@@ -1,0 +1,131 @@
+---
+import Interior from "../layouts/Interior.astro";
+import CtaStrip from "../components/CtaStrip.astro";
+import reviewsData from "../data/reviews.json";
+
+interface Props {
+  city: string;          // "Brighton"
+  slug: string;          // "brighton-reviews"
+  areaPage?: string;     // link back to the matching service-area page
+  intro?: string;
+}
+const { city, slug, areaPage, intro } = Astro.props as Props;
+
+const ALL = reviewsData.reviews as Array<{ name: string; rating: number; date: string; text: string; local_guide: boolean; review_id: string }>;
+
+// Ontario has ONE office (2210 Monroe Ave, Brighton). These pages cover the areas it
+// serves, so every page draws on the same Google listing. Give each city a distinct,
+// non-overlapping slice so the four pages are not duplicates of each other.
+const CITIES = ["Brighton", "Fairport", "Greece", "Pittsford"];
+// Build the split ONCE across all four cities so every review lands on exactly one
+// page. (Slicing per-page over a differently-filtered array lets reviews that name a
+// city appear on two pages.) A review naming exactly one city goes to that city;
+// everything else is dealt round-robin so the four pages stay balanced and distinct.
+const buckets: Record<string, typeof ALL> = Object.fromEntries(CITIES.map(c => [c, []]));
+const leftovers: typeof ALL = [];
+for (const r of ALL) {
+  const hay = " " + r.text.toLowerCase().replace(/[^a-z]+/g, " ") + " ";
+  const named = CITIES.filter(c => hay.includes(" " + c.toLowerCase() + " "));
+  if (named.length === 1) buckets[named[0]].push(r);
+  else leftovers.push(r);
+}
+leftovers.forEach((r, i) => buckets[CITIES[i % CITIES.length]].push(r));
+const reviews = buckets[city] ?? [];
+
+const rating = reviewsData.rating;
+const total = reviewsData.review_count;
+const fmtDate = (d: string) => new Date(d + "T00:00:00Z").toLocaleDateString("en-US", { year: "numeric", month: "long", timeZone: "UTC" });
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": ["LocalBusiness", "MedicalBusiness"],
+  name: "Ontario Hearing Center",
+  url: `https://ontariohearing.com/${slug}/`,
+  telephone: "585-442-4180",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "2210 Monroe Avenue",
+    addressLocality: "Rochester",
+    addressRegion: "NY",
+    postalCode: "14618",
+    addressCountry: "US",
+  },
+  areaServed: { "@type": "City", name: `${city}, NY` },
+  aggregateRating: {
+    "@type": "AggregateRating",
+    ratingValue: String(rating),
+    reviewCount: String(total),
+    bestRating: "5",
+    worstRating: "1",
+  },
+  review: reviews.map(r => ({
+    "@type": "Review",
+    author: { "@type": "Person", name: r.name },
+    datePublished: r.date,
+    reviewRating: { "@type": "Rating", ratingValue: String(r.rating), bestRating: "5", worstRating: "1" },
+    reviewBody: r.text,
+  })),
+};
+---
+<Interior
+  title={`${city} Reviews | Ontario Hearing Center`}
+  description={`Read verified Google reviews for Ontario Hearing Center from patients we serve in ${city}, NY. Rated ${rating} stars from ${total} reviews.`}
+  pageTitle={`${city} Reviews`}
+  pageSubtitle={intro ?? `Verified Google reviews from patients we care for in ${city}, NY.`}
+  breadcrumbLabel={`${city} Reviews`}
+  breadcrumbs={[{ label: "Home", href: "/" }]}
+  canonical={`https://ontariohearing.com/${slug}/`}
+  schemaJsonLd={schema}
+>
+  <section>
+    <div class="rev-summary">
+      <div class="rev-summary__score">
+        <span class="rev-summary__number">{Number(rating).toFixed(1)}</span>
+        <span class="rev-summary__stars" aria-hidden="true">★★★★★</span>
+        <span class="rev-summary__count">from {total} Google reviews</span>
+      </div>
+      <p class="rev-summary__note">
+        Ontario Hearing Center serves {city}, NY from our office at 2210 Monroe Avenue in Brighton.
+        Every review below is a verified Google review of our practice, shown in full and unedited.
+        {areaPage && (<> Read more about <a href={areaPage}>our care for {city} patients</a>.</>)}
+      </p>
+    </div>
+  </section>
+
+  <section class="section--cream">
+    <h2 class="rev-heading">What our {city} patients say</h2>
+    <div class="rev-grid">
+      {reviews.map((r) => (
+        <article class="quote-card">
+          <div class="quote-card__mark">“</div>
+          <p class="quote-card__text">{r.text}</p>
+          <div class="quote-card__foot">
+            <div>
+              <p class="quote-card__author">— {r.name}</p>
+              <p class="quote-card__city">{fmtDate(r.date)} · Google review</p>
+            </div>
+            <div class="quote-card__rating" aria-label={`${r.rating} out of 5 stars`}>{"★".repeat(r.rating)}</div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <CtaStrip />
+</Interior>
+
+<style>
+  .rev-summary { display: flex; flex-wrap: wrap; gap: 28px; align-items: center; }
+  .rev-summary__score { display: flex; flex-direction: column; align-items: center; padding: 20px 28px; background: #fff; border: 1px solid #E1DCC8; border-radius: 8px; min-width: 190px; }
+  .rev-summary__number { font-family: var(--font-serif); font-size: 52px; line-height: 1; color: var(--navy, #0A2540); }
+  .rev-summary__stars { color: #E8A33D; font-size: 22px; letter-spacing: 2px; margin: 6px 0 4px; }
+  .rev-summary__count { font-size: 14px; color: var(--body); }
+  .rev-summary__note { flex: 1 1 320px; font-size: 17px; line-height: 1.6; color: var(--body); margin: 0; }
+  .rev-summary__note a { color: var(--green, #2F7D5B); text-decoration: underline; text-underline-offset: 2px; }
+  .rev-summary__note a:hover { text-decoration-thickness: 2px; }
+  .rev-heading { font-family: var(--font-serif); font-size: 34px; font-weight: 400; color: var(--navy, #0A2540); margin: 0 0 28px; }
+  .rev-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+  .rev-grid .quote-card__text { white-space: pre-line; }
+  @media (max-width: 1024px) { .rev-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 640px)  { .rev-grid { grid-template-columns: 1fr; } .rev-summary { gap: 18px; } }
+</style>

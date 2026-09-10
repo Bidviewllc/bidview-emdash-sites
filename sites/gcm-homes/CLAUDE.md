@@ -247,6 +247,144 @@ collection (his earlier "listings as custom post types" idea), read-only by natu
 - **Note:** `mirror-listings.mjs` must be run ONCE to register the collection/table (done). The sync steps only keep
   ROWS fresh (they assume the table exists). If the D1 is ever rebuilt from scratch, run mirror-listings.mjs again.
 
+### 2026-09-10 — Sync MOVED to GitHub Actions (Vercel cron OFF) + fixed a real mirror bug it exposed
+Vince: "Lets give Liz Github actions. NO vercel. For her to decide" (cadence is Liz's).
+- **`.github/workflows/gcm-homes-trestle-sync.yml`** (in the monorepo, PR #127). Runs
+  `sites/gcm-homes/trestle-test/cf-worker/sync/sync.mjs` — dependency-free (global fetch), so **no npm install**;
+  `actions/checkout` with `sparse-checkout: sites/gcm-homes/trestle-test` + `filter: blob:none` keeps runs fast.
+  `workflow_dispatch` for on-demand runs. **`concurrency` group** so two syncs can never interleave the
+  DELETE + re-INSERT. Logs are piped to `$GITHUB_STEP_SUMMARY` so Liz can read counts without opening logs.
+- **✅ VERIFIED GitHub runners are NOT WAF-blocked by Trestle** — this was the make-or-break unknown (Cloudflare's
+  egress IS blocked). Triggered the workflow for real: `fetched 196 active listings`, `6670 photos`, success.
+- **Secrets set on the repo:** `GCM_TRESTLE_CLIENT_ID`, `GCM_TRESTLE_CLIENT_SECRET`, `GCM_CF_API_TOKEN` (GCM_ prefix
+  because the monorepo is shared). Set via `gh secret set` (account has repo admin).
+- **Cadence = Liz's call.** Default `0 */2 * * *` (every 2 h). The cron line carries a comment with the trade-off
+  (every Trestle query is BILLED; each run is a full pull) + reference crons for 6 h / 30 min / daily.
+- **Vercel cron REMOVED** (`crons` block deleted from `trestle-test/vercel/vercel.json`, redeployed) so we don't
+  double-sync and double-pay Trestle. **The `/api/sync` endpoint still exists as a manual fallback** (CRON_SECRET
+  bearer) — only the schedule is gone.
+
+**🐞 BUG the workflow exposed (and why running it mattered):** the first run "succeeded" but the log showed
+`emdash mirror (non-fatal): UNIQUE constraint failed: ec_listings.slug, ec_listings.locale`, and `ec_listings` held
+**213 rows vs 196 live** — i.e. 17 sold/withdrawn listings were still showing in the admin.
+- **Cause:** the mirror upserted FIRST and deleted departed rows AFTER. A **re-listed property gets a NEW ListingKey
+  but the SAME address → the same slug**; while the stale row still held that slug the insert tripped
+  `unique(slug,locale)`, which threw, aborted the whole mirror (it's wrapped non-fatal so the sync still reported
+  success), and the delete never ran. Re-listings are routine in real estate, so this would recur.
+- **Fix (all three sync paths — `mirror-listings.mjs`, `cf-worker/sync/sync.mjs`, `vercel/api/sync.js`):** delete
+  departed rows **BEFORE** the upsert, freeing the slug. PR #128.
+- **Verified:** re-ran the workflow → `emdash mirror: ec_listings upserted 196 listings (owner cols preserved)`, no
+  UNIQUE error; `ec_listings` 196 == `listings` 196; the 2 owner description overrides preserved; new Trestle fields
+  still populated (flooring 168, tour 107).
+- **LESSON: the mirror is wrapped in try/catch as non-fatal, so a broken mirror does NOT fail the sync.** Don't trust
+  a green sync — grep the log for `emdash mirror:` (success) vs `emdash mirror (non-fatal):` (silent failure).
+
+### 2026-09-10 — EDGE CACHE added (home page 386ms → 86ms) + Community copy fully CMS-editable
+Two of the three open "ready to work on" items, done + verified.
+
+**1. Edge cache (`src/worker.ts`) — the home-page slowness Liz reported.**
+Diagnosed first: **could NOT reproduce her 6,644ms** (I measured from the SIN PoP: ~386ms warm, 2,261ms on a cold
+isolate). `server-timing` showed `render;dur=300, db.total;dur=201, db.count;dur=2`. The real defect was that
+**nothing was cached at all** — `cache-control` and `cf-cache-status` were both absent, so every visitor paid a full
+SSR + D1 round-trip. Wrapped emdash's worker handler with a `caches.default` layer:
+- **Result: 1,973ms MISS → 86ms HIT** (home), and D1 is never touched on a hit.
+- Cache key = `origin+pathname+?__cv=<CACHE_VERSION>` — **query string dropped** so `?cb=`/`?utm=` share one entry
+  (verified safe: no `.astro` page reads `searchParams` server-side; `/api/*` excluded). **Bump `CACHE_VERSION` to
+  invalidate** (now `v2`).
+- **Bypasses (critical):** non-GET, `/_emdash/*`, `/api/*`, and **any request carrying an emdash session/edit cookie**
+  (regex `emdash[-_](session|edit-mode|admin)`) — that response is additionally forced to `private, no-store`, so an
+  admin's editable view is never cached or leaked to anonymous visitors. Verified: admin cookie → `X-Cache` absent +
+  `private, no-store`.
+- Only caches `200` + `text/html|application/xml|text/plain`. **Respects an existing `Cache-Control`** (the detail
+  route's `s-maxage=300` and the sitemap's `3600` survive); otherwise applies `s-maxage=300, stale-while-revalidate=86400`.
+- `scheduled` + `PluginBridge` re-exported so the cron + Durable Object binding still resolve.
+- **⚠️ Consequence:** after a CMS edit, anonymous visitors can see stale HTML for up to 5 min (logged-in admin always
+  sees fresh). To verify a CMS change immediately, send a `Cookie: emdash-session=…` to bypass the cache.
+- **Verified:** MISS→HIT, normalized key, admin bypass, listing pages NOT cross-contaminated (per-pathname keys — each
+  listing kept its own correct injected title), `/api/listings` uncached + 200, `/_emdash/admin` 200, sitemap 220 locs.
+
+**2. Community page copy → `community` singleton collection (79 fields + title = 80).**
+Closes the "text on other pages editable" promise — the 9 community sections were hardcoded constants.
+- **`seed/seed-community.mjs`** (scratchpad tool) generated the collection + entry **from the existing constants**, so
+  the seeded values are the current copy verbatim — zero content drift. Pushed with `push-collections.mjs` (4
+  collections now: homepage 21, page_content 11, neighborhoods 7, community 79).
+- **Fields cover every section:** hero (eyebrow/headline-HTML/sub/**image URL**), 4 lake facts (num/unit/label), the
+  neighborhoods head, 6 things-to-do (title/**`todoN_pick` = "yes" toggles the "Grant's pick" badge**/description),
+  the pull quote + cite, schools (eyebrow/heading/body/glance title + 4 glance lines), 3 history eras
+  (name/year/text), 4 living-here items (title + text where a **blank line = new paragraph**), featured head, CTA.
+- **Low-risk wiring:** markup and loops are UNCHANGED. Each `DEF_*` constant stays as the fallback and the arrays are
+  rebuilt from CMS fields (`t(key, fallback)`), so the page renders identically with an empty/missing collection.
+  Inline-edit bindings added on the single-element fields; `content={{collection:"community",id:"main"}}` passed to the layout.
+- **This also unblocks the "needs Grant" placeholders** — the school lines, Grant's picks, and the IVGID fee text can
+  now be filled in the admin instead of waiting on a code change.
+- **Verified:** all original copy still present; 6 todo cards / **2** Grant's picks / 3 eras / 4 accordion items intact;
+  **CMS-driven proven** (set `facts_heading='CMS TEST HEADING'` in D1 → live page showed it → reverted cleanly).
+  Version `247f0115`.
+
+**Still open of the three:** faster MLS sync (currently Vercel daily cron 15:00 UTC) — **needs Vince's call on cadence +
+host**, because every option costs something (GitHub Actions minutes, or Vercel Pro ~$20/mo, and every Trestle query is
+billed). CF Cron is NOT an option (its egress is WAF-blocked).
+
+### 2026-09-10 — Listing-page SEO metadata + real sitemap (Liz's "Two Pages Outside Astro" doc; Option A + sitemap)
+Liz flagged (verified true against prod): the `/homes/:slug/` detail pages ship a STATIC `<head>` → every listing
+delivered the same generic `<title>` ("Listing Detail — Grant C. Meyer Homes") and **no description / og:title /
+og:image / canonical / JSON-LD** — bad for search snippets + link previews on the pages Grant most shares. And
+`/sitemap.xml` was emdash's default index → **1 loc (sitemap-posts.xml only)**, omitting every listing + page.
+Vince chose **Option A (metadata) + sitemap fix now, HOLD B/C** (the Astro conversions) — because the detail page is
+still actively changing (Liz's Features/Amenities cards + 3D-tour build on the Aug-19 fields), so converting now would
+churn against her work.
+- **Detail head injected server-side, page still served raw** (`src/pages/homes/[...slug].astro`): the route now
+  `bySlug()`-looks-up the listing, builds a per-listing `<title>` (`<address>, <city>, <state> — <price> | Grant C.
+  Meyer Homes`) + description + og/twitter (og:image = **the listing's first Trestle photo**) + canonical + a
+  `RealEstateListing` JSON-LD (offers price/USD), then **replaces the static `<title>` and injects before `</head>`**.
+  Body still built client-side (unchanged — `#app` + `/api/listing-by-slug` fetch intact). Origin from the request →
+  correct on workers.dev now + grantcmeyer.com after cutover, no code change. Falls back to raw HTML on any error.
+- **Real sitemap** (`src/pages/sitemap.xml.ts`, overrides emdash default): main pages (8) + 15 neighborhoods + **every
+  active listing from D1** (`allActive()`). **1 → 220 URLs** (197 listings + 15 nb + 8 pages). Plus `robots.txt.ts`
+  → `Sitemap: <origin>/sitemap.xml`, disallow `/_emdash/` + `/api/`.
+- **Listings hub** (`public/listings/index.html`, static, one URL): added og:image (hero-tahoe.jpg) + canonical +
+  twitter tags. **⚠️ hardcoded workers.dev absolute URLs — find/replace the origin here at grantcmeyer.com cutover**
+  (detail pages are dynamic, hub is static so can't self-resolve origin).
+- **Verified (fetch, all PASS):** 777 Rodeo Drive title = "777 Rodeo Drive, Glenbrook, NV — $125,000,000 | …", 1011
+  Lakeshore shows its OWN title (not static); description/og:title/canonical/`RealEstateListing` present; og:image =
+  real Trestle photo; body `#app`+fetch intact; sitemap 220 URLs; robots points at sitemap; hub has og:image+canonical.
+  emdash cache/version `0afaa89a`.
+- **✅ INDEPENDENTLY VERIFIED BY VINCE (2026-09-10):** confirmed the link previews render on **opengraph.xyz**, checked
+  the `<head>` manually via view-source, and confirmed the sitemap. (I couldn't render it myself — chrome-devtools was
+  locked to his open Chrome profile; change is head-only so the body was unaffected.) **Codex/Gemini QA NOT run —
+  both CLIs still broken on this box** (Codex model-reject, Gemini free-tier discontinued; see the resources.astro note).
+- **HELD (Liz's Options B/C — Astro conversion of the detail page + hub):** deferred until Liz's Features/3D-tour build
+  settles. When ready: detail page's `render()` template-literal (118 `${}`) → Astro markup fed by the same lib the
+  API uses; move the two `<style>` blocks into styles.css; keep lightbox/filmstrip/owner-note/print-sheet client-side.
+- **Answered Liz's Qs:** raw-serve was a pragmatic staging step (dodges `${}`/`{}` collision), nothing lost by
+  converting; detail page IS still changing weekly (→ hold B); no objection to A alone (handled the dup-`<title>` by
+  replacing it); sitemap is ours + was a bug, now fixed. **NOT done — repo push + reply to Liz pending Vince.**
+
+### 2026-08-19 — Added 16 populated Trestle fields to the sync (Liz's field request)
+Liz asked for 9+ missing fields (listing Features/Amenities cards + 3D tour) and, more importantly, the definitive
+list of fields the feed ACTUALLY populates. **Probed the live feed** (`scratchpad/probe.mjs` — all 210 active
+listings, no `$select`, counted non-null per field) → 205 fields populated. Findings + field-by-field verdicts written
+to **`TRESTLE-FIELD-AVAILABILITY.md`** (also in the repo). Key: several requested fields are **0% in this feed** →
+substitutes: `Stories` (84%) not `StoriesTotal` (0%); `ListingContractDate` (100%) not `OnMarketDate` (0%); derive lot
+sqft from `LotSizeAcres`. **Not in feed at all:** WaterSource, all School fields, BuyerAgencyCompensation (moot),
+SubdivisionName (still null → keep polygons), VirtualTourURLBranded.
+- **Added (populated + useful):** flooring, fireplaces, fireplace_yn, fireplace_features, roof, utilities,
+  pool_features, listing_date, hoa_frequency (**the HOA-period bug**), tour_url_mls (VirtualTourURLUnbranded, 54%),
+  mls_number (ListingId), stories, arch_style, construction, lot_features, condition, + derived **lot_sqft**.
+- **Wired through 5 places:** `FULL_SELECT` + row map + `LCOLS` in BOTH sync files (`vercel/api/sync.js` deployed +
+  `cf-worker/sync/sync.mjs`); **D1 `ALTER TABLE listings ADD COLUMN`** (17 cols); detail API via `lib/listings.ts`
+  `toDetail` (camelCase keys: flooring, roof, mlsNumber, hoaFrequency, tourUrlMls, lotSqft, listingDate, …); admin
+  mirror via `EMDASH_MLS_FIELDS` (both syncs) + `MLS_FIELDS` in `mirror-listings.mjs` (registered as read-only MLS
+  fields — kept OUT of OWNER_FIELDS per Liz).
+- **`tour_url`:** exposed `tourUrlMls` in the API; Liz wires the site to prefer it and fall back to the owner's manual
+  `tour_url`. OWNER_FIELDS (headline, tour_url, note_image, owner_note) untouched by the sync.
+- **Verified (all PASS):** ran one manual sync (210 listings) → D1 coverage **matches the probe exactly** (flooring
+  178/85%, roof 156/74%, tour 113/54%, hoa_freq 118/56%, mls_no 210/100%, stories 176/84%, lot_features 173/82%,
+  lot_sqft 131/62%); detail API returns the new fields; admin mirror registered + populated; owner override preserved
+  across the sync. emdash cache `6a24a456`, Vercel redeployed. **Merged to monorepo — PR #108 (`afd2455c1`).**
+- **Note for Liz's front-end:** the fields are live in the detail API now; the listing design just needs to read the
+  new `toDetail` keys. Array-type MLS values (Flooring/Utilities/LotFeatures/etc.) are stored comma-joined.
+
 ### 2026-08-13 — Contact form backend DONE (D1 + Resend), all forms wired
 Every inquiry form now saves to D1 **and** emails via Resend. Modeled on the Ontario/onePHG handler.
 - **`src/pages/api/contact.ts`** — POST: honeypot (`website`), optional Turnstile (fail-open, only enforced if a

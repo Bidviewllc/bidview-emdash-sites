@@ -1,0 +1,20 @@
+---
+import Interior from '../layouts/Interior.astro';
+
+const groups = [
+  { title: 'Main pages', links: [['Home','/'],['Google Reviews','/reviews/'],['Ear to Brain Evaluation','/ear-to-brain-evaluation/'],['Ear to Brain Fitness','/ear-to-brain-fitness/'],['Brain Pie','/brain-pie/'],['Duet Method Courses','/duet-method-courses/'],['Hearing the Call','/hearing-the-call/']] },
+  { title: 'Hearing care', links: [['Hearing Loss','/hearing-loss/'],['Tinnitus','/tinnitus/'],['Hearing Aid Fittings','/hearing-aid-fittings/'],['Real Ear Measurement','/real-ear-measurement/'],['Hearing Protection','/hearing-protection/'],['Ear Wax Removal','/ear-wax-removal/'],['Auditory Processing Disorder','/auditory-processing-disorder/'],["Meniere's Disease",'/menieres-disease/'],['Sound Sensitivity','/sound-sensitivity/'],['Concussion & Auditory Function','/concussion-auditory-function/'],['Balance & Vestibular Disorders','/balance-vestibular-disorders/']] },
+  { title: 'Our team', links: [['Lori Halvorson, Au.D.','/audiologist/lori-halvorson/'],['Ann Benny Stephen, Au.D.','/audiologist/ann-benny-stephen/'],['Allison May, Au.D.','/audiologist/allison-may/'],['Kristen Halvorson','/team/kristen-halvorson/'],['Rebecca Keller','/team/rebecca-keller/'],['Rozanna Shambrook','/team/rozanna-shambrook/'],['Gigi Anderson','/team/gigi-anderson/'],['Susan Fink','/team/susan-fink/'],['Kaylie Fuentes','/team/kaylie-fuentes/'],['Kaleo','/team/kaleo/']] },
+  { title: 'Policies', links: [['Privacy Policy','/privacy-policy/'],['Terms of Service','/terms-of-service/']] },
+];
+---
+<Interior title="HTML Sitemap | Duet Hearing" description="Browse all public pages on the Duet Hearing website." canonical="https://duethearing.com/sitemap/">
+  <section class="page-hero"><div class="page-hero-inner"><div class="page-hero-text"><nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span class="sep">/</span><span class="current">Sitemap</span></nav><h1 class="page-title">HTML Sitemap</h1><div class="page-underline"></div><p class="page-dek">Browse the public pages on the Duet Hearing website.</p></div><div class="page-hero-media" aria-hidden="true"></div></div></section>
+  <div class="hero-curve curve-arch" aria-hidden="true"></div>
+  <main class="sitemap-main">
+    {groups.map((group) => <section><h2>{group.title}</h2><ul>{group.links.map(([label,href]) => <li><a href={href}>{label}</a></li>)}</ul></section>)}
+  </main>
+  <style>
+    .sitemap-main{width:min(1180px,calc(100% - 40px));margin:0 auto;padding:72px 0 96px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:36px 64px}.sitemap-main section{padding:30px;border:1px solid #e1ecf3;border-radius:18px;background:#fff}.sitemap-main h2{margin:0 0 20px;color:#21273f;font:500 28px/1.2 'Plus Jakarta Sans',sans-serif}.sitemap-main ul{display:grid;gap:11px;margin:0;padding:0;list-style:none}.sitemap-main a{color:#007da5;font:500 16px/1.5 'Plus Jakarta Sans',sans-serif;text-decoration:none}.sitemap-main a:hover{text-decoration:underline}@media(max-width:767px){.sitemap-main{width:min(100% - 28px,1180px);grid-template-columns:1fr;padding:48px 0 72px;gap:20px}.sitemap-main section{padding:24px}}
+  </style>
+</Interior>

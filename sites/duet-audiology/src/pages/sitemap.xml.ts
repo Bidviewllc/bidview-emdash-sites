@@ -2,7 +2,7 @@
 // If you add a new public page, list its slug here.
 
 const SITE = 'https://duethearing.com';
-const today = '2026-06-11';
+const today = new Date().toISOString().slice(0, 10);
 
 const urls: Array<{ path: string; priority: number; changefreq: string; lastmod?: string }> = [
   { path: '/', priority: 1.0, changefreq: 'weekly' },
@@ -34,6 +34,8 @@ const urls: Array<{ path: string; priority: number; changefreq: string; lastmod?
   { path: '/concussion-auditory-function/', priority: 0.6, changefreq: 'monthly' },
   { path: '/balance-vestibular-disorders/', priority: 0.6, changefreq: 'monthly' },
   { path: '/hearing-the-call/', priority: 0.7, changefreq: 'monthly' },
+  { path: '/reviews/', priority: 0.8, changefreq: 'monthly' },
+  { path: '/sitemap/', priority: 0.3, changefreq: 'monthly' },
   { path: '/privacy-policy/', priority: 0.3, changefreq: 'yearly' },
   { path: '/terms-of-service/', priority: 0.3, changefreq: 'yearly' },
 ];

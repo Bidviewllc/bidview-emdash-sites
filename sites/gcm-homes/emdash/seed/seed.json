@@ -571,6 +571,411 @@
 			]
 		},
 		{
+			"slug": "community",
+			"label": "Community Page",
+			"labelSingular": "Community Page",
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "hero_eyebrow",
+					"label": "Hero — eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "hero_headline",
+					"label": "Hero — headline (HTML allowed)",
+					"type": "text"
+				},
+				{
+					"slug": "hero_sub",
+					"label": "Hero — subhead",
+					"type": "text"
+				},
+				{
+					"slug": "hero_image",
+					"label": "Hero — image URL",
+					"type": "text"
+				},
+				{
+					"slug": "facts_eyebrow",
+					"label": "Facts — eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "facts_heading",
+					"label": "Facts — heading",
+					"type": "string"
+				},
+				{
+					"slug": "fact1_num",
+					"label": "Fact 1 — number",
+					"type": "string"
+				},
+				{
+					"slug": "fact1_unit",
+					"label": "Fact 1 — unit",
+					"type": "string"
+				},
+				{
+					"slug": "fact1_label",
+					"label": "Fact 1 — label",
+					"type": "string"
+				},
+				{
+					"slug": "fact2_num",
+					"label": "Fact 2 — number",
+					"type": "string"
+				},
+				{
+					"slug": "fact2_unit",
+					"label": "Fact 2 — unit",
+					"type": "string"
+				},
+				{
+					"slug": "fact2_label",
+					"label": "Fact 2 — label",
+					"type": "string"
+				},
+				{
+					"slug": "fact3_num",
+					"label": "Fact 3 — number",
+					"type": "string"
+				},
+				{
+					"slug": "fact3_unit",
+					"label": "Fact 3 — unit",
+					"type": "string"
+				},
+				{
+					"slug": "fact3_label",
+					"label": "Fact 3 — label",
+					"type": "string"
+				},
+				{
+					"slug": "fact4_num",
+					"label": "Fact 4 — number",
+					"type": "string"
+				},
+				{
+					"slug": "fact4_unit",
+					"label": "Fact 4 — unit",
+					"type": "string"
+				},
+				{
+					"slug": "fact4_label",
+					"label": "Fact 4 — label",
+					"type": "string"
+				},
+				{
+					"slug": "nb_eyebrow",
+					"label": "Neighborhoods — eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "nb_heading",
+					"label": "Neighborhoods — heading",
+					"type": "string"
+				},
+				{
+					"slug": "nb_intro",
+					"label": "Neighborhoods — intro",
+					"type": "text"
+				},
+				{
+					"slug": "todo_eyebrow",
+					"label": "Things to Do — eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "todo_heading",
+					"label": "Things to Do — heading",
+					"type": "string"
+				},
+				{
+					"slug": "todo_intro",
+					"label": "Things to Do — intro",
+					"type": "text"
+				},
+				{
+					"slug": "todo1_h",
+					"label": "Thing 1 — title",
+					"type": "string"
+				},
+				{
+					"slug": "todo1_pick",
+					"label": "Thing 1 — Grant's pick? (yes/blank)",
+					"type": "string"
+				},
+				{
+					"slug": "todo1_p",
+					"label": "Thing 1 — description",
+					"type": "text"
+				},
+				{
+					"slug": "todo2_h",
+					"label": "Thing 2 — title",
+					"type": "string"
+				},
+				{
+					"slug": "todo2_pick",
+					"label": "Thing 2 — Grant's pick? (yes/blank)",
+					"type": "string"
+				},
+				{
+					"slug": "todo2_p",
+					"label": "Thing 2 — description",
+					"type": "text"
+				},
+				{
+					"slug": "todo3_h",
+					"label": "Thing 3 — title",
+					"type": "string"
+				},
+				{
+					"slug": "todo3_pick",
+					"label": "Thing 3 — Grant's pick? (yes/blank)",
+					"type": "string"
+				},
+				{
+					"slug": "todo3_p",
+					"label": "Thing 3 — description",
+					"type": "text"
+				},
+				{
+					"slug": "todo4_h",
+					"label": "Thing 4 — title",
+					"type": "string"
+				},
+				{
+					"slug": "todo4_pick",
+					"label": "Thing 4 — Grant's pick? (yes/blank)",
+					"type": "string"
+				},
+				{
+					"slug": "todo4_p",
+					"label": "Thing 4 — description",
+					"type": "text"
+				},
+				{
+					"slug": "todo5_h",
+					"label": "Thing 5 — title",
+					"type": "string"
+				},
+				{
+					"slug": "todo5_pick",
+					"label": "Thing 5 — Grant's pick? (yes/blank)",
+					"type": "string"
+				},
+				{
+					"slug": "todo5_p",
+					"label": "Thing 5 — description",
+					"type": "text"
+				},
+				{
+					"slug": "todo6_h",
+					"label": "Thing 6 — title",
+					"type": "string"
+				},
+				{
+					"slug": "todo6_pick",
+					"label": "Thing 6 — Grant's pick? (yes/blank)",
+					"type": "string"
+				},
+				{
+					"slug": "todo6_p",
+					"label": "Thing 6 — description",
+					"type": "text"
+				},
+				{
+					"slug": "quote_text",
+					"label": "Pull quote — text",
+					"type": "text"
+				},
+				{
+					"slug": "quote_cite",
+					"label": "Pull quote — attribution",
+					"type": "string"
+				},
+				{
+					"slug": "schools_eyebrow",
+					"label": "Schools — eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "schools_heading",
+					"label": "Schools — heading",
+					"type": "string"
+				},
+				{
+					"slug": "schools_body",
+					"label": "Schools — body",
+					"type": "text"
+				},
+				{
+					"slug": "glance_title",
+					"label": "Schools — glance box title",
+					"type": "string"
+				},
+				{
+					"slug": "school1",
+					"label": "Schools — glance line 1",
+					"type": "string"
+				},
+				{
+					"slug": "school2",
+					"label": "Schools — glance line 2",
+					"type": "string"
+				},
+				{
+					"slug": "school3",
+					"label": "Schools — glance line 3",
+					"type": "string"
+				},
+				{
+					"slug": "school4",
+					"label": "Schools — glance line 4",
+					"type": "string"
+				},
+				{
+					"slug": "history_eyebrow",
+					"label": "History — eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "history_heading",
+					"label": "History — heading",
+					"type": "string"
+				},
+				{
+					"slug": "h1_era",
+					"label": "Era 1 — name",
+					"type": "string"
+				},
+				{
+					"slug": "h1_year",
+					"label": "Era 1 — year",
+					"type": "string"
+				},
+				{
+					"slug": "h1_p",
+					"label": "Era 1 — text",
+					"type": "text"
+				},
+				{
+					"slug": "h2_era",
+					"label": "Era 2 — name",
+					"type": "string"
+				},
+				{
+					"slug": "h2_year",
+					"label": "Era 2 — year",
+					"type": "string"
+				},
+				{
+					"slug": "h2_p",
+					"label": "Era 2 — text",
+					"type": "text"
+				},
+				{
+					"slug": "h3_era",
+					"label": "Era 3 — name",
+					"type": "string"
+				},
+				{
+					"slug": "h3_year",
+					"label": "Era 3 — year",
+					"type": "string"
+				},
+				{
+					"slug": "h3_p",
+					"label": "Era 3 — text",
+					"type": "text"
+				},
+				{
+					"slug": "living_eyebrow",
+					"label": "Living Here — eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "living_heading",
+					"label": "Living Here — heading",
+					"type": "string"
+				},
+				{
+					"slug": "living_intro",
+					"label": "Living Here — intro",
+					"type": "text"
+				},
+				{
+					"slug": "live1_h",
+					"label": "Living 1 — title",
+					"type": "string"
+				},
+				{
+					"slug": "live1_p",
+					"label": "Living 1 — text (blank line = new paragraph)",
+					"type": "text"
+				},
+				{
+					"slug": "live2_h",
+					"label": "Living 2 — title",
+					"type": "string"
+				},
+				{
+					"slug": "live2_p",
+					"label": "Living 2 — text (blank line = new paragraph)",
+					"type": "text"
+				},
+				{
+					"slug": "live3_h",
+					"label": "Living 3 — title",
+					"type": "string"
+				},
+				{
+					"slug": "live3_p",
+					"label": "Living 3 — text (blank line = new paragraph)",
+					"type": "text"
+				},
+				{
+					"slug": "live4_h",
+					"label": "Living 4 — title",
+					"type": "string"
+				},
+				{
+					"slug": "live4_p",
+					"label": "Living 4 — text (blank line = new paragraph)",
+					"type": "text"
+				},
+				{
+					"slug": "featured_eyebrow",
+					"label": "Featured — eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "featured_heading",
+					"label": "Featured — heading",
+					"type": "string"
+				},
+				{
+					"slug": "featured_intro",
+					"label": "Featured — intro",
+					"type": "text"
+				},
+				{
+					"slug": "cta_heading",
+					"label": "CTA — heading",
+					"type": "string"
+				},
+				{
+					"slug": "cta_body",
+					"label": "CTA — body",
+					"type": "text"
+				}
+			]
+		},
+		{
 			"slug": "market_intelligence",
 			"label": "Market Intelligence",
 			"labelSingular": "Market Intelligence Post",
@@ -2091,6 +2496,95 @@
 					"take": "Crystal Bay rewards patience. The lakefront here rarely lists publicly, and when it does the right buyer is often already on a list. If this is the corner you want, the move is to be known here before the home exists.",
 					"avg_price": "$4.1M",
 					"trend": "Emerging"
+				}
+			}
+		],
+		"community": [
+			{
+				"id": "main",
+				"slug": "main",
+				"status": "published",
+				"data": {
+					"title": "Community Page",
+					"hero_eyebrow": "Incline Village & Crystal Bay",
+					"hero_headline": "A Guide to Life on Tahoe's <em>North Shore.</em>",
+					"hero_sub": "Sixteen distinct neighborhoods, one extraordinary lake, and the details that make this corner of Nevada worth the move — mapped out from a 35-year resident's point of view.",
+					"hero_image": "/assets/hero-sand-harbor-people.jpg",
+					"facts_eyebrow": "Incline at a Glance",
+					"facts_heading": "The Lake, By the Numbers",
+					"fact1_num": "6,225–7,700",
+					"fact1_unit": "ft",
+					"fact1_label": "Elevation range",
+					"fact2_num": "290",
+					"fact2_unit": "days",
+					"fact2_label": "Of sunshine a year",
+					"fact3_num": "216",
+					"fact3_unit": "in",
+					"fact3_label": "Average snowfall",
+					"fact4_num": "72",
+					"fact4_unit": "miles",
+					"fact4_label": "Of shoreline",
+					"nb_eyebrow": "Explore the Neighborhoods",
+					"nb_heading": "Sixteen Areas, One Community",
+					"nb_intro": "Tap an area on the map to see its character, or pick a neighborhood below. Each opens its own guide, with the homes currently for sale there.",
+					"todo_eyebrow": "Things to Do",
+					"todo_heading": "What Living on the North Shore Looks Like",
+					"todo_intro": "Skiing in the morning, the beach by afternoon — the calendar here runs on the seasons.",
+					"todo1_h": "Diamond Peak",
+					"todo1_pick": "yes",
+					"todo1_p": "A community-owned ski resort with some of the best lake-view runs on the North Shore — and short lift lines compared with the bigger Tahoe resorts.",
+					"todo2_h": "The Private Beaches",
+					"todo2_pick": "",
+					"todo2_p": "Incline, Burnt Cedar, and Ski Beach are reserved for residents and their guests — swimming, picnics, and boat access through the summer.",
+					"todo3_h": "Two Golf Courses",
+					"todo3_pick": "",
+					"todo3_p": "The Robert Trent Jones championship course and the shorter mountain course, both run by the community improvement district.",
+					"todo4_h": "Trails & Sand Harbor",
+					"todo4_pick": "yes",
+					"todo4_p": "Hiking and biking from the village down to the lake, plus the East Shore Trail and Sand Harbor's coves just off Highway 28.",
+					"todo5_h": "On the Water",
+					"todo5_pick": "",
+					"todo5_p": "Boating, paddleboarding, and kayaking on the clearest large lake in the country, with full-service marinas a short drive away.",
+					"todo6_h": "Thunderbird Lodge",
+					"todo6_pick": "",
+					"todo6_p": "Captain Whittell's stone lakeside castle south of Sand Harbor, open for docent-led tours through the summer months.",
+					"quote_text": "Ask any local where the lake is best and you'll get a different answer for every month — the cove in July, the East Shore Trail in October, Diamond Peak in February. That's the whole secret of living here: there's a season for all of it.",
+					"quote_cite": "Grant C. Meyer · 35 years on the lake",
+					"schools_eyebrow": "Schools",
+					"schools_heading": "Learning, a Few Minutes From Home",
+					"schools_body": "Incline Village built its first elementary school in 1964 and its high school as the community itself took shape. Today families choose between the local public schools and a handful of private options — all within the village, none more than a short drive away.",
+					"glance_title": "In One Glance",
+					"school1": "Public elementary, middle & high schools",
+					"school2": "Private K–8 options within the village",
+					"school3": "A newer elementary campus completed in 2009",
+					"school4": "Reno–Tahoe universities within an hour",
+					"history_eyebrow": "A Short History",
+					"history_heading": "From Logging Camp to Master-Planned Village",
+					"h1_era": "Logging era",
+					"h1_year": "1880s",
+					"h1_p": "The North Shore began as timber country, feeding the Comstock silver mines of Virginia City. Through the 1800s a narrow-gauge line hauled logs up the mountain to a V-flume — the scars of that era still trace the ridgelines between Mill Creek and Sand Harbor.",
+					"h2_era": "Thunderbird Lodge",
+					"h2_year": "1930s",
+					"h2_p": "By the early 1900s the lake had become a summer escape. Captain George Whittell bought some 40,000 acres and built a stone castle south of Sand Harbor — the Thunderbird Lodge — where he was known for legendary parties and a private menagerie that included lions and an elephant.",
+					"h3_era": "Crystal Bay Development Co.",
+					"h3_year": "1960s",
+					"h3_p": "In the 1960s the Crystal Bay Development Company acquired Whittell's holdings and set out to build a master-planned community. Robert Trent Jones designed the golf course, the name Incline Village was chosen, and the first school opened in 1964 — the framework of the village you see today.",
+					"living_eyebrow": "Living Here",
+					"living_heading": "Settling Into Incline Village",
+					"living_intro": "The practical side of the move — how you get here, what residency opens up, and what the year actually feels like.",
+					"live1_h": "Getting here",
+					"live1_p": "Reno–Tahoe International Airport sits about 45 minutes down Highway 431, which makes Incline Village one of the more reachable luxury markets in the Sierra.\n\nSacramento and the Bay Area are an easy weekend drive, and most of the village is only a few minutes from Highway 28 along the shore.",
+					"live2_h": "Amenities & IVGID",
+					"live2_p": "The Incline Village General Improvement District runs the private beaches, Diamond Peak, both golf courses, the tennis complex, and the recreation center.\n\nAccess comes through an annual recreation fee billed alongside your Washoe County property taxes — one of the things that makes residency here distinct.",
+					"live3_h": "Climate & the seasons",
+					"live3_p": "Incline sits between roughly 6,225 and 7,700 feet, which gives it four genuine seasons: deep, snowy winters and dry, mild summers, with around 290 days of sunshine across the year.\n\nSnow piles up through the winter — well over a hundred inches in a typical year — then gives way to long, clear summers ideal for the lake.",
+					"live4_h": "Day-to-day essentials",
+					"live4_p": "The village covers the basics close to home — Raley's and the Village shopping center for groceries, the recreation center and library at the core, and the local public and private schools all within a few minutes.\n\nFor specialized care and bigger errands, Tahoe Forest Health System is over the hill in Truckee, and Reno's hospitals and shopping are about 45 minutes away.",
+					"featured_eyebrow": "Currently on the Market",
+					"featured_heading": "Featured Properties",
+					"featured_intro": "Homes Grant is representing right now across Incline Village and Crystal Bay.",
+					"cta_heading": "Ready to Know the North Shore From the Inside?",
+					"cta_body": "Start with a conversation. Grant will walk you through the neighborhoods, the market, and what's quietly available."
 				}
 			}
 		],

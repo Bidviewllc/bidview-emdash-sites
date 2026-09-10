@@ -1,0 +1,88 @@
+---
+/**
+ * Book an Appointment — hosts the Suno online scheduling widget.
+ *
+ * ClickUp 868k3k71a. Suno (Carissa) supplied the embed; Erika Haler is the
+ * client POC. The widget is a live booking system wired to Liberty's clinic
+ * (data-clinic="10083") — it loads their real appointment types and writes
+ * real bookings. It is NOT the same thing as the /contact/ enquiry form.
+ *
+ * Colours: `data-pc` is the accent, `data-dc` the panel background. Suno's
+ * defaults were amber #ffbf00 / teal #a8e1df, which clash with the navy/red
+ * palette. Set to --brand-red / --surface (Vince's call 2026-09-04). To change
+ * them, swap the hex values here AND in the standalone link below — they are
+ * the same two params (`pc` / `dc`).
+ *
+ * The script tag must be `is:inline` so Astro leaves the third-party URL alone,
+ * and must come AFTER the #clinic-scheduler div, exactly as Suno supplied it.
+ *
+ * This page is an intentional addition — the Vercel design demo has no
+ * equivalent. See CLAUDE.md.
+ */
+import Base from "../../layouts/Base.astro";
+
+const SUNO = {
+	token: "8f52c43eaf75df4cebf249aa565de5d231ae4e91",
+	clinic: "10083",
+	pc: "a6192e", // --brand-red
+	dc: "f5f7fb", // --surface
+};
+const standalone = `https://scheduling.suno.care/?clinic=${SUNO.clinic}&token=${SUNO.token}&pc=${SUNO.pc}&dc=${SUNO.dc}`;
+---
+
+<Base
+	title="Book an Appointment"
+	description="Book your appointment with Liberty Hearing Center in College Station, TX. Choose your provider, date and time online, or call 979-450-7996."
+	active="contact"
+	footer="inner"
+>
+<section style="background:var(--surface-blue)">
+<div style="max-width:1280px;margin:0 auto;padding:clamp(48px,7vw,84px) clamp(18px,4vw,32px)">
+<div style="display:inline-flex;align-items:center;gap:10px;padding:8px 18px;border-radius:999px;background:var(--white);font-size:13px;font-weight:700;color:var(--text-body)"><a href="/" style="color:var(--brand-red)">Home</a> <span style="opacity:.5">/</span> <span>Book an Appointment</span></div>
+<h1 style="margin:26px 0 0;color:var(--navy);font-size:clamp(38px,6vw,62px);font-weight:800;line-height:1.04;letter-spacing:-.035em;text-wrap:pretty">Book your appointment.</h1>
+<p style="margin:22px 0 0;max-width:760px;color:var(--text-body);font-size:19px;line-height:1.8;text-wrap:pretty">Choose your appointment type, provider, and a time that works for you. If you would rather talk it through, call us at <a href="tel:9794507996" style="color:var(--brand-red);font-weight:700">979-450-7996</a> and we will find a slot together.</p>
+<p style="margin:14px 0 0;max-width:760px;color:var(--text-muted);font-size:16px;line-height:1.7">Waking up with sudden hearing loss? Please call instead of booking online — we hold time each day for urgent appointments.</p>
+</div>
+</section>
+
+<section id="schedule" style="background:var(--white)">
+<div style="max-width:1100px;margin:0 auto;padding:clamp(40px,6vw,72px) clamp(18px,4vw,32px)">
+<div
+	id="clinic-scheduler"
+	data-token={SUNO.token}
+	data-clinic={SUNO.clinic}
+	data-pc={SUNO.pc}
+	data-dc={SUNO.dc}
+	style="min-height:360px"
+> </div>
+<noscript>
+<div style="padding:26px 28px;border:1px solid var(--border);border-radius:16px;background:var(--surface);color:var(--text-body);font-size:17px;line-height:1.7">
+Online booking needs JavaScript enabled. You can still <a href={standalone} style="color:var(--brand-red);font-weight:700">open the scheduler in a new tab</a>, or call us at <a href="tel:9794507996" style="color:var(--brand-red);font-weight:700">979-450-7996</a>.
+</div>
+</noscript>
+<p style="margin:22px 0 0;color:var(--text-muted);font-size:15px;line-height:1.7">Trouble with the scheduler? <a href={standalone} target="_blank" rel="noopener" style="color:var(--brand-red);font-weight:700">Open it in a new tab</a> or call <a href="tel:9794507996" style="color:var(--brand-red);font-weight:700">979-450-7996</a>.</p>
+</div>
+</section>
+
+<section style="background:var(--cream)">
+<div style="max-width:1280px;margin:0 auto;padding:clamp(44px,6vw,76px) clamp(18px,4vw,32px)">
+<div data-stack="3" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:34px">
+<div>
+<h2 style="margin:0 0 10px;color:var(--navy);font-size:20px;font-weight:750;letter-spacing:-.02em">Where to find us</h2>
+<p style="margin:0;color:var(--text-body);font-size:16px;line-height:1.7">2405 Texas Avenue South, Suite 307<br>College Station, TX 77840</p>
+<p style="margin:10px 0 0;color:var(--text-body);font-size:16px;line-height:1.7">3rd floor of the PNC Bank building. Park on the USDA / flag side for the quickest lift access.</p>
+</div>
+<div>
+<h2 style="margin:0 0 10px;color:var(--navy);font-size:20px;font-weight:750;letter-spacing:-.02em">Clinic hours</h2>
+<p style="margin:0;color:var(--text-body);font-size:16px;line-height:1.7">Monday 7:00 AM – 6:00 PM<br>Tuesday – Thursday 8:30 AM – 4:30 PM<br>Friday closed</p>
+</div>
+<div>
+<h2 style="margin:0 0 10px;color:var(--navy);font-size:20px;font-weight:750;letter-spacing:-.02em">Prefer to ask first?</h2>
+<p style="margin:0;color:var(--text-body);font-size:16px;line-height:1.7">Send us a question through the <a href="/contact/#request" style="color:var(--brand-red);font-weight:700">contact form</a>, or read <a href="/hearing-evaluations/" style="color:var(--brand-red);font-weight:700">what to expect</a> at a hearing evaluation.</p>
+</div>
+</div>
+</div>
+</section>
+
+<script is:inline src="https://suno-web-components.netlify.app/suno-patient-scheduling.es.js"></script>
+</Base>

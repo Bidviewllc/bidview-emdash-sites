@@ -1,0 +1,543 @@
+---
+// Hearing Aid Price Calculator — standalone page, no site layout (same pattern
+// as hearing-wellness). All pricing data lives in src/data/pricing.ts.
+import {
+  TIERS, MEMBERSHIP, INCLUDED, NOT_INCLUDED, TRIAL,
+  ACCESSORIES, ACCESSORY_NOTE, SERVICES,
+  FINANCING, INSURANCE_NOTE, DISCLAIMER, CONTACT,
+} from '../data/pricing';
+
+const logoSrc = '/assets/new-leaf-hearing-care-logo.webp';
+const fmt = (n: number) => '$' + n.toLocaleString('en-US');
+
+// Minimal data the client script needs (recommendation + price toggle)
+const clientTiers = TIERS.map(t => ({
+  id: t.id, name: t.name, whoFor: t.whoFor,
+  perEarLow: t.perEarLow, perEarHigh: t.perEarHigh,
+}));
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hearing Aid Pricing – New Leaf Hearing Care</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="See real hearing aid price ranges at New Leaf Hearing Care — no hidden fees, no sales pressure. Get a personalized estimate in under a minute.">
+<link rel="icon" type="image/webp" href="/assets/new-leaf-hearing-care-favicon.webp">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style is:global>
+:root{--green-dark:#2D6A35;--green-mid:#5DB83A;--green-light:#8DC63F;--purple-dark:#3D1A6B;--purple-mid:#5B2D8E;--purple-light:#7B52AB;--black:#0A0A0F;--off-white:#F7F5F0;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:linear-gradient(135deg,var(--purple-dark) 0%,var(--purple-mid) 50%,var(--green-dark) 100%);min-height:100vh;color:var(--black);}
+.wrap{max-width:860px;margin:0 auto;padding:2rem 1.25rem 4rem;}
+.logo-wrap{display:flex;align-items:center;justify-content:center;gap:1rem;padding-top:1.5rem;margin-bottom:2rem;}
+.logo-wrap img{height:56px;width:auto;}
+
+/* screens */
+.screen{display:none;animation:fadeUp .5s ease both;}
+.screen.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+
+/* landing */
+.landing{text-align:center;max-width:680px;margin:0 auto;padding:2rem 0 3rem;}
+.landing h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,3.1rem);font-weight:300;color:var(--off-white);line-height:1.2;margin-bottom:1.2rem;}
+.landing h1 em{font-style:italic;background:linear-gradient(135deg,var(--green-mid),var(--green-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.landing p{color:rgba(247,245,240,0.7);font-size:1.05rem;line-height:1.7;margin-bottom:2.4rem;font-weight:300;}
+.btn-primary{display:inline-block;background:linear-gradient(135deg,var(--green-dark),var(--green-mid));color:white;font-size:1rem;font-weight:600;letter-spacing:.04em;padding:1rem 2.4rem;border:none;border-radius:50px;cursor:pointer;transition:all .3s;box-shadow:0 8px 30px rgba(93,184,58,.3);text-decoration:none;font-family:'DM Sans',sans-serif;}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(93,184,58,.45);}
+.skip-link{display:block;margin-top:1.25rem;color:rgba(247,245,240,.75);font-size:.9rem;text-decoration:underline;text-underline-offset:3px;background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;width:100%;}
+.skip-link:hover{color:var(--off-white);}
+
+/* quiz card */
+.card{background:var(--off-white);border-radius:20px;box-shadow:0 30px 80px rgba(0,0,0,.45);overflow:hidden;}
+.card-header{background:linear-gradient(135deg,var(--purple-dark) 0%,var(--purple-mid) 60%,var(--green-dark) 100%);padding:1.6rem 2rem 1.3rem;}
+.card-header h2{font-family:'Cormorant Garamond',serif;color:white;font-size:1.5rem;font-weight:400;margin-bottom:.25rem;}
+.card-header p{color:rgba(255,255,255,.75);font-size:.85rem;}
+.progress-bar{height:4px;background:rgba(255,255,255,.2);margin-top:1rem;border-radius:2px;overflow:hidden;}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--green-light),var(--green-mid));transition:width .35s ease;}
+.card-body{padding:1.6rem 2rem 2rem;}
+.step{display:none;}
+.step.active{display:block;animation:fadeUp .3s ease;}
+.step-label{font-size:.7rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--purple-mid);margin-bottom:.5rem;}
+.step h3{font-family:'Cormorant Garamond',serif;font-size:1.35rem;margin-bottom:1.1rem;font-weight:600;}
+.opt{display:block;width:100%;text-align:left;background:white;border:1.5px solid #E8E4F0;border-radius:12px;padding:1rem 1.2rem;margin-bottom:.7rem;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.92rem;color:#2A2A35;line-height:1.5;transition:all .2s;}
+.opt:hover{border-color:var(--purple-light);background:#F6F2FC;}
+.opt strong{display:block;font-weight:600;color:var(--purple-dark);margin-bottom:.15rem;}
+.quiz-back{background:none;border:none;color:#777;font-size:.85rem;cursor:pointer;margin-top:.5rem;font-family:'DM Sans',sans-serif;text-decoration:underline;text-underline-offset:3px;}
+
+/* results */
+.results-head{text-align:center;margin-bottom:1.6rem;}
+.results-head h1{font-family:'Cormorant Garamond',serif;color:var(--off-white);font-weight:300;font-size:clamp(1.7rem,4vw,2.5rem);margin-bottom:.5rem;}
+.results-head p{color:rgba(247,245,240,.7);font-size:.95rem;font-weight:300;max-width:560px;margin:0 auto;}
+.toggle-row{display:flex;justify-content:center;gap:0;margin:1.4rem 0;}
+.toggle-row button{font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:600;padding:.55rem 1.4rem;border:1.5px solid rgba(247,245,240,.5);background:transparent;color:rgba(247,245,240,.8);cursor:pointer;transition:all .2s;}
+.toggle-row button:first-child{border-radius:50px 0 0 50px;}
+.toggle-row button:last-child{border-radius:0 50px 50px 0;border-left:none;}
+.toggle-row button.on{background:var(--off-white);color:var(--purple-dark);border-color:var(--off-white);}
+/* recommendation */
+#rec-wrap{margin-bottom:2rem;display:none;}
+.rec-banner{background:linear-gradient(135deg,var(--green-dark),var(--green-mid));color:white;border-radius:14px 14px 0 0;padding:.6rem 1.4rem;font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;}
+.rec-card{background:white;border:2px solid var(--green-mid);border-top:none;border-radius:0 0 16px 16px;padding:1.5rem 1.7rem;box-shadow:0 20px 60px rgba(0,0,0,.35);}
+.rec-card h3{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:600;color:var(--purple-dark);margin-bottom:.2rem;}
+.rec-price{font-size:1.5rem;font-weight:700;color:var(--green-dark);}
+.rec-unit{font-size:.78rem;color:#888;font-weight:500;margin-bottom:1rem;}
+.tier-desc{font-size:.88rem;color:#444;line-height:1.6;margin-bottom:1rem;}
+.why-title{font-size:.72rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--purple-mid);margin-bottom:.5rem;}
+.why-list{list-style:none;margin-bottom:.4rem;}
+.why-list li{font-size:.9rem;color:#333;line-height:1.6;padding:.35rem 0 .35rem 1.7rem;position:relative;}
+.why-list li::before{content:'✓';position:absolute;left:0;color:var(--green-mid);font-weight:700;}
+.care-note{background:#F0EBF8;border-left:3px solid var(--purple-mid);border-radius:0 10px 10px 0;padding:.9rem 1.1rem;margin-top:1rem;font-size:.85rem;color:#3A3A45;line-height:1.65;display:none;}
+.care-note strong{color:var(--purple-dark);display:block;margin-bottom:.25rem;}
+.care-note a{color:var(--purple-mid);font-weight:600;}
+
+/* comparison table */
+.table-panel{background:white;border-radius:16px;padding:1.2rem 1.2rem 1rem;margin-bottom:2rem;box-shadow:0 12px 40px rgba(0,0,0,.25);}
+.table-scroll{overflow-x:auto;}
+table.compare{width:100%;border-collapse:collapse;min-width:680px;}
+.compare th,.compare td{padding:.7rem .8rem;font-size:.83rem;text-align:left;vertical-align:top;border-bottom:1px solid #EEE9F5;line-height:1.5;color:#333;}
+.compare thead th{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:600;color:var(--purple-dark);border-bottom:2px solid var(--purple-light);vertical-align:bottom;}
+.compare tbody th{font-family:'DM Sans',sans-serif;font-weight:600;color:#666;font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;}
+.compare tr:last-child td,.compare tr:last-child th{border-bottom:none;}
+.compare td.price{font-weight:700;color:var(--green-dark);font-size:.95rem;white-space:nowrap;}
+.compare .rec-col{background:#F1F9EC;}
+.rec-tag{display:none;font-family:'DM Sans',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--green-dark);margin-bottom:.2rem;}
+.compare th.rec-col .rec-tag{display:block;}
+
+/* membership strip */
+#membership{margin-bottom:2rem;}
+.membership{background:white;border:2px solid var(--green-mid);border-top:none;border-radius:0 0 16px 16px;padding:1.6rem 1.8rem;color:var(--black);box-shadow:0 20px 60px rgba(0,0,0,.35);}
+.membership h3{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:600;color:var(--purple-dark);margin-bottom:.4rem;}
+.membership .m-price{font-size:1.15rem;font-weight:700;color:var(--green-dark);margin-bottom:.6rem;}
+.membership p{font-size:.87rem;line-height:1.65;color:#3A3A45;margin-bottom:1rem;}
+.membership a{display:inline-block;background:linear-gradient(135deg,var(--purple-dark),var(--purple-mid));color:white;font-weight:600;font-size:.85rem;padding:.65rem 1.5rem;border-radius:50px;text-decoration:none;transition:all .2s;box-shadow:0 4px 15px rgba(91,45,142,.3);}
+.membership a:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(91,45,142,.4);}
+
+/* included panel */
+.panel{background:white;border-radius:16px;padding:1.5rem 1.7rem;margin-bottom:1.2rem;box-shadow:0 12px 40px rgba(0,0,0,.2);}
+.panel h3{font-family:'DM Sans',sans-serif;font-size:1.15rem;color:var(--green-dark);font-weight:700;margin-bottom:.9rem;}
+.inc-list{list-style:none;}
+.inc-list li{font-size:.88rem;color:#333;padding:.4rem 0 .4rem 1.7rem;position:relative;line-height:1.5;}
+.inc-list li::before{content:'✓';position:absolute;left:0;color:var(--green-mid);font-weight:700;}
+.note-box{background:#F0EBF8;border-radius:10px;padding:.8rem 1rem;font-size:.82rem;color:#3A3A45;line-height:1.55;margin-top:.9rem;}
+.svc-table{width:100%;border-collapse:collapse;}
+.svc-table td{font-size:.85rem;padding:.55rem 0;border-bottom:1px solid #EEE9F5;color:#333;line-height:1.5;vertical-align:top;}
+.svc-table td:last-child{text-align:right;font-weight:600;color:var(--purple-dark);white-space:nowrap;padding-left:1rem;}
+.svc-table tr:last-child td{border-bottom:none;}
+details.panel summary{cursor:pointer;font-family:'DM Sans',sans-serif;font-size:1.15rem;color:var(--green-dark);font-weight:700;list-style:none;}
+details.panel summary::after{content:'+';float:right;font-family:'DM Sans',sans-serif;font-weight:400;color:var(--green-dark);}
+details.panel[open] summary::after{content:'–';}
+details.panel[open] summary{margin-bottom:.9rem;}
+
+/* fine print + CTA */
+.fine{color:rgba(247,245,240,.65);font-size:.78rem;line-height:1.65;margin:1.4rem auto;max-width:720px;text-align:center;font-weight:300;}
+.cta-block{text-align:center;margin:2.4rem 0 1rem;}
+.cta-block .btn-primary{margin-bottom:1.1rem;}
+.phones{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;}
+.phones a{color:var(--off-white);text-decoration:none;font-size:.95rem;}
+.phones a span{display:block;font-size:.72rem;color:rgba(247,245,240,.6);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.15rem;}
+.phones a strong{font-weight:600;}
+
+/* lead form */
+.lead-wrap{max-width:560px;margin:2.5rem auto 0;}
+#lead-open{width:100%;background:rgba(255,255,255,.1);border:1.5px solid rgba(247,245,240,.4);color:var(--off-white);border-radius:14px;padding:1rem;font-family:'DM Sans',sans-serif;font-size:.92rem;cursor:pointer;transition:all .2s;}
+#lead-open:hover{background:rgba(255,255,255,.18);}
+#lead-form-card{display:none;}
+#lead-form-card.open{display:block;animation:fadeUp .3s ease;}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;}
+.field-group{margin-bottom:1rem;}
+.field-group label{display:block;font-size:.78rem;font-weight:600;color:#3A3A45;margin-bottom:.35rem;}
+.field-group input{width:100%;padding:.7rem .95rem;border:1.5px solid #DDD;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.9rem;background:white;outline:none;transition:border-color .2s;}
+.field-group input:focus{border-color:var(--purple-mid);}
+.btn-submit{width:100%;background:linear-gradient(135deg,var(--green-dark),var(--green-mid));color:white;border:none;padding:.85rem;border-radius:50px;font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:600;cursor:pointer;transition:all .25s;box-shadow:0 4px 15px rgba(93,184,58,.35);}
+.btn-submit:hover{box-shadow:0 6px 20px rgba(93,184,58,.5);}
+.error-msg{background:#FFF0F0;border:1px solid #FFCDD2;color:#C62828;border-radius:8px;padding:.6rem 1rem;font-size:.8rem;margin-bottom:.8rem;display:none;}
+.error-msg.show{display:block;}
+.ty{text-align:center;padding:1rem 0;}
+.ty h3{font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--purple-dark);margin-bottom:.5rem;}
+.ty p{font-size:.88rem;color:#555;line-height:1.6;}
+@media(max-width:560px){.field-row{grid-template-columns:1fr;}.card-body,.card-header{padding-left:1.3rem;padding-right:1.3rem;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="logo-wrap"><img src={logoSrc} alt="New Leaf Hearing Care"></div>
+
+  <!-- ─── LANDING ─────────────────────────────────────────────── -->
+  <section class="screen active" id="screen-landing">
+    <div class="landing">
+      <h1>What do hearing aids <em>actually</em> cost?</h1>
+      <p>Real price ranges from our clinic — no hidden fees, no "call for pricing." Answer four quick questions for a personalized estimate, or skip straight to the numbers.</p>
+      <button class="btn-primary" id="start-quiz">Get My Estimate</button>
+      <button class="skip-link" id="skip-to-pricing">Just show me all the pricing</button>
+    </div>
+  </section>
+
+  <!-- ─── QUIZ ────────────────────────────────────────────────── -->
+  <section class="screen" id="screen-quiz">
+    <div class="card" style="max-width:620px;margin:0 auto;">
+      <div class="card-header">
+        <h2>Your Personalized Estimate</h2>
+        <p>Four quick questions — about 30 seconds.</p>
+        <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+      </div>
+      <div class="card-body">
+        <div class="step active" data-step="1">
+          <p class="step-label">Question 1 of 4</p>
+          <h3>How would you describe your daily listening life?</h3>
+          <button class="opt" data-q="lifestyle" data-v="1"><strong>Mostly quiet</strong>Home, one-on-one conversations, TV</button>
+          <button class="opt" data-q="lifestyle" data-v="2"><strong>Moderately busy</strong>Family gatherings, church, the occasional restaurant</button>
+          <button class="opt" data-q="lifestyle" data-v="3"><strong>Very active</strong>Restaurants, meetings, travel, groups, noisy places</button>
+        </div>
+        <div class="step" data-step="2">
+          <p class="step-label">Question 2 of 4</p>
+          <h3>Are you looking for one hearing aid or two?</h3>
+          <button class="opt" data-q="ears" data-v="two"><strong>Two ears</strong>Most people with hearing loss benefit from two</button>
+          <button class="opt" data-q="ears" data-v="one"><strong>One ear</strong>I've been told I only need one</button>
+          <button class="opt" data-q="ears" data-v="unsure"><strong>Not sure yet</strong>A hearing evaluation will tell us</button>
+        </div>
+        <div class="step" data-step="3">
+          <p class="step-label">Question 3 of 4</p>
+          <h3>What matters most to you?</h3>
+          <button class="opt" data-q="priority" data-v="3"><strong>The best possible technology</strong>Top performance in every situation</button>
+          <button class="opt" data-q="priority" data-v="2"><strong>A balance of performance and price</strong>Great results at a sensible cost</button>
+          <button class="opt" data-q="priority" data-v="1"><strong>Keeping the cost as low as possible</strong>Dependable hearing without extras</button>
+        </div>
+        <div class="step" data-step="4">
+          <p class="step-label">Question 4 of 4</p>
+          <h3>How much ongoing care would you like?</h3>
+          <button class="opt" data-q="care" data-v="3"><strong>Unlimited follow-up care for years</strong>Adjustments, cleanings and check-ins whenever I need them</button>
+          <button class="opt" data-q="care" data-v="2"><strong>Some follow-up support</strong>A year or so of included visits sounds right</button>
+          <button class="opt" data-q="care" data-v="1"><strong>Just get me set up</strong>I'll come back if I need something</button>
+        </div>
+        <button class="quiz-back" id="quiz-back">&larr; Back</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── RESULTS ─────────────────────────────────────────────── -->
+  <section class="screen" id="screen-results">
+    <div class="results-head">
+      <h1 id="results-title">Our Hearing Aid Pricing</h1>
+      <p id="results-sub">Every price below is the complete cost — professional fitting, follow-up care and warranty included.</p>
+    </div>
+
+    <div class="toggle-row" role="group" aria-label="Price display">
+      <button id="toggle-pair" class="on">Per pair</button>
+      <button id="toggle-ear">Per ear</button>
+    </div>
+
+    <!-- recommendation (quiz path only) -->
+    <div id="rec-wrap">
+      <div class="rec-banner">Our Recommendation</div>
+      <div class="rec-card">
+        <h3 id="rec-name"></h3>
+        <div class="rec-price" id="rec-price"></div>
+        <div class="rec-unit" id="rec-unit"></div>
+        <p class="tier-desc" id="rec-desc"></p>
+        <p class="why-title">Why this fits your answers</p>
+        <ul class="why-list" id="rec-why"></ul>
+        <div class="care-note" id="rec-care-note"></div>
+      </div>
+    </div>
+
+    <div class="table-panel"><div class="table-scroll">
+      <table class="compare">
+        <thead>
+          <tr>
+            <th></th>
+            {TIERS.map(t => <th data-col={t.id}><span class="rec-tag">Recommended</span>{t.name}</th>)}
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th id="price-row-label">Price (per pair)</th>
+            {TIERS.map(t => <td class="price" data-col={t.id} data-price-cell data-low={t.perEarLow} data-high={t.perEarHigh}></td>)}
+          </tr>
+          <tr><th>Who it's for</th>{TIERS.map(t => <td data-col={t.id}>{t.whoFor}</td>)}</tr>
+          <tr><th>Follow-up care</th>{TIERS.map(t => <td data-col={t.id}>{t.followUpCare}</td>)}</tr>
+          <tr><th>Warranty</th>{TIERS.map(t => <td data-col={t.id}>{t.warrantyYears} years</td>)}</tr>
+          <tr><th>Loss &amp; damage</th>{TIERS.map(t => <td data-col={t.id}>{t.lossAndDamage}</td>)}</tr>
+          <tr><th>Rechargeable</th>{TIERS.map(t => <td data-col={t.id}>{t.rechargeable ? 'Yes' : 'No'}</td>)}</tr>
+          <tr><th>Bluetooth streaming</th>{TIERS.map(t => <td data-col={t.id}>{t.bluetooth ? 'Yes' : 'No'}</td>)}</tr>
+        </tbody>
+      </table>
+    </div></div>
+
+    <div id="membership">
+      <div class="rec-banner">Prefer a monthly payment?</div>
+      <div class="membership">
+        <h3>{MEMBERSHIP.name}</h3>
+        <div class="m-price">{fmt(MEMBERSHIP.onboardingFee)} onboarding, then {fmt(MEMBERSHIP.monthly)}/month</div>
+        <p>{MEMBERSHIP.whoFor}</p>
+        <a href={MEMBERSHIP.checkoutUrl}>Learn About Membership</a>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>Every price above includes</h3>
+      <ul class="inc-list">
+        {INCLUDED.map(item => <li>{item}</li>)}
+        <li>{TRIAL}</li>
+      </ul>
+      <div class="note-box"><strong>{NOT_INCLUDED.item} ({NOT_INCLUDED.price})</strong> — {NOT_INCLUDED.note}</div>
+    </div>
+
+    <details class="panel">
+      <summary>Optional accessories</summary>
+      <table class="svc-table">
+        {ACCESSORIES.map(a => <tr><td>{a.name}</td><td>{fmt(a.price)}</td></tr>)}
+      </table>
+      <div class="note-box">{ACCESSORY_NOTE}</div>
+    </details>
+
+    <details class="panel">
+      <summary>Other services &amp; fees</summary>
+      <table class="svc-table">
+        {SERVICES.map(s => <tr><td>{s.name}</td><td>{s.price}</td></tr>)}
+      </table>
+    </details>
+
+    <details class="panel">
+      <summary>Insurance &amp; financing</summary>
+      <p style="font-size:.87rem;line-height:1.65;color:#333;margin-bottom:.8rem;">{FINANCING}</p>
+      <p style="font-size:.87rem;line-height:1.65;color:#333;">{INSURANCE_NOTE}</p>
+    </details>
+
+    <div class="cta-block">
+      <a class="btn-primary" href={CONTACT.bookingUrl}>Schedule an Appointment</a>
+      <div class="phones">
+        {CONTACT.phones.map(p => (
+          <a href={`tel:${p.tel}`}><span>{p.office}</span><strong>{p.display}</strong></a>
+        ))}
+      </div>
+    </div>
+
+    <div class="lead-wrap">
+      <button id="lead-open">Want a copy of this estimate? Email it to me &rarr;</button>
+      <div class="card" id="lead-form-card">
+        <div class="card-body" id="lead-body">
+          <p class="step-label">Your estimate, in your inbox</p>
+          <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;margin-bottom:1rem;">We'll send it over — no follow-up calls unless you ask.</h3>
+          <div class="error-msg" id="lead-error"></div>
+          <form id="lead-form">
+            <div class="field-row">
+              <div class="field-group"><label for="lf-first">First name</label><input id="lf-first" required autocomplete="given-name"></div>
+              <div class="field-group"><label for="lf-last">Last name</label><input id="lf-last" required autocomplete="family-name"></div>
+            </div>
+            <div class="field-group"><label for="lf-email">Email</label><input id="lf-email" type="email" required autocomplete="email"></div>
+            <div class="field-group"><label for="lf-phone">Phone (optional)</label><input id="lf-phone" type="tel" autocomplete="tel"></div>
+            <button class="btn-submit" type="submit">Email My Estimate</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <p class="fine">{DISCLAIMER}</p>
+  </section>
+</div>
+
+<script is:inline define:vars={{ clientTiers }}>
+(() => {
+  const $ = (s) => document.querySelector(s);
+  const answers = {};
+  let quizTaken = false;
+  let perPair = true;
+  let recommendedId = null;
+
+  // ── screen switching ──
+  const show = (id) => {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    $(id).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // ── quiz flow ──
+  let step = 1;
+  const TOTAL = 4;
+  const setStep = (n) => {
+    step = n;
+    document.querySelectorAll('.step').forEach(s =>
+      s.classList.toggle('active', +s.dataset.step === n));
+    $('#progress').style.width = ((n - 1) / TOTAL * 100) + '%';
+    $('#quiz-back').style.visibility = n === 1 ? 'hidden' : 'visible';
+  };
+
+  $('#start-quiz').addEventListener('click', () => { show('#screen-quiz'); setStep(1); });
+  $('#skip-to-pricing').addEventListener('click', () => { quizTaken = false; renderResults(); });
+  $('#quiz-back').addEventListener('click', () => setStep(Math.max(1, step - 1)));
+
+  document.querySelectorAll('.opt').forEach(btn => {
+    btn.addEventListener('click', () => {
+      answers[btn.dataset.q] = btn.dataset.v;
+      if (step < TOTAL) setStep(step + 1);
+      else { quizTaken = true; renderResults(); }
+    });
+  });
+
+  // ── recommendation + reasons ──
+  const recommend = (a) => {
+    const lifestyle = +a.lifestyle, priority = +a.priority, care = +a.care;
+    if (priority === 1) return care >= 2 ? 'economy' : 'essential';
+    if (priority === 2) return lifestyle >= 2 ? 'premium' : 'economy';
+    return lifestyle === 3 ? 'premium-plus' : 'premium';
+  };
+
+  // Builds the "why this fits" bullets plus a care-mismatch note when the
+  // patient's care answer differs from what the recommended tier includes.
+  const buildReasons = (a, tierId, tierName) => {
+    const lifestyle = +a.lifestyle, priority = +a.priority, care = +a.care;
+    const why = [];
+    let careNote = null;
+
+    if (tierId === 'premium-plus') {
+      why.push('Restaurants, meetings and group settings are the hardest rooms a hearing aid ever works in, and they’re part of your normal week.');
+      why.push('You asked for the best possible technology. Premium Plus is the top of our line, with our strongest noise processing in a custom rechargeable device.');
+    } else if (tierId === 'premium' && priority === 3) {
+      why.push('You asked for the best possible technology.');
+      why.push(lifestyle === 2
+        ? 'Family gatherings and the occasional restaurant put real demands on noise handling, and Premium delivers top-line sound there. The step up to Premium Plus earns its extra cost in constant heavy noise, which isn’t your daily reality.'
+        : 'For the quieter listening life you described, Premium delivers top-line sound. The step up to Premium Plus earns its extra cost in constant heavy noise, which isn’t your daily reality.');
+    } else if (tierId === 'premium') {
+      why.push('You want strong performance without paying for the maximum, and your week includes real background noise.');
+      why.push('Premium sits exactly at that intersection: excellent sound in noisy settings, backed by a 3-year service plan.');
+    } else if (tierId === 'economy' && priority === 2) {
+      why.push('Your listening life is mostly quiet, so top-tier noise processing would sit unused.');
+      why.push('Economy delivers quality everyday sound at a price that reflects what you actually need.');
+    } else if (tierId === 'economy') {
+      why.push('Keeping the cost down matters to you, and you still want follow-up support after the fitting.');
+      why.push('Economy is our most affordable tier that includes a full year of unlimited visits.');
+    } else { // essential
+      why.push('You want dependable hearing at the most accessible price, with a straightforward setup.');
+      why.push('Essential covers exactly that: prescription hearing aids plus the 3 follow-up visits it takes to dial in your fit.');
+    }
+
+    const unlimitedYears = (tierId === 'premium-plus' || tierId === 'premium') ? 3
+      : tierId === 'economy' ? 1 : 0;
+
+    if (care === 3 && unlimitedYears === 3) {
+      why.push('Three years of unlimited visits are included, so the ongoing care you asked for is already paid for.');
+    } else if (care === 3 && tierId === 'economy') {
+      careNote = { h: 'About the ongoing care you asked for',
+        p: 'Economy includes one year of unlimited visits. If years of included care is the real priority, look at the <a href="#membership">Hear It Forward membership</a> below: unlimited visits for as long as you’re a member, plus new premium hearing aids every 3 years.' };
+    } else if (care === 1 && unlimitedYears === 3) {
+      careNote = { h: 'You said you’d rather just get set up',
+        p: tierName + ' includes 3 years of unlimited visits either way, and that’s worth keeping. Hearing changes over time, ears change shape, and devices drift out of tune. The included care is what keeps this investment performing the way it did on day one, and every adjustment or cleaning in that window is already in the price.' };
+    } else if (care === 1 && tierId === 'economy') {
+      careNote = { h: 'You said you’d rather just get set up',
+        p: 'Economy still includes a year of unlimited visits, and nearly all fine-tuning happens in that first year. Use them freely; they’re already in the price.' };
+    } else if (care === 2 && unlimitedYears === 3) {
+      careNote = { h: 'On follow-up support',
+        p: 'You asked for some follow-up support. ' + tierName + ' goes further than that: every adjustment, cleaning and check-in for 3 full years is already covered.' };
+    }
+
+    if (a.ears === 'unsure') {
+      why.push('Not sure about one ear or two? The hearing evaluation ($50–$175) answers that before you spend anything on devices.');
+    }
+
+    return { why, careNote };
+  };
+
+  // ── price rendering ──
+  const money = (n) => '$' + n.toLocaleString('en-US');
+  const range = (t) => perPair
+    ? money(t.perEarLow * 2) + ' – ' + money(t.perEarHigh * 2)
+    : money(t.perEarLow) + ' – ' + money(t.perEarHigh);
+
+  const paintPrices = () => {
+    document.querySelectorAll('[data-price-cell]').forEach(cell => {
+      const t = clientTiers.find(x => x.id === cell.dataset.col);
+      if (t) cell.textContent = range(t);
+    });
+    $('#price-row-label').textContent = perPair ? 'Price (per pair)' : 'Price (per ear)';
+    if (recommendedId) {
+      const t = clientTiers.find(x => x.id === recommendedId);
+      $('#rec-price').textContent = range(t);
+      $('#rec-unit').textContent = perPair ? 'per pair' : 'per ear';
+    }
+    $('#toggle-pair').classList.toggle('on', perPair);
+    $('#toggle-ear').classList.toggle('on', !perPair);
+  };
+  $('#toggle-pair').addEventListener('click', () => { perPair = true; paintPrices(); });
+  $('#toggle-ear').addEventListener('click', () => { perPair = false; paintPrices(); });
+
+  // ── results ──
+  function renderResults() {
+    document.querySelectorAll('.compare [data-col]').forEach(c => c.classList.remove('rec-col'));
+    if (quizTaken) {
+      recommendedId = recommend(answers);
+      // one-ear answer → default the display to per-ear
+      perPair = answers.ears !== 'one';
+      $('#results-title').textContent = 'Your Personalized Estimate';
+      $('#results-sub').textContent = 'Based on your answers, here’s where we’d suggest starting — every option below is still yours to choose.';
+
+      const tier = clientTiers.find(t => t.id === recommendedId);
+      $('#rec-name').textContent = tier.name;
+      $('#rec-desc').textContent = tier.whoFor;
+      const { why, careNote } = buildReasons(answers, tier.id, tier.name);
+      $('#rec-why').innerHTML = why.map(w => '<li>' + w + '</li>').join('');
+      const noteEl = $('#rec-care-note');
+      if (careNote) {
+        noteEl.innerHTML = '<strong>' + careNote.h + '</strong>' + careNote.p;
+        noteEl.style.display = 'block';
+      } else {
+        noteEl.style.display = 'none';
+      }
+      $('#rec-wrap').style.display = 'block';
+      document.querySelectorAll(`.compare [data-col="${recommendedId}"]`).forEach(c => c.classList.add('rec-col'));
+    } else {
+      recommendedId = null;
+      perPair = true;
+      $('#results-title').textContent = 'Our Hearing Aid Pricing';
+      $('#results-sub').textContent = 'Every price below is the complete cost — professional fitting, follow-up care and warranty included.';
+      $('#rec-wrap').style.display = 'none';
+    }
+    paintPrices();
+    show('#screen-results');
+  }
+
+  // ── lead form ──
+  $('#lead-open').addEventListener('click', () => {
+    $('#lead-form-card').classList.add('open');
+    $('#lead-open').style.display = 'none';
+  });
+
+  $('#lead-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const err = $('#lead-error');
+    err.classList.remove('show');
+    const btn = e.target.querySelector('.btn-submit');
+    btn.disabled = true; btn.textContent = 'Sending…';
+
+    const recTier = clientTiers.find(t => t.id === recommendedId);
+    const payload = {
+      firstName: $('#lf-first').value.trim(),
+      lastName: $('#lf-last').value.trim(),
+      email: $('#lf-email').value.trim(),
+      phone: $('#lf-phone').value.trim() || undefined,
+      estimate: {
+        tierName: recTier ? recTier.name : 'Browsed all pricing',
+        priceRange: recTier ? range(recTier) + (perPair ? ' per pair' : ' per ear') : null,
+        ears: answers.ears || null,
+        answers: quizTaken ? answers : null,
+      },
+    };
+    try {
+      const res = await fetch('/api/pricing-lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error();
+      $('#lead-body').innerHTML =
+        '<div class="ty"><h3>On its way!</h3><p>Your estimate is headed to your inbox. If you’d like to talk it through, we’re a phone call away.</p></div>';
+    } catch {
+      err.textContent = 'Something went wrong sending your estimate. Please try again, or give us a call.';
+      err.classList.add('show');
+      btn.disabled = false; btn.textContent = 'Email My Estimate';
+    }
+  });
+})();
+</script>
+</body>
+</html>

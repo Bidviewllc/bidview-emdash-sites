@@ -3249,3 +3249,14 @@ padding: 0 70px 30px 0;
     font-size: 22px;
   }
 }
+
+.link-price-list {
+  font-size: 1.15em;
+  font-weight: 700;
+  color: var(--accent-secondary);
+}
+
+.link-pricing-estimator {
+  font-weight: 600;
+  color: #2d6a35;
+}

@@ -1,0 +1,186 @@
+---
+import { getSiteSettings } from "emdash";
+import { EmDashHead, EmDashBodyStart, EmDashBodyEnd } from "emdash/ui";
+import { createPublicPageContext } from "emdash/page";
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+
+interface Props {
+	/** <title> text. " | Liberty Hearing Center" is appended unless already present. */
+	title: string;
+	/** Optional distinct on-page title, used by the scaffold's CMS routes. */
+	pageTitle?: string | null;
+	/** Override the auto-computed canonical URL. */
+	canonical?: string | null;
+	description?: string | null;
+	/** Which top-level nav item to highlight. */
+	active?: "home" | "about" | "services" | "aids" | "resources" | "contact";
+	/** Which of the design's seven footer variants to render. */
+	footer?: "home" | "inner" | "services" | "aids" | "pricing" | "resources" | "staff";
+	/** og:image path; defaults to the team photo. */
+	image?: string | null;
+	/** og:type — "website" for most pages, "profile" for the staff pages. */
+	ogType?: string;
+	/** Extra <head> markup (page-scoped JSON-LD, etc). */
+	schema?: unknown;
+	/** Keep this page out of search results (thank-you pages, utility pages). */
+	noindex?: boolean;
+	/** Pass content reference for plugin page contributions on CMS pages. */
+	content?: { collection: string; id: string; slug?: string | null };
+}
+
+const {
+	title,
+	pageTitle,
+	description,
+	canonical: canonicalOverride,
+	active,
+	footer = "inner",
+	image = "/assets/hero-team.webp",
+	ogType = "website",
+	schema,
+	noindex = false,
+	content,
+} = Astro.props;
+
+const SITE_NAME = "Liberty Hearing Center";
+await getSiteSettings();
+
+const fullTitle = title.includes(SITE_NAME) ? title : `${title} | ${SITE_NAME}`;
+const canonical =
+	canonicalOverride ?? new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin).href;
+const ogImage = image ? new URL(image, Astro.site ?? Astro.url.origin).href : null;
+
+const pageCtx = createPublicPageContext({
+	Astro,
+	kind: content ? "content" : "custom",
+	pageType: "website",
+	title: fullTitle,
+	pageTitle: pageTitle ?? title,
+	description,
+	canonical,
+	image,
+	content,
+	siteName: SITE_NAME,
+});
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>{fullTitle}</title>
+		{description && <meta name="description" content={description} />}
+		<link rel="canonical" href={canonical} />
+		{/*
+		  Real favicon set, generated from the eagle head in
+		  public/assets/logo-color.webp (the full lockup is too wide — it reads
+		  as a blob at 16px, the head fills the square and stays legible).
+		  Bump ?v= when the artwork changes: browsers cache favicons hard, often
+		  across a hard refresh.
+		*/}
+		<link rel="icon" href="/favicon.ico?v=1" sizes="16x16 32x32 48x48" />
+		<link rel="icon" type="image/png" href="/favicon.png?v=1" sizes="192x192" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=1" sizes="180x180" />
+		{noindex && <meta name="robots" content="noindex, follow" />}
+
+		<meta property="og:locale" content="en_US" />
+		<meta property="og:type" content={ogType} />
+		<meta property="og:site_name" content={SITE_NAME} />
+		<meta property="og:title" content={fullTitle} />
+		{description && <meta property="og:description" content={description} />}
+		<meta property="og:url" content={canonical} />
+		{ogImage && <meta property="og:image" content={ogImage} />}
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={fullTitle} />
+		{description && <meta name="twitter:description" content={description} />}
+		{ogImage && <meta name="twitter:image" content={ogImage} />}
+
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap"
+			rel="stylesheet"
+		/>
+		<link rel="stylesheet" href="/assets/brand.css" />
+		<link rel="stylesheet" href="/assets/global.css" />
+
+		{schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
+		<EmDashHead page={pageCtx} />
+	</head>
+	<body>
+		<EmDashBodyStart page={pageCtx} />
+		<div style="min-height:100vh;display:flex;flex-direction:column;background:var(--white)">
+			<SiteHeader active={active} />
+			<main style="flex:1">
+				<slot />
+			</main>
+			<SiteFooter variant={footer} />
+		</div>
+		<EmDashBodyEnd page={pageCtx} />
+		<script is:inline src="/assets/site.js"></script>
+<!-- CHERRY WIDGET BEGIN
+     Patient-financing estimator supplied by the client (Vince, 2026-09-08).
+     Vendor snippet kept verbatim apart from Astro's `is:inline`, which stops
+     Astro from bundling/transforming a third-party script.
+     It renders a FLOATING estimator pinned bottom-right, so its position in the
+     DOM does not affect where it appears — #floatingEstimator is just the mount.
+     Sitewide (Vince, 2026-09-09): it is a floating popup, so it belongs on
+     every page rather than just /pricing/.
+     Cherry's own written copy lives on /insurance-billing/. -->
+<!-- Cherry's widget fonts, loaded ASYNCHRONOUSLY. Shipped by Cherry as a
+     plain render-blocking <link rel="stylesheet"> for 11 families; sitewide
+     that stalled first paint badly (7.6s FCP measured on /pricing/). The
+     widget is a floating popup, so these fonts are not needed to paint the
+     page. Do NOT change this back to a plain stylesheet link. -->
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400..900&family=Slabo+27px&family=Lato:wght@100;300;400;700;900&family=Raleway:wght@100..900&family=Montserrat:wght@100..900&family=Oswald:wght@200..700&family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100..900&family=Source+Sans+3:wght@200..900&family=PT+Sans:wght@400;700&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400..900&family=Slabo+27px&family=Lato:wght@100;300;400;700;900&family=Raleway:wght@100..900&family=Montserrat:wght@100..900&family=Oswald:wght@200..700&family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100..900&family=Source+Sans+3:wght@200..900&family=PT+Sans:wght@400;700&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" media="print" onload="this.media='all';this.onload=null" />
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400..900&family=Slabo+27px&family=Lato:wght@100;300;400;700;900&family=Raleway:wght@100..900&family=Montserrat:wght@100..900&family=Oswald:wght@200..700&family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100..900&family=Source+Sans+3:wght@200..900&family=PT+Sans:wght@400;700&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" /></noscript>
+<script is:inline>
+    (function (w, d, s, o, f, js, fjs) {
+        w[o] = w[o] || function () {
+            (w[o].q = w[o].q || []).push(arguments);
+        };
+        (js = d.createElement(s)), (fjs = d.getElementsByTagName(s)[0]);
+        js.id = o;
+        js.src = f;
+        js.async = 1;
+        fjs.parentNode.insertBefore(js, fjs);
+    })(window, document, "script", "_hw", "https://files.withcherry.com/widgets/widget.js");
+    _hw("init", {
+        debug: false,
+        variables: {
+            slug: 'liberty-hearing-center-pllc',
+            name: "Liberty Hearing Center",
+            images: [82],
+            customLogo: '',
+            defaultPurchaseAmount: 4000,
+            customImage: '',
+            imageCategory: 'audiology',
+            language: 'en',
+        },
+        styles: {
+            primaryColor: '#13294B',
+            secondaryColor: '#13294b10',
+            fontFamily: 'Open Sans',
+            headerFontFamily: 'Open Sans',
+            floatingEstimator: {
+                position: 'bottom-right',
+                offset: {
+                    x: '0px',
+                    y: '0px'
+                },
+                zIndex: 9999,
+                ctaFontFamily: 'Open Sans',
+                bodyFontFamily: 'Open Sans',
+                ctaColor: '#13294B',
+                ctaTextColor: '#FFFFFF'
+            }
+        }
+    }, ['floatingEstimator']);
+</script>
+<div id="floatingEstimator"></div>
+<!-- CHERRY WIDGET END -->
+	</body>
+</html>
