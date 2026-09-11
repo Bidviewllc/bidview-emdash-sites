@@ -162,6 +162,8 @@ position: relative;
 
 .hero-copy h1,
 .hero-copy .hero-copy__title {
+  /* A <p> does not match the global h1,h2,h3,.eyebrow font rule. */
+  font-family: "Outfit", sans-serif;
 color: var(--dark-gray);
   font-size: 60px;
   font-weight: 500;
