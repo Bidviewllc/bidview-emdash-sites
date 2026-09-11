@@ -1,0 +1,9 @@
+{
+  "name": "liberty-hearing-forms",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev --port 8790 --local"
+  }
+}

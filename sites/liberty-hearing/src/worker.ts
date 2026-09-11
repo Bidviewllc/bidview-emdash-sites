@@ -72,26 +72,14 @@ export default {
 	},
 
 	/**
-	 * Cron runs EVERY MINUTE purely to keep a Worker isolate warm (Vince, 2026-09-10).
+	 * Hourly emdash housekeeping (the scaffold shipped every-minute; that is waste).
 	 *
-	 * Pages are static and bypass this Worker entirely, but `/api/contact` cannot —
-	 * it has to run here to write D1 and send the lead email. On a cold isolate that
-	 * POST measured ~5s (vs ~250-380ms warm), so a patient submitting the appointment
-	 * form could wait five seconds. A scheduled invocation instantiates the Worker,
-	 * which pays the module-init cost that IS the cold start.
-	 *
-	 * IMPORTANT — this only warms the location Cloudflare chooses to run the cron in.
-	 * Cold starts are per-location, so this is a partial mitigation, not a fix. The
-	 * real fix is shrinking the 11.2MB / 507-module bundle. Do not assume the form is
-	 * always fast because this exists; re-measure (scratchpad/formspeed.mjs).
-	 *
-	 * emdash's own housekeeping is still only run HOURLY (at :00). Running it 1,440x
-	 * a day would be real work — D1 writes and revalidation — for no benefit; the
-	 * warming comes from the Worker starting up, not from the handler doing anything.
+	 * A per-minute "keep-warm" cron was tried here on 2026-09-10 and REMOVED. It
+	 * fired correctly but changed nothing: cron warms only one Cloudflare location,
+	 * and the isolate went cold after as little as a 5s gap (measured). The thing it
+	 * was meant to protect — /api/contact — now runs on the separate
+	 * `liberty-hearing-forms` Worker, so this Worker is no longer in any
+	 * user-facing path at all. Do not re-add a keep-warm cron here.
 	 */
-	async scheduled(event: ScheduledController, env: unknown, ctx: ExecutionContext): Promise<void> {
-		const minute = new Date(event.scheduledTime).getUTCMinutes();
-		if (minute !== 0) return; // keep-warm tick only — deliberately does no work
-		return createScheduledHandler()(event as any, env as any, ctx);
-	},
+	scheduled: createScheduledHandler(),
 } satisfies ExportedHandler;

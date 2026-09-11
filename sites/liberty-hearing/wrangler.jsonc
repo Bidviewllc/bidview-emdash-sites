@@ -31,15 +31,11 @@
 			"binding": "LOADER",
 		},
 	],
-	// Every minute — KEEP-WARM, not housekeeping (Vince's call 2026-09-10).
-	// `/api/contact` is the only user-facing route that still runs this Worker,
-	// and on a cold isolate that POST took ~5s. src/worker.ts runs emdash's real
-	// housekeeping ONLY at :00; the other 59 ticks return immediately and exist
-	// purely to keep an isolate alive. Note this reverses the earlier "dialled
-	// back to hourly" decision, which predates the form being the only live
-	// worker route. Only warms ONE location — see the comment in worker.ts.
+	// Hourly emdash housekeeping only. A per-minute keep-warm cron was tried
+	// 2026-09-10 and removed — it fired but did not help (see src/worker.ts).
+	// /api/contact now runs on the separate `liberty-hearing-forms` Worker.
 	"triggers": {
-		"crons": ["* * * * *"],
+		"crons": ["0 * * * *"],
 	},
 	"observability": { "enabled": true },
 	// Smart Placement REMOVED 2026-09-10 (Vince's call). It runs the worker near

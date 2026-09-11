@@ -955,3 +955,71 @@ files and found no defects in these edits.
 four content edits idempotently (asserts an exact occurrence count per string and
 skips anything already applied). Written after the revert; the pattern is worth
 copying whenever a batch of exact-string content edits must survive a redo.
+
+## CONTACT FORM MOVED TO ITS OWN WORKER (2026-09-10) — the real cold-start fix
+
+**Problem:** prerendering made pages static, but `/api/contact` still had to run
+the emdash Worker (D1 write + Resend). Measured on the live site: a bare
+`GET /api/contact` — a 405 that does **no work at all** — took **4.3-4.9s**,
+5 of 6 requests over 2s. So a patient clicking "Request appointment" waited
+~5 seconds. The cost was emdash's **11.2MB / 507-module bundle initialising**,
+nothing to do with the form.
+
+**What was ruled out first, with measurements (do not retry these):**
+- **Cloudflare keep-warm cron.** Deployed `* * * * *` and confirmed it fires
+  (28 scheduled invocations in 15 min). Form was **unchanged: 5.0-7.1s on 6/6
+  probes.** Cron warms only ONE location.
+- **Any pinger, at any cadence.** Measured the warm window directly: the isolate
+  is cold again after as little as a **5-second** gap, and the pattern is erratic
+  (some back-to-back requests 246ms, others 5s) — consistent with Cloudflare
+  spreading requests across many machines per colo, each needing its own isolate.
+  At near-zero traffic you would have to keep every machine in every colo warm.
+  GitHub Actions cannot even schedule below ~5 min. **A pinger cannot work here.**
+- Note my test vantage is **colo SIN (Singapore)** (`/cdn-cgi/trace`), while
+  patients hit a US colo — which is why "does the cron help patients?" was
+  genuinely unanswerable from this machine, and why the cost had to be removed
+  rather than hidden.
+
+### The fix: a separate, tiny Worker
+
+| | |
+| --- | --- |
+| Folder | `liberty-hearing/forms-worker/` |
+| Worker | `liberty-hearing-forms` (Cameron) |
+| Size | **6.59 KiB** (vs 11.2 MB) — imports nothing |
+| D1 | same `liberty-hearing-db` `c6fbfd7c-...`, same `contact_submissions` table |
+| Secrets | `RESEND_API_KEY` (Ontario key), `LEAD_TO` (info@ + drduhon@, comma-separated) |
+| Routes | `libertyhearingcentertx.com/api/contact*` and `www.*/api/contact*` |
+| workers.dev | `liberty-hearing-forms.cameron-239.workers.dev` |
+
+**A Workers Route DOES take precedence over the apex Worker Custom Domain** —
+verified live. That is what lets one path be peeled off onto another Worker
+without touching the custom domain binding.
+
+`src/index.ts` is a **verbatim behaviour port** of the emdash
+`src/pages/api/contact.ts` — honeypot, fail-open Turnstile, the spam filter that
+deliberately allows non-ASCII, D1-before-email, `303 -> /thank-you/`, JSON when
+`Accept: application/json`. **The emdash copy is deliberately LEFT IN PLACE** as a
+fallback: delete the route and the form keeps working.
+
+**Result:** `GET /api/contact` **median 73ms** (was 4,774ms). **POST after a 60s
+idle gap: 219-230ms** (was ~5,000ms). Worker telemetry: **37 invocations, 0 cold
+starts**, wallTime median **1ms**, cpuTime median **0ms**, zero Resend errors.
+
+**Also reverted:** the per-minute keep-warm cron is back to hourly `0 * * * *` and
+the `LHC_KEEPWARM_TICK` debug log is gone. This Worker is no longer in any
+user-facing path. **Do not re-add a keep-warm cron.**
+
+**Verified after the change:** all 10 form cases pass on the live domain; a **real
+browser click-submit** lands on `/thank-you/` (direct POSTs cannot catch
+client-side JS interception — the Roberts bug); 4 QA rows written to D1 with
+correct select values, then deleted (table back to 0); 39 pages p50 **87ms**,
+0 over 2s, all worker-bypassed; 57 URLs crawled, 0 broken, 0 redirects; client
+copy (ABR/ASSR, TRICARE) intact.
+
+**Note:** the browser QA submission sends a REAL email to info@ and drduhon@.
+Unavoidable when testing the accepted path end-to-end; keep such tests rare.
+
+**Deploying the form worker:** `cd forms-worker && npx wrangler deploy` with
+`CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ACCOUNT_ID` exported. It has its own
+`wrangler.jsonc` and is NOT part of the Astro build.

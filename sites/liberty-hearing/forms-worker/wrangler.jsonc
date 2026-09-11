@@ -1,0 +1,34 @@
+{
+	// Liberty Hearing Center — appointment-form handler, DELIBERATELY SEPARATE
+	// from the main `liberty-hearing` Worker.
+	//
+	// WHY THIS EXISTS (2026-09-10, Vince's call):
+	//   The emdash Worker bundles 11.2MB / 507 modules (admin UI, MCP server,
+	//   plugin sandbox, image processing, i18n). Initialising that took ~5s on a
+	//   cold isolate. Site pages are prerendered static so they never touch it,
+	//   but /api/contact HAD to run there — measured 4.3-4.9s for a bare 405 that
+	//   does no work at all. A patient submitting the form waited ~5 seconds.
+	//
+	//   Keep-warm was proven not to work first: a Cloudflare cron fires but only
+	//   warms one location, and the isolate goes cold after as little as a 5s gap
+	//   (measured), so no ping cadence can hold it. The cost had to be removed,
+	//   not hidden.
+	//
+	//   This Worker imports NOTHING. It is a few KB, so it cold-starts in
+	//   single-digit ms. Same D1, same Resend key, same behaviour.
+	"name": "liberty-hearing-forms",
+	"account_id": "239e9d015c7a3a39cdc2e9400312f553",
+	"main": "src/index.ts",
+	"compatibility_date": "2026-02-24",
+	// Same database the main Worker writes leads to — one `contact_submissions`
+	// table, so nothing downstream changes.
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "liberty-hearing-db",
+			"database_id": "c6fbfd7c-5c0f-42fc-9ff2-00dccd78892a",
+		},
+	],
+	"observability": { "enabled": true },
+	"workers_dev": true,
+}
