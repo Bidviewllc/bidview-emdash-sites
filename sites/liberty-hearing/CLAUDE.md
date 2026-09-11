@@ -1090,3 +1090,43 @@ the wizard is unrun and is not user-facing.
 **QA emails:** testing the accepted path sends REAL mail to info@ and drduhon@.
 Two went out on 2026-09-10 (one real-browser submit, one www edge-case POST).
 Prefer the **400 validation path** for timing tests — it sends nothing.
+
+## SITEMAP + ROBOTS FIXED (2026-09-11, Vince's call)
+
+`/sitemap.xml` was returning **500** (`<!-- EmDash not configured -->`) since
+launch, and nothing advertised a sitemap at all. Both now exist as real routes.
+
+**`src/pages/sitemap.xml.ts`** — overrides emdash's broken default (Astro's
+`src/pages` wins). **`export const prerender = true`**, so it is built to a static
+file and served by the ASSETS binding — it never invokes the emdash Worker, which
+would have reintroduced the ~5s cold start on a file Google fetches regularly.
+
+**Routes are DISCOVERED, not hardcoded.** `import.meta.glob("./**/index.astro")`
+enumerates the real page files at build time, skipping `[slug]` dynamic routes and
+the unused `posts`/`category`/`tag`/`api` scaffold. **Add a page under
+`src/pages/<slug>/index.astro` and it appears in the sitemap automatically** —
+nothing to remember. `/thank-you/` is in an `EXCLUDE` set because it renders
+`noindex`, and listing a noindex URL in a sitemap is a contradiction Search
+Console flags. **Keep EXCLUDE in sync if another page gains `noindex`.**
+
+**`src/pages/robots.txt.ts`** — also prerendered. Allows all, disallows
+`/_emdash/`, `/api/`, `/404`, and declares the sitemap.
+**Cloudflare PREPENDS its own "Cloudflare Managed content" block** (AI bot-control
+signals) to whatever the origin returns — that is a zone feature, it is additive,
+and it is why the served file shows a duplicated `User-agent: *`. Do not try to
+"fix" that.
+
+**Verified live:** `/sitemap.xml` 200, `application/xml`, well-formed, **38 URLs**,
+served with the **worker bypassed**; `/robots.txt` 200 carrying
+`Sitemap: https://libertyhearingcentertx.com/sitemap.xml`; **all 38 sitemap URLs
+resolve 200**, none slow, and **0 noindex/utility URLs listed**.
+
+### Two 500s remain — SAME root cause, both low impact
+| URL | Status | Notes |
+| --- | --- | --- |
+| `/sitemap-index.xml` | 500 | emdash default route. **Non-standard filename**, nothing links to it, robots does not name it, and Google looks for `/sitemap.xml`. (`/sitemap_index.xml`, the Yoast-style underscore name, correctly 302s.) |
+| `/_emdash/api/setup/status` | 500 | expected, not user-facing |
+
+**Both are emdash routes failing because the setup wizard was never run**
+(0 collections / 0 users). They disappear if the CMS is ever configured. Left
+alone deliberately rather than shadowing them with stub files.
