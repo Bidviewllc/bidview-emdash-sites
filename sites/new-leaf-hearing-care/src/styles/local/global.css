@@ -215,3 +215,26 @@ position: relative;
       text-align: center;
   }
 }
+
+/* The about-section eyebrow is an <h1> for SEO on the homepage and the two
+   location pages. As a <p> it inherited its size from the `.hero-copy p,
+   .about-copy p` and `p:not(.hero-copy p)` rules, which no longer match an
+   <h1>. These rules reproduce that exact rendering so the design is unchanged. */
+h1.eyebrow {
+  font-size: 16px;
+  line-height: 1.1;
+}
+
+@media (max-width: 1024px) {
+  h1.eyebrow {
+    font-size: 18px;
+    line-height: 1.1;
+  }
+}
+
+@media (max-width: 767px) {
+  h1.eyebrow {
+    font-size: 16px;
+    line-height: 1.4;
+  }
+}
