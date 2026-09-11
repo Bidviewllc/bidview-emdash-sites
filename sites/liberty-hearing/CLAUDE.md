@@ -1023,3 +1023,70 @@ Unavoidable when testing the accepted path end-to-end; keep such tests rare.
 **Deploying the form worker:** `cd forms-worker && npx wrangler deploy` with
 `CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ACCOUNT_ID` exported. It has its own
 `wrangler.jsonc` and is NOT part of the Astro build.
+
+## TRIPLE-CHECK (2026-09-11) — and one REAL defect found
+
+Re-verified everything independently. The speed work holds up; one genuine,
+**pre-existing** defect surfaced that had been missed every previous round.
+
+### ⚠ `/sitemap.xml` RETURNS 500 — Liberty has NO working sitemap
+
+```
+/sitemap.xml        500   body: <!-- EmDash not configured -->
+/sitemap-index.xml  500   same
+robots.txt          200   but it is CLOUDFLARE'S managed file and names NO sitemap
+```
+
+**Cause:** there is no `src/pages/sitemap.xml.ts` in this project, so emdash's
+default sitemap route handles it — and that route dies because the **emdash setup
+wizard was never run** (0 collections / 0 users). `Server-Timing` on the response
+shows `db.total;dur=4084` — it queries a CMS that was never configured.
+
+**This is NOT caused by the prerender or forms-worker work.** Confirmed: no
+sitemap/robots route has *ever* existed in `sites/liberty-hearing/` in repo
+history. It has been broken since launch (2026-09-08).
+
+**Every other Bidview site has the fix already** — `sites/ontario-hearing/` ships
+both `src/pages/sitemap.xml.ts` and `robots.txt.ts`, precisely because "emdash's
+default XML sitemap is often empty or emits wrong `/collection/{slug}` URLs"
+(see the monorepo notes). Liberty just never got them. **Fix = port that pattern:
+a custom `sitemap.xml.ts` emitting the 40 real routes, plus a `robots.txt.ts`
+pointing at it. NOT done — needs Vince's go-ahead.**
+
+### Why it was missed: my own crawler never checked it
+`scratchpad/crawl.mjs` follows **links**, and nothing on the site links to
+`/sitemap.xml`. So "57 URLs, 0 broken" was true and still missed a 500.
+**Always also probe the unlinked endpoints** — `scratchpad/endpoints.mjs` now does
+this: sitemap(s), robots, feeds, favicons, `/assets/*`, `/_emdash/*`, `/404`.
+Only remaining 500 there is `/_emdash/api/setup/status`, which is expected while
+the wizard is unrun and is not user-facing.
+
+### Everything else — verified clean
+- **Infrastructure:** both Workers active @100%; routes `libertyhearingcentertx.com/api/contact*`
+  and `www.*` -> `liberty-hearing-forms`; custom domains apex+www -> `liberty-hearing`;
+  cron back to hourly on the main Worker, none on forms; `LEAD_TO` + `RESEND_API_KEY`
+  present on forms.
+- **Form across idle gaps (0/30/60/120/180/300s):** median **253ms**, max 1537ms,
+  **0 over 2s**. Forms Worker: 0 cold starts, wallTime median 1ms, 0 Resend errors.
+- **Route edge cases:** `/api/contact`, `/api/contact/`, `/api/contact/extra` all
+  405 on GET; `/api/other` 404; `/api/` and `/api` 302->/404. www POST redirects to
+  the **www** thank-you (host preserved). Note `/api/contactfoo` also matches the
+  `*` wildcard and answers 405 — harmless, no such link exists.
+- **Honeypot is correctly hidden** — off-screen at `x:-9999`, `tabindex="-1"`,
+  `autocomplete="off"` (NOT `display:none`, deliberately — some bots detect that).
+  Not reachable by sighted or keyboard users, so no real lead can trip it.
+- **Empty browser submit is blocked client-side** on desktop AND mobile: 0 POSTs
+  to `/api/contact`. (My first check wrongly counted Cloudflare RUM / Cherry /
+  Google Maps telemetry POSTs as a leak — filter by URL, not method.)
+- **Pages:** 39 cache-busted p50 **85ms**, 0 over 2s, all worker-bypassed.
+  Sweep 37 pages x 3 viewports: 111 flags, **100% third-party console noise, 0
+  structural**. Interactive JS all passing.
+- **Crawl:** 57 URLs, 0 broken, 0 redirects. Client copy (ABR/ASSR $300, TRICARE,
+  referral FAQ) intact.
+- **Repo == deployed source:** 46 page files + configs + forms-worker all
+  byte-identical (ignoring CRLF); clean and level with origin/main.
+- **D1 `contact_submissions` back to 0.**
+
+**QA emails:** testing the accepted path sends REAL mail to info@ and drduhon@.
+Two went out on 2026-09-10 (one real-browser submit, one www edge-case POST).
+Prefer the **400 validation path** for timing tests — it sends nothing.
