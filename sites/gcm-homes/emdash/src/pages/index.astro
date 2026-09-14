@@ -249,7 +249,7 @@ const tagOf = (l: any) =>
 			<div class="testimonials">
 				{TESTIMONIALS.map((t) => (
 					<div class="testimonial">
-						<div class="stars">{[0, 1, 2, 3, 4].map(() => <span>★</span>)}</div>
+						<div class="stars">{[0, 1, 2, 3, 4].map(() => <span class="star"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" /></svg></span>)}</div>
 						<p class="testimonial__q">"{t.q}"</p>
 						<div class="testimonial__attr">
 							<div class="testimonial__name">{t.name}</div>
@@ -293,7 +293,7 @@ const tagOf = (l: any) =>
 				))}
 			</div>
 			<div class="section-end-cta">
-				<a class="btn btn--dark" href="/listings/">VIEW ALL LISTINGS<span class="cta-arrow" aria-hidden="true">→</span></a>
+				<a class="btn btn--dark" href="/listings/">VIEW ALL LISTINGS<span class="cta-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg></span></a>
 			</div>
 		</div>
 	</section>
@@ -337,20 +337,20 @@ const tagOf = (l: any) =>
 									</div>
 								)}
 							</div>
-							<a class="reality__link micro__cta" href={`/neighborhood/${n.slug}/`}>LEARN MORE<span class="cta-arrow" aria-hidden="true">→</span></a>
+							<a class="reality__link micro__cta" href={`/neighborhood/${n.slug}/`}>LEARN MORE<span class="cta-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg></span></a>
 						</div>
 					</div>
 				))}
 
 				{micro.length > 1 && (
 					<div class="micro__nav">
-						<button class="btn btn--icon btn--ghost" id="microPrev" aria-label="Previous neighborhood">←</button>
+						<button class="btn btn--icon btn--ghost" id="microPrev" aria-label="Previous neighborhood"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></svg></button>
 						<div class="micro__dots">
 							{micro.map((n: any, i: number) => (
 								<button class="micro__dot" data-micro-dot={i} aria-label={n.title}></button>
 							))}
 						</div>
-						<button class="btn btn--icon micro__next" id="microNext" aria-label="Next neighborhood">→</button>
+						<button class="btn btn--icon micro__next" id="microNext" aria-label="Next neighborhood"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg></button>
 					</div>
 				)}
 			</div>
@@ -386,7 +386,7 @@ const tagOf = (l: any) =>
 							<div class="card__body">
 								<h3 class="blog-card__h">{p.title}</h3>
 								<p class="blog-card__p">{p.excerpt}</p>
-								<span class="blog-card__cta">READ ARTICLE<span class="cta-arrow" aria-hidden="true">→</span></span>
+								<span class="blog-card__cta">READ ARTICLE<span class="cta-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg></span></span>
 								<div class="blog-card__byline">
 									<div class="blog-card__avatar"></div>
 									<div>

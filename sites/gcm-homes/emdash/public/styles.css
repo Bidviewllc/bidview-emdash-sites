@@ -164,13 +164,14 @@ img { display: block; max-width: 100%; }
   height: 48px;
   padding: 0;
   border-radius: 12px;
-  /* The glyph is a text character, so it was inheriting .btn's 13px inside a
-     48px box. Sized to the button, and letter-spacing zeroed — on a single
-     glyph the trailing 0.14em pushes it off centre. */
-  font-size: 22px;
+  /* Holds an inline SVG, not a text character, so there is no baseline or
+     letter-spacing to fight — the icon is sized directly and centred by flex. */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   line-height: 1;
-  letter-spacing: 0;
 }
+.btn.btn--icon svg { width: 22px; height: 22px; display: block; }
 
 /* Trailing arrow on text CTAs. Its own element so it can be sized, coloured
    and animated apart from the label — the arrow used to be part of the label
@@ -178,10 +179,12 @@ img { display: block; max-width: 100%; }
    (.btn, .reality__link) already space it with their existing gap. */
 .cta-arrow {
   display: inline-block;
-  font-size: 1.35em;
   line-height: 1;
   transition: transform 200ms ease;
 }
+/* Sized in em so the arrow still tracks the label's font-size, as it did when
+   it was a text character. */
+.cta-arrow svg { width: 1.15em; height: 1.15em; display: block; }
 a:hover .cta-arrow { transform: translateX(4px); }
 
 /* These three were plain inline text — give them the same flex spacing the
@@ -912,7 +915,8 @@ a:hover .cta-arrow { transform: translateX(4px); }
   transform: translateY(-4px);
   box-shadow: 0 20px 40px -20px rgba(21,36,59,0.18);
 }
-.stars { color: var(--orange); display: flex; gap: 4px; font-size: 16px; }
+.stars { color: var(--orange); display: flex; gap: 4px; }
+.stars svg { width: 16px; height: 16px; display: block; }
 .testimonial__q {
   font-family: var(--font-serif);
   font-style: italic;
@@ -1023,6 +1027,7 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   letter-spacing: 0.14em;
 }
 .btn--submit:hover { background: var(--orange-deep); }
+.form-sent svg { width: 16px; height: 16px; vertical-align: -3px; margin-right: 4px; }
 .form-sent {
   background: rgba(247, 148, 91, 0.12);
   border: 1px solid var(--orange);

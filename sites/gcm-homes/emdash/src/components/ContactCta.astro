@@ -140,7 +140,7 @@ const ROW_ICONS: Record<string, string> = {
 				<input class="honeypot" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
 				{/* Which page the lead came from, so enquiries are traceable. */}
 				<input type="hidden" name="source" value={Astro.url.pathname} />
-				<div class="form-sent" data-inquiry-sent style="display:none">✓ {successMessage}</div>
+				<div class="form-sent" data-inquiry-sent style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12" /></svg> {successMessage}</div>
 				<div class="form-error" data-inquiry-error style="display:none"></div>
 				<button type="submit" class="btn--submit btn" data-inquiry-submit>{submitLabel}</button>
 			</form>
