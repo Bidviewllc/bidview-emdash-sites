@@ -60,7 +60,7 @@ const meta = (l: any) => [l.beds && `${l.beds} BD`, l.baths && `${l.baths} BA`, 
 		<section class="nb-hero" data-screen-label="Neighborhood Hero">
 			<div class="nb-hero__veil"></div>
 			<div class="container nb-hero__copy">
-				<a class="nb-hero__back" href="/community/">← The Community</a>
+				<a class="nb-hero__back" href="/community/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></svg> The Community</a>
 				<span class="eyebrow" {...(e.tag ?? {})}>{d.tag ?? area.tag}</span>
 				<h1 class="cg-hero__title" {...(e.title ?? {})}>{d.title ?? area.name}</h1>
 				<p class="cg-hero__sub" {...(e.hero_sub ?? {})}>{heroSub}</p>
@@ -126,7 +126,7 @@ const meta = (l: any) => [l.beds && `${l.beds} BD`, l.baths && `${l.baths} BA`, 
 						</div>
 						{homes.length > 6 && (
 							<div class="section-end-cta">
-								<a class="btn btn--dark" href="/listings/">SEE ALL {homes.length} HOMES<span class="cta-arrow" aria-hidden="true">→</span></a>
+								<a class="btn btn--dark" href="/listings/">SEE ALL {homes.length} HOMES<span class="cta-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg></span></a>
 							</div>
 						)}
 					</>

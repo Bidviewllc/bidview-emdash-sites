@@ -456,7 +456,7 @@ async function submitListingInquiry(e) {
     f.style.display = "none";
     msg.className = "form-sent";
     msg.style.display = "block";
-    msg.textContent = "✓ Thanks — Grant will be in touch within 24 hours.";
+    msg.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12" /></svg> Thanks — Grant will be in touch within 24 hours.';
   } catch (err) {
     msg.style.color = "#c0392b";
     msg.textContent = err.message;
@@ -565,7 +565,7 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro) {
   const descBlock = `
     <div class="prop-desc" id="propDesc">
       <div class="prop-desc__body" id="propDescBody">${descHtml}</div>
-      ${canEdit ? `<div class="prop-desc__flag">${listing.descriptionIsCustom ? "✎ Custom description (edited). " : ""}<a href="/_emdash/admin/content/listings/${listing.id}?locale=en" target="_blank" rel="noopener">Edit description in the backend →</a></div>` : ""}
+      ${canEdit ? `<div class="prop-desc__flag">${listing.descriptionIsCustom ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9" /><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" /></svg> Custom description (edited). ` : ""}<a href="/_emdash/admin/content/listings/${listing.id}?locale=en" target="_blank" rel="noopener">Edit description in the backend <span class="cta-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg></span></a></div>` : ""}
     </div>`;
 
   const note = listing.ownerNote || "";
@@ -612,13 +612,13 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro) {
       <div class="filmstrip-wrap">
         <div class="filmstrip__header">
           <div class="filmstrip__header__t">Property Gallery</div>
-          <div class="eyebrow eyebrow--muted">${photos.length} Photos · Scroll →</div>
+          <div class="eyebrow eyebrow--muted">${photos.length} Photos · Scroll <span class="cta-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg></span></div>
         </div>
         <div class="filmstrip">
           ${photos.map((src, i) => `<div class="filmstrip__tile" style="background-image:url('${src}')" onclick="openLightbox(${i})" role="button" tabindex="0" aria-label="Open photo ${i + 1}"></div>`).join("")}
           <button class="filmstrip__cta" onclick="openLightbox(0)">
             <div class="filmstrip__cta__t">View Full<br />Photo Gallery</div>
-            <div class="filmstrip__cta__c">${photos.length} PHOTOS<span class="cta-arrow" aria-hidden="true">→</span></div>
+            <div class="filmstrip__cta__c">${photos.length} PHOTOS<span class="cta-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg></span></div>
           </button>
         </div>
       </div>
@@ -839,7 +839,7 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro) {
       </div>
     </section>
 
-    <div class="back-bar"><a class="back-btn" href="${backHref}">← ${backLabel}</a></div>
+    <div class="back-bar"><a class="back-btn" href="${backHref}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></svg> ${backLabel}</a></div>
 
     <section class="listing-body">
       <div class="listing-body__grid">

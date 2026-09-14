@@ -72,7 +72,8 @@
     }
     .search input:focus { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(21,36,59,0.07); }
     .search input::placeholder { color: var(--muted); }
-    .search__icon { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 13px; pointer-events: none; }
+    .search__icon { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+    .search__icon svg { width: 15px; height: 15px; display: block; }
     .search__clear {
       position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
       width: 22px; height: 22px; border-radius: 50%; color: var(--muted); font-size: 15px; line-height: 1;
@@ -93,13 +94,14 @@
     }
     .fsel select:hover { border-color: var(--navy); }
     .fsel select:focus { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(21,36,59,0.07); }
-    .fsel::after {
-      content: "⌄"; position: absolute; right: 12px; top: 44%; transform: translateY(-50%);
-      font-size: 12px; color: var(--muted); pointer-events: none;
+    .fsel__chev {
+      position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+      color: var(--muted); pointer-events: none;
     }
+    .fsel__chev svg { width: 12px; height: 12px; display: block; }
     /* A select holding a non-default value reads as an applied filter. */
     .fsel.is-set select { background: var(--navy); color: #fff; border-color: var(--navy); }
-    .fsel.is-set::after { color: rgba(255,255,255,0.7); }
+    .fsel.is-set .fsel__chev { color: rgba(255,255,255,0.7); }
 
     .toggle {
       display: inline-flex; align-items: center; gap: 7px; padding: 9px 16px;
@@ -366,7 +368,7 @@
     /* The same controls, sized for thumbs. */
     .fsheet .fsel { display: flex; width: 100%; }
     .fsheet .fsel select { width: 100%; border-radius: 4px; padding: 14px 34px 14px 14px; font-size: 14px; }
-    .fsheet .fsel::after { right: 14px; }
+    .fsheet .fsel__chev { right: 14px; }
     .fsheet .toggle { width: 100%; justify-content: center; border-radius: 4px; padding: 15px 16px; font-size: 14px; }
     .fsheet__foot {
       flex-shrink: 0; display: flex; align-items: center; gap: 12px;
@@ -482,17 +484,17 @@
 
 <div class="filterbar" id="filterbar">
   <div class="search" id="searchWrap">
-    <span class="search__icon">⌕</span>
+    <span class="search__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7" /><line x1="20" y1="20" x2="16.65" y2="16.65" /></svg></span>
     <input id="q" type="search" placeholder="Address, city, or ZIP" autocomplete="off" aria-label="Search listings" />
     <button class="search__clear" id="qClear" aria-label="Clear search">×</button>
   </div>
 
-  <div class="fsel"><select id="priceMin" aria-label="Minimum price"></select></div>
-  <div class="fsel"><select id="priceMax" aria-label="Maximum price"></select></div>
-  <div class="fsel"><select id="beds" aria-label="Bedrooms"></select></div>
-  <div class="fsel"><select id="baths" aria-label="Bathrooms"></select></div>
-  <div class="fsel"><select id="ptype" aria-label="Property type"></select></div>
-  <div class="fsel"><select id="city" aria-label="City"></select></div>
+  <div class="fsel"><select id="priceMin" aria-label="Minimum price"></select><span class="fsel__chev" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg></span></div>
+  <div class="fsel"><select id="priceMax" aria-label="Maximum price"></select><span class="fsel__chev" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg></span></div>
+  <div class="fsel"><select id="beds" aria-label="Bedrooms"></select><span class="fsel__chev" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg></span></div>
+  <div class="fsel"><select id="baths" aria-label="Bathrooms"></select><span class="fsel__chev" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg></span></div>
+  <div class="fsel"><select id="ptype" aria-label="Property type"></select><span class="fsel__chev" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg></span></div>
+  <div class="fsel"><select id="city" aria-label="City"></select><span class="fsel__chev" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg></span></div>
 
   <label class="toggle" id="wfToggle">
     <input type="checkbox" id="waterfront" /> Waterfront
@@ -501,7 +503,7 @@
   <button class="clear-all" id="clearAll">Clear all</button>
 
   <div class="filterbar__right">
-    <div class="fsel"><select id="sort" aria-label="Sort listings"></select></div>
+    <div class="fsel"><select id="sort" aria-label="Sort listings"></select><span class="fsel__chev" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg></span></div>
   </div>
 
   <!-- Mobile/tablet only. Last in the row so it pins to the right of it. -->
