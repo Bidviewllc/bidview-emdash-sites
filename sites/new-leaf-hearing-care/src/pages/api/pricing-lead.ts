@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { TIERS, FINANCING, DISCLAIMER, CONTACT, MEMBERSHIP } from '../../data/pricing';
+import { saveSubmission, markDelivery } from '../../lib/formSubmissions';
 
 // Price-calculator lead capture. Sends two plain-text emails via Resend (the
 // same provider the site's login emails use — RESEND_API_KEY is a secret on
@@ -156,6 +157,14 @@ export const POST: APIRoute = async ({ request }) => {
     return Response.json({ error: 'Invalid email' }, { status: 400 });
   }
 
+  // Save first: the lead must survive any email failure below.
+  const submissionId = await saveSubmission({
+    source: 'pricing-calculator',
+    firstName, lastName, email, phone: body.phone,
+    payload: { estimate: body.estimate ?? null },
+    request,
+  });
+
   const practiceText = practiceEmailText(body);
   const patientText = patientEmailText(firstName, body.estimate);
 
@@ -164,6 +173,7 @@ export const POST: APIRoute = async ({ request }) => {
     if (inWorkers) {
       // Deployed but the secret is missing — fail loudly rather than pretend.
       console.error('[pricing-lead] RESEND_API_KEY missing on this worker');
+      await markDelivery(submissionId, 'failed', 'RESEND_API_KEY missing on this worker');
       return Response.json({ error: 'Email unavailable' }, { status: 500 });
     }
     // Local dev: log instead of sending so the flow stays testable.
@@ -180,10 +190,17 @@ export const POST: APIRoute = async ({ request }) => {
   // The practice notification is the one that must not be lost silently.
   if (practiceResult.status === 'rejected') {
     console.error('[pricing-lead] practice send failed:', practiceResult.reason);
+    const patientNote = patientResult.status === 'rejected'
+      ? `; patient email failed: ${String(patientResult.reason)}`
+      : '; patient email sent';
+    await markDelivery(submissionId, 'failed', `practice email failed: ${String(practiceResult.reason)}${patientNote}`);
     return Response.json({ error: 'Email unavailable' }, { status: 500 });
   }
   if (patientResult.status === 'rejected') {
     console.error('[pricing-lead] patient send failed (lead still captured):', patientResult.reason);
+    await markDelivery(submissionId, 'partial', `patient email failed: ${String(patientResult.reason)}`);
+  } else {
+    await markDelivery(submissionId, 'sent');
   }
 
   return Response.json({ ok: true });
