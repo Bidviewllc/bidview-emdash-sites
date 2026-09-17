@@ -70,6 +70,19 @@ const pageCtx = createPublicPageContext({
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		{/*
+		  Google Search Console ownership + GA4 (Vince, 2026-09-17).
+		  is:inline is REQUIRED on both scripts: without it Astro bundles and
+		  hoists them, and gtag stops being a plain global before its config call.
+		*/}
+		<meta name="google-site-verification" content="gW6XErtjPkUib6NadQXF3s_jFRnJ2dNjXcqBviLa8gY" />
+		<script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-TMBSJHBH3Y"></script>
+		<script is:inline>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+			gtag('config', 'G-TMBSJHBH3Y');
+		</script>
 		<title>{fullTitle}</title>
 		{description && <meta name="description" content={description} />}
 		<link rel="canonical" href={canonical} />

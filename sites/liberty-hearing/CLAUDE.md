@@ -1130,3 +1130,21 @@ resolve 200**, none slow, and **0 noindex/utility URLs listed**.
 **Both are emdash routes failing because the setup wizard was never run**
 (0 collections / 0 users). They disappear if the CMS is ever configured. Left
 alone deliberately rather than shadowing them with stub files.
+
+## GSC verification + GA4 added (2026-09-17)
+
+Added to `src/layouts/Base.astro` `<head>`, sitewide:
+- `<meta name="google-site-verification" content="gW6XErtjPkUib6NadQXF3s_jFRnJ2dNjXcqBviLa8gY">` (Search Console, meta-tag method)
+- GA4 gtag, measurement ID **G-TMBSJHBH3Y**
+
+**Both scripts use `is:inline` — keep it.** Without it Astro bundles and hoists
+the scripts, and the gtag config call breaks. `CACHE_VERSION` bumped v3 -> v4.
+
+Deployed worker version `19e2e89d-c89e-4b4b-998f-2d32416d5e21`. Verified live on
+apex + www and 5 pages (meta, loader, config call all present), and in a real
+Chromium: each page load sends a GA4 `page_view` collect hit for G-TMBSJHBH3Y,
+0 JS errors. `/api/contact` still 405 on GET, sitemap + robots still 200.
+
+This supersedes the "no analytics" line under Still open. Note the domain also has
+an older DNS TXT `google-site-verification=t07qIet...` from a different owner; both
+can coexist.
