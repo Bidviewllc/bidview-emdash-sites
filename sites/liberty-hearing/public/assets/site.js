@@ -2,6 +2,7 @@
    1. style-hover attributes (stand-in for :hover on inline-styled elements)
    2. clinic photo lightbox
    3. SSNHL info modal
+   4. GA4 click_phone_number event on tel: links
    The homepage CTA/"Hearing the Call" swap from the design mockup was removed
    on conversion — the launch CTA (#book) is now the only version.
 
@@ -60,6 +61,19 @@
     if (e.key !== 'Escape') return;
     closeLightbox();
     if (modal && !modal.hidden) closeModal();
+  });
+
+  /* GA4 phone taps (2026-09-17). One delegated listener, so every tel: link on every
+     page counts, including any added later. The event name must stay exactly
+     click_phone_number: the weekly Lead Health pulse counts that name. gtag is
+     defined inline in Base.astro <head>; if it is missing (blocked), do nothing. */
+  document.addEventListener('click', function (e) {
+    var a = e.target && e.target.closest ? e.target.closest('a[href^="tel:"]') : null;
+    if (!a || typeof window.gtag !== 'function') return;
+    window.gtag('event', 'click_phone_number', {
+      link_url: a.getAttribute('href'),
+      page_location: window.location.href
+    });
   });
 
 })();
