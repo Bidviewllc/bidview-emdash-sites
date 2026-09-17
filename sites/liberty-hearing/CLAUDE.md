@@ -1148,3 +1148,134 @@ Chromium: each page load sends a GA4 `page_view` collect hit for G-TMBSJHBH3Y,
 This supersedes the "no analytics" line under Still open. Note the domain also has
 an older DNS TXT `google-site-verification=t07qIet...` from a different owner; both
 can coexist.
+
+## FORM AUDIT (2026-09-17) — wired correctly, but every lead so far is SPAM
+
+Vince asked whether the `/contact/` form is wired and saving to D1.
+
+**Wiring: correct, verified live.** Form `action="/api/contact" method="POST"`,
+fields `name,email,phone,reason,time,message,website(honeypot)`, required
+`name,email,message`. Routes `apex|www/api/contact*` -> `liberty-hearing-forms`
+(response has no `X-Cache-Status`, proving the forms Worker answers, not emdash).
+Secrets `LEAD_TO` + `RESEND_API_KEY` present. Empty POST 400, GET 405.
+
+**D1: saving.** `contact_submissions` has **5 rows (2026-09-11 -> 09-17). ALL 5 ARE SPAM.**
+- **3x "Robertsaw"** — one bot, rotating gmail addresses and phone numbers, the
+  same price enquiry in rotating languages: English "I wanted to know your price",
+  Basque "Kaixo, zure prezioa jakin nahi nuen", Albanian "kam dashur te di cmimin
+  tuaj". Well-known multilingual price-inquiry spam pattern.
+- **2x FreeB2BData** (`@freeb2bdata.org`, "Jerold"/"Hilda") — data-broker
+  solicitation, ~380-char message.
+- **No real patient has submitted yet.** I initially reported these as genuine
+  leads before reading the rows — don't infer "real lead" from a gmail address.
+
+**Tell-tale:** one Robertsaw row stored reason `VA C&amp;P evaluation` with a
+literal `&amp;`. A real browser submits the decoded `VA C&P evaluation`
+(verified in Chromium) — the bot scraped raw HTML. **Not a site bug.**
+
+**Email: Resend status checked per send** (key can list `/emails`). All sends
+`delivered` except the **09-17 06:00 Robertsaw email: `bounced`, type Transient /
+General** (soft bounce, no diagnostic code) — almost certainly Google rejecting
+spam content, not a config fault. No real lead has ever bounced. So the clinic's
+info@ + drduhon@ inboxes received **4 spam notifications** from the form.
+
+**Why the filter lets these through:** `looksLikeSpam()` catches links (>=2),
+keywords, BBCode and 120+ char tokens. These messages have no links or keywords,
+and **Turnstile is still not enabled** (needs a keypair from Cameron — the `cfat_`
+token cannot create widgets). Not changed — options raised with Vince.
+
+Mail DNS unchanged and still thin: single MX `10 alt4.aspmx.l.google.com`, no
+DMARC record. Not the cause of the bounce above, but still worth raising with Erika.
+
+## SPAM BLOCKER LIVE — Turnstile + JS timing check (2026-09-17)
+
+Vince supplied a Turnstile widget (already created) and asked for a spam blocker.
+**Site key `0x4AAAAAAE6gmKYYw7Z0RjWU`** (public, in the /contact/ HTML). Secret is
+the worker secret `TURNSTILE_SECRET` on **both** `liberty-hearing-forms` (live) and
+`liberty-hearing` (fallback); copy kept in `~/.claude/credentials/resend.md`.
+**Never commit the secret.** Integration followed Cloudflare's
+`developers.cloudflare.com/turnstile/spin/prompt.md` existing-widget flow.
+
+### How it works
+- **`/contact/`** — widget `<div class="cf-turnstile" data-sitekey=… data-action="contact">`,
+  `api.js` loaded `is:inline`, plus hidden `lhc_fs` stamped at submit with ms on page.
+  A submit **gate** holds the POST if `window.turnstile` exists but there is no token
+  yet, and shows: *Please complete the "Verify you are human" check above… Having
+  trouble? Call us at (979) 450-7996.* If the Turnstile script never loads (ad
+  blocker/network), the submit is allowed and the server flags it.
+- **Server (`forms-worker/src/index.ts`, fallback copy in `src/pages/api/contact.ts`)**
+  — Cloudflare's canonical siteverify: form-encoded, `AbortSignal.timeout(10_000)`,
+  `remoteip` from `CF-Connecting-IP`, then require `success` **and**
+  `action === "contact"` **and** hostname in {apex, www}. Then `lhc_fs` must be a
+  number >= **2000ms**.
+- **A failing submission is NOT rejected** — it is **saved to D1 with
+  `extra = "[BLOCKED: reason] | …"` and returns the normal 303, but no email is
+  sent.** Deliberate deviation from Cloudflare's guide (which 403s): a lost patient
+  enquiry is worse than a spam row. Reasons you will see: `turnstile-missing`,
+  `turnstile-failed <codes>`, `turnstile-action`, `turnstile-hostname`, `no-js`,
+  `bad-token`, `too-fast Nms`. **If a patient says they submitted and nobody got an
+  email, check D1 for a `[BLOCKED` row.** Only a siteverify network error/timeout is
+  allowed through (timing check still applies).
+- **Critical bug this fixed:** the old code was fail-open on a MISSING token
+  (`if (secret && token)`), so Turnstile alone would never have stopped these bots —
+  they run no JS and send no token.
+
+### Verified
+- `astro check` 0 errors; forms-worker `tsc --strict` 0 errors.
+- **Local** (`wrangler dev --local`, no email key): Cloudflare's always-fail test
+  secret -> missing token `turnstile-missing`, forged token
+  `turnstile-failed invalid-input-response`; timing -> `no-js`, `too-fast 800ms`,
+  `bad-token`; `lhc_fs=8000` reached the email step (not blocked); empty form 400;
+  honeypot still dropped.
+- **Real token**: headless Chrome gets NO token (Turnstile detects automation — the
+  gate correctly held the submit). **Headed Chrome with `--disable-blink-features=AutomationControlled`
+  + a click on the widget DID issue a token (794 chars).** Sent to siteverify with
+  the secret: `success:true, action:"contact", hostname:"libertyhearingcentertx.com"`
+  — the keypair and hostname are correct.
+- **Live bot replay** (Robertsaw shape, no token) and a **forged token** -> 303,
+  saved `[BLOCKED: …]`, **Resend count unchanged (no email)**.
+- **Live real human submit** (headed, token + `lhc_fs=15631`) -> `/thank-you/`, D1
+  row **not** blocked, email sent (subject "QA TEST - please ignore").
+- Visual: widget + hold message screenshotted at 1440 and 390, 0 overflow, 0 POSTs
+  while held. Cherry's floating pill partially overlaps the hold message on mobile
+  (pre-existing floating widget).
+- All QA rows deleted; D1 back to the 5 pre-existing spam rows (not cleared — Vince
+  has not said).
+- Deployed: `liberty-hearing` `e6a487ba-e46d-43b0-8bb6-9d96ad497980` (cache v6),
+  `liberty-hearing-forms` `90278ad4-70fd-4a72-b7de-ae7a6e46bb0d`.
+
+**NOT externally reviewed:** Codex hit its usage limit (resets 2026-09-22) and the
+Gemini CLI free tier is discontinued. Self-review only — it caught and fixed the hold
+message (said "wait" when Turnstile can need a click) and added the phone fallback.
+Codex was invoked with `--sandbox read-only` — keep doing that.
+
+**Process note:** my `Stop-Process` cleanup matched *all* wrangler/workerd processes
+(killed 10) — it may have stopped another session's local dev server. **Kill by
+port / PID of your own task only.**
+
+## ⚠ LEAD EMAILS BOUNCING SINCE 2026-09-17 — CORRECTS the form audit above
+
+The audit above said the 09-17 06:00 bounce was "almost certainly Google rejecting
+spam content". **That was wrong.** The spam-blocker QA email — clean, non-spammy —
+**also bounced** (09-17 14:56, Transient/General, no diagnostic code).
+
+Every Resend send on this key since 09-14:
+| UTC | to | result |
+| --- | --- | --- |
+| 09-15 01:19 | liberty | delivered |
+| 09-16 17:51 | NewLeafHearing.com / bidviewmarketing.com | delivered |
+| 09-16 21:38 | liberty | **delivered (last good)** |
+| 09-17 06:00 | liberty | **bounced** |
+| 09-17 14:56 | liberty | **bounced** |
+
+Ruled out: **MX unchanged** (`10 alt4.aspmx.l.google.com`, same on Cloudflare +
+Google resolvers); Google's MX accepts SMTP; **sender auth for `bidview.net` intact**
+(DKIM `resend._domainkey`, SPF on `send.bidview.net`, DMARC `p=none`); other
+clients delivered on 09-16. SMTP `RCPT TO` (no DATA sent) returns `250 OK` for
+info@, drduhon@ **and a made-up mailbox** — so the domain accepts everything at RCPT
+and rejects after the message is received; the probe cannot tell which mailbox.
+
+**Most likely on the clinic's Google Workspace side** (account/billing/mailbox/policy
+change around 09-17) — needs someone with Workspace admin (Erika). **Leads are still
+saved in D1**, but until fixed **nobody at the clinic is getting form emails.**
+Not yet raised with the client.

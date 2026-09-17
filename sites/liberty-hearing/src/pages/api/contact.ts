@@ -14,9 +14,8 @@ import { env } from "cloudflare:workers";
  *    "Please check the form and try again".
  *  - Every lead is written to D1 BEFORE the email is attempted, so a Resend
  *    outage or quota problem can never lose a lead.
- *  - Turnstile verification is FAIL-OPEN: no secret configured, no token, or a
- *    network error all fall through to the spam filter rather than dropping a
- *    real patient enquiry.
+ *  - Bot checks (Turnstile + JS timing token) never DROP a lead: failing
+ *    submissions are saved flagged `[BLOCKED: reason]` and just not emailed.
  *  - The spam filter deliberately does NOT reject on non-ASCII characters.
  *    The onePHG sites do, and it silently swallowed a legitimate submission
  *    that merely contained an em-dash. Accented names are normal.
@@ -57,6 +56,43 @@ function looksLikeSpam(name: string, message: string): boolean {
 	// a "message" that is one long unbroken token is almost always junk
 	if (/\S{120,}/.test(message)) return true;
 	return false;
+}
+
+const MIN_FILL_MS = 2000;
+const TURNSTILE_ACTION = "contact";
+const TURNSTILE_HOSTNAMES = new Set(["libertyhearingcentertx.com", "www.libertyhearingcentertx.com"]);
+
+function botReason(raw: string | undefined): string {
+	const v = String(raw ?? "").trim();
+	if (v === "") return "no-js";
+	const ms = Number(v);
+	if (!Number.isFinite(ms) || ms < 0) return "bad-token";
+	if (ms < MIN_FILL_MS) return `too-fast ${Math.round(ms)}ms`;
+	return "";
+}
+
+async function turnstileReason(raw: string | undefined, request: Request): Promise<string> {
+	const secret = (env as any).TURNSTILE_SECRET;
+	if (!secret) return "";
+	const token = String(raw ?? "").trim();
+	if (token === "") return "turnstile-missing";
+	if (token.length > 2048) return "turnstile-oversized";
+	try {
+		const res = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+			method: "POST",
+			headers: { "Content-Type": "application/x-www-form-urlencoded" },
+			signal: AbortSignal.timeout(10_000),
+			body: new URLSearchParams({ secret, response: token, remoteip: request.headers.get("CF-Connecting-IP") || "" }),
+		});
+		const r: any = await res.json();
+		if (!r.success) return `turnstile-failed ${(r["error-codes"] || []).join(",")}`.trim();
+		if (r.action !== TURNSTILE_ACTION) return `turnstile-action ${r.action}`;
+		if (!TURNSTILE_HOSTNAMES.has(r.hostname)) return `turnstile-hostname ${r.hostname}`;
+		return "";
+	} catch (err) {
+		console.error("Turnstile siteverify unreachable (allowing):", err);
+		return "";
+	}
 }
 
 async function saveToD1(d: Record<string, string>): Promise<boolean> {
@@ -134,25 +170,6 @@ export async function POST({ request }: { request: Request }) {
 		return ok();
 	}
 
-	// 2. Turnstile (fail-open by design — see the file header)
-	const turnstileToken = data["cf-turnstile-response"];
-	const turnstileSecret = (env as any).TURNSTILE_SECRET;
-	if (turnstileSecret && turnstileToken) {
-		try {
-			const verifyRes = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ secret: turnstileSecret, response: turnstileToken }),
-			});
-			const verifyData: any = await verifyRes.json();
-			if (!verifyData.success) {
-				return fail("Security check failed. Please go back and try again.", 400);
-			}
-		} catch (err) {
-			console.error("Turnstile verify error (non-fatal, allowing):", err);
-		}
-	}
-
 	const get = (...ks: string[]) => {
 		for (const k of ks) {
 			const v = esc(data[k] || "");
@@ -182,12 +199,27 @@ export async function POST({ request }: { request: Request }) {
 		return ok();
 	}
 
-	const extra = [reason && `${FIELD_LABELS.reason}: ${reason}`, time && `${FIELD_LABELS.time}: ${time}`]
+	// 5. Bot checks — FALLBACK COPY of forms-worker/src/index.ts (keep in sync).
+	//    Live traffic is served by the `liberty-hearing-forms` Worker via a Workers
+	//    Route; this only runs if that route is removed. Blocked = saved, not emailed.
+	const blocked =
+		(await turnstileReason(data["cf-turnstile-response"], request)) || botReason(data.lhc_fs);
+
+	const extra = [
+		blocked && `[BLOCKED: ${blocked}]`,
+		reason && `${FIELD_LABELS.reason}: ${reason}`,
+		time && `${FIELD_LABELS.time}: ${time}`,
+	]
 		.filter(Boolean)
 		.join(" | ");
 
-	// 5. D1 first — a lead saved here survives any email failure
+	// 6. D1 first — a lead saved here survives any email failure
 	const saved = await saveToD1({ name, email, phone, extra, message });
+
+	if (blocked) {
+		console.log(`Bot check blocked email (${blocked}), saved=${saved}, from`, email);
+		return ok();
+	}
 
 	const textBody = [
 		`Name:    ${name}`,

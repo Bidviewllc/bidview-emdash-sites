@@ -16,9 +16,9 @@
  *    "Please check the form and try again".
  *  - Every lead is written to D1 BEFORE the email is attempted, so a Resend
  *    outage or quota problem can never lose a lead.
- *  - Turnstile verification is FAIL-OPEN: no secret, no token, or a network
- *    error all fall through to the spam filter rather than dropping a real
- *    patient enquiry.
+ *  - Bot checks (Turnstile + a JS timing token, 2026-09-17) never DROP a lead:
+ *    a failing submission is saved to D1 flagged `[BLOCKED: reason]` and simply
+ *    not emailed. Only a Cloudflare network outage lets a missing check through.
  *  - The spam filter deliberately does NOT reject on non-ASCII. The onePHG
  *    sites do, and it silently swallowed a legitimate submission that merely
  *    contained an em-dash. Accented names are normal.
@@ -71,6 +71,75 @@ function looksLikeSpam(name: string, message: string): boolean {
 	// a "message" that is one long unbroken token is almost always junk
 	if (/\S{120,}/.test(message)) return true;
 	return false;
+}
+
+/**
+ * Minimum time on the contact page before a submit counts as human.
+ * Kept low on purpose: typing a name, email and message takes a real person far
+ * longer, and a false positive costs an email, not the lead (it is still in D1).
+ */
+const MIN_FILL_MS = 2000;
+
+/** Returns why a submission looks automated, or "" if it passes. */
+function botReason(raw: string | undefined): string {
+	const v = String(raw ?? "").trim();
+	if (v === "") return "no-js";
+	const ms = Number(v);
+	if (!Number.isFinite(ms) || ms < 0) return "bad-token";
+	if (ms < MIN_FILL_MS) return `too-fast ${Math.round(ms)}ms`;
+	return "";
+}
+
+/**
+ * Cloudflare Turnstile (widget sitekey 0x4AAAAAAE6gmKYYw7Z0RjWU, added 2026-09-17).
+ * Must match `data-action` on the widget in src/pages/contact/index.astro.
+ */
+const TURNSTILE_ACTION = "contact";
+const TURNSTILE_HOSTNAMES = new Set(["libertyhearingcentertx.com", "www.libertyhearingcentertx.com"]);
+
+/**
+ * Server-side Turnstile check, per Cloudflare's canonical siteverify flow:
+ * form-encoded POST, 10s timeout, remote IP, then success + action + hostname.
+ *
+ * Returns why the token is NOT acceptable, or "" if it passes.
+ * - No secret configured          -> "" (feature off; don't block everything)
+ * - Missing / oversized token      -> blocked. This is the case that matters: the
+ *                                     bots that spammed this form never run JS, so
+ *                                     they never have a token. The OLD code skipped
+ *                                     verification when the token was absent, which
+ *                                     is why Turnstile would not have stopped them.
+ * - siteverify says no / wrong action / wrong hostname -> blocked
+ * - Network error or timeout reaching Cloudflare -> "" (allowed). An outage on
+ *   Cloudflare's side must not punish real patients; the timing check still runs.
+ *
+ * "Blocked" never means a lost lead — see the caller: it is saved, just not emailed.
+ */
+async function turnstileReason(env: Env, raw: string | undefined, request: Request): Promise<string> {
+	const secret = env.TURNSTILE_SECRET;
+	if (!secret) return "";
+	const token = String(raw ?? "").trim();
+	if (token === "") return "turnstile-missing";
+	if (token.length > 2048) return "turnstile-oversized";
+	try {
+		const res = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+			method: "POST",
+			headers: { "Content-Type": "application/x-www-form-urlencoded" },
+			signal: AbortSignal.timeout(10_000),
+			body: new URLSearchParams({
+				secret,
+				response: token,
+				remoteip: request.headers.get("CF-Connecting-IP") || "",
+			}),
+		});
+		const r: any = await res.json();
+		if (!r.success) return `turnstile-failed ${(r["error-codes"] || []).join(",")}`.trim();
+		if (r.action !== TURNSTILE_ACTION) return `turnstile-action ${r.action}`;
+		if (!TURNSTILE_HOSTNAMES.has(r.hostname)) return `turnstile-hostname ${r.hostname}`;
+		return "";
+	} catch (err) {
+		console.error("Turnstile siteverify unreachable (allowing, timing check still applies):", err);
+		return "";
+	}
 }
 
 async function saveToD1(env: Env, d: Record<string, string>): Promise<boolean> {
@@ -148,25 +217,6 @@ async function handlePost(request: Request, env: Env): Promise<Response> {
 		return ok();
 	}
 
-	// 2. Turnstile (fail-open by design — see the file header)
-	const turnstileToken = data["cf-turnstile-response"];
-	const turnstileSecret = env.TURNSTILE_SECRET;
-	if (turnstileSecret && turnstileToken) {
-		try {
-			const verifyRes = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ secret: turnstileSecret, response: turnstileToken }),
-			});
-			const verifyData: any = await verifyRes.json();
-			if (!verifyData.success) {
-				return fail("Security check failed. Please go back and try again.", 400);
-			}
-		} catch (err) {
-			console.error("Turnstile verify error (non-fatal, allowing):", err);
-		}
-	}
-
 	const get = (...ks: string[]) => {
 		for (const k of ks) {
 			const v = esc(data[k] || "");
@@ -196,12 +246,34 @@ async function handlePost(request: Request, env: Env): Promise<Response> {
 		return ok();
 	}
 
-	const extra = [reason && `${FIELD_LABELS.reason}: ${reason}`, time && `${FIELD_LABELS.time}: ${time}`]
+	// 5. Bot check (2026-09-17). The /contact/ page runs a tiny script that puts
+	//    the time the visitor spent on the page into `lhc_fs` at submit. Bots that
+	//    POST straight from scraped HTML never run it — every lead received before
+	//    this existed was one (a multilingual "Robertsaw" price bot and FreeB2BData).
+	//    A missing value, or a submit under MIN_FILL_MS, is BLOCKED: still saved to
+	//    D1 (flagged in `extra`) but NO email is sent. Deliberately not a hard
+	//    reject — a real patient with JavaScript disabled must never be lost, only
+	//    kept out of the inbox. Review blocked rows in D1 if a lead seems missing.
+	//    Turnstile runs first and is the primary gate; the timing check is a
+	//    second layer that still works if Cloudflare's siteverify is unreachable.
+	const blocked =
+		(await turnstileReason(env, data["cf-turnstile-response"], request)) || botReason(data.lhc_fs);
+
+	const extra = [
+		blocked && `[BLOCKED: ${blocked}]`,
+		reason && `${FIELD_LABELS.reason}: ${reason}`,
+		time && `${FIELD_LABELS.time}: ${time}`,
+	]
 		.filter(Boolean)
 		.join(" | ");
 
-	// 5. D1 first — a lead saved here survives any email failure
+	// 6. D1 first — a lead saved here survives any email failure
 	const saved = await saveToD1(env, { name, email, phone, extra, message });
+
+	if (blocked) {
+		console.log(`Bot check blocked email (${blocked}), saved=${saved}, from`, email);
+		return ok(); // answer exactly like success so the bot learns nothing
+	}
 
 	const textBody = [
 		`Name:    ${name}`,
