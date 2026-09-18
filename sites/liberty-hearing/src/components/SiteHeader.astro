@@ -28,96 +28,14 @@ const { active } = Astro.props;
 <span style="display:block;width:20px;height:2px;background:var(--navy)"></span>
 <span style="display:block;width:20px;height:2px;background:var(--navy)"></span>
 </summary>
-<div style="position:absolute;left:0;right:0;top:100%;z-index:40;max-height:calc(100vh - 90px);overflow-y:auto;padding:10px clamp(14px,4vw,20px) 22px;border-top:3px solid var(--gold);background:var(--white);box-shadow:0 24px 55px rgba(var(--navy-rgb),.18)">
-
+<div data-mdrawer="1" style="position:absolute;left:0;right:0;top:100%;z-index:40;max-height:calc(100vh - 90px);overflow-y:auto;padding:10px clamp(14px,4vw,20px) 22px;border-top:3px solid var(--gold);background:var(--white);box-shadow:0 24px 55px rgba(var(--navy-rgb),.18)">
+<div data-mfallback="1">
 <a href="/" style="display:block;padding:15px 6px;border-bottom:1px solid rgba(var(--navy-rgb),.1);font-size:17px;font-weight:700">Home</a>
-
-<details name="lhc-msec">
-<summary style="list-style:none;display:flex;align-items:center;justify-content:space-between;padding:15px 6px;border-bottom:1px solid rgba(var(--navy-rgb),.1);font-size:17px;font-weight:700;cursor:pointer">Services <span style="font-size:20px;opacity:.6">▾</span></summary>
-<div style="padding:8px 6px 16px;display:flex;flex-direction:column;gap:14px;background:var(--surface)">
-<div>
-<div style="margin:0 0 4px 6px;font-size:11px;font-weight:750;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)">Testing &amp; Diagnosis</div>
-<a href="/hearing-evaluations/" style="display:block;padding:11px 6px;font-size:16px;font-weight:650">Hearing Evaluations</a>
-<a href="/pediatric-hearing-testing/" style="display:block;padding:11px 6px;font-size:16px;font-weight:650">Pediatric Hearing Evaluation</a>
-<a href="/school-hearing-screenings/" style="display:block;padding:11px 6px;font-size:16px;font-weight:650">Hearing Screenings</a>
-<a href="/diagnostic-services/" style="display:block;padding:11px 6px;font-size:16px;font-weight:650">Diagnostic Services</a>
-</div>
-<div>
-<div style="margin:0 0 4px 6px;font-size:11px;font-weight:750;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)">Treatment &amp; Care</div>
-<a href="/tinnitus-evaluations-management/" style="display:block;padding:11px 6px;font-size:16px;font-weight:650">Tinnitus Assessments</a>
-<a href="/ear-wax-removal/" style="display:block;padding:11px 6px;font-size:16px;font-weight:650">Ear Wax Removal</a>
-<a href="/cochlear-implants/" style="display:block;padding:11px 6px;font-size:16px;font-weight:650">Cochlear Implants</a>
-<a href="/sensorineural-hearing-loss/" style="display:block;padding:11px 6px;font-size:16px;font-weight:650">Sensorineural Hearing Loss</a>
-</div>
-<div>
-<div style="margin:0 0 4px 6px;font-size:11px;font-weight:750;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)">Prevention &amp; Veterans</div>
-<a href="/custom-hearing-protection-conservation/" style="display:block;padding:11px 6px;font-size:16px;font-weight:650">Custom Hearing Protection &amp; Conservation</a>
-<a href="/veterans-cp-hearing-evaluations/" style="display:block;padding:11px 6px;font-size:16px;font-weight:650">Veterans C&amp;P Hearing Evaluations</a>
-</div>
-</div>
-</details>
-
-<details name="lhc-msec">
-<summary style="list-style:none;display:flex;align-items:center;justify-content:space-between;padding:15px 6px;border-bottom:1px solid rgba(var(--navy-rgb),.1);font-size:17px;font-weight:700;cursor:pointer">Hearing Aids <span style="font-size:20px;opacity:.6">▾</span></summary>
-<div style="padding:8px 6px 16px;display:flex;flex-direction:column;gap:14px;background:var(--surface)">
-<div>
-<div style="margin:0 0 4px 6px;font-size:11px;font-weight:750;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)">Services</div>
-<a href="/hearing-aid-services/" style="display:block;padding:11px 6px;font-size:16px;font-weight:650">Hearing Aid Services</a>
-<a href="/hearing-aid-fitting/" style="display:block;padding:11px 6px;font-size:16px;font-weight:650">Hearing Aid Fittings</a>
-<a href="/real-ear-measurement/" style="display:block;padding:11px 6px;font-size:16px;font-weight:650">Real Ear Measurements</a>
-</div>
-<div>
-<div style="margin:0 0 4px 6px;font-size:11px;font-weight:750;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)">Brands We Carry</div>
-<div style="display:grid;grid-template-columns:1fr 1fr">
-<a href="/phonak-hearing-aids/" style="padding:11px 6px;font-size:16px;font-weight:650">Phonak</a>
-<a href="/widex-hearing-aids/" style="padding:11px 6px;font-size:16px;font-weight:650">Widex</a>
-<a href="/oticon-hearing-aids/" style="padding:11px 6px;font-size:16px;font-weight:650">Oticon</a>
-<a href="/starkey-hearing-aids/" style="padding:11px 6px;font-size:16px;font-weight:650">Starkey</a>
-<a href="/resound-hearing-aids/" style="padding:11px 6px;font-size:16px;font-weight:650">ReSound</a>
-<a href="/signia-hearing-aids/" style="padding:11px 6px;font-size:16px;font-weight:650">Signia</a>
-<a href="/unitron-hearing-aids/" style="padding:11px 6px;font-size:16px;font-weight:650">Unitron</a>
-</div>
-</div>
-<div>
-<div style="margin:0 0 4px 6px;font-size:11px;font-weight:750;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)">Batteries &amp; Accessories</div>
-<a href="/hearing-aid-batteries/" style="display:block;padding:11px 6px;font-size:16px;font-weight:650">Hearing Aid Batteries</a>
-<a href="/assistive-listening-devices/" style="display:block;padding:11px 6px;font-size:16px;font-weight:650">Assistive Listening Devices</a>
-</div>
-</div>
-</details>
-
-<details name="lhc-msec">
-<summary style="list-style:none;display:flex;align-items:center;justify-content:space-between;padding:15px 6px;border-bottom:1px solid rgba(var(--navy-rgb),.1);font-size:17px;font-weight:700;cursor:pointer">About <span style="font-size:20px;opacity:.6">▾</span></summary>
-<div style="padding:8px 6px 16px;display:flex;flex-direction:column;gap:14px;background:var(--surface)">
-<div>
-<a href="/about/" style="display:block;padding:11px 6px;font-size:16px;font-weight:650">About Liberty Hearing Center</a>
-<a href="/hearing-the-call/" style="display:block;padding:11px 6px;font-size:16px;font-weight:650">Giving Back</a>
-</div>
-<div>
-<div style="margin:0 0 4px 6px;font-size:11px;font-weight:750;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)">Our Staff</div>
-<a href="/dr-chris-duhon/" style="display:block;padding:11px 6px;font-size:16px;font-weight:650">Dr. Chris Duhon, AuD</a>
-<a href="/dr-carly-hall/" style="display:block;padding:11px 6px;font-size:16px;font-weight:650">Dr. Carly Hall, AuD</a>
-<a href="/rocio-zarandona/" style="display:block;padding:11px 6px;font-size:16px;font-weight:650">Rocio Zarandona</a>
-<a href="/nellie-minneman/" style="display:block;padding:11px 6px;font-size:16px;font-weight:650">Nellie Minneman</a>
-</div>
-<div style="padding:0 6px;font-size:15px;line-height:1.6;color:var(--text-body)">2405 Texas Ave South #307<br>College Station, TX 77840</div>
-</div>
-</details>
-
-<details name="lhc-msec">
-<summary style="list-style:none;display:flex;align-items:center;justify-content:space-between;padding:15px 6px;border-bottom:1px solid rgba(var(--navy-rgb),.1);font-size:17px;font-weight:700;cursor:pointer">Resources <span style="font-size:20px;opacity:.6">▾</span></summary>
-<div style="padding:8px 6px 16px;display:flex;flex-direction:column;background:var(--surface)">
-<a href="/pricing/" style="display:block;padding:11px 6px;font-size:16px;font-weight:650">Pricing</a>
-<a href="/insurance-billing/" style="display:block;padding:11px 6px;font-size:16px;font-weight:650">Insurance &amp; Billing</a>
-<a href="/resources/" style="display:block;padding:11px 6px;font-size:16px;font-weight:650">Articles</a>
-<a href="#" style="display:block;padding:11px 6px;font-size:16px;font-weight:650">Community Resources</a>
-</div>
-</details>
-
+<a href="/services/" style="display:block;padding:15px 6px;border-bottom:1px solid rgba(var(--navy-rgb),.1);font-size:17px;font-weight:700">Services</a>
+<a href="/hearing-aids-products/" style="display:block;padding:15px 6px;border-bottom:1px solid rgba(var(--navy-rgb),.1);font-size:17px;font-weight:700">Hearing Aids</a>
 <a href="/contact/" style="display:block;padding:15px 6px;border-bottom:1px solid rgba(var(--navy-rgb),.1);font-size:17px;font-weight:700">Contact</a>
-
 <a href="/book-appointment/" style="display:flex;min-height:52px;margin-top:18px;align-items:center;justify-content:center;padding:12px 24px;border-radius:999px;background:var(--brand-red);color:var(--white);font-size:16px;font-weight:750">Book Your Appointment</a>
-<div style="margin-top:14px;text-align:center;font-size:13px;font-weight:600;color:var(--text-body)">College Station, TX · <a href="tel:9794507996" style="color:var(--brand-red)">P: 979-450-7996</a><br>F: 979-426-8260</div>
+</div>
 </div>
 </details>
 </div>
@@ -271,3 +189,108 @@ const { active } = Astro.props;
 <a href="/book-appointment/" style="grid-column:3;grid-row:2;white-space:nowrap;display:inline-flex;min-height:50px;align-items:center;justify-content:center;padding:12px 24px;border-radius:999px;background:var(--brand-red);color:var(--white);font-size:16px;font-weight:700;transition:.3s" style-hover="background:var(--navy);transform:translateY(-2px)">Book Your Appointment</a>
 </div>
 </header>
+
+<script is:inline>
+/* The mobile menu is built from the desktop menu that is already in the page,
+   the first time the drawer is opened. That keeps the ~120 words of menu link
+   text in the HTML once instead of twice. Without JS the drawer still shows the
+   short link list rendered above. */
+(function () {
+  var LINK = "display:block;padding:11px 6px;font-size:16px;font-weight:650";
+  var TOP = "display:block;padding:15px 6px;border-bottom:1px solid rgba(var(--navy-rgb),.1);font-size:17px;font-weight:700";
+  var SUM = "list-style:none;display:flex;align-items:center;justify-content:space-between;padding:15px 6px;border-bottom:1px solid rgba(var(--navy-rgb),.1);font-size:17px;font-weight:700;cursor:pointer";
+  var GRP = "margin:0 0 4px 6px;font-size:11px;font-weight:750;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)";
+  var el = function (tag, style, text) {
+    var n = document.createElement(tag);
+    if (style) n.setAttribute("style", style);
+    if (text != null) n.textContent = text;
+    return n;
+  };
+  function build(panel) {
+    var grid = document.querySelector("[data-hdrgrid]");
+    var found = grid ? grid.querySelectorAll("nav [data-dd]") : [];
+    if (!found.length) return false;
+    /* keep the order the mobile menu has always used */
+    var ORDER = ["home", "services", "aids", "about", "resources", "contact"];
+    var groups = [].slice.call(found).sort(function (a, b) {
+      var ka = (a.querySelector("a[data-navkey]") || {}).dataset;
+      var kb = (b.querySelector("a[data-navkey]") || {}).dataset;
+      var ia = ORDER.indexOf(ka && ka.navkey), ib = ORDER.indexOf(kb && kb.navkey);
+      return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib);
+    });
+    var frag = document.createDocumentFragment();
+    for (var i = 0; i < groups.length; i++) {
+      var top = groups[i].querySelector("a[data-navkey], a");
+      var ddp = groups[i].querySelector("[data-ddpanel]");
+      if (!top) continue;
+      var label = (top.childNodes[0] && top.childNodes[0].textContent || top.textContent).trim();
+      if (!ddp) {
+        var a = el("a", TOP, label);
+        a.href = top.getAttribute("href");
+        frag.appendChild(a);
+        continue;
+      }
+      var det = document.createElement("details");
+      det.setAttribute("name", "lhc-msec");
+      var sum = el("summary", SUM, label);
+      sum.appendChild(el("span", "font-size:20px;opacity:.6", "▾"));
+      det.appendChild(sum);
+      var body = el("div", "padding:8px 6px 16px;display:flex;flex-direction:column;gap:14px;background:var(--surface)");
+      var cols = ddp.querySelectorAll(":scope > div > div");
+      for (var c = 0; c < cols.length; c++) {
+        var col = el("div", null);
+        var head = cols[c].querySelector("div");
+        var headText = head && /^[A-Z0-9 &'\-]+$/.test(head.textContent.trim().toUpperCase()) ? head.textContent.trim() : null;
+        if (headText) col.appendChild(el("div", GRP, headText));
+        var links = cols[c].querySelectorAll("a");
+        var added = 0;
+        for (var l = 0; l < links.length; l++) {
+          var href = links[l].getAttribute("href") || "";
+          if (href.indexOf("tel:") === 0) continue;
+          var la = el("a", LINK, links[l].textContent.trim());
+          la.href = href;
+          col.appendChild(la);
+          added++;
+        }
+        if (!added) continue;
+        if (added >= 6) {
+          /* the brand list has always been two columns on phones */
+          var wrap = el("div", "display:grid;grid-template-columns:1fr 1fr");
+          var kids = col.querySelectorAll("a");
+          for (var k = 0; k < kids.length; k++) {
+            kids[k].setAttribute("style", "padding:11px 6px;font-size:16px;font-weight:650");
+            wrap.appendChild(kids[k]);
+          }
+          col.appendChild(wrap);
+        }
+        body.appendChild(col);
+      }
+      det.appendChild(body);
+      frag.appendChild(det);
+    }
+    var book = el("a", "display:flex;min-height:52px;margin-top:18px;align-items:center;justify-content:center;padding:12px 24px;border-radius:999px;background:var(--brand-red);color:var(--white);font-size:16px;font-weight:750", "Book Your Appointment");
+    book.href = "/book-appointment/";
+    frag.appendChild(book);
+    var nap = el("div", "margin-top:14px;text-align:center;font-size:13px;font-weight:600;color:var(--text-body)");
+    nap.appendChild(document.createTextNode("College Station, TX · "));
+    var tel = el("a", "color:var(--brand-red)", "P: 979-450-7996");
+    tel.href = "tel:9794507996";
+    nap.appendChild(tel);
+    nap.appendChild(document.createElement("br"));
+    nap.appendChild(document.createTextNode("F: 979-426-8260"));
+    frag.appendChild(nap);
+    var fb = panel.querySelector("[data-mfallback]");
+    if (fb) fb.remove();
+    panel.appendChild(frag);
+    panel.setAttribute("data-mbuilt", "1");
+    return true;
+  }
+  document.addEventListener("toggle", function (e) {
+    var d = e.target;
+    if (!d || d.tagName !== "DETAILS" || !d.hasAttribute("data-drawer") || !d.open) return;
+    var panel = d.querySelector("[data-mdrawer]");
+    if (!panel || panel.getAttribute("data-mbuilt") === "1") return;
+    build(panel);
+  }, true);
+})();
+</script>
