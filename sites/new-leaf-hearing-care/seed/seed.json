@@ -12139,6 +12139,36 @@
           "content": [
             {
               "_type": "block",
+              "_key": "blockquote_hap_manufacturer_chain",
+              "style": "blockquote",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "blockquote_hap_manufacturer_chain_title",
+                  "text": "The appointment that changed things: manufacturer-chain hearing aids that never worked, independent fitting that did",
+                  "marks": [
+                    "strong"
+                  ]
+                },
+                {
+                  "_type": "span",
+                  "_key": "blockquote_hap_manufacturer_chain_body",
+                  "text": "\n\nA new patient came to us having purchased hearing aids from a manufacturer-owned clinic. They whistled, didn't fit her ears, and never sounded right. She went back multiple times without resolution. When her trial period ended, no one told her. She was stuck. By the time she found us, she was so frustrated she didn't want us to try to fix the original devices, even when we offered. Because we aren't owned by a hearing aid manufacturer, I had several brands to choose from. I made a recommendation based on her hearing loss, her ear anatomy, and how she actually uses her hearing day to day. We fit her the same day. She said she couldn't even feel them in her ears, and the sound was clear without the over-amplified quality she'd experienced before. She was also surprised to find our prices weren't significantly higher than what she'd paid through her insurance discount program at the previous clinic.\n\n",
+                  "marks": []
+                },
+                {
+                  "_type": "span",
+                  "_key": "blockquote_hap_manufacturer_chain_author",
+                  "text": "— Dusty Jessen, Audiologist, New Leaf Hearing Care",
+                  "marks": [
+                    "strong"
+                  ]
+                }
+              ]
+            },
+            {
+              "_type": "block",
               "_key": "k18j",
               "style": "h2",
               "markDefs": [],

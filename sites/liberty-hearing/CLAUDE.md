@@ -1130,3 +1130,317 @@ resolve 200**, none slow, and **0 noindex/utility URLs listed**.
 **Both are emdash routes failing because the setup wizard was never run**
 (0 collections / 0 users). They disappear if the CMS is ever configured. Left
 alone deliberately rather than shadowing them with stub files.
+
+## GSC verification + GA4 added (2026-09-17)
+
+Added to `src/layouts/Base.astro` `<head>`, sitewide:
+- `<meta name="google-site-verification" content="gW6XErtjPkUib6NadQXF3s_jFRnJ2dNjXcqBviLa8gY">` (Search Console, meta-tag method)
+- GA4 gtag, measurement ID **G-TMBSJHBH3Y**
+
+**Both scripts use `is:inline` — keep it.** Without it Astro bundles and hoists
+the scripts, and the gtag config call breaks. `CACHE_VERSION` bumped v3 -> v4.
+
+Deployed worker version `19e2e89d-c89e-4b4b-998f-2d32416d5e21`. Verified live on
+apex + www and 5 pages (meta, loader, config call all present), and in a real
+Chromium: each page load sends a GA4 `page_view` collect hit for G-TMBSJHBH3Y,
+0 JS errors. `/api/contact` still 405 on GET, sitemap + robots still 200.
+
+This supersedes the "no analytics" line under Still open. Note the domain also has
+an older DNS TXT `google-site-verification=t07qIet...` from a different owner; both
+can coexist.
+
+## FORM AUDIT (2026-09-17) — wired correctly, but every lead so far is SPAM
+
+Vince asked whether the `/contact/` form is wired and saving to D1.
+
+**Wiring: correct, verified live.** Form `action="/api/contact" method="POST"`,
+fields `name,email,phone,reason,time,message,website(honeypot)`, required
+`name,email,message`. Routes `apex|www/api/contact*` -> `liberty-hearing-forms`
+(response has no `X-Cache-Status`, proving the forms Worker answers, not emdash).
+Secrets `LEAD_TO` + `RESEND_API_KEY` present. Empty POST 400, GET 405.
+
+**D1: saving.** `contact_submissions` has **5 rows (2026-09-11 -> 09-17). ALL 5 ARE SPAM.**
+- **3x "Robertsaw"** — one bot, rotating gmail addresses and phone numbers, the
+  same price enquiry in rotating languages: English "I wanted to know your price",
+  Basque "Kaixo, zure prezioa jakin nahi nuen", Albanian "kam dashur te di cmimin
+  tuaj". Well-known multilingual price-inquiry spam pattern.
+- **2x FreeB2BData** (`@freeb2bdata.org`, "Jerold"/"Hilda") — data-broker
+  solicitation, ~380-char message.
+- **No real patient has submitted yet.** I initially reported these as genuine
+  leads before reading the rows — don't infer "real lead" from a gmail address.
+
+**Tell-tale:** one Robertsaw row stored reason `VA C&amp;P evaluation` with a
+literal `&amp;`. A real browser submits the decoded `VA C&P evaluation`
+(verified in Chromium) — the bot scraped raw HTML. **Not a site bug.**
+
+**Email: Resend status checked per send** (key can list `/emails`). All sends
+`delivered` except the **09-17 06:00 Robertsaw email: `bounced`, type Transient /
+General** (soft bounce, no diagnostic code) — almost certainly Google rejecting
+spam content, not a config fault. No real lead has ever bounced. So the clinic's
+info@ + drduhon@ inboxes received **4 spam notifications** from the form.
+
+**Why the filter lets these through:** `looksLikeSpam()` catches links (>=2),
+keywords, BBCode and 120+ char tokens. These messages have no links or keywords,
+and **Turnstile is still not enabled** (needs a keypair from Cameron — the `cfat_`
+token cannot create widgets). Not changed — options raised with Vince.
+
+Mail DNS unchanged and still thin: single MX `10 alt4.aspmx.l.google.com`, no
+DMARC record. Not the cause of the bounce above, but still worth raising with Erika.
+
+## SPAM BLOCKER LIVE — Turnstile + JS timing check (2026-09-17)
+
+Vince supplied a Turnstile widget (already created) and asked for a spam blocker.
+**Site key `0x4AAAAAAE6gmKYYw7Z0RjWU`** (public, in the /contact/ HTML). Secret is
+the worker secret `TURNSTILE_SECRET` on **both** `liberty-hearing-forms` (live) and
+`liberty-hearing` (fallback); copy kept in `~/.claude/credentials/resend.md`.
+**Never commit the secret.** Integration followed Cloudflare's
+`developers.cloudflare.com/turnstile/spin/prompt.md` existing-widget flow.
+
+### How it works
+- **`/contact/`** — widget `<div class="cf-turnstile" data-sitekey=… data-action="contact">`,
+  `api.js` loaded `is:inline`, plus hidden `lhc_fs` stamped at submit with ms on page.
+  A submit **gate** holds the POST if `window.turnstile` exists but there is no token
+  yet, and shows: *Please complete the "Verify you are human" check above… Having
+  trouble? Call us at (979) 450-7996.* If the Turnstile script never loads (ad
+  blocker/network), the submit is allowed and the server flags it.
+- **Server (`forms-worker/src/index.ts`, fallback copy in `src/pages/api/contact.ts`)**
+  — Cloudflare's canonical siteverify: form-encoded, `AbortSignal.timeout(10_000)`,
+  `remoteip` from `CF-Connecting-IP`, then require `success` **and**
+  `action === "contact"` **and** hostname in {apex, www}. Then `lhc_fs` must be a
+  number >= **2000ms**.
+- **A failing submission is NOT rejected** — it is **saved to D1 with
+  `extra = "[BLOCKED: reason] | …"` and returns the normal 303, but no email is
+  sent.** Deliberate deviation from Cloudflare's guide (which 403s): a lost patient
+  enquiry is worse than a spam row. Reasons you will see: `turnstile-missing`,
+  `turnstile-failed <codes>`, `turnstile-action`, `turnstile-hostname`, `no-js`,
+  `bad-token`, `too-fast Nms`. **If a patient says they submitted and nobody got an
+  email, check D1 for a `[BLOCKED` row.** Only a siteverify network error/timeout is
+  allowed through (timing check still applies).
+- **Critical bug this fixed:** the old code was fail-open on a MISSING token
+  (`if (secret && token)`), so Turnstile alone would never have stopped these bots —
+  they run no JS and send no token.
+
+### Verified
+- `astro check` 0 errors; forms-worker `tsc --strict` 0 errors.
+- **Local** (`wrangler dev --local`, no email key): Cloudflare's always-fail test
+  secret -> missing token `turnstile-missing`, forged token
+  `turnstile-failed invalid-input-response`; timing -> `no-js`, `too-fast 800ms`,
+  `bad-token`; `lhc_fs=8000` reached the email step (not blocked); empty form 400;
+  honeypot still dropped.
+- **Real token**: headless Chrome gets NO token (Turnstile detects automation — the
+  gate correctly held the submit). **Headed Chrome with `--disable-blink-features=AutomationControlled`
+  + a click on the widget DID issue a token (794 chars).** Sent to siteverify with
+  the secret: `success:true, action:"contact", hostname:"libertyhearingcentertx.com"`
+  — the keypair and hostname are correct.
+- **Live bot replay** (Robertsaw shape, no token) and a **forged token** -> 303,
+  saved `[BLOCKED: …]`, **Resend count unchanged (no email)**.
+- **Live real human submit** (headed, token + `lhc_fs=15631`) -> `/thank-you/`, D1
+  row **not** blocked, email sent (subject "QA TEST - please ignore").
+- Visual: widget + hold message screenshotted at 1440 and 390, 0 overflow, 0 POSTs
+  while held. Cherry's floating pill partially overlaps the hold message on mobile
+  (pre-existing floating widget).
+- All QA rows deleted; D1 back to the 5 pre-existing spam rows (not cleared — Vince
+  has not said).
+- Deployed: `liberty-hearing` `e6a487ba-e46d-43b0-8bb6-9d96ad497980` (cache v6),
+  `liberty-hearing-forms` `90278ad4-70fd-4a72-b7de-ae7a6e46bb0d`.
+
+**NOT externally reviewed:** Codex hit its usage limit (resets 2026-09-22) and the
+Gemini CLI free tier is discontinued. Self-review only — it caught and fixed the hold
+message (said "wait" when Turnstile can need a click) and added the phone fallback.
+Codex was invoked with `--sandbox read-only` — keep doing that.
+
+**Process note:** my `Stop-Process` cleanup matched *all* wrangler/workerd processes
+(killed 10) — it may have stopped another session's local dev server. **Kill by
+port / PID of your own task only.**
+
+## ⚠ LEAD EMAILS BOUNCING SINCE 2026-09-17 — CORRECTS the form audit above
+
+The audit above said the 09-17 06:00 bounce was "almost certainly Google rejecting
+spam content". **That was wrong.** The spam-blocker QA email — clean, non-spammy —
+**also bounced** (09-17 14:56, Transient/General, no diagnostic code).
+
+Every Resend send on this key since 09-14:
+| UTC | to | result |
+| --- | --- | --- |
+| 09-15 01:19 | liberty | delivered |
+| 09-16 17:51 | NewLeafHearing.com / bidviewmarketing.com | delivered |
+| 09-16 21:38 | liberty | **delivered (last good)** |
+| 09-17 06:00 | liberty | **bounced** |
+| 09-17 14:56 | liberty | **bounced** |
+
+Ruled out: **MX unchanged** (`10 alt4.aspmx.l.google.com`, same on Cloudflare +
+Google resolvers); Google's MX accepts SMTP; **sender auth for `bidview.net` intact**
+(DKIM `resend._domainkey`, SPF on `send.bidview.net`, DMARC `p=none`); other
+clients delivered on 09-16. SMTP `RCPT TO` (no DATA sent) returns `250 OK` for
+info@, drduhon@ **and a made-up mailbox** — so the domain accepts everything at RCPT
+and rejects after the message is received; the probe cannot tell which mailbox.
+
+**Most likely on the clinic's Google Workspace side** (account/billing/mailbox/policy
+change around 09-17) — needs someone with Workspace admin (Erika). **Leads are still
+saved in D1**, but until fixed **nobody at the clinic is getting form emails.**
+Not yet raised with the client.
+
+## DUPLICATE SEO TAGS FIXED — "meta_description_multiple" (2026-09-21)
+
+The SEO audit sheet flagged `meta_description_multiple`. Confirmed live on **every
+page**: TWO `<meta name="description">`, TWO `<link rel="canonical">`, TWO
+`og:title`, TWO `og:description`, TWO `og:image` and TWO `og:type`. Long noted in
+this file as "pre-existing, raise separately" — now fixed.
+
+**Cause:** `Base.astro` hand-wrote the whole SEO block **and** emdash's
+`<EmDashHead page={pageCtx}>` emits the same set from `generateBaseSeoContributions`
+(`node_modules/emdash/src/page/seo-contributions.ts`). Both ran on every page.
+
+**Fix — emdash is now the SINGLE emitter.** The hand-written tags were removed from
+`Base.astro`, and the page context is fed the REAL values it was previously denied:
+- `pageType: ogType` (was hardcoded `"website"`)
+- `image: ogImage` — the **absolute** URL (was the RELATIVE `image` prop, which is
+  why one of the two `og:image` tags was `/assets/...` and useless to social crawlers)
+
+**Still hand-written in `Base.astro` on purpose:** `<title>`, favicons,
+`og:locale` (emdash does not emit it), the `noindex` meta, GSC verification + GA4.
+**Add any new SEO tag via `createPublicPageContext`, NOT in the head** — putting it
+back in the head is exactly what caused this.
+
+**KNOWN TRADE-OFF — `og:type="profile"` is gone on the 3 staff pages.** emdash
+hardcodes `content: page.pageType === "article" ? "article" : "website"`, so
+"profile" collapses to "website". Emitting our own `og:type` would re-create the
+duplicate. `ogType="article"` (the 2 blog posts) still works correctly. The `ogType`
+prop's doc comment records this.
+
+**Verified live** (worker `028facfe-172a-4907-adf2-879e0d51db17`, cache v7): 12
+sampled pages incl. staff, blog, book-appointment and thank-you — **exactly 1 of
+each tag, 0 duplicates**; `og:image` absolute; `/thank-you/` still
+`noindex, follow`; blog `og:type=article`; `astro check` 0 errors; 40 pages built.
+`dist` was checked for duplicates BEFORE deploying (`scratchpad/dupmeta.mjs`,
+`dupcheck2.mjs`).
+
+**NOT verified against the sheet itself** — `docs.google.com/spreadsheets/d/1ArMMBwVSPcLXVdh52GpUaf4wcykxiyzhVTdqgN5qjYs`
+returns 401 to every service account on this box, so the exact row list was never
+read. The defect fixed is the one the tab name describes, confirmed independently
+on the live site.
+
+## SCHEMA MARKUP — BLOCKED, NOT STARTED (2026-09-21)
+
+Vince asked to implement schema from
+`docs.google.com/document/d/16JPwCAoNarLJ2D2WY8x0wd1d--6Y9WGYRYhwz0d8Dr8`.
+**The doc is private — 401** via `/export?format=txt` and 403 via the Docs API for
+all three service accounts on this box (`steve-516@clawdbot-access-485707`,
+`bidview-posting@poised-artwork-485514-h0`, `seo-harness-sheets@shay-seo-harness`).
+The claude.ai Google Drive connector is not authorised in this session.
+
+**Nothing was implemented** — the doc defines the client's required types/fields and
+guessing them on a medical practice is not acceptable. To unblock, either share both
+files with one of the SA emails above, or paste the contents.
+
+Note `Base.astro` already accepts a `schema` prop (rendered as `application/ld+json`)
+and **no page passes one**, so there is a ready insertion point. emdash also ships
+`node_modules/emdash/src/page/jsonld.ts` — check it before hand-rolling.
+
+## SCHEMA MARKUP IMPLEMENTED + VALIDATED (2026-09-21)
+
+Source: the client's schema doc
+`docs.google.com/document/d/16JPwCAoNarLJ2D2WY8x0wd1d--6Y9WGYRYhwz0d8Dr8`
+(made public 2026-09-21). **30 sections, 53 JSON-LD blocks, copied VERBATIM.**
+
+### How it is wired — nothing was added to individual pages
+- **`src/lib/page-schema.ts`** (generated, do not hand-tune): `SITEWIDE_SCHEMA`
+  (the `@graph`: `["MedicalBusiness","LocalBusiness"]` + `WebSite`) and
+  `PAGE_SCHEMA`, keyed by pathname **with trailing slash**, plus
+  `schemaForPath()` which tolerates a missing one.
+- **`Base.astro`** renders `[SITEWIDE_SCHEMA, ...schemaForPath(Astro.url.pathname),
+  ...(schema prop)]`. **Deliberately route-driven, NOT per-page props** — the 24
+  service pages are generated by `scratchpad/gen-pages.py` and hand edits there
+  would be lost on the next regeneration.
+- **`siteName` is no longer passed to `createPublicPageContext`.** That is what
+  made emdash emit the bare `WebSite` block the doc says to replace
+  (`seo-contributions.ts` -> `buildWebSiteJsonLd`, emitted whenever `siteName` is
+  set). Dropping it also drops emdash's `og:site_name`, so **`Base.astro` now emits
+  `og:site_name` itself** — still exactly one of each tag.
+
+Coverage: sitewide graph on **all 40 pages**; per-route blocks on **29 routes** —
+4 `Person` (the staff pages), 24 `Service`, 23 `FAQPage`, 1 `AboutPage`.
+
+### Validated — both validators, after deploy
+- **Schema.org Markup Validator** (`POST validator.schema.org/validate`, live URLs):
+  **30 URLs -> 0 errors, 0 warnings.** Script: `scratchpad/schemaorg.mjs`.
+- **Google Rich Results Test** — no public API, so driven in a real headed Chrome
+  (`scratchpad/rrt.mjs`; headless is detected/blocked). `/`,
+  `/hearing-evaluations/`, `/dr-chris-duhon/` each: **"2 valid items detected",
+  0 invalid** — *Local businesses* + *Organization*, crawled successfully.
+- **Why RRT lists only those two:** **Google retired FAQ rich results in 2023**, and
+  `Service`/`Person` are not rich-result types. The FAQ/Service/Person markup is
+  valid (schema.org validator confirms) but **will not produce a rich snippet** —
+  that is Google policy, not a markup defect. Do not "fix" it.
+- **FAQ content check:** every `Question` name in the doc was verified to appear in
+  the rendered page text before shipping (Google requires FAQ markup to match
+  visible content). 0 missing across the sampled pages.
+
+### Verified otherwise
+`astro check` 0 errors; 94 ld+json blocks across 40 built pages, all parsing; the
+29 target routes each carry exactly the doc's block types (checked in `dist/`
+BEFORE deploy and again live); duplicate SEO tags did NOT come back; `/thank-you/`
+still `noindex`; 64-URL crawl 0 broken; sitemap/robots 200; `GET /api/contact` 405;
+12 pages cache-busted p50 **50ms**, worker still bypassed on all.
+Deployed: worker `9fe7f9cf-eedb-460f-92e6-6c5d0379536e`, cache **v8**.
+
+### Two things to raise with the client
+1. **Doc section 30 is titled "AboutPage + Breadcrumb" but contains NO
+   `BreadcrumbList`** — there is not one anywhere in the doc. `/about/` therefore
+   has `AboutPage` only. Not invented; ask whether a breadcrumb was intended.
+2. **`openingHoursSpecification` in the doc** (Mon 07:00-11:30 + 13:30-18:00,
+   Tue-Thu 08:30-12:00 + 12:30-16:30) **does not match the site's own hours copy**
+   (homepage: Mon 7:00 AM-6:00 PM, Tue-Thu 8:30 AM-4:30 PM, Fri closed) — the doc
+   adds lunch breaks and says nothing about Friday. Shipped as the doc specifies,
+   but the page copy and the schema now disagree and one of them is wrong.
+
+**Re-extracting after a doc change:** `scratchpad/schema-doc.txt` ->
+`scratchpad/schema-out/by-route.json` (split on `^\d+\.` headings, pull
+`<script type="application/ld+json">` blocks, `json.loads` each) -> regenerate
+`src/lib/page-schema.ts` -> rebuild -> re-run both validators.
+
+**The audit SHEET is still private** (`spreadsheets/d/1ArMMBwVSPcLXVdh52GpUaf4wcykxiyzhVTdqgN5qjYs`
+-> 401); only the doc was shared. The `meta_description_multiple` item was fixed and
+verified independently against the live site — see the section above.
+
+### Rich Results Test coverage — 16/30, then Google blocked the tool (2026-09-21)
+
+Vince asked for all 30 URLs checked for errors AND warnings. Status:
+
+| Validator | Coverage | Result |
+| --- | --- | --- |
+| Schema.org Markup Validator | **30/30** | **0 errors, 0 warnings** |
+| Google Rich Results Test | **16/30** | 2 valid items, **0 warnings, 0 invalid** on every one |
+
+**Why it stopped at 16:** the RRT rate-limits hard. After ~15 consecutive tests it
+stops running them and serves the landing form; then it started returning
+**"Something went wrong — Log in and try again"** (screenshot:
+`scratchpad/rrt3-_assistive_listening_devices_.png`). A 12-minute cooldown bought
+exactly ONE more test (`/about/`), then the block returned and six further attempts
+at 12-minute spacing all failed. **This is a Google-side limit on anonymous use from
+this IP, not a page defect.** Scripts are resumable (`scratchpad/rrt3.mjs` skips
+routes already recorded `ok` in `rrt3-results.json`).
+
+**The 16 verified cover every DISTINCT schema shape:** homepage (graph alone),
+all 4 `Person`, `/services/` (Service without FAQ), 9 `Service`+`FAQPage`, `/about/`
+(`AboutPage`).
+
+**The 14 not yet verified by Google, checked structurally instead**
+(`scratchpad/skeleton.mjs` reduces each page's JSON-LD to a key/type skeleton and
+compares):
+- **7 are byte-identical in structure** to a Google-verified Service+FAQ page.
+- **7 brand pages differ by exactly ONE property** — the Service block carries
+  `"brand": {"@type":"Brand","name":"Oticon"}` etc. All 7 passed the Schema.org
+  validator cleanly, but **no brand page has been through Google's tool**, so that
+  one shape is unproven there. Do not claim otherwise.
+
+**Ways to finish the last 14 (pick one):**
+1. Run them in a signed-in browser by hand — ~30s each; one brand page closes the
+   only real gap.
+2. Re-run `scratchpad/rrt3.mjs` after the block lifts (likely ~24h).
+3. **Best long-term: the GSC URL Inspection API.** `gsc-token.json` refreshes fine
+   and DOES have the property (`https://libertyhearingcentertx.com/`, 87 properties
+   on that account; `vince-gsc-token.json` fails to refresh). It returns
+   `richResultsResult` per URL with Google's own verdict — but only for the INDEXED
+   copy, and right now every URL returns **"URL is unknown to Google"** because the
+   site has not been crawled yet. Re-check once indexing starts.

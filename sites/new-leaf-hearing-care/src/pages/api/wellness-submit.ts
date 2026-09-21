@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+import { saveSubmission, markDelivery } from '../../lib/formSubmissions';
 
 // ── Scoring engine (server-side only — never sent to client) ─────────────────
 const QUESTIONS = [
@@ -83,17 +84,17 @@ const TAG_NEW_LEAF = 108;
 async function pushToAC({ firstName, lastName, email, total, e, s, grade, label, handicap }: {
   firstName: string; lastName: string; email: string;
   total: number; e: number; s: number; grade: number; label: string; handicap: string;
-}) {
+}): Promise<{ ok: boolean; partial?: boolean; detail: string }> {
   const headers = { 'Api-Token': AC_KEY, 'Content-Type': 'application/json' };
   const syncRes = await fetch(`${AC_URL}/contact/sync`, {
     method: 'POST', headers,
     body: JSON.stringify({ contact: { email, firstName, lastName } }),
   });
-  if (!syncRes.ok) return;
+  if (!syncRes.ok) return { ok: false, detail: `contact/sync HTTP ${syncRes.status}` };
   const { contact } = await syncRes.json() as { contact: { id: number } };
   const contactId = contact.id;
 
-  await Promise.all([
+  const fieldResults = await Promise.all([
     [AC_FIELDS.total, String(total)],
     [AC_FIELDS.e, String(e)],
     [AC_FIELDS.s, String(s)],
@@ -106,12 +107,21 @@ async function pushToAC({ firstName, lastName, email, total, e, s, grade, label,
     })
   ));
 
-  await Promise.all([TAG_WELLNESS_PAGE, TAG_NEW_LEAF].map(tag =>
+  const tagResults = await Promise.all([TAG_WELLNESS_PAGE, TAG_NEW_LEAF].map(tag =>
     fetch(`${AC_URL}/contactTags`, {
       method: 'POST', headers,
       body: JSON.stringify({ contactTag: { contact: contactId, tag } }),
     })
   ));
+
+  const failed = [...fieldResults, ...tagResults].filter(r => !r.ok);
+  if (failed.length) {
+    return {
+      ok: false, partial: true,
+      detail: `contact ${contactId}: ${failed.length} field/tag call(s) failed (HTTP ${failed.map(r => r.status).join(', ')})`,
+    };
+  }
+  return { ok: true, detail: `ActiveCampaign contact ${contactId}` };
 }
 
 // ── API Route ─────────────────────────────────────────────────────────────────
@@ -133,6 +143,14 @@ export const POST: APIRoute = async ({ request, locals }) => {
   const handicap = getHandicap(total);
   const recs = getRecs(wellness.grade);
 
+  // Save first, so the submission is kept even if ActiveCampaign fails.
+  const submissionId = await saveSubmission({
+    source: 'hearing-wellness',
+    firstName, lastName, email,
+    payload: { answers, total, e, s, grade: wellness.grade, label: wellness.label, handicap },
+    request,
+  });
+
   // Push to ActiveCampaign. Workers cancels in-flight work once the response
   // is sent, so the promise must go through waitUntil — a bare fire-and-forget
   // silently drops every sync. Astro v6 exposes the execution context as
@@ -140,7 +158,8 @@ export const POST: APIRoute = async ({ request, locals }) => {
   // AC failure must never block the visitor's report, hence the swallowed
   // rejection.
   const acPromise = pushToAC({ firstName, lastName, email, total, e, s, grade: wellness.grade, label: wellness.label, handicap })
-    .catch(() => {/* silent */});
+    .then(r => markDelivery(submissionId, r.ok ? 'sent' : r.partial ? 'partial' : 'failed', r.detail))
+    .catch(err => markDelivery(submissionId, 'failed', `ActiveCampaign error: ${String(err)}`));
   const ctx = (locals as { cfContext?: { waitUntil?: (p: Promise<unknown>) => void } }).cfContext;
   if (ctx?.waitUntil) {
     ctx.waitUntil(acPromise);

@@ -4,6 +4,7 @@ import { EmDashHead, EmDashBodyStart, EmDashBodyEnd } from "emdash/ui";
 import { createPublicPageContext } from "emdash/page";
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
+import { SITEWIDE_SCHEMA, schemaForPath } from "../lib/page-schema";
 
 interface Props {
 	/** <title> text. " | Liberty Hearing Center" is appended unless already present. */
@@ -19,7 +20,14 @@ interface Props {
 	footer?: "home" | "inner" | "services" | "aids" | "pricing" | "resources" | "staff";
 	/** og:image path; defaults to the team photo. */
 	image?: string | null;
-	/** og:type — "website" for most pages, "profile" for the staff pages. */
+	/**
+	 * og:type. NOTE (2026-09-21): emdash emits this tag and only understands
+	 * "article" vs "website" — `content: page.pageType === "article" ? "article" : "website"`
+	 * in node_modules/emdash/src/page/seo-contributions.ts. So "article" works,
+	 * but **"profile" on the staff pages silently renders as "website"**.
+	 * Accepted deliberately: emitting our own og:type would bring back the
+	 * duplicate tags this layout was just cleaned up to remove.
+	 */
 	ogType?: string;
 	/** Extra <head> markup (page-scoped JSON-LD, etc). */
 	schema?: unknown;
@@ -54,15 +62,31 @@ const ogImage = image ? new URL(image, Astro.site ?? Astro.url.origin).href : nu
 const pageCtx = createPublicPageContext({
 	Astro,
 	kind: content ? "content" : "custom",
-	pageType: "website",
+	// These feed emdash's <EmDashHead>, which is now the ONLY thing that emits
+	// description / canonical / og:* / twitter:* (2026-09-21). Pass the REAL
+	// per-page values: `ogType` (pages set "profile"/"article") and the ABSOLUTE
+	// image URL — emdash was previously handed a hardcoded "website" and a
+	// RELATIVE image, which is why the duplicate pair disagreed.
+	pageType: ogType,
 	title: fullTitle,
 	pageTitle: pageTitle ?? title,
 	description,
 	canonical,
-	image,
+	image: ogImage,
 	content,
-	siteName: SITE_NAME,
+	// `siteName` is deliberately NOT passed (2026-09-21). emdash emits a bare
+	// `WebSite` JSON-LD block whenever it is set
+	// (seo-contributions.ts -> buildWebSiteJsonLd), and the client's schema doc
+	// replaces that with the full MedicalBusiness/WebSite @graph below. Dropping
+	// it also drops emdash's og:site_name, so this layout emits that tag itself.
 });
+
+/**
+ * Structured data: the sitewide @graph on every page, plus any per-page blocks
+ * mapped by route in src/lib/page-schema.ts, plus anything a page passes via the
+ * `schema` prop. All copied verbatim from the client's schema document.
+ */
+const schemaBlocks: unknown[] = [SITEWIDE_SCHEMA, ...schemaForPath(Astro.url.pathname), ...(schema ? [schema] : [])];
 ---
 
 <!doctype html>
@@ -70,9 +94,28 @@ const pageCtx = createPublicPageContext({
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		{/*
+		  Google Search Console ownership + GA4 (Vince, 2026-09-17).
+		  is:inline is REQUIRED on both scripts: without it Astro bundles and
+		  hoists them, and gtag stops being a plain global before its config call.
+		*/}
+		<meta name="google-site-verification" content="gW6XErtjPkUib6NadQXF3s_jFRnJ2dNjXcqBviLa8gY" />
+		<script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-TMBSJHBH3Y"></script>
+		<script is:inline>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+			gtag('config', 'G-TMBSJHBH3Y');
+		</script>
 		<title>{fullTitle}</title>
-		{description && <meta name="description" content={description} />}
-		<link rel="canonical" href={canonical} />
+		{/*
+		  NO description / canonical / og:* / twitter:* here on purpose.
+		  emdash's <EmDashHead> (below) emits all of them from `pageCtx`. Having
+		  BOTH is what put TWO meta descriptions, TWO canonicals, TWO og:title,
+		  TWO og:description and TWO og:image on every page — the
+		  "meta_description_multiple" finding in the SEO audit sheet.
+		  Add new SEO tags by passing them into createPublicPageContext, NOT here.
+		*/}
 		{/*
 		  Real favicon set, generated from the eagle head in
 		  public/assets/logo-color.webp (the full lockup is too wide — it reads
@@ -85,17 +128,13 @@ const pageCtx = createPublicPageContext({
 		<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=1" sizes="180x180" />
 		{noindex && <meta name="robots" content="noindex, follow" />}
 
+		{/*
+		  og:locale is never emitted by emdash. og:site_name is emitted by emdash
+		  ONLY when `siteName` is passed into the page context, which it no longer
+		  is (see the note above) — so both live here. Neither is duplicated.
+		*/}
 		<meta property="og:locale" content="en_US" />
-		<meta property="og:type" content={ogType} />
 		<meta property="og:site_name" content={SITE_NAME} />
-		<meta property="og:title" content={fullTitle} />
-		{description && <meta property="og:description" content={description} />}
-		<meta property="og:url" content={canonical} />
-		{ogImage && <meta property="og:image" content={ogImage} />}
-		<meta name="twitter:card" content="summary_large_image" />
-		<meta name="twitter:title" content={fullTitle} />
-		{description && <meta name="twitter:description" content={description} />}
-		{ogImage && <meta name="twitter:image" content={ogImage} />}
 
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -106,7 +145,9 @@ const pageCtx = createPublicPageContext({
 		<link rel="stylesheet" href="/assets/brand.css" />
 		<link rel="stylesheet" href="/assets/global.css" />
 
-		{schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
+		{schemaBlocks.map((block) => (
+			<script type="application/ld+json" set:html={JSON.stringify(block)} />
+		))}
 		<EmDashHead page={pageCtx} />
 	</head>
 	<body>
