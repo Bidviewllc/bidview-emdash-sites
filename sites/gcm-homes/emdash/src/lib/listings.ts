@@ -51,6 +51,63 @@ export function liveCumDom(r: any): number | null {
 	return current == null ? total : Math.max(total, current);
 }
 
+// ── Features filter ──────────────────────────────────────────────────────────
+// The listings page filters on features, not on raw MLS strings. Sending
+// `parking`, `lot_features`, `security_features` etc. down to the browser for
+// every card would roughly double the payload, so each listing is reduced here
+// to the short list of feature keys it matches, and the page filters on those.
+//
+// THE KEYS ARE THE CONTRACT. `FEATURES` in public/listings/index.html maps the
+// same keys to their checkbox labels. A key emitted here that the page doesn't
+// know is ignored; a key the page knows that nothing emits hides itself (the
+// page only shows options with at least one match). So the two lists can't get
+// out of step in a way that breaks the search — but keep them together anyway.
+//
+// The multi-value MLS fields are comma-joined strings of RESO enum tokens
+// ("Level, Wooded"). Tokenised rather than substring-matched so that, say,
+// "SmokeDetectors" can be excluded from the gated/security test without also
+// killing "SecuritySystemOwned" on the same listing.
+const tokens = (v: any): string[] =>
+	String(v ?? "").split(",").map(s => s.trim()).filter(Boolean);
+const has = (v: any, re: RegExp): boolean => tokens(v).some(t => re.test(t));
+
+export function featuresOf(r: any): string[] {
+	const f: string[] = [];
+	// The lot
+	if (r.waterfront === 1) f.push("waterfront");
+	if (Number(r.lot_acres) >= 1) f.push("acre");
+	if (has(r.lot_features, /^Level$/i)) f.push("level");
+	if (has(r.lot_features, /Wooded/i)) f.push("wooded");
+	if (has(r.lot_features, /Greenbelt/i)) f.push("greenbelt");
+	if (has(r.lot_features, /Cul-?De-?Sac/i)) f.push("culdesac");
+	// The home
+	if (Number(r.stories) === 1) f.push("single");
+	if (Number(r.main_level_beds) >= 1) f.push("mainbed");
+	if (tokens(r.cooling).length) f.push("ac");
+	if (tokens(r.pool_features).length) f.push("pool");
+	if (tokens(r.spa_features).length || r.spa_yn === 1) f.push("spa");
+	// "In unit" means the laundry is inside the home — hookups count, a shared
+	// building laundry (CommonArea) or None does not.
+	if (has(r.laundry_features, /LaundryRoom|Inside|InUnit|Stacked|Closet|InKitchen|InBasement|InGarage|MainLevel|UpperLevel|LowerLevel|Washer|Dryer|Hookup/i)
+		&& !has(r.laundry_features, /^None$/i)) f.push("laundry");
+	if (Number(r.year_built) >= 2015) f.push("newbuild");
+	if (r.tour_url_mls) f.push("tour");
+	// Parking
+	if (Number(r.garage) >= 1) f.push("garage");
+	if (Number(r.garage) >= 2) f.push("garage2");
+	if (has(r.parking, /Rv|Boat/i)) f.push("rvboat");
+	if (has(r.parking, /ElectricVehicle|EvCharg/i)) f.push("ev");
+	// Community. Smoke/CO detectors and fire sprinklers live in SecurityFeatures
+	// on most listings and say nothing about the property being secured, so they
+	// are dropped before the test.
+	const guard = /Gate|Guard|SecuritySystem|Alarm|KeyCard|Controlled|Surveillance|Camera|Doorman|Concierge/i;
+	const realSecurity = (v: any) =>
+		tokens(v).filter(t => !/Detector|Sprinkler|Extinguisher/i.test(t)).some(t => guard.test(t));
+	if (realSecurity(r.security_features) || realSecurity(r.assoc_amenities)) f.push("gated");
+	if (Number(r.hoa_fee) > 0) f.push("hoa"); else f.push("nohoa");
+	return f;
+}
+
 export function toListing(r: any) {
 	return {
 		id: r.id, slug: r.slug, address: r.address,
@@ -60,7 +117,7 @@ export function toListing(r: any) {
 		type: r.type, subType: r.sub_type, category: r.category, status: r.status,
 		lat: r.lat, lng: r.lng, view: r.view, waterfront: r.waterfront === 1,
 		dom: liveDom(r), photosCount: r.photos_count, agent: r.agent, office: r.office,
-		updated: r.updated, photo: r.photo,
+		updated: r.updated, photo: r.photo, feats: featuresOf(r),
 	};
 }
 export function toDetail(r: any) {

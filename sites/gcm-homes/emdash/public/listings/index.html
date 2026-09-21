@@ -113,6 +113,60 @@
     .toggle.active { background: var(--navy); color: #fff; border-color: var(--navy); }
     .toggle input { display: none; }
 
+    /* ===== Multi-select groups (The View, Features) =====
+       One control, many options, and the same markup in both layouts: a
+       dropdown under the pill on the desktop bar, an accordion row inside the
+       filter sheet below 1400px. Collapsed by default in both, so a long list
+       of view options never buries the Features list under it. */
+    .msel { position: relative; display: inline-flex; flex: none; }
+    .msel__btn {
+      display: inline-flex; align-items: center; gap: 7px; padding: 9px 14px;
+      font-size: 12px; font-weight: 600; letter-spacing: 0.04em; color: var(--navy);
+      background: #fff; border: 1px solid var(--line); border-radius: 999px;
+      white-space: nowrap; transition: all 160ms ease;
+    }
+    .msel__btn:hover { border-color: var(--navy); }
+    .msel__btn:focus-visible { outline: none; border-color: var(--navy); box-shadow: 0 0 0 3px rgba(21,36,59,0.07); }
+    .msel.is-set .msel__btn { background: var(--navy); color: #fff; border-color: var(--navy); }
+    .msel__n {
+      display: none; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px;
+      background: var(--orange); color: #fff; font-size: 11px; font-weight: 700;
+      align-items: center; justify-content: center;
+    }
+    .msel.is-set .msel__n { display: inline-flex; }
+    .msel__chev { width: 12px; height: 12px; display: block; color: var(--muted); transition: transform 180ms ease; }
+    .msel.is-set .msel__chev { color: rgba(255,255,255,0.7); }
+    .msel.is-open .msel__chev { transform: rotate(180deg); }
+
+    .msel__panel {
+      position: absolute; top: calc(100% + 8px); left: 0; z-index: 900;
+      width: 288px; max-height: min(60vh, 420px); overflow-y: auto;
+      padding: 6px; background: #fff; border: 1px solid var(--line); border-radius: 10px;
+      box-shadow: 0 18px 44px -20px rgba(10,18,29,0.45);
+    }
+    .msel__panel[hidden] { display: none; }
+    /* Features is the longer list, and it carries sub-headings. */
+    .msel--wide .msel__panel { width: 320px; }
+    /* Last pill before the right-hand group: anchor its panel to the right edge
+       so it can't hang off the window. */
+    .msel--right .msel__panel { left: auto; right: 0; }
+    .msel__grp {
+      padding: 12px 10px 4px; font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .msel__grp:first-child { padding-top: 6px; }
+    .msel__opt {
+      display: flex; align-items: center; gap: 10px; padding: 9px 10px;
+      border-radius: 6px; font-size: 13px; color: var(--navy); cursor: pointer;
+    }
+    .msel__opt:hover { background: var(--beige); }
+    .msel__opt input { width: 16px; height: 16px; flex: none; accent-color: var(--navy); cursor: pointer; }
+    /* Nothing in the current results has it. Dimmed, never disabled — a ticked
+       box has to stay untickable-back even when the result set is empty. */
+    .msel__opt.is-empty { opacity: 0.42; }
+    .msel__cnt { margin-left: auto; font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
+    .msel__opt.is-empty .msel__cnt { color: var(--muted); }
+
     .clear-all {
       font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700;
       color: var(--orange); padding: 8px 4px; white-space: nowrap; display: none;
@@ -169,6 +223,7 @@
     .empty button:hover { background: var(--orange); }
 
     /* --- Load more --- */
+    .loadmore[hidden] { display: none; }
     .loadmore {
       grid-column: 1/-1; display: flex; flex-direction: column; align-items: center; gap: 12px;
       padding: 40px 0 8px;
@@ -309,7 +364,7 @@
     /* ===== Condensed filter bar =====
        All seven pill controls in one row need roughly 1,380px. Below that the
        bar used to turn into a horizontal scroller you had to drag sideways to
-       reach Waterfront and Sort. Instead the row keeps search + a Filters
+       reach the last filters and Sort. Instead the row keeps search + a Filters
        button, and layoutFilters() moves the controls into the sheet below --
        moved, not duplicated, so every id, listener and .is-set class still
        applies to the same nodes. Hidden by default: the desktop row is
@@ -370,6 +425,18 @@
     .fsheet .fsel select { width: 100%; border-radius: 4px; padding: 14px 34px 14px 14px; font-size: 14px; }
     .fsheet .fsel__chev { right: 14px; }
     .fsheet .toggle { width: 100%; justify-content: center; border-radius: 4px; padding: 15px 16px; font-size: 14px; }
+    /* Accordion mode: the pill becomes a full-width header and the panel opens
+       in the flow underneath it instead of floating over the sheet. */
+    .fsheet .msel { display: block; width: 100%; }
+    .fsheet .msel__btn { width: 100%; justify-content: flex-start; border-radius: 4px; padding: 15px 16px; font-size: 14px; }
+    .fsheet .msel__chev { margin-left: auto; width: 14px; height: 14px; }
+    .fsheet .msel__panel {
+      position: static; width: auto; max-height: none; overflow: visible;
+      padding: 6px 0 2px; background: none; border: none; box-shadow: none;
+    }
+    .fsheet .msel__opt { padding: 11px 6px; font-size: 14px; }
+    .fsheet .msel__opt input { width: 18px; height: 18px; }
+    .fsheet .msel__grp { padding-left: 6px; }
     .fsheet__foot {
       flex-shrink: 0; display: flex; align-items: center; gap: 12px;
       padding: 14px 20px calc(14px + env(safe-area-inset-bottom));
@@ -385,11 +452,32 @@
     }
     body.fsheet-open { overflow: hidden; }
     body.fsheet-open .viewtoggle { display: none; }
+    /* The drawer is z-index 100 (responsive.css) and this pill is 850, so
+       without this the pill floats over the open menu on phones. */
+    body.nav-open .viewtoggle { display: none; }
+    .viewtoggle svg { flex: none; }
 
-    /* Measured, not guessed: the full pill row needs 1,392px, so anything narrower
-       than ~1400 pushed the Sort select past the edge of the window and gave the
-       whole page a horizontal scrollbar. Above this the row fits as designed. */
-    @media (max-width: 1400px) {
+    /* The middle band: every pill still fits, but only once the row gives up its
+       loose spacing. Measured — this buys back most of the width the two new
+       multi-select pills cost, which is the difference between dropping to the
+       Filters sheet at ~1650px and holding the full row down to a 1440px laptop.
+       Nothing above 1700 is touched, so the designed layout is unchanged there. */
+    @media (max-width: 1700px) {
+      .filterbar { padding: 0 28px; gap: 7px; }
+      .fsel select { padding: 9px 26px 9px 11px; }
+      .fsel__chev { right: 10px; }
+      .msel__btn { padding: 9px 11px; gap: 6px; }
+      .search { flex: 0 1 260px; min-width: 130px; }
+    }
+
+    /* Measured, not guessed, and re-measured in a browser when Waterfront became
+       the two multi-select pills: worst case — every select holding its longest
+       option AND Clear all in the row — the pills need 1,477px with the tightened
+       spacing above. Anything narrower pushes the Sort select past the edge of the
+       window and gives the whole page a horizontal scrollbar, so the row gives way
+       to the sheet at 1500. (The old 1400 was measured without Clear all in the
+       row, so the live page has always overflowed by ~22px at 1401.) */
+    @media (max-width: 1500px) {
       .fb-more { display: inline-flex; }
       .fsheet { display: block; }
       .filterbar { overflow: visible; flex-wrap: nowrap; }
@@ -465,6 +553,7 @@
       burger.setAttribute("aria-expanded", open ? "true" : "false");
       burger.setAttribute("aria-label", open ? "Close menu" : "Open menu");
       drawer.setAttribute("aria-hidden", open ? "false" : "true");
+      document.body.classList.toggle("nav-open", open);
       document.body.style.overflow = open ? "hidden" : "";
     }
     burger.addEventListener("click", function () {
@@ -496,9 +585,21 @@
   <div class="fsel"><select id="ptype" aria-label="Property type"></select><span class="fsel__chev" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg></span></div>
   <div class="fsel"><select id="city" aria-label="City"></select><span class="fsel__chev" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg></span></div>
 
-  <label class="toggle" id="wfToggle">
-    <input type="checkbox" id="waterfront" /> Waterfront
-  </label>
+  <!-- Options are rendered by buildMsels() from the data, so an option nothing
+       matches never appears. Waterfront now lives inside Features. -->
+  <div class="msel" id="viewMsel">
+    <button class="msel__btn" type="button" aria-expanded="false" aria-controls="viewMselPanel">
+      <span>The View</span><span class="msel__n"></span><svg class="msel__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg>
+    </button>
+    <div class="msel__panel" id="viewMselPanel" role="group" aria-label="View" hidden></div>
+  </div>
+
+  <div class="msel msel--wide msel--right" id="featMsel">
+    <button class="msel__btn" type="button" aria-expanded="false" aria-controls="featMselPanel">
+      <span>Features</span><span class="msel__n"></span><svg class="msel__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg>
+    </button>
+    <div class="msel__panel" id="featMselPanel" role="group" aria-label="Features" hidden></div>
+  </div>
 
   <button class="clear-all" id="clearAll">Clear all</button>
 
@@ -550,8 +651,10 @@
         <div data-slot="city"></div>
       </div>
       <div class="fsheet__row">
-        <span class="fsheet__lab">Features</span>
-        <div data-slot="waterfront"></div>
+        <div data-slot="viewMsel"></div>
+      </div>
+      <div class="fsheet__row">
+        <div data-slot="featMsel"></div>
       </div>
       <div class="fsheet__row">
         <span class="fsheet__lab">Sort by</span>
@@ -629,7 +732,7 @@
   </div>
 </footer>
 
-<button class="viewtoggle" id="viewToggle">◗ Map</button>
+<button class="viewtoggle" id="viewToggle"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg><span>Map</span></button>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
@@ -678,8 +781,72 @@ const PRICE_STEPS = [500e3, 750e3, 1e6, 1.5e6, 2e6, 3e6, 5e6, 10e6, 20e6, 50e6];
 
 const state = {
   q: "", priceMin: "", priceMax: "", beds: "", baths: "",
-  ptype: "", city: "", waterfront: false, sort: "featured", mapSync: false,
+  ptype: "", city: "", views: [], feats: [], sort: "featured", mapSync: false,
 };
+
+/* ------------------------------------------------- multi-select catalogues --
+   THE VIEW reads the MLS `View` field, which this feed populates on 100% of
+   listings and fills from a fixed set of seven values. Ordered for this market
+   rather than by count: the lake is why people search Incline, and Trees/Woods
+   is on three-quarters of the feed, so leading with it would be leading with
+   nothing. `value` is the raw MLS token; only the label is ours.
+
+   FEATURES reads `listing.feats`, the key list featuresOf() derives per listing
+   in src/lib/listings.ts — that function owns the matching rules and these keys
+   must match it. Grouped so twenty-odd checkboxes stay scannable.
+
+   Both lists are filtered against the data before rendering: an option no
+   active listing matches is left out rather than shown as a dead end. That is
+   also what makes the MLS fields we sync but haven't seen values for yet safe
+   to list — they appear by themselves once a sync fills them in. */
+const VIEW_OPTS = [
+  ["Lake", "Lake"],
+  ["Mountains", "Mountains"],
+  ["Panoramic", "Panoramic"],
+  ["CreekStream", "Creek or stream"],
+  ["GolfCourse", "Golf course"],
+  ["SkiArea", "Ski area"],
+  ["TreesWoods", "Trees and woods"],
+];
+
+const FEAT_GROUPS = [
+  ["The home", [
+    ["single", "Single story"],
+    ["mainbed", "Main-level bedroom"],
+    ["ac", "Air conditioning"],
+    ["laundry", "Laundry in unit"],
+    ["pool", "Pool"],
+    ["spa", "Spa or hot tub"],
+    ["newbuild", "Built 2015 or newer"],
+    ["tour", "3D tour"],
+  ]],
+  ["Parking", [
+    ["garage", "Garage"],
+    ["garage2", "2+ car garage"],
+    ["rvboat", "RV or boat parking"],
+    ["ev", "EV charging"],
+  ]],
+  ["The lot", [
+    ["waterfront", "Waterfront"],
+    ["acre", "1+ acre"],
+    ["level", "Level lot"],
+    ["wooded", "Wooded"],
+    ["greenbelt", "Backs to greenbelt"],
+    ["culdesac", "Cul-de-sac"],
+  ]],
+  ["Community", [
+    ["gated", "Gated or security"],
+    ["hoa", "HOA"],
+    ["nohoa", "No HOA"],
+  ]],
+];
+
+const MSELS = [
+  { id: "viewMsel", kind: "views" },
+  { id: "featMsel", kind: "feats" },
+];
+
+const viewTokens = l => String(l.view || "").split(",").map(t => t.trim()).filter(Boolean);
 
 /* ------------------------------------------------- filter state <-> URL ----
    Filters used to live only in `state`, so opening a listing and coming back
@@ -695,7 +862,8 @@ function writeStateToUrl() {
     // "featured" is the default sort, so it stays out of the URL.
     if (state[k] && !(k === "sort" && state[k] === "featured")) p.set(k, state[k]);
   });
-  if (state.waterfront) p.set("waterfront", "1");
+  if (state.views.length) p.set("views", state.views.join(","));
+  if (state.feats.length) p.set("feats", state.feats.join(","));
   const qs = p.toString();
   const url = location.pathname + (qs ? "?" + qs : "");
   history.replaceState(null, "", url);
@@ -711,11 +879,11 @@ function readStateFromUrl() {
     const el = document.getElementById(k);
     if (el) el.value = state[k];
   });
-  if (p.get("waterfront") === "1") {
-    state.waterfront = true;
-    const wf = document.getElementById("waterfront");
-    if (wf) wf.checked = true;
-  }
+  const list = k => (p.get(k) || "").split(",").map(v => v.trim()).filter(Boolean);
+  state.views = list("views");
+  state.feats = list("feats");
+  // Links shared before Waterfront moved into Features still carry ?waterfront=1.
+  if (p.get("waterfront") === "1" && !state.feats.includes("waterfront")) state.feats.push("waterfront");
 }
 
 function opt(value, label, selected) {
@@ -765,7 +933,9 @@ function buildDataControls() {
 
 /* --------------------------------------------------------- filter + sort */
 
-function matches(l) {
+/** `skip` excludes one group from the test, which is how each option gets the
+    count of what ticking it would leave. */
+function matches(l, skip) {
   if (state.q) {
     const hay = `${l.address || ""} ${l.city || ""} ${l.state || ""} ${l.zip || ""} ${l.category || ""} ${l.subType || ""}`.toLowerCase();
     // Every token must appear, so "incline condo" narrows rather than widens.
@@ -777,7 +947,16 @@ function matches(l) {
   if (state.baths && !(l.baths >= +state.baths)) return false;
   if (state.ptype && l.category !== state.ptype) return false;
   if (state.city  && l.city !== state.city) return false;
-  if (state.waterfront && !l.waterfront) return false;
+  // Views are OR (lake or mountains), features are AND (garage and A/C) —
+  // which is how each reads out loud, and how every portal behaves.
+  if (skip !== "views" && state.views.length) {
+    const t = viewTokens(l);
+    if (!state.views.some(v => t.includes(v))) return false;
+  }
+  if (skip !== "feats" && state.feats.length) {
+    const f = l.feats || [];
+    if (!state.feats.every(k => f.includes(k))) return false;
+  }
   if (state.mapSync && map) {
     if (l.lat == null || l.lng == null) return false;
     if (!map.getBounds().contains([l.lat, l.lng])) return false;
@@ -962,7 +1141,8 @@ function renderMap() {
 
 const isUnfiltered = () =>
   !state.q && !state.priceMin && !state.priceMax && !state.beds &&
-  !state.baths && !state.ptype && !state.city && !state.waterfront;
+  !state.baths && !state.ptype && !state.city &&
+  !state.views.length && !state.feats.length;
 
 /** Two-way highlight between a card and its pin. */
 function highlight(id, fromMap) {
@@ -983,7 +1163,7 @@ function highlight(id, fromMap) {
 /* --------------------------------------------------------------- refresh */
 
 function apply() {
-  VIEW = sortView(ALL.filter(matches));
+  VIEW = sortView(ALL.filter(l => matches(l)));
   shown = PAGE_SIZE;
   renderGrid();
   renderMap();
@@ -992,7 +1172,7 @@ function apply() {
 
 /** Re-render the list only — used when the map moves under "search this area". */
 function applyListOnly() {
-  VIEW = sortView(ALL.filter(matches));
+  VIEW = sortView(ALL.filter(l => matches(l)));
   shown = PAGE_SIZE;
   renderGrid();
   syncChips();
@@ -1003,11 +1183,12 @@ function syncChips() {
    ["baths", "baths"], ["ptype", "ptype"], ["city", "city"]].forEach(([el, key]) => {
     document.getElementById(el).closest(".fsel").classList.toggle("is-set", !!state[key]);
   });
-  document.getElementById("wfToggle").classList.toggle("active", state.waterfront);
+  syncMsels();
   document.getElementById("searchWrap").classList.toggle("has-value", !!state.q);
 
   const dirty = !!(state.q || state.priceMin || state.priceMax || state.beds ||
-                   state.baths || state.ptype || state.city || state.waterfront || state.mapSync);
+                   state.baths || state.ptype || state.city || state.mapSync ||
+                   state.views.length || state.feats.length);
   document.getElementById("clearAll").classList.toggle("show", dirty);
 
   syncSheet();
@@ -1019,12 +1200,11 @@ function syncChips() {
 function clearAll() {
   Object.assign(state, {
     q: "", priceMin: "", priceMax: "", beds: "", baths: "",
-    ptype: "", city: "", waterfront: false, mapSync: false,
+    ptype: "", city: "", views: [], feats: [], mapSync: false,
   });
   document.getElementById("q").value = "";
   ["priceMin", "priceMax", "beds", "baths", "ptype", "city"].forEach(id =>
     document.getElementById(id).value = "");
-  document.getElementById("waterfront").checked = false;
   document.getElementById("mapSync").checked = false;
   apply();
 }
@@ -1035,9 +1215,9 @@ window.clearAll = clearAll;
    are moved, not copied: the same nodes, ids and listeners, so none of the
    filter logic above needs to know which layout is on screen.               */
 
-/* Must stay in step with the @media (max-width: 1400px) block above. */
-const CONDENSED = window.matchMedia("(max-width: 1400px)");
-const SHEET_IDS = ["priceMin", "priceMax", "beds", "baths", "ptype", "city", "waterfront", "sort"];
+/* Must stay in step with the @media (max-width: 1500px) block above. */
+const CONDENSED = window.matchMedia("(max-width: 1500px)");
+const SHEET_IDS = ["priceMin", "priceMax", "beds", "baths", "ptype", "city", "viewMsel", "featMsel", "sort"];
 const filterHome = [];   // [node, parent, nextSibling] as the bar had them
 
 /* In the bar a select has to name itself, because there are no labels. In the
@@ -1061,10 +1241,11 @@ function relabelDefaults() {
   }
 }
 
-/** The pill a control sits in: .fsel for the selects, .toggle for the checkbox. */
+/** The pill a control sits in: .fsel for the selects, .msel for the two
+    multi-selects (which carry the id themselves), .toggle for a checkbox. */
 function groupFor(id) {
   const el = document.getElementById(id);
-  return el.closest(".fsel") || el.closest(".toggle") || el;
+  return el.closest(".fsel") || el.closest(".msel") || el.closest(".toggle") || el;
 }
 
 function layoutFilters() {
@@ -1075,6 +1256,7 @@ function layoutFilters() {
     });
   }
   const sheet = document.getElementById("fsheet");
+  closeMsels();
   if (CONDENSED.matches) {
     SHEET_IDS.forEach(id => {
       const slot = sheet.querySelector('[data-slot="' + id + '"]');
@@ -1114,11 +1296,102 @@ function closeSheet() {
 /** Badge count on the Filters button, live result count on the sheet's CTA. */
 function syncSheet() {
   const n = [state.priceMin || state.priceMax, state.beds, state.baths,
-             state.ptype, state.city, state.waterfront].filter(Boolean).length;
+             state.ptype, state.city].filter(Boolean).length +
+            state.views.length + state.feats.length;
   document.getElementById("fbMore").classList.toggle("is-set", n > 0);
   document.getElementById("fbMoreN").textContent = n || "";
   document.getElementById("fsheetApply").textContent =
     VIEW.length === 1 ? "Show 1 home" : "Show " + VIEW.length + " homes";
+}
+
+/* ------------------------------------------------- multi-select engine ----
+   The two grouped filters. Options are built once from the data, then kept in
+   step by syncMsels() on every filter change — rebuilding the list on each
+   change would tear the checkbox out from under the click that set it. */
+
+/** An option is only offered when some active listing actually has it. */
+function availableOpts() {
+  const views = new Set(), feats = new Set();
+  for (const l of ALL) {
+    for (const t of viewTokens(l)) views.add(t);
+    for (const k of (l.feats || [])) feats.add(k);
+  }
+  return { views, feats };
+}
+
+function optHTML(kind, value, label) {
+  return `<label class="msel__opt" data-opt="${esc(value)}">
+      <input type="checkbox" data-kind="${esc(kind)}" value="${esc(value)}" />
+      <span>${esc(label)}</span><span class="msel__cnt"></span>
+    </label>`;
+}
+
+function buildMsels() {
+  const avail = availableOpts();
+  document.getElementById("viewMselPanel").innerHTML =
+    VIEW_OPTS.filter(([v]) => avail.views.has(v))
+             .map(([v, lab]) => optHTML("views", v, lab)).join("");
+  document.getElementById("featMselPanel").innerHTML =
+    FEAT_GROUPS.map(([title, opts]) => {
+      const rows = opts.filter(([k]) => avail.feats.has(k));
+      // A whole group can be empty — no heading for a section with no options.
+      if (!rows.length) return "";
+      return `<div class="msel__grp">${esc(title)}</div>` +
+             rows.map(([k, lab]) => optHTML("feats", k, lab)).join("");
+    }).join("");
+  // A value arriving on the URL that nothing offers would otherwise stay applied
+  // with no box to untick — drop it rather than return a silent zero.
+  state.views = state.views.filter(v => avail.views.has(v));
+  state.feats = state.feats.filter(k => avail.feats.has(k));
+}
+
+/** The number beside each option: what ticking it would leave you with. Views
+    are OR, so they count against every filter EXCEPT the view group; features
+    are AND, so they count within the results you already have. */
+function optionCounts() {
+  const views = new Map(), feats = new Map();
+  for (const l of ALL) {
+    if (!matches(l, "views")) continue;
+    for (const t of viewTokens(l)) views.set(t, (views.get(t) || 0) + 1);
+  }
+  for (const l of VIEW) for (const k of (l.feats || [])) feats.set(k, (feats.get(k) || 0) + 1);
+  return { views, feats };
+}
+
+function syncMsels() {
+  const counts = optionCounts();
+  for (const { id, kind } of MSELS) {
+    const root = document.getElementById(id);
+    const sel = kind === "views" ? state.views : state.feats;
+    root.classList.toggle("is-set", sel.length > 0);
+    root.querySelector(".msel__n").textContent = sel.length || "";
+    root.querySelectorAll(".msel__opt").forEach(opt => {
+      const val = opt.dataset.opt;
+      const on = sel.includes(val);
+      const n = counts[kind].get(val) || 0;
+      opt.querySelector("input").checked = on;
+      opt.querySelector(".msel__cnt").textContent = n;
+      opt.classList.toggle("is-empty", !n && !on);
+    });
+  }
+}
+
+function closeMsels(except) {
+  for (const { id } of MSELS) {
+    const root = document.getElementById(id);
+    if (root === except) continue;
+    root.classList.remove("is-open");
+    root.querySelector(".msel__btn").setAttribute("aria-expanded", "false");
+    root.querySelector(".msel__panel").hidden = true;
+  }
+}
+
+function toggleMsel(root) {
+  const open = !root.classList.contains("is-open");
+  closeMsels(open ? root : null);
+  root.classList.toggle("is-open", open);
+  root.querySelector(".msel__btn").setAttribute("aria-expanded", open ? "true" : "false");
+  root.querySelector(".msel__panel").hidden = !open;
 }
 
 /* ----------------------------------------------------------------- wiring */
@@ -1150,9 +1423,25 @@ function wire() {
     });
   });
 
-  document.getElementById("waterfront").addEventListener("change", e => {
-    state.waterfront = e.target.checked;
-    apply();
+  MSELS.forEach(({ id, kind }) => {
+    const root = document.getElementById(id);
+    root.querySelector(".msel__btn").addEventListener("click", () => toggleMsel(root));
+    // Delegated to the panel, which survives: the options inside it are written
+    // by buildMsels() once the listings have loaded.
+    root.querySelector(".msel__panel").addEventListener("change", e => {
+      const box = e.target.closest('input[type="checkbox"]');
+      if (!box) return;
+      const sel = kind === "views" ? state.views : state.feats;
+      const at = sel.indexOf(box.value);
+      if (box.checked && at < 0) sel.push(box.value);
+      if (!box.checked && at >= 0) sel.splice(at, 1);
+      apply();
+    });
+  });
+  // Clicking away closes an open group. In the sheet that means tapping one
+  // accordion header collapses the other, which is what an accordion should do.
+  document.addEventListener("click", e => {
+    if (!e.target.closest(".msel")) closeMsels();
   });
 
   document.getElementById("mapSync").addEventListener("change", e => {
@@ -1168,12 +1457,20 @@ function wire() {
   document.getElementById("fsheetReset").addEventListener("click", clearAll);
   document.querySelectorAll("[data-fsheet-close]").forEach(el =>
     el.addEventListener("click", closeSheet));
-  document.addEventListener("keydown", e => { if (e.key === "Escape") closeSheet(); });
+  document.addEventListener("keydown", e => {
+    if (e.key !== "Escape") return;
+    closeMsels();
+    closeSheet();
+  });
   CONDENSED.addEventListener("change", layoutFilters);
 
+  /* Feather-style icons, same stroke weight as the drawer arrows. */
+  const ICON_MAP = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>';
+  const ICON_LIST = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="9" y1="6" x2="21" y2="6"/><line x1="9" y1="12" x2="21" y2="12"/><line x1="9" y1="18" x2="21" y2="18"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/></svg>';
   document.getElementById("viewToggle").addEventListener("click", () => {
     const open = document.body.classList.toggle("map-open");
-    document.getElementById("viewToggle").innerHTML = open ? "☰ List" : "◗ Map";
+    document.getElementById("viewToggle").innerHTML =
+      open ? ICON_LIST + "<span>List</span>" : ICON_MAP + "<span>Map</span>";
     if (open && map) setTimeout(() => map.invalidateSize(), 60);
   });
 }
@@ -1217,6 +1514,7 @@ async function load() {
     // After the data-driven options exist, restore any filters from the URL so a
     // shared link — or a return trip from a listing — reopens the same search.
     readStateFromUrl();
+    buildMsels();
     document.getElementById("live").hidden = false;
     document.getElementById("stamp").textContent =
       new Date().toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
