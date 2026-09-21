@@ -4,6 +4,7 @@ import { EmDashHead, EmDashBodyStart, EmDashBodyEnd } from "emdash/ui";
 import { createPublicPageContext } from "emdash/page";
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
+import { SITEWIDE_SCHEMA, schemaForPath } from "../lib/page-schema";
 
 interface Props {
 	/** <title> text. " | Liberty Hearing Center" is appended unless already present. */
@@ -73,8 +74,19 @@ const pageCtx = createPublicPageContext({
 	canonical,
 	image: ogImage,
 	content,
-	siteName: SITE_NAME,
+	// `siteName` is deliberately NOT passed (2026-09-21). emdash emits a bare
+	// `WebSite` JSON-LD block whenever it is set
+	// (seo-contributions.ts -> buildWebSiteJsonLd), and the client's schema doc
+	// replaces that with the full MedicalBusiness/WebSite @graph below. Dropping
+	// it also drops emdash's og:site_name, so this layout emits that tag itself.
 });
+
+/**
+ * Structured data: the sitewide @graph on every page, plus any per-page blocks
+ * mapped by route in src/lib/page-schema.ts, plus anything a page passes via the
+ * `schema` prop. All copied verbatim from the client's schema document.
+ */
+const schemaBlocks: unknown[] = [SITEWIDE_SCHEMA, ...schemaForPath(Astro.url.pathname), ...(schema ? [schema] : [])];
 ---
 
 <!doctype html>
@@ -116,8 +128,13 @@ const pageCtx = createPublicPageContext({
 		<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=1" sizes="180x180" />
 		{noindex && <meta name="robots" content="noindex, follow" />}
 
-		{/* og:locale is the one tag emdash does NOT emit, so it stays here. */}
+		{/*
+		  og:locale is never emitted by emdash. og:site_name is emitted by emdash
+		  ONLY when `siteName` is passed into the page context, which it no longer
+		  is (see the note above) — so both live here. Neither is duplicated.
+		*/}
 		<meta property="og:locale" content="en_US" />
+		<meta property="og:site_name" content={SITE_NAME} />
 
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -128,7 +145,9 @@ const pageCtx = createPublicPageContext({
 		<link rel="stylesheet" href="/assets/brand.css" />
 		<link rel="stylesheet" href="/assets/global.css" />
 
-		{schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
+		{schemaBlocks.map((block) => (
+			<script type="application/ld+json" set:html={JSON.stringify(block)} />
+		))}
 		<EmDashHead page={pageCtx} />
 	</head>
 	<body>
