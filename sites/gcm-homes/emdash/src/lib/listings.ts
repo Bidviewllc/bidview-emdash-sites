@@ -86,10 +86,13 @@ export function featuresOf(r: any): string[] {
 	if (tokens(r.cooling).length) f.push("ac");
 	if (tokens(r.pool_features).length) f.push("pool");
 	if (tokens(r.spa_features).length || r.spa_yn === 1) f.push("spa");
-	// "In unit" means the laundry is inside the home — hookups count, a shared
-	// building laundry (CommonArea) or None does not.
-	if (has(r.laundry_features, /LaundryRoom|Inside|InUnit|Stacked|Closet|InKitchen|InBasement|InGarage|MainLevel|UpperLevel|LowerLevel|Washer|Dryer|Hookup/i)
-		&& !has(r.laundry_features, /^None$/i)) f.push("laundry");
+	// "In unit" means the laundry is inside the home. Checked against the live feed
+	// 2026-09-21: it says where the laundry IS (LaundryRoom, LaundryCloset, InHall,
+	// InKitchen, InBathroom, InGarage, LaundryInUtilityRoom, MainLevel), and the only
+	// values that mean "not in the home" are CommonArea and None. Listing what counts
+	// missed InHall and InBathroom — 21 listings — so this asks the other question:
+	// anything at all beyond those two is laundry you have to yourself.
+	if (tokens(r.laundry_features).some(t => !/^(CommonArea|None|SeeRemarks)$/i.test(t))) f.push("laundry");
 	if (Number(r.year_built) >= 2015) f.push("newbuild");
 	if (r.tour_url_mls) f.push("tour");
 	// Parking
@@ -97,12 +100,16 @@ export function featuresOf(r: any): string[] {
 	if (Number(r.garage) >= 2) f.push("garage2");
 	if (has(r.parking, /Rv|Boat/i)) f.push("rvboat");
 	if (has(r.parking, /ElectricVehicle|EvCharg/i)) f.push("ev");
-	// Community. Smoke/CO detectors and fire sprinklers live in SecurityFeatures
-	// on most listings and say nothing about the property being secured, so they
-	// are dropped before the test.
-	const guard = /Gate|Guard|SecuritySystem|Alarm|KeyCard|Controlled|Surveillance|Camera|Doorman|Concierge/i;
+	// Community. Life-safety kit says nothing about a property being secured and is
+	// on most listings — SmokeDetectors alone accounts for 43 of the 88 that fill
+	// this field — so it is dropped before the test. FireAlarm and SecurityLights
+	// are in that same category despite their names, which a bare /Alarm/ got wrong.
+	// What's left in this feed: SecuritySystem, ClosedCircuitCameras, and
+	// ControlledAccess (which arrives under the HOA's amenities, not security).
+	const guard = /Gate|Guard|SecuritySystem|ControlledAccess|KeyCard|Camera|Surveillance|Doorman|Concierge/i;
+	const lifeSafety = /Detector|Sprinkler|Extinguisher|FireAlarm|SecurityLights/i;
 	const realSecurity = (v: any) =>
-		tokens(v).filter(t => !/Detector|Sprinkler|Extinguisher/i.test(t)).some(t => guard.test(t));
+		tokens(v).filter(t => !lifeSafety.test(t)).some(t => guard.test(t));
 	if (realSecurity(r.security_features) || realSecurity(r.assoc_amenities)) f.push("gated");
 	if (Number(r.hoa_fee) > 0) f.push("hoa"); else f.push("nohoa");
 	return f;
