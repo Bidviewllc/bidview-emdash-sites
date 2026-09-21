@@ -1402,3 +1402,45 @@ Deployed: worker `9fe7f9cf-eedb-460f-92e6-6c5d0379536e`, cache **v8**.
 **The audit SHEET is still private** (`spreadsheets/d/1ArMMBwVSPcLXVdh52GpUaf4wcykxiyzhVTdqgN5qjYs`
 -> 401); only the doc was shared. The `meta_description_multiple` item was fixed and
 verified independently against the live site — see the section above.
+
+### Rich Results Test coverage — 16/30, then Google blocked the tool (2026-09-21)
+
+Vince asked for all 30 URLs checked for errors AND warnings. Status:
+
+| Validator | Coverage | Result |
+| --- | --- | --- |
+| Schema.org Markup Validator | **30/30** | **0 errors, 0 warnings** |
+| Google Rich Results Test | **16/30** | 2 valid items, **0 warnings, 0 invalid** on every one |
+
+**Why it stopped at 16:** the RRT rate-limits hard. After ~15 consecutive tests it
+stops running them and serves the landing form; then it started returning
+**"Something went wrong — Log in and try again"** (screenshot:
+`scratchpad/rrt3-_assistive_listening_devices_.png`). A 12-minute cooldown bought
+exactly ONE more test (`/about/`), then the block returned and six further attempts
+at 12-minute spacing all failed. **This is a Google-side limit on anonymous use from
+this IP, not a page defect.** Scripts are resumable (`scratchpad/rrt3.mjs` skips
+routes already recorded `ok` in `rrt3-results.json`).
+
+**The 16 verified cover every DISTINCT schema shape:** homepage (graph alone),
+all 4 `Person`, `/services/` (Service without FAQ), 9 `Service`+`FAQPage`, `/about/`
+(`AboutPage`).
+
+**The 14 not yet verified by Google, checked structurally instead**
+(`scratchpad/skeleton.mjs` reduces each page's JSON-LD to a key/type skeleton and
+compares):
+- **7 are byte-identical in structure** to a Google-verified Service+FAQ page.
+- **7 brand pages differ by exactly ONE property** — the Service block carries
+  `"brand": {"@type":"Brand","name":"Oticon"}` etc. All 7 passed the Schema.org
+  validator cleanly, but **no brand page has been through Google's tool**, so that
+  one shape is unproven there. Do not claim otherwise.
+
+**Ways to finish the last 14 (pick one):**
+1. Run them in a signed-in browser by hand — ~30s each; one brand page closes the
+   only real gap.
+2. Re-run `scratchpad/rrt3.mjs` after the block lifts (likely ~24h).
+3. **Best long-term: the GSC URL Inspection API.** `gsc-token.json` refreshes fine
+   and DOES have the property (`https://libertyhearingcentertx.com/`, 87 properties
+   on that account; `vince-gsc-token.json` fails to refresh). It returns
+   `richResultsResult` per URL with Google's own verdict — but only for the INDEXED
+   copy, and right now every URL returns **"URL is unknown to Google"** because the
+   site has not been crawled yet. Re-check once indexing starts.
