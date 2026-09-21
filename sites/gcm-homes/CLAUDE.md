@@ -385,6 +385,56 @@ SubdivisionName (still null → keep polygons), VirtualTourURLBranded.
 - **Note for Liz's front-end:** the fields are live in the detail API now; the listing design just needs to read the
   new `toDetail` keys. Array-type MLS values (Flooring/Utilities/LotFeatures/etc.) are stored comma-joined.
 
+### 2026-09-21 — Listings filters: "The View" + "Features" (Liz's request) — PREVIEW, not yet live
+The single Waterfront checkbox became two multi-select groups. **Deployed as a version preview only:**
+`https://1b3638b2-gcm-homes-emdash.cameron-239.workers.dev/listings/` (version `1b3638b2`) — production untouched.
+- **The View** — the MLS `View` field, 100% populated, 7 values across the whole feed: TreesWoods 73%, Mountains 44%,
+  Lake 32%, Panoramic 12%, CreekStream 11%, GolfCourse 6%, SkiArea 5%. Answers the original ask: water view is
+  32% of the feed (59 of 187) against a Waterfront flag that only ever matches 10 listings, and every waterfront
+  listing also carries a Lake view. Options are **OR** — Lake or Mountains.
+- **Features** — 21 options in 4 groups, **AND** (garage and A/C), each with a live count of what ticking it leaves.
+- **Where the feature data comes from:** `featuresOf()` in `emdash/src/lib/listings.ts` reduces each listing to a
+  list of feature keys, added to the list API as `listing.feats`. Sending the raw MLS strings instead would have
+  roughly doubled the payload. **The keys are the contract** between that function and `FEAT_GROUPS` in
+  `public/listings/index.html`; an option nothing matches is hidden rather than shown as a dead end, which is also
+  what lets a field appear by itself once a sync starts filling it.
+- **6 new MLS fields added to the sync** for the tier-3 options Liz picked: `LaundryFeatures` (77% populated),
+  `SecurityFeatures` (53%), `MainLevelBedrooms` (37%), `AssociationAmenities` (23%), `SpaFeatures` (19%), `SpaYN`
+  (17%) → columns `laundry_features`, `security_features`, `main_level_beds`, `assoc_amenities`, `spa_features`,
+  `spa_yn`. Wired into **both** sync files (`cf-worker/sync/sync.mjs` + `vercel/api/sync.js`). NOT added to the
+  emdash admin mirror — they are filter inputs, not admin display fields.
+- **⚠️ ORDER OF OPERATIONS — the `ALTER TABLE` must land BEFORE the new sync code reaches `main`,** or the sync's
+  INSERT hits columns that don't exist and the run fails (and a failed run leaves the site truncated — see below):
+  ```
+  cd sites/gcm-homes/emdash && npx wrangler d1 execute gcm-homes-db --remote --command "ALTER TABLE listings ADD COLUMN laundry_features TEXT; ALTER TABLE listings ADD COLUMN security_features TEXT; ALTER TABLE listings ADD COLUMN main_level_beds INTEGER; ALTER TABLE listings ADD COLUMN assoc_amenities TEXT; ALTER TABLE listings ADD COLUMN spa_features TEXT; ALTER TABLE listings ADD COLUMN spa_yn INTEGER;"
+  ```
+  Until a sync fills them, the 4 tier-3 options (Laundry in unit, Gated or security, Main-level bedroom, Spa or hot
+  tub) simply don't appear. **Their RESO enum values are unverified** — the matchers in `featuresOf()` are written
+  from the RESO dictionary, not from this feed's actual values, so re-check the counts after the first sync.
+- **Filter row breakpoint 1400 → 1500.** Two pills cost the row ~220px. A tightened middle band
+  (`@media (max-width: 1700px)`: padding 28, gap 7, smaller pill padding) buys most of it back; measured worst case
+  (every select on its longest option + Clear all showing) the row needs 1,477px, so a 1512px laptop still keeps the
+  full pill row. Note the old 1400 was measured **without** Clear all in the row — the live page has always
+  overflowed by ~22px at 1401.
+- **Drive-by fix:** `.loadmore` sets `display:flex`, which beat the `[hidden]` attribute, so "Load 0 more listings /
+  Showing 0 of 0" showed under every short result set (reproduced on production at `/listings/?beds=4`). One line:
+  `.loadmore[hidden] { display: none; }`.
+- **Verified in Chrome** (headless, local harness + the deployed preview): OR/AND semantics, per-option counts match
+  the result count, URL round-trip (`?views=…&feats=…`), old `?waterfront=1` links still work (rewritten to
+  `?feats=waterfront`), Clear all, the accordion in the phone sheet (both collapsed by default — Features is
+  reachable without scrolling past the view options), no console errors, no horizontal overflow at 390px or 1501px.
+
+### 2026-09-21 — ⚠️ SYNC LEFT THE SITE TRUNCATED (found during the above, NOT caused by it)
+At 16:28 UTC production was serving **25 listings instead of 187, and `listing_photos` was empty** (galleries gone).
+`sync_meta.last_synced_at` still read `09:42:25Z` with count 187, so the run that did it never finished.
+- **Cause:** the sync is `DELETE FROM listing_photos` + `DELETE FROM listings` then re-INSERT in batches of 25, with
+  no transaction. Any run that dies partway leaves the live site serving whatever fraction got inserted — here one
+  batch. The workflow has `timeout-minutes: 15`, so a hung Trestle call is enough to do it.
+- **Recovery:** Actions tab → "GCM Homes — Trestle → D1 sync" → Run workflow. The 2-hourly schedule also repairs it
+  on the next successful run.
+- **Worth fixing properly:** insert into a staging table and swap, or wrap the delete+insert in one transaction, so
+  a failed sync can never empty the public site. Not done — flagged.
+
 ### 2026-08-13 — Contact form backend DONE (D1 + Resend), all forms wired
 Every inquiry form now saves to D1 **and** emails via Resend. Modeled on the Ontario/onePHG handler.
 - **`src/pages/api/contact.ts`** — POST: honeypot (`website`), optional Turnstile (fail-open, only enforced if a

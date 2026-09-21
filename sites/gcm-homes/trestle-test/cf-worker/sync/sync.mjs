@@ -46,6 +46,12 @@ const FULL_SELECT = [
   // listing contract; this one does not. Both are frozen at ModificationTimestamp
   // in the feed — see toDetail() in emdash/src/lib/listings.ts for the live maths.
   "CumulativeDaysOnMarket",
+  // Added 2026-09-21 (Liz's Features filter): the last well-populated feed fields
+  // the listings search wants to filter on. Coverage measured on the live feed:
+  // LaundryFeatures 77%, SecurityFeatures 53%, MainLevelBedrooms 37%,
+  // AssociationAmenities 23%, SpaFeatures 19%, SpaYN 17%.
+  "LaundryFeatures", "SecurityFeatures", "MainLevelBedrooms",
+  "AssociationAmenities", "SpaFeatures", "SpaYN",
 ].join(",");
 
 /* ---------------------------------------------------------------- helpers */
@@ -255,6 +261,10 @@ async function main() {
       l.LotSizeAcres != null ? Math.round(Number(l.LotSizeAcres) * 43560) : null,
       // Added 2026-09-10:
       l.CumulativeDaysOnMarket ?? null,
+      // Added 2026-09-21 (Features filter):
+      flat(l.LaundryFeatures) || null, flat(l.SecurityFeatures) || null,
+      l.MainLevelBedrooms ?? null, flat(l.AssociationAmenities) || null,
+      flat(l.SpaFeatures) || null, l.SpaYN === true ? 1 : (l.SpaYN === false ? 0 : null),
     ];
   });
   const photoRows = [];
@@ -269,7 +279,9 @@ async function main() {
     // Added 2026-08-19 (Liz's field request):
     "flooring","fireplaces","fireplace_yn","fireplace_features","roof","utilities","pool_features","listing_date","hoa_frequency","tour_url_mls","mls_number","stories","arch_style","construction","lot_features","condition","lot_sqft",
     // Added 2026-09-10:
-    "cum_dom"];
+    "cum_dom",
+    // Added 2026-09-21 (Features filter):
+    "laundry_features","security_features","main_level_beds","assoc_amenities","spa_features","spa_yn"];
   await insertRows("listings", LCOLS, listingRows, 25);
   await insertRows("listing_photos", ["listing_key","ord","url"], photoRows, 300);
   await d1(`INSERT OR REPLACE INTO sync_meta (id,last_synced_at,count) VALUES (1,${sqlVal(new Date().toISOString())},${listingRows.length})`);
