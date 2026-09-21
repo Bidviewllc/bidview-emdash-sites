@@ -1279,3 +1279,60 @@ and rejects after the message is received; the probe cannot tell which mailbox.
 change around 09-17) — needs someone with Workspace admin (Erika). **Leads are still
 saved in D1**, but until fixed **nobody at the clinic is getting form emails.**
 Not yet raised with the client.
+
+## DUPLICATE SEO TAGS FIXED — "meta_description_multiple" (2026-09-21)
+
+The SEO audit sheet flagged `meta_description_multiple`. Confirmed live on **every
+page**: TWO `<meta name="description">`, TWO `<link rel="canonical">`, TWO
+`og:title`, TWO `og:description`, TWO `og:image` and TWO `og:type`. Long noted in
+this file as "pre-existing, raise separately" — now fixed.
+
+**Cause:** `Base.astro` hand-wrote the whole SEO block **and** emdash's
+`<EmDashHead page={pageCtx}>` emits the same set from `generateBaseSeoContributions`
+(`node_modules/emdash/src/page/seo-contributions.ts`). Both ran on every page.
+
+**Fix — emdash is now the SINGLE emitter.** The hand-written tags were removed from
+`Base.astro`, and the page context is fed the REAL values it was previously denied:
+- `pageType: ogType` (was hardcoded `"website"`)
+- `image: ogImage` — the **absolute** URL (was the RELATIVE `image` prop, which is
+  why one of the two `og:image` tags was `/assets/...` and useless to social crawlers)
+
+**Still hand-written in `Base.astro` on purpose:** `<title>`, favicons,
+`og:locale` (emdash does not emit it), the `noindex` meta, GSC verification + GA4.
+**Add any new SEO tag via `createPublicPageContext`, NOT in the head** — putting it
+back in the head is exactly what caused this.
+
+**KNOWN TRADE-OFF — `og:type="profile"` is gone on the 3 staff pages.** emdash
+hardcodes `content: page.pageType === "article" ? "article" : "website"`, so
+"profile" collapses to "website". Emitting our own `og:type` would re-create the
+duplicate. `ogType="article"` (the 2 blog posts) still works correctly. The `ogType`
+prop's doc comment records this.
+
+**Verified live** (worker `028facfe-172a-4907-adf2-879e0d51db17`, cache v7): 12
+sampled pages incl. staff, blog, book-appointment and thank-you — **exactly 1 of
+each tag, 0 duplicates**; `og:image` absolute; `/thank-you/` still
+`noindex, follow`; blog `og:type=article`; `astro check` 0 errors; 40 pages built.
+`dist` was checked for duplicates BEFORE deploying (`scratchpad/dupmeta.mjs`,
+`dupcheck2.mjs`).
+
+**NOT verified against the sheet itself** — `docs.google.com/spreadsheets/d/1ArMMBwVSPcLXVdh52GpUaf4wcykxiyzhVTdqgN5qjYs`
+returns 401 to every service account on this box, so the exact row list was never
+read. The defect fixed is the one the tab name describes, confirmed independently
+on the live site.
+
+## SCHEMA MARKUP — BLOCKED, NOT STARTED (2026-09-21)
+
+Vince asked to implement schema from
+`docs.google.com/document/d/16JPwCAoNarLJ2D2WY8x0wd1d--6Y9WGYRYhwz0d8Dr8`.
+**The doc is private — 401** via `/export?format=txt` and 403 via the Docs API for
+all three service accounts on this box (`steve-516@clawdbot-access-485707`,
+`bidview-posting@poised-artwork-485514-h0`, `seo-harness-sheets@shay-seo-harness`).
+The claude.ai Google Drive connector is not authorised in this session.
+
+**Nothing was implemented** — the doc defines the client's required types/fields and
+guessing them on a medical practice is not acceptable. To unblock, either share both
+files with one of the SA emails above, or paste the contents.
+
+Note `Base.astro` already accepts a `schema` prop (rendered as `application/ld+json`)
+and **no page passes one**, so there is a ready insertion point. emdash also ships
+`node_modules/emdash/src/page/jsonld.ts` — check it before hand-rolling.
