@@ -385,9 +385,9 @@ SubdivisionName (still null → keep polygons), VirtualTourURLBranded.
 - **Note for Liz's front-end:** the fields are live in the detail API now; the listing design just needs to read the
   new `toDetail` keys. Array-type MLS values (Flooring/Utilities/LotFeatures/etc.) are stored comma-joined.
 
-### 2026-09-21 — Listings filters: "The View" + "Features" (Liz's request) — PREVIEW, not yet live
-The single Waterfront checkbox became two multi-select groups. **Deployed as a version preview only:**
-`https://1b3638b2-gcm-homes-emdash.cameron-239.workers.dev/listings/` (version `1b3638b2`) — production untouched.
+### 2026-09-21 — Listings filters: "The View" + "Features" (Liz's request) — LIVE
+The single Waterfront checkbox became two multi-select groups. **Live on production**, version `3be56239` (first
+deploy `6c25ef02`, then the matcher corrections below). Preview `1b3638b2` kept as a rollback point.
 - **The View** — the MLS `View` field, 100% populated, 7 values across the whole feed: TreesWoods 73%, Mountains 44%,
   Lake 32%, Panoramic 12%, CreekStream 11%, GolfCourse 6%, SkiArea 5%. Answers the original ask: water view is
   32% of the feed (59 of 187) against a Waterfront flag that only ever matches 10 listings, and every waterfront
@@ -402,15 +402,26 @@ The single Waterfront checkbox became two multi-select groups. **Deployed as a v
   `SecurityFeatures` (53%), `MainLevelBedrooms` (37%), `AssociationAmenities` (23%), `SpaFeatures` (19%), `SpaYN`
   (17%) → columns `laundry_features`, `security_features`, `main_level_beds`, `assoc_amenities`, `spa_features`,
   `spa_yn`. Wired into **both** sync files (`cf-worker/sync/sync.mjs` + `vercel/api/sync.js`). NOT added to the
-  emdash admin mirror — they are filter inputs, not admin display fields.
-- **⚠️ ORDER OF OPERATIONS — the `ALTER TABLE` must land BEFORE the new sync code reaches `main`,** or the sync's
-  INSERT hits columns that don't exist and the run fails (and a failed run leaves the site truncated — see below):
+  emdash admin mirror — they are filter inputs, not admin display fields. Filled by the 20:00 UTC sync: laundry
+  142/187, security 88, main-level beds 69, HOA amenities 44, spa 33 (+29 `SpaYN`).
+- **⚠️ ORDER OF OPERATIONS — the `ALTER TABLE` had to land BEFORE the new sync code reached `main`,** or the sync's
+  INSERT hits columns that don't exist and the run fails (and a failed run leaves the site truncated — see below).
+  **Applied 2026-09-21 ~17:00 UTC, ahead of the merge.** Kept here for a rebuild:
   ```
   cd sites/gcm-homes/emdash && npx wrangler d1 execute gcm-homes-db --remote --command "ALTER TABLE listings ADD COLUMN laundry_features TEXT; ALTER TABLE listings ADD COLUMN security_features TEXT; ALTER TABLE listings ADD COLUMN main_level_beds INTEGER; ALTER TABLE listings ADD COLUMN assoc_amenities TEXT; ALTER TABLE listings ADD COLUMN spa_features TEXT; ALTER TABLE listings ADD COLUMN spa_yn INTEGER;"
   ```
-  Until a sync fills them, the 4 tier-3 options (Laundry in unit, Gated or security, Main-level bedroom, Spa or hot
-  tub) simply don't appear. **Their RESO enum values are unverified** — the matchers in `featuresOf()` are written
-  from the RESO dictionary, not from this feed's actual values, so re-check the counts after the first sync.
+  Until a sync fills them the tier-3 options simply don't appear, which is what made shipping ahead of the sync safe.
+- **The tier-3 matchers were wrong on first write, and checking them against real values caught it.** They were
+  written from the RESO dictionary; this feed's vocabulary differs. Two corrections after the first sync filled them:
+  - **Laundry in unit** listed the values that count and missed `InHall` (18) and `InBathroom` (6) — 113 instead of
+    134. Rewritten to ask the opposite question: the field says where the laundry *is*, and only `CommonArea` (6) and
+    `None` (2) mean "not in the home", so everything else counts. Enumerate the exclusions, not the inclusions.
+  - **Gated or security** matched a bare `/Alarm/`, so `FireAlarm` read as security — 44 instead of 34. Life-safety
+    kit is now dropped before the test (`SmokeDetectors` alone is 43 of the 88 listings that fill this field, plus
+    sprinklers, `FireAlarm`, `SecurityLights`). What genuinely remains: `SecuritySystem`, `ClosedCircuitCameras`,
+    and `ControlledAccess` — which arrives under the HOA's amenities, not under security.
+  - **Still on the table:** `assoc_amenities` also carries `BeachRights`, `Pier`, `Pool`, `TennisCourts`,
+    `Clubhouse`, `FitnessCenter`, `Sauna`/`SpaHotTub`. `BeachRights` and `Pier` would make strong Tahoe filters.
 - **Filter row breakpoint 1400 → 1500.** Two pills cost the row ~220px. A tightened middle band
   (`@media (max-width: 1700px)`: padding 28, gap 7, smaller pill padding) buys most of it back; measured worst case
   (every select on its longest option + Clear all showing) the row needs 1,477px, so a 1512px laptop still keeps the
@@ -419,7 +430,11 @@ The single Waterfront checkbox became two multi-select groups. **Deployed as a v
 - **Drive-by fix:** `.loadmore` sets `display:flex`, which beat the `[hidden]` attribute, so "Load 0 more listings /
   Showing 0 of 0" showed under every short result set (reproduced on production at `/listings/?beds=4`). One line:
   `.loadmore[hidden] { display: none; }`.
-- **Verified in Chrome** (headless, local harness + the deployed preview): OR/AND semantics, per-option counts match
+- **Live counts (187 active, 2026-09-21):** The View — TreesWoods 137, Mountains 82, Lake 58, Panoramic 23,
+  CreekStream 20, GolfCourse 11, SkiArea 9. Features — laundry 134, level 110, garage 105, tour 102, hoa 102,
+  nohoa 85, garage2 84, mainbed 65, wooded 45, ac 42, spa 34, gated 34, single 31, greenbelt 25, acre 23,
+  rvboat 17, culdesac 13, newbuild 13, waterfront 10, pool 6, ev 5.
+- **Verified in Chrome** (headless, local harness + the deployed site): OR/AND semantics, per-option counts match
   the result count, URL round-trip (`?views=…&feats=…`), old `?waterfront=1` links still work (rewritten to
   `?feats=waterfront`), Clear all, the accordion in the phone sheet (both collapsed by default — Features is
   reachable without scrolling past the view options), no console errors, no horizontal overflow at 390px or 1501px.
