@@ -1,0 +1,116 @@
+---
+// A client story as a section of its own — the reusable story block, in the
+// three styles Liz picked from the design canvas (2026-09-22):
+//
+//   band   (default) — orange stripe, the story centred in large serif type.
+//                      Works for any story; it only needs the text.
+//   number           — orange, a big figure left and the story right. Only for
+//                      a story with real numbers behind it; no pull quote.
+//   photo            — a full-height photo left with an orange card over it.
+//                      For a story that has a photo we can use.
+//
+// Orange (#F7945B) takes navy text only: white on it fails contrast.
+//
+// Content stays on the page's own CMS entry (story text, eyebrow, stats,
+// photo); the page picks the style. `stats` is the raw "value | label" text,
+// one per line — the first line is the big figure in the `number` style and
+// the card's figure in the `photo` style. With no stats, `number` falls back
+// to `band` and `photo` closes the card with the attribution.
+interface Props {
+	variant?: "band" | "number" | "photo";
+	body: string;
+	eyebrow?: string;
+	attribution?: string;
+	stats?: string;
+	photo?: string | null;
+	photoAlt?: string;
+	/** Screen label for the design-review overlay. */
+	label?: string;
+	/** Emdash inline-edit attributes, one per editable field. */
+	editBody?: Record<string, any>;
+	editEyebrow?: Record<string, any>;
+	editStats?: Record<string, any>;
+}
+const {
+	body,
+	eyebrow = "A Seller's Story",
+	attribution = "Grant C. Meyer",
+	stats = "",
+	photo = null,
+	photoAlt = "",
+	label = "Story",
+	editBody = {},
+	editEyebrow = {},
+	editStats = {},
+} = Astro.props;
+
+const parsed = String(stats ?? "")
+	.split(/\n+/)
+	.map((line) => line.trim())
+	.filter(Boolean)
+	.map((line) => {
+		const [value, ...rest] = line.split("|");
+		return { value: value.trim(), label: rest.join("|").trim() };
+	});
+const [lead, ...more] = parsed;
+
+let variant = Astro.props.variant ?? "band";
+if (variant === "number" && !lead) variant = "band";
+if (variant === "photo" && !photo) variant = "band";
+---
+
+{variant === "band" && (
+	<section class="story story--band" data-screen-label={label}>
+		<div class="container story__band">
+			<div class="eyebrow story__eyebrow" {...editEyebrow}>{eyebrow}</div>
+			<p class="story__text story__text--lg" {...editBody}>{body}</p>
+			<div class="story__rule" aria-hidden="true"></div>
+			<div class="eyebrow story__eyebrow">{attribution}</div>
+		</div>
+	</section>
+)}
+
+{variant === "number" && (
+	<section class="story story--number" data-screen-label={label}>
+		<div class="container story__number">
+			<div class="story__figures" {...editStats}>
+				<div class="eyebrow story__eyebrow" {...editEyebrow}>{eyebrow}</div>
+				<div class="story__big">{lead.value}</div>
+				{lead.label && <div class="story__big-label">{lead.label}</div>}
+				{more.length > 0 && (
+					<div class="story__stats">
+						{more.map((s) => (
+							<div class="story__stat">
+								<div class="story__stat-value">{s.value}</div>
+								<div class="story__stat-label">{s.label}</div>
+							</div>
+						))}
+					</div>
+				)}
+			</div>
+			<p class="story__text story__text--sans" {...editBody}>{body}</p>
+		</div>
+	</section>
+)}
+
+{variant === "photo" && (
+	<section class="story story--photo" data-screen-label={label}>
+		<div class="story__photo" role="img" aria-label={photoAlt || undefined} style={`background-image:url(${photo})`}></div>
+		<div class="container story__photo-wrap">
+			<div class="story__card">
+				<div class="eyebrow story__eyebrow" {...editEyebrow}>{eyebrow}</div>
+				<p class="story__text" {...editBody}>{body}</p>
+				{lead ? (
+					<div class="story__card-foot" {...editStats}>
+						<div class="story__card-value">{lead.value}</div>
+						<div class="story__card-label">{lead.label}</div>
+					</div>
+				) : (
+					<div class="story__card-foot">
+						<div class="eyebrow story__eyebrow">{attribution}</div>
+					</div>
+				)}
+			</div>
+		</div>
+	</section>
+)}

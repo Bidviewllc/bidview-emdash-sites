@@ -16,21 +16,6 @@
    photo/copy), the same as the /buyers/ Stakes. This is only the gap. */
 .row2 { margin-top: 96px; }
 
-/* ---- Story highlight ---------------------------------------------------- */
-/* A client story set off from the body copy: the orange left rule of a pull
-   quote, but upright body type, so it reads as the proof rather than as
-   Grant speaking. The light-section cousin of .net__story. Used in Seasonal
-   Timing (beside the quote) and Honest Advice (above it). */
-.story-hl,
-.honesty__body .story-hl {
-	font-size: 18px;
-	line-height: 1.78;
-	color: var(--navy);
-	border-left: 3px solid var(--orange);
-	padding: 4px 0 4px 28px;
-	margin: 0;
-}
-
 /* ---- Seasonal timing ---------------------------------------------------- */
 /* One row, two columns: head, copy and chart on the left (3fr); Grant's quote
    over the condo-record story on the right (2fr). */
@@ -257,21 +242,13 @@
 .honesty__head { text-align: center; }
 .honesty__head .eyebrow { margin-bottom: 16px; }
 .honesty__body { display: flex; flex-direction: column; gap: 26px; margin-top: 34px; }
+.honesty__body .pullquote { margin: 6px 0 0; }
 .honesty__body p {
 	font-size: 17px;
 	line-height: 1.8;
 	color: var(--body);
 }
-/* The story and the quote sit side by side, wider than the text column. */
-.honesty__pair {
-	max-width: 1080px;
-	margin: 48px auto 0;
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	gap: 64px;
-	align-items: center;
-}
-.honesty__pair .pullquote { margin: 0; }
+
 
 /* ---- Home valuation ----------------------------------------------------- */
 /* Reuses the site's .invite two-panel shell (navy left, form right) so the
@@ -302,10 +279,8 @@
 	.timing__main { gap: 32px; }
 	.timing__side { gap: 32px; }
 	.guide.mkt__intro { grid-template-columns: 1fr; gap: 48px; }
-	.honesty__pair { grid-template-columns: 1fr; gap: 32px; margin-top: 36px; }
 	.timing__copy p { font-size: 16px; }
 	.row2 { margin-top: 64px; }
-	.story-hl, .honesty__body .story-hl { font-size: 17px; }
 
 	.season { --season-gutter: 96px; padding: 28px 24px 24px; }
 
@@ -321,10 +296,8 @@
 @media (max-width: 640px) {
 	.timing { gap: 36px; }
 	.timing__main, .timing__side { gap: 28px; }
-	.honesty__pair { gap: 28px; margin-top: 28px; }
 	.timing__copy p { font-size: 15px; }
 	.row2 { margin-top: 48px; }
-	.story-hl, .honesty__body .story-hl { font-size: 16px; padding-left: 20px; }
 
 	/* Too narrow for a label gutter — collapse it to zero so the labels stack
 	   above their own lane. The bars stay on the same month columns because

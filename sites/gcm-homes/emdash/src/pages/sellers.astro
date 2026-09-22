@@ -5,10 +5,13 @@
 //
 //   01 Hero            .hero              — same pattern as the home/About hero
 //   02 The Pricing Read .guide.split--rev — two rows: copy/photo, then photo/copy
-//   03 Seasonal Timing .timing            — one 3fr/2fr row: copy + chart | quote + story
+//   03 Seasonal Timing .timing            — one 3fr/2fr row: copy + chart | quote
+//      Story            <StoryBlock photo>  — the condo record
 //   04 The Marketing   .mkt__*            — three rows: copy/photo, film + reach, package
 //   05 The Network     .net.net--cols     — dark Statement block, two columns
-//   06 Honest Advice   .honesty           — narrow column, then story | quote
+//      Story            <StoryBlock band>   — the hydronic boiler
+//   06 Honest Advice   .honesty           — narrow column with the quote
+//      Story            <StoryBlock number> — the inherited house
 //   07 The Process     .process           — editorial column (styles.css)
 //   08 Home Valuation  .invite            — the site's contact shell, reused
 //
@@ -33,6 +36,7 @@ import InquiryFormScript from "../components/InquiryFormScript.astro";
 import { getEmDashEntry } from "emdash";
 import { imageUrl } from "../lib/media";
 import { randomHomePhotos } from "../lib/listings";
+import StoryBlock from "../components/StoryBlock.astro";
 
 let entry: any = null;
 try {
@@ -56,9 +60,20 @@ const filmImage = imageUrl(d.film_image) ?? "/assets/gallery-1.jpg";
 // The Pricing Read's second row and the Marketing intro run real houses from
 // the MLS feed, picked at random (two different listings), the same as the
 // /buyers/ Stakes second row. A CMS image, if one is ever set, wins.
-const [randomA, randomB] = await randomHomePhotos(2);
+const [randomA, randomB, randomC] = await randomHomePhotos(3);
 const pricingImage2 = imageUrl(d.pricing_image2) ?? randomA ?? "/assets/gallery-1.jpg";
 const mktImage = imageUrl(d.mkt_image) ?? randomB ?? "/assets/listing-hero-exterior.jpg";
+
+// The three stories each run as their own <StoryBlock> section, right after
+// the section they belong to. The story text stays in its original field
+// (timing_p3, network_story, honesty_p2); *_story_stats is "value | label",
+// one per line (see StoryBlock.astro). The stats fallbacks only show before
+// the fields exist in the CMS.
+const timingStoryImage = imageUrl(d.timing_story_image) ?? randomC ?? "/assets/gallery-1.jpg";
+const timingStoryStats = d.timing_story_stats ?? "$715K | complex record, set in early spring";
+const honestyStoryStats =
+	d.honesty_story_stats ??
+	"$550,000 | more than the off-market offer, after commission.\n46% | more than the offer\n3% | the fee they hoped to save";
 const agentPhoto = imageUrl(d.agent_photo) ?? "/assets/grant.jpg";
 
 // The eight-month chart (Mar–Oct). Buyers are here from April; most listings do
@@ -161,8 +176,8 @@ const successMessage = d.val_success ?? "Thanks — Grant will be in touch with 
 	</section>
 
 	{/* 03 SEASONAL TIMING — one row, two columns (3fr / 2fr): the head, copy and
-	     eight-month chart on the left; Grant's quote over the condo-record story
-	     on the right. */}
+	     eight-month chart on the left; Grant's quote on the right. The
+	     condo-record story follows as its own section. */}
 	<section class="section section--cream" data-screen-label="03 Seasonal Timing">
 		<div class="container timing">
 			<div class="timing__main">
@@ -238,12 +253,23 @@ const successMessage = d.val_success ?? "Thanks — Grant will be in touch with 
 					</div>
 					<div class="eyebrow pullquote__a">— GRANT C. MEYER</div>
 				</div>
-				<p class="story-hl" {...(e.timing_p3 ?? {})}>
-					{d.timing_p3 ?? "This is a secondary-home market, so days on market run longer than a metro area. A well-priced home can still take a happy season or more to find its buyer. Getting the timing and the price right at the start is what shortens that."}
-				</p>
 			</div>
 		</div>
 	</section>
+
+	{/* STORY — the condo record, photo style. */}
+	<StoryBlock
+		variant="photo"
+		label="Story: Condo Record"
+		eyebrow={d.timing_story_eyebrow ?? "A Seller's Story"}
+		body={d.timing_p3 ?? "This is a secondary-home market, so days on market run longer than a metro area. A well-priced home can still take a happy season or more to find its buyer. Getting the timing and the price right at the start is what shortens that."}
+		stats={timingStoryStats}
+		photo={timingStoryImage}
+		photoAlt="A home for sale in Incline Village"
+		editBody={e.timing_p3 ?? {}}
+		editEyebrow={e.timing_story_eyebrow ?? {}}
+		editStats={e.timing_story_stats ?? {}}
+	/>
 
 	{/* 04 THE MARKETING — three rows: lead copy with a photo (the photo column
 	     matches the reach panel below it), the film/reach feature, then the
@@ -293,7 +319,8 @@ const successMessage = d.val_success ?? "Thanks — Grant will be in touch with 
 	</section>
 
 	{/* 05 THE NETWORK — the dark Statement block, two columns (the same layout
-	     as /buyers/): the statement left, Grant's quote over the story right. */}
+	     as /buyers/): the statement left, Grant's quote right. The boiler story
+	     follows as its own section. */}
 	<section class="section section--dark on-dark" data-screen-label="05 The Network">
 		<div class="container net-cols">
 			<div class="net net--cols">
@@ -317,15 +344,22 @@ const successMessage = d.val_success ?? "Thanks — Grant will be in touch with 
 					</div>
 					<div class="eyebrow pullquote__a">— GRANT C. MEYER</div>
 				</div>
-				<p class="net__story" {...(e.network_story ?? {})}>
-					{d.network_story ?? "He has earned that response by sending those trades business for years and treating them right, so they pick up when he calls. One recent deal needed a hydronic-heating specialist most plumbers cannot touch; Grant had the right person on it."}
-				</p>
 			</div>
 		</div>
 	</section>
 
-	{/* 06 HONEST ADVICE — a narrow editorial column (head + lead paragraph),
-	     then a wider two-column row: the inherited-house story | Grant's quote. */}
+	{/* STORY — the hydronic boiler, band style (the default). */}
+	<StoryBlock
+		label="Story: Hydronic Boiler"
+		eyebrow={d.network_story_eyebrow ?? "A Seller's Story"}
+		body={d.network_story ?? "He has earned that response by sending those trades business for years and treating them right, so they pick up when he calls. One recent deal needed a hydronic-heating specialist most plumbers cannot touch; Grant had the right person on it."}
+		editBody={e.network_story ?? {}}
+		editEyebrow={e.network_story_eyebrow ?? {}}
+	/>
+
+	{/* 06 HONEST ADVICE — a narrow editorial column: the head, the lead
+	     paragraph and Grant's quote. The inherited-house story follows as its
+	     own section. */}
 	<section class="section section--cream" data-screen-label="06 Honest Advice">
 		<div class="container">
 			<div class="honesty">
@@ -339,21 +373,28 @@ const successMessage = d.val_success ?? "Thanks — Grant will be in touch with 
 					<p {...(e.honesty_p1 ?? {})}>
 						{d.honesty_p1 ?? "Some agents will tell a seller whatever it takes to win the listing — a price they cannot get, a timeline that will not hold. Grant runs the opposite way. His business is built on repeat clients and referrals; one has done 23 transactions with him over the years. That only happens when the advice is honest the first time."}
 					</p>
-				</div>
-			</div>
-			<div class="honesty__pair">
-				<p class="story-hl" {...(e.honesty_p2 ?? {})}>
-					{d.honesty_p2 ?? "For most sellers here, the home is not their only one and they are not moving across the country to start a job, so there is room to be strategic about timing and price instead of forced into a fire sale. Grant will give a seller his real read — what he expects, where the home might surprise on the upside, and where it might not — and then let the seller drive."}
-				</p>
-				<div class="pullquote">
-					<div class="pullquote__q" {...(e.honesty_quote ?? {})}>
-						"{d.honesty_quote ?? "All I can ask is that my clients listen to my advice. At the end of the day, it's their decision — they get to drive the ship."}"
+					<div class="pullquote">
+						<div class="pullquote__q" {...(e.honesty_quote ?? {})}>
+							"{d.honesty_quote ?? "All I can ask is that my clients listen to my advice. At the end of the day, it's their decision — they get to drive the ship."}"
+						</div>
+						<div class="eyebrow pullquote__a">— GRANT C. MEYER</div>
 					</div>
-					<div class="eyebrow pullquote__a">— GRANT C. MEYER</div>
 				</div>
 			</div>
 		</div>
 	</section>
+
+	{/* STORY — the inherited house, number style (no pull quote in it). */}
+	<StoryBlock
+		variant="number"
+		label="Story: Inherited House"
+		eyebrow={d.honesty_story_eyebrow ?? "A Seller's Story"}
+		body={d.honesty_p2 ?? "For most sellers here, the home is not their only one and they are not moving across the country to start a job, so there is room to be strategic about timing and price instead of forced into a fire sale. Grant will give a seller his real read — what he expects, where the home might surprise on the upside, and where it might not — and then let the seller drive."}
+		stats={honestyStoryStats}
+		editBody={e.honesty_p2 ?? {}}
+		editEyebrow={e.honesty_story_eyebrow ?? {}}
+		editStats={e.honesty_story_stats ?? {}}
+	/>
 
 	{/* 07 THE PROCESS — off the page until Grant's own account of the steps is
 	     in the CMS. See the note on `processBody` above. */}

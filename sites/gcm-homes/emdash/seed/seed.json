@@ -1756,7 +1756,22 @@
 				},
 				{
 					"slug": "timing_p3",
-					"label": "Seasonal timing — story (second row)",
+					"label": "Story (condo, photo style) — text",
+					"type": "text"
+				},
+				{
+					"slug": "timing_story_eyebrow",
+					"label": "Story (condo, photo style) — eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "timing_story_image",
+					"label": "Story (condo, photo style) — photo (blank = a random home from the listings feed)",
+					"type": "image"
+				},
+				{
+					"slug": "timing_story_stats",
+					"label": "Story (condo, photo style) — figure: value | label",
 					"type": "text"
 				},
 				{
@@ -1916,8 +1931,13 @@
 				},
 				{
 					"slug": "network_story",
-					"label": "Network — proof story",
+					"label": "Story (boiler, band style) — text",
 					"type": "text"
+				},
+				{
+					"slug": "network_story_eyebrow",
+					"label": "Story (boiler, band style) — eyebrow",
+					"type": "string"
 				},
 				{
 					"slug": "network_quote",
@@ -1946,7 +1966,17 @@
 				},
 				{
 					"slug": "honesty_p2",
-					"label": "Honest advice — story",
+					"label": "Story (inherited house, number style) — text",
+					"type": "text"
+				},
+				{
+					"slug": "honesty_story_eyebrow",
+					"label": "Story (inherited house, number style) — eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "honesty_story_stats",
+					"label": "Story (inherited house, number style) — figures, one per line: value | label (first = the big one)",
 					"type": "text"
 				},
 				{
@@ -2899,7 +2929,12 @@
 					"incl8_t": "Coldwell Banker Reach",
 					"incl8_d": "Local MLS plus the national and international Coldwell Banker Global Luxury network.",
 					"incl_heading": "The Grant C. Meyer Homes Seller Package",
-					"pricing_p2b": "The county records add another wrinkle. Square footage was measured loosely here for decades, so I get an appraisal measurement on almost every listing and market the real number."
+					"pricing_p2b": "The county records add another wrinkle. Square footage was measured loosely here for decades, so I get an appraisal measurement on almost every listing and market the real number.",
+					"timing_story_eyebrow": "A Seller's Story",
+					"timing_story_stats": "$715K | complex record, set in early spring",
+					"network_story_eyebrow": "A Seller's Story",
+					"honesty_story_eyebrow": "A Seller's Story",
+					"honesty_story_stats": "$550,000 | more than the off-market offer, after commission.\n46% | more than the offer\n3% | the fee they hoped to save"
 				}
 			}
 		]
