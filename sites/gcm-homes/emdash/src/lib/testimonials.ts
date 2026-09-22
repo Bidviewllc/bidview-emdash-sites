@@ -10,20 +10,10 @@ export interface Testimonial {
 	loc: string;
 }
 
-export const TESTIMONIALS: Testimonial[] = [
-	{
-		q: "Grant's knowledge of Incline Village is encyclopedic. He knew about our dream home before it even hit the market, allowing us to secure it in a cash-only bidding war.",
-		name: "The Harrison Family",
-		loc: "LAKESHORE BOULEVARD",
-	},
-	{
-		q: "Selling a property we had owned for 40 years was emotional. Grant handled the transition with such dignity and achieved a price that far exceeded our expectations.",
-		name: "Dr. Robert Chen",
-		loc: "TYNER WAY",
-	},
-	{
-		q: "Navigating the TRPA requirements and water rights was daunting until Grant stepped in. His legal background and local connections saved us months of delay.",
-		name: "Sarah & James Miller",
-		loc: "CRYSTAL BAY",
-	},
-];
+// 2026-09-22: the three design quotes (attributed to invented people) were
+// removed after the content review call. Grant approved pulling his REAL reviews
+// from Yelp (43), Realtor.com and Zillow (40-60 each) and Google (~7). Add them
+// here as { q, name, loc } and both grids come back. While the list is empty the
+// home page keeps its "Clients Who Come Back" copy and the About page skips the
+// section entirely.
+export const TESTIMONIALS: Testimonial[] = [];

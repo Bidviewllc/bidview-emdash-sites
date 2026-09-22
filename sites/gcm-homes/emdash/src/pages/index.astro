@@ -246,6 +246,7 @@ const tagOf = (l: any) =>
 					{d.proof_body ?? "From first-time Tahoe buyers to clients who've completed 23 transactions together, the proof is in the relationships, not the brochures."}
 				</p>
 			</div>
+			{TESTIMONIALS.length > 0 && (
 			<div class="testimonials">
 				{TESTIMONIALS.map((t) => (
 					<div class="testimonial">
@@ -258,6 +259,7 @@ const tagOf = (l: any) =>
 					</div>
 				))}
 			</div>
+			)}
 		</div>
 	</section>
 

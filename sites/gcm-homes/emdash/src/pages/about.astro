@@ -94,7 +94,7 @@ const STORY_FALLBACKS = [
 
 <GcmLayout
 	title="About Grant C. Meyer — Grant C. Meyer Homes"
-	description="Thirty-five years in Incline Village, seventeen as a full-time realtor. Why Grant's clients get a neighbor, not just an agent."
+	description="Incline Village since 1992, full-time realtor since 2009, more property sold here than any other agent since 2019. Meet Grant C. Meyer."
 	content={entry ? { collection: "about_page", id: entry.data.id, slug: "about" } : undefined}
 >
 	<link rel="stylesheet" href="/about.css" />
@@ -261,6 +261,7 @@ const STORY_FALLBACKS = [
 	     Still the design's template copy: Liz is checking with Vince how the real
 	     reviews get pulled in. Shared from src/lib/testimonials.ts so there is one
 	     place to swap them. */}
+	{TESTIMONIALS.length > 0 && (
 	<section class="section section--beige" data-screen-label="07 Social Proof">
 		<div class="container">
 			<div class="section-title">
@@ -281,6 +282,7 @@ const STORY_FALLBACKS = [
 			</div>
 		</div>
 	</section>
+	)}
 
 	{/* 08 CONTACT — the shared site-wide section, anchored so the two buttons above
 	     land on it. */}
