@@ -1092,7 +1092,8 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   white-space: nowrap;
 }
 .card__tag { background: rgba(21,36,59,0.92); backdrop-filter: blur(4px); }
-.card__wf { background: var(--orange); }
+/* The orange is light enough that white type on it fails contrast; navy reads. */
+.card__wf { background: var(--orange); color: var(--navy); }
 .card__count {
   position: absolute;
   bottom: 12px; right: 12px;
@@ -1388,18 +1389,27 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
 .listing-hero__bottom {
   position: relative;
   width: 100%;
-  padding: 200px 64px 64px;
+  padding: 200px 64px 32px;
   color: var(--white);
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
   gap: 48px;
 }
+ /* Same pill as .card__wf on the listing cards, so the neighbourhood reads as
+   the same kind of label in both places — only bigger: it stays at 12px where
+   the card badge is 9px. */
 .listing-hero__crumb {
+  display: inline-block;
+  align-self: flex-start;
+  background: var(--orange);
+  color: var(--navy);
   font-size: 12px;
-  letter-spacing: 0.24em;
+  letter-spacing: 0.13em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.85);
+  font-weight: 700;
+  padding: 5px 10px;
+  border-radius: 2px;
   margin-bottom: 18px;
 }
 .listing-hero__title {
@@ -1429,7 +1439,9 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
 }
 .listing-hero__share {
   position: absolute;
-  top: 132px;
+  /* Equal inset top and right. The hero already starts below the fixed nav
+     (body has padding-top), so this is measured from the top of the photo. */
+  top: 64px;
   right: 64px;
   display: flex;
   gap: 12px;
@@ -2318,7 +2330,7 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
     linear-gradient(180deg, rgba(0,0,0,0) 45%, rgba(0,0,0,0.55) 78%, rgba(0,0,0,0.85) 100%);
 }
 .listing-hero--fl .listing-hero__bottom {
-  padding: 220px 32px 80px;
+  padding: 220px 32px 40px;
   align-items: flex-end;
   gap: 80px;
 }
@@ -2332,7 +2344,7 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
 }
 .listing-hero--fl .listing-hero__crumb {
   font-size: 12px;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.13em;
   margin-bottom: 0;
   margin-top: 10px;
   order: 2;

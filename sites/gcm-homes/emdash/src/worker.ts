@@ -25,7 +25,7 @@ export { PluginBridge };
 // most sharply the community accordion, which moved from .cg-acc to the
 // shared .acc. Cached v2 HTML against the new stylesheet would render that
 // section unstyled, so this has to move with the deploy.
-const CACHE_VERSION = "v3";
+const CACHE_VERSION = "v4";
 const CACHEABLE_TYPE = /^(?:text\/html|application\/xml|text\/xml|text\/plain)/i;
 const ADMIN_COOKIE = /emdash[-_](session|edit-mode|admin)/i;
 
