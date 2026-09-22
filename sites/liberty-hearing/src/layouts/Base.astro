@@ -5,7 +5,7 @@ import { createPublicPageContext } from "emdash/page";
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import { SITEWIDE_SCHEMA, schemaForPath } from "../lib/page-schema";
-import { articleMetaForPath } from "../lib/article-meta";
+import { articleMetaForPath, blogPostingForPath } from "../lib/article-meta";
 
 interface Props {
 	/** <title> text. " | Liberty Hearing Center" is appended unless already present. */
@@ -60,6 +60,9 @@ const canonical =
 	canonicalOverride ?? new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin).href;
 const ogImage = image ? new URL(image, Astro.site ?? Astro.url.origin).href : null;
 
+// Declared before the page context: `pageType` below depends on it.
+const blogPosting = blogPostingForPath(Astro.url.pathname);
+
 const pageCtx = createPublicPageContext({
 	Astro,
 	kind: content ? "content" : "custom",
@@ -68,7 +71,10 @@ const pageCtx = createPublicPageContext({
 	// per-page values: `ogType` (pages set "profile"/"article") and the ABSOLUTE
 	// image URL — emdash was previously handed a hardcoded "website" and a
 	// RELATIVE image, which is why the duplicate pair disagreed.
-	pageType: ogType,
+	// `pageType: "website"` on the two blog posts SUPPRESSES emdash's own
+	// BlogPosting so ours (with author.url + publisher) is the only one. See the
+	// long note in src/lib/article-meta.ts — it costs og:type="article" there.
+	pageType: blogPosting ? "website" : ogType,
 	title: fullTitle,
 	pageTitle: pageTitle ?? title,
 	description,
@@ -91,7 +97,12 @@ const pageCtx = createPublicPageContext({
  * mapped by route in src/lib/page-schema.ts, plus anything a page passes via the
  * `schema` prop. All copied verbatim from the client's schema document.
  */
-const schemaBlocks: unknown[] = [SITEWIDE_SCHEMA, ...schemaForPath(Astro.url.pathname), ...(schema ? [schema] : [])];
+const schemaBlocks: unknown[] = [
+	SITEWIDE_SCHEMA,
+	...schemaForPath(Astro.url.pathname),
+	...(blogPosting ? [blogPosting] : []),
+	...(schema ? [schema] : []),
+];
 ---
 
 <!doctype html>

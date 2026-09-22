@@ -41,3 +41,77 @@ export function articleMetaForPath(pathname: string): ArticleMeta | undefined {
 	const p = pathname.endsWith("/") ? pathname : `${pathname}/`;
 	return ARTICLE_META[p];
 }
+
+/**
+ * Hand-written BlogPosting for the two posts (2026-09-22).
+ *
+ * WHY THIS REPLACED emdash's auto block: Google's Rich Results Test warned
+ * *author: Missing field "url" (optional)*, and emdash's builder emits the author
+ * as `{"@type":"Person","name":…}` with NO url field and no way to add one. It
+ * also cannot emit an Organization `publisher` without `siteName`, which would
+ * re-create the duplicate bare `WebSite` block.
+ *
+ * Base.astro therefore passes `pageType: "website"` for these two routes, which is
+ * the ONLY way to stop emdash emitting its own BlogPosting
+ * (`seo-contributions.ts` emits it whenever pageType === "article"). **Side effect,
+ * accepted deliberately: `og:type` on these two posts is now "website" instead of
+ * "article".** Emitting our own og:type as well would duplicate the tag.
+ *
+ * `author.url` points at the real staff page, and `publisher` references the
+ * `#organization` node from the sitewide @graph by @id.
+ *
+ * STILL NO DATES — no publication date exists in the posts, the page sources, or
+ * the client's blog doc (all three checked 2026-09-22). Add `datePublished` /
+ * `dateModified` (ISO 8601) here when the real dates are supplied.
+ */
+const ORG = "https://libertyhearingcentertx.com/#organization";
+const AUTHOR = {
+	"@type": "Person",
+	name: "Dr. Chris Duhon, AuD",
+	url: "https://libertyhearingcentertx.com/dr-chris-duhon/",
+};
+
+export const BLOG_POSTING: Record<string, Record<string, unknown>> = {
+	"/best-way-to-clean-ears/": {
+		"@context": "https://schema.org",
+		"@type": "BlogPosting",
+		"@id": "https://libertyhearingcentertx.com/best-way-to-clean-ears/#blogposting",
+		headline: "Best Way to Clean Ears: What Actually Works",
+		description:
+			"Cotton swabs push wax deeper. Learn the best way to clean ears safely, and when it's time to see an audiologist. Liberty Hearing Center, TX.",
+		image: "https://libertyhearingcentertx.com/assets/hearing-test.webp",
+		url: "https://libertyhearingcentertx.com/best-way-to-clean-ears/",
+		mainEntityOfPage: {
+			"@type": "WebPage",
+			"@id": "https://libertyhearingcentertx.com/best-way-to-clean-ears/",
+		},
+		author: AUTHOR,
+		publisher: { "@id": ORG },
+		inLanguage: "en-US",
+	},
+	"/hearing-aids-for-tinnitus/": {
+		"@context": "https://schema.org",
+		"@type": "BlogPosting",
+		"@id": "https://libertyhearingcentertx.com/hearing-aids-for-tinnitus/#blogposting",
+		// Clean headline: the page's own <title> carries a brand suffix, which emdash
+		// was copying into `headline`. The other post's headline had none.
+		headline: "Hearing Aids for Tinnitus: Quiet the Ringing, Not the Room",
+		description:
+			"Struggling with tinnitus? Liberty Hearing Center in College Station, TX fits hearing aids for tinnitus relief. Book your consultation today.",
+		image: "https://libertyhearingcentertx.com/assets/hearing-aids.webp",
+		url: "https://libertyhearingcentertx.com/hearing-aids-for-tinnitus/",
+		mainEntityOfPage: {
+			"@type": "WebPage",
+			"@id": "https://libertyhearingcentertx.com/hearing-aids-for-tinnitus/",
+		},
+		author: AUTHOR,
+		publisher: { "@id": ORG },
+		inLanguage: "en-US",
+	},
+};
+
+/** Our BlogPosting for a pathname, tolerant of a missing trailing slash. */
+export function blogPostingForPath(pathname: string): Record<string, unknown> | undefined {
+	const p = pathname.endsWith("/") ? pathname : `${pathname}/`;
+	return BLOG_POSTING[p];
+}

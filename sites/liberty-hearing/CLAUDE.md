@@ -1536,3 +1536,42 @@ flow straight through, no other change needed.
   Liberty Hearing Center, TX"* — emdash uses the page's own title, and that page's
   title prop already carries the brand suffix. The other post's headline is clean.
   Cosmetic; can be normalised by passing a cleaner `pageTitle`.
+
+### BlogPosting rebuilt to clear Google's author warning (2026-09-22)
+
+Google RRT warned **`author: Missing field "url" (optional)`**. emdash's builder
+emits `author` as `{"@type":"Person","name":…}` with **no url field and no way to
+add one**, so the block had to come from our own code.
+
+`src/lib/article-meta.ts` now exports **`BLOG_POSTING`** — a full hand-written
+BlogPosting per post, rendered by `Base.astro`. It adds what emdash could not:
+`author.url` -> `/dr-chris-duhon/`, `publisher` -> `{"@id": …#organization}`
+(referencing the sitewide graph), `@id`, `inLanguage`, and a **clean `headline`**
+for the tinnitus post (emdash had been copying the page title *with* its brand
+suffix; the other post's headline had none).
+
+**To stop TWO BlogPosting blocks, `Base.astro` passes `pageType: "website"` for
+these two routes** — that is the only lever that stops emdash emitting its own
+(`seo-contributions.ts` emits whenever pageType === "article").
+**Accepted side effect: `og:type` on the two posts is now `"website"`, not
+`"article"`.** Emitting our own og:type as well would duplicate the tag. Every page
+still has exactly ONE og:type (checked across all 40 built pages).
+
+**Verified — Google Rich Results Test, after deploy** (worker
+`48b19194-2e38-40f3-b077-e743b2074a35`, cache v11):
+- `/best-way-to-clean-ears/` — **3 valid items, 0 warnings, 0 invalid**:
+  Articles + Local businesses + Organization.
+- `/hearing-aids-for-tinnitus/` — **4 valid items, 0 warnings, 0 invalid**:
+  Articles + **Breadcrumbs** + Local businesses + Organization (screenshot
+  `scratchpad/rrtblog-_hearing_aids_for_tinnitus_.png`).
+- **"Articles" only became a detected rich-result type after this change** — the
+  thin auto block was not eligible. This also gives the first live confirmation
+  that the new **Breadcrumbs** markup validates in Google's tool.
+
+**GOTCHA:** pass route arguments to these scripts with **`MSYS_NO_PATHCONV=1`** —
+Git Bash rewrote `/best-way-to-clean-ears/` into `C:/Program Files/Git/...` and the
+test silently ran against a bogus URL.
+
+Dates are STILL absent (no date exists in the posts, the sources, or the client's
+blog doc). Drop `datePublished`/`dateModified` into the `BLOG_POSTING` entries when
+real dates arrive.
