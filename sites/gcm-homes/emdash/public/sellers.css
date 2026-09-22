@@ -11,6 +11,26 @@
    match this one, so the deeper gradient is now shared rather than page-scoped —
    see "Deep hero veil" there. Both /buyers/ and /sellers/ carry the class. */
 
+/* ---- Second rows --------------------------------------------------------- */
+/* The Pricing Read runs as two .guide rows in one section (copy/photo, then
+   photo/copy), the same as the /buyers/ Stakes. This is only the gap. */
+.row2 { margin-top: 96px; }
+
+/* ---- Story highlight ---------------------------------------------------- */
+/* A client story set off from the body copy: the orange left rule of a pull
+   quote, but upright body type, so it reads as the proof rather than as
+   Grant speaking. The light-section cousin of .net__story. Used in Seasonal
+   Timing (beside the quote) and Honest Advice (above it). */
+.story-hl,
+.honesty__body .story-hl {
+	font-size: 18px;
+	line-height: 1.78;
+	color: var(--navy);
+	border-left: 3px solid var(--orange);
+	padding: 4px 0 4px 28px;
+	margin: 0;
+}
+
 /* ---- Seasonal timing ---------------------------------------------------- */
 .timing__head { max-width: 860px; }
 .timing__head .eyebrow { margin-bottom: 16px; }
@@ -27,6 +47,15 @@
 	line-height: 1.75;
 	color: var(--body);
 }
+/* Second row: Grant's quote left, the condo-record story right. */
+.timing__row2 {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 72px;
+	align-items: center;
+	margin-top: 72px;
+}
+.timing__row2 .pullquote { margin: 0; }
 
 /* The 8-month chart. Two bars on a shared month grid show the gap between
    buyers arriving (April) and listings appearing (June) — the window a
@@ -159,15 +188,7 @@
 }
 
 /* ---- Marketing built to be seen ----------------------------------------- */
-.mkt__head { max-width: 860px; }
-.mkt__head .eyebrow { margin-bottom: 16px; }
-.mkt__lead { display: flex; flex-direction: column; gap: 18px; margin-top: 26px; }
-.mkt__lead p {
-	font-size: 17px;
-	line-height: 1.75;
-	color: var(--body);
-}
-
+/* The lead copy + photo row is the site's .guide split (styles.css). */
 .mkt__feature {
 	display: grid;
 	grid-template-columns: 1.35fr 1fr;
@@ -200,8 +221,10 @@
 }
 
 .mkt__incl { margin-top: 72px; }
-/* Type from .eyebrow; this owns the rule beneath the label. */
-.mkt__incl-label {
+/* "WHAT A SELLER GETS" is the eyebrow over an h3 (type from .h3); the rule
+   that used to sit under the eyebrow now sits under the heading. */
+.mkt__incl-h {
+	margin-top: 14px;
 	padding-bottom: 20px;
 	border-bottom: 1px solid rgba(197, 198, 206, 0.6);
 }
@@ -242,7 +265,7 @@
 	line-height: 1.8;
 	color: var(--body);
 }
-.honesty__body .pullquote { margin: 6px 0; }
+.honesty__body .pullquote { margin: 6px 0 0; }
 
 /* ---- Home valuation ----------------------------------------------------- */
 /* Reuses the site's .invite two-panel shell (navy left, form right) so the
@@ -271,10 +294,12 @@
 @media (max-width: 1024px) {
 	.timing__grid { grid-template-columns: 1fr; gap: 40px; margin-top: 44px; }
 	.timing__copy p { font-size: 16px; }
+	.row2 { margin-top: 64px; }
+	.timing__row2 { grid-template-columns: 1fr; gap: 36px; margin-top: 48px; }
+	.story-hl, .honesty__body .story-hl { font-size: 17px; }
 
 	.season { --season-gutter: 96px; padding: 28px 24px 24px; }
 
-	.mkt__lead p { font-size: 16px; }
 	.mkt__feature { grid-template-columns: 1fr; gap: 24px; margin-top: 44px; }
 	.mkt__film { min-height: 300px; }
 	.mkt__grid { grid-template-columns: repeat(2, 1fr); gap: 32px 24px; }
@@ -287,6 +312,9 @@
 @media (max-width: 640px) {
 	.timing__grid { gap: 32px; }
 	.timing__copy p { font-size: 15px; }
+	.row2 { margin-top: 48px; }
+	.timing__row2 { gap: 28px; margin-top: 40px; }
+	.story-hl, .honesty__body .story-hl { font-size: 16px; padding-left: 20px; }
 
 	/* Too narrow for a label gutter — collapse it to zero so the labels stack
 	   above their own lane. The bars stay on the same month columns because
@@ -313,7 +341,6 @@
 	.season__bar-note { font-size: 11px; }
 	.season__caption { font-size: 13px; margin-top: 18px; }
 
-	.mkt__lead p { font-size: 15px; }
 	.mkt__film { min-height: 230px; }
 	.mkt__reach { padding: 32px 24px; }
 	.mkt__reach-body { font-size: 15px; }

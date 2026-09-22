@@ -1725,6 +1725,11 @@
 					"type": "image"
 				},
 				{
+					"slug": "pricing_image2",
+					"label": "Pricing read — second-row photo (blank = a random home from the listings feed)",
+					"type": "image"
+				},
+				{
 					"slug": "timing_eyebrow",
 					"label": "Seasonal timing — eyebrow",
 					"type": "string"
@@ -1746,7 +1751,7 @@
 				},
 				{
 					"slug": "timing_p3",
-					"label": "Seasonal timing — paragraph 3",
+					"label": "Seasonal timing — story (second row)",
 					"type": "text"
 				},
 				{
@@ -1780,6 +1785,11 @@
 					"type": "image"
 				},
 				{
+					"slug": "mkt_image",
+					"label": "Marketing — intro photo (blank = a random home from the listings feed)",
+					"type": "image"
+				},
+				{
 					"slug": "reach_eyebrow",
 					"label": "Marketing — reach eyebrow",
 					"type": "string"
@@ -1792,6 +1802,11 @@
 				{
 					"slug": "incl_label",
 					"label": "Marketing — inclusions label",
+					"type": "string"
+				},
+				{
+					"slug": "incl_heading",
+					"label": "Marketing — seller package heading",
 					"type": "string"
 				},
 				{
@@ -1926,7 +1941,7 @@
 				},
 				{
 					"slug": "honesty_p2",
-					"label": "Honest advice — paragraph 2",
+					"label": "Honest advice — story",
 					"type": "text"
 				},
 				{
@@ -2816,42 +2831,42 @@
 					"title": "Sellers",
 					"hero_eyebrow": "Sell With Me",
 					"hero_headline": "Your Home's Value Here Isn't What an <em>Algorithm</em> Says It Is.",
-					"hero_sub": "In our most desirable neighborhoods an original 1962 house sits next door to brand-new construction, and the algorithm averages them. That's why internet estimates are notoriously wrong in this town. I've sold more property in Incline Village than any other agent since 2019, and I price from what buyers are looking at today. Start with what your home is actually worth.",
+					"hero_sub": "In our most desirable neighborhoods, an original 1962 house sits next door to brand-new construction, and the algorithm averages them. That's why internet estimates are notoriously wrong in this town. I've sold more property in Incline Village than any other agent since 2019, and I price based on what buyers are looking at today. Start with what your home is actually worth.",
 					"hero_cta": "WHAT'S MY TAHOE HOME WORTH?",
 					"pricing_eyebrow": "THE PRICING READ",
 					"pricing_heading": "The Hardest Number to Get Right in This Market.",
 					"pricing_p1": "Pricing here isn't a formula. I start where an appraiser would, with price per square foot and what closed in the last six months, and then I show you something most agents skip: what a buyer for your type of property has on the shelf right now. Six new listings below you make last spring's comps irrelevant, and nothing on the market within $200,000 of you means we can push higher than we could six months ago.",
 					"pricing_p2": "The internet gets this town wrong for a specific reason. Most markets value by proximity, and here proximity means little: an original 1962 home and new construction share a lot line in our best neighborhoods, so the algorithm overvalues one and undervalues the other. The county records add another wrinkle. Square footage was measured loosely here for decades, so I get an appraisal measurement on almost every listing and market the real number.",
-					"pricing_p3": "Then the decision is yours. Some sellers need to be gone this season, and some are happy to wait years for their number. I'll tell you honestly which price gets which result, and I'll be in this business for another 19 years, so I'm not in a hurry either.",
+					"pricing_p3": "My job is to give you what I know. You get to drive the ship.  Some sellers need to be gone this season, and some are happy to wait years for their number. I'll tell you honestly which price gets which result, and I'll be in this business for another 19 years, so I'm not in a hurry either.",
 					"pricing_quote": "I sell more property than anybody else here, and I still can't promise you a number. The market tells us whether we're priced right. My job is to make sure you hear it early and clearly.",
 					"timing_eyebrow": "SEASONAL TIMING",
 					"timing_heading": "The Sellers Who Win Here Are Ready Before the Buyers Arrive.",
 					"timing_p1": "Buyers are here before sellers are ready. They come up to ski in the winter and start looking in April and May, while most owners are still in Arizona, Las Vegas, or Palm Springs and haven't been up to get the house ready for summer.",
 					"timing_p2": "So we list earlier in the spring than most, and we sell a lot of property before the competition shows up. Last winter was mild, so we brought new listings on in November while everyone else had pulled theirs in October, and we got full price, all cash, multiple offers because we watched the weather instead of the calendar.",
-					"timing_p3": "The record I'm proudest of works the other way too. We brought a remodeled three-bedroom condo to market in early spring and set the complex record at $715,000. By late summer, every neighbor who saw that number had listed, and I got a different client a nicer three-bedroom in the same complex for $100,000 less. Same building, one season apart, and my clients were on the right side of both.",
+					"timing_p3": "We brought a remodeled three-bedroom condo to market in early spring and set the complex record at $715,000. By late summer, every neighbor who saw that number had listed, and I got a different client a nicer three-bedroom in the same complex for $100,000 less. Same building, one season apart, and my clients were on the right side of both.",
 					"timing_quote": "When I've got a seller who's ready and the marketing package is done, we come on before everyone else lists. That's a real opportunity, and most agents miss it because they're doing what they did last year.",
 					"mkt_eyebrow": "THE MARKETING",
 					"mkt_heading": "Every Listing Gets the Full Package, Whatever the Price.",
-					"mkt_p1": "It disappoints me how many agents in this industry shoot a $4 million house on an iPhone. Every one of my listings gets professional photography, drone, video, and its own individual property website, whatever the price point. Most of our buyers see the home first on a screen from hundreds of miles away, and that first look has to be its best.",
-					"mkt_p2": "Before the camera arrives, my stager sets the home up to show as clean and beautiful as it can. Then the property gets a champagne brunch broker tour so the 700 agents in town see it, open houses, and a QR-code e-flyer on the sign instead of a box of paper that gets snowed on. One of my team accompanies every showing we can, even on a $500,000 condo, because we know the property better than the buyer's agent walking in the door.",
+					"mkt_p1": "It disappoints me how many agents in this industry shoot a $4 million house on an iPhone. Every one of my listings gets professional photography, drone, video, and its own individual property webpage, whatever the price point. Most of our buyers see the home first on a screen from hundreds of miles away, and that first look has to be its best.",
+					"mkt_p2": "Before the camera arrives, my stager sets the home up to show as clean and beautiful as it can. Then the property gets a champagne brunch broker tour so the 700 agents in town see it, open houses, and a QR-code e-flyer on the sign instead of a box of paper that gets snowed on. One of my team members accompanies every showing we can, even on a $500,000 condo, because we know the property better than the buyer's agent walking in the door.",
 					"reach_eyebrow": "REACH",
 					"reach_body": "Through Coldwell Banker Select and the Coldwell Banker Global Luxury network, the listing goes out to a national and international buyer base on top of our local MLS, so a home in Incline Village shows up in front of the relocating buyer in San Francisco and the family flying in from Seattle.",
 					"incl_label": "WHAT A SELLER GETS",
 					"network_eyebrow": "THE NETWORK",
 					"network_heading": "The Network That Gets Your Home Sale-Ready.",
-					"network_p1": "In a resort market the good contractors are booked for months and the right specialist isn't in the phone book unless you already know who to call. I've been building those relationships since 2009, and a seller inherits them the moment we sign.",
-					"network_p2": "When a home needs work before it shows well, I know who to bring in and roughly what it should cost, because I grew up on my father's job sites. Construction here runs 50% longer and 50% more expensive than people budget, so I'll tell you which fixes earn their money back and which to skip.",
-					"network_story": "One of my sellers lives in Australia, and the buyers' inspector flagged the heating system. He couldn't understand it; he skis here every winter and the heat works fine. Most plumbers won't touch a hydronic boiler, so I got a boiler specialist out, the inspector came back and signed off, and we closed.",
+					"network_p1": "In a resort market, the good contractors are booked for months, and the right specialist isn't in the phone book unless you already know who to call. I've been building those relationships since 2009, and a seller inherits them the moment we sign.",
+					"network_p2": "When a home needs work before it shows well, I know who to bring in and roughly what it should cost, because I grew up on my father's job sites. A remodel here takes about 50% longer and costs 50% more than it would in most markets, because materials come up the mountain and good contractors are booked months out. Before you spend a dollar getting ready to list, I'll tell you which fixes earn their money back and which to skip.",
+					"network_story": "One of my sellers lives in Australia, and the buyers' inspector flagged the heating system. He couldn't understand it; he skis here every winter, and the heat works fine. Most plumbers won't touch a hydronic boiler, so I got a boiler specialist out, the inspector came back and signed off, and we closed.",
 					"network_quote": "We live in a resort market. It's really hard to get an electrician to your house. So you take care of people. When you treat them right, they treat you right.",
 					"honesty_eyebrow": "HONEST ADVICE",
 					"honesty_heading": "I'd Rather Keep You for Life Than Win One Listing.",
 					"honesty_p1": "Too many agents give a seller the answer that wins the listing instead of the truth. I'll be honest even when it isn't what you want to hear, because the business I've built runs on people coming back. One client has done 23 transactions with me, and several of this year's sales were homes that sat unsold with another agent last year.",
-					"honesty_quote": "You can skin a sheep once, but you can shear it over and over again. Too many people in this business skin the sheep. We built ours on the shearing.",
-					"honesty_p2": "A plumber I work with inherited his father's house and had an off-market offer in hand from an agent the family knew. I walked it, ran the numbers, and told him I thought we could get half a million more. The family wanted to save 3% by not listing; we listed, and they cleared $550,000 more than the offer, 46% more, after paying the commission they'd been trying to avoid. Penny wise and pound foolish happens more than you'd think, and it's why I give you the honest read first and let you drive.",
+					"honesty_quote": "Penny-wise and pound-foolish happens more than you'd think, and it's why I give you the honest read first and let you drive.",
+					"honesty_p2": "A plumber I work with inherited his father's house and had an off-market offer in hand from an agent the family knew. I walked it, ran the numbers, and told him I thought we could get half a million more. The family wanted to save 3% by not listing; we listed, and they cleared $550,000 more than the offer, 46% more, after paying the commission they'd been trying to avoid.",
 					"process_eyebrow": "THE PROCESS",
 					"process_heading": "What Listing With Me Actually Looks Like.",
 					"process_body": "It starts with me at your house. I can run numbers on square footage from my desk, but your version of remodeled, mine, and a buyer's are three different things, and \"lake view\" has several categories in our MLS, so I need boots on the ground before we talk price. Then we go through the listing agreement clause by clause, so you know exactly what a contingency does to your deal and when a buyer's earnest money becomes non-refundable. From there it's prep, photography, the property website, the broker tour, and to market on the right timing, with one of my team at every showing we can make.",
-					"process_promise": "When offers come in, I give you the information and you choose the route. You're driving the train, and my job is to tell you which track gets you there fastest. Under contract, I handle the buyer's inspectors and appraiser, get contractor bids on anything they flag, protect your deposit through escrow, and show up at your signing, because escrow is neutral and I'm not. I've also dealt with movers, a client's Rivian, and a massage chair after the keys changed hands, so nothing you need is too small to ask.",
+					"process_promise": "When offers come in, I give you the information, and you choose the route. You're driving the train, and my job is to tell you which track gets you there fastest. Under contract, I handle the buyer's inspectors and appraiser, get contractor bids on anything they flag, protect your deposit through escrow, and show up at your signing, because escrow is neutral and I'm not. My job doesn't end when the keys change hands. Movers, utilities, whatever you left behind: we'll either handle it ourselves or find someone who will. Nothing is too small to ask.\n\n",
 					"val_eyebrow": "HOME VALUATION",
 					"val_heading": "Start With What Your Home Is Worth.",
 					"val_lead": "Give me the address and a little about the place, and I'll come back to you with a real read on value and timing, from comps and from what's on the market against you today. There's no automated number at the end of this form and no pitch, just a read from someone who sells more here than anyone. If you'd like, we'll set a time for me to walk the property.",
@@ -2866,8 +2881,8 @@
 					"incl1_d": "On every listing, at any price point. The first showing happens on a screen, so it has to be the best one.",
 					"incl2_t": "Video & Drone",
 					"incl2_d": "A walkthrough of the home plus aerials that show the setting, the shoreline, and what's nearby.",
-					"incl3_t": "Individual Property Website",
-					"incl3_d": "Its own site with photos, film, and floor plans, branded and unbranded, built by our photographer for every listing.",
+					"incl3_t": "Individual Property Webpage",
+					"incl3_d": "Its own site with photos, film, and floor plans, for every listing.",
 					"incl4_t": "Staging & Prep",
 					"incl4_d": "My stager, cleaners, and window washers get the home ready, and I tell you which fixes earn their money back.",
 					"incl5_t": "Champagne Broker Tour",
@@ -2877,7 +2892,8 @@
 					"incl7_t": "QR E-Flyers",
 					"incl7_d": "A code on the sign takes buyers straight to the listing, so no more paper flyers getting rained on.",
 					"incl8_t": "Coldwell Banker Reach",
-					"incl8_d": "Local MLS plus the national and international Coldwell Banker Global Luxury network."
+					"incl8_d": "Local MLS plus the national and international Coldwell Banker Global Luxury network.",
+					"incl_heading": "The Grant C. Meyer Homes Seller Package"
 				}
 			}
 		]

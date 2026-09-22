@@ -173,6 +173,22 @@ export async function randomHomePhoto(): Promise<string | null> {
 		return null;
 	}
 }
+/**
+ * Lead photos of `n` different active Residential listings, picked at random --
+ * for a page that needs more than one (/sellers/). Same rules as
+ * randomHomePhoto; the array is shorter than `n` (or empty) when fewer match or
+ * the query fails, so callers fall back per slot.
+ */
+export async function randomHomePhotos(n: number): Promise<string[]> {
+	try {
+		const { results } = await DB().prepare(
+			"SELECT photo FROM listings WHERE status='Active' AND type='Residential' AND photo IS NOT NULL AND photo != '' ORDER BY RANDOM() LIMIT ?"
+		).bind(n).all();
+		return (results ?? []).map((r: any) => r.photo);
+	} catch {
+		return [];
+	}
+}
 
 export async function bySlug(slug: string) {
 	const row = await DB().prepare("SELECT * FROM listings WHERE slug = ?").bind(slug).first();

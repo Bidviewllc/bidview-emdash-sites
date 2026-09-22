@@ -604,7 +604,9 @@
 
   .net { max-width: none; }
   .net__body { font-size: 17px; margin-top: 22px; }
-  .net-split { grid-template-columns: 1fr; gap: 36px; margin-top: 44px; }
+  .net-cols { grid-template-columns: 1fr; gap: 44px; }
+  .net-cols__side { gap: 32px; }
+  .net-cols__side .pullquote__q { font-size: 23px; }
   .net__story { font-size: 17px; }
 
   .process__head { margin-bottom: 32px; }
@@ -618,7 +620,9 @@
 
   .net__body { font-size: 16px; margin-top: 18px; }
   .net__body p + p { margin-top: 16px; }
-  .net-split { gap: 28px; margin-top: 36px; }
+  .net-cols { gap: 36px; }
+  .net-cols__side { gap: 28px; }
+  .net-cols__side .pullquote__q { font-size: 20px; }
   .net__story { font-size: 16px; padding-left: 20px; }
 
   .process__head { margin-bottom: 26px; }

@@ -2530,8 +2530,7 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
 
 /* ===== Network statement (dark) =====
    The "network you inherit" block on /buyers/ and the "gets your home
-   sale-ready" block on /sellers/. A wide statement column, then a two-up of
-   the proof story and the quote. Lives on `.section--dark.on-dark`. */
+   sale-ready" block on /sellers/. Lives on `.section--dark.on-dark`. */
 /* The statement column is CENTRED and the copy runs large (19px), per the
    design. The proof story below is not plain body text — it carries the same
    orange left rule as a pull quote. */
@@ -2550,14 +2549,24 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
 }
 .net__body p + p { margin-top: 22px; }
 
-/* Proof story left, Grant's quote right, both vertically centred. */
-.net-split {
-  max-width: 1080px;
-  margin: 56px auto 0;
+/* Two columns (both pages since 2026-09-22): the statement on the left,
+   Grant's quote over the proof story on the right, everything left-aligned.
+   This replaced the centred statement + .net-split two-up. */
+.net-cols {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 72px;
+  grid-template-columns: 3fr 2fr;
+  gap: 80px;
   align-items: center;
+}
+.net.net--cols {
+  max-width: none;
+  margin: 0;
+  text-align: left;
+}
+.net-cols__side {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
   text-align: left;
 }
 .net__story {
@@ -2568,8 +2577,8 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   padding: 4px 0 4px 28px;
   margin: 0;
 }
-.net-split .pullquote { margin: 0; }
-.net-split .pullquote__q { font-size: 26px; line-height: 1.42; }
+.net-cols__side .pullquote { margin: 0; }
+.net-cols__side .pullquote__q { font-size: 26px; line-height: 1.42; }
 
 /* ===== Process column =====
    The editorial "what working with Grant actually looks like" column, shared by

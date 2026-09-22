@@ -27,7 +27,10 @@ export { PluginBridge };
 // section unstyled, so this has to move with the deploy.
 // v5 (2026-09-22): /buyers/ layout pass -- Stakes in two rows, Network in two
 // columns, tax lead-ins inline. Old cached HTML would miss the new classes.
-const CACHE_VERSION = "v5";
+// v6 (2026-09-22): /sellers/ layout pass -- Pricing in two rows, Timing
+// second row, Marketing intro split + package heading, Network in two columns
+// (now shared in styles.css), Honesty story. Old cached HTML would miss them.
+const CACHE_VERSION = "v6";
 const CACHEABLE_TYPE = /^(?:text\/html|application\/xml|text\/xml|text\/plain)/i;
 const ADMIN_COOKIE = /emdash[-_](session|edit-mode|admin)/i;
 
