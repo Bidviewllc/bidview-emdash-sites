@@ -257,11 +257,11 @@
 
   /* Cinematic hero */
   .listing-hero, .listing-hero--fl { min-height: 680px; }
-  .listing-hero--fl .listing-hero__bottom { padding: 176px 32px 56px; flex-direction: column; align-items: stretch; gap: 32px; }
+  .listing-hero--fl .listing-hero__bottom { padding: 176px 32px 28px; flex-direction: column; align-items: stretch; gap: 32px; }
   .listing-hero--fl .listing-hero__title { font-size: 44px; }
   .listing-hero--fl .listing-hero__stats { gap: 36px; flex-wrap: wrap; padding: 0; }
   .listing-hero--fl .listing-hero__stat__v { font-size: 24px; }
-  .listing-hero__share { top: 100px; right: 32px; }
+  .listing-hero__share { top: 32px; right: 32px; }
 
   /* Description + sidebar */
   .listing-body { padding: 72px 32px; }
@@ -452,13 +452,12 @@
 
   /* Cinematic hero */
   .listing-hero, .listing-hero--fl { min-height: 580px; }
-  .listing-hero--fl .listing-hero__bottom { padding: 150px 20px 40px; gap: 24px; }
+  .listing-hero--fl .listing-hero__bottom { padding: 150px 20px 20px; gap: 24px; }
   .listing-hero--fl .listing-hero__title { font-size: 30px; }
-  .listing-hero--fl .listing-hero__crumb { font-size: 11px; }
   .listing-hero--fl .listing-hero__stats { gap: 20px 28px; padding: 16px 0 0; }
   .listing-hero--fl .listing-hero__stat__l { font-size: 10px; }
   .listing-hero--fl .listing-hero__stat__v { font-size: 20px; }
-  .listing-hero__share { top: 96px; right: 16px; gap: 8px; }
+  .listing-hero__share { top: 16px; right: 16px; gap: 8px; }
   .listing-hero__share button { width: 36px; height: 36px; }
 
   /* Description + sidebar */

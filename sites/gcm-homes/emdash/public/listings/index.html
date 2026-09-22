@@ -992,7 +992,7 @@ function cardHTML(l) {
   if (!bits.length && l.lotAcres) bits.push(`<span><b>${l.lotAcres}</b> ACRES</span>`);
 
   return `
-    <article class="card" data-id="${esc(l.id)}" onclick="location.href='/homes/${esc(l.slug)}/'">
+    <a class="card" data-id="${esc(l.id)}" href="/homes/${esc(l.slug)}/">
       <div class="card__media">
         ${media}
         <div class="card__badges">
@@ -1007,7 +1007,7 @@ function cardHTML(l) {
         <div class="card__city">${esc(cityLine)}</div>
         ${bits.length ? `<div class="card__meta">${bits.join("")}</div>` : ""}
       </div>
-    </article>`;
+    </a>`;
 }
 
 function skeletons(n = 6) {

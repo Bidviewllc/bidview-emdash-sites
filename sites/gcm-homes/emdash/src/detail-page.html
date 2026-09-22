@@ -30,7 +30,10 @@
     /* --- "Back to all listings" bar. No design counterpart; kept because it is the
            way back for anyone arriving from the listings grid. --- */
     .back-bar { padding: 20px 48px; border-bottom: 1px solid var(--line); background: var(--cream); }
-    .back-btn { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; color: var(--muted); display: inline-flex; align-items: center; gap: 8px; }
+    .back-btn { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; color: var(--muted); display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
+    /* The arrow ships no width/height attributes. Without this it renders at the
+       SVG default 300x150 and squeezes the label onto three lines. */
+    .back-btn svg { width: 14px; height: 14px; flex: 0 0 auto; }
     .back-btn:hover { color: var(--navy); }
 
     /* --- "A Note From Grant" + its inline admin editor. Not part of the design, so
@@ -430,6 +433,25 @@ function totalDomRows(listing) {
   const cur = listing.daysOnMarket, tot = listing.cumulativeDaysOnMarket;
   return (tot != null && cur != null && tot - cur >= 2) ? [["Total Days on Market", tot]] : [];
 }
+// MLS enum fields arrive machine-shaped: single values are PascalCase
+// ("SingleFamilyResidence") and multi-value fields are comma-joined with no
+// space after the comma ("Lake,Mountains"). Both read as raw data on the page,
+// so split them back into words. Only ever used on enum fields -- never on
+// formatted numbers, where splitting on commas would wreck the thousands
+// separators.
+function fmtEnum(v) {
+  if (v == null || v === "") return "";
+  return String(v)
+    .split(",")
+    .map(t => t.trim())
+    .filter(Boolean)
+    .map(t => t
+      .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+      .replace(/([A-Z]+)([A-Z][a-z])/g, "$1 $2")
+      .replace(/ +/g, " ")
+      .trim())
+    .join(", ");
+}
 function noteToHtml(s) { return escapeHtml(s).replace(/\n/g, "<br>"); }
 
 /* ---------------- Contact form ---------------- */
@@ -633,11 +655,11 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro) {
     ["Area & Lot", [
       ["Living Area", fmtSqft(listing.sqft)],
       ["Lot Size", listing.lotAcres ? listing.lotAcres + " acres" : "—"],
-      ["Year Built", listing.yearBuilt], ["Type", listing.type],
+      ["Year Built", listing.yearBuilt], ["Type", fmtEnum(listing.type)],
     ]],
     ["Property Info", [
       ["Garage", listing.garage ? listing.garage + " spaces" : "—"],
-      ["View", listing.view || "—"], ["Sub-Type", listing.subType || "—"], ["Status", listing.status],
+      ["View", fmtEnum(listing.view) || "—"], ["Sub-Type", fmtEnum(listing.subType) || "—"], ["Status", fmtEnum(listing.status)],
     ]],
     ["Financial", [
       ["List Price", fmt(listing.price)],
@@ -853,13 +875,13 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro) {
           <div class="eyebrow eyebrow--muted aside-fl__h">QUICK STATISTICS</div>
           <div class="aside-fl__stats">
             ${[
-              ["Status", listing.status],
-              ["Property Type", listing.subType || listing.type],
+              ["Status", fmtEnum(listing.status)],
+              ["Property Type", fmtEnum(listing.subType || listing.type)],
               ["Year Built", listing.yearBuilt],
               ["Living Area", fmtSqft(listing.sqft)],
               ["Lot Size", listing.lotAcres ? listing.lotAcres + " acres" : "—"],
               ["Garage", listing.garage ? listing.garage + " spaces" : "—"],
-              ["View", listing.view || "—"],
+              ["View", fmtEnum(listing.view) || "—"],
               ["Annual Taxes", listing.taxes ? fmt(listing.taxes) : "—"],
               ["Days on Market", listing.daysOnMarket ?? "—"],
               ...totalDomRows(listing),
@@ -880,13 +902,13 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro) {
           <div class="print-stats__h">Quick Statistics</div>
           <dl class="print-stats__list">
             ${[
-              ["Status", listing.status],
-              ["Type", listing.subType || listing.type],
+              ["Status", fmtEnum(listing.status)],
+              ["Type", fmtEnum(listing.subType || listing.type)],
               ["Year Built", listing.yearBuilt],
               ["Living Area", fmtSqft(listing.sqft)],
               ["Lot Size", listing.lotAcres ? listing.lotAcres + " acres" : "\u2014"],
               ["Garage", listing.garage ? listing.garage + " spaces" : "\u2014"],
-              ["View", listing.view || "\u2014"],
+              ["View", fmtEnum(listing.view) || "\u2014"],
               ["Annual Taxes", listing.taxes ? fmt(listing.taxes) : "\u2014"],
               ["Days on Market", listing.daysOnMarket ?? "\u2014"],
               ...totalDomRows(listing),
