@@ -5,6 +5,7 @@ import { createPublicPageContext } from "emdash/page";
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import { SITEWIDE_SCHEMA, schemaForPath } from "../lib/page-schema";
+import { articleMetaForPath } from "../lib/article-meta";
 
 interface Props {
 	/** <title> text. " | Liberty Hearing Center" is appended unless already present. */
@@ -74,6 +75,10 @@ const pageCtx = createPublicPageContext({
 	canonical,
 	image: ogImage,
 	content,
+	// Blog posts only: feeds author (and dates, once known) into emdash's
+	// BlogPosting builder. Route-keyed in src/lib/article-meta.ts — see the note
+	// there for why this is not a hand-written JSON-LD block.
+	articleMeta: articleMetaForPath(Astro.url.pathname),
 	// `siteName` is deliberately NOT passed (2026-09-21). emdash emits a bare
 	// `WebSite` JSON-LD block whenever it is set
 	// (seo-contributions.ts -> buildWebSiteJsonLd), and the client's schema doc

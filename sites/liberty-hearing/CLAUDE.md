@@ -1507,3 +1507,32 @@ two posts trigger via `ogType="article"`. Live today it contains only:
 
 **Asked Vince for:** the author of each post (Dr. Duhon? the practice?) and the
 publish dates. Not changed until he answers.
+
+### BlogPosting author added (2026-09-22) — dates still missing
+
+Vince: author is **Dr. Duhon**. Implemented as `Dr. Chris Duhon, AuD` on both posts
+via **`src/lib/article-meta.ts`** (route-keyed) fed into
+`createPublicPageContext({ articleMeta })` from `Base.astro`.
+
+**Fed into emdash's existing BlogPosting rather than writing a second block** —
+emdash already emits one for `pageType: "article"`, so a hand-written block would
+have produced TWO. This keeps one block AND keeps `og:type="article"`.
+
+Live (worker `64e1c92e-2425-4ba0-8a64-b2f080b9a5a4`, cache v10): both posts have
+exactly **1 BlogPosting** with `author {"@type":"Person","name":"Dr. Chris Duhon, AuD"}`,
+`og:type=article` intact, `/hearing-aids-for-tinnitus/` also carrying its breadcrumb.
+
+**DATES: still absent, and the "date in the post" does not exist.** Checked three
+places — the rendered pages (no visible date), the generated `.astro` sources, and
+**the client's original blog doc** (`docs.google.com/document/d/1V6mxopq8l9VMOsfD7IYV2A82YlQu5-v6jNZihGadIXI`,
+re-fetched 2026-09-22): none of them contain a publication date. Asked Vince again.
+Add `publishedTime` / `modifiedTime` (ISO 8601) to `ARTICLE_META` when known — they
+flow straight through, no other change needed.
+
+**Two quality notes, not fixed:**
+- `publisher` is still absent (needs `siteName`, which would re-create the duplicate
+  `WebSite` block). Optional for non-AMP Google Article results.
+- `/hearing-aids-for-tinnitus/` has `headline` = *"Hearing Aids for Tinnitus |
+  Liberty Hearing Center, TX"* — emdash uses the page's own title, and that page's
+  title prop already carries the brand suffix. The other post's headline is clean.
+  Cosmetic; can be normalised by passing a cleaner `pageTitle`.
