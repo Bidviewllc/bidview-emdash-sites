@@ -30,6 +30,7 @@ import GcmLayout from "../layouts/GcmLayout.astro";
 import ContactCta from "../components/ContactCta.astro";
 import { getEmDashEntry } from "emdash";
 import { imageUrl } from "../lib/media";
+import { randomHomePhoto } from "../lib/listings";
 
 let entry: any = null;
 try {
@@ -53,6 +54,18 @@ const e = entry?.edit ?? {};
 const heroImage = imageUrl(d.hero_image) ?? "/assets/hero-eagle-rock.jpg";
 const stakesImage = imageUrl(d.stakes_image) ?? "/assets/listing-hero-exterior.jpg";
 const investmentImage = imageUrl(d.investment_image) ?? "/assets/gallery-1.jpg";
+// The Stakes section's second row runs a real house from the MLS feed, picked at
+// random (see randomHomePhoto). A CMS image, if one is ever set, wins.
+// stakes_p4 is the back half of what used to be one long stakes_p3. Its
+// fallback only shows when stakes_p3 doesn't already carry that text, so an
+// unsplit stakes_p3 never renders the sentence twice.
+const STAKES_P4_FALLBACK =
+	"That knowledge doesn't live in a database. I've been reading this market from inside it since 1992, and I read it for you, on your side of the table.";
+const stakesP4 =
+	d.stakes_p4 ??
+	((d.stakes_p3 ?? "").includes("That knowledge") ? null : STAKES_P4_FALLBACK);
+const stakesImage2 =
+	imageUrl(d.stakes_image2) ?? (await randomHomePhoto()) ?? "/assets/gallery-1.jpg";
 
 // The Nevada tax advantage — four buyer situations, each one a disclosure.
 // `bullets`/`after` only appear on the business scenario, so the shape is
@@ -162,8 +175,11 @@ const COMMUNITIES = [
 // one paragraph and no divider until Grant answers. Both fields empty hides the
 // section entirely.
 const processBody = (d.process_body ?? "").toString().trim();
+// process_body2 is the second half of the first segment ("We look online
+// first, ..."), split out so it can stand as its own paragraph.
+const processBody2 = (d.process_body2 ?? "").toString().trim();
 const processPromise = (d.process_promise ?? "").toString().trim();
-const showProcess = Boolean(processBody || processPromise);
+const showProcess = Boolean(processBody || processBody2 || processPromise);
 ---
 
 <GcmLayout
@@ -192,7 +208,9 @@ const showProcess = Boolean(processBody || processPromise);
 		</div>
 	</section>
 
-	{/* 02 THE STAKES — the site's copy/photo split, run copy-first. */}
+	{/* 02 THE STAKES — two rows of the site's copy/photo split: the first runs
+	     copy-first (the setup and the $3.88M example), the second flips to
+	     photo-first (the micro-market read and Grant's quote). */}
 	<section class="section section--beige" data-screen-label="02 The Stakes">
 		<div class="container guide split--rev split--photo-fill">
 			<div class="guide__copy">
@@ -209,28 +227,41 @@ const showProcess = Boolean(processBody || processPromise);
 					{d.stakes_punch ?? "Tahoe punishes that confidence."}
 				</p>
 				<p class="guide__p" {...(e.stakes_p2 ?? {})}>
-					{d.stakes_p2 ?? "One buyer bought a property off-market, on their own, for $3.9 million. Two years later it was listed at $2.2 million."}
+					{d.stakes_p2 ?? "In 2021 a couple bought a home here directly from the owner for $3.88 million, no agent, sure they were saving money. They tried to sell two years later. It took three and a half years, and the home closed this year at $1.92 million. Less than half."}
 				</p>
-				<p class="guide__p" {...(e.stakes_p3 ?? {})}>
-					{d.stakes_p3 ?? "A micro-market of roughly 10,000 parcels moves on a handful of sales. The right read on timing, on comparables, on what a property is actually worth — none of it lives in a database. It lives in someone who has watched every cycle from inside the community. Grant has spent 35 years learning to read this market, and he reads it for you, on your side of the table."}
-				</p>
-				<div class="pullquote">
-					<div class="pullquote__q" {...(e.stakes_quote ?? {})}>
-						"{d.stakes_quote ?? "You can avoid making those 50, 60% mistakes by paying 3 to 6%. In our market, that's a fantastic insurance policy."}"
-					</div>
-					<div class="eyebrow pullquote__a">— GRANT C. MEYER</div>
-				</div>
 			</div>
 			<div class="guide__photo">
 				<div class="guide__img" style={`background-image:url(${stakesImage})`}></div>
 			</div>
 		</div>
+		<div class="container guide split--photo-fill stakes-row2">
+			<div class="guide__photo">
+				<div class="guide__img" style={`background-image:url(${stakesImage2})`}></div>
+			</div>
+			<div class="guide__copy">
+				<p class="guide__p" {...(e.stakes_p3 ?? {})}>
+					{d.stakes_p3 ?? "This is a micro market of 10,000 parcels, and it moves on a handful of sales. The same floor plan can be worth a very different number one street over, and one hard winter can send a whole elevation band to market at once."}
+				</p>
+				{stakesP4 && (
+					<p class="guide__p" {...(e.stakes_p4 ?? {})}>{stakesP4}</p>
+				)}
+				<div class="pullquote">
+					<div class="pullquote__q" {...(e.stakes_quote ?? {})}>
+						"{d.stakes_quote ?? "You can avoid making those 50-60% mistakes by paying 3-6%. In our market, that's a fantastic insurance policy."}"
+					</div>
+					<div class="eyebrow pullquote__a">— GRANT C. MEYER</div>
+				</div>
+			</div>
+		</div>
 	</section>
 
-	{/* 03 THE NETWORK — the dark Statement block. */}
+	{/* 03 THE NETWORK — the dark Statement block, run as two columns on this
+	     page (.net--cols in buyers.css): the statement on the left, Grant's
+	     quote over the proof story on the right. /sellers/ keeps the centred
+	     original. */}
 	<section class="section section--dark on-dark" data-screen-label="03 The Network">
-		<div class="container">
-			<div class="net">
+		<div class="container net-cols">
+			<div class="net net--cols">
 				<span class="eyebrow" {...(e.network_eyebrow ?? {})}>{d.network_eyebrow ?? "THE NETWORK"}</span>
 				<h2 class="net__h" {...(e.network_heading ?? {})}>
 					{d.network_heading ?? "The Network You Inherit on Day One."}
@@ -244,16 +275,16 @@ const showProcess = Boolean(processBody || processPromise);
 					</p>
 				</div>
 			</div>
-			<div class="net-split">
-				<p class="net__story" {...(e.network_story ?? {})}>
-					{d.network_story ?? "One recent client needed mold remediation before a deal could go through. Grant made one call. The specialist was at the house within 90 minutes — in a market where that kind of help is usually weeks out."}
-				</p>
+			<div class="net-cols__side">
 				<div class="pullquote">
 					<div class="pullquote__q" {...(e.network_quote ?? {})}>
 						"{d.network_quote ?? "It took me 35 years to earn those phone calls. The day you close, every one of them is yours too."}"
 					</div>
 					<div class="eyebrow pullquote__a">— GRANT C. MEYER</div>
 				</div>
+				<p class="net__story" {...(e.network_story ?? {})}>
+					{d.network_story ?? "One recent client needed mold remediation before a deal could go through. Grant made one call. The specialist was at the house within 90 minutes — in a market where that kind of help is usually weeks out."}
+				</p>
 			</div>
 		</div>
 	</section>
@@ -285,8 +316,15 @@ const showProcess = Boolean(processBody || processPromise);
 							<span class="acc__icon" aria-hidden="true"></span>
 						</summary>
 						<div class="acc__panel">
-							<div class="tax-acc__title">{s.title}</div>
-							{s.paras.map((p) => <p>{p}</p>)}
+							{/* The scenario title opens the first paragraph as a bold,
+							    underlined lead-in rather than sitting above it. */}
+							{s.paras.map((p, j) =>
+								j === 0 ? (
+									<p><strong class="tax-lead">{s.title}</strong> {p}</p>
+								) : (
+									<p>{p}</p>
+								)
+							)}
 							{s.bullets && (
 								<ul class="tax-bullets">
 									{s.bullets.map((b) => <li>{b}</li>)}
@@ -389,8 +427,10 @@ const showProcess = Boolean(processBody || processPromise);
 						</h2>
 					</div>
 					<div class="process__body">
+						{/* No divider between the segments on this page (Liz, 2026-09-22):
+						    the paragraphs run as one column. /sellers/ keeps its divider. */}
 						{processBody && <p {...(e.process_body ?? {})}>{processBody}</p>}
-						{processBody && processPromise && <div class="process__divider"></div>}
+						{processBody2 && <p {...(e.process_body2 ?? {})}>{processBody2}</p>}
 						{processPromise && <p {...(e.process_promise ?? {})}>{processPromise}</p>}
 					</div>
 				</div>
