@@ -1,10 +1,10 @@
 /**
  * JSON-LD structured data for Liberty Hearing Center.
  *
- * GENERATED 2026-09-21 from the client's schema document
- * (docs.google.com/document/d/16JPwCAoNarLJ2D2WY8x0wd1d--6Y9WGYRYhwz0d8Dr8),
- * copied VERBATIM — do not hand-tune values here. If the client changes the doc,
- * re-extract rather than editing this file, and re-validate (see CLAUDE.md).
+ * GENERATED from the client's schema documents — copied VERBATIM, do not hand-tune:
+ *   - schema doc  (2026-09-21): docs.google.com/document/d/16JPwCAoNarLJ2D2WY8x0wd1d--6Y9WGYRYhwz0d8Dr8
+ *   - breadcrumbs (2026-09-22): docs.google.com/document/d/11namj2DTNImyYX9swBy8cVjM0h-OHC88DNFfZ2_zaS4
+ * If a doc changes, re-extract and re-validate (see CLAUDE.md) rather than editing here.
  *
  * SITEWIDE_SCHEMA goes on every page. It REPLACES the bare `WebSite` block emdash
  * used to emit (that came from passing `siteName` into createPublicPageContext —
@@ -133,6 +133,25 @@ export const PAGE_SCHEMA: Record<string, Record<string, unknown>[]> = {
     "https://libertyhearingcentertx.com/dr-chris-duhon/",
     "https://libertyhearingcentertx.com/dr-carly-hall/"
    ]
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "BreadcrumbList",
+   "@id": "https://libertyhearingcentertx.com/about/#breadcrumb",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://libertyhearingcentertx.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "About",
+     "item": "https://libertyhearingcentertx.com/about/"
+    }
+   ]
   }
  ],
  "/assistive-listening-devices/": [
@@ -174,6 +193,31 @@ export const PAGE_SCHEMA: Record<string, Record<string, unknown>[]> = {
       "@type": "Answer",
       "text": "No. While many assistive listening solutions work best alongside hearing aids, several are effective as standalone tools for patients who do not wear amplification. CapTel captioned phones, alerting and notification devices, and personal amplifiers can all provide meaningful benefits independently of hearing aid use. Liberty Hearing Center evaluates each patient’s full communication picture and recommends assistive technology based on individual need."
      }
+    }
+   ]
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "BreadcrumbList",
+   "@id": "https://libertyhearingcentertx.com/assistive-listening-devices/#breadcrumb",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://libertyhearingcentertx.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Hearing Aids",
+     "item": "https://libertyhearingcentertx.com/hearing-aids-products/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Assistive Listening Devices",
+     "item": "https://libertyhearingcentertx.com/assistive-listening-devices/"
     }
    ]
   }
@@ -235,6 +279,31 @@ export const PAGE_SCHEMA: Record<string, Record<string, unknown>[]> = {
      }
     }
    ]
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "BreadcrumbList",
+   "@id": "https://libertyhearingcentertx.com/cochlear-implants/#breadcrumb",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://libertyhearingcentertx.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Services",
+     "item": "https://libertyhearingcentertx.com/services/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Cochlear Implants",
+     "item": "https://libertyhearingcentertx.com/cochlear-implants/"
+    }
+   ]
   }
  ],
  "/custom-hearing-protection-conservation/": [
@@ -286,6 +355,31 @@ export const PAGE_SCHEMA: Record<string, Record<string, unknown>[]> = {
      }
     }
    ]
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "BreadcrumbList",
+   "@id": "https://libertyhearingcentertx.com/custom-hearing-protection-conservation/#breadcrumb",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://libertyhearingcentertx.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Services",
+     "item": "https://libertyhearingcentertx.com/services/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Custom Hearing Protection & Conservation",
+     "item": "https://libertyhearingcentertx.com/custom-hearing-protection-conservation/"
+    }
+   ]
   }
  ],
  "/diagnostic-services/": [
@@ -335,6 +429,31 @@ export const PAGE_SCHEMA: Record<string, Record<string, unknown>[]> = {
       "@type": "Answer",
       "text": "Yes. Results are reviewed with the patient or family at the end of the appointment. Dr. Duhon or Dr. Hall explains the findings, discusses what they mean clinically, and outlines recommended next steps, which may include monitoring, medical referral, hearing technology, early intervention services, or additional testing."
      }
+    }
+   ]
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "BreadcrumbList",
+   "@id": "https://libertyhearingcentertx.com/diagnostic-services/#breadcrumb",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://libertyhearingcentertx.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Services",
+     "item": "https://libertyhearingcentertx.com/services/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Diagnostic Services",
+     "item": "https://libertyhearingcentertx.com/diagnostic-services/"
     }
    ]
   }
@@ -424,6 +543,31 @@ export const PAGE_SCHEMA: Record<string, Record<string, unknown>[]> = {
      "@type": "EducationalOccupationalCredential",
      "name": "Doctor of Audiology (Au.D.)",
      "credentialCategory": "degree"
+    }
+   ]
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "BreadcrumbList",
+   "@id": "https://libertyhearingcentertx.com/dr-carly-hall/#breadcrumb",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://libertyhearingcentertx.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "About",
+     "item": "https://libertyhearingcentertx.com/about/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Dr. Carly Hall, AuD",
+     "item": "https://libertyhearingcentertx.com/dr-carly-hall/"
     }
    ]
   }
@@ -532,6 +676,31 @@ export const PAGE_SCHEMA: Record<string, Record<string, unknown>[]> = {
      "credentialCategory": "degree"
     }
    ]
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "BreadcrumbList",
+   "@id": "https://libertyhearingcentertx.com/dr-chris-duhon/#breadcrumb",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://libertyhearingcentertx.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "About",
+     "item": "https://libertyhearingcentertx.com/about/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Dr. Chris Duhon, AuD",
+     "item": "https://libertyhearingcentertx.com/dr-chris-duhon/"
+    }
+   ]
   }
  ],
  "/ear-wax-removal/": [
@@ -581,6 +750,31 @@ export const PAGE_SCHEMA: Record<string, Record<string, unknown>[]> = {
       "@type": "Answer",
       "text": "Ear wax does not cause permanent hearing loss on its own. However, leaving impacted wax unaddressed for an extended period can cause discomfort, increase infection risk, and interfere with hearing aid function in ways that affect long-term device performance. Addressing it promptly is always the better path."
      }
+    }
+   ]
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "BreadcrumbList",
+   "@id": "https://libertyhearingcentertx.com/ear-wax-removal/#breadcrumb",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://libertyhearingcentertx.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Services",
+     "item": "https://libertyhearingcentertx.com/services/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Ear Wax Removal",
+     "item": "https://libertyhearingcentertx.com/ear-wax-removal/"
     }
    ]
   }
@@ -642,6 +836,31 @@ export const PAGE_SCHEMA: Record<string, Record<string, unknown>[]> = {
      }
     }
    ]
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "BreadcrumbList",
+   "@id": "https://libertyhearingcentertx.com/hearing-aid-batteries/#breadcrumb",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://libertyhearingcentertx.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Hearing Aids",
+     "item": "https://libertyhearingcentertx.com/hearing-aids-products/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Hearing Aid Batteries",
+     "item": "https://libertyhearingcentertx.com/hearing-aid-batteries/"
+    }
+   ]
   }
  ],
  "/hearing-aid-fitting/": [
@@ -701,6 +920,31 @@ export const PAGE_SCHEMA: Record<string, Record<string, unknown>[]> = {
      }
     }
    ]
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "BreadcrumbList",
+   "@id": "https://libertyhearingcentertx.com/hearing-aid-fitting/#breadcrumb",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://libertyhearingcentertx.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Hearing Aids",
+     "item": "https://libertyhearingcentertx.com/hearing-aids-products/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Hearing Aid Fittings",
+     "item": "https://libertyhearingcentertx.com/hearing-aid-fitting/"
+    }
+   ]
   }
  ],
  "/hearing-aid-services/": [
@@ -742,6 +986,58 @@ export const PAGE_SCHEMA: Record<string, Record<string, unknown>[]> = {
       "@type": "Answer",
       "text": "Liberty Hearing Center provides repair and maintenance services for all major hearing aid brands regardless of where they were originally purchased, including Phonak, Oticon, ReSound, Widex, Starkey, Signia, and Unitron. Please note: hearing aids purchased through big-box retailers such as Costco or Sam’s Club are often exclusive, retailer-specific versions of major brands, built on proprietary software that only their in-house staff can access. As a result, we’re unable to program, adjust, or service these devices in our office. Additionally, if your hearing aids came with a manufacturer’s warranty, any adjustments or repairs performed outside of the original point of purchase could affect that warranty. We recommend checking with your original provider before scheduling a service appointment with us if this applies to you."
      }
+    }
+   ]
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "BreadcrumbList",
+   "@id": "https://libertyhearingcentertx.com/hearing-aid-services/#breadcrumb",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://libertyhearingcentertx.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Hearing Aids",
+     "item": "https://libertyhearingcentertx.com/hearing-aids-products/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Hearing Aid Services",
+     "item": "https://libertyhearingcentertx.com/hearing-aid-services/"
+    }
+   ]
+  }
+ ],
+ "/hearing-aids-for-tinnitus/": [
+  {
+   "@context": "https://schema.org",
+   "@type": "BreadcrumbList",
+   "@id": "https://libertyhearingcentertx.com/hearing-aids-for-tinnitus/#breadcrumb",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://libertyhearingcentertx.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Resources",
+     "item": "https://libertyhearingcentertx.com/resources/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Hearing Aids for Tinnitus",
+     "item": "https://libertyhearingcentertx.com/hearing-aids-for-tinnitus/"
     }
    ]
   }
@@ -801,6 +1097,25 @@ export const PAGE_SCHEMA: Record<string, Record<string, unknown>[]> = {
       "@type": "Answer",
       "text": "Yes, and they should be. Programming adjustments based on real-world listening feedback are a normal and expected part of the process, particularly in the weeks and months following an initial fitting as the auditory system adapts to amplification. Liberty Hearing Center builds follow-up care into every fitting plan and adjusts programming based on specific feedback from each patient’s daily listening environments rather than making changes in the abstract."
      }
+    }
+   ]
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "BreadcrumbList",
+   "@id": "https://libertyhearingcentertx.com/hearing-aids-products/#breadcrumb",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://libertyhearingcentertx.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Hearing Aids",
+     "item": "https://libertyhearingcentertx.com/hearing-aids-products/"
     }
    ]
   }
@@ -878,6 +1193,31 @@ export const PAGE_SCHEMA: Record<string, Record<string, unknown>[]> = {
      }
     }
    ]
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "BreadcrumbList",
+   "@id": "https://libertyhearingcentertx.com/hearing-evaluations/#breadcrumb",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://libertyhearingcentertx.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Services",
+     "item": "https://libertyhearingcentertx.com/services/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Hearing Evaluations",
+     "item": "https://libertyhearingcentertx.com/hearing-evaluations/"
+    }
+   ]
   }
  ],
  "/nellie-minneman/": [
@@ -892,6 +1232,31 @@ export const PAGE_SCHEMA: Record<string, Record<string, unknown>[]> = {
    "worksFor": {
     "@id": "https://libertyhearingcentertx.com/#organization"
    }
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "BreadcrumbList",
+   "@id": "https://libertyhearingcentertx.com/nellie-minneman/#breadcrumb",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://libertyhearingcentertx.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "About",
+     "item": "https://libertyhearingcentertx.com/about/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Nellie Minneman",
+     "item": "https://libertyhearingcentertx.com/nellie-minneman/"
+    }
+   ]
   }
  ],
  "/oticon-hearing-aids/": [
@@ -971,6 +1336,31 @@ export const PAGE_SCHEMA: Record<string, Record<string, unknown>[]> = {
      }
     }
    ]
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "BreadcrumbList",
+   "@id": "https://libertyhearingcentertx.com/oticon-hearing-aids/#breadcrumb",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://libertyhearingcentertx.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Hearing Aids",
+     "item": "https://libertyhearingcentertx.com/hearing-aids-products/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Oticon Hearing Aids",
+     "item": "https://libertyhearingcentertx.com/oticon-hearing-aids/"
+    }
+   ]
   }
  ],
  "/pediatric-hearing-testing/": [
@@ -1030,6 +1420,31 @@ export const PAGE_SCHEMA: Record<string, Record<string, unknown>[]> = {
      }
     }
    ]
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "BreadcrumbList",
+   "@id": "https://libertyhearingcentertx.com/pediatric-hearing-testing/#breadcrumb",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://libertyhearingcentertx.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Services",
+     "item": "https://libertyhearingcentertx.com/services/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Pediatric Hearing Evaluation",
+     "item": "https://libertyhearingcentertx.com/pediatric-hearing-testing/"
+    }
+   ]
   }
  ],
  "/phonak-hearing-aids/": [
@@ -1085,6 +1500,31 @@ export const PAGE_SCHEMA: Record<string, Record<string, unknown>[]> = {
      }
     }
    ]
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "BreadcrumbList",
+   "@id": "https://libertyhearingcentertx.com/phonak-hearing-aids/#breadcrumb",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://libertyhearingcentertx.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Hearing Aids",
+     "item": "https://libertyhearingcentertx.com/hearing-aids-products/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Phonak Hearing Aids",
+     "item": "https://libertyhearingcentertx.com/phonak-hearing-aids/"
+    }
+   ]
   }
  ],
  "/real-ear-measurement/": [
@@ -1134,6 +1574,31 @@ export const PAGE_SCHEMA: Record<string, Record<string, unknown>[]> = {
       "@type": "Answer",
       "text": "Yes. If your current hearing aids were fitted without real ear measurement or if your hearing has changed since your last verification, the process can identify how your devices are actually performing and guide precise adjustments that may significantly improve clarity and comfort. You do not need to buy new hearing aids to benefit from a verification appointment."
      }
+    }
+   ]
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "BreadcrumbList",
+   "@id": "https://libertyhearingcentertx.com/real-ear-measurement/#breadcrumb",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://libertyhearingcentertx.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Hearing Aids",
+     "item": "https://libertyhearingcentertx.com/hearing-aids-products/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Real Ear Measurements",
+     "item": "https://libertyhearingcentertx.com/real-ear-measurement/"
     }
    ]
   }
@@ -1207,6 +1672,31 @@ export const PAGE_SCHEMA: Record<string, Record<string, unknown>[]> = {
      }
     }
    ]
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "BreadcrumbList",
+   "@id": "https://libertyhearingcentertx.com/resound-hearing-aids/#breadcrumb",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://libertyhearingcentertx.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Hearing Aids",
+     "item": "https://libertyhearingcentertx.com/hearing-aids-products/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "ReSound Hearing Aids",
+     "item": "https://libertyhearingcentertx.com/resound-hearing-aids/"
+    }
+   ]
   }
  ],
  "/rocio-zarandona/": [
@@ -1221,6 +1711,31 @@ export const PAGE_SCHEMA: Record<string, Record<string, unknown>[]> = {
    "worksFor": {
     "@id": "https://libertyhearingcentertx.com/#organization"
    }
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "BreadcrumbList",
+   "@id": "https://libertyhearingcentertx.com/rocio-zarandona/#breadcrumb",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://libertyhearingcentertx.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "About",
+     "item": "https://libertyhearingcentertx.com/about/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Rocio Zarandona",
+     "item": "https://libertyhearingcentertx.com/rocio-zarandona/"
+    }
+   ]
   }
  ],
  "/school-hearing-screenings/": [
@@ -1262,6 +1777,31 @@ export const PAGE_SCHEMA: Record<string, Record<string, unknown>[]> = {
       "@type": "Answer",
       "text": "Hearing screening begins at birth through the newborn hearing screening program. School-age hearing screenings are typically conducted starting in preschool and repeated at key points through elementary school. Liberty Hearing Center provides hearing testing for children of all ages, from newborn follow-up screenings through school-age diagnostic evaluations, using age-appropriate testing protocols at every stage."
      }
+    }
+   ]
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "BreadcrumbList",
+   "@id": "https://libertyhearingcentertx.com/school-hearing-screenings/#breadcrumb",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://libertyhearingcentertx.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Services",
+     "item": "https://libertyhearingcentertx.com/services/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Hearing Screenings",
+     "item": "https://libertyhearingcentertx.com/school-hearing-screenings/"
     }
    ]
   }
@@ -1315,6 +1855,31 @@ export const PAGE_SCHEMA: Record<string, Record<string, unknown>[]> = {
      }
     }
    ]
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "BreadcrumbList",
+   "@id": "https://libertyhearingcentertx.com/sensorineural-hearing-loss/#breadcrumb",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://libertyhearingcentertx.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Services",
+     "item": "https://libertyhearingcentertx.com/services/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Sensorineural Hearing Loss",
+     "item": "https://libertyhearingcentertx.com/sensorineural-hearing-loss/"
+    }
+   ]
   }
  ],
  "/services/": [
@@ -1334,6 +1899,25 @@ export const PAGE_SCHEMA: Record<string, Record<string, unknown>[]> = {
     "@type": "City",
     "name": "College Station"
    }
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "BreadcrumbList",
+   "@id": "https://libertyhearingcentertx.com/services/#breadcrumb",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://libertyhearingcentertx.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Services",
+     "item": "https://libertyhearingcentertx.com/services/"
+    }
+   ]
   }
  ],
  "/signia-hearing-aids/": [
@@ -1387,6 +1971,31 @@ export const PAGE_SCHEMA: Record<string, Record<string, unknown>[]> = {
       "@type": "Answer",
       "text": "Yes. The Signia IX platform is now available through the VA, DoD, and Indian Health Service, making it accessible to veterans and active military members through authorized VA Community Care channels. Liberty Hearing Center conducts VA-authorized C&P hearing and tinnitus evaluations and participates in the VA Community Care Network. Veterans are also eligible for special discount pricing on hearing technology through Liberty Hearing Center’s service appreciation program."
      }
+    }
+   ]
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "BreadcrumbList",
+   "@id": "https://libertyhearingcentertx.com/signia-hearing-aids/#breadcrumb",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://libertyhearingcentertx.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Hearing Aids",
+     "item": "https://libertyhearingcentertx.com/hearing-aids-products/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Signia Hearing Aids",
+     "item": "https://libertyhearingcentertx.com/signia-hearing-aids/"
     }
    ]
   }
@@ -1444,6 +2053,31 @@ export const PAGE_SCHEMA: Record<string, Record<string, unknown>[]> = {
      }
     }
    ]
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "BreadcrumbList",
+   "@id": "https://libertyhearingcentertx.com/starkey-hearing-aids/#breadcrumb",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://libertyhearingcentertx.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Hearing Aids",
+     "item": "https://libertyhearingcentertx.com/hearing-aids-products/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Starkey Hearing Aids",
+     "item": "https://libertyhearingcentertx.com/starkey-hearing-aids/"
+    }
+   ]
   }
  ],
  "/tinnitus-evaluations-management/": [
@@ -1493,6 +2127,31 @@ export const PAGE_SCHEMA: Record<string, Record<string, unknown>[]> = {
       "@type": "Answer",
       "text": "No. Tinnitus management is not time-sensitive in the same way that some hearing interventions are. Patients who have lived with tinnitus for years, or even decades, can still benefit meaningfully from a structured evaluation and management plan. Habits of attention and response to the tinnitus signal are addressable regardless of how long they have been established, and sound therapy and hearing aids remain effective options for long-standing tinnitus."
      }
+    }
+   ]
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "BreadcrumbList",
+   "@id": "https://libertyhearingcentertx.com/tinnitus-evaluations-management/#breadcrumb",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://libertyhearingcentertx.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Services",
+     "item": "https://libertyhearingcentertx.com/services/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Tinnitus Assessments",
+     "item": "https://libertyhearingcentertx.com/tinnitus-evaluations-management/"
     }
    ]
   }
@@ -1548,6 +2207,31 @@ export const PAGE_SCHEMA: Record<string, Record<string, unknown>[]> = {
       "@type": "Answer",
       "text": "Charging a Unitron rechargeable hearing aid takes approximately five to seven hours for a full charge. You will know the hearing aids are charging when the indicator lights blink green about five times. When the lights stop blinking and stay solid green, the hearing aids are fully charged and ready for a full day of use."
      }
+    }
+   ]
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "BreadcrumbList",
+   "@id": "https://libertyhearingcentertx.com/unitron-hearing-aids/#breadcrumb",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://libertyhearingcentertx.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Hearing Aids",
+     "item": "https://libertyhearingcentertx.com/hearing-aids-products/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Unitron Hearing Aids",
+     "item": "https://libertyhearingcentertx.com/unitron-hearing-aids/"
     }
    ]
   }
@@ -1609,6 +2293,31 @@ export const PAGE_SCHEMA: Record<string, Record<string, unknown>[]> = {
      }
     }
    ]
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "BreadcrumbList",
+   "@id": "https://libertyhearingcentertx.com/veterans-cp-hearing-evaluations/#breadcrumb",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://libertyhearingcentertx.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Services",
+     "item": "https://libertyhearingcentertx.com/services/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Veterans C&P Hearing Evaluations",
+     "item": "https://libertyhearingcentertx.com/veterans-cp-hearing-evaluations/"
+    }
+   ]
   }
  ],
  "/widex-hearing-aids/": [
@@ -1662,6 +2371,31 @@ export const PAGE_SCHEMA: Record<string, Record<string, unknown>[]> = {
       "@type": "Answer",
       "text": "Yes. Most Widex hearing aids include Zen tinnitus management programs, which use fractal tones alongside other sound options to reduce tinnitus perception and ease the stress response that makes tinnitus feel more intrusive. Zen programs are available directly through the Widex Moment app and can be customized to your personal comfort. For many patients, properly fitted hearing aids with Zen therapy significantly reduce how often tinnitus is noticed during daily life."
      }
+    }
+   ]
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "BreadcrumbList",
+   "@id": "https://libertyhearingcentertx.com/widex-hearing-aids/#breadcrumb",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://libertyhearingcentertx.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Hearing Aids",
+     "item": "https://libertyhearingcentertx.com/hearing-aids-products/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Widex Hearing Aids",
+     "item": "https://libertyhearingcentertx.com/widex-hearing-aids/"
     }
    ]
   }

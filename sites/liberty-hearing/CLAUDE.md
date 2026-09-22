@@ -1444,3 +1444,66 @@ compares):
    `richResultsResult` per URL with Google's own verdict — but only for the INDEXED
    copy, and right now every URL returns **"URL is unknown to Google"** because the
    site has not been crawled yet. Re-check once indexing starts.
+
+## BREADCRUMB SCHEMA ADDED (2026-09-22)
+
+Source: `docs.google.com/document/d/11namj2DTNImyYX9swBy8cVjM0h-OHC88DNFfZ2_zaS4`
+(public). **30 `BreadcrumbList` blocks, copied VERBATIM**, merged into
+`src/lib/page-schema.ts` alongside the 2026-09-21 schema doc. Same route-keyed
+mechanism — **no page file was touched**.
+
+`PAGE_SCHEMA` is now **30 routes / 82 blocks**. `/hearing-aids-for-tinnitus/` is a
+NEW entry (breadcrumb only; it was not in the first schema doc).
+
+Trails: `Home > Services > …` for the 10 service pages, `Home > Hearing Aids > …`
+for the 12 hearing-aid/brand pages, `Home > About > …` for the 4 staff pages, and
+`Home > Resources > …` for the tinnitus blog post.
+
+**Verified live** (worker `17b40685-fb72-48ca-9741-5c67f2c45daf`, cache v9):
+all **30 routes carry exactly 1 `BreadcrumbList`, byte-identical to the doc**;
+positions are a clean 1..n on every page; **all 32 unique `item` URLs return 200**;
+124 ld+json blocks across 40 built pages, all parsing; `astro check` 0 errors.
+Checked in `dist/` BEFORE deploying, then again live (`scratchpad/bclive.mjs`).
+
+### ⚠ Validators were rate-limited — NOT re-validated after this change
+Both tools blocked this IP on 2026-09-22:
+- **Schema.org validator: HTTP 429** on every request, even with 20-40s backoff.
+  Its code-paste mode returns 405 for the `html=` param, so that is no workaround.
+- **Google Rich Results Test:** still the "Log in and try again" block from 09-21.
+
+So the breadcrumb markup is verified **structurally and against the doc**, but has
+**not** been through either validator. **Re-run when the blocks lift** —
+`scratchpad/sdo-paced.mjs` (resumable, writes `sdo-paced.json`) and
+`scratchpad/rrt3.mjs`. Breadcrumbs ARE a supported Google rich-result type, so RRT
+should list a "Breadcrumbs" item once it runs — a useful extra signal that the
+earlier 16/30 run could not give.
+
+### Gap in the client's breadcrumb doc
+`/best-way-to-clean-ears/` — the OTHER blog post — **has no breadcrumb in the doc**,
+while `/hearing-aids-for-tinnitus/` does. Following the same pattern it would be
+`Home > Resources > Best Way to Clean Ears`. **NOT added** — raised with Vince
+rather than invented.
+
+## BLOGPOSTING — already present (thin), enrichment BLOCKED on client data
+
+Vince asked to add BlogPosting to the individual blog posts. **Both posts already
+emit one** — emdash builds it automatically whenever `pageType === "article"`
+(`node_modules/emdash/src/page/jsonld.ts` -> `buildBlogPostingJsonLd`), which the
+two posts trigger via `ogType="article"`. Live today it contains only:
+`headline`, `description`, `image`, `url`, `mainEntityOfPage`.
+
+**Missing: `author`, `publisher`, `datePublished`, `dateModified`.**
+- `publisher` vanished when `siteName` stopped being passed (that was how the
+  duplicate bare `WebSite` block was removed — see 2026-09-21). Re-adding
+  `siteName` would bring the duplicate back.
+- `author`/dates are **client facts I do not have**: neither post shows a byline or
+  a date anywhere on the page (checked the rendered text), and inventing a
+  publication date for a medical practice's content is not acceptable.
+- Note emdash types `author` as **Person only**, so an Organization author cannot
+  be expressed through its builder — a richer block would have to be emitted from
+  `PAGE_SCHEMA` instead, and emdash's own would then need suppressing to avoid TWO
+  `BlogPosting` blocks (it only stops emitting if `pageType` is not `"article"`,
+  which would also drop `og:type=article`).
+
+**Asked Vince for:** the author of each post (Dr. Duhon? the practice?) and the
+publish dates. Not changed until he answers.
