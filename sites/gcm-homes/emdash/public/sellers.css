@@ -32,30 +32,24 @@
 }
 
 /* ---- Seasonal timing ---------------------------------------------------- */
-.timing__head { max-width: 860px; }
-.timing__head .eyebrow { margin-bottom: 16px; }
-.timing__grid {
+/* One row, two columns: head, copy and chart on the left (3fr); Grant's quote
+   over the condo-record story on the right (2fr). */
+.timing {
 	display: grid;
-	grid-template-columns: 1fr 1fr;
+	grid-template-columns: 3fr 2fr;
 	gap: 72px;
-	align-items: start;
-	margin-top: 56px;
+	align-items: center;
 }
+.timing__main { display: flex; flex-direction: column; gap: 40px; }
+.timing__head .eyebrow { margin-bottom: 16px; }
 .timing__copy { display: flex; flex-direction: column; gap: 18px; }
 .timing__copy p {
 	font-size: 17px;
 	line-height: 1.75;
 	color: var(--body);
 }
-/* Second row: Grant's quote left, the condo-record story right. */
-.timing__row2 {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	gap: 72px;
-	align-items: center;
-	margin-top: 72px;
-}
-.timing__row2 .pullquote { margin: 0; }
+.timing__side { display: flex; flex-direction: column; gap: 40px; }
+.timing__side .pullquote { margin: 0; }
 
 /* The 8-month chart. Two bars on a shared month grid show the gap between
    buyers arriving (April) and listings appearing (June) — the window a
@@ -188,7 +182,10 @@
 }
 
 /* ---- Marketing built to be seen ----------------------------------------- */
-/* The lead copy + photo row is the site's .guide split (styles.css). */
+/* The lead copy + photo row is the site's .guide split (styles.css), on the
+   same 1.35fr / 1fr grid and 40px gap as .mkt__feature below, so the photo
+   is exactly as wide as the reach panel under it. */
+.guide.mkt__intro { grid-template-columns: 1.35fr 1fr; gap: 40px; }
 .mkt__feature {
 	display: grid;
 	grid-template-columns: 1.35fr 1fr;
@@ -265,7 +262,16 @@
 	line-height: 1.8;
 	color: var(--body);
 }
-.honesty__body .pullquote { margin: 6px 0 0; }
+/* The story and the quote sit side by side, wider than the text column. */
+.honesty__pair {
+	max-width: 1080px;
+	margin: 48px auto 0;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 64px;
+	align-items: center;
+}
+.honesty__pair .pullquote { margin: 0; }
 
 /* ---- Home valuation ----------------------------------------------------- */
 /* Reuses the site's .invite two-panel shell (navy left, form right) so the
@@ -292,10 +298,13 @@
 
 /* ---- Tablet ------------------------------------------------------------- */
 @media (max-width: 1024px) {
-	.timing__grid { grid-template-columns: 1fr; gap: 40px; margin-top: 44px; }
+	.timing { grid-template-columns: 1fr; gap: 44px; }
+	.timing__main { gap: 32px; }
+	.timing__side { gap: 32px; }
+	.guide.mkt__intro { grid-template-columns: 1fr; gap: 48px; }
+	.honesty__pair { grid-template-columns: 1fr; gap: 32px; margin-top: 36px; }
 	.timing__copy p { font-size: 16px; }
 	.row2 { margin-top: 64px; }
-	.timing__row2 { grid-template-columns: 1fr; gap: 36px; margin-top: 48px; }
 	.story-hl, .honesty__body .story-hl { font-size: 17px; }
 
 	.season { --season-gutter: 96px; padding: 28px 24px 24px; }
@@ -310,10 +319,11 @@
 
 /* ---- Mobile ------------------------------------------------------------- */
 @media (max-width: 640px) {
-	.timing__grid { gap: 32px; }
+	.timing { gap: 36px; }
+	.timing__main, .timing__side { gap: 28px; }
+	.honesty__pair { gap: 28px; margin-top: 28px; }
 	.timing__copy p { font-size: 15px; }
 	.row2 { margin-top: 48px; }
-	.timing__row2 { gap: 28px; margin-top: 40px; }
 	.story-hl, .honesty__body .story-hl { font-size: 16px; padding-left: 20px; }
 
 	/* Too narrow for a label gutter — collapse it to zero so the labels stack

@@ -5,10 +5,10 @@
 //
 //   01 Hero            .hero              — same pattern as the home/About hero
 //   02 The Pricing Read .guide.split--rev — two rows: copy/photo, then photo/copy
-//   03 Seasonal Timing .season            — copy + chart, then quote + story
-//   04 The Marketing   .guide + .mkt__*   — copy/photo row, film + reach, package
+//   03 Seasonal Timing .timing            — one 3fr/2fr row: copy + chart | quote + story
+//   04 The Marketing   .mkt__*            — three rows: copy/photo, film + reach, package
 //   05 The Network     .net.net--cols     — dark Statement block, two columns
-//   06 Honest Advice   .honesty           — narrow column, story then quote
+//   06 Honest Advice   .honesty           — narrow column, then story | quote
 //   07 The Process     .process           — editorial column (styles.css)
 //   08 Home Valuation  .invite            — the site's contact shell, reused
 //
@@ -89,6 +89,10 @@ const processBody = (d.process_body ?? "").toString().trim();
 const processPromise = (d.process_promise ?? "").toString().trim();
 const showProcess = Boolean(processBody || processPromise);
 
+// pricing_p2b is the county-records half of what used to be one long
+// pricing_p2, moved to open the second row. No fallback: empty hides it.
+const pricingP2b = (d.pricing_p2b ?? "").toString().trim();
+
 const successMessage = d.val_success ?? "Thanks — Grant will be in touch with a considered read within 24 hours.";
 ---
 
@@ -142,6 +146,7 @@ const successMessage = d.val_success ?? "Thanks — Grant will be in touch with 
 				<div class="guide__img" style={`background-image:url(${pricingImage2})`}></div>
 			</div>
 			<div class="guide__copy">
+				{pricingP2b && <p class="guide__p" {...(e.pricing_p2b ?? {})}>{pricingP2b}</p>}
 				<p class="guide__p" {...(e.pricing_p3 ?? {})}>
 					{d.pricing_p3 ?? "Grant prices from 35 years of watching what sells, what stalls, and why. He has been wrong on the upside and the downside, and he will tell you which way he thinks your home leans before you list."}
 				</p>
@@ -155,18 +160,19 @@ const successMessage = d.val_success ?? "Thanks — Grant will be in touch with 
 		</div>
 	</section>
 
-	{/* 03 SEASONAL TIMING — copy alongside the eight-month chart, then a second
-	     row: Grant's quote left, the condo-record story right. */}
+	{/* 03 SEASONAL TIMING — one row, two columns (3fr / 2fr): the head, copy and
+	     eight-month chart on the left; Grant's quote over the condo-record story
+	     on the right. */}
 	<section class="section section--cream" data-screen-label="03 Seasonal Timing">
-		<div class="container">
-			<div class="timing__head">
-				<span class="eyebrow" {...(e.timing_eyebrow ?? {})}>{d.timing_eyebrow ?? "SEASONAL TIMING"}</span>
-				<h2 class="h2" {...(e.timing_heading ?? {})}>
-					{d.timing_heading ?? "The Sellers Who Win Here Are Ready Before the Buyers Arrive."}
-				</h2>
-			</div>
+		<div class="container timing">
+			<div class="timing__main">
+				<div class="timing__head">
+					<span class="eyebrow" {...(e.timing_eyebrow ?? {})}>{d.timing_eyebrow ?? "SEASONAL TIMING"}</span>
+					<h2 class="h2" {...(e.timing_heading ?? {})}>
+						{d.timing_heading ?? "The Sellers Who Win Here Are Ready Before the Buyers Arrive."}
+					</h2>
+				</div>
 
-			<div class="timing__grid">
 				<div class="timing__copy">
 					<p {...(e.timing_p1 ?? {})}>
 						{d.timing_p1 ?? "Tahoe runs on a calendar most out-of-area agents do not price into a plan. For the last several years, buyers have been here looking in April and May. Most single-family listings do not come on until June or July. That gap is the opportunity."}
@@ -225,7 +231,7 @@ const successMessage = d.val_success ?? "Thanks — Grant will be in touch with 
 				</div>
 			</div>
 
-			<div class="timing__row2">
+			<div class="timing__side">
 				<div class="pullquote">
 					<div class="pullquote__q" {...(e.timing_quote ?? {})}>
 						"{d.timing_quote ?? "If I've got sellers who are ready and the marketing package is done, we can come on the market earlier — before everyone else lists. That's a real opportunity."}"
@@ -239,10 +245,11 @@ const successMessage = d.val_success ?? "Thanks — Grant will be in touch with 
 		</div>
 	</section>
 
-	{/* 04 THE MARKETING — lead copy with a photo (the site's copy/photo split,
-	     copy first), the film/reach feature, then the seller package. */}
+	{/* 04 THE MARKETING — three rows: lead copy with a photo (the photo column
+	     matches the reach panel below it), the film/reach feature, then the
+	     seller package. */}
 	<section class="section section--beige" data-screen-label="04 Marketing">
-		<div class="container guide split--rev split--photo-fill">
+		<div class="container guide split--rev split--photo-fill mkt__intro">
 			<div class="guide__copy">
 				<div class="eyebrow" {...(e.mkt_eyebrow ?? {})}>{d.mkt_eyebrow ?? "THE MARKETING"}</div>
 				<h2 class="guide__h" {...(e.mkt_heading ?? {})}>
@@ -259,32 +266,28 @@ const successMessage = d.val_success ?? "Thanks — Grant will be in touch with 
 				<div class="guide__img" style={`background-image:url(${mktImage})`}></div>
 			</div>
 		</div>
-		<div class="container">
-
-			<div class="mkt__feature">
-				<div class="mkt__film" style={`background-image:url(${filmImage})`}></div>
-				<div class="mkt__reach">
-					<span class="eyebrow" {...(e.reach_eyebrow ?? {})}>{d.reach_eyebrow ?? "REACH"}</span>
-					<p class="mkt__reach-body" {...(e.reach_body ?? {})}>
-						{d.reach_body ?? "Through Coldwell Banker, the listing reaches a national and international buyer network on top of the local MLS — so a home in Incline Village shows up in front of the relocating buyer in San Francisco and the second-home buyer overseas."}
-					</p>
-				</div>
+		<div class="container mkt__feature">
+			<div class="mkt__film" style={`background-image:url(${filmImage})`}></div>
+			<div class="mkt__reach">
+				<span class="eyebrow" {...(e.reach_eyebrow ?? {})}>{d.reach_eyebrow ?? "REACH"}</span>
+				<p class="mkt__reach-body" {...(e.reach_body ?? {})}>
+					{d.reach_body ?? "Through Coldwell Banker, the listing reaches a national and international buyer network on top of the local MLS — so a home in Incline Village shows up in front of the relocating buyer in San Francisco and the second-home buyer overseas."}
+				</p>
 			</div>
-
-			<div class="mkt__incl">
-				<div class="eyebrow" {...(e.incl_label ?? {})}>{d.incl_label ?? "WHAT A SELLER GETS"}</div>
-				<h3 class="h3 mkt__incl-h" {...(e.incl_heading ?? {})}>
-					{d.incl_heading ?? "The Grant C. Meyer Homes Seller Package"}
-				</h3>
-				<div class="mkt__grid">
-					{INCLUSIONS.map((m, i) => (
-						<div class="mkt__item">
-							<div class="mkt__item-num">{String(i + 1).padStart(2, "0")}</div>
-							<div class="mkt__item-t" {...(e[`incl${i + 1}_t`] ?? {})}>{d[`incl${i + 1}_t`] ?? m.t}</div>
-							<p class="mkt__item-d" {...(e[`incl${i + 1}_d`] ?? {})}>{d[`incl${i + 1}_d`] ?? m.d}</p>
-						</div>
-					))}
-				</div>
+		</div>
+		<div class="container mkt__incl">
+			<div class="eyebrow" {...(e.incl_label ?? {})}>{d.incl_label ?? "WHAT A SELLER GETS"}</div>
+			<h3 class="h3 mkt__incl-h" {...(e.incl_heading ?? {})}>
+				{d.incl_heading ?? "The Grant C. Meyer Homes Seller Package"}
+			</h3>
+			<div class="mkt__grid">
+				{INCLUSIONS.map((m, i) => (
+					<div class="mkt__item">
+						<div class="mkt__item-num">{String(i + 1).padStart(2, "0")}</div>
+						<div class="mkt__item-t" {...(e[`incl${i + 1}_t`] ?? {})}>{d[`incl${i + 1}_t`] ?? m.t}</div>
+						<p class="mkt__item-d" {...(e[`incl${i + 1}_d`] ?? {})}>{d[`incl${i + 1}_d`] ?? m.d}</p>
+					</div>
+				))}
 			</div>
 		</div>
 	</section>
@@ -321,8 +324,8 @@ const successMessage = d.val_success ?? "Thanks — Grant will be in touch with 
 		</div>
 	</section>
 
-	{/* 06 HONEST ADVICE — a narrow editorial column: the lead paragraph, the
-	     inherited-house story, then Grant's quote. */}
+	{/* 06 HONEST ADVICE — a narrow editorial column (head + lead paragraph),
+	     then a wider two-column row: the inherited-house story | Grant's quote. */}
 	<section class="section section--cream" data-screen-label="06 Honest Advice">
 		<div class="container">
 			<div class="honesty">
@@ -336,15 +339,17 @@ const successMessage = d.val_success ?? "Thanks — Grant will be in touch with 
 					<p {...(e.honesty_p1 ?? {})}>
 						{d.honesty_p1 ?? "Some agents will tell a seller whatever it takes to win the listing — a price they cannot get, a timeline that will not hold. Grant runs the opposite way. His business is built on repeat clients and referrals; one has done 23 transactions with him over the years. That only happens when the advice is honest the first time."}
 					</p>
-					<p class="story-hl" {...(e.honesty_p2 ?? {})}>
-						{d.honesty_p2 ?? "For most sellers here, the home is not their only one and they are not moving across the country to start a job, so there is room to be strategic about timing and price instead of forced into a fire sale. Grant will give a seller his real read — what he expects, where the home might surprise on the upside, and where it might not — and then let the seller drive."}
-					</p>
-					<div class="pullquote">
-						<div class="pullquote__q" {...(e.honesty_quote ?? {})}>
-							"{d.honesty_quote ?? "All I can ask is that my clients listen to my advice. At the end of the day, it's their decision — they get to drive the ship."}"
-						</div>
-						<div class="eyebrow pullquote__a">— GRANT C. MEYER</div>
+				</div>
+			</div>
+			<div class="honesty__pair">
+				<p class="story-hl" {...(e.honesty_p2 ?? {})}>
+					{d.honesty_p2 ?? "For most sellers here, the home is not their only one and they are not moving across the country to start a job, so there is room to be strategic about timing and price instead of forced into a fire sale. Grant will give a seller his real read — what he expects, where the home might surprise on the upside, and where it might not — and then let the seller drive."}
+				</p>
+				<div class="pullquote">
+					<div class="pullquote__q" {...(e.honesty_quote ?? {})}>
+						"{d.honesty_quote ?? "All I can ask is that my clients listen to my advice. At the end of the day, it's their decision — they get to drive the ship."}"
 					</div>
+					<div class="eyebrow pullquote__a">— GRANT C. MEYER</div>
 				</div>
 			</div>
 		</div>

@@ -1710,6 +1710,11 @@
 					"type": "text"
 				},
 				{
+					"slug": "pricing_p2b",
+					"label": "Pricing read — second row, opening paragraph",
+					"type": "text"
+				},
+				{
 					"slug": "pricing_p3",
 					"label": "Pricing read — paragraph 3",
 					"type": "text"
@@ -2836,7 +2841,7 @@
 					"pricing_eyebrow": "THE PRICING READ",
 					"pricing_heading": "The Hardest Number to Get Right in This Market.",
 					"pricing_p1": "Pricing here isn't a formula. I start where an appraiser would, with price per square foot and what closed in the last six months, and then I show you something most agents skip: what a buyer for your type of property has on the shelf right now. Six new listings below you make last spring's comps irrelevant, and nothing on the market within $200,000 of you means we can push higher than we could six months ago.",
-					"pricing_p2": "The internet gets this town wrong for a specific reason. Most markets value by proximity, and here proximity means little: an original 1962 home and new construction share a lot line in our best neighborhoods, so the algorithm overvalues one and undervalues the other. The county records add another wrinkle. Square footage was measured loosely here for decades, so I get an appraisal measurement on almost every listing and market the real number.",
+					"pricing_p2": "The internet gets this town wrong for a specific reason. Most markets value by proximity, and here proximity means little: an original 1962 home and new construction share a lot line in our best neighborhoods, so the algorithm overvalues one and undervalues the other.",
 					"pricing_p3": "My job is to give you what I know. You get to drive the ship.  Some sellers need to be gone this season, and some are happy to wait years for their number. I'll tell you honestly which price gets which result, and I'll be in this business for another 19 years, so I'm not in a hurry either.",
 					"pricing_quote": "I sell more property than anybody else here, and I still can't promise you a number. The market tells us whether we're priced right. My job is to make sure you hear it early and clearly.",
 					"timing_eyebrow": "SEASONAL TIMING",
@@ -2893,7 +2898,8 @@
 					"incl7_d": "A code on the sign takes buyers straight to the listing, so no more paper flyers getting rained on.",
 					"incl8_t": "Coldwell Banker Reach",
 					"incl8_d": "Local MLS plus the national and international Coldwell Banker Global Luxury network.",
-					"incl_heading": "The Grant C. Meyer Homes Seller Package"
+					"incl_heading": "The Grant C. Meyer Homes Seller Package",
+					"pricing_p2b": "The county records add another wrinkle. Square footage was measured loosely here for decades, so I get an appraisal measurement on almost every listing and market the real number."
 				}
 			}
 		]
