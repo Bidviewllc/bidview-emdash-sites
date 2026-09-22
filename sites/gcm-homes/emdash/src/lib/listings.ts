@@ -157,6 +157,23 @@ export async function allActive() {
 	).all();
 	return (results ?? []).map((r: any) => ({ ...toListing(r), ownerNote: r.owner_note ?? null }));
 }
+/**
+ * The lead photo of one active Residential listing, picked at random -- a house,
+ * never a vacant lot or a commercial building. Used as a section image on
+ * /buyers/, so it changes each time the edge cache (5 min) refreshes the page.
+ * Returns null when the query fails or nothing matches; callers fall back.
+ */
+export async function randomHomePhoto(): Promise<string | null> {
+	try {
+		const row = await DB().prepare(
+			"SELECT photo FROM listings WHERE status='Active' AND type='Residential' AND photo IS NOT NULL AND photo != '' ORDER BY RANDOM() LIMIT 1"
+		).first();
+		return (row as any)?.photo ?? null;
+	} catch {
+		return null;
+	}
+}
+
 export async function bySlug(slug: string) {
 	const row = await DB().prepare("SELECT * FROM listings WHERE slug = ?").bind(slug).first();
 	if (!row) return null;

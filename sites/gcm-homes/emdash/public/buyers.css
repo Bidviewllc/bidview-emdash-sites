@@ -36,15 +36,17 @@
 /* The accordion itself is the site-wide `.acc` in styles.css -- it started here
    as `.tax-acc` and moved into the design system when it became the house
    accordion style (see "Accordion (site default)" there). What is left below is
-   only what this page adds inside a panel: the scenario sub-title and the
-   dash-bulleted list. */
-.acc__panel .tax-acc__title {
-	font-family: var(--font-serif);
-	font-weight: 500;
-	font-size: 20px;
-	line-height: 1.3;
+   only what this page adds inside a panel: the scenario lead-in and the
+   dash-bulleted list.
+   The lead-in used to be a serif sub-title on its own line (.tax-acc__title).
+   Liz swapped it (2026-09-22) for a bold, underlined run-in that opens the
+   first paragraph. */
+.acc__panel .tax-lead {
+	font-weight: 700;
 	color: var(--navy);
-	margin-bottom: 16px;
+	text-decoration: underline;
+	text-underline-offset: 3px;
+	text-decoration-thickness: 1px;
 }
 
 .tax-bullets {
@@ -74,13 +76,41 @@
 .tax-disclaimer {
 	max-width: 780px;
 	margin: 64px auto 0;
-	padding-top: 28px;
-	border-top: 1px solid rgba(197, 198, 206, 0.5);
 	font-size: 13.5px;
 	line-height: 1.7;
 	color: var(--muted);
 	text-align: center;
 }
+
+/* ---- The Stakes, second row --------------------------------------------- */
+/* The Stakes runs as two .guide rows in one section: copy/photo, then
+   photo/copy. This is only the space between them. */
+.stakes-row2 { margin-top: 96px; }
+
+/* ---- The Network, two columns ------------------------------------------- */
+/* /buyers/ runs the shared .net statement as a two-column split instead of a
+   centred column: statement left, Grant's quote over the proof story right,
+   everything left-aligned. /sellers/ keeps the centred original, so this is
+   scoped here rather than changed in styles.css. */
+.net-cols {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 80px;
+	align-items: center;
+}
+.net.net--cols {
+	max-width: none;
+	margin: 0;
+	text-align: left;
+}
+.net-cols__side {
+	display: flex;
+	flex-direction: column;
+	gap: 40px;
+	text-align: left;
+}
+.net-cols__side .pullquote { margin: 0; }
+.net-cols__side .pullquote__q { font-size: 26px; line-height: 1.42; }
 
 /* ---- Two communities, one lake ------------------------------------------ */
 /* Photo cards that link through to the community page. */
@@ -217,6 +247,11 @@
 	.tax-intro__turn { font-size: 19px; }
 	.tax-disclaimer { margin-top: 48px; }
 
+	.stakes-row2 { margin-top: 64px; }
+	.net-cols { grid-template-columns: 1fr; gap: 44px; }
+	.net-cols__side { gap: 32px; }
+	.net-cols__side .pullquote__q { font-size: 23px; }
+
 	.communities { grid-template-columns: 1fr; gap: 24px; margin-top: 48px; }
 	.comm-card { height: 400px; }
 }
@@ -227,6 +262,11 @@
 	.tax-intro__turn { font-size: 17px; margin-top: 20px; }
 	.tax-bullets li { font-size: 15px; }
 	.tax-disclaimer { font-size: 12.5px; margin-top: 40px; }
+
+	.stakes-row2 { margin-top: 48px; }
+	.net-cols { gap: 36px; }
+	.net-cols__side { gap: 28px; }
+	.net-cols__side .pullquote__q { font-size: 20px; }
 
 	.comm-card { height: 360px; }
 	.comm-card__body { padding: 28px 22px; }

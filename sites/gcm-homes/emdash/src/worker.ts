@@ -25,7 +25,9 @@ export { PluginBridge };
 // most sharply the community accordion, which moved from .cg-acc to the
 // shared .acc. Cached v2 HTML against the new stylesheet would render that
 // section unstyled, so this has to move with the deploy.
-const CACHE_VERSION = "v4";
+// v5 (2026-09-22): /buyers/ layout pass -- Stakes in two rows, Network in two
+// columns, tax lead-ins inline. Old cached HTML would miss the new classes.
+const CACHE_VERSION = "v5";
 const CACHEABLE_TYPE = /^(?:text\/html|application\/xml|text\/xml|text\/plain)/i;
 const ADMIN_COOKIE = /emdash[-_](session|edit-mode|admin)/i;
 
