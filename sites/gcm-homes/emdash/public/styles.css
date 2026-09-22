@@ -2545,7 +2545,7 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
 .net__body {
   font-size: 19px;
   line-height: 1.78;
-  color: rgba(255, 255, 255, 0.82);
+  color: var(--white);
   margin-top: 28px;
 }
 .net__body p + p { margin-top: 22px; }

@@ -56,6 +56,14 @@ const stakesImage = imageUrl(d.stakes_image) ?? "/assets/listing-hero-exterior.j
 const investmentImage = imageUrl(d.investment_image) ?? "/assets/gallery-1.jpg";
 // The Stakes section's second row runs a real house from the MLS feed, picked at
 // random (see randomHomePhoto). A CMS image, if one is ever set, wins.
+// stakes_p4 is the back half of what used to be one long stakes_p3. Its
+// fallback only shows when stakes_p3 doesn't already carry that text, so an
+// unsplit stakes_p3 never renders the sentence twice.
+const STAKES_P4_FALLBACK =
+	"That knowledge doesn't live in a database. I've been reading this market from inside it since 1992, and I read it for you, on your side of the table.";
+const stakesP4 =
+	d.stakes_p4 ??
+	((d.stakes_p3 ?? "").includes("That knowledge") ? null : STAKES_P4_FALLBACK);
 const stakesImage2 =
 	imageUrl(d.stakes_image2) ?? (await randomHomePhoto()) ?? "/assets/gallery-1.jpg";
 
@@ -234,9 +242,9 @@ const showProcess = Boolean(processBody || processBody2 || processPromise);
 				<p class="guide__p" {...(e.stakes_p3 ?? {})}>
 					{d.stakes_p3 ?? "This is a micro market of 10,000 parcels, and it moves on a handful of sales. The same floor plan can be worth a very different number one street over, and one hard winter can send a whole elevation band to market at once."}
 				</p>
-				<p class="guide__p" {...(e.stakes_p4 ?? {})}>
-					{d.stakes_p4 ?? "That knowledge doesn't live in a database. I've been reading this market from inside it since 1992, and I read it for you, on your side of the table."}
-				</p>
+				{stakesP4 && (
+					<p class="guide__p" {...(e.stakes_p4 ?? {})}>{stakesP4}</p>
+				)}
 				<div class="pullquote">
 					<div class="pullquote__q" {...(e.stakes_quote ?? {})}>
 						"{d.stakes_quote ?? "You can avoid making those 50-60% mistakes by paying 3-6%. In our market, that's a fantastic insurance policy."}"

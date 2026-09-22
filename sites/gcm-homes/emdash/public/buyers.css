@@ -94,7 +94,7 @@
    scoped here rather than changed in styles.css. */
 .net-cols {
 	display: grid;
-	grid-template-columns: 1fr 1fr;
+	grid-template-columns: 3fr 2fr;
 	gap: 80px;
 	align-items: center;
 }
