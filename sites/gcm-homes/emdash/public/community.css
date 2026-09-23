@@ -38,11 +38,10 @@
 .cg-facts { padding: 84px 48px; background: var(--navy); text-align: center; }
 .cg-facts .cg-h2 { color: #fff; }
 .cg-facts__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; margin-top: 48px; }
-/* Liz's spec. The faint white hairline became the site's orange accent rule,
-   so these read as the same kind of mark as .pullquote and .stat. The
-   old `:first-child { border-left: none }` exception is gone with it -- the
-   rule is now a deliberate accent on every figure, not a divider between them. */
-.cg-fact { border-left: 3px solid var(--orange); padding-left: 24px; text-align: center; }
+/* Liz's spec (2026-09-23): back to a faint hairline divider between figures,
+   so the first figure has no rule and the other three do. */
+.cg-fact { text-align: center; }
+.cg-fact:not(:first-child) { border-left: 1px solid #f0ede86b; padding-left: 24px; }
 .cg-fact__num { font-family: var(--font-serif); font-size: 40px; color: #fff; line-height: 1; }
 .cg-fact__num span { font-size: 18px; color: var(--orange); margin-left: 6px; }
 /* Type from `eyebrow eyebrow--dim`; the gap above is this rule's. */
@@ -132,10 +131,10 @@
 /* 6. History */
 .cg-history { padding: 90px 48px; background: var(--navy); text-align: center; }
 .cg-eras { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-top: 52px; text-align: left; }
-.cg-era__mark { font-family: var(--font-serif); font-size: 40px; color: rgba(247,148,91,0.55); line-height: 1; }
+.cg-era__mark { font-family: var(--font-serif); font-size: 40px; color: var(--orange); line-height: 1; }
 .cg-era__title { font-family: var(--font-serif); font-size: 22px; color: #fff; margin: 14px 0 12px; }
-.cg-era__title span { color: rgba(255,255,255,0.5); font-size: 15px; }
-.cg-era__p { font-size: 15px; line-height: 1.75; color: rgba(255,255,255,0.72); }
+/* The year matches the era name -- same colour and size, fully opaque. */
+.cg-era__p { font-size: 15px; line-height: 1.75; color: #fff; }
 
 /* 7. Living Here accordion — uses the site-wide `.acc` in styles.css (the
    Buyers tax accordion, promoted to the house style). The only difference here

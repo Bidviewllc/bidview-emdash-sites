@@ -156,7 +156,7 @@
     ).addTo(map);
 
     // Outline style adapts to the base: navy on light maps, cream over satellite.
-    var mode = { border: '#06223A', fill: 0.32, hoverFill: 0.5 };
+    var mode = { border: '#06223A', fill: 0.5, hoverFill: 0.65 };
 
     var i = 0;
     var layer = L.geoJSON(window.NEIGHBORHOODS, {
@@ -190,8 +190,8 @@
 
     // When the base layer changes, re-tune the outline color/opacity to stay readable.
     map.on('baselayerchange', function (e) {
-      if (e.layer === satellite) { mode.border = '#FEDCB9'; mode.fill = 0.28; mode.hoverFill = 0.45; }
-      else { mode.border = '#06223A'; mode.fill = 0.32; mode.hoverFill = 0.5; }
+      if (e.layer === satellite) { mode.border = '#FEDCB9'; mode.fill = 0.5; mode.hoverFill = 0.65; }
+      else { mode.border = '#06223A'; mode.fill = 0.5; mode.hoverFill = 0.65; }
       layer.setStyle(function (f) {
         return { color: mode.border, weight: 1.5, fillColor: f.properties._fill, fillOpacity: mode.fill };
       });
