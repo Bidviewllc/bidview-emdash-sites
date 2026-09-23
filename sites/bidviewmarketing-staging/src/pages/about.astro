@@ -12,7 +12,12 @@ const pageHtml = bodyHtml
   .replace(/<footer class="site-footer"[\s\S]*?<\/footer>/i, '')
   .trim();
 ---
-<BaseLayout title="About | Bidview Marketing">
+<BaseLayout
+  title="About - Bidview Marketing"
+  metaDescription="Bidview Marketing helps professional service businesses grow revenue by building clear, predictable systems that attract the right clients and convert demand"
+  ogImage="/Assets/line-drawing-of-cameron-working-on-building-drawings.jpg"
+  schema={[{ '@type': 'AboutPage', '@id': 'https://www.bidviewmarketing.com/about/#aboutpage', url: 'https://www.bidviewmarketing.com/about/', name: 'About - Bidview Marketing' }]}
+>
   <SiteHeader />
   <Fragment set:html={pageHtml} />
   <SiteFooter />

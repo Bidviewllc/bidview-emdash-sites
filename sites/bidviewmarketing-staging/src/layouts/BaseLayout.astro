@@ -1,11 +1,60 @@
 ---
+import {
+  SITE_NAME,
+  GA_TAG_ID,
+  GSC_VERIFICATION,
+  ROBOTS_INDEX,
+  absoluteUrl,
+  baseSchemaGraph,
+  isStagingHost,
+} from '../lib/site';
+
 interface Props {
   title: string;
   scriptSrc?: string;
   metaDescription?: string;
+  /** Path of this page, e.g. "/about/". Defaults to the request path. */
+  canonicalPath?: string;
+  /** Set true for pages that must never be indexed (e.g. /thank-you/). */
+  noindex?: boolean;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  /** Extra JSON-LD nodes appended to the Organization + WebSite graph. */
+  schema?: Record<string, unknown>[];
 }
 
-const { title, scriptSrc, metaDescription } = Astro.props;
+const {
+  title,
+  scriptSrc,
+  metaDescription,
+  canonicalPath = Astro.url.pathname,
+  noindex = false,
+  ogImage = '/Assets/bidview-marketing-internal-hero-image.webp',
+  ogType = 'website',
+  schema = [],
+} = Astro.props;
+
+// One canonical per page: /about and /about/ both answer, both point to /about/.
+const canonical = absoluteUrl(canonicalPath.endsWith('/') ? canonicalPath : `${canonicalPath}/`);
+const staging = isStagingHost(Astro.url.hostname);
+const robots = noindex || staging ? 'noindex, nofollow' : ROBOTS_INDEX;
+const isHome = canonicalPath === '/';
+
+const graph = [
+  ...baseSchemaGraph(),
+  {
+    '@type': 'WebPage',
+    '@id': `${canonical}#webpage`,
+    url: canonical,
+    name: title,
+    ...(metaDescription ? { description: metaDescription } : {}),
+    isPartOf: { '@id': absoluteUrl('/#website') },
+    about: { '@id': absoluteUrl('/#organization') },
+    inLanguage: 'en-US',
+  },
+  ...schema,
+];
+const jsonLd = JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }).replace(/</g, '\\u003c');
 ---
 <!doctype html>
 <html lang="en">
@@ -20,10 +69,35 @@ const { title, scriptSrc, metaDescription } = Astro.props;
     />
     <title>{title}</title>
     {metaDescription && <meta name="description" content={metaDescription} />}
+    <meta name="robots" content={robots} />
+    <link rel="canonical" href={canonical} />
+    {isHome && <meta name="google-site-verification" content={GSC_VERIFICATION} />}
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={title} />
+    {metaDescription && <meta property="og:description" content={metaDescription} />}
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:image" content={absoluteUrl(ogImage)} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    {metaDescription && <meta name="twitter:description" content={metaDescription} />}
+    <meta name="twitter:image" content={absoluteUrl(ogImage)} />
     <link rel="icon" type="image/webp" href="/Assets/bidview-marketing-logo-favicon.webp" />
+    <script type="application/ld+json" set:html={jsonLd} />
+    {/* Production only: staging visits must not land in the live GA property. */}
+    {!staging && <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${GA_TAG_ID}`}></script>}
+    {!staging && (
+      <script is:inline define:vars={{ GA_TAG_ID }}>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', GA_TAG_ID);
+      </script>
+    )}
   </head>
   <body>
     <slot />
-    {scriptSrc && <script src={scriptSrc}></script>}
+    {scriptSrc && <script is:inline src={scriptSrc}></script>}
   </body>
 </html>

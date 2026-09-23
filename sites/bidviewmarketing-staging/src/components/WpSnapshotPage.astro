@@ -1,0 +1,20 @@
+---
+// Renders one of the converted WordPress service pages (converted/*.html) —
+// identical markup and CSS to live, with the WordPress-only parts replaced.
+// See src/lib/wp-snapshot.ts for exactly what changes.
+import { renderSnapshot } from '../lib/wp-snapshot';
+import { isStagingHost } from '../lib/site';
+
+interface Props {
+  /** Raw HTML of the converted page (import with ?raw). */
+  raw: string;
+  /** This page's path, e.g. "/audiology-marketing/". */
+  path: string;
+}
+
+const { raw, path } = Astro.props;
+const html = renderSnapshot(raw, { path, staging: isStagingHost(Astro.url.hostname) })
+  // Astro writes its own doctype for the page.
+  .replace(/^\s*<!DOCTYPE html>\s*/i, '');
+---
+<Fragment set:html={html} />

@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import { FORMS_ENDPOINT, LEAD_FORM_HIDDEN_FIELDS } from '../lib/site';
 import '../../Pages/internal-pages-custom.css';
 
 import raw from '../../Pages/Contact Us.html?raw';
@@ -10,9 +11,23 @@ const bodyHtml = bodyMatch ? bodyMatch[1] : '';
 const pageHtml = bodyHtml
   .replace(/<header class="site-header"[\s\S]*?<\/header>/i, '')
   .replace(/<footer class="site-footer"[\s\S]*?<\/footer>/i, '')
+  // The design file's form posts to "#". Send it to the forms Worker.
+  .replace(
+    /<form class="contact-form" action="#" method="post">/i,
+    `<form class="contact-form lead-form" action="${FORMS_ENDPOINT}" method="post">${LEAD_FORM_HIDDEN_FIELDS}`,
+  )
   .trim();
+
+if (!pageHtml.includes('lead-form')) {
+  throw new Error('contact-us: the contact form markup changed — lead form was not wired');
+}
 ---
-<BaseLayout title="Contact Us | Bidview Marketing">
+<BaseLayout
+  title="Contact Us - Bidview Marketing"
+  metaDescription="First, we have a call and ask some questions to understand your situation better."
+  scriptSrc="/scripts/lead-forms.js"
+  schema={[{ '@type': 'ContactPage', '@id': 'https://www.bidviewmarketing.com/contact-us/#contactpage', url: 'https://www.bidviewmarketing.com/contact-us/', name: 'Contact Us - Bidview Marketing' }]}
+>
   <SiteHeader />
   <Fragment set:html={pageHtml} />
   <SiteFooter />

@@ -12,7 +12,10 @@ const pageHtml = bodyHtml
   .replace(/<footer class="site-footer"[\s\S]*?<\/footer>/i, '')
   .trim();
 ---
-<BaseLayout title="Privacy Policy | Bidview Marketing">
+<BaseLayout
+  title="Privacy Policy - Bidview Marketing"
+  metaDescription="This Privacy Policy describes how your personal information is collected, used, and shared when you visit or make a purchase from"
+>
   <SiteHeader />
   <Fragment set:html={pageHtml} />
   <SiteFooter />

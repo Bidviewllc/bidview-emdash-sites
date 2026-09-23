@@ -369,6 +369,8 @@ const buildSections = (blocks: ContentBlock[], pageTitle: string) => {
 const slugParam = Astro.params.slug;
 const slug = Array.isArray(slugParam) ? slugParam.join('/') : (slugParam ?? '');
 const db = await getDb();
+// The ec_services collection may not exist yet (this site's pages are not in the
+// CMS). A failed lookup must be a 404, not a 500, for every unknown URL.
 const row = await db
   .selectFrom('ec_services')
   .select([
@@ -385,7 +387,8 @@ const row = await db
   .where('slug', '=', slug)
   .where('status', '=', 'published')
   .where('locale', '=', 'en')
-  .executeTakeFirst();
+  .executeTakeFirst()
+  .catch(() => undefined);
 
 if (!row) {
   return new Response('Not found', { status: 404 });
@@ -537,7 +540,7 @@ const ctaPattern =
             </p>
             <h1 id="service-title">{title}</h1>
             {metaDescription && <p>{metaDescription}</p>}
-            <a class="btn-primary" href="/contact-us">
+            <a class="btn-primary" href="/contact-us/">
               <img class="btn-icon" src="/Assets/bidview-marketing-icon-calendar-plus.svg" alt="" aria-hidden="true" width="20" height="20" />
               <span>Book a strategy session</span>
             </a>
@@ -739,7 +742,7 @@ const ctaPattern =
                 <p>Get a free analysis of your online reviews and ratings.</p>
               </div>
               <div class="cta-mini__action">
-                <a class="btn-secondary" href="/contact-us">
+                <a class="btn-secondary" href="/contact-us/">
                   <img class="btn-icon" src="/Assets/bidview-marketing-icon-logo.svg" alt="" aria-hidden="true" width="20" height="20" />
                   <span>Check My Score</span>
                 </a>
@@ -961,7 +964,7 @@ const ctaPattern =
             <div class="cta-band__title">
               <h2>{featureSection.title}</h2>
               {hasNonEmptyText(ctaLeftHtml) && <Fragment set:html={ctaLeftHtml} />}
-              <a class="btn-secondary" href="/contact-us">
+              <a class="btn-secondary" href="/contact-us/">
                 <img class="btn-icon" src="/Assets/bidview-marketing-icon-logo.svg" alt="" aria-hidden="true" width="20" height="20" />
                 <span>Contact Us Today</span>
               </a>
