@@ -6,6 +6,7 @@
 //   01 Hero          .hero              — same pattern as the home/About hero
 //   02 The Stakes    .guide.split--rev  — copy + full-height photo, copy first
 //   03 The Network   .net               — dark Statement block (styles.css)
+//      Story         <StoryBlock band>  — the mold remediation
 //   04 Tax Advantage .acc               — the site-wide accordion (styles.css)
 //   05 Investment    .guide             — the same split, photo first (full height)
 //   06 Communities   .communities       — new, styles in /buyers.css
@@ -31,6 +32,7 @@ import ContactCta from "../components/ContactCta.astro";
 import { getEmDashEntry } from "emdash";
 import { imageUrl } from "../lib/media";
 import { randomHomePhoto } from "../lib/listings";
+import StoryBlock from "../components/StoryBlock.astro";
 
 let entry: any = null;
 try {
@@ -257,8 +259,7 @@ const showProcess = Boolean(processBody || processBody2 || processPromise);
 
 	{/* 03 THE NETWORK — the dark Statement block, run as two columns on this
 	     page (.net--cols in buyers.css): the statement on the left, Grant's
-	     quote over the proof story on the right. /sellers/ keeps the centred
-	     original. */}
+	     quote on the right. The proof story follows as its own section. */}
 	<section class="section section--dark on-dark" data-screen-label="03 The Network">
 		<div class="container net-cols">
 			<div class="net net--cols">
@@ -282,12 +283,18 @@ const showProcess = Boolean(processBody || processBody2 || processPromise);
 					</div>
 					<div class="eyebrow pullquote__a">— GRANT C. MEYER</div>
 				</div>
-				<p class="net__story" {...(e.network_story ?? {})}>
-					{d.network_story ?? "One recent client needed mold remediation before a deal could go through. Grant made one call. The specialist was at the house within 90 minutes — in a market where that kind of help is usually weeks out."}
-				</p>
 			</div>
 		</div>
 	</section>
+
+	{/* STORY — the mold remediation, band style (the default). */}
+	<StoryBlock
+		label="Story: Mold Remediation"
+		eyebrow={d.network_story_eyebrow ?? "A Buyer's Story"}
+		body={d.network_story ?? "A buyer's inspector flagged mold at the last minute, and the sale was about to fall apart. I called my mold guy; he was treating the house within 90 minutes, and we closed two days later. That's what those phone calls are worth."}
+		editBody={e.network_story ?? {}}
+		editEyebrow={e.network_story_eyebrow ?? {}}
+	/>
 
 	{/* 04 THE TAX ADVANTAGE — four buyer situations as native <details>
 	     disclosures, so the section needs no JavaScript and every panel is still

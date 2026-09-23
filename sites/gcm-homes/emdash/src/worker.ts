@@ -32,7 +32,7 @@ export { PluginBridge };
 // (now shared in styles.css), Honesty story. Old cached HTML would miss them.
 // v7 (2026-09-22): /sellers/ -- season chart moved to its own row; story
 // figures get a bottom rule.
-const CACHE_VERSION = "v7";
+const CACHE_VERSION = "v8";
 const CACHEABLE_TYPE = /^(?:text\/html|application\/xml|text\/xml|text\/plain)/i;
 const ADMIN_COOKIE = /emdash[-_](session|edit-mode|admin)/i;
 
