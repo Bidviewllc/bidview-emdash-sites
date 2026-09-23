@@ -11,22 +11,30 @@
    match this one, so the deeper gradient is now shared rather than page-scoped —
    see "Deep hero veil" there. Both /buyers/ and /sellers/ carry the class. */
 
+/* ---- Second rows --------------------------------------------------------- */
+/* The Pricing Read runs as two .guide rows in one section (copy/photo, then
+   photo/copy), the same as the /buyers/ Stakes. This is only the gap. */
+.row2 { margin-top: 96px; }
+
 /* ---- Seasonal timing ---------------------------------------------------- */
-.timing__head { max-width: 860px; }
-.timing__head .eyebrow { margin-bottom: 16px; }
-.timing__grid {
+/* One row, two columns: head, copy and chart on the left (3fr); Grant's quote
+   over the condo-record story on the right (2fr). */
+.timing {
 	display: grid;
-	grid-template-columns: 1fr 1fr;
+	grid-template-columns: 3fr 2fr;
 	gap: 72px;
-	align-items: start;
-	margin-top: 56px;
+	align-items: center;
 }
+.timing__main { display: flex; flex-direction: column; gap: 40px; }
+.timing__head .eyebrow { margin-bottom: 16px; }
 .timing__copy { display: flex; flex-direction: column; gap: 18px; }
 .timing__copy p {
 	font-size: 17px;
 	line-height: 1.75;
 	color: var(--body);
 }
+.timing__side { display: flex; flex-direction: column; gap: 40px; }
+.timing__side .pullquote { margin: 0; }
 
 /* The 8-month chart. Two bars on a shared month grid show the gap between
    buyers arriving (April) and listings appearing (June) — the window a
@@ -159,15 +167,10 @@
 }
 
 /* ---- Marketing built to be seen ----------------------------------------- */
-.mkt__head { max-width: 860px; }
-.mkt__head .eyebrow { margin-bottom: 16px; }
-.mkt__lead { display: flex; flex-direction: column; gap: 18px; margin-top: 26px; }
-.mkt__lead p {
-	font-size: 17px;
-	line-height: 1.75;
-	color: var(--body);
-}
-
+/* The lead copy + photo row is the site's .guide split (styles.css), on the
+   same 1.35fr / 1fr grid and 40px gap as .mkt__feature below, so the photo
+   is exactly as wide as the reach panel under it. */
+.guide.mkt__intro { grid-template-columns: 1.35fr 1fr; gap: 40px; }
 .mkt__feature {
 	display: grid;
 	grid-template-columns: 1.35fr 1fr;
@@ -200,8 +203,10 @@
 }
 
 .mkt__incl { margin-top: 72px; }
-/* Type from .eyebrow; this owns the rule beneath the label. */
-.mkt__incl-label {
+/* "WHAT A SELLER GETS" is the eyebrow over an h3 (type from .h3); the rule
+   that used to sit under the eyebrow now sits under the heading. */
+.mkt__incl-h {
+	margin-top: 14px;
 	padding-bottom: 20px;
 	border-bottom: 1px solid rgba(197, 198, 206, 0.6);
 }
@@ -237,12 +242,13 @@
 .honesty__head { text-align: center; }
 .honesty__head .eyebrow { margin-bottom: 16px; }
 .honesty__body { display: flex; flex-direction: column; gap: 26px; margin-top: 34px; }
+.honesty__body .pullquote { margin: 6px 0 0; }
 .honesty__body p {
 	font-size: 17px;
 	line-height: 1.8;
 	color: var(--body);
 }
-.honesty__body .pullquote { margin: 6px 0; }
+
 
 /* ---- Home valuation ----------------------------------------------------- */
 /* Reuses the site's .invite two-panel shell (navy left, form right) so the
@@ -269,12 +275,15 @@
 
 /* ---- Tablet ------------------------------------------------------------- */
 @media (max-width: 1024px) {
-	.timing__grid { grid-template-columns: 1fr; gap: 40px; margin-top: 44px; }
+	.timing { grid-template-columns: 1fr; gap: 44px; }
+	.timing__main { gap: 32px; }
+	.timing__side { gap: 32px; }
+	.guide.mkt__intro { grid-template-columns: 1fr; gap: 48px; }
 	.timing__copy p { font-size: 16px; }
+	.row2 { margin-top: 64px; }
 
 	.season { --season-gutter: 96px; padding: 28px 24px 24px; }
 
-	.mkt__lead p { font-size: 16px; }
 	.mkt__feature { grid-template-columns: 1fr; gap: 24px; margin-top: 44px; }
 	.mkt__film { min-height: 300px; }
 	.mkt__grid { grid-template-columns: repeat(2, 1fr); gap: 32px 24px; }
@@ -285,8 +294,10 @@
 
 /* ---- Mobile ------------------------------------------------------------- */
 @media (max-width: 640px) {
-	.timing__grid { gap: 32px; }
+	.timing { gap: 36px; }
+	.timing__main, .timing__side { gap: 28px; }
 	.timing__copy p { font-size: 15px; }
+	.row2 { margin-top: 48px; }
 
 	/* Too narrow for a label gutter — collapse it to zero so the labels stack
 	   above their own lane. The bars stay on the same month columns because
@@ -313,7 +324,6 @@
 	.season__bar-note { font-size: 11px; }
 	.season__caption { font-size: 13px; margin-top: 18px; }
 
-	.mkt__lead p { font-size: 15px; }
 	.mkt__film { min-height: 230px; }
 	.mkt__reach { padding: 32px 24px; }
 	.mkt__reach-body { font-size: 15px; }

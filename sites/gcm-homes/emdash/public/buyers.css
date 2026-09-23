@@ -87,31 +87,6 @@
    photo/copy. This is only the space between them. */
 .stakes-row2 { margin-top: 96px; }
 
-/* ---- The Network, two columns ------------------------------------------- */
-/* /buyers/ runs the shared .net statement as a two-column split instead of a
-   centred column: statement left, Grant's quote over the proof story right,
-   everything left-aligned. /sellers/ keeps the centred original, so this is
-   scoped here rather than changed in styles.css. */
-.net-cols {
-	display: grid;
-	grid-template-columns: 3fr 2fr;
-	gap: 80px;
-	align-items: center;
-}
-.net.net--cols {
-	max-width: none;
-	margin: 0;
-	text-align: left;
-}
-.net-cols__side {
-	display: flex;
-	flex-direction: column;
-	gap: 40px;
-	text-align: left;
-}
-.net-cols__side .pullquote { margin: 0; }
-.net-cols__side .pullquote__q { font-size: 26px; line-height: 1.42; }
-
 /* ---- Two communities, one lake ------------------------------------------ */
 /* Photo cards that link through to the community page. */
 .communities {
@@ -248,9 +223,6 @@
 	.tax-disclaimer { margin-top: 48px; }
 
 	.stakes-row2 { margin-top: 64px; }
-	.net-cols { grid-template-columns: 1fr; gap: 44px; }
-	.net-cols__side { gap: 32px; }
-	.net-cols__side .pullquote__q { font-size: 23px; }
 
 	.communities { grid-template-columns: 1fr; gap: 24px; margin-top: 48px; }
 	.comm-card { height: 400px; }
@@ -264,9 +236,6 @@
 	.tax-disclaimer { font-size: 12.5px; margin-top: 40px; }
 
 	.stakes-row2 { margin-top: 48px; }
-	.net-cols { gap: 36px; }
-	.net-cols__side { gap: 28px; }
-	.net-cols__side .pullquote__q { font-size: 20px; }
 
 	.comm-card { height: 360px; }
 	.comm-card__body { padding: 28px 22px; }

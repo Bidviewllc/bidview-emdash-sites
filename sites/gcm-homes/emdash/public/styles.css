@@ -2530,8 +2530,7 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
 
 /* ===== Network statement (dark) =====
    The "network you inherit" block on /buyers/ and the "gets your home
-   sale-ready" block on /sellers/. A wide statement column, then a two-up of
-   the proof story and the quote. Lives on `.section--dark.on-dark`. */
+   sale-ready" block on /sellers/. Lives on `.section--dark.on-dark`. */
 /* The statement column is CENTRED and the copy runs large (19px), per the
    design. The proof story below is not plain body text — it carries the same
    orange left rule as a pull quote. */
@@ -2550,14 +2549,24 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
 }
 .net__body p + p { margin-top: 22px; }
 
-/* Proof story left, Grant's quote right, both vertically centred. */
-.net-split {
-  max-width: 1080px;
-  margin: 56px auto 0;
+/* Two columns (both pages since 2026-09-22): the statement on the left,
+   Grant's quote over the proof story on the right, everything left-aligned.
+   This replaced the centred statement + .net-split two-up. */
+.net-cols {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 72px;
+  grid-template-columns: 3fr 2fr;
+  gap: 80px;
   align-items: center;
+}
+.net.net--cols {
+  max-width: none;
+  margin: 0;
+  text-align: left;
+}
+.net-cols__side {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
   text-align: left;
 }
 .net__story {
@@ -2568,8 +2577,8 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   padding: 4px 0 4px 28px;
   margin: 0;
 }
-.net-split .pullquote { margin: 0; }
-.net-split .pullquote__q { font-size: 26px; line-height: 1.42; }
+.net-cols__side .pullquote { margin: 0; }
+.net-cols__side .pullquote__q { font-size: 26px; line-height: 1.42; }
 
 /* ===== Process column =====
    The editorial "what working with Grant actually looks like" column, shared by
@@ -2853,3 +2862,112 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
 
 /* A button standing alone under a centred statement. */
 .btn--spaced { margin-top: 24px; }
+
+/* ===== Story block =====
+   A client story as a section of its own (src/components/StoryBlock.astro),
+   in three styles: .story--band (default), .story--number, .story--photo.
+   .story--navy is the number style's navy version.
+   Orange sections carry NAVY text: white on --orange fails contrast. */
+.story { color: var(--navy); }
+.story--band,
+.story--number { background: var(--orange); padding: 112px 48px; }
+.story .story__eyebrow { color: var(--navy); }
+.story__text {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 23px;
+  line-height: 1.55;
+  color: var(--navy);
+  text-wrap: pretty;
+}
+.story__text--lg { font-size: 32px; line-height: 1.5; }
+.story__text--sans {
+  font-family: var(--font-sans);
+  font-size: 21px;
+  line-height: 1.75;
+  font-weight: 500;
+}
+
+/* Band: centred, one column. */
+.story__band {
+  max-width: 1000px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 36px;
+  text-align: center;
+}
+.story__rule { width: 56px; height: 2px; background: var(--navy); }
+
+/* Number: the figures left, the story right. */
+.story__number {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  gap: 96px;
+  align-items: center;
+}
+.story__figures { display: flex; flex-direction: column; gap: 18px; }
+.story__big {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: 128px;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+}
+.story__big-label { font-size: 22px; font-weight: 600; line-height: 1.35; max-width: 380px; }
+.story__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px 40px;
+  margin-top: 18px;
+  padding-top: 24px;
+  border-top: 2px solid var(--navy);
+}
+.story__stat { display: flex; flex-direction: column; gap: 4px; }
+.story__stat-value { font-family: var(--font-serif); font-size: 40px; font-weight: 500; line-height: 1; }
+.story__stat-label { font-size: 13px; font-weight: 600; letter-spacing: 0.04em; }
+
+/* Photo: the photo fills the whole section; the orange card sits over it,
+   on the right. */
+.story--photo {
+  position: relative;
+  background: var(--beige);
+  padding: 96px 48px;
+  overflow: hidden;
+}
+.story__photo {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+}
+.story__photo-wrap { position: relative; display: flex; justify-content: flex-end; }
+.story__card {
+  width: 620px;
+  max-width: 100%;
+  background: var(--orange);
+  padding: 56px 56px 52px;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  box-shadow: 0 30px 60px -24px rgba(21, 36, 59, 0.45);
+}
+.story__card-foot {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-top: 22px;
+  border-top: 1px solid rgba(21, 36, 59, 0.35);
+}
+.story__card-value { font-family: var(--font-serif); font-size: 44px; font-weight: 500; line-height: 1; }
+.story__card-label { font-size: 13px; font-weight: 600; line-height: 1.4; max-width: 200px; }
+
+/* Number, navy version: orange figures and divider, white text. */
+.story--number.story--navy { background: var(--navy); color: var(--white); }
+.story--navy .story__eyebrow,
+.story--navy .story__text,
+.story--navy .story__big-label,
+.story--navy .story__stat-label { color: var(--white); }
+.story--navy .story__big,
+.story--navy .story__stat-value { color: var(--orange); }
+.story--navy .story__stats { border-top-color: var(--orange); }

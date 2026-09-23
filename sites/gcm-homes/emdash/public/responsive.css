@@ -604,7 +604,17 @@
 
   .net { max-width: none; }
   .net__body { font-size: 17px; margin-top: 22px; }
-  .net-split { grid-template-columns: 1fr; gap: 36px; margin-top: 44px; }
+  .net-cols { grid-template-columns: 1fr; gap: 44px; }
+  .net-cols__side { gap: 32px; }
+  .net-cols__side .pullquote__q { font-size: 23px; }
+
+  .story--band, .story--number { padding: 88px 32px; }
+  .story__text--lg { font-size: 26px; }
+  .story__number { grid-template-columns: 1fr; gap: 48px; }
+  .story__big { font-size: 96px; }
+  .story--photo { padding: 0 0 72px; }
+  .story__photo { position: static; width: 100%; height: 420px; }
+  .story__photo-wrap { justify-content: center; margin-top: -120px; padding: 0 32px; }
   .net__story { font-size: 17px; }
 
   .process__head { margin-bottom: 32px; }
@@ -618,7 +628,23 @@
 
   .net__body { font-size: 16px; margin-top: 18px; }
   .net__body p + p { margin-top: 16px; }
-  .net-split { gap: 28px; margin-top: 36px; }
+  .net-cols { gap: 36px; }
+  .net-cols__side { gap: 28px; }
+  .net-cols__side .pullquote__q { font-size: 20px; }
+
+  .story--band, .story--number { padding: 72px 20px; }
+  .story__band { gap: 26px; }
+  .story__text { font-size: 19px; }
+  .story__text--lg { font-size: 21px; }
+  .story__text--sans { font-size: 17px; }
+  .story__big { font-size: 68px; }
+  .story__big-label { font-size: 18px; }
+  .story__stat-value { font-size: 32px; }
+  .story--photo { padding-bottom: 56px; }
+  .story__photo { height: 280px; }
+  .story__photo-wrap { margin-top: -72px; padding: 0 16px; }
+  .story__card { padding: 36px 26px 32px; gap: 20px; }
+  .story__card-value { font-size: 34px; }
   .net__story { font-size: 16px; padding-left: 20px; }
 
   .process__head { margin-bottom: 26px; }

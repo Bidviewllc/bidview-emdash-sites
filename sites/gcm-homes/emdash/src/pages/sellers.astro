@@ -4,11 +4,14 @@
 // about.astro and buyers.astro took):
 //
 //   01 Hero            .hero              — same pattern as the home/About hero
-//   02 The Pricing Read .guide.split--rev — copy + working photo, copy first
-//   03 Seasonal Timing .season            — new, styles in /sellers.css
-//   04 The Marketing   .mkt__*            — new, styles in /sellers.css
-//   05 The Network     .net               — dark Statement block (styles.css)
-//   06 Honest Advice   .honesty           — new, styles in /sellers.css
+//   02 The Pricing Read .guide.split--rev — two rows: copy/photo, then photo/copy
+//   03 Seasonal Timing .timing            — one 3fr/2fr row: copy + chart | quote
+//      Story            <StoryBlock photo>  — the condo record
+//   04 The Marketing   .mkt__*            — three rows: copy/photo, film + reach, package
+//   05 The Network     .net.net--cols     — dark Statement block, two columns
+//      Story            <StoryBlock band>   — the hydronic boiler
+//   06 Honest Advice   .honesty           — narrow column with the quote
+//      Story            <StoryBlock number> — the inherited house
 //   07 The Process     .process           — editorial column (styles.css)
 //   08 Home Valuation  .invite            — the site's contact shell, reused
 //
@@ -32,6 +35,8 @@ import GcmLayout from "../layouts/GcmLayout.astro";
 import InquiryFormScript from "../components/InquiryFormScript.astro";
 import { getEmDashEntry } from "emdash";
 import { imageUrl } from "../lib/media";
+import { randomHomePhotos } from "../lib/listings";
+import StoryBlock from "../components/StoryBlock.astro";
 
 let entry: any = null;
 try {
@@ -52,6 +57,23 @@ const e = entry?.edit ?? {};
 const heroImage = imageUrl(d.hero_image) ?? "/assets/hero-rubicon-emerald-bay.jpg";
 const pricingImage = imageUrl(d.pricing_image) ?? "/assets/listing-hero-exterior.jpg";
 const filmImage = imageUrl(d.film_image) ?? "/assets/gallery-1.jpg";
+// The Pricing Read's second row and the Marketing intro run real houses from
+// the MLS feed, picked at random (two different listings), the same as the
+// /buyers/ Stakes second row. A CMS image, if one is ever set, wins.
+const [randomA, randomB, randomC] = await randomHomePhotos(3);
+const pricingImage2 = imageUrl(d.pricing_image2) ?? randomA ?? "/assets/gallery-1.jpg";
+const mktImage = imageUrl(d.mkt_image) ?? randomB ?? "/assets/listing-hero-exterior.jpg";
+
+// The three stories each run as their own <StoryBlock> section, right after
+// the section they belong to. The story text stays in its original field
+// (timing_p3, network_story, honesty_p2); *_story_stats is "value | label",
+// one per line (see StoryBlock.astro). The stats fallbacks only show before
+// the fields exist in the CMS.
+const timingStoryImage = imageUrl(d.timing_story_image) ?? randomC ?? "/assets/gallery-1.jpg";
+const timingStoryStats = d.timing_story_stats ?? "$715K | complex record, set in early spring";
+const honestyStoryStats =
+	d.honesty_story_stats ??
+	"$550,000 | more than the off-market offer, after commission.\n46% | more than the offer\n3% | the fee they hoped to save";
 const agentPhoto = imageUrl(d.agent_photo) ?? "/assets/grant.jpg";
 
 // The eight-month chart (Mar–Oct). Buyers are here from April; most listings do
@@ -82,6 +104,10 @@ const processBody = (d.process_body ?? "").toString().trim();
 const processPromise = (d.process_promise ?? "").toString().trim();
 const showProcess = Boolean(processBody || processPromise);
 
+// pricing_p2b is the county-records half of what used to be one long
+// pricing_p2, moved to open the second row. No fallback: empty hides it.
+const pricingP2b = (d.pricing_p2b ?? "").toString().trim();
+
 const successMessage = d.val_success ?? "Thanks — Grant will be in touch with a considered read within 24 hours.";
 ---
 
@@ -110,7 +136,8 @@ const successMessage = d.val_success ?? "Thanks — Grant will be in touch with 
 		</div>
 	</section>
 
-	{/* 02 THE PRICING READ — the site's copy/photo split, run copy-first. */}
+	{/* 02 THE PRICING READ — two rows of the site's copy/photo split: copy-first,
+	     then photo-first from "My job is to give you what I know" (pricing_p3). */}
 	<section class="section section--beige" data-screen-label="02 The Pricing Read">
 		<div class="container guide split--rev split--photo-fill">
 			<div class="guide__copy">
@@ -124,6 +151,17 @@ const successMessage = d.val_success ?? "Thanks — Grant will be in touch with 
 				<p class="guide__p" {...(e.pricing_p2 ?? {})}>
 					{d.pricing_p2 ?? "Online valuation tools are built for markets where one sale looks like the next. Here, a single panoramic-lake-view sale can reset a whole tier. Roughly 60% of owners are year-round residents and 40% are second-home and investment owners, so the comparables that matter are not always the ones a database picks."}
 				</p>
+			</div>
+			<div class="guide__photo">
+				<div class="guide__img" style={`background-image:url(${pricingImage})`}></div>
+			</div>
+		</div>
+		<div class="container guide split--photo-fill row2">
+			<div class="guide__photo">
+				<div class="guide__img" style={`background-image:url(${pricingImage2})`}></div>
+			</div>
+			<div class="guide__copy">
+				{pricingP2b && <p class="guide__p" {...(e.pricing_p2b ?? {})}>{pricingP2b}</p>}
 				<p class="guide__p" {...(e.pricing_p3 ?? {})}>
 					{d.pricing_p3 ?? "Grant prices from 35 years of watching what sells, what stalls, and why. He has been wrong on the upside and the downside, and he will tell you which way he thinks your home leans before you list."}
 				</p>
@@ -134,23 +172,22 @@ const successMessage = d.val_success ?? "Thanks — Grant will be in touch with 
 					<div class="eyebrow pullquote__a">— GRANT C. MEYER</div>
 				</div>
 			</div>
-			<div class="guide__photo">
-				<div class="guide__img" style={`background-image:url(${pricingImage})`}></div>
-			</div>
 		</div>
 	</section>
 
-	{/* 03 SEASONAL TIMING — copy alongside the eight-month chart. */}
+	{/* 03 SEASONAL TIMING — one row, two columns (3fr / 2fr): the head, copy and
+	     eight-month chart on the left; Grant's quote on the right. The
+	     condo-record story follows as its own section. */}
 	<section class="section section--cream" data-screen-label="03 Seasonal Timing">
-		<div class="container">
-			<div class="timing__head">
-				<span class="eyebrow" {...(e.timing_eyebrow ?? {})}>{d.timing_eyebrow ?? "SEASONAL TIMING"}</span>
-				<h2 class="h2" {...(e.timing_heading ?? {})}>
-					{d.timing_heading ?? "The Sellers Who Win Here Are Ready Before the Buyers Arrive."}
-				</h2>
-			</div>
+		<div class="container timing">
+			<div class="timing__main">
+				<div class="timing__head">
+					<span class="eyebrow" {...(e.timing_eyebrow ?? {})}>{d.timing_eyebrow ?? "SEASONAL TIMING"}</span>
+					<h2 class="h2" {...(e.timing_heading ?? {})}>
+						{d.timing_heading ?? "The Sellers Who Win Here Are Ready Before the Buyers Arrive."}
+					</h2>
+				</div>
 
-			<div class="timing__grid">
 				<div class="timing__copy">
 					<p {...(e.timing_p1 ?? {})}>
 						{d.timing_p1 ?? "Tahoe runs on a calendar most out-of-area agents do not price into a plan. For the last several years, buyers have been here looking in April and May. Most single-family listings do not come on until June or July. That gap is the opportunity."}
@@ -158,15 +195,6 @@ const successMessage = d.val_success ?? "Thanks — Grant will be in touch with 
 					<p {...(e.timing_p2 ?? {})}>
 						{d.timing_p2 ?? "When a seller is ready early — home prepped, photography and video shot, marketing package built — Grant can bring the listing to market while serious buyers are already searching and competing listings have not surfaced yet. Sellers who wait for listing season arrive into the crowd instead of ahead of it."}
 					</p>
-					<p {...(e.timing_p3 ?? {})}>
-						{d.timing_p3 ?? "This is a secondary-home market, so days on market run longer than a metro area. A well-priced home can still take a happy season or more to find its buyer. Getting the timing and the price right at the start is what shortens that."}
-					</p>
-					<div class="pullquote">
-						<div class="pullquote__q" {...(e.timing_quote ?? {})}>
-							"{d.timing_quote ?? "If I've got sellers who are ready and the marketing package is done, we can come on the market earlier — before everyone else lists. That's a real opportunity."}"
-						</div>
-						<div class="eyebrow pullquote__a">— GRANT C. MEYER</div>
-					</div>
 				</div>
 
 				{/* The bars carry the meaning rather than the labels, so the whole
@@ -217,56 +245,85 @@ const successMessage = d.val_success ?? "Thanks — Grant will be in touch with 
 					</p>
 				</div>
 			</div>
+
+			<div class="timing__side">
+				<div class="pullquote">
+					<div class="pullquote__q" {...(e.timing_quote ?? {})}>
+						"{d.timing_quote ?? "If I've got sellers who are ready and the marketing package is done, we can come on the market earlier — before everyone else lists. That's a real opportunity."}"
+					</div>
+					<div class="eyebrow pullquote__a">— GRANT C. MEYER</div>
+				</div>
+			</div>
 		</div>
 	</section>
 
-	{/* 04 THE MARKETING — lead copy, the film/reach feature, then inclusions. */}
+	{/* STORY — the condo record, photo style. */}
+	<StoryBlock
+		variant="photo"
+		label="Story: Condo Record"
+		eyebrow={d.timing_story_eyebrow ?? "A Seller's Story"}
+		body={d.timing_p3 ?? "This is a secondary-home market, so days on market run longer than a metro area. A well-priced home can still take a happy season or more to find its buyer. Getting the timing and the price right at the start is what shortens that."}
+		stats={timingStoryStats}
+		photo={timingStoryImage}
+		photoAlt="A home for sale in Incline Village"
+		editBody={e.timing_p3 ?? {}}
+		editEyebrow={e.timing_story_eyebrow ?? {}}
+		editStats={e.timing_story_stats ?? {}}
+	/>
+
+	{/* 04 THE MARKETING — three rows: lead copy with a photo (the photo column
+	     matches the reach panel below it), the film/reach feature, then the
+	     seller package. */}
 	<section class="section section--beige" data-screen-label="04 Marketing">
-		<div class="container">
-			<div class="mkt__head">
-				<span class="eyebrow" {...(e.mkt_eyebrow ?? {})}>{d.mkt_eyebrow ?? "THE MARKETING"}</span>
-				<h2 class="h2" {...(e.mkt_heading ?? {})}>
+		<div class="container guide split--rev split--photo-fill mkt__intro">
+			<div class="guide__copy">
+				<div class="eyebrow" {...(e.mkt_eyebrow ?? {})}>{d.mkt_eyebrow ?? "THE MARKETING"}</div>
+				<h2 class="guide__h" {...(e.mkt_heading ?? {})}>
 					{d.mkt_heading ?? "A Listing Built to Be Seen — Locally and Everywhere."}
 				</h2>
-				<div class="mkt__lead">
-					<p {...(e.mkt_p1 ?? {})}>
-						{d.mkt_p1 ?? "A home priced right still needs to reach the right buyer, and most of those buyers are searching from the Bay Area, Sacramento, or Los Angeles before they ever drive up. Grant's marketing is built for that distance."}
-					</p>
-					<p {...(e.mkt_p2 ?? {})}>
-						{d.mkt_p2 ?? "Each listing gets a property film in the format Grant has refined for Tahoe homes: a walkthrough that opens at the front door, slow detail pans the camera catches that photos miss, and a drone pullback that shows the setting and what is nearby. Professional photography, a written story that ties the home to its location, and — where it fits the buyer — a Matterport 3D walkthrough round it out."}
-					</p>
-				</div>
+				<p class="guide__p" {...(e.mkt_p1 ?? {})}>
+					{d.mkt_p1 ?? "A home priced right still needs to reach the right buyer, and most of those buyers are searching from the Bay Area, Sacramento, or Los Angeles before they ever drive up. Grant's marketing is built for that distance."}
+				</p>
+				<p class="guide__p" {...(e.mkt_p2 ?? {})}>
+					{d.mkt_p2 ?? "Each listing gets a property film in the format Grant has refined for Tahoe homes: a walkthrough that opens at the front door, slow detail pans the camera catches that photos miss, and a drone pullback that shows the setting and what is nearby. Professional photography, a written story that ties the home to its location, and — where it fits the buyer — a Matterport 3D walkthrough round it out."}
+				</p>
 			</div>
-
-			<div class="mkt__feature">
-				<div class="mkt__film" style={`background-image:url(${filmImage})`}></div>
-				<div class="mkt__reach">
-					<span class="eyebrow" {...(e.reach_eyebrow ?? {})}>{d.reach_eyebrow ?? "REACH"}</span>
-					<p class="mkt__reach-body" {...(e.reach_body ?? {})}>
-						{d.reach_body ?? "Through Coldwell Banker, the listing reaches a national and international buyer network on top of the local MLS — so a home in Incline Village shows up in front of the relocating buyer in San Francisco and the second-home buyer overseas."}
-					</p>
-				</div>
+			<div class="guide__photo">
+				<div class="guide__img" style={`background-image:url(${mktImage})`}></div>
 			</div>
-
-			<div class="mkt__incl">
-				<div class="eyebrow mkt__incl-label">{d.incl_label ?? "WHAT A SELLER GETS"}</div>
-				<div class="mkt__grid">
-					{INCLUSIONS.map((m, i) => (
-						<div class="mkt__item">
-							<div class="mkt__item-num">{String(i + 1).padStart(2, "0")}</div>
-							<div class="mkt__item-t" {...(e[`incl${i + 1}_t`] ?? {})}>{d[`incl${i + 1}_t`] ?? m.t}</div>
-							<p class="mkt__item-d" {...(e[`incl${i + 1}_d`] ?? {})}>{d[`incl${i + 1}_d`] ?? m.d}</p>
-						</div>
-					))}
-				</div>
+		</div>
+		<div class="container mkt__feature">
+			<div class="mkt__film" style={`background-image:url(${filmImage})`}></div>
+			<div class="mkt__reach">
+				<span class="eyebrow" {...(e.reach_eyebrow ?? {})}>{d.reach_eyebrow ?? "REACH"}</span>
+				<p class="mkt__reach-body" {...(e.reach_body ?? {})}>
+					{d.reach_body ?? "Through Coldwell Banker, the listing reaches a national and international buyer network on top of the local MLS — so a home in Incline Village shows up in front of the relocating buyer in San Francisco and the second-home buyer overseas."}
+				</p>
+			</div>
+		</div>
+		<div class="container mkt__incl">
+			<div class="eyebrow" {...(e.incl_label ?? {})}>{d.incl_label ?? "WHAT A SELLER GETS"}</div>
+			<h3 class="h3 mkt__incl-h" {...(e.incl_heading ?? {})}>
+				{d.incl_heading ?? "The Grant C. Meyer Homes Seller Package"}
+			</h3>
+			<div class="mkt__grid">
+				{INCLUSIONS.map((m, i) => (
+					<div class="mkt__item">
+						<div class="mkt__item-num">{String(i + 1).padStart(2, "0")}</div>
+						<div class="mkt__item-t" {...(e[`incl${i + 1}_t`] ?? {})}>{d[`incl${i + 1}_t`] ?? m.t}</div>
+						<p class="mkt__item-d" {...(e[`incl${i + 1}_d`] ?? {})}>{d[`incl${i + 1}_d`] ?? m.d}</p>
+					</div>
+				))}
 			</div>
 		</div>
 	</section>
 
-	{/* 05 THE NETWORK — the dark Statement block, sale-ready framing. */}
+	{/* 05 THE NETWORK — the dark Statement block, two columns (the same layout
+	     as /buyers/): the statement left, Grant's quote right. The boiler story
+	     follows as its own section. */}
 	<section class="section section--dark on-dark" data-screen-label="05 The Network">
-		<div class="container">
-			<div class="net">
+		<div class="container net-cols">
+			<div class="net net--cols">
 				<span class="eyebrow" {...(e.network_eyebrow ?? {})}>{d.network_eyebrow ?? "THE NETWORK"}</span>
 				<h2 class="net__h" {...(e.network_heading ?? {})}>
 					{d.network_heading ?? "The Network That Gets Your Home Sale-Ready."}
@@ -280,10 +337,7 @@ const successMessage = d.val_success ?? "Thanks — Grant will be in touch with 
 					</p>
 				</div>
 			</div>
-			<div class="net-split">
-				<p class="net__story" {...(e.network_story ?? {})}>
-					{d.network_story ?? "He has earned that response by sending those trades business for years and treating them right, so they pick up when he calls. One recent deal needed a hydronic-heating specialist most plumbers cannot touch; Grant had the right person on it."}
-				</p>
+			<div class="net-cols__side">
 				<div class="pullquote">
 					<div class="pullquote__q" {...(e.network_quote ?? {})}>
 						"{d.network_quote ?? "We live in a resort market. It's really hard to get an electrician to your house. So you take care of people. When you treat them right, they treat you right."}"
@@ -294,7 +348,18 @@ const successMessage = d.val_success ?? "Thanks — Grant will be in touch with 
 		</div>
 	</section>
 
-	{/* 06 HONEST ADVICE — a narrow editorial column with the quote inside it. */}
+	{/* STORY — the hydronic boiler, band style (the default). */}
+	<StoryBlock
+		label="Story: Hydronic Boiler"
+		eyebrow={d.network_story_eyebrow ?? "A Seller's Story"}
+		body={d.network_story ?? "He has earned that response by sending those trades business for years and treating them right, so they pick up when he calls. One recent deal needed a hydronic-heating specialist most plumbers cannot touch; Grant had the right person on it."}
+		editBody={e.network_story ?? {}}
+		editEyebrow={e.network_story_eyebrow ?? {}}
+	/>
+
+	{/* 06 HONEST ADVICE — a narrow editorial column: the head, the lead
+	     paragraph and Grant's quote. The inherited-house story follows as its
+	     own section. */}
 	<section class="section section--cream" data-screen-label="06 Honest Advice">
 		<div class="container">
 			<div class="honesty">
@@ -314,13 +379,23 @@ const successMessage = d.val_success ?? "Thanks — Grant will be in touch with 
 						</div>
 						<div class="eyebrow pullquote__a">— GRANT C. MEYER</div>
 					</div>
-					<p {...(e.honesty_p2 ?? {})}>
-						{d.honesty_p2 ?? "For most sellers here, the home is not their only one and they are not moving across the country to start a job, so there is room to be strategic about timing and price instead of forced into a fire sale. Grant will give a seller his real read — what he expects, where the home might surprise on the upside, and where it might not — and then let the seller drive."}
-					</p>
 				</div>
 			</div>
 		</div>
 	</section>
+
+	{/* STORY — the inherited house, number style, navy (no pull quote in it). */}
+	<StoryBlock
+		variant="number"
+		tone="navy"
+		label="Story: Inherited House"
+		eyebrow={d.honesty_story_eyebrow ?? "A Seller's Story"}
+		body={d.honesty_p2 ?? "For most sellers here, the home is not their only one and they are not moving across the country to start a job, so there is room to be strategic about timing and price instead of forced into a fire sale. Grant will give a seller his real read — what he expects, where the home might surprise on the upside, and where it might not — and then let the seller drive."}
+		stats={honestyStoryStats}
+		editBody={e.honesty_p2 ?? {}}
+		editEyebrow={e.honesty_story_eyebrow ?? {}}
+		editStats={e.honesty_story_stats ?? {}}
+	/>
 
 	{/* 07 THE PROCESS — off the page until Grant's own account of the steps is
 	     in the CMS. See the note on `processBody` above. */}
