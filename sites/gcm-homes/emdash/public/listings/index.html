@@ -229,6 +229,10 @@
       transition: background 200ms ease;
     }
     .card__dots span.is-on { background: #fff; }
+    /* Swipe slides move rather than fade, and the page keeps vertical scrolling
+       over the photo while horizontal drags come to the swipe handler. */
+    .card__slide--swipe { opacity: 1; transition: transform 320ms ease; }
+    @media (pointer: coarse) { .card__media { touch-action: pan-y pinch-zoom; } }
 
     .empty, .error-msg {
       grid-column: 1/-1; text-align: center; padding: 70px 30px; color: var(--muted);
@@ -1024,6 +1028,7 @@ function cardHTML(l) {
           ${l.waterfront ? `<div class="card__wf">Waterfront</div>` : ""}
         </div>
         ${l.photosCount ? `<div class="card__count">${l.photosCount} photos</div>` : ""}
+        ${CAN_SWIPE && l.photo && l.photosCount > 1 ? dotsHTML(Math.min(l.photosCount, MAX_PHOTOS)) : ""}
       </div>
       <div class="card__body">
         <div class="card__price">${fmtFull(l.price, l)}</div>
@@ -1058,25 +1063,38 @@ function wireCards(cards) {
   cards.forEach(el => {
     el.addEventListener("mouseenter", () => { highlight(el.dataset.id, false); startCarousel(el); });
     el.addEventListener("mouseleave", () => { highlight(null, false); stopCarousel(el); });
+    if (CAN_SWIPE) wireSwipe(el);
   });
 }
 
-/* ------------------------------------------------------ hover carousel */
-/* Hovering a card fades through its first few photos, then it snaps back to the
-   lead photo when the mouse leaves. Nothing loads until a card is hovered, so the
-   page's first load is unchanged: the photo list comes from /api/listing-photos
-   (cached per listing for the visit) and each photo is preloaded before it is
-   shown, so a slow MLS image server delays a slide rather than flashing a blank.
+/* ------------------------------------------------------ photo carousel */
+/* Two ways through a card's first few photos, sharing photosFor() and showSlide():
 
-   Desktop only for now. Phones have no hover, so their cards behave exactly as
-   before; a swipe version would reuse photosFor() and showSlide() and add touch
-   handling that tells a swipe from a tap on the card's link. Skipped too for
-   visitors who have asked their OS for reduced motion. */
+   - Desktop: hovering fades through them on a timer, and the card snaps back to
+     the lead photo when the mouse leaves. Skipped for visitors who have asked
+     their OS for reduced motion, since it moves on its own.
+   - Touch screens: swiping across the photo slides to the next or previous one.
+     A tap still opens the listing. The dots are drawn up front on these devices
+     (from photosCount, no request needed) because without hover they are the
+     only sign there is anything to swipe.
+
+   Nothing loads until a card is hovered or touched, so the page's first load is
+   unchanged: the photo list comes from /api/listing-photos (cached per listing
+   for the visit) and each photo is preloaded before it is shown, so a slow MLS
+   image server delays a slide rather than flashing a blank. */
 const CAROUSEL_OK = matchMedia("(hover: hover) and (pointer: fine)").matches
   && !matchMedia("(prefers-reduced-motion: reduce)").matches;
+const CAN_SWIPE = matchMedia("(pointer: coarse)").matches;
+const MAX_PHOTOS = 5;    // matches the cap in /api/listing-photos
 const SLIDE_MS = 1300;   // time each photo stays up
 const FIRST_MS = 600;    // quicker first change, so the hover visibly does something
 const PHOTOS = new Map(); // listing id -> Promise<string[]>
+
+function dotsHTML(n, on = 0) {
+  return `<div class="card__dots">${
+    Array.from({ length: n }, (_, i) => `<span${i === on ? ' class="is-on"' : ""}></span>`).join("")
+  }</div>`;
+}
 
 function photosFor(id) {
   if (!PHOTOS.has(id)) {
@@ -1109,10 +1127,8 @@ function startCarousel(card) {
       im.src = u;
       return im.decode().then(() => true, () => false);
     });
-    const dots = document.createElement("div");
-    dots.className = "card__dots";
-    dots.innerHTML = urls.map((_, i) => `<span${i ? "" : ' class="is-on"'}></span>`).join("");
-    lead.parentNode.appendChild(dots);
+    lead.parentNode.insertAdjacentHTML("beforeend", dotsHTML(urls.length));
+    const dots = lead.parentNode.lastElementChild;
     run.dots = dots;
 
     let at = 0;
@@ -1129,20 +1145,95 @@ function startCarousel(card) {
   });
 }
 
-/** Fades one photo in over whatever is showing, then drops the slides beneath it. */
-function showSlide(card, lead, url, index, dots) {
+/** Puts one photo over whatever is showing, then drops the slides beneath it.
+    dir 0 fades it in (hover); dir 1 / -1 slides it in from the right / left (swipe). */
+function showSlide(card, lead, url, index, dots, dir = 0) {
   const media = lead.parentNode;
   const slides = media.querySelectorAll(".card__slide");
   const img = document.createElement("img");
-  img.className = "card__img card__slide";
+  img.className = "card__img card__slide" + (dir ? " card__slide--swipe" : "");
   img.alt = "";
   img.src = url;
+  if (dir) img.style.transform = `translateX(${dir * 100}%)`;
   (slides[slides.length - 1] || lead).after(img);
-  requestAnimationFrame(() => requestAnimationFrame(() => img.classList.add("is-on")));
-  img.addEventListener("transitionend", e => {
-    if (e.propertyName === "opacity") slides.forEach(s => s.remove());
-  }, { once: true });
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    img.classList.add("is-on");
+    if (dir) img.style.transform = "";
+  }));
+  const done = dir ? "transform" : "opacity";
+  img.addEventListener("transitionend", function landed(e) {
+    if (e.propertyName !== done) return;
+    img.removeEventListener("transitionend", landed);
+    slides.forEach(s => s.remove());
+  });
   [...dots.children].forEach((d, i) => d.classList.toggle("is-on", i === index));
+}
+
+/* Swipe: horizontal only. .card__media has touch-action: pan-y, so vertical
+   drags still scroll the page natively and the listeners can stay passive. A
+   swipe must be mostly sideways and at least 35px, so a sloppy scroll never
+   flips a photo; the click that some browsers fire after it is swallowed so a
+   swipe never opens the listing by accident. */
+function wireSwipe(card) {
+  const lead = card.querySelector(".card__media > img.card__img");
+  if (!lead || !card.querySelector(".card__dots")) return; // one photo or none
+  const media = lead.parentNode;
+  let x0 = null, y0 = 0;
+  media.addEventListener("touchstart", e => {
+    x0 = e.touches[0].clientX; y0 = e.touches[0].clientY;
+    swipeState(card, lead); // start fetching the photo list on first touch
+  }, { passive: true });
+  media.addEventListener("touchend", e => {
+    if (x0 == null) return;
+    const dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0;
+    x0 = null;
+    if (Math.abs(dx) < 35 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+    card._swipedAt = Date.now();
+    swipeState(card, lead).then(s => s && swipeTo(card, lead, s, dx < 0 ? 1 : -1));
+  }, { passive: true });
+  card.addEventListener("click", e => {
+    if (Date.now() - (card._swipedAt || 0) < 500) e.preventDefault();
+  }, true);
+}
+
+/** Per-card swipe state, built once: the photo list, lazy preloads, where we are. */
+function swipeState(card, lead) {
+  if (!card._swipe) {
+    card._swipe = photosFor(card.dataset.id).then(list => {
+      if (list.length < 2) return null;
+      const urls = [lead.currentSrc || lead.src, ...list.slice(1)]; // see startCarousel
+      const loads = new Map();
+      const ready = i => {
+        if (!loads.has(i)) {
+          const im = new Image();
+          im.src = urls[i];
+          loads.set(i, im.decode().then(() => true, () => false));
+        }
+        return loads.get(i);
+      };
+      // Only the neighbours, not all five: on a phone most cards get scrolled
+      // past after a swipe or two, and each photo is mobile data.
+      ready(1); ready(urls.length - 1);
+      // photosCount drew the dots; the feed can hold fewer photos than it claims.
+      let dots = card.querySelector(".card__dots");
+      if (dots.children.length !== urls.length) {
+        dots.outerHTML = dotsHTML(urls.length);
+        dots = card.querySelector(".card__dots");
+      }
+      return { urls, ready, at: 0, dots };
+    });
+  }
+  return card._swipe;
+}
+
+async function swipeTo(card, lead, s, dir) {
+  const n = s.urls.length;
+  const next = (s.at + dir + n) % n; // wraps: back from the first photo goes to the last
+  s.at = next; // move on now, so quick repeated swipes each advance
+  const ok = await s.ready(next);
+  if (!ok || s.at !== next || !card.isConnected) return;
+  showSlide(card, lead, s.urls[next], next, s.dots, dir);
+  s.ready((next + dir + n) % n); // preload the one after, in the same direction
 }
 
 function stopCarousel(card) {
