@@ -2866,6 +2866,7 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
 /* ===== Story block =====
    A client story as a section of its own (src/components/StoryBlock.astro),
    in three styles: .story--band (default), .story--number, .story--photo.
+   .story--navy is the number style's navy version.
    Orange sections carry NAVY text: white on --orange fails contrast. */
 .story { color: var(--navy); }
 .story--band,
@@ -2926,8 +2927,8 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
 .story__stat-value { font-family: var(--font-serif); font-size: 40px; font-weight: 500; line-height: 1; }
 .story__stat-label { font-size: 13px; font-weight: 600; letter-spacing: 0.04em; }
 
-/* Photo: the photo runs full height from the left edge of the window; the
-   orange card sits over its right edge. */
+/* Photo: the photo fills the whole section; the orange card sits over it,
+   on the right. */
 .story--photo {
   position: relative;
   background: var(--beige);
@@ -2936,8 +2937,7 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
 }
 .story__photo {
   position: absolute;
-  inset: 0 auto 0 0;
-  width: 62.5%;
+  inset: 0;
   background-size: cover;
   background-position: center;
 }
@@ -2961,3 +2961,13 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
 }
 .story__card-value { font-family: var(--font-serif); font-size: 44px; font-weight: 500; line-height: 1; }
 .story__card-label { font-size: 13px; font-weight: 600; line-height: 1.4; max-width: 200px; }
+
+/* Number, navy version: orange figures and divider, white text. */
+.story--number.story--navy { background: var(--navy); color: var(--white); }
+.story--navy .story__eyebrow,
+.story--navy .story__text,
+.story--navy .story__big-label,
+.story--navy .story__stat-label { color: var(--white); }
+.story--navy .story__big,
+.story--navy .story__stat-value { color: var(--orange); }
+.story--navy .story__stats { border-top-color: var(--orange); }

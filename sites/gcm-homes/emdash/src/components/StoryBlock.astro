@@ -4,9 +4,11 @@
 //
 //   band   (default) — orange stripe, the story centred in large serif type.
 //                      Works for any story; it only needs the text.
-//   number           — orange, a big figure left and the story right. Only for
-//                      a story with real numbers behind it; no pull quote.
-//   photo            — a full-height photo left with an orange card over it.
+//   number           — a big figure left and the story right. Only for a story
+//                      with real numbers behind it; no pull quote. Orange by
+//                      default; tone="navy" gives the navy version (orange
+//                      figures and divider, white text).
+//   photo            — a full-width photo with an orange card over it.
 //                      For a story that has a photo we can use.
 //
 // Orange (#F7945B) takes navy text only: white on it fails contrast.
@@ -18,6 +20,8 @@
 // to `band` and `photo` closes the card with the attribution.
 interface Props {
 	variant?: "band" | "number" | "photo";
+	/** Number style only: "orange" (default) or "navy". */
+	tone?: "orange" | "navy";
 	body: string;
 	eyebrow?: string;
 	attribution?: string;
@@ -39,6 +43,7 @@ const {
 	photo = null,
 	photoAlt = "",
 	label = "Story",
+	tone = "orange",
 	editBody = {},
 	editEyebrow = {},
 	editStats = {},
@@ -71,7 +76,7 @@ if (variant === "photo" && !photo) variant = "band";
 )}
 
 {variant === "number" && (
-	<section class="story story--number" data-screen-label={label}>
+	<section class={`story story--number${tone === "navy" ? " story--navy" : ""}`} data-screen-label={label}>
 		<div class="container story__number">
 			<div class="story__figures" {...editStats}>
 				<div class="eyebrow story__eyebrow" {...editEyebrow}>{eyebrow}</div>
