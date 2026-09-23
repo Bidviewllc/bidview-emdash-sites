@@ -278,7 +278,8 @@ async function handlePost(request: Request, env: Env): Promise<Response> {
 			body: JSON.stringify({
 				from: `${SITE} <${LEAD_FROM}>`,
 				to: leadTo,
-				bcc: [LEAD_BCC],
+				// Skip the monitoring copy when that address already receives the lead.
+				...(leadTo.some((a) => a.toLowerCase() === LEAD_BCC) ? {} : { bcc: [LEAD_BCC] }),
 				// Bare address: a display name like "Smith, John" would break parsing.
 				reply_to: email,
 				subject: `New website lead — ${name}`,
