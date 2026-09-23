@@ -190,6 +190,19 @@ export async function randomHomePhotos(n: number): Promise<string[]> {
 	}
 }
 
+/**
+ * The first `n` photo URLs of one listing, in MLS order (so [0] is the card's
+ * lead photo). For the hover carousel on /listings/ -- fetched per card on
+ * hover rather than shipped in /api/listings, which would add ~4 long signed
+ * URLs to every one of ~190 cards for the few a visitor actually points at.
+ */
+export async function listingPhotos(listingKey: string, n: number): Promise<string[]> {
+	const { results } = await DB().prepare(
+		"SELECT url FROM listing_photos WHERE listing_key = ? ORDER BY ord LIMIT ?"
+	).bind(listingKey, n).all();
+	return (results ?? []).map((p: any) => p.url);
+}
+
 export async function bySlug(slug: string) {
 	const row = await DB().prepare("SELECT * FROM listings WHERE slug = ?").bind(slug).first();
 	if (!row) return null;
