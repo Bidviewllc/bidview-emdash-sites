@@ -1,0 +1,25 @@
+{
+	// Bidview Marketing — lead form handler, deliberately separate from the
+	// emdash Worker (same reason as liberty-hearing-forms: this imports nothing
+	// and cold-starts in milliseconds). See src/index.ts for the rules.
+	//
+	// While the site is on workers.dev the forms post to this Worker's own URL.
+	// At go-live, add a Workers Route www.bidviewmarketing.com/api/contact* here
+	// and point the forms back at the relative /api/contact.
+	//
+	// Secrets (never in this file): RESEND_API_KEY, LEAD_TO, optional TURNSTILE_SECRET.
+	"name": "bidviewmarketing-forms",
+	"account_id": "239e9d015c7a3a39cdc2e9400312f553",
+	"main": "src/index.ts",
+	"compatibility_date": "2026-02-24",
+	// Same database as the site Worker — one contact_submissions table.
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "bidviewmarketing-staging",
+			"database_id": "128e040b-501c-496a-bddc-7bfeb94e2e97",
+		},
+	],
+	"observability": { "enabled": true },
+	"workers_dev": true,
+}

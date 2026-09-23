@@ -1,0 +1,38 @@
+---
+// Where the forms Worker sends visitors after a submission. noindex: a
+// confirmation page has no search value, and keeping it out of Google stops
+// organic visits from firing as false conversions.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import '../../Pages/internal-pages-custom.css';
+---
+<BaseLayout title="Thank You - Bidview Marketing" metaDescription="Thank you!" noindex>
+  <SiteHeader />
+  <article class="page-article">
+    <section class="internal-hero" aria-labelledby="internal-hero-title">
+      <div class="internal-hero__content">
+        <p class="internal-hero__eyebrow">Thank You</p>
+        <h1 id="internal-hero-title" class="internal-hero__title">Thank you!</h1>
+      </div>
+    </section>
+
+    <nav class="hero-breadcrumb" aria-label="Breadcrumb">
+      <div class="hero-breadcrumb__inner">
+        <a href="/">Home</a>
+        <span aria-hidden="true">&raquo;</span>
+        <span class="hero-breadcrumb__current" aria-current="page">Thank You</span>
+      </div>
+    </nav>
+
+    <section class="page-content-section legal-page-content-section" aria-label="Thank you">
+      <section class="legal-doc-section">
+        <div class="legal-doc-container">
+          <p>We have received your details and one of our representatives will get back to you within 24 hours.</p>
+          <p><a href="/">Back to the homepage</a></p>
+        </div>
+      </section>
+    </section>
+  </article>
+  <SiteFooter />
+</BaseLayout>

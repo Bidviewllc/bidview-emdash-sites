@@ -13,7 +13,12 @@ const pageHtml = bodyHtml
   .replace(/<script\s+src="\.\/[^\"]+\.js"[^>]*><\/script>\s*$/i, '')
   .trim();
 ---
-<BaseLayout title="Bidview Marketing" scriptSrc="/scripts/bidview-homepage.js">
+<BaseLayout
+  title="Revenue-Focused Digital Marketing Agency | Bidview Marketing"
+  metaDescription="Bidview Marketing helps growing businesses increase revenue through SEO, website development, paid advertising, branding, content, and AI automation."
+  canonicalPath="/"
+  scriptSrc="/scripts/bidview-homepage.js"
+>
   <SiteHeader />
   <Fragment set:html={pageHtml} />
   <SiteFooter />

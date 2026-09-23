@@ -12,7 +12,10 @@ const pageHtml = bodyHtml
   .replace(/<footer class="site-footer"[\s\S]*?<\/footer>/i, '')
   .trim();
 ---
-<BaseLayout title="Terms of Use | Bidview Marketing">
+<BaseLayout
+  title="Terms of Use - Bidview Marketing"
+  metaDescription="This website is operated by Bidview LLC. Throughout the site, the terms “we”, “us” and “our” refer to Bidview LLC."
+>
   <SiteHeader />
   <Fragment set:html={pageHtml} />
   <SiteFooter />
