@@ -17,8 +17,8 @@
 .row2 { margin-top: 96px; }
 
 /* ---- Seasonal timing ---------------------------------------------------- */
-/* One row, two columns: head, copy and chart on the left (3fr); Grant's quote
-   over the condo-record story on the right (2fr). */
+/* Two rows: head and copy on the left (3fr) beside Grant's quote (2fr), then
+   the eight-month chart across the full width. */
 .timing {
 	display: grid;
 	grid-template-columns: 3fr 2fr;
@@ -35,6 +35,7 @@
 }
 .timing__side { display: flex; flex-direction: column; gap: 40px; }
 .timing__side .pullquote { margin: 0; }
+.timing__chart { margin-top: 64px; }
 
 /* The 8-month chart. Two bars on a shared month grid show the gap between
    buyers arriving (April) and listings appearing (June) — the window a
@@ -278,6 +279,7 @@
 	.timing { grid-template-columns: 1fr; gap: 44px; }
 	.timing__main { gap: 32px; }
 	.timing__side { gap: 32px; }
+	.timing__chart { margin-top: 44px; }
 	.guide.mkt__intro { grid-template-columns: 1fr; gap: 48px; }
 	.timing__copy p { font-size: 16px; }
 	.row2 { margin-top: 64px; }
@@ -296,6 +298,7 @@
 @media (max-width: 640px) {
 	.timing { gap: 36px; }
 	.timing__main, .timing__side { gap: 28px; }
+	.timing__chart { margin-top: 36px; }
 	.timing__copy p { font-size: 15px; }
 	.row2 { margin-top: 48px; }
 
