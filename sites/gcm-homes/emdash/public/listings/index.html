@@ -210,6 +210,26 @@
        the home page Featured Listings grid and the blog cards share one design.
        styles.css is loaded above; nothing else is needed here. */
 
+    /* Hover carousel (this page only, not the home page grid). Each slide is an
+       extra <img> stacked over the lead photo and faded in; see startCarousel().
+       Slides go in right after the lead photo, before the badges, so the badges
+       stay on top without a z-index. */
+    .card__slide { position: absolute; inset: 0; opacity: 0; transition: opacity 450ms ease, transform 500ms ease; }
+    .card__slide.is-on { opacity: 1; }
+    .card__dots {
+      /* Same dark backing as the "N photos" badge opposite, so the dots read on
+         bright snow and white-interior shots. */
+      position: absolute; bottom: 12px; left: 12px;
+      display: flex; gap: 5px; pointer-events: none;
+      padding: 6px 8px; border-radius: 10px; background: rgba(0,0,0,0.45);
+    }
+    .card__dots span {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: rgba(255,255,255,0.45);
+      transition: background 200ms ease;
+    }
+    .card__dots span.is-on { background: #fff; }
+
     .empty, .error-msg {
       grid-column: 1/-1; text-align: center; padding: 70px 30px; color: var(--muted);
       background: #fff; border-radius: 4px; border: 1px dashed var(--line);
@@ -1036,8 +1056,105 @@ let shown = PAGE_SIZE;
 /** Hovering a card lights its pin, so list and map stay legible together. */
 function wireCards(cards) {
   cards.forEach(el => {
-    el.addEventListener("mouseenter", () => highlight(el.dataset.id, false));
-    el.addEventListener("mouseleave", () => highlight(null, false));
+    el.addEventListener("mouseenter", () => { highlight(el.dataset.id, false); startCarousel(el); });
+    el.addEventListener("mouseleave", () => { highlight(null, false); stopCarousel(el); });
+  });
+}
+
+/* ------------------------------------------------------ hover carousel */
+/* Hovering a card fades through its first few photos, then it snaps back to the
+   lead photo when the mouse leaves. Nothing loads until a card is hovered, so the
+   page's first load is unchanged: the photo list comes from /api/listing-photos
+   (cached per listing for the visit) and each photo is preloaded before it is
+   shown, so a slow MLS image server delays a slide rather than flashing a blank.
+
+   Desktop only for now. Phones have no hover, so their cards behave exactly as
+   before; a swipe version would reuse photosFor() and showSlide() and add touch
+   handling that tells a swipe from a tap on the card's link. Skipped too for
+   visitors who have asked their OS for reduced motion. */
+const CAROUSEL_OK = matchMedia("(hover: hover) and (pointer: fine)").matches
+  && !matchMedia("(prefers-reduced-motion: reduce)").matches;
+const SLIDE_MS = 1300;   // time each photo stays up
+const FIRST_MS = 600;    // quicker first change, so the hover visibly does something
+const PHOTOS = new Map(); // listing id -> Promise<string[]>
+
+function photosFor(id) {
+  if (!PHOTOS.has(id)) {
+    PHOTOS.set(id, fetch(`/api/listing-photos?id=${encodeURIComponent(id)}`)
+      .then(r => (r.ok ? r.json() : { photos: [] }))
+      .then(d => d.photos || [])
+      .catch(() => []));
+  }
+  return PHOTOS.get(id);
+}
+
+function startCarousel(card) {
+  if (!CAROUSEL_OK) return;
+  const lead = card.querySelector(".card__media > img.card__img");
+  if (!lead) return; // no-photo placeholder card
+  stopCarousel(card);
+  const run = { timer: 0 };
+  card._carousel = run;
+  const live = () => card._carousel === run && card.isConnected;
+
+  photosFor(card.dataset.id).then(list => {
+    if (!live() || list.length < 2) return;
+    // Photo 1 is the lead photo the card already shows, but listing_photos signs
+    // it with a different URL than listings.photo; reuse the card's copy so
+    // looping back to it doesn't download it a second time.
+    const urls = [lead.currentSrc || lead.src, ...list.slice(1)];
+    // Start every download now; a slide is only shown once its photo has decoded.
+    const ready = urls.map(u => {
+      const im = new Image();
+      im.src = u;
+      return im.decode().then(() => true, () => false);
+    });
+    const dots = document.createElement("div");
+    dots.className = "card__dots";
+    dots.innerHTML = urls.map((_, i) => `<span${i ? "" : ' class="is-on"'}></span>`).join("");
+    lead.parentNode.appendChild(dots);
+    run.dots = dots;
+
+    let at = 0;
+    const step = async () => {
+      if (!live()) return;
+      const next = (at + 1) % urls.length;
+      const ok = await ready[next];
+      if (!live()) return;
+      if (ok) showSlide(card, lead, urls[next], next, dots);
+      at = next; // a photo that failed to load is skipped, not retried
+      run.timer = setTimeout(step, SLIDE_MS);
+    };
+    run.timer = setTimeout(step, FIRST_MS);
+  });
+}
+
+/** Fades one photo in over whatever is showing, then drops the slides beneath it. */
+function showSlide(card, lead, url, index, dots) {
+  const media = lead.parentNode;
+  const slides = media.querySelectorAll(".card__slide");
+  const img = document.createElement("img");
+  img.className = "card__img card__slide";
+  img.alt = "";
+  img.src = url;
+  (slides[slides.length - 1] || lead).after(img);
+  requestAnimationFrame(() => requestAnimationFrame(() => img.classList.add("is-on")));
+  img.addEventListener("transitionend", e => {
+    if (e.propertyName === "opacity") slides.forEach(s => s.remove());
+  }, { once: true });
+  [...dots.children].forEach((d, i) => d.classList.toggle("is-on", i === index));
+}
+
+function stopCarousel(card) {
+  const run = card._carousel;
+  if (!run) return;
+  clearTimeout(run.timer);
+  card._carousel = null;
+  run.dots?.remove();
+  // Fade back to the lead photo rather than cutting to it.
+  card.querySelectorAll(".card__slide").forEach(s => {
+    s.classList.remove("is-on");
+    setTimeout(() => s.remove(), 500);
   });
 }
 
