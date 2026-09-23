@@ -316,6 +316,7 @@
   .listings-filters { padding: 24px 32px; gap: 8px; }
   .listings-filters > div:last-child { width: 100%; justify-content: flex-end; margin-left: 0; }
   .listings-grid { grid-template-columns: 1fr 1fr; gap: 24px; padding: 32px; }
+  .fl-track { grid-auto-columns: calc((100% - 24px) / 2); gap: 24px; }
 
   /* ===== Accordion (site default, .acc in styles.css) =====
      Moved here from buyers.css when the accordion became site-wide. */
@@ -549,6 +550,7 @@
   }
   .chip { padding: 10px 16px; flex-shrink: 0; }
   .listings-grid { grid-template-columns: 1fr; gap: 20px; padding: 32px 20px; }
+  .fl-track { grid-auto-columns: 86%; gap: 16px; }
 
   /* ===== Accordion (site default, .acc in styles.css) ===== */
   .acc { margin-top: 36px; }

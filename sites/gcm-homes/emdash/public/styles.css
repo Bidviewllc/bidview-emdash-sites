@@ -102,7 +102,7 @@ img { display: block; max-width: 100%; }
   position: relative;
   padding: 6px 0;
 }
-.nav.transparent .nav__link { color: rgba(255,255,255,0.92); }
+.nav.transparent .nav__link { color: var(--white); }
 .nav__link:hover { color: var(--orange); }
 .nav.transparent .nav__link:hover { color: var(--orange); }
 .nav__link.active::after,
@@ -350,7 +350,6 @@ a:hover .cta-arrow { transform: translateX(4px); }
   line-height: 1.65;
   max-width: 680px;
   margin: 0 auto;
-  opacity: 0.92;
   font-weight: 300;
 }
 .hero__cta {
@@ -435,7 +434,7 @@ a:hover .cta-arrow { transform: translateX(4px); }
 /* Colour only. --light and --dim are for dark sections, --navy and --muted for
    light ones. The greys collapsed from three (--ink, --body, --muted) to one. */
 .eyebrow--light { color: var(--white); }
-.eyebrow--dim { color: rgba(255, 255, 255, 0.6); }
+.eyebrow--dim { color: var(--white); }
 .eyebrow--navy { color: var(--navy); }
 .eyebrow--muted { color: var(--muted); }
 .h-rule {
@@ -588,7 +587,7 @@ a:hover .cta-arrow { transform: translateX(4px); }
 .stat__desc {
   font-size: 14px;
   line-height: 1.55;
-  color: rgba(255,255,255,0.7);
+  color: var(--white);
   margin-top: 6px;
 }
 
@@ -641,7 +640,7 @@ a:hover .cta-arrow { transform: translateX(4px); }
   font-size: 17px;
   line-height: 1.7;
   letter-spacing: 0.02em;
-  color: rgba(255,255,255,0.88);
+  color: var(--white);
   max-width: 690px;
   margin: 24px auto 0;
 }
@@ -714,7 +713,7 @@ a:hover .cta-arrow { transform: translateX(4px); }
   font-size: 18px;
   line-height: 1.7;
   letter-spacing: 0.01em;
-  color: rgba(255,255,255,0.95);
+  color: var(--white);
   max-width: 720px;
   margin: 28px auto 0;
   text-shadow: 0 2px 14px rgba(0,0,0,0.5);
@@ -749,7 +748,7 @@ a:hover .cta-arrow { transform: translateX(4px); }
 .emotion-bc__p {
   font-size: 16px;
   line-height: 1.7;
-  color: rgba(255,255,255,0.85);
+  color: var(--white);
   border-left: 2px solid var(--orange);
   padding-left: 24px;
 }
@@ -980,7 +979,7 @@ a:hover .cta-arrow { transform: translateX(4px); }
 }
 .invite__agent img { width: 56px; height: 56px; object-fit: cover; border-radius: 12px; }
 .invite__agent__name { font-weight: 700; font-size: 15px; color: var(--white); }
-.invite__agent__role { font-size: 13px; color: rgba(255,255,255,0.7); }
+.invite__agent__role { font-size: 13px; color: var(--white); }
 
 .invite__form { padding: 64px; display: flex; flex-direction: column; gap: 26px; }
 .invite__form__h {
@@ -1211,6 +1210,30 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
    and add a shadow, so only the fill is taken. */
 .micro__next { background: var(--orange); }
 
+/* ===== Featured listings carousel (home) =====
+   A native horizontal scroller: three cards in view, snapping card by card.
+   The padding gives the cards' hover lift and shadow room inside the scroll
+   box, and the negative margin cancels it so the cards still line up with
+   the container edge. */
+.fl-track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc((100% - 64px) / 3);
+  gap: 32px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding: 0 12px;
+  scrollbar-width: none;
+  padding: 8px 12px 28px;
+  margin: -8px -12px -28px;
+}
+.fl-track::-webkit-scrollbar { display: none; }
+.fl-track > .card { scroll-snap-align: start; }
+.fl-nav { display: flex; gap: 16px; justify-content: center; margin-top: 48px; }
+.fl-nav .btn--icon { border: 1px solid rgba(21, 36, 59, 0.25); color: var(--navy); background: transparent; }
+.fl-nav .fl-nav__next { background: var(--orange); border-color: var(--orange); color: var(--white); }
+.fl-nav .btn--icon:disabled { opacity: 0.35; cursor: default; }
+
 /* ===== Asymmetric photo gallery ===== */
 .gallery {
   display: grid;
@@ -1352,7 +1375,7 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   justify-content: space-between;
   align-items: center;
   font-size: 13px;
-  color: rgba(255,255,255,0.6);
+  color: var(--white);
 }
 .footer__bottom__links { display: flex; gap: 28px; }
 
@@ -2469,7 +2492,7 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   margin-top: 18px;
   text-wrap: balance;
 }
-.section-title.on-dark p { color: rgba(255,255,255,0.75); }
+.section-title.on-dark p { color: var(--white); }
 
 /* ===== Pull quote =====
    Moved here from about.css when /buyers/ and /sellers/ started using it too —
@@ -2780,14 +2803,14 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
 .footer__brand__blurb {
   font-size: 14px;
   line-height: 1.6;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--white);
   margin-bottom: 24px;
   max-width: 280px;
 }
 .footer__disclaimer {
   font-size: 12px;
   line-height: 1.6;
-  color: rgba(255, 255, 255, 0.45);
+  color: var(--white);
   max-width: 640px;
 }
 

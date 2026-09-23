@@ -34,7 +34,8 @@ export { PluginBridge };
 // figures get a bottom rule.
 // v9 (2026-09-23): /about/ -- 1/3-2/3 bio, concierge line above the stories,
 // no "Let's talk" in The Return. Old cached HTML kept the previous layout.
-const CACHE_VERSION = "v9";
+// v10 (2026-09-23): / -- featured listings carousel, Market Insights READ MORE.
+const CACHE_VERSION = "v10";
 const CACHEABLE_TYPE = /^(?:text\/html|application\/xml|text\/xml|text\/plain)/i;
 const ADMIN_COOKIE = /emdash[-_](session|edit-mode|admin)/i;
 
