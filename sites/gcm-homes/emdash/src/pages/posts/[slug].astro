@@ -1,91 +1,261 @@
 ---
-import { getEmDashEntry, getSeoMeta, decodeSlug, getSiteSettings } from "emdash";
-import { Image, PortableText, WidgetArea } from "emdash/ui";
-import Base from "../../layouts/Base.astro";
+// /posts/<slug>/ — a single Market Insights article. Styles in /blog.css.
+//
+// Layout (approved design, 2026-09-23):
+//   Hero     — mirrors the listing page's .listing-hero--fl under the solid nav.
+//              Content row is row-reverse in the markup: share + author on the
+//              right, breadcrumb (top) and category + title (bottom) on the left.
+//              No excerpt. Capped at 100vh on desktop/tablet.
+//   Body     — the post's one rich-text field, with an "In this article"
+//              table of contents (closed accordion) inserted before the first
+//              H2, then the author card. Right sidebar: "Ask The Expert" CTA and
+//              one featured listing picked at random on each page load.
+//   Then     — the shared ContactCta, then three more articles.
+import { getEmDashEntry, getSeoMeta, decodeSlug, getSiteSettings, getEditMeta } from "emdash";
+import { PortableText } from "emdash/ui";
+import GcmLayout from "../../layouts/GcmLayout.astro";
+import ContactCta from "../../components/ContactCta.astro";
+import PostCardC from "../../components/PostCard.astro";
+import PostBlock from "../../components/PostBlock.astro";
 import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { imageUrl } from "../../lib/media";
+import { extractH2s, formatDate, readMinutes, listPosts, featuredListingPool } from "../../lib/posts";
 
 const slug = decodeSlug(Astro.params.slug);
-
-if (!slug) {
-	return Astro.redirect("/404");
-}
+if (!slug) return Astro.redirect("/404");
 
 const { entry: post, cacheHint } = await getEmDashEntry("posts", slug);
-
-if (!post) {
-	return Astro.redirect("/404");
-}
-
+if (!post) return Astro.redirect("/404");
 if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+
 const { siteTitle } = resolveStarterSiteIdentity(await getSiteSettings());
+const seo = getSeoMeta(post, { siteTitle, siteUrl: Astro.url.origin, path: `/posts/${slug}` });
 
-// SEO meta from content fields
-const seo = getSeoMeta(post, {
-	siteTitle,
-	siteUrl: Astro.url.origin,
-	path: `/posts/${slug}`,
-});
+const d: any = post.data;
+const categories: any[] = d.terms?.category ?? [];
+const heroImage = imageUrl(d.featured_image) ?? "/assets/hero-lake.jpg";
+const date = formatDate(d.publishedAt ?? d.published_at);
+const minutes = readMinutes(d.content);
+const pageUrl = `${Astro.url.origin}/posts/${slug}/`;
 
-// Taxonomy terms are already hydrated onto the entry by getEmDashEntry.
-const tags = post.data.terms?.tag ?? [];
-const categories = post.data.terms?.category ?? [];
+// Table of contents: built from the H2s and slotted in just before the first
+// one, so writers never add it by hand. In edit mode (logged-in admin) the
+// field renders as emdash's inline editor, which needs the whole value in one
+// piece — so the split and the TOC only happen for regular visitors.
+const content: any[] = Array.isArray(d.content) ? d.content : [];
+const editing = Boolean(getEditMeta(d.content));
+const toc = editing ? [] : extractH2s(content);
+const firstH2 = toc.length ? content.findIndex((b: any) => b?._type === "block" && b.style === "h2") : -1;
+const beforeToc = firstH2 > 0 ? content.slice(0, firstH2) : [];
+const afterToc = firstH2 >= 0 ? content.slice(firstH2) : content;
+const components = { block: PostBlock };
+
+const [{ posts: related }, pool] = await Promise.all([
+	listPosts({ perPage: 3, excludeId: d.id }),
+	featuredListingPool(),
+]);
+
+const money = (n: number) => (n ? "$" + Number(n).toLocaleString("en-US") : "Price on request");
+const metaBits = (l: any) => {
+	const bits: Array<[string, string]> = [];
+	if (l.beds) bits.push([String(l.beds), "BD"]);
+	if (l.baths) bits.push([String(l.baths), "BA"]);
+	if (l.sqft) bits.push([Number(l.sqft).toLocaleString(), "SQFT"]);
+	if (!bits.length && l.lot_acres) bits.push([String(l.lot_acres), "ACRES"]);
+	return bits;
+};
+const tagOf = (l: any) =>
+	l.category || String(l.sub_type || l.type || "Property").replace(/([a-z])([A-Z])/g, "$1 $2");
 ---
 
-<Base
+<GcmLayout
 	title={seo.title}
-	pageTitle={seo.ogTitle}
 	description={seo.description}
 	canonical={seo.canonical}
 	image={seo.ogImage}
-	content={{ collection: "posts", id: post.data.id, slug }}
+	content={{ collection: "posts", id: d.id, slug }}
 >
-	<article>
-		{
-			post.data.featured_image && (
-				<div {...post.edit.featured_image}>
-					<Image image={post.data.featured_image} />
+	<link rel="stylesheet" href="/blog.css" />
+
+	<div class="post-page">
+		<section class="post-hero">
+			<div class="post-hero__img" style={`background-image:url('${heroImage}')`} {...post.edit.featured_image}></div>
+			<div class="post-hero__veil"></div>
+
+			{/* row-reverse: the right-hand column comes first in the markup. */}
+			<div class="post-hero__row">
+				<div class="post-hero__aside">
+					<div class="post-hero__share" data-share data-url={pageUrl} data-title={d.title}>
+						<button type="button" data-share-native aria-label="Share" title="Share">
+							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><line x1="8.6" y1="10.7" x2="15.4" y2="6.3" /><line x1="8.6" y1="13.3" x2="15.4" y2="17.7" /></svg>
+						</button>
+						<button type="button" data-share-copy aria-label="Copy link" title="Copy link">
+							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" /><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" /></svg>
+						</button>
+						<a href={`mailto:?subject=${encodeURIComponent(d.title)}&body=${encodeURIComponent(pageUrl)}`} aria-label="Share by email" title="Share by email">
+							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" /><polyline points="3 7 12 13 21 7" /></svg>
+						</a>
+						<button type="button" data-share-print aria-label="Print" title="Print">
+							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9" /><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" /><rect x="6" y="14" width="12" height="8" /></svg>
+						</button>
+						<span class="post-hero__copied" data-share-status role="status" aria-live="polite"></span>
+					</div>
+					<div class="post-hero__author">
+						<div>
+							<div class="post-hero__author__l">Written by</div>
+							<div class="post-hero__author__n">Grant C. Meyer</div>
+							<div class="post-hero__author__l post-hero__author__d">{date}{date && " · "}{minutes} min read</div>
+						</div>
+						<img src="/assets/grant.jpg" alt="" />
+					</div>
 				</div>
-			)
-		}
 
-		<h1 {...post.edit.title}>{post.data.title}</h1>
-
-		{
-			post.data.publishedAt && (
-				<time datetime={post.data.publishedAt.toISOString()}>
-					{post.data.publishedAt.toLocaleDateString("en-US", {
-						year: "numeric",
-						month: "long",
-						day: "numeric",
-					})}
-				</time>
-			)
-		}
-
-		{
-			categories.length > 0 && (
-				<div>
-					{categories.map((c) => (
-						<a href={`/category/${c.slug}`}>{c.label}</a>
-					))}
+				<div class="post-hero__main">
+					<nav class="post-hero__crumbs" aria-label="Breadcrumb">
+						<a href="/posts/">Articles</a>
+						<span aria-hidden="true">/</span>
+						<span aria-current="page" class="post-hero__crumbs__here">{d.title}</span>
+					</nav>
+					<div class="post-hero__titlebox">
+						{categories[0] && (
+							<a class="listing-hero__crumb post-hero__cat" href={`/category/${categories[0].slug}/`}>{categories[0].label}</a>
+						)}
+						<h1 class="post-hero__title" {...post.edit.title}>{d.title}</h1>
+					</div>
 				</div>
-			)
-		}
+			</div>
+		</section>
 
-		<PortableText value={post.data.content} />
+		<section class="post-body">
+			<div class="post-body__grid">
+				<article class="post-prose">
+					{editing ? (
+						<PortableText value={d.content} />
+					) : (
+						<>
+							{beforeToc.length > 0 && <PortableText value={beforeToc} components={components} />}
+							{toc.length > 0 && (
+								<details class="post-toc">
+									<summary class="post-toc__summary">
+										<span class="post-toc__label">
+											<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6" /><line x1="8" y1="12" x2="21" y2="12" /><line x1="8" y1="18" x2="21" y2="18" /><line x1="3" y1="6" x2="3.01" y2="6" /><line x1="3" y1="12" x2="3.01" y2="12" /><line x1="3" y1="18" x2="3.01" y2="18" /></svg>
+											<span class="post-toc__title">In this article</span>
+											<span class="post-toc__count">{toc.length} {toc.length === 1 ? "section" : "sections"}</span>
+										</span>
+										<svg class="post-toc__chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg>
+									</summary>
+									<nav class="post-toc__list" aria-label="In this article">
+										{toc.map((h) => <a href={`#${h.id}`}>{h.text}</a>)}
+									</nav>
+								</details>
+							)}
+							{afterToc.length > 0 && <PortableText value={afterToc} components={components} />}
+						</>
+					)}
 
-		{
-			tags.length > 0 && (
-				<div>
-					{tags.map((t) => (
-						<a href={`/tag/${t.slug}`}>{t.label}</a>
-					))}
+					<div class="post-author">
+						<img src="/assets/grant.jpg" alt="Grant C. Meyer" />
+						<div class="post-author__body">
+							<span class="eyebrow">Written by</span>
+							<span class="post-author__n">Grant C. Meyer</span>
+							<p>Incline Village since 1992. More property sold here than any other agent since 2019.</p>
+							<a class="blog-card__cta" href="/about/">ABOUT GRANT<span class="cta-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg></span></a>
+						</div>
+					</div>
+				</article>
+
+				<aside class="post-side">
+					<div class="post-expert">
+						<span class="eyebrow">Ask The Expert</span>
+						<h2 class="post-expert__h">Buying, selling, or just watching the market?</h2>
+						<p class="post-expert__p">Incline Village is a micro-market that doesn't follow the trends you'd read about in other markets. We are here to answer any questions you have.</p>
+						<a class="btn btn--orange post-expert__btn" href="#post-contact">LET'S TALK<span class="cta-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg></span></a>
+					</div>
+
+					{pool.length > 0 && (
+						<div class="post-listing" data-listing-pool>
+							<span class="eyebrow eyebrow--muted">Featured Listing</span>
+							{pool.map((l: any, i: number) => (
+								<a class="card" href={`/homes/${l.slug}/`} data-listing-pick hidden={i !== 0}>
+									<div class="card__media">
+										<img class="card__img" src={l.photo} alt={l.address || "Featured listing"} loading="lazy" />
+										<div class="card__badges">
+											<div class="card__tag">{tagOf(l)}</div>
+											{l.waterfront ? <div class="card__wf">Waterfront</div> : null}
+										</div>
+									</div>
+									<div class="card__body">
+										<div class="card__price">{money(l.price)}</div>
+										<div class="card__addr">{l.address || "Address on request"}</div>
+										<div class="card__city">{[l.city, l.state].filter(Boolean).join(", ") || "Lake Tahoe"}</div>
+										{metaBits(l).length > 0 && (
+											<div class="card__meta">
+												{metaBits(l).map(([n, unit]) => <span><b>{n}</b> {unit}</span>)}
+											</div>
+										)}
+									</div>
+								</a>
+							))}
+							<a class="btn btn--dark post-listing__btn" href="/listings/">VIEW LISTINGS<span class="cta-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg></span></a>
+						</div>
+					)}
+				</aside>
+			</div>
+		</section>
+
+		<ContactCta id="post-contact" bg="cream" />
+
+		{related.length > 0 && (
+			<section class="section section--beige post-related">
+				<div class="container">
+					<div class="post-related__head">
+						<div>
+							<span class="eyebrow eyebrow--block">Keep Reading</span>
+							<h2 class="h2">More Market Insights</h2>
+						</div>
+						<a class="blog-card__cta" href="/posts/">ALL ARTICLES<span class="cta-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg></span></a>
+					</div>
+					<div class="blog">
+						{related.map((p) => <PostCardC post={p} />)}
+					</div>
 				</div>
-			)
-		}
-	</article>
+			</section>
+		)}
+	</div>
 
-	<aside>
-		<WidgetArea name="sidebar" />
-	</aside>
-</Base>
+	<script is:inline>
+		(function () {
+			// Featured listing: the whole pool is in the page (it's edge-cached), so
+			// pick one here to get a different listing on every load.
+			var picks = document.querySelectorAll("[data-listing-pick]");
+			if (picks.length > 1) {
+				var n = Math.floor(Math.random() * picks.length);
+				picks.forEach(function (el, i) { el.hidden = i !== n; });
+			}
+
+			// Share buttons.
+			var box = document.querySelector("[data-share]");
+			if (!box) return;
+			var url = box.getAttribute("data-url") || location.href;
+			var title = box.getAttribute("data-title") || document.title;
+			var status = box.querySelector("[data-share-status]");
+			function copy() {
+				if (!navigator.clipboard) return;
+				navigator.clipboard.writeText(url).then(function () {
+					if (!status) return;
+					status.textContent = "Link copied";
+					setTimeout(function () { status.textContent = ""; }, 2000);
+				});
+			}
+			var nativeBtn = box.querySelector("[data-share-native]");
+			if (nativeBtn) nativeBtn.addEventListener("click", function () {
+				if (navigator.share) navigator.share({ title: title, url: url }).catch(function () {});
+				else copy();
+			});
+			var copyBtn = box.querySelector("[data-share-copy]");
+			if (copyBtn) copyBtn.addEventListener("click", copy);
+			var printBtn = box.querySelector("[data-share-print]");
+			if (printBtn) printBtn.addEventListener("click", function () { window.print(); });
+		})();
+	</script>
+</GcmLayout>

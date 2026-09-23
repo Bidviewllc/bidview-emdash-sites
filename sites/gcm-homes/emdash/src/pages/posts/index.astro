@@ -1,53 +1,20 @@
 ---
-import { getEmDashCollection, getTermsForEntries } from "emdash";
-import { Image } from "emdash/ui";
-import Base from "../../layouts/Base.astro";
+// /posts/ — Market Insights archive, page 1. Also serves search results
+// (/posts/?q=...): that is the one page that reads the query string, and
+// src/worker.ts bypasses the edge cache whenever ?q= is present.
+import GcmLayout from "../../layouts/GcmLayout.astro";
+import BlogArchive from "../../components/BlogArchive.astro";
+import { listPosts, listCategories, POSTS_PER_PAGE } from "../../lib/posts";
 
-const { entries: posts, cacheHint } = await getEmDashCollection("posts", {
-	orderBy: { published_at: "desc" },
-});
-if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
-
-// Single batched query for tags across every post, instead of calling
-// getEntryTerms() per post (which would be N round-trips).
-const tagsByEntry = await getTermsForEntries(
-	"posts",
-	posts.map((p) => p.data.id),
-	"tag",
-);
-const postsWithTags = posts.map((post) => ({
-	post,
-	tags: tagsByEntry.get(post.data.id) ?? [],
-}));
+const q = (Astro.url.searchParams.get("q") ?? "").trim().slice(0, 100) || null;
+const [{ posts, total }, categories] = await Promise.all([listPosts({ page: 1, q }), listCategories()]);
 ---
 
-<Base title="All Posts">
-	<h1>Posts</h1>
-
-	{
-		postsWithTags.length === 0 ? (
-			<p>No posts yet.</p>
-		) : (
-			<ul>
-				{postsWithTags.map(({ post, tags }) => (
-					<li>
-						<a href={`/posts/${post.id}`}>
-							{post.data.featured_image && (
-								<Image image={post.data.featured_image} />
-							)}
-							<h2>{post.data.title}</h2>
-						</a>
-						{post.data.excerpt && <p>{post.data.excerpt}</p>}
-						{tags.length > 0 && (
-							<div>
-								{tags.map((t) => (
-									<a href={`/tag/${t.slug}`}>{t.label}</a>
-								))}
-							</div>
-						)}
-					</li>
-				))}
-			</ul>
-		)
-	}
-</Base>
+<GcmLayout
+	title={q ? `Search: ${q} — Market Insights | Grant C. Meyer Homes` : "Market Insights — Grant C. Meyer Homes"}
+	description="Grant C. Meyer on the Lake Tahoe luxury real estate market: Incline Village and Crystal Bay market analysis, buying and selling advice, and local news."
+	canonical={`${Astro.url.origin}/posts/`}
+>
+	<link rel="stylesheet" href="/blog.css" />
+	<BlogArchive posts={posts} total={total} page={1} perPage={POSTS_PER_PAGE} categories={categories} q={q} basePath="/posts/" />
+</GcmLayout>

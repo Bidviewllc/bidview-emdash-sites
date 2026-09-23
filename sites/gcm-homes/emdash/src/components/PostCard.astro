@@ -1,0 +1,35 @@
+---
+// One Market Insights article card — the same .card--post the home page's
+// Market Insights strip uses, so a post looks identical wherever it's listed.
+// The whole card is the link, so "READ ARTICLE" is a span (no <a> in an <a>).
+import type { PostCard } from "../lib/posts";
+
+interface Props {
+	post: PostCard;
+}
+const { post } = Astro.props;
+const category = post.categories.map((c) => c.label).join(" · ");
+---
+
+<a class="card card--post" href={`/posts/${post.slug}/`}>
+	<div class="card__media">
+		<img class="card__img" src={post.image} alt="" loading="lazy" />
+		{category && (
+			<div class="card__badges">
+				<div class="card__tag">{category}</div>
+			</div>
+		)}
+	</div>
+	<div class="card__body">
+		<h3 class="blog-card__h">{post.title}</h3>
+		{post.excerpt && <p class="blog-card__p">{post.excerpt}</p>}
+		<span class="blog-card__cta">READ ARTICLE<span class="cta-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg></span></span>
+		<div class="blog-card__byline">
+			<div class="blog-card__avatar"></div>
+			<div>
+				<div class="blog-card__byline__t">GRANT C. MEYER</div>
+				<div class="blog-card__byline__d">{post.date}{post.date && " · "}{post.readMinutes} MIN READ</div>
+			</div>
+		</div>
+	</div>
+</a>

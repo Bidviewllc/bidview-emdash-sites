@@ -14,7 +14,9 @@
 //    so inline editing and the admin-only listing UI are never served stale or
 //    leaked to anonymous visitors.
 //  - Cache key drops the query string (so ?cb=/?utm= share one entry). Verified
-//    safe: no .astro page reads searchParams server-side; /api/* is excluded.
+//    safe: the only .astro page that reads searchParams is blog search
+//    (/posts/?q=), and any request carrying ?q= bypasses the cache; /api/* is
+//    excluded.
 //  - An existing Cache-Control on the response is respected (the detail route
 //    and sitemap set their own); otherwise a 5-minute s-maxage is applied.
 // Bump CACHE_VERSION to invalidate everything.
@@ -35,7 +37,9 @@ export { PluginBridge };
 // v9 (2026-09-23): /about/ -- 1/3-2/3 bio, concierge line above the stories,
 // no "Let's talk" in The Return. Old cached HTML kept the previous layout.
 // v10 (2026-09-23): / -- featured listings carousel, Market Insights READ MORE.
-const CACHE_VERSION = "v10";
+// v11 (2026-09-23): Market Insights blog -- new /posts/, /category/ and post
+// templates, plus the Insights link in every page's nav and footer.
+const CACHE_VERSION = "v11";
 const CACHEABLE_TYPE = /^(?:text\/html|application\/xml|text\/xml|text\/plain)/i;
 const ADMIN_COOKIE = /emdash[-_](session|edit-mode|admin)/i;
 
@@ -47,7 +51,10 @@ export default {
 			request.method !== "GET" ||
 			isAdmin ||
 			url.pathname.startsWith("/_emdash") ||
-			url.pathname.startsWith("/api/");
+			url.pathname.startsWith("/api/") ||
+			// Blog search (/posts/?q=...) is the one page that reads the query
+			// string, and the cache key drops it -- so it must never be cached.
+			url.searchParams.has("q");
 
 		if (bypass) {
 			const res = await emdashWorker.fetch(request, env as any, ctx);

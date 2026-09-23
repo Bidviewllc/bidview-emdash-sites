@@ -1,42 +1,31 @@
 ---
-import { getTerm, getEmDashCollection, decodeSlug } from "emdash";
-import { Image } from "emdash/ui";
-import Base from "../../layouts/Base.astro";
+// /category/<slug>/ — Market Insights archive filtered to one category.
+// Same page as /posts/, with that category's filter button active.
+import GcmLayout from "../../layouts/GcmLayout.astro";
+import BlogArchive from "../../components/BlogArchive.astro";
+import { listPosts, listCategories, POSTS_PER_PAGE } from "../../lib/posts";
 
-const slug = decodeSlug(Astro.params.slug);
-const term = slug ? await getTerm("category", slug) : null;
+const slug = String(Astro.params.slug ?? "");
+const categories = await listCategories();
+const activeCategory = categories.find((c) => c.slug === slug) ?? null;
+if (!activeCategory) return Astro.redirect("/posts/");
 
-if (!term) {
-	return Astro.redirect("/404");
-}
-
-const { entries: posts } = await getEmDashCollection("posts", {
-	where: { category: term.slug },
-	orderBy: { published_at: "desc" },
-});
+const { posts, total } = await listPosts({ page: 1, categorySlug: slug });
 ---
 
-<Base title={`${term.label} posts`} description={`Posts in ${term.label}`}>
-	<h1>{term.label}</h1>
-	<p>{posts.length} {posts.length === 1 ? "post" : "posts"}</p>
-
-	{
-		posts.length === 0 ? (
-			<p>No posts in this category yet.</p>
-		) : (
-			<ul>
-				{posts.map((post) => (
-					<li>
-						<a href={`/posts/${post.id}`}>
-							{post.data.featured_image && (
-								<Image image={post.data.featured_image} />
-							)}
-							<h2>{post.data.title}</h2>
-						</a>
-						{post.data.excerpt && <p>{post.data.excerpt}</p>}
-					</li>
-				))}
-			</ul>
-		)
-	}
-</Base>
+<GcmLayout
+	title={`${activeCategory.label} — Market Insights | Grant C. Meyer Homes`}
+	description={`${activeCategory.label} from Grant C. Meyer: Lake Tahoe luxury real estate in Incline Village and Crystal Bay.`}
+	canonical={`${Astro.url.origin}/category/${slug}/`}
+>
+	<link rel="stylesheet" href="/blog.css" />
+	<BlogArchive
+		posts={posts}
+		total={total}
+		page={1}
+		perPage={POSTS_PER_PAGE}
+		categories={categories}
+		activeCategory={activeCategory}
+		basePath={`/category/${slug}/`}
+	/>
+</GcmLayout>

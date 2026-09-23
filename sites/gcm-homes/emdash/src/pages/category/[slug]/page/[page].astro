@@ -1,0 +1,36 @@
+---
+// /category/<slug>/page/<n>/ — a category's archive, page 2 onward.
+import GcmLayout from "../../../../layouts/GcmLayout.astro";
+import BlogArchive from "../../../../components/BlogArchive.astro";
+import { listPosts, listCategories, POSTS_PER_PAGE } from "../../../../lib/posts";
+
+const slug = String(Astro.params.slug ?? "");
+const page = Number.parseInt(String(Astro.params.page), 10);
+const base = `/category/${slug}/`;
+if (!Number.isFinite(page) || page < 1) return Astro.redirect(base);
+if (page === 1) return Astro.redirect(base, 301);
+
+const categories = await listCategories();
+const activeCategory = categories.find((c) => c.slug === slug) ?? null;
+if (!activeCategory) return Astro.redirect("/posts/");
+
+const { posts, total } = await listPosts({ page, categorySlug: slug });
+if (posts.length === 0) return Astro.redirect(base);
+---
+
+<GcmLayout
+	title={`${activeCategory.label} — Page ${page} | Grant C. Meyer Homes`}
+	description={`${activeCategory.label} from Grant C. Meyer: Lake Tahoe luxury real estate in Incline Village and Crystal Bay.`}
+	canonical={`${Astro.url.origin}${base}page/${page}/`}
+>
+	<link rel="stylesheet" href="/blog.css" />
+	<BlogArchive
+		posts={posts}
+		total={total}
+		page={page}
+		perPage={POSTS_PER_PAGE}
+		categories={categories}
+		activeCategory={activeCategory}
+		basePath={base}
+	/>
+</GcmLayout>

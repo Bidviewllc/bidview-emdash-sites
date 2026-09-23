@@ -1,0 +1,23 @@
+---
+// /posts/page/<n>/ — Market Insights archive, page 2 onward. Page 1 lives at
+// /posts/ and /posts/page/1/ redirects there so it has one address.
+import GcmLayout from "../../../layouts/GcmLayout.astro";
+import BlogArchive from "../../../components/BlogArchive.astro";
+import { listPosts, listCategories, POSTS_PER_PAGE } from "../../../lib/posts";
+
+const page = Number.parseInt(String(Astro.params.page), 10);
+if (!Number.isFinite(page) || page < 1) return Astro.redirect("/posts/");
+if (page === 1) return Astro.redirect("/posts/", 301);
+
+const [{ posts, total }, categories] = await Promise.all([listPosts({ page }), listCategories()]);
+if (posts.length === 0) return Astro.redirect("/posts/");
+---
+
+<GcmLayout
+	title={`Market Insights — Page ${page} | Grant C. Meyer Homes`}
+	description="Grant C. Meyer on the Lake Tahoe luxury real estate market: Incline Village and Crystal Bay market analysis, buying and selling advice, and local news."
+	canonical={`${Astro.url.origin}/posts/page/${page}/`}
+>
+	<link rel="stylesheet" href="/blog.css" />
+	<BlogArchive posts={posts} total={total} page={page} perPage={POSTS_PER_PAGE} categories={categories} basePath="/posts/" />
+</GcmLayout>
