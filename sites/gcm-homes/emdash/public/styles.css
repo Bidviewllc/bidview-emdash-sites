@@ -2920,8 +2920,9 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   flex-wrap: wrap;
   gap: 24px 40px;
   margin-top: 18px;
-  padding-top: 24px;
+  padding: 24px 0;
   border-top: 2px solid var(--navy);
+  border-bottom: 2px solid var(--navy);
 }
 .story__stat { display: flex; flex-direction: column; gap: 4px; }
 .story__stat-value { font-family: var(--font-serif); font-size: 40px; font-weight: 500; line-height: 1; }
@@ -2970,4 +2971,4 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
 .story--navy .story__stat-label { color: var(--white); }
 .story--navy .story__big,
 .story--navy .story__stat-value { color: var(--orange); }
-.story--navy .story__stats { border-top-color: var(--orange); }
+.story--navy .story__stats { border-color: var(--orange); }

@@ -5,7 +5,7 @@
 //
 //   01 Hero            .hero              — same pattern as the home/About hero
 //   02 The Pricing Read .guide.split--rev — two rows: copy/photo, then photo/copy
-//   03 Seasonal Timing .timing            — one 3fr/2fr row: copy + chart | quote
+//   03 Seasonal Timing .timing            — copy | quote (3fr/2fr), then the chart full width
 //      Story            <StoryBlock photo>  — the condo record
 //   04 The Marketing   .mkt__*            — three rows: copy/photo, film + reach, package
 //   05 The Network     .net.net--cols     — dark Statement block, two columns
@@ -175,8 +175,8 @@ const successMessage = d.val_success ?? "Thanks — Grant will be in touch with 
 		</div>
 	</section>
 
-	{/* 03 SEASONAL TIMING — one row, two columns (3fr / 2fr): the head, copy and
-	     eight-month chart on the left; Grant's quote on the right. The
+	{/* 03 SEASONAL TIMING — two rows: the head and copy (3fr) beside Grant's
+	     quote (2fr), then the eight-month chart at full width. The
 	     condo-record story follows as its own section. */}
 	<section class="section section--cream" data-screen-label="03 Seasonal Timing">
 		<div class="container timing">
@@ -196,54 +196,6 @@ const successMessage = d.val_success ?? "Thanks — Grant will be in touch with 
 						{d.timing_p2 ?? "When a seller is ready early — home prepped, photography and video shot, marketing package built — Grant can bring the listing to market while serious buyers are already searching and competing listings have not surfaced yet. Sellers who wait for listing season arrive into the crowd instead of ahead of it."}
 					</p>
 				</div>
-
-				{/* The bars carry the meaning rather than the labels, so the whole
-				    chart is one labelled image to a screen reader. */}
-				<div
-					class="season"
-					role="img"
-					aria-label="Buyers begin searching in April and May, while most listings do not appear until June or July — leaving an early-season opportunity."
-				>
-					<div class="season__legend">
-						<span class="season__key season__key--window">The opening</span>
-						<span class="season__key season__key--buyers">Buyers searching</span>
-						<span class="season__key season__key--listings">Most listings appear</span>
-					</div>
-
-					<div class="season__chart">
-						<div class="season__window" aria-hidden="true"></div>
-
-						<div class="season__track">
-							<span class="season__track-label">Buyers searching</span>
-							<div class="season__lane">
-								<div class="season__bar season__bar--buyers" style="grid-column:2 / 8">
-									<span class="season__bar-note">Here and looking from April</span>
-								</div>
-							</div>
-						</div>
-
-						<div class="season__track">
-							<span class="season__track-label">Listings on market</span>
-							<div class="season__lane">
-								<div class="season__bar season__bar--listings" style="grid-column:4 / 8">
-									<span class="season__bar-note">Most don't surface until June–July</span>
-								</div>
-							</div>
-						</div>
-
-						<div class="season__months">
-							<span></span>
-							<div class="season__lane">
-								{SEASON_MONTHS.map((m) => <span class="season__month">{m}</span>)}
-							</div>
-						</div>
-					</div>
-
-					<p class="season__caption">
-						The early weeks — buyers already on the lake, few listings to compete with — are
-						the window a prepared seller can own.
-					</p>
-				</div>
 			</div>
 
 			<div class="timing__side">
@@ -253,6 +205,57 @@ const successMessage = d.val_success ?? "Thanks — Grant will be in touch with 
 					</div>
 					<div class="eyebrow pullquote__a">— GRANT C. MEYER</div>
 				</div>
+			</div>
+		</div>
+
+		{/* Second row: the eight-month chart, full width. */}
+		<div class="container timing__chart">
+			{/* The bars carry the meaning rather than the labels, so the whole
+			    chart is one labelled image to a screen reader. */}
+			<div
+				class="season"
+				role="img"
+				aria-label="Buyers begin searching in April and May, while most listings do not appear until June or July — leaving an early-season opportunity."
+			>
+				<div class="season__legend">
+					<span class="season__key season__key--window">The opening</span>
+					<span class="season__key season__key--buyers">Buyers searching</span>
+					<span class="season__key season__key--listings">Most listings appear</span>
+				</div>
+
+				<div class="season__chart">
+					<div class="season__window" aria-hidden="true"></div>
+
+					<div class="season__track">
+						<span class="season__track-label">Buyers searching</span>
+						<div class="season__lane">
+							<div class="season__bar season__bar--buyers" style="grid-column:2 / 8">
+								<span class="season__bar-note">Here and looking from April</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="season__track">
+						<span class="season__track-label">Listings on market</span>
+						<div class="season__lane">
+							<div class="season__bar season__bar--listings" style="grid-column:4 / 8">
+								<span class="season__bar-note">Most don't surface until June–July</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="season__months">
+						<span></span>
+						<div class="season__lane">
+							{SEASON_MONTHS.map((m) => <span class="season__month">{m}</span>)}
+						</div>
+					</div>
+				</div>
+
+				<p class="season__caption">
+					The early weeks — buyers already on the lake, few listings to compete with — are
+					the window a prepared seller can own.
+				</p>
 			</div>
 		</div>
 	</section>
