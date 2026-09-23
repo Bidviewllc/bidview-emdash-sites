@@ -669,15 +669,6 @@ a:hover .cta-arrow { transform: translateX(4px); }
   position: relative;
   overflow: hidden;
 }
-.emotion-split__panel::before {
-  content: "";
-  position: absolute;
-  top: -120px; right: -120px;
-  width: 360px; height: 360px;
-  border: 1px solid rgba(247, 148, 91, 0.18);
-  transform: rotate(45deg);
-  pointer-events: none;
-}
 .emotion-split__h {
   font-family: var(--font-serif);
   font-weight: 500;

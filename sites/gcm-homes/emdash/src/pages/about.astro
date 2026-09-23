@@ -151,19 +151,16 @@ const STORY_FALLBACKS = [
 		</div>
 	</section>
 
-	{/* 03 THE GUIDE — same Bio-Split as the home page, the full-length version. */}
+	{/* 03 THE GUIDE — the home page's 1/3 - 2/3 .grant-intro layout, the full-length copy. */}
 	<section id="about-guide" class="section section--beige" data-screen-label="03 The Guide">
-		<div class="container guide">
-			<div class="guide__photo">
-				<div class="guide__img"></div>
-				<div class="guide__name">Grant C. Meyer</div>
-			</div>
-			<div class="guide__copy">
+		<div class="container grant-intro">
+			<div class="grant-intro__photo" style="background-image:url('/assets/grant.jpg')"></div>
+			<div class="grant-intro__copy">
 				<div class="eyebrow" {...(e.guide_eyebrow ?? {})}>{d.guide_eyebrow ?? "MEETING THE MENTOR"}</div>
 				<h2 class="guide__h" {...(e.guide_heading ?? {})}>
 					{d.guide_heading ?? "35 Years Here. Still the First One to Pick Up the Phone."}
 				</h2>
-				<div class="guide__creds">
+				<div class="grant-intro__creds">
 					{CREDS.map((c, i) => (
 						<div class="cred">
 							<span class="check-disc" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12" /></svg></span>
@@ -225,6 +222,9 @@ const STORY_FALLBACKS = [
 					{d.proof_heading ?? "What “Going Above and Beyond” Actually Looks Like."}
 				</h2>
 			</div>
+			<p class="proof__transition" {...(e.proof_transition ?? {})}>
+				{d.proof_transition ?? "This is what “full service” means in practice — not a tagline, but a standard that holds even when nobody's watching."}
+			</p>
 			<div class="proof proof--cards">
 				{STORIES.map((s, i) => (
 					<div class="proof-card">
@@ -233,9 +233,6 @@ const STORY_FALLBACKS = [
 					</div>
 				))}
 			</div>
-			<p class="proof__transition" {...(e.proof_transition ?? {})}>
-				{d.proof_transition ?? "This is what “full service” means in practice — not a tagline, but a standard that holds even when nobody's watching."}
-			</p>
 		</div>
 	</section>
 
@@ -251,9 +248,6 @@ const STORY_FALLBACKS = [
 				{d.return_body ?? "Incline Village stopped being a place I worked a long time ago. The people I've helped buy and sell homes here have become my neighbors and some of my closest friends — the people I see at the market and on the mountain. I've probably made more real friendships through this work than anything else in my life."}
 			</p>
 			<div class="eyebrow pullquote__a">— GRANT C. MEYER</div>
-			<a class="btn btn--orange btn--start" href="#about-contact">
-				{d.return_cta ?? "LET'S TALK"}
-			</a>
 		</div>
 	</section>
 
@@ -284,7 +278,7 @@ const STORY_FALLBACKS = [
 	</section>
 	)}
 
-	{/* 08 CONTACT — the shared site-wide section, anchored so the two buttons above
-	     land on it. */}
+	{/* 08 CONTACT — the shared site-wide section, anchored so the bio's button above
+	     lands on it. */}
 	<ContactCta id="about-contact" bg="cream" />
 </GcmLayout>

@@ -395,7 +395,6 @@
 
   .emotion-split__photo { min-height: 280px; }
   .emotion-split__panel { padding: 48px 24px; }
-  .emotion-split__panel::before { width: 220px; height: 220px; top: -90px; right: -90px; }
   .emotion-split__h { font-size: 30px; }
   .emotion-split__p { font-size: 15px; }
 

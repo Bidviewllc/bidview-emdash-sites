@@ -59,7 +59,7 @@
 	line-height: 1.62;
 	color: var(--body);
 }
-.on-dark .pillar__text { color: rgba(255, 255, 255, 0.74); }
+.on-dark .pillar__text { color: var(--white); }
 
 /* ---- Proof stories ------------------------------------------------------ */
 .proof { margin-top: 56px; }
@@ -86,9 +86,10 @@
 	color: var(--navy);
 	text-wrap: pretty;
 }
+/* Sits between the heading and the two stories. */
 .proof__transition {
 	max-width: 760px;
-	margin: 64px auto 0;
+	margin: 40px auto 0;
 	text-align: center;
 	font-family: var(--font-serif);
 	font-style: italic;
@@ -104,8 +105,9 @@
 	   as the frame narrows. Scoped to .hero--about: the home hero must not move. */
 	.hero--about .hero__img { background-position: 70% center; }
 	.pillars { grid-template-columns: 1fr; gap: 24px; margin-top: 48px; }
+	.proof { margin-top: 40px; }
 	.proof--cards { grid-template-columns: 1fr; gap: 24px; }
-	.proof__transition { font-size: 20px; margin-top: 48px; }
+	.proof__transition { font-size: 20px; margin-top: 32px; }
 }
 
 /* ---- Mobile ------------------------------------------------------------- */
