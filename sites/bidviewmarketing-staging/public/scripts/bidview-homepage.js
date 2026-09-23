@@ -154,6 +154,8 @@
 
     if (partnerVideo && partnerVideoElement) {
       partnerVideo.src = data.video;
+      // Still frame for devices that block autoplay (e.g. iOS Low Power Mode).
+      partnerVideoElement.poster = data.video.replace(/\.mp4$/, '-poster.webp');
       partnerVideoElement.load();
       partnerVideoElement.play().catch(function () {});
     }

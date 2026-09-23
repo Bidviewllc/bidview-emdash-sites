@@ -95,6 +95,11 @@ export function renderSnapshot(raw: string, { path, staging }: SnapshotOptions):
     // WPMU DEV hosting analytics — belongs to the WordPress host, not this site.
     .replace(/<script type="text\/javascript">\s*var _paq[\s\S]*?<\/script>\s*/g, '');
 
+  // The conversion renamed every "wp-" to "bv-", including the Trustindex loader's
+  // mode flag. Trustindex only knows "?wp-widget" — with "?bv-widget" the Google
+  // reviews box renders "Widget not found".
+  html = html.replace('cdn.trustindex.io/loader.js?bv-widget', 'cdn.trustindex.io/loader.js?wp-widget');
+
   // Google tag (Site Kit): production only, so staging visits stay out of live GA.
   if (staging) {
     html = html

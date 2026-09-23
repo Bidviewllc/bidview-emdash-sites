@@ -449,6 +449,12 @@ p {
   max-width: 112ch;
 }
 
+.legal-doc-container p,
+.legal-doc-container li,
+.legal-doc-container a {
+  overflow-wrap: anywhere;
+}
+
 .legal-doc-container ul {
   margin: 0;
   padding-left: 24px;
