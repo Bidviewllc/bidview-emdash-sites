@@ -17,8 +17,10 @@ const { title, description, canonical, image, content } = Astro.props;
 await getSiteSettings();
 
 // Drives BOTH the desktop nav and the mobile drawer, so one edit covers both.
-// Concierge was removed 2026-09-08 at Liz's request. The /concierge/ page is
-// still live and still linked from the footer — it is just no longer in the nav.
+// Concierge was removed 2026-09-08 at Liz's request, and from the footer on
+// 2026-09-23; the /concierge/ page is still live but no longer linked in the chrome.
+// Insights was added 2026-09-23 and removed the same day (Liz); the blog is
+// still linked from the footer as "Market Insights".
 const nav = [
 	["Listings", "/listings/"],
 	["Buyers", "/buyers/"],
@@ -27,8 +29,6 @@ const nav = [
 	// ("this is where I live... I want clients to know that this is my community too").
 	["Our Community", "/community/"],
 	["About", "/about/"],
-	// Added 2026-09-23 with the Market Insights blog (approved canvas design).
-	["Insights", "/posts/"],
 ];
 
 const pageCtx = createPublicPageContext({
@@ -173,7 +173,6 @@ const pageCtx = createPublicPageContext({
 					<h4 class="footer__h">Tahoe</h4>
 					<div class="footer__links">
 						<a href="/community/">Our Community</a>
-						<a href="/concierge/">Concierge</a>
 						<a href="/posts/">Market Insights</a>
 					</div>
 				</div>
