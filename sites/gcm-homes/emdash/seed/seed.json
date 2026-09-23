@@ -1421,8 +1421,13 @@
 				},
 				{
 					"slug": "network_story",
-					"label": "Network — proof story",
+					"label": "Story (mold, band style) — text",
 					"type": "text"
+				},
+				{
+					"slug": "network_story_eyebrow",
+					"label": "Story (mold, band style) — eyebrow",
+					"type": "string"
 				},
 				{
 					"slug": "network_quote",
@@ -2810,7 +2815,8 @@
 					"network_heading": "The Network You Inherit on Day One.",
 					"network_p1": "This is a resort market. There's no Home Depot in Incline Village, the good contractors are booked for months, and the right specialist isn't in the phone book unless you already know who to call.",
 					"network_p2": "Since 2009 I've been sending work to the trades, lenders, title officers, inspectors, and appraisers who do it right, and treating them right, so they pick up when I call. In a small town everyone earns a reputation fast, good or bad, and I know which plumber to call and which one to avoid. My clients inherit all of that the day they close.",
-					"network_story": "A buyer's inspector flagged mold at the last minute and the sale was about to fall apart. I called my mold guy, he was treating the house within 90 minutes, and we closed two days later. That's what those phone calls are worth.",
+					"network_story": "A buyer's inspector flagged mold at the last minute, and the sale was about to fall apart. I called my mold guy; he was treating the house within 90 minutes, and we closed two days later. That's what those phone calls are worth.",
+					"network_story_eyebrow": "A Buyer's Story",
 					"network_quote": "It took me 35 years to earn those phone calls. The day you close, every one of them is yours too.",
 					"tax_eyebrow": "THE TAX ADVANTAGE",
 					"tax_heading": "Why Buyers Choose Nevada",
