@@ -16,7 +16,8 @@
  *  - Bot checks never DROP a lead: a failing submission is saved to D1 flagged
  *    `[BLOCKED: reason]` and simply not emailed.
  *  - No rejection on non-ASCII text. Accented names and em-dashes are normal.
- *  - Honeypot and spam rejections answer like SUCCESS so a bot learns nothing.
+ *  - Honeypot and spam hits are SAVED (flagged, not emailed) and answer like
+ *    success so a bot learns nothing. Nothing is ever dropped without a D1 row.
  *  - Body parsing is decoupled from response format (FormData + Accept: JSON works).
  *
  * Differences from Liberty:
@@ -84,12 +85,14 @@ function sourcePage(request: Request, data: Record<string, string>): string {
  * Intentionally narrow: a false positive here is a lost lead.
  */
 function looksLikeSpam(name: string, message: string): boolean {
+	// Prospects of an SEO agency paste their own site and talk about links, so
+	// URLs and SEO words are NOT spam signals here. One match per URL (a URL with
+	// both "https://" and "www." used to count twice); only link-stuffing counts.
 	const blob = `${name}\n${message}`.toLowerCase();
-	const linkCount = (blob.match(/https?:\/\/|www\.|\[url|<a\s/g) || []).length;
-	if (linkCount >= 2) return true;
-	if (/\b(?:backlinks?|crypto|casino|viagra|cialis|loan offer|bitcoin|forex|escort)\b/.test(blob)) return true;
+	const linkCount = (blob.match(/(?:https?:\/\/|www\.)\S+|\[url|<a\s/g) || []).length;
+	if (linkCount >= 4) return true;
+	if (/\b(?:casino|viagra|cialis|loan offer|escort)\b/.test(blob)) return true;
 	if (/\[url=|\[\/url\]|bb-?code/.test(blob)) return true;
-	if (/\S{120,}/.test(message)) return true;
 	return false;
 }
 
@@ -136,7 +139,18 @@ async function turnstileReason(env: Env, raw: string | undefined, request: Reque
 	}
 }
 
+/**
+ * One retry: during testing a single submission answered success but never
+ * reached D1 (not reproducible — most likely a transient D1 error). A retry
+ * after a short pause is cheap insurance for a lost lead.
+ */
 async function saveToD1(env: Env, d: Record<string, string>): Promise<boolean> {
+	if (await saveOnce(env, d)) return true;
+	await new Promise((r) => setTimeout(r, 300));
+	return saveOnce(env, d);
+}
+
+async function saveOnce(env: Env, d: Record<string, string>): Promise<boolean> {
 	const db = env.DB;
 	if (!db) return false;
 	try {
@@ -191,12 +205,6 @@ async function handlePost(request: Request, env: Env): Promise<Response> {
 	const fail = (msg: string, status: number) =>
 		wantsJson ? json({ ok: false, error: msg }, status) : new Response(msg, { status });
 
-	// 1. Honeypot — hidden from humans. Answer like success so the bot learns nothing.
-	if (data.bv_hp && data.bv_hp.trim() !== "") {
-		console.log("Honeypot tripped — dropping submission");
-		return ok();
-	}
-
 	const name = esc(data.name || "");
 	const email = esc(data.email || "");
 	const phone = esc(data.phone || "");
@@ -213,19 +221,18 @@ async function handlePost(request: Request, env: Env): Promise<Response> {
 		return fail("Please enter a valid email address.", 400);
 	}
 
-	// 3. Spam — rejected before any email is sent
-	if (looksLikeSpam(name, message)) {
-		console.log("Spam filter tripped — dropping submission from", email);
-		return ok();
-	}
-
-	// 4. Bot checks. Blocked = saved to D1 but not emailed. Never a lost lead.
+	// 3. Bot and spam checks. Blocked = saved to D1 but NOT emailed — never a lost
+	//    lead. That includes the honeypot and the spam filter: autofill can fill a
+	//    hidden field and a heuristic can misfire, so every row is kept for review.
 	const blocked =
-		(await turnstileReason(env, data["cf-turnstile-response"], request)) || botReason(data.bv_fs);
+		(data.bv_hp && data.bv_hp.trim() !== "" ? "honeypot" : "") ||
+		(looksLikeSpam(name, message) ? "spam" : "") ||
+		(await turnstileReason(env, data["cf-turnstile-response"], request)) ||
+		botReason(data.bv_fs);
 
 	const extra = blocked ? `[BLOCKED: ${blocked}]` : "";
 
-	// 5. D1 first — a lead saved here survives any email failure
+	// 4. D1 first — a lead saved here survives any email failure
 	const saved = await saveToD1(env, { name, email, phone, website, page, extra, message });
 
 	if (blocked) {
@@ -272,7 +279,8 @@ async function handlePost(request: Request, env: Env): Promise<Response> {
 				from: `${SITE} <${LEAD_FROM}>`,
 				to: leadTo,
 				bcc: [LEAD_BCC],
-				reply_to: `${name} <${email}>`,
+				// Bare address: a display name like "Smith, John" would break parsing.
+				reply_to: email,
 				subject: `New website lead — ${name}`,
 				text: textBody,
 			}),

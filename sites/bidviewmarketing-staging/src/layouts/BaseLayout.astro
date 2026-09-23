@@ -34,7 +34,8 @@ const {
   schema = [],
 } = Astro.props;
 
-const canonical = absoluteUrl(canonicalPath);
+// One canonical per page: /about and /about/ both answer, both point to /about/.
+const canonical = absoluteUrl(canonicalPath.endsWith('/') ? canonicalPath : `${canonicalPath}/`);
 const staging = isStagingHost(Astro.url.hostname);
 const robots = noindex || staging ? 'noindex, nofollow' : ROBOTS_INDEX;
 const isHome = canonicalPath === '/';
@@ -84,13 +85,16 @@ const jsonLd = JSON.stringify({ '@context': 'https://schema.org', '@graph': grap
     <meta name="twitter:image" content={absoluteUrl(ogImage)} />
     <link rel="icon" type="image/webp" href="/Assets/bidview-marketing-logo-favicon.webp" />
     <script type="application/ld+json" set:html={jsonLd} />
-    <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${GA_TAG_ID}`}></script>
-    <script is:inline define:vars={{ GA_TAG_ID }}>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() { dataLayer.push(arguments); }
-      gtag('js', new Date());
-      gtag('config', GA_TAG_ID);
-    </script>
+    {/* Production only: staging visits must not land in the live GA property. */}
+    {!staging && <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${GA_TAG_ID}`}></script>}
+    {!staging && (
+      <script is:inline define:vars={{ GA_TAG_ID }}>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', GA_TAG_ID);
+      </script>
+    )}
   </head>
   <body>
     <slot />

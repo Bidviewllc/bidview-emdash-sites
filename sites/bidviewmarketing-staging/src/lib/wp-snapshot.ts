@@ -32,7 +32,12 @@ function replaceOnce(html: string, pattern: RegExp, replacement: string | ((...m
 
 /** Absolute URLs + no WordPress author archive in the Rank Math schema graph. */
 function fixSchema(json: string): string {
-  const data = JSON.parse(json);
+  let data: unknown;
+  try {
+    data = JSON.parse(json);
+  } catch {
+    return json; // leave unparseable schema as-is rather than failing the page
+  }
   const walk = (node: any): any => {
     if (Array.isArray(node)) return node.map(walk).filter((v) => v !== '');
     if (node && typeof node === 'object') {
@@ -57,7 +62,7 @@ function fixSchema(json: string): string {
 }
 
 export function renderSnapshot(raw: string, { path, staging }: SnapshotOptions): string {
-  let html = raw.replace(/﻿/g, '');
+  let html = raw.split(String.fromCharCode(0xfeff)).join(''); // byte-order mark
 
   // --- head: canonical, Open Graph, robots -------------------------------
   html = replaceOnce(html, /<link rel="canonical" href="[^"]*"\s*\/>/, `<link rel="canonical" href="${SITE_URL}${path}" />`, 'canonical');
@@ -89,6 +94,13 @@ export function renderSnapshot(raw: string, { path, staging }: SnapshotOptions):
     .replace(/<script id="gform_recaptcha-js"[^>]*><\/script>\s*/g, '')
     // WPMU DEV hosting analytics — belongs to the WordPress host, not this site.
     .replace(/<script type="text\/javascript">\s*var _paq[\s\S]*?<\/script>\s*/g, '');
+
+  // Google tag (Site Kit): production only, so staging visits stay out of live GA.
+  if (staging) {
+    html = html
+      .replace(/<script id="google_gtagjs-js"[^>]*><\/script>\s*/g, '')
+      .replace(/<script id="google_gtagjs-js-after">[\s\S]*?<\/script>\s*/g, '');
+  }
 
   // --- the lead form ---------------------------------------------------------
   html = replaceOnce(
