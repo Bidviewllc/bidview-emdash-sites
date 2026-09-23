@@ -685,7 +685,9 @@ p {
   position: relative;
   overflow: hidden;
   min-height: 910px;
-  background: #ffffff;
+  /* The hero video stays hidden until it can play; this still shows if it never
+     does (autoplay blocked, Low Power Mode, data saver). */
+  background: #ffffff url('/Assets/bidview-marketing-video-hero-poster.webp') center / cover no-repeat;
   display: flex;
   align-items: center;
   --hero-glow-width: 45%;
