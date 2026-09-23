@@ -1,0 +1,18 @@
+---
+// Portable Text block renderer for blog posts. H2s get an id so the
+// "In this article" table of contents can link to them; every other block
+// style is handed straight to emdash's own Block component, unchanged.
+// The id comes from the same headingId() the TOC uses, so the two always match.
+import { Block } from "emdash/ui";
+import { headingId } from "../lib/posts";
+
+const { node, index: _index, isInline: _isInline, ...attrs } = Astro.props as any;
+const isH2 = node?.style === "h2";
+const text = isH2 ? (node.children ?? []).map((c: any) => c?.text ?? "").join("").trim() : "";
+---
+
+{isH2 ? (
+	<h2 id={headingId(text)} {...attrs}><slot /></h2>
+) : (
+	<Block {...Astro.props}><slot /></Block>
+)}

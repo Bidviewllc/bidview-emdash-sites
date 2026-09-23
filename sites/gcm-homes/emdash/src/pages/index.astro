@@ -27,7 +27,7 @@ try {
 	const DB = (env as any)?.DB;
 	if (DB) {
 		const { results } = await DB.prepare(
-			"SELECT id, slug, address, city, state, price, beds, baths, sqft, lot_acres, category, sub_type, type, waterfront, photos_count, photo FROM listings WHERE status='Active' AND photo IS NOT NULL ORDER BY price DESC LIMIT 3"
+			"SELECT id, slug, address, city, state, price, beds, baths, sqft, lot_acres, category, sub_type, type, waterfront, photos_count, photo FROM listings WHERE status='Active' AND photo IS NOT NULL ORDER BY price DESC LIMIT 9"
 		).all();
 		featured = results ?? [];
 	}
@@ -263,14 +263,17 @@ const tagOf = (l: any) =>
 		</div>
 	</section>
 
-	{/* FEATURED LISTINGS — live from D1 */}
+	{/* FEATURED LISTINGS — live from D1. A carousel: three cards in view on
+	     desktop, scrolled one card at a time by the arrows (or by swipe). Its own
+	     .fl-track rather than .listings-grid, which carries the /listings/ page's
+	     cream panel and padding. */}
 	<section class="section section--beige" data-screen-label="07 Featured Listings">
 		<div class="container">
 			<div class="section-title section-title--nolead">
 				<span class="eyebrow" {...(e.featured_eyebrow ?? {})}>{d.featured_eyebrow ?? "CURATED LAKE TAHOE PROPERTIES"}</span>
 				<h2 {...(e.featured_heading ?? {})}>{d.featured_heading ?? "Featured Listings"}</h2>
 			</div>
-			<div class="listings-grid">
+			<div class="fl-track" id="flTrack">
 				{featured.map((l) => (
 					<a class="card" href={`/homes/${l.slug}/`}>
 						<div class="card__media">
@@ -294,6 +297,12 @@ const tagOf = (l: any) =>
 					</a>
 				))}
 			</div>
+			{featured.length > 3 && (
+				<div class="fl-nav">
+					<button class="btn btn--icon fl-nav__prev" id="flPrev" aria-label="Previous listings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></svg></button>
+					<button class="btn btn--icon fl-nav__next" id="flNext" aria-label="Next listings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg></button>
+				</div>
+			)}
 			<div class="section-end-cta">
 				<a class="btn btn--dark" href="/listings/">VIEW ALL LISTINGS<span class="cta-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg></span></a>
 			</div>
@@ -400,6 +409,9 @@ const tagOf = (l: any) =>
 						</a>
 					))}
 				</div>
+				<div class="section-end-cta">
+					<a class="btn btn--dark" href="/posts/">READ MORE<span class="cta-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg></span></a>
+				</div>
 			</div>
 		</section>
 	)}
@@ -433,6 +445,30 @@ const tagOf = (l: any) =>
 			next.addEventListener("click", function () { show(at + 1); });
 			dots.forEach(function (el, k) { el.addEventListener("click", function () { show(k); }); });
 			show(0);
+		})();
+
+		/* Featured listings carousel. The track is a native horizontal scroller with
+		   scroll-snap, so swipe works on its own; the arrows move it one card. */
+		(function () {
+			var track = document.getElementById("flTrack");
+			var prev = document.getElementById("flPrev");
+			var next = document.getElementById("flNext");
+			if (!track || !prev || !next) return;
+			function step() {
+				var card = track.querySelector(".card");
+				if (!card) return track.clientWidth;
+				return card.getBoundingClientRect().width + parseFloat(getComputedStyle(track).columnGap || "0");
+			}
+			function sync() {
+				var max = track.scrollWidth - track.clientWidth - 2;
+				prev.disabled = track.scrollLeft <= 2;
+				next.disabled = track.scrollLeft >= max;
+			}
+			prev.addEventListener("click", function () { track.scrollBy({ left: -step(), behavior: "smooth" }); });
+			next.addEventListener("click", function () { track.scrollBy({ left: step(), behavior: "smooth" }); });
+			track.addEventListener("scroll", sync, { passive: true });
+			window.addEventListener("resize", sync);
+			sync();
 		})();
 
 	</script>
