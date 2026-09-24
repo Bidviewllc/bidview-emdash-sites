@@ -4,8 +4,9 @@
 **From:** Vince
 **Date:** 10 September 2026
 **Re:** your `two-pages-outside-astro.md` (9 Sept)
-**Status:** ✅ **Option A + the sitemap are shipped and live.** Options B and C are **held** — for the reason you
-identified yourself (see Q2).
+**Status:** ✅ **Option A + the sitemap are shipped and live** — and since then, **the home-page slowness you flagged
+is fixed too** (it wasn't what either of us thought: see "On the home page's 6.6 s"). Options B and C are **held**, for
+the reason you identified yourself (see Q2). **One thing needs a decision from you:** the MLS sync cadence.
 
 ---
 
@@ -54,13 +55,16 @@ static `<title>` rather than appending a second one. So there's exactly one titl
 
 ## How to verify
 
-1. **View source** on two listings and confirm the titles differ (they were identical before):
-   - `…/homes/glenbrook-nv/777-rodeo-drive/`
-   - `…/homes/incline-village-nv/1011-lakeshore-blvd/`
-2. **The real test** — paste a listing URL into `opengraph.xyz` (or just drop it in Slack) and confirm a photo and
-   title render.
-3. `…/sitemap.xml` → 220 `<loc>` entries.
-4. `…/robots.txt` → `Sitemap:` line present.
+Site: **https://gcm-homes-emdash.cameron-239.workers.dev**
+
+1. **View source** on these two listings and confirm the titles differ (they were identical before):
+   - https://gcm-homes-emdash.cameron-239.workers.dev/homes/glenbrook-nv/777-rodeo-drive/
+   - https://gcm-homes-emdash.cameron-239.workers.dev/homes/incline-village-nv/1011-lakeshore-blvd/
+2. **The real test** — paste either of those into https://www.opengraph.xyz/ (or drop it in a chat) and confirm a photo
+   and title render.
+3. https://gcm-homes-emdash.cameron-239.workers.dev/sitemap.xml → 220 `<loc>` entries.
+4. https://gcm-homes-emdash.cameron-239.workers.dev/robots.txt → `Sitemap:` line present.
+5. https://gcm-homes-emdash.cameron-239.workers.dev/listings/ → view source, `og:image` + `canonical` present.
 
 ---
 
@@ -122,25 +126,110 @@ domain automatically with no change. (Converting the hub in Option C would remov
 
 ---
 
-## On the home page's 6.6 s
+## On the home page's 6.6 s — chased, and fixed
 
-You flagged it as "not your problem," but it is a real problem and I don't want it to look like it was waved past:
-**I've reproduced it and I have not investigated it yet.** Your read is almost certainly right that it's the
-server-side CMS reads. It's logged as its own item and it does deserve a proper look — it's the slowest thing on the
-site by a factor of three, and it's the first page anyone lands on.
+I dug into this properly. Two things to report, one of which contradicts your measurement, so here's exactly what I
+found.
+
+**I could not reproduce 6,644 ms.** Measuring from my PoP (Singapore — `cf-ray` confirmed), the home page was
+**~386 ms warm**, and the one slow run I saw was **2,261 ms on a cold isolate** (my first request of the session warmed
+it; every page after was fast). Interleaved, three runs each:
+
+| Page | TTFB (warm) |
+|---|---:|
+| `/` | 398 / 374 / 497 ms |
+| `/community/` | 334 / 261 / 241 ms |
+
+So I'm not going to claim your number was wrong — you're on a different PoP and D1's latency varies with distance —
+but I couldn't see it, and I'd rather say that than quietly "fix" a number I never observed.
+
+**What I did find is a real defect, and it's the thing behind whatever you measured.** The response headers showed
+`cache-control` **absent** and `cf-cache-status` **absent** — meaning **nothing was cached at all.** Every single
+visitor triggered a full SSR render plus a D1 round-trip. The `server-timing` header broke it down:
+
+```
+render;dur=300    mw;dur=300    db.total;dur=201    db.count;dur=2
+```
+
+So ~200 ms of every request was database, on every hit, forever, for everyone — and a cold isolate stacked seconds on
+top. Your instinct ("server-side CMS reads") was right; the aggravating factor was that nothing shielded them.
+
+**Fix: an edge cache in front of the worker.**
+
+| | Before | After |
+|---|---|---|
+| Home page | ~386 ms warm / 2,261 ms cold, **every** request | **1,973 ms first → 86 ms** thereafter |
+| D1 queries per request | 2, always | **0 on a cache hit** |
+
+Safety, since caching a CMS-backed site can go wrong in boring ways:
+
+- A logged-in admin (emdash session/edit cookie) **bypasses the cache entirely** and gets `private, no-store` — so
+  inline editing still works and an editable view can never be served to an anonymous visitor.
+- `/api/*` and `/_emdash/*` are never cached. Only `GET`, only `200`, only html/xml/plain.
+- The cache key drops the query string, so `?utm=…` traffic shares one entry instead of fragmenting it. Verified safe:
+  no page reads `searchParams` server-side.
+- Listing pages are keyed per path, so the per-listing `<head>` from Option A can't cross-contaminate — I checked two
+  listings explicitly and each kept its own title.
+
+**One caveat worth knowing:** anonymous visitors can now see stale HTML for **up to 5 minutes** after a CMS edit. You
+and Grant always see fresh when logged in. If that's too long for content work, say so and I'll shorten it.
+
+---
+
+## Three other things shipped since, two of which touch you
+
+**1. The community page copy is now fully editable (80 fields).** Its nine sections were hardcoded constants. They're
+now a `community` collection, seeded *verbatim* from those constants — so nothing changed visually (I verified: same
+copy, 6 cards, 2 Grant's picks, 3 eras, 4 accordion items). Relevant to you because **three of the placeholders we've
+been waiting on Grant for are now fillable in the admin** rather than needing a code change: the school lines, which
+items are "Grant's picks", and the IVGID fee wording.
+
+**2. The MLS sync moved to GitHub Actions — and the cadence is yours to set.** It used to be one Vercel cron a day
+(Hobby caps it there). Cloudflare Cron can never work for this (its egress is WAF-blocked). GitHub's runners are
+**not** blocked — I verified that with a real run before building on it.
+
+Workflow file:
+https://github.com/Bidviewllc/bidview-emdash-sites/blob/main/.github/workflows/gcm-homes-trestle-sync.yml
+Run history / "Run workflow" button:
+https://github.com/Bidviewllc/bidview-emdash-sites/actions/workflows/gcm-homes-trestle-sync.yml
+
+**Change the `cron:` line and that's the whole job.** The trade-off is documented in the file: every Trestle query is
+billed and each run is a full pull, so more frequent = fresher listings but more cost. Reference points are in the
+comment (2 h / 6 h / 30 min / daily). Currently **every 2 hours**. The run summary prints the listing/photo counts so
+you don't have to open logs. The Vercel cron is off so we're not double-paying.
+
+**3. That workflow immediately caught a bug worth flagging.** The first run reported success, but the log showed:
+
+```
+emdash mirror (non-fatal): UNIQUE constraint failed: ec_listings.slug, ec_listings.locale
+```
+
+`ec_listings` held **213 rows against 196 live listings** — i.e. **17 sold/withdrawn properties were still showing in
+the admin.** Cause: a **re-listed property gets a new ListingKey but the same address, hence the same slug**, and the
+mirror deleted departed rows *after* upserting — so the stale row still owned the slug, the insert failed, the whole
+mirror aborted, and the delete never ran. Re-listings are routine, so this would have kept recurring. Fixed by
+deleting departed rows before the upsert; now 196 = 196 with owner overrides intact.
+
+The lesson, if you ever read these logs: **the mirror is wrapped non-fatal, so a broken mirror does not fail the
+sync.** A green checkmark isn't proof — grep for `emdash mirror:` (worked) versus `emdash mirror (non-fatal):`
+(silently didn't).
 
 ---
 
 ## Where that leaves us
 
-- **Done:** listing metadata, sitemap, robots, hub `og:`.
+- **Done:** listing metadata, sitemap, robots, hub `og:`, **edge cache**, **community copy editable**, **sync on
+  Actions**, mirror bug fixed.
+- **Yours to set:** the sync cadence (one line in the workflow).
 - **Held, waiting on you:** Option B (detail page) — ping me when Features/3D-tour settles.
-- **Held, lower priority:** Option C (hub) — agreed with your reasoning that listing URLs matter more than the one hub
-  URL. It would also kill the cutover chore above, so it's worth doing eventually.
-- **Mine to chase:** the home page TTFB.
+- **Held, lower priority:** Option C (hub) — agreed that listing URLs matter more than the one hub URL. It would also
+  kill the cutover chore above, so it's worth doing eventually.
 
 ---
 
-*Verified by HTTP fetch against `gcm-homes-emdash.cameron-239.workers.dev` on 10 Sept (worker `0afaa89a`): per-listing
-titles confirmed distinct across two listings, all tags present, page body unaffected, sitemap 220 `<loc>`. No
-browser screenshot — the change is head-only and the body is still client-built and untouched.*
+*Verified against `gcm-homes-emdash.cameron-239.workers.dev` on 10 Sept. Metadata (worker `0afaa89a`): per-listing
+titles confirmed distinct across two listings, all tags present, page body unaffected, sitemap 220 `<loc>` — Vince also
+confirmed the link previews independently on opengraph.xyz. Timings: 3+ runs per page, cache-busted, `server-timing`
+read from the response headers. Cache (`v2`): MISS→HIT confirmed, admin-cookie bypass confirmed, per-listing keys
+confirmed. Community: verified the rendered copy is unchanged and CMS-driven via a live D1 edit + revert. Sync:
+workflow run end-to-end on GitHub's runners (196 listings / 6,670 photos), mirror line checked in the log.*
