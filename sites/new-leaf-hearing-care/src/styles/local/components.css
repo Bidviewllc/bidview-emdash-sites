@@ -404,3 +404,27 @@ margin-top: 12px;
   gap: 14px;
   }
 }
+/* Hero pricing CTA - sits under the Schedule / Call Us buttons and links to the
+   pricing estimator. The label is long, so unlike other .btn pills it wraps and
+   spans the width of the two buttons above it. Spacing comes from .hero-copy's
+   flex gap, so no margin is needed here. */
+.hero-copy .btn-hero-pricing {
+  width: 584px;
+  max-width: 100%;
+  white-space: normal;
+  text-align: center;
+  color: var(--light);
+  background: var(--secondary);
+  border: 1px solid var(--secondary);
+}
+
+.hero-copy .btn-hero-pricing:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+@media (max-width: 1024px) {
+  .hero-copy .btn-hero-pricing {
+    width: 100%;
+  }
+}
