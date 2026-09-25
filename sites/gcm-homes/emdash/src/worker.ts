@@ -41,7 +41,9 @@ export { PluginBridge };
 // templates, plus the Insights link in every page's nav and footer.
 // v12 (2026-09-23): /listings/ -- hover photo carousel + mobile swipe on the
 // cards. Old cached HTML would lack the carousel code.
-const CACHE_VERSION = "v13";
+// v14 (2026-09-25): / and /community/ -- listings ticked "Featured" in the
+// admin lead the featured rows.
+const CACHE_VERSION = "v14";
 const CACHEABLE_TYPE = /^(?:text\/html|application\/xml|text\/xml|text\/plain)/i;
 const ADMIN_COOKIE = /emdash[-_](session|edit-mode|admin)/i;
 
