@@ -9,7 +9,7 @@
 // the crawlable/shareable head. Returned raw so Astro doesn't parse the page's ${}.
 export const prerender = false;
 import rawHtml from "../../detail-page.html?raw";
-import { bySlug } from "../../lib/listings";
+import { bySlug, isHiddenSlug } from "../../lib/listings";
 
 const attr = (s: any) => String(s ?? "").replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
@@ -53,6 +53,9 @@ try {
 			`<meta name="twitter:description" content="${attr(desc)}" />`,
 			`<meta name="twitter:image" content="${attr(ogImage)}" />`,
 			`<script type="application/ld+json">${JSON.stringify(ld).replace(/</g, "\\u003c")}</script>`,
+			// "Hide from search" in the admin: the page still opens by direct link,
+			// but search engines are told to leave it out.
+			...((await isHiddenSlug(slug)) ? [`<meta name="robots" content="noindex" />`] : []),
 		].join("\n  ");
 		// Replace the static <title> with the real one, then inject the rest before </head>.
 		var outHtml = rawHtml
