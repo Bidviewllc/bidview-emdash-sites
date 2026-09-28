@@ -32,7 +32,7 @@ Both probes made one billed query each, ran on a throwaway Actions branch, and w
 or Closed was expired, withdrawn or canceled. The feed does not say which.
 
 Side finding: the sync pulls `StandardStatus eq 'Active'` only, so a home disappears from the site the moment it goes
-under contract. See open question 1.
+under contract. Decision: pull those too and show them with a status badge (section 7).
 
 ## Design
 
@@ -78,7 +78,8 @@ today, and a relist brings its own new photos automatically. The **only** MLS im
 
 Why not store everything, even though it would only be ~$1/month (10,000 listings × 34 photos × 217 KB ≈ 74 GB):
 we won't show full galleries for closed listings; relists replace the photos anyway; a stored copy goes stale when
-the listing agent swaps a photo; and holding copies after close is the riskiest part legally (open question 3).
+the listing agent swaps a photo; and holding full galleries after close is the riskiest part legally. (One photo per
+closed listing is fine; see Decisions.)
 
 **The main photo.** The Media record with `PreferredPhotoYN = true`, falling back to `Order = 1`. That's the same
 image the cards already use (`listings.photo`).
@@ -117,8 +118,10 @@ close first. **Backfill once** with a single query:
 which pulls his sales back to 2011 in one go. Cards show his own uploaded photos if we have them, else the stored main photo, address, close date and a "Represented the
 buyer / seller" label. Owner fields from `owner_snapshot` can power a short story per sale.
 
-Other agents' sold data stays **internal** (market stats, neighborhood trends) until we confirm the Incline Village
-MLS IDX display rules allow publishing it.
+The backfill query returns `Media` for closed listings (28 of 29 in the probe), so **every past sale gets its MLS main
+photo** at backfill time. Grant's photographer images replace those over time, uploaded as we go.
+
+Other agents' sold listings can be shown publicly too, with the Sold badge and the main photo only (Decisions).
 
 ### 6. Owner checkboxes (in PR #158)
 
@@ -127,30 +130,50 @@ MLS IDX display rules allow publishing it.
   photos. The detail page still opens by direct link, with `noindex`.
 Both are `ec_listings` owner columns that the sync never writes. The archive keeps them in `owner_snapshot`.
 
+### 7. Status badges
+
+Every listing card and detail page shows one badge: **On market**, **Under contract**, **Pending** or **Sold**.
+
+- **Sync:** pull `StandardStatus in ('Active','ActiveUnderContract','Pending')` instead of `Active` only (51 extra
+  records today), so a home stays on the site when it goes under contract. The badge comes from `StandardStatus`,
+  mapped to Liz's labels (the MLS says "Contingent" for ActiveUnderContract).
+- **Sold:** the detail page stays live after close, with the Sold badge, close date/price and the stored main photo
+  only. Its data comes from `listing_archive`.
+- **Off-market** (expired/withdrawn): no public badge or page. It stays in the archive for internal use, and its URL
+  returns 410 Gone so search engines drop it.
+- Featured rows (home, community, blog sidebar) default to On market only. Tick-to-feature can still pull in an Under
+  contract or Sold listing if Grant wants to show one off.
+
 ## Stages and estimates
 
 | # | Stage | Who | Estimate |
 |---|---|---|---|
 | 1 | `listing_archive` table + sync upsert + owner snapshot before delete | Vince | 3–4 h |
 | 2 | "What changed" follow-up query (sold / under contract / off-market) | Vince | 2–3 h |
-| 3 | Copy each listing's main photo to R2 (first seen + on change) + one-time backfill | Vince | 2–3 h |
-| 4 | `photo_decision` table + inline photo controls on the listing page (hide / main / reorder) | Liz/Claude | 4–5 h |
-| 5 | Grant's own photos/video per listing + "use my photos instead of the MLS photos" | Liz/Claude | 3–4 h |
-| 6 | "Previous listings of this property" reference field in the admin | Vince or Liz/Claude | 2–3 h |
-| 7 | One-time backfill of Grant's past sales (data + main photo) | Vince | 1–2 h |
-| 8 | `/sold/` Recently Sold by Grant page | Liz/Claude | 4–6 h |
-| 9 | After-action report per sale | later | — |
+| 3 | Sync pulls Under contract + Pending too (status filter, `status` column) | Vince | 1–2 h |
+| 4 | Copy each listing's main photo to R2 (first seen + on change) + one-time backfill | Vince | 2–3 h |
+| 5 | Status badges on cards + detail page; sold pages stay live (main photo only); off-market → 410 | Liz/Claude | 3–4 h |
+| 6 | `photo_decision` table + inline photo controls on the listing page (hide / main / reorder) | Liz/Claude | 4–5 h |
+| 7 | Grant's own photos/video per listing + "use my photos instead of the MLS photos" | Liz/Claude | 3–4 h |
+| 8 | "Previous listings of this property" reference field in the admin | Vince or Liz/Claude | 2–3 h |
+| 9 | One-time backfill of Grant's past sales (data + main photo) | Vince | 1–2 h |
+| 10 | `/sold/` Recently Sold by Grant page | Liz/Claude | 4–6 h |
+| 11 | After-action report per sale | later | — |
 
 Stage 1 is the urgent one. Until it ships, every sync keeps deleting history.
 
-## Open questions
+## Decisions (Liz, 2026-09-28)
 
-1. **Under contract / pending:** show them on the site with a badge (common on agent sites), or keep them archived only?
-   Today they vanish from the site the moment they go under contract.
-2. **Grant's own sales before this site:** his photographer's images for past deals would need uploading by hand.
-   Otherwise those cards use the stored MLS main photo (or none, for sales that closed before the backfill ran).
-3. **MLS display rules (Grant or Liz to ask the MLS, feed `OriginatingSystemName` = `INCLINE`):** (a) Can we keep and
-   show the main photo of a sold or off-market listing? (b) Can other agents' sold listings be shown publicly, or only
-   internally? The Trestle platform agreement doesn't cover this; the MLS data license does. Grant's own listings, with
-   his own photographer's images, are the safe case either way.
-4. `_trestle_probe` in D1 still holds the two probe responses. Drop it once this plan is agreed.
+1. **Status badges:** show On market / Under contract / Pending / Sold (section 7). The sync starts pulling
+   under-contract and pending listings.
+2. **Grant's past sales:** the backfill brings in the data plus the MLS main photo. His photographer's images get
+   uploaded over time, as we go.
+3. **Showing sold listings:** fine to show publicly with one image, the way Zillow keeps old listings up. We're not
+   asking the MLS first. If the MLS ever objects, **Hide from search** (section 6) pulls a listing off every list and search in one click.
+Taking its page fully offline (410) would be a small addition.
+
+## Still open
+
+1. Should sold listings also appear in the main `/listings/` search behind a **Sold** status filter (off by default),
+   or only on `/sold/` and their own pages? Proposed: the filter, off by default.
+2. `_trestle_probe` in D1 still holds the two probe responses. Drop it once this plan is agreed.
