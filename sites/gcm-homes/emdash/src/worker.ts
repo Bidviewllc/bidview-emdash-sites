@@ -41,9 +41,16 @@ export { PluginBridge };
 // templates, plus the Insights link in every page's nav and footer.
 // v12 (2026-09-23): /listings/ -- hover photo carousel + mobile swipe on the
 // cards. Old cached HTML would lack the carousel code.
-// v14 (2026-09-25): / and /community/ -- listings ticked "Featured" in the
-// admin lead the featured rows.
-const CACHE_VERSION = "v14";
+// v14 (2026-09-25): new /reviews/ page + home "The Proof" now shows featured
+// client reviews. Old cached home HTML would lack them.
+// v15 (2026-09-25): home "The Proof" becomes the shared review carousel
+// (all reviews, 2 in view) instead of three static cards.
+// v16 (2026-09-25): Zillow + Realtor.com reviews added (74 total), source
+// filter chips on /reviews/, cards without stars for unrated recommendations.
+// v17 (2026-09-28): listings ticked "Featured" in the admin lead the featured
+// rows on / and /community/; "Hide from search" drops a listing from every
+// list, search and the sitemap.
+const CACHE_VERSION = "v17";
 const CACHEABLE_TYPE = /^(?:text\/html|application\/xml|text\/xml|text\/plain)/i;
 const ADMIN_COOKIE = /emdash[-_](session|edit-mode|admin)/i;
 

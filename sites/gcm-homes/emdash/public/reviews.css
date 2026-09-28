@@ -1,0 +1,58 @@
+/* /reviews/ — page-only styles. The hero reuses .chero from contact.css; the
+   review carousel itself (shared with the home page) lives in styles.css. */
+
+/* ---- Aggregate line under the hero lead -------------------------------- */
+.rv-summary {
+	display: inline-flex;
+	align-items: center;
+	gap: 14px;
+	margin-top: 36px;
+	padding: 12px 22px;
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	border-radius: 999px;
+}
+.rv-summary__avg {
+	font-family: var(--font-serif);
+	font-size: 28px;
+	line-height: 1;
+	color: var(--white);
+}
+.rv-summary__stars svg { width: 18px; height: 18px; }
+.rv-summary__count {
+	font-size: 13px;
+	font-weight: 600;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: rgba(255, 255, 255, 0.75);
+}
+
+/* ---- Source filter chips ----------------------------------------------- */
+.rv-filters {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 10px;
+}
+.rv-chip {
+	font: 600 13px/1 var(--font-sans);
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	padding: 12px 18px;
+	border: 1px solid var(--line);
+	border-radius: 999px;
+	background: transparent;
+	color: var(--navy);
+	cursor: pointer;
+	transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+.rv-chip:hover { border-color: var(--navy); }
+.rv-chip.is-active { background: var(--navy); border-color: var(--navy); color: var(--white); }
+.rv-chip:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
+
+.rv-empty { text-align: center; color: var(--muted); }
+
+@media (max-width: 640px) {
+	.rv-summary { gap: 10px; padding: 10px 16px; margin-top: 28px; }
+	.rv-summary__avg { font-size: 24px; }
+	.rv-chip { padding: 10px 14px; font-size: 12px; }
+}
