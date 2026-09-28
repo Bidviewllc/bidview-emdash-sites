@@ -7,7 +7,11 @@ import GcmLayout from "../layouts/GcmLayout.astro";
 import { getEmDashEntry, getTermsForEntries } from "emdash";
 import { env } from "cloudflare:workers";
 import { firstImageUrl } from "../lib/media";
-import { TESTIMONIALS } from "../lib/testimonials";
+// "The Proof" is the shared review carousel over every client review, featured
+// ones first (src/lib/reviews.ts). The About page still reads
+// lib/testimonials.ts, which stays empty for now.
+import { homeReviews } from "../lib/reviews";
+import ReviewCarousel from "../components/ReviewCarousel.astro";
 import ContactCta from "../components/ContactCta.astro";
 import GrantIntro from "../components/GrantIntro.astro";
 
@@ -19,6 +23,7 @@ try {
 } catch { entry = null; }
 const d = entry?.data ?? {};
 const e = entry?.edit ?? {};
+const proofReviews = await homeReviews();
 
 // Featured listings — live from the Trestle-synced D1 tables (read-only).
 // Astro 6 exposes Cloudflare bindings via `cloudflare:workers`, not Astro.locals.
@@ -246,18 +251,12 @@ const tagOf = (l: any) =>
 					{d.proof_body ?? "From first-time Tahoe buyers to clients who've completed 23 transactions together, the proof is in the relationships, not the brochures."}
 				</p>
 			</div>
-			{TESTIMONIALS.length > 0 && (
-			<div class="testimonials">
-				{TESTIMONIALS.map((t) => (
-					<div class="testimonial">
-						<div class="stars">{[0, 1, 2, 3, 4].map(() => <span class="star"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" /></svg></span>)}</div>
-						<p class="testimonial__q">"{t.q}"</p>
-						<div class="testimonial__attr">
-							<div class="testimonial__name">{t.name}</div>
-							<div class="eyebrow eyebrow--muted">{t.loc}</div>
-						</div>
-					</div>
-				))}
+			{proofReviews.length > 0 && (
+			<div class="proof-carousel"><ReviewCarousel reviews={proofReviews} /></div>
+			)}
+			{proofReviews.length > 0 && (
+			<div class="section-end-cta">
+				<a class="btn btn--dark" href="/reviews/">READ ALL REVIEWS<span class="cta-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg></span></a>
 			</div>
 			)}
 		</div>

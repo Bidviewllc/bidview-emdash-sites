@@ -1,0 +1,98 @@
+---
+// /reviews/ — what Grant's clients have written about him on Google, Zillow,
+// Realtor.com and the rest, gathered in one place.
+//
+// Data: the `reviews` collection (src/lib/reviews.ts). Every quote is verbatim
+// and links back to where it was posted. Hidden reviews never render.
+//
+// The cards are the shared ReviewCarousel (also on the home page). The source
+// filter is client-side (data-source + a small script), NOT a ?source= query: the edge cache in src/worker.ts drops the query string, so a
+// server-side filter would be served the cached unfiltered page.
+//
+// Deliberately no Review / AggregateRating JSON-LD — Google's guidelines don't
+// allow review markup for reviews collected from third-party sites.
+import GcmLayout from "../layouts/GcmLayout.astro";
+import ContactCta from "../components/ContactCta.astro";
+import ReviewCarousel from "../components/ReviewCarousel.astro";
+import { allReviews, summarize } from "../lib/reviews";
+
+const reviews = await allReviews();
+const { count, rated, avg, bySource } = summarize(reviews);
+
+const seo = {
+	title: "Client Reviews — Grant C. Meyer Homes",
+	description:
+		"Read what buyers and sellers say about working with Grant C. Meyer, Lake Tahoe real estate agent in Incline Village and Crystal Bay — in their own words.",
+};
+
+const STAR =
+	'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" /></svg>';
+---
+
+<GcmLayout title={seo.title} description={seo.description}>
+	<link rel="stylesheet" href="/contact.css" />
+	<link rel="stylesheet" href="/reviews.css" />
+
+	<section class="section section--dark chero" data-screen-label="01 Hero">
+		<div class="container chero__inner">
+			<span class="eyebrow">Client Reviews</span>
+			<h1 class="h1 chero__h">In their <em>own words.</em></h1>
+			<p class="section-lead chero__lead">
+				Every review below is quoted exactly as the client wrote it, with a link to where it was posted.
+			</p>
+			{rated > 0 && (
+				<div class="rv-summary" aria-label={`Average ${avg} out of 5 across ${rated} rated reviews`}>
+					<span class="rv-summary__avg">{avg.toFixed(1)}</span>
+					<span class="stars rv-summary__stars">{[0, 1, 2, 3, 4].map(() => <span class="star" set:html={STAR} />)}</span>
+					<span class="rv-summary__count">{count} {count === 1 ? "review" : "reviews"}</span>
+				</div>
+			)}
+		</div>
+	</section>
+
+	<section class="section section--cream" data-screen-label="02 Reviews">
+		<div class="container">
+			{bySource.length > 1 && (
+				<div class="rv-filters" role="group" aria-label="Filter reviews by source">
+					<button type="button" class="rv-chip is-active" data-filter="all" aria-pressed="true">All ({count})</button>
+					{bySource.map((s) => (
+						<button type="button" class="rv-chip" data-filter={s.source} aria-pressed="false">{s.source} ({s.count})</button>
+					))}
+				</div>
+			)}
+
+			{count === 0 ? (
+				<p class="rv-empty">Reviews are on their way.</p>
+			) : (
+				<ReviewCarousel reviews={reviews} />
+			)}
+		</div>
+	</section>
+
+	<ContactCta id="reviews-contact" bg="beige" />
+
+	<script is:inline>
+		/* Source filter chips (only rendered when there is more than one source).
+		   Hides non-matching cards, then asks the carousel to re-sync. */
+		(function () {
+			var chips = document.querySelectorAll(".rv-chip");
+			var root = document.querySelector("[data-rv]");
+			if (!chips.length || !root) return;
+			var cards = root.querySelectorAll(".rv-card");
+			chips.forEach(function (chip) {
+				chip.addEventListener("click", function () {
+					var f = chip.getAttribute("data-filter");
+					chips.forEach(function (c) {
+						var on = c === chip;
+						c.classList.toggle("is-active", on);
+						c.setAttribute("aria-pressed", on ? "true" : "false");
+					});
+					cards.forEach(function (card) {
+						card.hidden = !(f === "all" || card.getAttribute("data-source") === f);
+					});
+					root.dispatchEvent(new Event("rv:refresh"));
+				});
+			});
+		})();
+	</script>
+</GcmLayout>
