@@ -46,7 +46,7 @@ One row per `ListingKey`. It holds a snapshot of the MLS columns as last seen pl
 - `list_agent_mls_id`, `buyer_agent_mls_id`, `co_list_agent_mls_id`, `co_buyer_agent_mls_id` (+ names/offices)
 - `owner_snapshot` (JSON): headline, description, owner_note, note_image, tour_url, featured, hidden, copied from
   `ec_listings` just before that row is deleted
-- photos are in their own tables (section 4), not on this row
+- `main_photo_key`: R2 key of the stored main photo (section 4)
 
 Size: roughly 10 KB/row, so 10,000 listings is ~100 MB in D1. That's fine.
 
@@ -70,52 +70,51 @@ read-only reference field in the admin, **"Previous listings of this property"**
 status, and Grant's headline/description/note from `owner_snapshot`. He copies what he wants into the live fields.
 (It's an MLS-style field: the sync rewrites it every run, and admin edits to it are discarded.)
 
-### 4. Photos: keep all of them, under our control
+### 4. Photos: use Trestle's, keep only the main photo
 
-**Decision (Liz, 2026-09-28): keep every photo, subject to the license check in open question 3.** Cost doesn't limit
-us: at 10,000 listings × 34 photos × 217 KB (measured on the current feed) it's **~74 GB, about $1/month** on R2 (first
-10 GB free, no egress charge). Even 50 photos × 500 KB is ~250 GB, about $3.60/month.
+**Decision (Liz, 2026-09-28): don't copy MLS galleries.** Active listings keep showing Trestle's photos exactly as
+today, and a relist brings its own new photos automatically. The **only** MLS image we store is each listing's
+**main photo**, so a sold or off-market record still has a picture after Trestle stops returning the listing.
 
-**Storage: one copy per unique image.** Each photo is saved to the existing R2 bucket `gcm-homes-media` (binding
-`MEDIA`, never used so far) under a hash of its bytes, `photos/<sha256>.jpg`. A relist that reuses the same photos
-stores nothing new. (Re-edited or re-shot photos are new images and get their own copy.)
+Why not store everything, even though it would only be ~$1/month (10,000 listings × 34 photos × 217 KB ≈ 74 GB):
+we won't show full galleries for closed listings; relists replace the photos anyway; a stored copy goes stale when
+the listing agent swaps a photo; and holding copies after close is the riskiest part legally (open question 3).
 
-**Tables:**
-- `listing_photo`: `(listing_key, photo_hash, mls_order, source)`. `source` is `mls` or `owner`. The sync writes
-  the `mls` rows; Grant's uploads are `owner` rows.
-- `photo_decision`: owner-controlled and **never written by the sync**, like the `ec_listings` owner columns.
-  `(parcel_number, photo_hash, action, sort_order)`, with `action` one of `hide` | `delete` | `main`.
-  - **hide**: off the site, still stored.
-  - **delete**: removed from R2, and the hash is remembered, so the sync never re-adds it even if Trestle sends it again.
-  - **main** / `sort_order`: pick the lead photo and reorder the gallery.
-  These are keyed by parcel + hash rather than listing key, so a decision still applies after a relist.
+**The main photo.** The Media record with `PreferredPhotoYN = true`, falling back to `Order = 1`. That's the same
+image the cards already use (`listings.photo`).
+- **When:** the sync copies it into the existing R2 bucket `gcm-homes-media` (binding `MEDIA`, never used so far) when
+  a listing is first seen, and again whenever its `MediaKey` changes. It has to happen while the listing is live,
+  because an expired or withdrawn listing disappears from the feed with no warning (section 2).
+- **Where:** `listings/<ListingKey>/main.jpg`, with the key saved on the `listing_archive` row (`main_photo_key`).
+- **Size:** 10,000 × ~217 KB ≈ **2 GB, which fits inside R2's free 10 GB.** The one-time backfill is about 10,000
+  downloads.
 
 **Which photos the site shows:**
-- **Active listing:** the gallery comes from *our* tables, not Trestle's live list. That's what makes hide/delete/reorder
-  stick: today `listing_photos` is rewritten every sync, so a deletion made there would come back 2 hours later.
-- **Relist ("newest photos win"):** the site groups listings by `ParcelNumber` and shows only the current listing's
-  photos. Earlier listings' photos are marked superseded and hidden. Optional rule: delete superseded photos N days
-  after a relist (Liz to decide N, or keep them).
-- **Closed / off-market:** the **main photo only** in public. The rest stay stored for internal use. This is one
-  setting, so it can change once the license question is answered.
+- **Active listing:** Trestle's full gallery (unchanged), with Grant's photo decisions applied (below).
+- **Relist:** the new listing's Trestle photos. Nothing to de-duplicate, because we don't keep old galleries.
+- **Sold / off-market:** the stored main photo only.
 
-**Where Grant manages them:** the emdash admin has no screen for a synced photo gallery, so it goes **inline on the
-listing page**, gated on a logged-in admin like the Note From Grant editor. Each photo gets Hide / Delete / Make main,
-the gallery can be dragged to reorder, and an Upload button adds his own photos and video. Visitors never see the
-controls.
+**Photo control on active listings, without storing copies.** Trestle gives every photo a permanent `MediaKey`, so a
+small owner table, `photo_decision (media_key, action, sort_order)`, is enough. The sync never writes it, just like
+the `ec_listings` owner columns. Actions: **hide** (off the site; for an MLS photo this is our "delete", since we
+can't delete Trestle's copy), **main** (pick the lead photo) and **reorder**. The site applies these on top of
+Trestle's live list. Each Media record also carries MLS permission fields (`Permission`, `ListingPermission`,
+`MediaStatus`, `InternetEntireListingDisplayYN`); the site should honor those live, which is another reason not to
+keep copies.
 
-**Grant's own photography and video** (uploaded through us) is ours and is always kept and shown in full.
+**Where Grant manages them:** inline on the listing page, gated on a logged-in admin like the Note From Grant editor.
+Each photo gets Hide / Make main, and the gallery can be dragged to reorder. Visitors never see the controls.
 
-**First fill:** about 340,000 photo downloads for 10,000 listings. We don't know yet whether Trestle media downloads
-count toward the 4,800/hour quota. If they do, the backfill runs over ~3 days of sync runs. Test that with a small
-batch first. After the backfill, each new listing is only ~34 downloads.
+**Grant's own listings:** his photographer's images and video are his to use, so they go up through the emdash admin
+(already R2-backed) and are kept in full. A per-listing option, **"Use my photos instead of the MLS photos"**, swaps the
+gallery. These are also what the Recently Sold by Grant page shows, in full, since we have the rights.
 
 ### 5. Recently Sold by Grant (`/sold/`)
 
 `listing_archive` where `archive_status = 'sold'` and any of the four agent-ID columns = `meyergra111`, newest
 close first. **Backfill once** with a single query:
 `StandardStatus eq 'Closed' and (ListAgentMlsId eq 'meyergra111' or BuyerAgentMlsId eq 'meyergra111' or …Co… )`,
-which pulls his sales back to 2011 in one go. Cards show the kept photo, address, close date and a "Represented the
+which pulls his sales back to 2011 in one go. Cards show his own uploaded photos if we have them, else the stored main photo, address, close date and a "Represented the
 buyer / seller" label. Owner fields from `owner_snapshot` can power a short story per sale.
 
 Other agents' sold data stays **internal** (market stats, neighborhood trends) until we confirm the Incline Village
@@ -134,11 +133,11 @@ Both are `ec_listings` owner columns that the sync never writes. The archive kee
 |---|---|---|---|
 | 1 | `listing_archive` table + sync upsert + owner snapshot before delete | Vince | 3–4 h |
 | 2 | "What changed" follow-up query (sold / under contract / off-market) | Vince | 2–3 h |
-| 3 | Photo copy to R2 (all photos, hashed / de-duplicated) + `listing_photo` table | Vince | 4–6 h |
-| 4 | Site serves galleries from our tables: relist grouping, closed = main photo only | Vince or Liz/Claude | 3–4 h |
-| 5 | `photo_decision` table + inline photo manager on the listing page (hide / delete / main / reorder / upload) | Liz/Claude | 6–8 h |
+| 3 | Copy each listing's main photo to R2 (first seen + on change) + one-time backfill | Vince | 2–3 h |
+| 4 | `photo_decision` table + inline photo controls on the listing page (hide / main / reorder) | Liz/Claude | 4–5 h |
+| 5 | Grant's own photos/video per listing + "use my photos instead of the MLS photos" | Liz/Claude | 3–4 h |
 | 6 | "Previous listings of this property" reference field in the admin | Vince or Liz/Claude | 2–3 h |
-| 7 | One-time backfill of Grant's past sales (+ their photos) | Vince | 1–2 h |
+| 7 | One-time backfill of Grant's past sales (data + main photo) | Vince | 1–2 h |
 | 8 | `/sold/` Recently Sold by Grant page | Liz/Claude | 4–6 h |
 | 9 | After-action report per sale | later | — |
 
@@ -148,10 +147,10 @@ Stage 1 is the urgent one. Until it ships, every sync keeps deleting history.
 
 1. **Under contract / pending:** show them on the site with a badge (common on agent sites), or keep them archived only?
    Today they vanish from the site the moment they go under contract.
-2. After a relist, keep the superseded photos forever, or delete them after N days?
-3. **License check before building stage 3.** Ask the MLS (feed `OriginatingSystemName` = `INCLINE`) or Trestle
-   support: (a) Can we keep listing photos after a listing closes or goes off-market, for internal use? (b) Can we show
-   the main photo of a sold listing publicly? (c) Can other agents' sold listings be shown publicly at all, or only
-   internally? The photos are the photographer's/listing agent's, licensed to us through IDX, and many IDX agreements
-   require off-market listings to come down within a set time. Grant's own listings are the safe case either way.
+2. **Grant's own sales before this site:** his photographer's images for past deals would need uploading by hand.
+   Otherwise those cards use the stored MLS main photo (or none, for sales that closed before the backfill ran).
+3. **MLS display rules (Grant or Liz to ask the MLS, feed `OriginatingSystemName` = `INCLINE`):** (a) Can we keep and
+   show the main photo of a sold or off-market listing? (b) Can other agents' sold listings be shown publicly, or only
+   internally? The Trestle platform agreement doesn't cover this; the MLS data license does. Grant's own listings, with
+   his own photographer's images, are the safe case either way.
 4. `_trestle_probe` in D1 still holds the two probe responses. Drop it once this plan is agreed.
