@@ -152,7 +152,7 @@ Every listing card and detail page shows one badge: **On market**, **Under contr
 | 2 | "What changed" follow-up query (sold / under contract / off-market) | Vince | 2–3 h |
 | 3 | Sync pulls Under contract + Pending too (status filter, `status` column) | Vince | 1–2 h |
 | 4 | Copy each listing's main photo to R2 (first seen + on change) + one-time backfill | Vince | 2–3 h |
-| 5 | Status badges on cards + detail page; sold pages stay live (main photo only); off-market → 410 | Liz/Claude | 3–4 h |
+| 5 | Status badges on cards + detail page; sold pages stay live (main photo only); off-market → 410; "Sold" search filter (off by default) | Liz/Claude | 4–5 h |
 | 6 | `photo_decision` table + inline photo controls on the listing page (hide / main / reorder) | Liz/Claude | 4–5 h |
 | 7 | Grant's own photos/video per listing + "use my photos instead of the MLS photos" | Liz/Claude | 3–4 h |
 | 8 | "Previous listings of this property" reference field in the admin | Vince or Liz/Claude | 2–3 h |
@@ -172,8 +172,9 @@ Stage 1 is the urgent one. Until it ships, every sync keeps deleting history.
    asking the MLS first. If the MLS ever objects, **Hide from search** (section 6) pulls a listing off every list and search in one click.
 Taking its page fully offline (410) would be a small addition.
 
+4. **Sold in the main search:** `/listings/` gets a **Sold** status filter that is **always off by default**. Buyers
+   see on-market homes first and can opt in to sold ones. Sold listings also appear on `/sold/` and their own pages.
+
 ## Still open
 
-1. Should sold listings also appear in the main `/listings/` search behind a **Sold** status filter (off by default),
-   or only on `/sold/` and their own pages? Proposed: the filter, off by default.
-2. `_trestle_probe` in D1 still holds the two probe responses. Drop it once this plan is agreed.
+1. `_trestle_probe` in D1 still holds the two probe responses. Drop it once this plan is agreed.
