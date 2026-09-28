@@ -21,7 +21,7 @@ export const GET: APIRoute = async ({ request }) => {
 	const urls: Array<{ path: string; pr: string; cf: string }> = [];
 	urls.push({ path: "/", pr: "1.0", cf: "weekly" });
 	urls.push({ path: "/listings/", pr: "0.9", cf: "daily" });
-	for (const p of ["/buyers/", "/sellers/", "/community/", "/concierge/", "/about/", "/contact/"]) urls.push({ path: p, pr: "0.7", cf: "monthly" });
+	for (const p of ["/buyers/", "/sellers/", "/community/", "/concierge/", "/about/", "/reviews/", "/contact/"]) urls.push({ path: p, pr: "0.7", cf: "monthly" });
 	for (const n of NEIGHBORHOODS) urls.push({ path: `/neighborhood/${n}/`, pr: "0.6", cf: "weekly" });
 	try {
 		const listings = await allActive();

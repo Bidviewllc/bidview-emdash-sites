@@ -247,6 +247,49 @@ collection (his earlier "listings as custom post types" idea), read-only by natu
 - **Note:** `mirror-listings.mjs` must be run ONCE to register the collection/table (done). The sync steps only keep
   ROWS fresh (they assume the table exists). If the D1 is ever rebuilt from scratch, run mirror-listings.mjs again.
 
+### 2026-09-24/25 — Client REVIEWS (ClickUp 868m8g6hj, Liz) — DEPLOYED TO STAGING, NOT pushed to GitHub
+**Deployed 2026-09-25** (Vince: "push to staging") → `gcm-homes-emdash` version `85e0ae75`, CACHE_VERSION v13→**v14**. Remote D1 got
+the `reviews` collection + 19 rows via `node seed/reviews.mjs --remote` (tool now takes `--local` OR `--remote`, no default).
+Verified live: /reviews/ 19 cards, equal heights, carousel works; home Proof = Veronica/Jeff/Nancy; About unchanged; in sitemap.
+**2nd deploy 2026-09-25 → version `ae53b6e4`, CACHE_VERSION v15:** home "The Proof" is now the SAME carousel (Vince) over ALL reviews,
+featured first (`homeReviews()`). Carousel = shared `src/components/ReviewCarousel.astro` (multi-instance, `[data-rv]` roots;
+/reviews/ filter chips dispatch `rv:refresh`); its CSS moved to the "Review carousel" block in `public/styles.css`
+(reviews.css keeps only hero summary + chips). `.testimonials--few` + `featuredReviews()` removed.
+**3rd deploy 2026-09-25 → version `8a245390`, CACHE_VERSION v16: 74 reviews** = Google 19 + Realtor.com 31 (17 reviews + 14
+recommendations w/ NO stars → `rating` NULL, card renders without stars) + Zillow 24. Collected via **Firecrawl** (`FIRECRAWL_API_KEY`
+env): Realtor.com = page `__NEXT_DATA__` `agentDetailPageProps.reviews/.recommendations`; Zillow = profile embeds only 10, so used
+Firecrawl `actions` to open "Show all reviews" modal, scroll EVERY element + window (scrolling only divs stalls at 30), then a JS
+dump of React fiber props (`reviewComment` = full text; the visible text is server-truncated). Scripts: scratchpad fc.mjs/merge.py.
+**Dedupe = difflib ratio ≥0.75** (exact-prefix missed "our realtor"→"our agent" copies); priority Google > Realtor.com (real names)
+> Zillow (usernames). 25 cross-site copies dropped. Same person w/ DIFFERENT text kept (e.g. Richard Burkette ×3). Import now PRUNES
+imported rows no longer in reviews.json (admin-created rows have no `_external_id`, untouched). One Zillow review is 4★ (bobtait485).
+**Yelp NOT collected:** Firecrawl refuses yelp.com; Yelp CAPTCHAs the automated Chrome. Needs Vince's real Chrome (chrome-devtools
+MCP now `--autoConnect`; Vince must enable chrome://inspect/#remote-debugging + restart Claude Code).
+**⚠️ NOT in GitHub yet** — Liz deploys from `main`, so her next deploy would REMOVE the reviews page/home Proof until a PR lands.
+Changed: index.astro, sitemap.xml.ts, styles.css, worker.ts (v15); new reviews.astro, components/ReviewCarousel.astro, lib/reviews.ts, public/reviews.css,
+seed/reviews.mjs, seed/reviews.json.
+Vince: new `/reviews/` page = yes; home "The Proof" (existing section) = fill it; **About page = do NOT touch**; build locally first.
+- **`reviews` collection** (LOCAL D1 only): title = reviewer name, `source` (select: Google/Zillow/Realtor.com/Yelp/Experience.com/Other),
+  `rating` (integer), `review_date` (YYYY-MM), `body` (verbatim), `location`, `source_url`, `featured`/`hidden` (boolean→INTEGER),
+  hidden `_external_id`. Data file `emdash/seed/reviews.json`; import `node seed/reviews.mjs --local` (refuses without `--local`).
+  Re-import refreshes text but **never overwrites featured/hidden** set in admin (verified).
+- `src/lib/reviews.ts` (reads `env.DB`), `src/pages/reviews.astro` + `public/reviews.css` (reuses `.chero` + `.testimonial`),
+  client-side source chips (NOT `?source=` — edge cache drops the query). **/reviews/ is a CAROUSEL (Vince 2026-09-24): 2 cards in view
+  (1 + peek on phones), `.rv-track` scroll-snap + `.fl-nav` arrows + "1–2 of 19" counter; all cards equal height (one grid row);
+  quotes clamped to 6 lines with a "Read more" toggle shown only when actually clamped.** **No Review/AggregateRating schema** (Google disallows it for
+  third-party-sourced reviews). Home Proof now reads `featuredReviews(3)` + "READ ALL REVIEWS" button; `lib/testimonials.ts` left
+  empty so About stays hidden. New `.testimonials--few` in styles.css centres rows under 3 cards. `/reviews/` added to sitemap.
+- **Data = all 19 Google reviews with full text** (collected 2026-09-24 from Google Maps via chrome-devtools; 20th, Daniel Haim,
+  is rating-only). Featured on home: Veronica Cisneros, Jeff Crowe, Nancy P. Dates approximate (YYYY-MM, or YYYY for "N years ago").
+  **Yelp/Zillow/Realtor NOT collected:** they 403 plain fetches, and Yelp CAPTCHAs the chrome-devtools MCP because it launches its
+  OWN automated Chrome profile (config: `npx chrome-devtools-mcp@latest`, no `--autoConnect`/`--browserUrl`), not Vince's Chrome.
+- **GOTCHA: the worker edge cache runs in `astro dev` too** — a DB change looks "not applied" because the page is a cache HIT
+  (`x-cache: HIT`). Verify locally with `-H "Cookie: emdash-session=x"` (bypass). **Before telling Vince to look, clear it:**
+  `npx astro dev stop; rm -rf .wrangler/state/v3/cache; npx astro dev --background` (his browser has no bypass cookie). Also `astro dev` (Astro 7) daemonizes and listens
+  on `[::1]` — `curl -4 localhost` gets 000; use `http://[::1]:4321`.
+- **GOTCHA: never run `astro build` while `astro dev` is running** — the build replaces `node_modules/.vite` and the dev server
+  then 500s every page (`deps_ssr/... does not exist`). Fix: `npx astro dev stop; rm -rf node_modules/.vite; npx astro dev --background`.
+
 ### 2026-09-10 — Sync MOVED to GitHub Actions (Vercel cron OFF) + fixed a real mirror bug it exposed
 Vince: "Lets give Liz Github actions. NO vercel. For her to decide" (cadence is Liz's).
 - **`.github/workflows/gcm-homes-trestle-sync.yml`** (in the monorepo, PR #127). Runs

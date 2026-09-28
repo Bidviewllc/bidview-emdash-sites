@@ -1,0 +1,111 @@
+---
+// Client-review carousel — shared by /reviews/ and the home page's "The Proof".
+//
+// One grid row, two cards in view (one plus a peek on phones). A single row
+// stretches every card to the same height; long quotes are clamped to six
+// lines with a "Read more" toggle, shown only when the clamp actually cut
+// text. Arrows move one card; swipe/trackpad scroll works natively.
+// Styles: the "Review carousel" block in public/styles.css.
+//
+// Several instances can share a page: the script finds every [data-rv] root.
+// A page that hides cards (the /reviews/ source filter) dispatches "rv:refresh"
+// on the root afterwards so the counter and arrows re-sync.
+import type { Review } from "../lib/reviews";
+
+interface Props {
+	reviews: Review[];
+	label?: string;
+}
+const { reviews, label = "Client reviews" } = Astro.props;
+
+const STAR =
+	'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" /></svg>';
+---
+
+<div class="rv" data-rv>
+	<div class="rv-track" data-rv-track tabindex="0" aria-label={label}>
+		{reviews.map((r) => (
+			<article class="testimonial rv-card" data-source={r.source}>
+				{r.rating != null && (
+					<div class="stars" aria-label={`${r.rating} out of 5 stars`}>
+						{Array.from({ length: r.rating }).map(() => <span class="star" set:html={STAR} />)}
+					</div>
+				)}
+				<div class="rv-body">
+					<p class="testimonial__q rv-quote">"{r.body}"</p>
+					<button type="button" class="rv-more" aria-expanded="false" hidden>Read more</button>
+				</div>
+				<div class="testimonial__attr">
+					<div class="testimonial__name">{r.name}</div>
+					<div class="eyebrow eyebrow--muted">{[r.location, r.date].filter(Boolean).join(" · ")}</div>
+					{r.url ? (
+						<a class="rv-source" href={r.url} target="_blank" rel="noopener nofollow">Read on {r.source} →</a>
+					) : (
+						<span class="rv-source">via {r.source}</span>
+					)}
+				</div>
+			</article>
+		))}
+	</div>
+	{reviews.length > 2 && (
+		<div class="fl-nav rv-nav">
+			<button class="btn btn--icon fl-nav__prev" data-rv-prev aria-label="Previous reviews"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></svg></button>
+			<span class="rv-pos" data-rv-pos aria-live="polite"></span>
+			<button class="btn btn--icon fl-nav__next" data-rv-next aria-label="Next reviews"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg></button>
+		</div>
+	)}
+</div>
+
+<script is:inline>
+	(function () {
+		document.querySelectorAll("[data-rv]:not([data-rv-ready])").forEach(function (root) {
+			root.setAttribute("data-rv-ready", "");
+			var track = root.querySelector("[data-rv-track]");
+			var prev = root.querySelector("[data-rv-prev]");
+			var next = root.querySelector("[data-rv-next]");
+			var pos = root.querySelector("[data-rv-pos]");
+			var cards = Array.prototype.slice.call(track.querySelectorAll(".rv-card"));
+			var shown = function () { return cards.filter(function (c) { return !c.hidden; }); };
+			var gap = function () { return parseFloat(getComputedStyle(track).columnGap || "0"); };
+
+			function markClamped() {
+				cards.forEach(function (card) {
+					if (card.classList.contains("is-open")) return;
+					var q = card.querySelector(".rv-quote");
+					card.querySelector(".rv-more").hidden = q.scrollHeight <= q.clientHeight + 2;
+				});
+			}
+			cards.forEach(function (card) {
+				var btn = card.querySelector(".rv-more");
+				btn.addEventListener("click", function () {
+					var open = card.classList.toggle("is-open");
+					btn.textContent = open ? "Show less" : "Read more";
+					btn.setAttribute("aria-expanded", open ? "true" : "false");
+				});
+			});
+
+			function step() {
+				var c = shown()[0];
+				return c ? c.getBoundingClientRect().width + gap() : track.clientWidth;
+			}
+			function sync() {
+				var list = shown(), s = step();
+				var perView = Math.max(1, Math.round((track.clientWidth + gap()) / s));
+				var first = Math.min(list.length, Math.round(track.scrollLeft / s) + 1);
+				var last = Math.min(list.length, first + perView - 1);
+				if (pos) pos.textContent = list.length ? (first === last ? first : first + "–" + last) + " of " + list.length : "";
+				if (prev) prev.disabled = track.scrollLeft <= 2;
+				if (next) next.disabled = track.scrollLeft >= track.scrollWidth - track.clientWidth - 2;
+			}
+			function refresh() { markClamped(); sync(); }
+
+			if (prev) prev.addEventListener("click", function () { track.scrollBy({ left: -step(), behavior: "smooth" }); });
+			if (next) next.addEventListener("click", function () { track.scrollBy({ left: step(), behavior: "smooth" }); });
+			track.addEventListener("scroll", sync, { passive: true });
+			window.addEventListener("resize", refresh);
+			root.addEventListener("rv:refresh", function () { track.scrollLeft = 0; refresh(); });
+			refresh();
+			if (document.fonts && document.fonts.ready) document.fonts.ready.then(refresh);
+		});
+	})();
+</script>

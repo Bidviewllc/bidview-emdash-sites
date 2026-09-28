@@ -918,6 +918,84 @@ a:hover .cta-arrow { transform: translateX(4px); }
 .testimonial__attr { display: flex; flex-direction: column; gap: 2px; }
 .testimonial__name { font-weight: 700; font-size: 15px; color: var(--ink); }
 
+/* ===== Review carousel (components/ReviewCarousel.astro) =====
+   Shared by /reviews/ and the home page's "The Proof". */
+/* One grid row: every card is stretched to the row's height, so all boxes are
+   the same size. Two in view on desktop/tablet, one (plus a peek) on phones.
+   Same scroll-snap pattern as the home page's .fl-track. */
+.rv-track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc((100% - 32px) / 2);
+  gap: 32px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding: 0 12px;
+  scrollbar-width: none;
+  /* room for the card hover lift + shadow, cancelled by the negative margin */
+  padding: 8px 12px 28px;
+  margin: -8px -12px -28px;
+}
+.rv-filters + .rv { margin-top: 32px; }
+.proof-carousel { margin-top: 64px; }
+.rv-track::-webkit-scrollbar { display: none; }
+.rv-track:focus-visible { outline: 2px solid var(--orange); outline-offset: 4px; }
+.rv-card { scroll-snap-align: start; }
+/* .testimonial is display:flex, which beats the [hidden] UA rule. */
+.rv-card[hidden] { display: none; }
+
+/* Quote clamped to six lines; the wrapper takes the spare height so the
+   name/date/link line sits at the same place on every card. */
+.rv-body { flex: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+.rv-quote {
+  flex: none;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 6;
+  line-clamp: 6;
+  overflow: hidden;
+}
+.rv-card.is-open .rv-quote { display: block; -webkit-line-clamp: unset; line-clamp: none; overflow: visible; }
+.rv-more {
+  font: 700 13px/1 var(--font-sans);
+  letter-spacing: 0.06em;
+  color: var(--navy);
+  background: none;
+  border: 0;
+  padding: 4px 0;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.rv-more:hover { color: var(--orange-deep); }
+
+.rv-nav { align-items: center; }
+.rv-pos {
+  min-width: 84px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.rv-source {
+  margin-top: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--orange-deep);
+  text-decoration: none;
+  align-self: flex-start;
+}
+a.rv-source:hover { text-decoration: underline; }
+span.rv-source { color: var(--muted); font-weight: 600; }
+@media (max-width: 640px) {
+  .rv-track { grid-auto-columns: 88%; gap: 16px; }
+  .proof-carousel { margin-top: 48px; }
+}
+
 /* ===== Contact / Invitation ===== */
 .invite {
   display: grid;
