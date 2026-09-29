@@ -47,7 +47,9 @@ export { PluginBridge };
 // (all reviews, 2 in view) instead of three static cards.
 // v16 (2026-09-25): Zillow + Realtor.com reviews added (74 total), source
 // filter chips on /reviews/, cards without stars for unrated recommendations.
-const CACHE_VERSION = "v16";
+// v17 (2026-09-29): /reviews/ switches from the carousel to a grid (Liz); the
+// home page carousel is unchanged.
+const CACHE_VERSION = "v17";
 const CACHEABLE_TYPE = /^(?:text\/html|application\/xml|text\/xml|text\/plain)/i;
 const ADMIN_COOKIE = /emdash[-_](session|edit-mode|admin)/i;
 
