@@ -70,6 +70,7 @@ const pageSchemas = [...(schemaData.sitewide ?? []), ...(schemaData.pages?.[sche
       gtag("js", new Date());
       gtag("config", measurementId);
     </script>
+    <script is:inline src="/assets/lead-tracking.js" defer></script>
   </head>
   <body>
     <Preloader />
