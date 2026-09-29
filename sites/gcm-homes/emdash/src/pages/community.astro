@@ -15,6 +15,7 @@ import ContactCta from "../components/ContactCta.astro";
 import { getEmDashEntry } from "emdash";
 import { env } from "cloudflare:workers";
 import { NEIGHBORHOODS } from "../lib/neighborhoods";
+import { NOT_HIDDEN, FEATURED_FIRST } from "../lib/listings";
 
 const DEF_FACTS = [
 	{ num: "6,225–7,700", unit: "ft", label: "Elevation range" },
@@ -79,13 +80,17 @@ const LIVING_HERE = DEF_LIVE.map((x, i) => {
 	return { h: t(`live${i + 1}_h`, x.h), body };
 });
 
-// Featured — live top 3 from the Trestle-synced D1 tables.
+// Featured — live top 3 from the Trestle-synced D1 tables. Listings ticked
+// "Featured" in the admin come first, then the priciest (same rule as the home page).
 let featured: any[] = [];
 try {
 	const DB = (env as any)?.DB;
 	if (DB) {
 		const { results } = await DB.prepare(
-			"SELECT id, slug, address, price, beds, baths, sqft, category, type, photo FROM listings WHERE status='Active' AND photo IS NOT NULL ORDER BY price DESC LIMIT 3",
+			`SELECT l.id, l.slug, l.address, l.price, l.beds, l.baths, l.sqft, l.category, l.type, l.photo
+			 FROM listings l LEFT JOIN ec_listings e ON e.id = l.id
+			 WHERE l.status='Active' AND l.photo IS NOT NULL AND ${NOT_HIDDEN}
+			 ORDER BY ${FEATURED_FIRST}, l.price DESC LIMIT 3`,
 		).all();
 		featured = results ?? [];
 	}

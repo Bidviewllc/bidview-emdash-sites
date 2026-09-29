@@ -6,6 +6,17 @@ import { portableTextToHtml, plainToPortableText } from "./portabletext";
 
 const DB = () => (env as any).DB as any;
 
+// ── Owner checkboxes (ec_listings, never written by the Trestle sync) ────────
+// SQL fragments for any query that joins `listings l LEFT JOIN ec_listings e
+// ON e.id = l.id`. Checkbox values arrive as text, and which text depends on who
+// wrote it (admin checkbox vs SQL), so anything but empty/0/false counts as on.
+// "Hide from search" drops a listing from every list, search, featured row,
+// neighbourhood page, random section photo and the sitemap; its detail page
+// still answers a direct link, with a noindex tag.
+export const NOT_HIDDEN = "COALESCE(e.hidden, '') IN ('', '0', 'false')";
+// "Featured" listings sort ahead of the rest; put this first in ORDER BY.
+export const FEATURED_FIRST = "(COALESCE(e.featured, '') NOT IN ('', '0', 'false')) DESC";
+
 // ── Days on market ───────────────────────────────────────────────────────────
 // Trestle does NOT recompute DaysOnMarket daily. The MLS writes it when the
 // record changes and then leaves it, so the feed hands us a number that is
@@ -149,11 +160,23 @@ export function toDetail(r: any) {
 	};
 }
 
+/** True when the listing at `slug` is ticked "Hide from search" (detail page adds noindex). */
+export async function isHiddenSlug(slug: string): Promise<boolean> {
+	try {
+		const row = await DB().prepare(
+			`SELECT 1 AS h FROM listings l JOIN ec_listings e ON e.id = l.id WHERE l.slug = ? AND NOT (${NOT_HIDDEN})`
+		).bind(slug).first();
+		return !!row;
+	} catch {
+		return false;
+	}
+}
+
 export async function allActive() {
 	// LEFT JOIN the emdash mirror so cards can surface a "Grant's note" flag. Owner
 	// note lives in ec_listings.owner_note (preserved across every sync).
 	const { results } = await DB().prepare(
-		"SELECT l.*, e.owner_note AS owner_note FROM listings l LEFT JOIN ec_listings e ON e.id = l.id WHERE l.status='Active' ORDER BY (l.photo IS NULL), l.price DESC"
+		`SELECT l.*, e.owner_note AS owner_note FROM listings l LEFT JOIN ec_listings e ON e.id = l.id WHERE l.status='Active' AND ${NOT_HIDDEN} ORDER BY (l.photo IS NULL), l.price DESC`
 	).all();
 	return (results ?? []).map((r: any) => ({ ...toListing(r), ownerNote: r.owner_note ?? null }));
 }
@@ -166,7 +189,7 @@ export async function allActive() {
 export async function randomHomePhoto(): Promise<string | null> {
 	try {
 		const row = await DB().prepare(
-			"SELECT photo FROM listings WHERE status='Active' AND type='Residential' AND photo IS NOT NULL AND photo != '' ORDER BY RANDOM() LIMIT 1"
+			`SELECT l.photo FROM listings l LEFT JOIN ec_listings e ON e.id = l.id WHERE l.status='Active' AND l.type='Residential' AND l.photo IS NOT NULL AND l.photo != '' AND ${NOT_HIDDEN} ORDER BY RANDOM() LIMIT 1`
 		).first();
 		return (row as any)?.photo ?? null;
 	} catch {
@@ -182,7 +205,7 @@ export async function randomHomePhoto(): Promise<string | null> {
 export async function randomHomePhotos(n: number): Promise<string[]> {
 	try {
 		const { results } = await DB().prepare(
-			"SELECT photo FROM listings WHERE status='Active' AND type='Residential' AND photo IS NOT NULL AND photo != '' ORDER BY RANDOM() LIMIT ?"
+			`SELECT l.photo FROM listings l LEFT JOIN ec_listings e ON e.id = l.id WHERE l.status='Active' AND l.type='Residential' AND l.photo IS NOT NULL AND l.photo != '' AND ${NOT_HIDDEN} ORDER BY RANDOM() LIMIT ?`
 		).bind(n).all();
 		return (results ?? []).map((r: any) => r.photo);
 	} catch {

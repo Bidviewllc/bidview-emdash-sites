@@ -47,9 +47,11 @@ function plainToPortableText(plain) {
 	})));
 }
 // emdash field type per slug. description is rich text (WYSIWYG); owner_note and
-// local_perspective are paragraphs (textarea); *_image fields store JSON.
+// local_perspective are paragraphs (textarea); *_image fields store JSON; featured
+// and hidden are checkboxes (text column, like ec_neighborhoods.featured).
 const FIELD_TYPE = (slug) => {
 	if (slug === "description") return ["portableText", "json"];
+	if (slug === "featured" || slug === "hidden") return ["boolean", "text"];
 	if (slug.endsWith("_image")) return ["image", "json"];
 	if (slug === "owner_note" || slug === "local_perspective") return ["text", "text"];
 	return ["string", "text"];
@@ -74,6 +76,10 @@ const MLS_FIELDS = [
 	["condition", "Condition"], ["lot_sqft", "Lot (sq ft)"],
 ];
 const OWNER_FIELDS = [
+	// Added 2026-09-25: ticked listings lead the home page carousel + community
+	// page "Featured" row; empty slots fill with the priciest active listings.
+	["featured", "Featured listing (home page + community page)"],
+	["hidden", "Hide from search (off every list, search and the sitemap; the page still opens by direct link)"],
 	["headline", "Property Headline (leave empty to use the street address)"],
 	["description", "Description (editable — overrides the MLS remarks)"],
 	["owner_note", "Note From Grant — paragraph (shown publicly)"],

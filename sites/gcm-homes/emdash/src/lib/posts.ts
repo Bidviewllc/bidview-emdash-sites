@@ -12,6 +12,7 @@
 import { getTermsForEntries } from "emdash";
 import { env } from "cloudflare:workers";
 import { firstImageUrl } from "./media";
+import { NOT_HIDDEN, FEATURED_FIRST } from "./listings";
 
 export const POSTS_PER_PAGE = 9;
 
@@ -195,7 +196,10 @@ export async function featuredListingPool(): Promise<any[]> {
 	if (!DB) return [];
 	try {
 		const { results } = await DB.prepare(
-			"SELECT id, slug, address, city, state, price, beds, baths, sqft, lot_acres, category, sub_type, type, waterfront, photo FROM listings WHERE status='Active' AND photo IS NOT NULL ORDER BY price DESC LIMIT 9",
+			`SELECT l.id, l.slug, l.address, l.city, l.state, l.price, l.beds, l.baths, l.sqft, l.lot_acres, l.category, l.sub_type, l.type, l.waterfront, l.photo
+			 FROM listings l LEFT JOIN ec_listings e ON e.id = l.id
+			 WHERE l.status='Active' AND l.photo IS NOT NULL AND ${NOT_HIDDEN}
+			 ORDER BY ${FEATURED_FIRST}, l.price DESC LIMIT 9`,
 		).all();
 		return results ?? [];
 	} catch {
