@@ -1,10 +1,15 @@
 ---
-// Client-review carousel — shared by /reviews/ and the home page's "The Proof".
+// Client-review cards — shared by /reviews/ (layout="grid") and the home
+// page's "The Proof" (layout="carousel", the default).
 //
-// One grid row, two cards in view (one plus a peek on phones). A single row
-// stretches every card to the same height; long quotes are clamped to six
-// lines with a "Read more" toggle, shown only when the clamp actually cut
-// text. Arrows move one card; swipe/trackpad scroll works natively.
+// carousel: one grid row, two cards in view (one plus a peek on phones). A
+//   single row stretches every card to the same height. Arrows move one card;
+//   swipe/trackpad scroll works natively.
+// grid: 3 / 2 / 1 columns. Every row is locked to the height of the tallest
+//   collapsed card, so all boxes are the same size; an opened card grows over
+//   the cards below it instead of stretching the whole grid.
+// Both: long quotes are clamped to six lines with a "Read more" toggle, shown
+// only when the clamp actually cut text.
 // Styles: the "Review carousel" block in public/styles.css.
 //
 // Several instances can share a page: the script finds every [data-rv] root.
@@ -15,15 +20,17 @@ import type { Review } from "../lib/reviews";
 interface Props {
 	reviews: Review[];
 	label?: string;
+	layout?: "carousel" | "grid";
 }
-const { reviews, label = "Client reviews" } = Astro.props;
+const { reviews, label = "Client reviews", layout = "carousel" } = Astro.props;
+const isGrid = layout === "grid";
 
 const STAR =
 	'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26" /></svg>';
 ---
 
-<div class="rv" data-rv>
-	<div class="rv-track" data-rv-track tabindex="0" aria-label={label}>
+<div class={isGrid ? "rv rv--grid" : "rv"} data-rv data-rv-layout={layout}>
+	<div class="rv-track" data-rv-track tabindex={isGrid ? undefined : "0"} aria-label={label}>
 		{reviews.map((r) => (
 			<article class="testimonial rv-card" data-source={r.source}>
 				{r.rating != null && (
@@ -47,7 +54,7 @@ const STAR =
 			</article>
 		))}
 	</div>
-	{reviews.length > 2 && (
+	{!isGrid && reviews.length > 2 && (
 		<div class="fl-nav rv-nav">
 			<button class="btn btn--icon fl-nav__prev" data-rv-prev aria-label="Previous reviews"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></svg></button>
 			<span class="rv-pos" data-rv-pos aria-live="polite"></span>
@@ -67,6 +74,7 @@ const STAR =
 			var cards = Array.prototype.slice.call(track.querySelectorAll(".rv-card"));
 			var shown = function () { return cards.filter(function (c) { return !c.hidden; }); };
 			var gap = function () { return parseFloat(getComputedStyle(track).columnGap || "0"); };
+			var isGrid = root.getAttribute("data-rv-layout") === "grid";
 
 			function markClamped() {
 				cards.forEach(function (card) {
@@ -75,10 +83,12 @@ const STAR =
 					card.querySelector(".rv-more").hidden = q.scrollHeight <= q.clientHeight + 2;
 				});
 			}
+			var topZ = 2;
 			cards.forEach(function (card) {
 				var btn = card.querySelector(".rv-more");
 				btn.addEventListener("click", function () {
 					var open = card.classList.toggle("is-open");
+					card.style.zIndex = open ? String(++topZ) : "";
 					btn.textContent = open ? "Show less" : "Read more";
 					btn.setAttribute("aria-expanded", open ? "true" : "false");
 				});
@@ -97,11 +107,22 @@ const STAR =
 				if (prev) prev.disabled = track.scrollLeft <= 2;
 				if (next) next.disabled = track.scrollLeft >= track.scrollWidth - track.clientWidth - 2;
 			}
-			function refresh() { markClamped(); sync(); }
+			/* Grid: lock every row to the tallest collapsed card. Measured with open
+			   cards temporarily clamped (.rv-measure), so opening one never resizes
+			   the grid — it overflows its cell instead. */
+			function sizeGrid() {
+				track.style.gridAutoRows = "";
+				root.classList.add("rv-measure");
+				var h = 0;
+				shown().forEach(function (c) { h = Math.max(h, c.getBoundingClientRect().height); });
+				root.classList.remove("rv-measure");
+				if (h) track.style.gridAutoRows = Math.ceil(h) + "px";
+			}
+			function refresh() { markClamped(); if (isGrid) sizeGrid(); else sync(); }
 
 			if (prev) prev.addEventListener("click", function () { track.scrollBy({ left: -step(), behavior: "smooth" }); });
 			if (next) next.addEventListener("click", function () { track.scrollBy({ left: step(), behavior: "smooth" }); });
-			track.addEventListener("scroll", sync, { passive: true });
+			if (!isGrid) track.addEventListener("scroll", sync, { passive: true });
 			window.addEventListener("resize", refresh);
 			root.addEventListener("rv:refresh", function () { track.scrollLeft = 0; refresh(); });
 			refresh();

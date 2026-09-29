@@ -5,7 +5,8 @@
 // Data: the `reviews` collection (src/lib/reviews.ts). Every quote is verbatim
 // and links back to where it was posted. Hidden reviews never render.
 //
-// The cards are the shared ReviewCarousel (also on the home page). The source
+// The cards are the shared ReviewCarousel in its grid layout (the home page
+// uses the same component as a carousel). The source
 // filter is client-side (data-source + a small script), NOT a ?source= query: the edge cache in src/worker.ts drops the query string, so a
 // server-side filter would be served the cached unfiltered page.
 //
@@ -64,7 +65,7 @@ const STAR =
 			{count === 0 ? (
 				<p class="rv-empty">Reviews are on their way.</p>
 			) : (
-				<ReviewCarousel reviews={reviews} />
+				<ReviewCarousel reviews={reviews} layout="grid" />
 			)}
 		</div>
 	</section>
