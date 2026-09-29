@@ -265,7 +265,16 @@ dump of React fiber props (`reviewComment` = full text; the visible text is serv
 imported rows no longer in reviews.json (admin-created rows have no `_external_id`, untouched). One Zillow review is 4★ (bobtait485).
 **Yelp NOT collected:** Firecrawl refuses yelp.com; Yelp CAPTCHAs the automated Chrome. Needs Vince's real Chrome (chrome-devtools
 MCP now `--autoConnect`; Vince must enable chrome://inspect/#remote-debugging + restart Claude Code).
-**⚠️ NOT in GitHub yet** — Liz deploys from `main`, so her next deploy would REMOVE the reviews page/home Proof until a PR lands.
+**GitHub: PR #159 MERGED to main 2026-09-28 (merge `a2dc1e5`, Vince approved).** Branched from main 8475bbb; only the 11 reviews
+files (6 new, 5 edited = additions only). Main == staging now, so a deploy from `main` keeps the reviews. Liz's open PR #158
+(Featured listing checkbox) bumps CACHE_VERSION to v14 → it now needs v18 (see 4th deploy) + its `ec_listings.featured` DB column first.
+**4th deploy 2026-09-29 → version `09b7b82e`, CACHE_VERSION v17: /reviews/ is now a GRID** (Liz's ClickUp comment; Vince: "I do it").
+`ReviewCarousel.astro` takes `layout="grid"|"carousel"` (home stays carousel). Grid = 3/2/1 cols; JS `sizeGrid()` locks every row to the
+tallest COLLAPSED card (`.rv-measure` clamps open cards while measuring) so all boxes are equal; an opened card overflows its cell
+(z-index + shadow) instead of resizing the grid. Page is long (74 cards ≈ 11k px desktop, 29k px phone) — "Show more" paging suggested.
+Liz's #158 must now use CACHE_VERSION **v18**. GOTCHA: right after deploy, staging briefly served the OLD styles.css (CF asset
+propagation) → re-check a minute later before calling it broken.
+PR checks: the 2 "Workers Builds" (bidview-emdash-sites, robertshearingclinic-emdash-staging) FAIL on every PR — pre-existing, not GCM.
 Changed: index.astro, sitemap.xml.ts, styles.css, worker.ts (v15); new reviews.astro, components/ReviewCarousel.astro, lib/reviews.ts, public/reviews.css,
 seed/reviews.mjs, seed/reviews.json.
 Vince: new `/reviews/` page = yes; home "The Proof" (existing section) = fill it; **About page = do NOT touch**; build locally first.

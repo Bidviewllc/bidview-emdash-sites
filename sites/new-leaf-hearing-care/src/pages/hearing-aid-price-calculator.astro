@@ -158,6 +158,15 @@ details.panel[open] summary{margin-bottom:.9rem;}
 .ty p{font-size:.88rem;color:#555;line-height:1.6;}
 @media(max-width:560px){.field-row{grid-template-columns:1fr;}.card-body,.card-header{padding-left:1.3rem;padding-right:1.3rem;}}
 </style>
+<!-- Google Analytics (GA4). This page has no site layout, so it loads GA itself. -->
+<script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-B5S53SMNR5"></script>
+<script is:inline>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag("js", new Date());
+  gtag("config", "G-B5S53SMNR5");
+</script>
+<script is:inline src="/assets/lead-tracking.js" defer></script>
 </head>
 <body>
 <div class="wrap">
@@ -529,6 +538,10 @@ details.panel[open] summary{margin-bottom:.9rem;}
         body: JSON.stringify(payload),
       });
       if (!res.ok) throw new Error();
+      // GA4 lead event, fired only once the server accepted the request. The name must
+      // stay form_submit: the weekly Lead Health pulse counts it. Never let tracking
+      // break the thank-you message.
+      try { window.bvGtag && window.bvGtag('event', 'form_submit', { form_id: 'lead-form', form_name: 'Pricing estimate' }); } catch {}
       $('#lead-body').innerHTML =
         '<div class="ty"><h3>On its way!</h3><p>Your estimate is headed to your inbox. If you’d like to talk it through, we’re a phone call away.</p></div>';
     } catch {
