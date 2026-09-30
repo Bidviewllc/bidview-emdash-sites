@@ -7,7 +7,6 @@ export const GET: APIRoute = async () => {
 Allow: /
 
 Disallow: /_emdash/
-Disallow: /404
 Disallow: /api/
 
 Sitemap: ${SITE}/sitemap.xml

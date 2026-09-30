@@ -1,0 +1,27 @@
+---
+import Interior from "../layouts/Interior.astro";
+
+// Missing URLs are rewritten here by [...slug].astro, so the visitor keeps the
+// address they asked for and the response carries a real 404 status.
+Astro.response.status = 404;
+---
+<Interior
+  title="Page Not Found | Ontario Hearing Center"
+  description="The page you were looking for could not be found."
+  pageTitle="We can't find that page."
+  breadcrumbLabel="Page not found"
+  noindex
+  nofollow
+>
+  <section>
+    <p>The page may have moved, or the link may be out of date. These pages will get you where you need to go:</p>
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/hearing-aids/">Hearing aids</a></li>
+      <li><a href="/hearing-test/">Hearing tests</a></li>
+      <li><a href="/blog/">Blog</a></li>
+      <li><a href="/contact-us/">Contact us</a></li>
+    </ul>
+    <p>Prefer to talk to someone? Call us at <a href="tel:5854424180">(585) 442-4180</a>.</p>
+  </section>
+</Interior>
