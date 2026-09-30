@@ -15,6 +15,7 @@ interface Props {
   ogType?: "website" | "article" | "profile";
   schemaJsonLd?: any | any[];
   noindex?: boolean;
+  nofollow?: boolean;
 }
 
 const SITE = "https://ontariohearing.com";
@@ -30,6 +31,7 @@ const {
   ogType = "website",
   schemaJsonLd,
   noindex = false,
+  nofollow = false,
 } = Astro.props;
 
 const canonicalUrl = canonical || SITE + Astro.url.pathname;
@@ -132,7 +134,7 @@ const allSchemas = Array.isArray(schemaJsonLd) ? schemaJsonLd : (schemaJsonLd ? 
 
   <title>{title}</title>
   {description && <meta name="description" content={description} />}
-  {noindex && <meta name="robots" content="noindex, follow" />}
+  {noindex && <meta name="robots" content={nofollow ? "noindex, nofollow" : "noindex, follow"} />}
   <link rel="canonical" href={canonicalUrl} />
 
   <!-- Google Analytics 4 (property: ontariohearing.com / 397242492) -->

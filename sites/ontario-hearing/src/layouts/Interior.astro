@@ -18,6 +18,7 @@ interface Props {
   ogType?: "website" | "article" | "profile";
   schemaJsonLd?: any | any[];
   noindex?: boolean;
+  nofollow?: boolean;
 }
 
 const SITE = "https://ontariohearing.com";
@@ -35,6 +36,7 @@ const {
   ogType,
   schemaJsonLd,
   noindex = false,
+  nofollow = false,
 } = Astro.props;
 
 const canonicalUrl = canonical || SITE + Astro.url.pathname;
@@ -88,6 +90,7 @@ const allSchemas = [
   ogType={ogType}
   schemaJsonLd={allSchemas}
   noindex={noindex}
+  nofollow={nofollow}
 >
   <section class="pagetitle">
     <div class="pagetitle__inner">
