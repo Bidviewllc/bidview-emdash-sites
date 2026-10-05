@@ -7,6 +7,8 @@
 export interface Block {
 	t: "h2" | "h3" | "p" | "ul" | "faq";
 	v?: string;
+	/** Optional in-text link on a "p" block: `text` must appear in `v` exactly once. */
+	link?: { text: string; href: string };
 	items?: string[];
 	qa?: { q: string; a: string[] }[];
 }
