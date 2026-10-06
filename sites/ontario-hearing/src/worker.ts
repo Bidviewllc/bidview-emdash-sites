@@ -14,11 +14,20 @@ const CACHEABLE_TYPES = ["text/html", "application/xml", "text/plain", "applicat
 // (their content should never be served from the public cache)
 const EDIT_COOKIES = ["emdash-edit-mode=true", "emdash-admin=", "emdash-session", "emdash_session"];
 
+// Missing files that are still linked somewhere. 301 them to a file that exists.
+// The "Can a Deaf Person Hear?" post's featured image was never uploaded (crawl 2026-10-03).
+const ASSET_REDIRECTS: Record<string, string> = {
+	"/assets/img/can-a-deaf-person-hear-understanding-deafness-sound-and-hearing-technology.webp":
+		"/assets/img/girl-headsets-standing-soundproof-booth-6b113458.webp",
+};
+
 const worker = {
 	...handler,
 
 	async fetch(request: Request, env: any, ctx: ExecutionContext): Promise<Response> {
 		const url = new URL(request.url);
+		const assetTarget = ASSET_REDIRECTS[url.pathname];
+		if (assetTarget) return Response.redirect(`${url.origin}${assetTarget}`, 301);
 		const cookie = request.headers.get("Cookie") || "";
 
 		const isEditMode = EDIT_COOKIES.some((c) => cookie.includes(c));
