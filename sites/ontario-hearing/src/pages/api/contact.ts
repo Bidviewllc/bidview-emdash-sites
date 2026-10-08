@@ -4,6 +4,7 @@ import { env } from "cloudflare:workers";
 
 const LEAD_TO   = "info@ontariohearing.com";
 const LEAD_FROM = "noreply@bidview.net";
+const LEAD_CC   = "local@bidviewmarketing.com";
 const SITE      = "Ontario Hearing Center";
 const THANK_YOU = "/thank-you-for-contacting-us/";
 const RESEND_API = "https://api.resend.com/emails";
@@ -142,6 +143,7 @@ export async function POST({ request }: { request: Request }) {
 			body: JSON.stringify({
 				from: `${SITE} <${LEAD_FROM}>`,
 				to: [LEAD_TO],
+				cc: [LEAD_CC],
 				reply_to: `${name} <${email}>`,
 				subject: `New Lead — ${name}`,
 				text: textBody,
