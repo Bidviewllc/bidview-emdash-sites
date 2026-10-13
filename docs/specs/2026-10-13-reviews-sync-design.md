@@ -57,11 +57,11 @@ The Worker, the config shape, the tables and the reader helper are written site-
 - A reviews admin screen in EmDash.
 - Other review sources.
 
-## Open items to verify before building
-1. DataForSEO cost per location per weekly pull, and whether the ready-checks are billed.
-2. One Worker holding three D1 bindings with the token in use. Confirm permissions.
-3. Whether to use `pingback_url` later instead of the Sunday checks.
-4. The deploy order for each site. New Leaf must be built with `npm run build:cloudflare` and `CF_DEPLOY=1`, or it ships a stale `dist/`.
+## Open items (checked 2026-10-13)
+1. **Cost:** DataForSEO bills Google Reviews per 10 reviews returned, standard queue about $0.00075 per 10 (sources: dataforseo.com/pricing/business-data/google-reviews-api and docs.dataforseo.com/v3/reviews-google-task_post). Depth 50 is about $0.004 per location per pull, rounded up to the next block of 10. Whether `task_get` is billed is not stated on those pages and is still unconfirmed. Check the first invoice line after the first real Sunday.
+2. **Cloudflare token:** reads work on the New Leaf, Ontario and Duet D1 databases (`SELECT 1` succeeded on each). Write access is proven only when the first seed runs.
+3. **`pingback_url`:** not used in this version. Revisit only if the Sunday checks prove unreliable.
+4. **Deploy order for New Leaf:** build with `npm run build:cloudflare` and `CF_DEPLOY=1`, or it ships a stale `dist/`.
 
 ## Testing
 - Unit: normalise a DataForSEO response, upsert keeps `hidden`, mismatch is rejected, empty pull is ignored.
