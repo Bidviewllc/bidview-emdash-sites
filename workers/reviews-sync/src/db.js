@@ -35,8 +35,16 @@ export async function ensureSchema(db) {
   for (const sql of SCHEMA_SQL) await db.prepare(sql).run();
   const info = await db.prepare("PRAGMA table_info(reviews)").all();
   const cols = new Set((info.results || []).map((c) => c.name));
-  if (!cols.has("hidden")) await db.prepare("ALTER TABLE reviews ADD COLUMN hidden INTEGER DEFAULT 0").run();
-  if (!cols.has("author_url")) await db.prepare("ALTER TABLE reviews ADD COLUMN author_url TEXT").run();
+  const addColumn = async (name, sql) => {
+    if (cols.has(name)) return;
+    try {
+      await db.prepare(sql).run();
+    } catch (e) {
+      if (!String(e?.message || e).includes("duplicate column")) throw e;
+    }
+  };
+  await addColumn("hidden", "ALTER TABLE reviews ADD COLUMN hidden INTEGER DEFAULT 0");
+  await addColumn("author_url", "ALTER TABLE reviews ADD COLUMN author_url TEXT");
 }
 
 // The conflict update deliberately leaves `hidden` alone, so a hidden review stays hidden.
@@ -52,8 +60,8 @@ const UPSERT_REVIEW = `INSERT INTO reviews
 const UPSERT_META = `INSERT INTO review_meta (location,title,place_id,rating,votes_count,synced_at)
   VALUES (?,?,?,?,?,?)
   ON CONFLICT(location) DO UPDATE SET
-    title=excluded.title, place_id=excluded.place_id, rating=excluded.rating,
-    votes_count=excluded.votes_count, synced_at=excluded.synced_at`;
+    title=excluded.title, place_id=excluded.place_id, rating=COALESCE(excluded.rating, review_meta.rating),
+    votes_count=COALESCE(excluded.votes_count, review_meta.votes_count), synced_at=excluded.synced_at`;
 
 export async function upsertResult(db, location, norm, nowIso) {
   const stmts = norm.reviews.map((r) =>

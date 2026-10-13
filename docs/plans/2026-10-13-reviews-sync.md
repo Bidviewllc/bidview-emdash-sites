@@ -14,7 +14,7 @@
 
 - Node 24 (uses `node:sqlite` and `node:test`). The Worker has no runtime npm dependencies. `wrangler ^4.79.0` is a dev dependency.
 - Cloudflare account `239e9d015c7a3a39cdc2e9400312f553`. D1 ids: New Leaf `6228c322-f3ea-4a88-9994-c32e2f3be379`, Ontario `3e408b59-75b2-4b13-aa9e-a41e17ff678c`, Duet `8cb09fcd-352f-4bdc-8190-cd9363341326`.
-- Schedule: post Sunday `0 13 * * 0`; collect `*/20 13-16 * * 0`; catch-up Monday `0 13 * * 1`. Nothing runs outside those.
+- Schedule: post Sunday `0 13 * * SUN`; collect `*/20 13-16 * * SUN`; catch-up Monday `0 13 * * MON`. Nothing runs outside those.
 - A location is posted at most once per 6 days, and never while a job from the last 48 hours is pending.
 - Weekly pull depth is **50 newest reviews** per location (`depth` in config). Cost scales with depth, and seeds already hold the history. Google totals come from `review_meta`.
 - Never write an empty, failed or mismatched pull. Never overwrite the `hidden` column.
@@ -898,7 +898,7 @@ test("/run with a good token and a bad mode returns 400", async () => {
   "main": "src/index.js",
   "account_id": "239e9d015c7a3a39cdc2e9400312f553",
   "compatibility_date": "2026-03-29",
-  "triggers": { "crons": ["0 13 * * 0", "*/20 13-16 * * 0", "0 13 * * 1"] },
+  "triggers": { "crons": ["0 13 * * SUN", "*/20 13-16 * * SUN", "0 13 * * MON"] },
   "d1_databases": [
     { "binding": "DB_NEW_LEAF", "database_name": "new-leaf-hearing-care-db", "database_id": "6228c322-f3ea-4a88-9994-c32e2f3be379" },
     { "binding": "DB_ONTARIO", "database_name": "ontario-hearing-db", "database_id": "3e408b59-75b2-4b13-aa9e-a41e17ff678c" },
@@ -916,9 +916,9 @@ import { runCatchUp, runCollect, runPost } from "./sync.js";
 
 // These strings must match wrangler.jsonc. tests/index.test.mjs fails if they drift.
 export const CRONS = {
-  post: "0 13 * * 0",
-  collect: "*/20 13-16 * * 0",
-  catchup: "0 13 * * 1",
+  post: "0 13 * * SUN",
+  collect: "*/20 13-16 * * SUN",
+  catchup: "0 13 * * MON",
 };
 
 export async function dispatch(cron, env, opts = {}) {
@@ -1202,15 +1202,16 @@ if (process.argv[1] && import.meta.url.endsWith(process.argv[1].replace(/\\/g, "
 - [ ] **Step 2: Set secrets.** From `workers/reviews-sync`, with `CLOUDFLARE_API_TOKEN` set from `C:/Users/acer/.claude/credentials/cloudflare-cameron-token.txt` for the shell session only:
   `npx wrangler secret put DATAFORSEO_LOGIN`, `DATAFORSEO_PASSWORD` (values from the DataForSEO section of `C:/Users/acer/.claude/credentials/apis.md`), `SLACK_ALERTS_WEBHOOK` (the `#bidview-alerts` webhook; if it is not on disk, ask Vince, do not guess), and `RUN_TOKEN` (generate with `openssl rand -hex 24`, save it to `C:/Users/acer/.claude/credentials/reviews-sync.md`, and never print it).
   Also set `DRY_RUN` to `1`: `npx wrangler secret put DRY_RUN` and enter `1`, so the first live cron cannot spend money before you check it.
-- [ ] **Step 3: Seed Ontario and Duet.** For each site, from `workers/reviews-sync`:
+- [ ] **Step 3: Seed Ontario and Duet.** The seed is for fresh databases only (INSERT OR IGNORE, CREATE TABLE IF NOT EXISTS): do not run it on New Leaf, and abort if the generated SQL is empty. For each site, from `workers/reviews-sync`:
   `node scripts/seed-sql.mjs ontario > ../../seed-ontario.sql` then `npx wrangler d1 execute ontario-hearing-db --remote --file ../../seed-ontario.sql`; same with `duet` and `duet-audiology-db`. Delete the two `.sql` files afterwards (do not commit them). Expected: `"success": true`.
 - [ ] **Step 4: Deploy.** `npm run deploy`. Expected: a `reviews-sync.<subdomain>.workers.dev` URL and three cron triggers listed.
 - [ ] **Step 5: Health and dry run.**
   `curl https://<url>/health` → `ok`.
   `curl -X POST "https://<url>/run?mode=post&dry=1" -H "x-run-token: <RUN_TOKEN>"` → every location `would-post` (Ontario and Duet were seeded with an old `synced_at`; New Leaf's last sync was 2026-08-07, so it also qualifies).
-- [ ] **Step 6: One real pull for ONE site, with DRY_RUN removed for this call only.** `npx wrangler secret delete DRY_RUN`, then `curl -X POST "https://<url>/run?mode=post&site=duet" -H "x-run-token: <RUN_TOKEN>"` → `posted`. Wait 5 minutes, then `curl -X POST "https://<url>/run?mode=collect&site=duet" ...` → `written`, then again after another run it should say `idle`. If it says `rejected`, read the reason: a title or Place ID mismatch is the guard working, so fix `expectedTitleIncludes` in `src/config.js`, redeploy and retry.
+  A dry run spends no DataForSEO money and writes no reviews or job rows, but it does create or migrate the schema (additive: `hidden`, `author_url`, `review_jobs`).
+- [ ] **Step 6: One real pull for ONE site, with `live=1` for this call only.** Use `live=1` on the /run call so DRY_RUN can stay set until all three sites have written once: `curl -X POST "https://<url>/run?mode=post&site=duet&live=1" -H "x-run-token: <RUN_TOKEN>"` → `posted`. Wait 5 minutes, then `curl -X POST "https://<url>/run?mode=collect&site=duet&live=1" ...` → `written`, then again after another run it should say `idle`. If it says `rejected`, read the reason: a title or Place ID mismatch is the guard working, so fix `expectedTitleIncludes` in `src/config.js`, redeploy and retry.
 - [ ] **Step 7: Verify the data.** `npx wrangler d1 execute duet-audiology-db --remote --command "SELECT COUNT(*) n, MAX(published_at) newest FROM reviews WHERE location='lake-forest'"`. Compare the count and newest date with the Google listing in a browser. Then do the same single-site post and collect for `ontario` and `new-leaf`.
-- [ ] **Step 8: Leave production armed.** After all three sites show `written`, nothing else is needed: the crons now run weekly. Record the Worker URL and the date in `docs/specs/2026-10-13-reviews-sync-design.md` ("Deployed 2026-10-xx at ...") and commit.
+- [ ] **Step 8: Leave production armed.** After all three sites show `written`, delete DRY_RUN (`npx wrangler secret delete DRY_RUN`), on a weekday (never Sunday 13:00-17:00 UTC). Nothing else is needed: the crons now run weekly. Record the Worker URL and the date in `docs/specs/2026-10-13-reviews-sync-design.md` ("Deployed 2026-10-xx at ...") and commit.
 
 ---
 
@@ -1321,6 +1322,7 @@ const SKIP_CACHE_PATHS = ["/_emdash", "/api", "/brighton-reviews", "/fairport-re
 - Modify: `sites/new-leaf-hearing-care/src/components/ReviewsPage.astro:10,14`
 
 - [ ] **Step 1: Copy the reader** to `sites/new-leaf-hearing-care/src/lib/reviews-reader.mjs`.
+- [ ] **Step 1b: Freshness label.** The reader passes the stored `time_ago` through, and it freezes on reviews that fall out of the weekly newest-50 window. In ReviewsPage.astro derive the label from `publishedAt` (for example 'N weeks ago' computed at render) instead of using `timeAgo`.
 - [ ] **Step 2: Read the dynamic-import pattern.** Open `sites/new-leaf-hearing-care/src/pages/api/pricing-lead.ts` lines 120-135 and mirror its `await import('cloudflare:workers')` in try/catch exactly. A static import breaks the non-Cloudflare Node build.
 - [ ] **Step 3: Edit `ReviewsPage.astro`.** After `import reviewsData from "../reviews/reviews.json";` add:
 

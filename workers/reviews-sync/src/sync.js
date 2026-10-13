@@ -19,6 +19,7 @@ export function validate(loc, norm) {
     return `title mismatch: got "${norm.title}"`;
   }
   if (norm.reviews.length === 0) return "pull returned no reviews";
+  if (norm.rating == null || norm.votesCount == null) return "pull returned no rating totals";
   return null;
 }
 

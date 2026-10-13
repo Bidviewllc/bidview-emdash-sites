@@ -30,9 +30,10 @@ A single Cloudflare Worker with cron triggers and one D1 binding per site databa
 `DATAFORSEO_LOGIN`, `DATAFORSEO_PASSWORD` and `SLACK_ALERTS_WEBHOOK` are Worker secrets. No file on any machine is read.
 
 ### 3. Schedule (weekly, so DataForSEO usage stays low)
-- Sunday 13:00 UTC: post one reviews task per location. This is the only paid pull.
-- Sunday, every 20 minutes until 17:00 UTC: check each pending task and write results when ready. Nothing new is posted.
-- Monday 13:00 UTC: one catch-up check, then a Slack alert if any task is still pending.
+- Sunday 13:00 UTC (`0 13 * * SUN`): post one reviews task per location. This is the only paid pull.
+- Sunday, every 20 minutes until 17:00 UTC (`*/20 13-16 * * SUN`): check each pending task and write results when ready. Nothing new is posted.
+- Monday 13:00 UTC (`0 13 * * MON`): one catch-up check, then a Slack alert if any task is still pending.
+- Cloudflare weekdays run 1 (Sunday) to 7 (Saturday), so the schedule uses SUN and MON names.
 
 State is kept in a `review_jobs` table in each site's D1 (`location_key`, `task_id`, `posted_at`, `status`). A location is posted only if it has no pending job and its last good sync is more than 6 days old, so a retry can never double-post.
 
@@ -42,6 +43,7 @@ Reuse New Leaf's tables `reviews` and `review_meta`, add a `hidden INTEGER DEFAU
 - Never write an empty or failed pull over existing data.
 - Compare the returned `title` and `place_id` with the configured expected values. On a mismatch, write nothing and alert Slack. This guards against the wrong-listing case seen with Audio Help Stamford.
 - Hidden reviews stay in the table, so the next sync cannot bring them back.
+- A dry run spends no DataForSEO money and writes no reviews or job rows, but it does create or migrate the schema (additive: `hidden`, `author_url`, `review_jobs`).
 
 ### 5. Sites read D1 at render
 Each site gets a small shared reader that returns `{ rating, count, reviews[] }` for a location, excluding hidden reviews, and replaces the JSON imports. The trust-strip rating and count come from Google's own totals in `review_meta`, never from the displayed set, so hiding a review or a minimum-star filter cannot change them. Each site first seeds D1 from its current JSON. If D1 is empty or unreadable, the page falls back to the committed JSON, so rollout cannot blank a page.

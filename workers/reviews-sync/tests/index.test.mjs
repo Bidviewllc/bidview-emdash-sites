@@ -86,3 +86,61 @@ test("a cron run that throws sends one Slack alert with the error message and th
     globalThis.fetch = origFetch;
   }
 });
+
+import { resolveDry } from "../src/index.js";
+import { fakeD1 } from "./helpers/fake-d1.mjs";
+
+const DAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+
+test("cron day-of-week fields use SUN-SAT names, never numbers, in code and wrangler.jsonc", () => {
+  const cfg = JSON.parse(readFileSync(new URL("../wrangler.jsonc", import.meta.url), "utf8"));
+  for (const cron of [...Object.values(CRONS), ...cfg.triggers.crons]) {
+    const dow = cron.split(/\s+/)[4];
+    assert.ok(dow && !/^[\d,\-*\/]+$/.test(dow) || dow === "*", `numeric weekday in "${cron}"`);
+    for (const name of dow.split(/[,\-]/)) assert.ok(DAYS.includes(name) || name === "*", `bad weekday "${name}" in "${cron}"`);
+  }
+  assert.equal(CRONS.post, "0 13 * * SUN");
+  assert.equal(CRONS.collect, "*/20 13-16 * * SUN");
+  assert.equal(CRONS.catchup, "0 13 * * MON");
+});
+
+test("each cron key reaches its own runner", async () => {
+  const site = { site: "s", dbBinding: "DB", locations: [{ key: "arvada", label: "Arvada", placeId: "P", depth: 50, expectedTitleIncludes: [] }] };
+  const env = { DB: fakeD1() };
+  const status = async (cron, dry) => (await dispatch(cron, env, { dry, sites: [site], now: new Date("2026-10-18T13:00:00Z") }))[0].status;
+  assert.equal(await status(CRONS.post, true), "would-post");
+  assert.equal(await status(CRONS.collect, true), "idle");
+  assert.equal(await status(CRONS.catchup, true), "stale-data");
+});
+
+test("resolveDry: live=1 overrides DRY_RUN, otherwise dry=1 or DRY_RUN decide", () => {
+  const u = (q) => new URL("https://x/run?" + q);
+  assert.equal(resolveDry(u("mode=post"), {}), false);
+  assert.equal(resolveDry(u("mode=post&dry=1"), {}), true);
+  assert.equal(resolveDry(u("mode=post"), { DRY_RUN: "1" }), true);
+  assert.equal(resolveDry(u("mode=post&live=1"), { DRY_RUN: "1" }), false);
+});
+
+test("/run live=1 with DRY_RUN=1 and a good token returns 200", async () => {
+  const r = await worker.fetch(new Request("https://x/run?mode=post&live=1", { method: "POST", headers: { "x-run-token": "secret" } }), { RUN_TOKEN: "secret", DRY_RUN: "1" });
+  assert.equal(r.status, 200);
+});
+
+test("/run that throws returns 500 and sends one Slack alert with the message only", async () => {
+  const { SITES } = await import("../src/config.js");
+  const origFetch = globalThis.fetch;
+  const calls = [];
+  globalThis.fetch = async (url, init) => { calls.push({ url, body: init?.body }); return new Response("ok"); };
+  try {
+    const env = new Proxy({ RUN_TOKEN: "secret", SLACK_ALERTS_WEBHOOK: "https://hooks.example/test" }, {
+      get(t, p) { if (typeof p === "string" && SITES.some((s) => s.dbBinding === p)) throw new Error("run boom"); return t[p]; },
+    });
+    const r = await worker.fetch(new Request("https://x/run?mode=post", { method: "POST", headers: { "x-run-token": "secret" } }), env);
+    assert.equal(r.status, 500);
+    assert.equal(await r.text(), "run failed");
+    assert.equal(calls.length, 1);
+    assert.ok(JSON.parse(calls[0].body).text.endsWith("reviews-sync /run failed: run boom"));
+  } finally {
+    globalThis.fetch = origFetch;
+  }
+});

@@ -26,12 +26,14 @@ async function setup() {
 }
 
 test("validate accepts a good result and rejects wrong place, wrong title and empty pulls", () => {
-  const good = { title: "New Leaf Hearing Care", placeId: "ChIJx", reviews: [{}] };
+  const good = { title: "New Leaf Hearing Care", placeId: "ChIJx", rating: 4.9, votesCount: 85, reviews: [{}] };
   assert.equal(validate(LOC, good), null);
   assert.match(validate(LOC, { ...good, placeId: "ChIJother" }), /place_id mismatch/);
   assert.match(validate(LOC, { ...good, title: "Some Other Clinic" }), /title mismatch/);
   assert.match(validate(LOC, { ...good, reviews: [] }), /no reviews/);
   assert.equal(validate(LOC, { ...good, placeId: "" }), null);
+  assert.match(validate(LOC, { ...good, rating: null }), /no rating totals/);
+  assert.match(validate(LOC, { ...good, votesCount: null }), /no rating totals/);
 });
 
 test("runPost posts once, records a pending job, and does not double-post", async () => {

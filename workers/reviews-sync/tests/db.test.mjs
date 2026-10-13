@@ -51,3 +51,30 @@ test("setJob replaces the single job row per location", async () => {
   assert.deepEqual(await getJob(db, "arvada"), { location: "arvada", task_id: "T2", status: "done", posted_at: "p2" });
   assert.equal(await getJob(db, "nowhere"), null);
 });
+
+test("upsertResult with null totals keeps the previous rating and votes_count", async () => {
+  const db = fakeD1();
+  await ensureSchema(db);
+  await upsertResult(db, "arvada", norm([row("a")]), "t1");
+  await upsertResult(db, "arvada", norm([row("a")], { rating: null, votesCount: null }), "t2");
+  const m = await getMeta(db, "arvada");
+  assert.equal(m.rating, 4.9);
+  assert.equal(m.votes_count, 85);
+  assert.equal(m.synced_at, "t2");
+});
+
+test("ensureSchema ignores a duplicate-column error on ALTER and rethrows others", async () => {
+  const mk = (msg) => {
+    const real = fakeD1();
+    return {
+      ...real,
+      prepare: (sql) => {
+        if (sql.startsWith("PRAGMA table_info")) return { all: async () => ({ results: [] }) };
+        if (sql.includes("ADD COLUMN hidden")) return { run: async () => { throw new Error(msg); } };
+        return real.prepare(sql);
+      },
+    };
+  };
+  await ensureSchema(mk("duplicate column name: hidden"));
+  await assert.rejects(() => ensureSchema(mk("disk I/O error")), /disk I\/O/);
+});

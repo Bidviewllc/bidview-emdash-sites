@@ -4,9 +4,9 @@ import { runCatchUp, runCollect, runPost } from "./sync.js";
 
 // These strings must match wrangler.jsonc. tests/index.test.mjs fails if they drift.
 export const CRONS = {
-  post: "0 13 * * 0",
-  collect: "*/20 13-16 * * 0",
-  catchup: "0 13 * * 1",
+  post: "0 13 * * SUN",
+  collect: "*/20 13-16 * * SUN",
+  catchup: "0 13 * * MON",
 };
 
 export async function dispatch(cron, env, opts = {}) {
@@ -25,6 +25,12 @@ async function tokenOk(got, want) {
   let diff = 0;
   for (let i = 0; i < a.length; i++) diff |= a[i] ^ b[i];
   return diff === 0;
+}
+
+// live=1 forces a real run for one call even while DRY_RUN=1; dry=1 forces a dry run.
+export function resolveDry(url, env) {
+  if (url.searchParams.get("live") === "1") return false;
+  return url.searchParams.get("dry") === "1" || env.DRY_RUN === "1";
 }
 
 // A cron run that throws must still reach Slack. The error message only, never
@@ -55,8 +61,14 @@ export default {
       const only = url.searchParams.get("site");
       const sites = only ? SITES.filter((s) => s.site === only) : SITES;
       if (only && sites.length === 0) return new Response("unknown site", { status: 400 });
-      const dry = url.searchParams.get("dry") === "1" || env.DRY_RUN === "1";
-      return Response.json(await dispatch(cron, env, { dry, sites }));
+      const dry = resolveDry(url, env);
+      try {
+        return Response.json(await dispatch(cron, env, { dry, sites }));
+      } catch (e) {
+        const message = e && e.message ? e.message : "unknown error";
+        await alert(env, "reviews-sync /run failed: " + message);
+        return new Response("run failed", { status: 500 });
+      }
     }
     return new Response("not found", { status: 404 });
   },
