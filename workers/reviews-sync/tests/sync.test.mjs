@@ -124,3 +124,63 @@ test("runCatchUp marks a still-pending job stale and alerts", async () => {
   assert.equal((await getJob(db, "arvada")).status, "stale");
   assert.match(alerts.join(" "), /still pending/);
 });
+
+test("a rejected or failed job does not block the next Sunday post", async () => {
+  for (const status of ["rejected", "failed"]) {
+    const { db, env, fetchFn } = await setup();
+    await upsertResult(db, "arvada", { title: "t", placeId: "p", rating: 5, votesCount: 1, reviews: [] }, "2026-10-10T00:00:00.000Z");
+    await setJob(db, { location: "arvada", taskId: "X", status, postedAt: "2026-10-11T00:00:00.000Z" });
+    assert.equal((await runPost(env, { now: NOW, fetchFn, sites: SITES }))[0].status, "posted");
+  }
+});
+
+test("a schema failure on one site is reported and later sites still run", async () => {
+  const { env, fetchFn, alerts } = await setup();
+  const bad = { prepare() { throw new Error("d1 down"); }, exec() { throw new Error("d1 down"); }, batch() { throw new Error("d1 down"); } };
+  env.BAD = bad;
+  const sites = [{ site: "bad", dbBinding: "BAD", locations: [LOC] }, ...SITES];
+  const r = await runPost(env, { now: NOW, fetchFn, sites });
+  assert.equal(r[0].status, "error");
+  assert.equal(r[1].status, "posted");
+  assert.match(alerts[0], /d1 down/);
+});
+
+for (const [name, body, expected] of [
+  ["good result", ready(), "would-write"],
+  ["mismatched result", ready({ title: "Another Clinic" }), "would-reject"],
+  ["DataForSEO error", { tasks: [{ status_code: 40501, status_message: "bad key" }] }, "would-fail"],
+]) {
+  test(`dry runCollect and runCatchUp change nothing: ${name}`, async () => {
+    for (const fn of [runCollect, runCatchUp]) {
+      const { db, env, fetchFn, alerts, dfsBody } = await setup();
+      await setJob(db, { location: "arvada", taskId: "T1", status: "pending", postedAt: NOW.toISOString() });
+      dfsBody.current = body;
+      const before = await getJob(db, "arvada");
+      const r = await fn(env, { now: NOW, fetchFn, sites: SITES, dry: true });
+      assert.equal(fn === runCollect ? r[0].status : r[0].status === "ok" || r[0].status === "ok-alerted", fn === runCollect ? expected : true);
+      assert.deepEqual(await getJob(db, "arvada"), before);
+      assert.equal((await db.prepare("SELECT COUNT(*) AS n FROM reviews").first()).n, 0);
+      assert.deepEqual(alerts, []);
+    }
+  });
+}
+
+test("dry runCatchUp reports would-stale and changes nothing", async () => {
+  const { db, env, fetchFn, alerts, dfsBody } = await setup();
+  await setJob(db, { location: "arvada", taskId: "T1", status: "pending", postedAt: "2026-10-18T13:00:00.000Z" });
+  dfsBody.current = { tasks: [{ status_code: 40602 }] };
+  const before = await getJob(db, "arvada");
+  const r = await runCatchUp(env, { now: new Date("2026-10-19T13:00:00.000Z"), fetchFn, sites: SITES, dry: true });
+  assert.equal(r[0].status, "would-stale");
+  assert.deepEqual(await getJob(db, "arvada"), before);
+  assert.deepEqual(alerts, []);
+});
+
+test("runCatchUp does not double-alert a rejected location", async () => {
+  const { db, env, fetchFn, alerts, dfsBody } = await setup();
+  await setJob(db, { location: "arvada", taskId: "T1", status: "pending", postedAt: NOW.toISOString() });
+  dfsBody.current = ready({ title: "Another Clinic" });
+  const r = await runCatchUp(env, { now: NOW, fetchFn, sites: SITES });
+  assert.equal(r[0].status, "ok-alerted");
+  assert.equal(alerts.length, 1);
+});

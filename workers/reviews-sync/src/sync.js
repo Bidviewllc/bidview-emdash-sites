@@ -31,7 +31,14 @@ async function eachLocation(env, sites, fetchFn, fn) {
       await alert(env, `reviews-sync: no D1 binding ${site.dbBinding} for ${site.site}`, fetchFn);
       continue;
     }
-    await ensureSchema(db);
+    try {
+      await ensureSchema(db);
+    } catch (e) {
+      const error = String(e?.message || e);
+      out.push({ site: site.site, status: "error", error });
+      await alert(env, `reviews-sync: schema setup failed for ${site.site}: ${error}`, fetchFn);
+      continue;
+    }
     for (const loc of site.locations) {
       const r = { site: site.site, location: loc.key };
       try {
@@ -74,18 +81,28 @@ export async function runCollect(env, { now = new Date(), fetchFn = fetch, sites
     const t = await getTask(env, job.task_id, fetchFn);
     if (t.state === "pending") { r.status = "still-pending"; return; }
     if (t.state === "error") {
+      r.error = t.message;
+      if (dry) {
+        r.status = "would-fail";
+        console.log(`[reviews-sync] dry: would mark ${site.site}/${loc.key} failed: ${t.message}`);
+        return;
+      }
       await setJob(db, { ...keep, status: "failed" });
       r.status = "failed";
-      r.error = t.message;
       await alert(env, `reviews-sync: DataForSEO task failed for ${site.site}/${loc.key}: ${t.message}`, fetchFn);
       return;
     }
     const norm = normalizeResult(t.result, now.toISOString());
     const problem = validate(loc, norm);
     if (problem) {
+      r.reason = problem;
+      if (dry) {
+        r.status = "would-reject";
+        console.log(`[reviews-sync] dry: would reject ${site.site}/${loc.key}: ${problem}`);
+        return;
+      }
       await setJob(db, { ...keep, status: "rejected" });
       r.status = "rejected";
-      r.reason = problem;
       await alert(env, `reviews-sync: rejected ${site.site}/${loc.key}: ${problem}. Nothing was written.`, fetchFn);
       return;
     }
@@ -98,17 +115,30 @@ export async function runCollect(env, { now = new Date(), fetchFn = fetch, sites
 }
 
 export async function runCatchUp(env, opts = {}) {
-  const { now = new Date(), fetchFn = fetch, sites = SITES } = opts;
-  await runCollect(env, opts);
+  const { now = new Date(), fetchFn = fetch, sites = SITES, dry = false } = opts;
+  const collected = await runCollect(env, opts);
+  const byLoc = new Map(collected.map((c) => [`${c.site}/${c.location}`, c.status]));
   return eachLocation(env, sites, fetchFn, async ({ db, site, loc, r }) => {
+    const prior = byLoc.get(`${site.site}/${loc.key}`);
+    if (prior === "rejected" || prior === "failed" || prior === "would-reject" || prior === "would-fail") {
+      r.status = "ok-alerted";
+      return;
+    }
+    if (prior === "would-write") { r.status = "ok"; return; }
     const job = await getJob(db, loc.key);
     const meta = await getMeta(db, loc.key);
     if (job?.status === "pending") {
+      if (dry) {
+        r.status = "would-stale";
+        console.log(`[reviews-sync] dry: would mark ${site.site}/${loc.key} stale`);
+        return;
+      }
       await setJob(db, { location: loc.key, taskId: job.task_id, status: "stale", postedAt: job.posted_at });
       r.status = "stale";
       await alert(env, `reviews-sync: ${site.site}/${loc.key} task ${job.task_id} is still pending after the weekend. It will be re-posted next Sunday.`, fetchFn);
     } else if (!meta?.synced_at || now - Date.parse(meta.synced_at) > STALE_SYNC_DAYS * DAY) {
       r.status = "stale-data";
+      if (dry) { console.log(`[reviews-sync] dry: ${site.site}/${loc.key} has not synced in over ${STALE_SYNC_DAYS} days`); return; }
       await alert(env, `reviews-sync: ${site.site}/${loc.key} has not synced in over ${STALE_SYNC_DAYS} days.`, fetchFn);
     } else {
       r.status = "ok";
