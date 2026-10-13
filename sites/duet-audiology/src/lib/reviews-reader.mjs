@@ -27,8 +27,8 @@ export async function getLocationReviews(db, location, fallback) {
     return {
       label: fallback?.label,
       placeId: meta.place_id,
-      rating: meta.rating,
-      votesCount: meta.votes_count,
+      rating: meta.rating ?? fallback?.rating ?? null,
+      votesCount: meta.votes_count ?? fallback?.votesCount ?? null,
       syncedAt: meta.synced_at,
       source: "d1",
       reviews: list.map((r) => ({

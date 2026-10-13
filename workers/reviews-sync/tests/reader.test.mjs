@@ -31,6 +31,18 @@ test("returns D1 data newest first, with Google totals, hiding hidden reviews", 
   assert.deepEqual(out.reviews[0], { id: "new", author: "A", authorUrl: "u", avatar: "av", rating: 5, text: "t", timeAgo: "1 week ago", publishedAt: "2026-08-01T00:00:00.000Z", url: "r", localGuide: true });
 });
 
+test("a meta row with NULL rating and count uses the fallback's, but keeps the D1 reviews", async () => {
+  const db = fakeD1();
+  await ensureSchema(db);
+  await upsertResult(db, "arvada", { title: "T", placeId: "P", rating: 4.9, votesCount: 85, reviews: [row("a")] }, "t");
+  await db.prepare("UPDATE review_meta SET rating = NULL, votes_count = NULL WHERE location = 'arvada'").run();
+  const out = await getLocationReviews(db, "arvada", FALLBACK);
+  assert.equal(out.source, "d1");
+  assert.deepEqual(out.reviews.map((r) => r.id), ["a"]);
+  assert.equal(out.rating, 4);
+  assert.equal(out.votesCount, 3);
+});
+
 test("a rating-only review comes back with empty text", async () => {
   const db = fakeD1();
   await ensureSchema(db);

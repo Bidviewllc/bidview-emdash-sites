@@ -23,7 +23,7 @@ const live = await getLocationReviews(env.DB, "brighton", {
 });
 const reviewsData = { rating: live.rating, review_count: live.votesCount };
 const ALL = live.reviews.map((r: any) => ({
-  name: r.author, rating: r.rating, date: String(r.publishedAt || "").slice(0, 10),
+  name: r.author, rating: r.rating, date: typeof r.publishedAt === "string" ? r.publishedAt.slice(0, 10) : "",
   text: r.text, local_guide: r.localGuide, review_id: r.id,
 })) as Array<{ name: string; rating: number; date: string; text: string; local_guide: boolean; review_id: string }>;
 
