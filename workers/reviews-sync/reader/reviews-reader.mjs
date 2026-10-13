@@ -10,18 +10,20 @@ export async function getLocationReviews(db, location, fallback) {
   const fb = { reviews: [], ...(fallback || {}), source: "fallback" };
   if (!db) return fb;
   try {
-    const meta = await db
-      .prepare("SELECT title, place_id, rating, votes_count, synced_at FROM review_meta WHERE location = ?")
-      .bind(location)
-      .first();
-    const rows = await db
-      .prepare(
-        `SELECT review_id, author, author_url, avatar_url, rating, text, time_ago, published_at, review_url, local_guide
-         FROM reviews WHERE location = ? AND (hidden IS NULL OR hidden = 0)
-         ORDER BY published_at DESC`
-      )
-      .bind(location)
-      .all();
+    const [meta, rows] = await Promise.all([
+      db
+        .prepare("SELECT title, place_id, rating, votes_count, synced_at FROM review_meta WHERE location = ?")
+        .bind(location)
+        .first(),
+      db
+        .prepare(
+          `SELECT review_id, author, author_url, avatar_url, rating, text, time_ago, published_at, review_url, local_guide
+           FROM reviews WHERE location = ? AND (hidden IS NULL OR hidden = 0)
+           ORDER BY published_at DESC`
+        )
+        .bind(location)
+        .all(),
+    ]);
     const list = rows?.results ?? [];
     if (!meta || list.length === 0) return fb;
     return {

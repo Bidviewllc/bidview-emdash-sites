@@ -5,7 +5,7 @@ export { PluginBridge } from "@emdash-cms/cloudflare/sandbox";
 const CACHE_VERSION = "v100";
 
 // Paths we never serve from cache — admin UI, API endpoints, internal emdash routes
-const SKIP_CACHE_PATHS = ["/_emdash", "/api", "/brighton-reviews", "/fairport-reviews", "/greece-reviews", "/pittsford-reviews"];
+const SKIP_CACHE_PATHS = ["/_emdash", "/api"];
 
 // Response content types we cache (HTML pages + XML feeds + plain text like robots.txt)
 const CACHEABLE_TYPES = ["text/html", "application/xml", "text/plain", "application/json"];

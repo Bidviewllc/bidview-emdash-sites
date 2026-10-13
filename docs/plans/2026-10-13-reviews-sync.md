@@ -1297,19 +1297,19 @@ const live = await getLocationReviews(env.DB, "brighton", {
 });
 const reviewsData = { rating: live.rating, review_count: live.votesCount };
 const ALL = live.reviews.map((r: any) => ({
-  name: r.author, rating: r.rating, date: String(r.publishedAt || "").slice(0, 10),
+  name: r.author, rating: r.rating, date: typeof r.publishedAt === "string" ? r.publishedAt.slice(0, 10) : "",
   text: r.text, local_guide: r.localGuide, review_id: r.id,
 })) as Array<{ name: string; rating: number; date: string; text: string; local_guide: boolean; review_id: string }>;
 ```
 
 The later lines `const rating = reviewsData.rating;` and `const total = reviewsData.review_count;` keep working.
-- [ ] **Step 3: Edit `src/worker.ts`.** Change line 8 to skip the worker cache for the review pages, and bump the version on line 5 (`v99` to `v100`):
+- [ ] **Step 3: Edit `src/worker.ts`.** Bump the version on line 5 (`v99` to `v100`). Leave `SKIP_CACHE_PATHS` unchanged: Ontario keeps its existing one-hour worker cache, so review pages refresh within an hour of a sync.
 
 ```ts
-const SKIP_CACHE_PATHS = ["/_emdash", "/api", "/brighton-reviews", "/fairport-reviews", "/greece-reviews", "/pittsford-reviews"];
+const SKIP_CACHE_PATHS = ["/_emdash", "/api"]; // unchanged
 ```
 - [ ] **Step 4: Build.** `cd sites/ontario-hearing && npm run build`. Expected: success.
-- [ ] **Step 5: Preview and check.** Upload a non-live version, open `/brighton-reviews/`, `/fairport-reviews/`, `/greece-reviews/` and `/pittsford-reviews/`. Check each page shows a distinct slice of reviews (the city split must still put every review on exactly one page), the rating reads 5, and the count matches Google. Take desktop and mobile screenshots and look at them. Confirm the response header `X-Cache-Status` is absent on these four pages.
+- [ ] **Step 5: Preview and check.** Upload a non-live version, open `/brighton-reviews/`, `/fairport-reviews/`, `/greece-reviews/` and `/pittsford-reviews/`. Check each page shows a distinct slice of reviews (the city split must still put every review on exactly one page), the rating reads 5, and the count matches Google. Take desktop and mobile screenshots and look at them. Confirm `X-Cache-Status` is present on a second request to each page (MISS then HIT), i.e. the one-hour worker cache still applies.
 - [ ] **Step 6: Drift test and commit.** `cd ../../workers/reviews-sync && npm test`, then `git add sites/ontario-hearing && git commit -m "ontario: read reviews from D1, skip worker cache on review pages" -m "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>"`
 - [ ] **Step 7: Go live only after Vince approves the preview.** `npx wrangler deploy`, then fetch each of the four pages and confirm 200 and review markup.
 

@@ -49,7 +49,7 @@ Reuse New Leaf's tables `reviews` and `review_meta`, add a `hidden INTEGER DEFAU
 Each site gets a small shared reader that returns `{ rating, count, reviews[] }` for a location, excluding hidden reviews, and replaces the JSON imports. The trust-strip rating and count come from Google's own totals in `review_meta`, never from the displayed set, so hiding a review or a minimum-star filter cannot change them. Each site first seeds D1 from its current JSON. If D1 is empty or unreadable, the page falls back to the committed JSON, so rollout cannot blank a page.
 
 ### 6. Freshness without cache purges
-Cameron's Cloudflare token cannot purge cache and the New Leaf zone cache ignores query strings. Review pages therefore get a short edge lifetime of about one hour. Ontario's worker needs the review paths exempted from the global `CACHE_VERSION` cache.
+Cameron's Cloudflare token cannot purge cache and the New Leaf zone cache ignores query strings. Review pages therefore rely on the existing one-hour HTML caches, so they refresh within an hour of a sync. Ontario keeps its existing one-hour worker cache (`CACHE_VERSION` in `src/worker.ts`, s-maxage=3600). New Leaf's middleware also caches HTML for an hour (`HTML_CACHE_VERSION` in `src/middleware.ts`). Duet has no worker cache. The review paths are not exempted from caching, which avoids a database round trip on every request.
 
 ### 7. Template reuse
 The Worker, the config shape, the tables and the reader helper are written site-neutral so the Entheos/Bidview template can adopt them. This spec is the default for the template's reviews feature. Admin controls for the template (Place ID, minimum rating, hide a review) are out of scope for this first build.
