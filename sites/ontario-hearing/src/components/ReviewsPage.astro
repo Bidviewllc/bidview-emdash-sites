@@ -1,7 +1,9 @@
 ---
 import Interior from "../layouts/Interior.astro";
 import CtaStrip from "../components/CtaStrip.astro";
-import reviewsData from "../data/reviews.json";
+import fallbackData from "../data/reviews.json";
+import { env } from "cloudflare:workers";
+import { getLocationReviews } from "../lib/reviews-reader.mjs";
 
 interface Props {
   city: string;          // "Brighton"
@@ -11,7 +13,19 @@ interface Props {
 }
 const { city, slug, areaPage, intro } = Astro.props as Props;
 
-const ALL = reviewsData.reviews as Array<{ name: string; rating: number; date: string; text: string; local_guide: boolean; review_id: string }>;
+// Reviews come from D1 (kept current by the reviews-sync Worker); the committed JSON is the fallback.
+const live = await getLocationReviews(env.DB, "brighton", {
+  rating: fallbackData.rating,
+  votesCount: fallbackData.review_count,
+  reviews: fallbackData.reviews.map((r: any) => ({
+    id: r.review_id, author: r.name, rating: r.rating, text: r.text, publishedAt: r.date, localGuide: r.local_guide,
+  })),
+});
+const reviewsData = { rating: live.rating, review_count: live.votesCount };
+const ALL = live.reviews.map((r: any) => ({
+  name: r.author, rating: r.rating, date: typeof r.publishedAt === "string" ? r.publishedAt.slice(0, 10) : "",
+  text: r.text, local_guide: r.localGuide, review_id: r.id,
+})).filter((r: any) => r.text && r.text.trim()) as Array<{ name: string; rating: number; date: string; text: string; local_guide: boolean; review_id: string }>;
 
 // Ontario has ONE office (2210 Monroe Ave, Brighton). These pages cover the areas it
 // serves, so every page draws on the same Google listing. Give each city a distinct,

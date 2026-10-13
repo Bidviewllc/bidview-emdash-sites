@@ -8,10 +8,34 @@
  * third-party widget or client-side fetch.
  */
 import reviewsData from "../reviews/reviews.json";
+import { getLocationReviews } from "../lib/reviews-reader.mjs";
 import "../styles/local/pages/reviews.css";
 
 const { location } = Astro.props;
-const data = reviewsData[location];
+// Reviews come from D1 (kept current by the reviews-sync Worker); the committed JSON is the fallback.
+let db: any = null;
+try {
+  db = ((await import("cloudflare:workers")) as { env?: { DB?: unknown } }).env?.DB ?? null;
+} catch {
+  db = null;
+}
+const data = await getLocationReviews(db, location, (reviewsData as Record<string, any>)[location]);
+
+// The stored timeAgo freezes on older reviews, so derive the label from publishedAt at render.
+function freshness(publishedAt: string | undefined, fallback: string): string {
+  const t = publishedAt ? Date.parse(publishedAt) : NaN;
+  if (Number.isNaN(t)) return fallback;
+  const days = Math.max(0, Math.floor((Date.now() - t) / 86400000));
+  const n = (v: number, u: string) => `${v} ${u}${v === 1 ? "" : "s"} ago`;
+  if (days < 1) return "today";
+  if (days < 2) return "yesterday";
+  if (days < 14) return n(days, "day");
+  const weeks = Math.floor(days / 7);
+  if (weeks < 8) return n(weeks, "week");
+  const months = Math.floor(days / 30.44);
+  if (months < 18) return n(months, "month");
+  return n(Math.floor(days / 365.25), "year");
+}
 
 const LOCATIONS = {
   arvada: {
@@ -115,7 +139,7 @@ const schema = {
                 <span class={avatarClass(i)} aria-hidden="true">{initial(r.author)}</span>
                 <div>
                   <h3>{r.author}</h3>
-                  <p>{r.timeAgo}</p>
+                  <p>{freshness(r.publishedAt, r.timeAgo)}</p>
                 </div>
               </div>
               <div class="testimonial-rating" aria-label={`${r.rating} out of 5 stars`}>

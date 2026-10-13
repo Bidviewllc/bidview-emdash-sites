@@ -1,8 +1,29 @@
 ---
 import Interior from '../layouts/Interior.astro';
-import reviewData from '../data/google-reviews.json';
+import fallbackData from '../data/google-reviews.json';
+import { env } from 'cloudflare:workers';
+import { getLocationReviews } from '../lib/reviews-reader.mjs';
 
-const reviews = reviewData.reviews;
+// Reviews come from D1 (kept current by the reviews-sync Worker). The committed JSON is the
+// fallback if D1 is empty or unreadable, so a page can never go blank.
+const live = await getLocationReviews(env.DB, 'lake-forest', {
+  placeId: fallbackData.placeId,
+  rating: fallbackData.googleRating,
+  votesCount: fallbackData.googleReviewCount,
+  reviews: fallbackData.reviews.map((r) => ({
+    id: r.id, author: r.authorName, authorUrl: r.authorUrl, avatar: r.profileImageUrl, rating: r.rating,
+    text: r.text, timeAgo: r.relativeTime, publishedAt: r.timestamp, url: r.reviewUrl, localGuide: false,
+  })),
+});
+const reviewData = {
+  placeId: live.placeId || fallbackData.placeId,
+  googleRating: live.rating ?? fallbackData.googleRating,
+  googleReviewCount: live.votesCount ?? fallbackData.googleReviewCount,
+};
+const reviews = live.reviews.map((r) => ({
+  id: r.id, authorName: r.author, authorUrl: r.authorUrl, profileImageUrl: r.avatar, rating: r.rating,
+  text: r.text, timestamp: r.publishedAt, relativeTime: r.timeAgo, language: '', reviewUrl: r.url,
+}));
 const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('Duet Hearing, 267 E Westminster Avenue, Lake Forest, IL 60045')}&query_place_id=${reviewData.placeId}`;
 const formatDate = (value: string) => {
   const date = new Date(value);
