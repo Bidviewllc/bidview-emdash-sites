@@ -34,3 +34,55 @@ test("/run with a good token and a bad mode returns 400", async () => {
   const r = await worker.fetch(new Request("https://x/run?mode=bogus", { method: "POST", headers: { "x-run-token": "secret" } }), { RUN_TOKEN: "secret" });
   assert.equal(r.status, 400);
 });
+
+test("/run rejects an unknown site name with 400 and dispatches nothing", async () => {
+  const r = await worker.fetch(new Request("https://x/run?mode=post&site=nope", { method: "POST", headers: { "x-run-token": "secret" } }), { RUN_TOKEN: "secret" });
+  assert.equal(r.status, 400);
+  assert.equal(await r.text(), "unknown site");
+});
+
+test("/run with a real site name and dry=1 reaches dispatch and reports only that site", async () => {
+  const { SITES } = await import("../src/config.js");
+  const name = SITES[0].site;
+  // No D1 bindings: each site reports no-db, so nothing is written and no network call is made.
+  const r = await worker.fetch(new Request(`https://x/run?mode=post&site=${name}&dry=1`, { method: "POST", headers: { "x-run-token": "secret" } }), { RUN_TOKEN: "secret" });
+  assert.equal(r.status, 200);
+  const body = await r.json();
+  assert.equal(body.length, 1);
+  assert.equal(body[0].site, name);
+});
+
+test("a cron run that throws sends one Slack alert with the error message and the promise does not reject", async () => {
+  const { SITES } = await import("../src/config.js");
+  const origFetch = globalThis.fetch;
+  const calls = [];
+  globalThis.fetch = async (url, init) => {
+    calls.push({ url, body: init?.body });
+    return new Response("ok");
+  };
+  try {
+    // Accessing any D1 binding throws, which escapes eachLocation and rejects dispatch.
+    const env = new Proxy(
+      { RUN_TOKEN: "secret", SLACK_ALERTS_WEBHOOK: "https://hooks.example/test" },
+      {
+        get(target, prop) {
+          if (typeof prop === "string" && SITES.some((s) => s.dbBinding === prop)) {
+            throw new Error("binding boom");
+          }
+          return target[prop];
+        },
+      },
+    );
+    const pending = [];
+    const ctx = { waitUntil: (p) => pending.push(p) };
+    worker.scheduled({ cron: CRONS.post }, env, ctx);
+    assert.equal(pending.length, 1);
+    await Promise.all(pending);
+    assert.equal(calls.length, 1);
+    assert.equal(calls[0].url, "https://hooks.example/test");
+    const text = JSON.parse(calls[0].body).text;
+    assert.ok(text.includes(`reviews-sync cron ${CRONS.post} failed: binding boom`), text);
+  } finally {
+    globalThis.fetch = origFetch;
+  }
+});
