@@ -32,6 +32,61 @@ test("getTask maps ready, queued and error states", async () => {
   assert.match(err.message, /boom/);
 });
 
+const leakEnv = { DATAFORSEO_LOGIN: "login-x7", DATAFORSEO_PASSWORD: "s3cret-pw-x9" };
+const httpFail = (status) => async () => ({ ok: false, status, json: async () => ({}) });
+const notJson = async () => ({ ok: true, status: 200, json: async () => { throw new SyntaxError("Unexpected token <"); } });
+const rejects = async () => { throw new Error("socket hang up"); };
+
+test("postTask throws on a non-2xx response", async () => {
+  await assert.rejects(postTask(env, { key: "k", placeId: "p" }, httpFail(502)), /task_post HTTP 502/);
+});
+
+test("postTask throws a clear error on a non-JSON body", async () => {
+  await assert.rejects(postTask(env, { key: "k", placeId: "p" }, notJson), /task_post returned a non-JSON response/);
+});
+
+test("getTask reports a non-2xx response as an error state", async () => {
+  const r = await getTask(env, "T", httpFail(429));
+  assert.deepEqual(r, { state: "error", message: "task_get HTTP 429" });
+});
+
+test("getTask reports a non-JSON body as an error state", async () => {
+  const r = await getTask(env, "T", notJson);
+  assert.deepEqual(r, { state: "error", message: "task_get returned a non-JSON response" });
+});
+
+test("getTask reports an empty tasks array as an error state", async () => {
+  assert.deepEqual(await getTask(env, "T", reply({ tasks: [] })), { state: "error", message: "task_get returned no task" });
+  assert.deepEqual(await getTask(env, "T", reply({})), { state: "error", message: "task_get returned no task" });
+});
+
+test("getTask reports a task with no status code as an error, not pending", async () => {
+  const r = await getTask(env, "T", reply({ tasks: [{ id: "T" }] }));
+  assert.equal(r.state, "error");
+});
+
+test("getTask still throws when fetchFn rejects", async () => {
+  await assert.rejects(getTask(env, "T", rejects), /socket hang up/);
+});
+
+test("no error or returned message leaks the Basic header or the password", async () => {
+  const messages = [];
+  const grab = async (p) => { try { const r = await p; if (r?.message) messages.push(r.message); } catch (e) { messages.push(e.message); } };
+  await grab(postTask(leakEnv, { key: "k", placeId: "p" }, httpFail(500)));
+  await grab(postTask(leakEnv, { key: "k", placeId: "p" }, notJson));
+  await grab(postTask(leakEnv, { key: "k", placeId: "p" }, reply({ tasks: [{ status_code: 40501, status_message: "bad" }] })));
+  await grab(getTask(leakEnv, "T", httpFail(503)));
+  await grab(getTask(leakEnv, "T", notJson));
+  await grab(getTask(leakEnv, "T", reply({ tasks: [] })));
+  await grab(getTask(leakEnv, "T", reply({ tasks: [{ status_code: 50000, status_message: "boom" }] })));
+  assert.equal(messages.length, 7);
+  for (const m of messages) {
+    assert.ok(!m.includes("Basic"), `message leaks Basic header: ${m}`);
+    assert.ok(!m.includes(leakEnv.DATAFORSEO_PASSWORD), `message leaks password: ${m}`);
+    assert.ok(!m.includes(leakEnv.DATAFORSEO_LOGIN), `message leaks login: ${m}`);
+  }
+});
+
 test("alert posts to Slack when a webhook is set and is silent otherwise", async () => {
   let called = 0;
   const fetchFn = async () => { called++; return {}; };
