@@ -1,0 +1,264 @@
+---
+// Review controls: the floating panel reviewers use to try the template's
+// options. Review-only; it never ships on a live practice site
+// (practice.reviewControls), and ?panel=off hides it for client presentations.
+//
+// Every setting is written to the address bar, so a shared link reproduces the
+// view. Values equal to the default are left out to keep links short.
+import { practice } from "../data/practice";
+import { FOOTERS, GLOBAL_DEFAULTS, HEADERS, HEROES, PALETTES, getSettings, type HeroKey } from "../lib/settings";
+import Icon from "./Icon.astro";
+
+export type Tweak =
+	| { key: string; label: string; type: "bool"; default: boolean }
+	| { key: string; label: string; type: "choice"; default: string; options: [string, string][] };
+
+interface Props {
+	pageName: string;
+	tweaks: Tweak[];
+	/** The page's own default hero, or omit when the page has no hero choice. */
+	heroDefault?: HeroKey;
+}
+const { pageName, tweaks, heroDefault } = Astro.props;
+const s = getSettings(Astro.url);
+const q = s.query;
+
+const pageDefaults: Record<string, string> = {};
+for (const t of tweaks) pageDefaults[t.key] = t.type === "bool" ? (t.default ? "1" : "0") : t.default;
+const defaults = { ...GLOBAL_DEFAULTS, ...pageDefaults, ...(heroDefault ? { hero: heroDefault } : {}) };
+
+const cur = (k: string, d: string) => q.get(k) ?? d;
+const hex = (c: string) => c.toLowerCase();
+---
+<aside class="rc" id="rc" aria-label="Review controls" data-defaults={JSON.stringify(defaults)}>
+	<button class="rc-head" type="button" aria-expanded="true" aria-controls="rc-body">
+		<span>Review controls</span>
+		<span class="i-open"><Icon name="chevD" /></span><span class="i-close"><Icon name="chevU" /></span>
+	</button>
+	<div class="rc-body" id="rc-body">
+		<span class="rc-group">Colours</span>
+		<label class="rc-field">Palette
+			<select name="palette">
+				{Object.entries(PALETTES).map(([k, p]) => <option value={k} selected={s.paletteKey === k}>{p.label}</option>)}
+				<option value="custom" selected={s.paletteKey === "custom"}>Custom (pick below)</option>
+			</select>
+		</label>
+		{
+			s.paletteKey === "custom" && (
+				<div class="rc-colors">
+					<label>Primary<input type="color" name="p" value={hex(s.colors.P)} /></label>
+					<label>Accent<input type="color" name="a" value={hex(s.colors.A)} /></label>
+					<label>Light<input type="color" name="l" value={hex(s.colors.L)} /></label>
+				</div>
+			)
+		}
+		<div class="rc-contrast" aria-live="polite" data-contrast></div>
+
+		<span class="rc-group">Brand</span>
+		<label class="rc-field">Practice name<input type="text" name="name" value={s.name} autocomplete="off" /></label>
+		<label class="rc-field">Phone number<input type="text" name="phone" value={s.phone} autocomplete="off" inputmode="tel" /></label>
+		<div class="rc-field">Logo
+			<div class="rc-logo">
+				<label class="rc-upload"><Icon name="upload" size={18} /> Upload<input type="file" accept="image/*" data-logo-file class="sr" /></label>
+				<button type="button" class="rc-mini" data-logo-reset>Use sample</button>
+			</div>
+			<span class="rc-note">An uploaded logo stays in this browser only; it is not in shared links.</span>
+		</div>
+		<label class="rc-field">Logo shape
+			<select name="lshape">
+				<option value="wide" selected={s.logoShape === "wide"}>Wide</option>
+				<option value="stacked" selected={s.logoShape === "stacked"}>Stacked</option>
+			</select>
+		</label>
+
+		<span class="rc-group">Header and footer</span>
+		<label class="rc-field">Header style
+			<select name="header">{Object.entries(HEADERS).map(([k, l]) => <option value={k} selected={s.header === k}>{l}</option>)}</select>
+		</label>
+		<label class="rc-field">Footer style
+			<select name="footer">{Object.entries(FOOTERS).map(([k, l]) => <option value={k} selected={s.footer === k}>{l}</option>)}</select>
+		</label>
+		<label class="rc-field">Footer logo
+			<select name="flogo">
+				<option value="landscape" selected={s.footerLogo === "landscape"}>Landscape</option>
+				<option value="vertical" selected={s.footerLogo === "vertical"}>Vertical</option>
+			</select>
+		</label>
+		<label class="rc-check"><input type="checkbox" name="badges" checked={s.footerBadges} /> Footer badge row (F7)</label>
+
+		<span class="rc-group">Site-wide</span>
+		<label class="rc-field">Offices
+			<select name="offices">
+				<option value="2" selected={s.officeCount === 2}>Two</option>
+				<option value="1" selected={s.officeCount === 1}>One</option>
+			</select>
+		</label>
+		{
+			heroDefault && (
+				<label class="rc-field">Hero
+					<select name="hero">{Object.entries(HEROES).map(([k, l]) => <option value={k} selected={s.heroFor(heroDefault) === k}>{l}</option>)}</select>
+				</label>
+			)
+		}
+		<label class="rc-check"><input type="checkbox" name="ctaphoto" checked={s.ctaPhoto} /> CTA photo panel</label>
+
+		{
+			tweaks.length > 0 && (
+				<>
+					<span class="rc-group">This page · {pageName}</span>
+					{tweaks.map((t) =>
+						t.type === "bool" ? (
+							<label class="rc-check">
+								<input type="checkbox" name={t.key} checked={cur(t.key, t.default ? "1" : "0") === "1"} /> {t.label}
+							</label>
+						) : (
+							<label class="rc-field">
+								{t.label}
+								<select name={t.key}>
+									{t.options.map(([v, l]) => <option value={v} selected={cur(t.key, t.default) === v}>{l}</option>)}
+								</select>
+							</label>
+						),
+					)}
+				</>
+			)
+		}
+
+		<button class="rc-reset" type="button" data-reset>Reset to defaults</button>
+		<span class="rc-note">Add <code>?panel=off</code> to a link to hide this panel.</span>
+	</div>
+</aside>
+
+<script>
+	// Colour maths: keep in step with src/lib/color.ts.
+	const hx = (h: string) => { h = String(h).replace("#", ""); if (h.length === 3) h = h.split("").map((c) => c + c).join(""); return h; };
+	const lum = (h: string) => { h = hx(h); const x = [0, 2, 4].map((i) => { const c = parseInt(h.substr(i, 2), 16) / 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); }); return 0.2126 * x[0] + 0.7152 * x[1] + 0.0722 * x[2]; };
+	const cr = (a: string, b: string) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
+	const on = (c: string) => (cr(c, "#FFFFFF") >= cr(c, "#1B1F23") ? "#FFFFFF" : "#1B1F23");
+	const darken = (h: string, t: number) => "#" + [0, 2, 4].map((i) => Math.round(parseInt(hx(h).substr(i, 2), 16) * (1 - t)).toString(16).padStart(2, "0")).join("");
+	const ink = (P: string) => { let k = P; for (let t = 0.08; cr(k, "#FFFFFF") < 4.5 && t < 0.9; t += 0.08) k = darken(P, t); return k; };
+
+	const rc = document.getElementById("rc")!;
+	const head = rc.querySelector<HTMLButtonElement>(".rc-head")!;
+	const body = document.getElementById("rc-body")!;
+	const defaults: Record<string, string> = JSON.parse(rc.dataset.defaults || "{}");
+	const root = document.body;
+
+	// --- open / closed, remembered per browser ---
+	const store = {
+		get: (k: string) => { try { return localStorage.getItem(k); } catch { return null; } },
+		set: (k: string, v: string) => { try { localStorage.setItem(k, v); } catch {} },
+		del: (k: string) => { try { localStorage.removeItem(k); } catch {} },
+	};
+	const setOpen = (open: boolean) => {
+		body.hidden = !open;
+		rc.classList.toggle("closed", !open);
+		head.setAttribute("aria-expanded", String(open));
+	};
+	const saved = store.get("rc-open");
+	setOpen(saved === null ? window.innerWidth >= 1024 : saved === "1");
+	head.addEventListener("click", () => {
+		const open = body.hidden;
+		setOpen(open);
+		store.set("rc-open", open ? "1" : "0");
+	});
+
+	// --- contrast readout for the current colours ---
+	const readout = rc.querySelector<HTMLElement>("[data-contrast]")!;
+	const showContrast = () => {
+		const cs = getComputedStyle(root);
+		const v = (n: string) => cs.getPropertyValue(n).trim();
+		const P = v("--p"), A = v("--a"), L = v("--l");
+		const rows: [string, number, number][] = [
+			["Text on Primary", cr(P, on(P)), 4.5],
+			["Links on white", cr(ink(P), "#FFFFFF"), 4.5],
+			["Text on Light", cr(L, on(L)), 4.5],
+			["Text on Accent", cr(A, on(A)), 4.5],
+		];
+		readout.innerHTML = rows
+			.map(([l, r, min]) => `<span class="${r >= min ? "ok" : "bad"}">${l}: ${r.toFixed(1)}:1 ${r >= min ? "passes" : "fails"} AA</span>`)
+			.join("");
+	};
+	showContrast();
+
+	// --- write a setting to the address bar and reload the page with it ---
+	const go = (changes: Record<string, string>) => {
+		const url = new URL(location.href);
+		for (const [k, val] of Object.entries(changes)) {
+			if (val === (defaults[k] ?? "")) url.searchParams.delete(k);
+			else url.searchParams.set(k, val);
+		}
+		if (url.searchParams.get("palette") !== "custom") ["p", "a", "l"].forEach((k) => url.searchParams.delete(k));
+		try { sessionStorage.setItem("rc-scroll", String(scrollY)); } catch {}
+		location.assign(url.toString());
+	};
+
+	body.querySelectorAll<HTMLInputElement | HTMLSelectElement>("select[name], input[name]").forEach((el) => {
+		const name = el.getAttribute("name")!;
+		if (el instanceof HTMLInputElement && el.type === "color") {
+			// live preview while dragging, saved when the picker closes
+			el.addEventListener("input", () => {
+				const P = (body.querySelector("[name=p]") as HTMLInputElement).value;
+				const A = (body.querySelector("[name=a]") as HTMLInputElement).value;
+				const L = (body.querySelector("[name=l]") as HTMLInputElement).value;
+				const vars: Record<string, string> = { "--p": P, "--a": A, "--l": L, "--on-p": on(P), "--on-a": on(A), "--on-l": on(L), "--p-ink": ink(P) };
+				for (const [k, val] of Object.entries(vars)) root.style.setProperty(k, val);
+				showContrast();
+			});
+			el.addEventListener("change", () => go({ [name]: el.value.replace("#", "").toUpperCase() }));
+			return;
+		}
+		el.addEventListener("change", () => {
+			if (el instanceof HTMLInputElement && el.type === "checkbox") go({ [name]: el.checked ? "1" : "0" });
+			else if (name === "palette" && el.value === "custom") {
+				const cs = getComputedStyle(root);
+				const cur = (n: string) => cs.getPropertyValue(n).trim().replace("#", "").toUpperCase();
+				go({ palette: "custom", p: cur("--p"), a: cur("--a"), l: cur("--l") });
+			} else go({ [name]: el.value.trim() });
+		});
+	});
+
+	rc.querySelector("[data-reset]")!.addEventListener("click", () => {
+		const url = new URL(location.href);
+		const keep = url.searchParams.get("panel");
+		url.search = keep ? `?panel=${keep}` : "";
+		location.assign(url.toString());
+	});
+
+	// --- uploaded logo (this browser only) ---
+	const fileInput = rc.querySelector<HTMLInputElement>("[data-logo-file]")!;
+	fileInput.addEventListener("change", () => {
+		const f = fileInput.files?.[0];
+		if (!f) return;
+		const r = new FileReader();
+		r.onload = () => {
+			const data = String(r.result);
+			if (data.length > 1_500_000) { alert("That image is too large. Please use a logo under about 1 MB."); return; }
+			store.set("rc-logo", data);
+			applyLogo();
+		};
+		r.readAsDataURL(f);
+	});
+	rc.querySelector("[data-logo-reset]")!.addEventListener("click", () => { store.del("rc-logo"); location.reload(); });
+	const applyLogo = () => {
+		const data = store.get("rc-logo");
+		if (!data) return;
+		document.querySelectorAll<HTMLAnchorElement>("a[data-logo]").forEach((a) => {
+			a.classList.add("has-upload");
+			a.innerHTML = "";
+			const img = document.createElement("img");
+			img.src = data;
+			img.alt = "";
+			a.appendChild(img);
+		});
+	};
+	applyLogo();
+</script>
+
+<script is:inline>
+	// Put the reader back where they were after a settings change reloads the page.
+	try {
+		const y = sessionStorage.getItem("rc-scroll");
+		if (y) { sessionStorage.removeItem("rc-scroll"); addEventListener("load", () => scrollTo(0, +y)); }
+	} catch {}
+</script>

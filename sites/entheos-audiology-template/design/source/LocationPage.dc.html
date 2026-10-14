@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Location page</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./d1.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>body{margin:0}</style>
+</helmet>
+<div class="d1 page" style="--p: {{P}}; --a: {{A}}; --l: {{L}}; --on-p: {{onP}}; --on-a: {{onA}}; --on-l: {{onL}}; --p-ink: {{pInk}}">
+
+  <header class="hdr">
+    <a class="logo" href="#" aria-label="Lakeview Hearing Center, home"><svg viewBox="0 0 40 40" width="44" height="44" aria-hidden="true"><circle cx="20" cy="20" r="20" style="fill: var(--p)"></circle><path d="M12 20v0M16 15.5v9M20 11v18M24 15.5v9M28 18.5v3" style="stroke: var(--on-p)" stroke-width="2.6" stroke-linecap="round" fill="none"></path></svg><span class="lw"><b>Lakeview</b><span>Hearing Center</span></span></a>
+    <nav aria-label="Main" style="margin: 0 auto">
+      <ul class="nav">
+        <li><button class="nav-link" aria-expanded="false">Services <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></button></li>
+        <li><button class="nav-link" aria-expanded="false">Hearing aids <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></button></li>
+        <li><a class="nav-link" href="#">About</a></li>
+        <li><a class="nav-link" href="#">Resources</a></li>
+        <li><a class="nav-link" href="#">Blog</a></li>
+        <li><a class="nav-link" href="#">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="hdr-right">
+      <a class="tel" href="tel:+15550100142"><span class="ico"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"></path></svg></span>(555) 010-0142</a>
+      <a class="btn btn-primary" href="#">Book appointment</a>
+    </div>
+  </header>
+
+  <sc-if value="{{heroWithPhoto}}" hint-placeholder-val="{{true}}">
+    <section style="padding: 56px 0 88px">
+      <div class="wrap ihero">
+        <div class="stack g24">
+          <nav aria-label="Breadcrumb"><ol class="crumbs"><li><a href="#">Home</a></li><li class="sep" aria-hidden="true">/</li><li><a href="#">Locations</a></li><li class="sep" aria-hidden="true">/</li><li aria-current="page">Northfield</li></ol></nav>
+          <h1 class="h1">Hearing care in Northfield</h1>
+          <p class="lead">Id est laborum curabitur pretium tincidunt lacus nulla gravida orci. A odio nullam varius turpis et commodo pharetra est eros bibendum elit nec luctus. Magna felis sollicitudin mauris integer in mauris eu nibh euismod gravida.</p>
+          <div class="rowf" style="gap: 12px; margin-top: 4px">
+            <a class="btn btn-primary" href="#">Book appointment</a>
+            <a class="btn btn-secondary" href="tel:+15550100178">Call (555) 010-0178</a>
+          </div>
+        </div>
+        <div class="ph stone" style="aspect-ratio: 3/2; border-radius: 28px"><span class="ph-label">Office exterior photo · 3:2</span></div>
+      </div>
+    </section>
+  </sc-if>
+  <sc-if value="{{heroNoPhoto}}" hint-placeholder-val="{{false}}">
+    <div style="padding: 12px 0 0">
+      <section class="inophoto {{noPhotoCls}}" style="background: {{noPhotoBg}}; color: {{noPhotoInk}}">
+        <div class="shape" style="width: 620px; height: 620px; right: -140px; top: -210px; border: 64px solid {{shapeA}}"></div>
+        <div class="wrap">
+          <div class="stack g24" style="max-width: 820px; position: relative">
+            <nav aria-label="Breadcrumb"><ol class="crumbs"><li><a href="#">Home</a></li><li class="sep" aria-hidden="true">/</li><li><a href="#">Locations</a></li><li class="sep" aria-hidden="true">/</li><li aria-current="page">Northfield</li></ol></nav>
+            <h1 class="h1 xl" style="color: {{noPhotoInk}}">Hearing care in Northfield</h1>
+            <p class="lead" style="color: {{noPhotoInk}}; opacity: .9">Id est laborum curabitur pretium tincidunt lacus nulla gravida orci. A odio nullam varius turpis et commodo pharetra est eros bibendum elit nec luctus. Magna felis sollicitudin mauris integer in mauris eu nibh euismod gravida.</p>
+            <div class="rowf" style="gap: 12px; margin-top: 4px">
+              <a class="btn {{np1}}" href="#">Book appointment</a>
+              <a class="btn {{np2}}" href="tel:+15550100178">Call (555) 010-0178</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </sc-if>
+
+  <section class="band" style="padding-top: {{bodyTop}}">
+    <div class="wrap">
+      <div class="panel loc-grid">
+        <div class="card loc-card">
+          <div class="stack g8"><span class="eyebrow">Office details</span><h2 class="h2">Northfield office</h2></div>
+          <div class="loc-facts">
+            <div class="drow"><span class="di"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg></span><div class="stack g4"><span class="feat-h">Address</span><address style="font-style: normal">48 Mill Street<br>Northfield, ST 00000</address></div></div>
+            <div class="drow"><span class="di"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"></path></svg></span><div class="stack g4"><span class="feat-h">Phone</span><a href="tel:+15550100178" style="font-weight: 700; font-size: 20px">(555) 010-0178</a></div></div>
+            <div class="drow"><span class="di"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg></span><div class="stack g4"><span class="feat-h">Hours</span><span>Tuesday and Thursday<br>9:00 am to 4:00 pm</span></div></div>
+          </div>
+          <div class="loc-notes">
+            <div class="drow"><span class="di"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 17h14v-5l-2-5H7l-2 5z"></path><path d="M5 12h14"></path><circle cx="8" cy="17" r="1.6"></circle><circle cx="16" cy="17" r="1.6"></circle></svg></span><div class="stack g4"><h3 class="h4">Directions and parking</h3><p class="muted">Praesent blandit odio eu enim pellentesque sed dapibus est sed lacinia. Sapien vel tellus lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor. Incididunt ut labore et dolore magna aliqua ut enim. Ad minim veniam quis nostrud.</p></div></div>
+            <div class="drow"><span class="di"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="4.5" r="1.8"></circle><path d="M6 8.5h12M12 8.5V14M12 14l-3.5 6.5M12 14l3.5 6.5"></path></svg></span><div class="stack g4"><h3 class="h4">Accessibility</h3><p class="muted">Exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in. Voluptate velit esse.</p></div></div>
+          </div>
+          <a class="btn btn-primary" href="#" style="align-self: flex-start">Get directions <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></a>
+        </div>
+        <div class="ph stone loc-map"><span class="ph-label">Map · loads on tap</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band bg-light">
+    <div class="wrap" style="display: grid; grid-template-columns: 4fr 8fr; gap: 64px; align-items: center">
+      <div class="stack g16">
+        <span class="eyebrow">Providers</span>
+        <h2 class="h2">Your audiologists in Northfield</h2>
+        <a class="link-arrow" href="#" style="align-self: flex-start">Meet the whole team <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+      </div>
+      <div class="provh-grid">
+        <sc-if value="{{v.providerLinked}}" hint-placeholder-val="{{true}}">
+          <a class="prov provh" href="#" aria-label="Meet Dr. Raman">
+            <span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"></path></svg></span>
+            <div class="ph stone"><svg class="sil" viewBox="0 0 200 220" aria-hidden="true"><circle cx="100" cy="80" r="44" fill="currentColor"></circle><path d="M18 220c0-54 37-88 82-88s82 34 82 88z" fill="currentColor"></path></svg><span class="ph-label tl">4:5</span></div>
+            <div class="who"><h3 class="pname">Dr. Priya Raman, Au.D.</h3><span class="ptitle">Audiologist</span><span class="ptitle">Sees patients in Northfield and Riverside</span></div>
+          </a>
+        </sc-if>
+        <sc-if value="{{providerPlain}}" hint-placeholder-val="{{false}}">
+          <div class="prov provh">
+            <div class="ph stone"><svg class="sil" viewBox="0 0 200 220" aria-hidden="true"><circle cx="100" cy="80" r="44" fill="currentColor"></circle><path d="M18 220c0-54 37-88 82-88s82 34 82 88z" fill="currentColor"></path></svg><span class="ph-label tl">4:5</span></div>
+            <div class="who"><h3 class="pname">Dr. Priya Raman, Au.D.</h3><span class="ptitle">Audiologist</span><span class="ptitle">Sees patients in Northfield and Riverside</span></div>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap stack g48">
+      <div class="stack g16" style="max-width: 760px">
+        <span class="eyebrow">Services</span>
+        <h2 class="h2">Services offered in Northfield</h2>
+      </div>
+      <div class="stack g24">
+        <div class="panel grid g-4">
+          <sc-for list="{{svc}}" as="s" hint-placeholder-count="4">
+            <article class="card">
+              <h3 class="h3">{{s.t}}</h3>
+              <p class="muted">{{s.d}}</p>
+              <sc-if value="{{s.more}}" hint-placeholder-val="{{true}}"><div class="actions"><a class="btn btn-gray sm" href="#">Learn more<span class="sr"> about {{s.t}}</span></a></div></sc-if>
+            </article>
+          </sc-for>
+        </div>
+        <a class="link-arrow" href="#" style="align-self: flex-start">View all services <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="band bg-light">
+    <div class="wrap stack g48">
+      <div class="stack g16">
+        <span class="eyebrow">Reviews</span>
+        <h2 class="h2">What Northfield patients say</h2>
+      </div>
+      <div class="panel grid g-2">
+        <sc-for list="{{reviews}}" as="r" hint-placeholder-count="2">
+            <figure class="card review" style="margin: 0">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start">
+                <span class="qmark" aria-hidden="true"><svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M9.5 6H5a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h3c0 2-1 3.5-3 4l.5 1.5C9 17.5 10.5 15 10.5 11V7a1 1 0 0 0-1-1zm10 0H15a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h3c0 2-1 3.5-3 4l.5 1.5c3.5-1 5-3.5 5-7.5V7a1 1 0 0 0-1-1z"></path></svg></span>
+                <div class="stars" role="img" aria-label="5 out of 5 stars"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg></div>
+              </div>
+              <blockquote class="rtext" style="margin: 0">{{r.text}}</blockquote>
+                            <figcaption class="rmeta" style="margin-top: auto; padding-top: 8px"><b>{{r.name}}</b><span>Google review</span><span aria-hidden="true">·</span><span>{{r.date}}</span></figcaption>
+            </figure>
+        </sc-for>
+      </div>
+      <a class="link-arrow" href="#" style="align-self: flex-start">Read more reviews <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+    </div>
+  </section>
+
+  <div style="padding: 96px 0">
+    <sc-if value="{{ctaPhoto}}" hint-placeholder-val="{{true}}">
+      <section class="cta" aria-labelledby="lcta">
+        <div class="cta-act">
+          <h2 class="h2" id="lcta">Visit our Northfield office</h2>
+          <p class="lead" style="color: var(--on-p); max-width: 500px">Tue and Thu, 9:00 am to 4:00 pm · 48 Mill Street, Northfield</p>
+          <div class="rowf" style="gap: 20px; margin-top: 12px">
+            <a class="btn btn-inverse" href="#">Book appointment</a>
+            <a class="btn btn-ghost-on-p" href="tel:+15550100178">Call (555) 010-0178</a>
+          </div>
+        </div>
+        <div class="cta-emo on-dark">
+          <div class="ph dark"><span class="ph-label tr">Lifestyle photo · conversation, meal, outdoors</span></div>
+          <div class="scrim"></div>
+          <div class="inner">
+            <span class="eyebrow on-dark">Start your hearing journey</span>
+            <p class="big">Get back to the conversations you’ve been missing</p>
+          </div>
+        </div>
+      </section>
+    </sc-if>
+    <sc-if value="{{ctaSolo}}" hint-placeholder-val="{{false}}">
+      <section class="cta solo" aria-labelledby="lcta2">
+        <div class="cta-act">
+          <div class="stack g16" style="max-width: 640px">
+            <h2 class="h2" id="lcta2">Visit our Northfield office</h2>
+            <p class="lead" style="color: var(--on-p)">Tue and Thu, 9:00 am to 4:00 pm · 48 Mill Street, Northfield</p>
+          </div>
+          <div class="stack g12" style="align-items: flex-start; flex: none">
+            <a class="btn btn-inverse" href="#">Book appointment</a>
+            <a class="btn btn-ghost-on-p" href="tel:+15550100178">Call (555) 010-0178</a>
+          </div>
+        </div>
+      </section>
+    </sc-if>
+  </div>
+
+  <footer class="ftr">
+    <div class="fgrid">
+      <div class="card" style="gap: 18px">
+        <a class="logo" href="#" aria-label="Lakeview Hearing Center, home"><svg viewBox="0 0 40 40" width="44" height="44" aria-hidden="true"><circle cx="20" cy="20" r="20" style="fill: var(--p)"></circle><path d="M12 20v0M16 15.5v9M20 11v18M24 15.5v9M28 18.5v3" style="stroke: var(--on-p)" stroke-width="2.6" stroke-linecap="round" fill="none"></path></svg><span class="lw"><b>Lakeview</b><span>Hearing Center</span></span></a>
+        <p class="muted">Independent audiology care for Riverside and Northfield families.</p>
+        <a class="btn btn-primary" href="#" style="align-self: flex-start">Book appointment</a>
+        <a href="mailto:hello@lakeviewhearing.example" style="font-size: 18px">hello@lakeviewhearing.example</a>
+      </div>
+      <div class="card" style="gap: 12px">
+        <h2 class="h4">Riverside office</h2>
+        <address style="font-style: normal">1200 Lakeview Parkway, Suite 210<br>Riverside, ST 00000</address>
+        <a href="tel:+15550100142" style="font-weight: 700; font-size: 19px">(555) 010-0142</a>
+        <dl class="hours" style="margin: 4px 0 0"><dt>Mon – Thu</dt><dd>8:00 – 5:00</dd><dt>Fri</dt><dd>8:00 – 12:00</dd><dt>Sat – Sun</dt><dd>Closed</dd></dl>
+      </div>
+      <div class="card" style="gap: 12px">
+        <h2 class="h4">Northfield office</h2>
+        <address style="font-style: normal">48 Mill Street<br>Northfield, ST 00000</address>
+        <a href="tel:+15550100178" style="font-weight: 700; font-size: 19px">(555) 010-0178</a>
+        <dl class="hours" style="margin: 4px 0 0"><dt>Tue, Thu</dt><dd>9:00 – 4:00</dd><dt>Other days</dt><dd>Closed</dd></dl>
+      </div>
+      <nav class="card" style="gap: 8px" aria-label="Footer">
+        <h2 class="h4">Explore</h2>
+        <ul class="flinks">
+          <li><a href="#">Services</a></li><li><a href="#">Hearing aids</a></li><li><a href="#">About us</a></li><li><a href="#">Patient resources</a></li><li><a href="#">Reviews</a></li><li><a href="#">Blog</a></li><li><a href="#">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="fbottom">
+      <span>© 2026 Lakeview Hearing Center. All rights reserved.</span>
+      <nav aria-label="Legal"><ul class="legal"><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Use</a></li><li><a href="#">Accessibility</a></li><li><a href="#">Sitemap</a></li></ul></nav>
+    </div>
+  </footer>
+
+  <aside class="rc {{rcCls}}" aria-label="Review controls">
+    <button class="rc-head" onClick="{{toggleOpen}}" aria-expanded="{{openStr}}">
+      <span>Review controls</span>
+      <sc-if value="{{open}}" hint-placeholder-val="{{true}}"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></sc-if>
+      <sc-if value="{{closed}}" hint-placeholder-val="{{false}}"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 15 6-6 6 6"></path></svg></sc-if>
+    </button>
+    <sc-if value="{{open}}" hint-placeholder-val="{{true}}">
+      <div class="rc-body">
+        <label class="rc-field">Palette
+          <select value="{{v.palette}}" onChange="{{setPalette}}">
+            <option value="Teal / Amber">Teal / Amber</option>
+            <option value="Navy / Coral">Navy / Coral</option>
+            <option value="Forest / Gold">Forest / Gold</option>
+          </select>
+        </label>
+        <label class="rc-field">Hero
+          <select value="{{v.hero}}" onChange="{{setHero}}">
+            <option value="Photo">Photo (office exterior)</option>
+            <option value="No photo · Light">No photo · Light</option>
+            <option value="No photo · Primary">No photo · Primary</option>
+          </select>
+        </label>
+        <label class="rc-field">Service links
+          <select value="{{v.serviceLinks}}" onChange="{{setServiceLinks}}">
+            <option value="Mixed">Mixed</option>
+            <option value="All">All linked</option>
+            <option value="None">None linked</option>
+          </select>
+        </label>
+        <label class="rc-check"><input type="checkbox" checked="{{v.providerLinked}}" onChange="{{setProviderLinked}}"> Provider has a profile page</label>
+        <label class="rc-check"><input type="checkbox" checked="{{v.ctaPhoto}}" onChange="{{setCtaPhoto}}"> CTA photo panel</label>
+        <button class="rc-reset" onClick="{{reset}}">Reset to Tweaks defaults</button>
+      </div>
+    </sc-if>
+  </aside>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"palette":{"editor":"enum","options":["Teal / Amber","Navy / Coral","Forest / Gold"],"default":"Teal / Amber","section":"Practice colors"},"hero":{"editor":"enum","options":["Photo","No photo · Light","No photo · Primary"],"default":"Photo","section":"Sections"},"serviceLinks":{"editor":"enum","options":["Mixed","All","None"],"default":"Mixed","section":"Sections"},"providerLinked":{"editor":"boolean","default":true,"section":"Sections"},"ctaPhoto":{"editor":"boolean","default":true,"section":"Sections"},"showControls":{"editor":"boolean","default":true,"section":"Review controls"},"$preview":{"width":1440,"height":5600}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { o: {}, open: true }; }
+  renderVals() {
+    const p = this.props;
+    const d = (x, f) => (x === undefined || x === null ? f : x);
+    const base = { palette: d(p.palette, 'Teal / Amber'), hero: d(p.hero, 'Photo'), serviceLinks: d(p.serviceLinks, 'Mixed'), providerLinked: d(p.providerLinked, true), ctaPhoto: d(p.ctaPhoto, true) };
+    const v = { ...base, ...this.state.o };
+    const presets = { 'Teal / Amber': ['#0F5E6B', '#E0A33B', '#F6F1EA'], 'Navy / Coral': ['#1E3A5F', '#E8735A', '#EEF3F8'], 'Forest / Gold': ['#2F5D3A', '#C9A227', '#F7F4EC'] };
+    const [P, A, L] = presets[v.palette] || presets['Teal / Amber'];
+    const hex = (h) => { h = String(h).replace('#', ''); if (h.length === 3) h = h.split('').map((c) => c + c).join(''); return h; };
+    const lum = (h) => { h = hex(h); const x = [0, 2, 4].map((i) => { const c = parseInt(h.substr(i, 2), 16) / 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); }); return 0.2126 * x[0] + 0.7152 * x[1] + 0.0722 * x[2]; };
+    const cr = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
+    const on = (c) => (cr(c, '#FFFFFF') >= cr(c, '#1B1F23') ? '#FFFFFF' : '#1B1F23');
+    const darken = (h, t) => '#' + [0, 2, 4].map((i) => Math.round(parseInt(hex(h).substr(i, 2), 16) * (1 - t)).toString(16).padStart(2, '0')).join('');
+    let ink = P; for (let t = 0.08; cr(ink, '#FFFFFF') < 4.5 && t < 0.9; t += 0.08) ink = darken(P, t);
+    const onP = on(P), onL = on(L);
+    const withPhoto = v.hero === 'Photo';
+    const prim = v.hero === 'No photo · Primary';
+    const sl = v.serviceLinks;
+    const svc = [
+      { t: 'Hearing Evaluations', d: 'Culpa qui officia deserunt mollit anim id est laborum curabitur pretium tincidunt. Lacus nulla gravida orci a odio nullam varius.', more: true },
+      { t: 'Hearing Aid Fittings', d: 'Turpis et commodo pharetra est eros bibendum elit nec luctus magna felis sollicitudin mauris integer. In mauris eu nibh euismod.', more: true },
+      { t: 'Hearing Aid Repairs & Services', d: 'Gravida praesent blandit odio eu enim pellentesque sed dapibus est sed lacinia sapien. Vel tellus lorem ipsum dolor sit amet.', more: false },
+      { t: 'Ear Wax Removal', d: 'Consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore. Et dolore magna aliqua ut enim ad minim veniam quis.', more: true }
+    ].map((s) => { const more = sl === 'All' ? true : sl === 'None' ? false : s.more; return { ...s, more, plain: !more }; });
+    const reviews = [
+      { name: 'Ellen R.', date: 'August 2026', text: 'Cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in. Culpa qui officia deserunt mollit anim id est laborum curabitur pretium tincidunt. Lacus nulla gravida orci a odio nullam varius turpis et commodo. Pharetra est eros.' },
+      { name: 'Tom B.', date: 'July 2026', text: 'Bibendum elit nec luctus magna felis sollicitudin mauris integer. In mauris eu nibh euismod gravida praesent blandit odio eu enim pellentesque sed. Dapibus est sed lacinia sapien vel tellus lorem ipsum dolor sit amet consectetur adipiscing elit sed do. Eiusmod tempor incididunt ut labore et dolore magna aliqua ut. Enim.' }
+    ];
+    const set = (k) => (e) => this.setState({ o: { ...this.state.o, [k]: e.target.value } });
+    const flag = (k) => (e) => this.setState({ o: { ...this.state.o, [k]: !!e.target.checked } });
+    const open = !!this.state.open;
+    return {
+      P, A, L, onP, onA: on(A), onL, pInk: ink, v,
+      heroWithPhoto: withPhoto, heroNoPhoto: !withPhoto,
+      noPhotoBg: prim ? P : L, noPhotoInk: prim ? onP : onL, noPhotoCls: prim ? 'on-p-text' : '',
+      np1: prim ? 'btn-inverse' : 'btn-primary', np2: prim ? 'btn-ghost-on-p' : 'btn-secondary',
+      shapeA: prim ? 'color-mix(in srgb, var(--on-p) 8%, transparent)' : 'color-mix(in srgb, var(--p) 7%, transparent)',
+      bodyTop: withPhoto ? '24px' : '112px',
+      providerPlain: !v.providerLinked, svc, reviews,
+      ctaPhoto: v.ctaPhoto, ctaSolo: !v.ctaPhoto,
+      open, closed: !open, openStr: open ? 'true' : 'false',
+      rcCls: (open ? '' : 'closed') + (d(p.showControls, true) ? '' : ' sr'),
+      toggleOpen: () => this.setState({ open: !this.state.open }),
+      reset: () => this.setState({ o: {} }),
+      setPalette: set('palette'), setHero: set('hero'), setServiceLinks: set('serviceLinks'),
+      setProviderLinked: flag('providerLinked'), setCtaPhoto: flag('ctaPhoto')
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Home, alternate states</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./d1.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>body{margin:0}</style>
+</helmet>
+<div class="d1 sheet" style="min-height: 7600px; padding-top: 56px; --p: {{P}}; --a: {{A}}; --l: {{L}}; --on-p: {{onP}}; --on-a: {{onA}}; --on-l: {{onL}}; --p-ink: {{pInk}}">
+  <div class="sheet-head">
+    <h1 class="sheet-title" style="font-size: 32px">Home · alternate states</h1>
+    <p class="sheet-sub">Every switchable section in its other state. The main Home boards show the defaults: photo hero, links shown, linked providers, posts shown, CTA with photo.</p>
+  </div>
+
+  <div class="spec">1 · Hero, no photo · Primary frame</div>
+  <div class="vp">
+    <section class="hhero prim" style="min-height: 640px">
+      <div class="shape" style="width: 780px; height: 780px; right: -170px; top: -280px; border: 76px solid color-mix(in srgb, var(--on-p) 7%, transparent)"></div>
+      <div class="shape" style="width: 340px; height: 340px; right: 300px; top: 300px; border: 44px solid color-mix(in srgb, var(--on-p) 5%, transparent)"></div>
+      <div class="hcontent" style="padding: 112px 0 200px">
+        <h1 class="h1" style="font-size: 68px; max-width: 900px">Hearing care that starts with listening to you</h1>
+        <p class="lead" style="max-width: 600px; opacity: .92">Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor.</p>
+        <div class="rowf" style="gap: 12px; margin-top: 8px">
+          <a class="btn btn-inverse" href="#">Book appointment</a>
+          <a class="btn btn-ghost-on-p" href="tel:+15550100142">Call (555) 010-0142</a>
+        </div>
+      </div>
+      <div class="trust on-p">
+        <div class="track">
+          <ul class="marq" style="list-style: none; margin: 0" aria-label="Hearing aid brands we carry">
+            <sc-for list="{{loop}}" as="b" hint-placeholder-count="14"><li class="tword" aria-hidden="{{b.ah}}">{{b.name}}</li></sc-for>
+          </ul>
+        </div>
+        <div class="rating">
+          <b>Rated 4.9/5 from 210 Google reviews</b>
+          <div class="stars" aria-hidden="true" style="color: {{starsOnP}}"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg></div>
+        </div>
+        <button class="pause" aria-label="Pause logo scrolling"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M9 5v14M15 5v14"></path></svg></button>
+      </div>
+    </section>
+  </div>
+
+  <div class="spec">2 · Hero, no photo · Light frame</div>
+  <div class="vp">
+    <section class="hhero light" style="min-height: 640px">
+      <div class="shape" style="width: 780px; height: 780px; right: -170px; top: -280px; border: 76px solid color-mix(in srgb, var(--p) 7%, transparent)"></div>
+      <div class="shape" style="width: 340px; height: 340px; right: 300px; top: 300px; border: 44px solid color-mix(in srgb, var(--a) 14%, transparent)"></div>
+      <div class="hcontent" style="padding: 112px 0 200px">
+        <h1 class="h1" style="font-size: 68px; max-width: 900px">Hearing care that starts with listening to you</h1>
+        <p class="lead" style="max-width: 600px; opacity: .85">Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor.</p>
+        <div class="rowf" style="gap: 12px; margin-top: 8px">
+          <a class="btn btn-primary" href="#">Book appointment</a>
+          <a class="btn btn-secondary" href="tel:+15550100142">Call (555) 010-0142</a>
+        </div>
+      </div>
+      <div class="trust on-light">
+        <div class="track">
+          <ul class="marq" style="list-style: none; margin: 0" aria-label="Hearing aid brands we carry">
+            <sc-for list="{{loop}}" as="b" hint-placeholder-count="14"><li class="tword" aria-hidden="{{b.ah}}">{{b.name}}</li></sc-for>
+          </ul>
+        </div>
+        <div class="rating">
+          <b>Rated 4.9/5 from 210 Google reviews</b>
+          <div class="stars" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg></div>
+        </div>
+        <button class="pause" aria-label="Pause logo scrolling"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M9 5v14M15 5v14"></path></svg></button>
+      </div>
+    </section>
+  </div>
+
+  <div class="spec">3 · Hero, no photo · mobile</div>
+  <div class="phones">
+    <div class="phone-col">
+      <div class="phone m" style="padding: 12px 0">
+        <section class="hhero prim" style="margin: 0 12px">
+          <div class="shape" style="width: 320px; height: 320px; right: -140px; top: -130px; border: 40px solid color-mix(in srgb, var(--on-p) 7%, transparent)"></div>
+          <div class="hcontent" style="padding: 48px 20px 28px">
+            <h1 class="h1" style="font-size: 40px">Hearing care that starts with listening to you</h1>
+            <p class="lead" style="opacity: .92">Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor.</p>
+            <div class="stack g12"><a class="btn btn-inverse block" href="#">Book appointment</a><a class="btn btn-ghost-on-p block" href="tel:+15550100142">Call (555) 010-0142</a></div>
+          </div>
+          <div class="trust on-p" style="margin: 0 8px 8px">
+            <div class="rating"><b>Rated 4.9/5 from 210 Google reviews</b><div class="stars" aria-hidden="true" style="color: {{starsOnP}}"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg></div></div>
+            <div class="track">
+              <ul class="marq" style="list-style: none; margin: 0" aria-label="Hearing aid brands we carry"><sc-for list="{{loop}}" as="b" hint-placeholder-count="14"><li class="tword" aria-hidden="{{b.ah}}">{{b.name}}</li></sc-for></ul>
+              <button class="pause" aria-label="Pause logo scrolling"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M9 5v14M15 5v14"></path></svg></button>
+            </div>
+          </div>
+        </section>
+      </div>
+      <span class="note">Primary frame. With no photo, the text sits inside the frame and the trust bar stays on it.</span>
+    </div>
+    <div class="phone-col">
+      <div class="phone m" style="padding: 12px 0">
+        <section class="hhero light" style="margin: 0 12px">
+          <div class="shape" style="width: 320px; height: 320px; right: -140px; top: -130px; border: 40px solid color-mix(in srgb, var(--p) 7%, transparent)"></div>
+          <div class="hcontent" style="padding: 48px 20px 28px">
+            <h1 class="h1" style="font-size: 40px">Hearing care that starts with listening to you</h1>
+            <p class="lead" style="opacity: .85">Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor.</p>
+            <div class="stack g12"><a class="btn btn-primary block" href="#">Book appointment</a><a class="btn btn-secondary block" href="tel:+15550100142">Call (555) 010-0142</a></div>
+          </div>
+          <div class="trust on-light" style="margin: 0 8px 8px">
+            <div class="rating"><b>Rated 4.9/5 from 210 Google reviews</b><div class="stars" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg></div></div>
+            <div class="track">
+              <ul class="marq" style="list-style: none; margin: 0" aria-label="Hearing aid brands we carry"><sc-for list="{{loop}}" as="b" hint-placeholder-count="14"><li class="tword" aria-hidden="{{b.ah}}">{{b.name}}</li></sc-for></ul>
+              <button class="pause" aria-label="Pause logo scrolling"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M9 5v14M15 5v14"></path></svg></button>
+            </div>
+          </div>
+        </section>
+      </div>
+      <span class="note">Light frame.</span>
+    </div>
+  </div>
+
+  <div class="spec">4 · About teaser · “Read our story” hidden (About page not live)</div>
+  <div class="vp">
+    <section class="band" style="padding: 24px 0 0">
+      <div class="wrap about">
+        <div class="ph stone"><span class="ph-label">Team photo · 3:2</span></div>
+        <div class="stack g24">
+          <span class="eyebrow">About us</span>
+          <h2 class="h2">A locally owned practice in Riverside</h2>
+          <p class="body">Nostrud exercitation ullamco laboris nisi ut aliquip ex ea. Commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum. Dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt. Mollit anim id est laborum curabitur pretium tincidunt lacus nulla. Gravida orci a odio nullam varius turpis et commodo pharetra est eros bibendum elit. Nec luctus magna felis sollicitudin mauris integer in mauris eu nibh euismod. Gravida praesent blandit odio eu enim pellentesque sed dapibus est sed. Lacinia sapien vel tellus lorem ipsum dolor sit amet consectetur adipiscing elit sed do.</p>
+          <div class="panel grid g-2" style="--pad: 12px">
+            <div class="fact"><b>35+ years</b><span>caring for Riverside</span></div>
+            <div class="fact"><b>Au.D.</b><span>Doctors of Audiology on staff</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="spec">5 · Providers · plain (no profile pages yet)</div>
+  <div class="vp">
+    <section class="band bg-light" style="padding: 80px 0">
+      <div class="wrap stack g48">
+        <div class="stack g16 text-col"><span class="eyebrow">Our team</span><h2 class="h2">Meet your hearing care team</h2><p class="lead">Eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi.</p></div>
+        <div class="grid g-3" style="gap: 16px">
+          <sc-for list="{{team}}" as="p" hint-placeholder-count="3">
+            <div class="prov">
+              <div class="who" style="padding-right: 10px"><h3 class="pname">{{p.name}}</h3><span class="ptitle">{{p.title}}</span></div>
+              <div class="ph {{p.tone}}"><svg class="sil" viewBox="0 0 200 220" aria-hidden="true"><circle cx="100" cy="80" r="44" fill="currentColor"></circle><path d="M18 220c0-54 37-88 82-88s82 34 82 88z" fill="currentColor"></path></svg></div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="spec">6 · Reviews · “Read more reviews” hidden</div>
+  <div class="vp">
+    <div class="wrap stack g48">
+      <div class="stack g16"><span class="eyebrow">Reviews</span><h2 class="h2">What our patients say</h2><span class="lead" style="color: var(--ink)"><b>4.9 out of 5</b> from 210 Google reviews</span></div>
+      <div class="panel grid g-2">
+        <figure class="card review" style="margin: 0">
+          <div class="stars" role="img" aria-label="5 out of 5 stars"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg></div>
+          <blockquote class="rtext" style="margin: 0">Gravida praesent blandit odio eu enim pellentesque sed dapibus est sed lacinia sapien vel. Tellus lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod. Tempor incididunt ut labore et dolore magna aliqua ut enim ad. Minim veniam quis nostrud exercitation ullamco laboris nisi.</blockquote>
+          <figcaption class="rmeta" style="margin-top: auto; padding-top: 8px"><b>Linda M.</b><span>Google review</span><span aria-hidden="true">·</span><span>September 2026</span></figcaption>
+        </figure>
+        <figure class="card review" style="margin: 0">
+          <div class="stars" role="img" aria-label="5 out of 5 stars"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg></div>
+          <blockquote class="rtext" style="margin: 0">Ut aliquip ex ea commodo consequat duis aute irure. Dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum. Curabitur pretium tincidunt lacus nulla gravida orci a odio nullam. Varius turpis et commodo pharetra est eros bibendum elit nec luctus.</blockquote>
+          <button class="readmore" aria-expanded="false">Read more</button>
+          <figcaption class="rmeta" style="margin-top: auto; padding-top: 8px"><b>Robert K.</b><span>Google review</span><span aria-hidden="true">·</span><span>August 2026</span></figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+
+  <div class="spec">7 · Locations · one office</div>
+  <div class="vp">
+    <section class="band bg-light" style="padding: 80px 0">
+      <div class="wrap stack g48">
+        <div class="stack g16"><span class="eyebrow">Locations</span><h2 class="h2">Visit us in Riverside</h2></div>
+        <div class="panel">
+          <article class="card" style="padding: 12px; display: grid; grid-template-columns: 1fr 1.15fr; gap: 12px">
+            <div class="stack g16" style="padding: 28px 28px 32px">
+              <h3 class="h3">Riverside office</h3>
+              <div class="drow"><span class="di"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg></span><address style="font-style: normal; padding-top: 6px">1200 Lakeview Parkway, Suite 210, Riverside, ST 00000</address></div>
+              <div class="drow" style="align-items: center"><span class="di"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"></path></svg></span><a href="tel:+15550100142" style="font-weight: 700; font-size: 20px">(555) 010-0142</a></div>
+              <div class="drow" style="align-items: center"><span class="di"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg></span><span>Mon – Thu 8 am – 5 pm · Fri 8 am – 12 pm</span></div>
+              <a class="link-arrow" href="#" style="align-self: flex-start">Get directions <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></a>
+            </div>
+            <div class="ph stone" style="border-radius: 12px; min-height: 340px"><span class="ph-label">Map · loads on tap</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="row-specs" style="margin-top: 12px"><p class="note">With one office, the card turns sideways: details left, map right. The H2 drops the second town.</p></div>
+
+  <div class="spec">8 · Latest posts hidden → page goes straight to the CTA (CTA without photo)</div>
+  <div class="hidden-slot">Latest posts: hidden (no posts yet). It takes no space; Locations is followed directly by the CTA.</div>
+  <div class="vp" style="padding-top: 24px">
+    <section class="cta solo" aria-labelledby="scta">
+      <div class="cta-act">
+        <div class="stack g16" style="max-width: 640px">
+          <h2 class="h2" id="scta">Take the first step toward better hearing</h2>
+          <p class="lead" style="color: var(--on-p)">Pretium tincidunt lacus nulla gravida orci a odio nullam varius turpis. Et commodo pharetra est eros bibendum elit.</p>
+        </div>
+        <div class="stack g12" style="align-items: flex-start; flex: none">
+          <a class="btn btn-inverse" href="#">Book appointment</a>
+          <a class="btn btn-ghost-on-p" href="tel:+15550100142">Call (555) 010-0142</a>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"primary":{"editor":"color","default":"#0F5E6B","options":["#0F5E6B","#1E3A5F","#2F5D3A"],"section":"Practice colors"},"accent":{"editor":"color","default":"#E0A33B","options":["#E0A33B","#E8735A","#C9A227"],"section":"Practice colors"},"light":{"editor":"color","default":"#F6F1EA","options":["#F6F1EA","#EEF3F8","#F7F4EC"],"section":"Practice colors"},"$preview":{"width":1440,"height":7600}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const P = this.props.primary ?? '#0F5E6B', A = this.props.accent ?? '#E0A33B', L = this.props.light ?? '#F6F1EA';
+    const hex = (h) => { h = String(h).replace('#', ''); if (h.length === 3) h = h.split('').map((c) => c + c).join(''); return h; };
+    const lum = (h) => { h = hex(h); const v = [0, 2, 4].map((i) => { const c = parseInt(h.substr(i, 2), 16) / 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); }); return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2]; };
+    const cr = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
+    const on = (c) => (cr(c, '#FFFFFF') >= cr(c, '#1B1F23') ? '#FFFFFF' : '#1B1F23');
+    const darken = (h, t) => '#' + [0, 2, 4].map((i) => Math.round(parseInt(hex(h).substr(i, 2), 16) * (1 - t)).toString(16).padStart(2, '0')).join('');
+    let ink = P; for (let t = 0.08; cr(ink, '#FFFFFF') < 4.5 && t < 0.9; t += 0.08) ink = darken(P, t);
+    const names = ['Phonak', 'Oticon', 'ReSound', 'Signia', 'Starkey', 'Widex', 'Unitron'];
+    const loop = [...names.map((name) => ({ name, ah: 'false' })), ...names.map((name) => ({ name, ah: 'true' }))];
+    const team = [
+      { name: 'Dr. Jordan Ellis, Au.D.', title: 'Owner and Audiologist', tone: 'warm' },
+      { name: 'Dr. Priya Raman, Au.D.', title: 'Audiologist', tone: 'sage' },
+      { name: 'Morgan Lee', title: 'Patient Care Coordinator', tone: 'sky' }
+    ];
+    const starsOnP = cr(A, P) >= 2 ? A : on(P);
+    return { P, A, L, onP: on(P), onA: on(A), onL: on(L), pInk: ink, loop, team, starsOnP };
+  }
+}
+</script>
+</body>
+</html>

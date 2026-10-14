@@ -1,0 +1,74 @@
+---
+// Top-level menu items for the desktop headers. Services and Hearing aids open a
+// dropdown (a grey panel holding a white list). Dropdown links are built from the
+// records that have their own page, so a page switched on joins the menu.
+import { brands, routes, services } from "../data/practice";
+import { getSettings } from "../lib/settings";
+import Icon from "./Icon.astro";
+
+type Key = "services" | "hearing-aids" | "about" | "resources" | "blog" | "contact";
+interface Props {
+	items?: Key[];
+	current?: Key;
+}
+const { items = ["services", "hearing-aids", "about", "resources", "blog", "contact"], current } = Astro.props;
+const s = getSettings(Astro.url);
+
+const menus = {
+	services: {
+		label: "Services",
+		links: services.filter((x) => x.hasPage).map((x) => ({ label: x.navLabel, href: routes.service(x.slug) })),
+		all: { label: "All services", href: routes.services },
+	},
+	"hearing-aids": {
+		label: "Hearing aids",
+		links: brands.filter((b) => b.hasPage).map((b) => ({ label: `${b.name} hearing aids`, href: routes.brand(b.slug) })),
+		all: { label: "All hearing aids", href: routes.hearingAids },
+	},
+} as const;
+
+const plain = {
+	about: { label: "About", href: routes.about },
+	resources: { label: "Resources", href: routes.resources },
+	blog: { label: "Blog", href: routes.blog },
+	contact: { label: "Contact", href: routes.contact },
+} as const;
+---
+{
+	items.map((key) =>
+		key === "services" || key === "hearing-aids" ? (
+			<li data-dd>
+				<button
+					class:list={["nav-link", { "is-current": current === key }]}
+					aria-expanded="false"
+					aria-controls={`dd-${key}`}
+					aria-current={current === key ? "true" : undefined}
+				>
+					{menus[key].label} <Icon name="chevD" size={18} />
+				</button>
+				<div class="dd" id={`dd-${key}`} hidden>
+					<ul class="dd-inner">
+						{menus[key].links.map((l) => (
+							<li>
+								<a href={s.href(l.href)}>
+									{l.label} <Icon name="arrowR" size={18} />
+								</a>
+							</li>
+						))}
+					</ul>
+					<div class="dd-foot">
+						<a class="link-arrow" href={s.href(menus[key].all.href)} style="font-size: 17px">
+							{menus[key].all.label} <Icon name="arrowR" size={18} />
+						</a>
+					</div>
+				</div>
+			</li>
+		) : (
+			<li>
+				<a class="nav-link" href={s.href(plain[key].href)} aria-current={current === key ? "page" : undefined}>
+					{plain[key].label}
+				</a>
+			</li>
+		),
+	)
+}

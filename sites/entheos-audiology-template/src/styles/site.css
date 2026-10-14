@@ -1,0 +1,209 @@
+/* Site layer on top of the design's d1.css.
+   What lives here: things the design boards did with inline styles or board
+   scaffolding (phone frames, "state" toggles) that a real page needs as CSS,
+   the header breakpoint, the tablet step (768 to 1023 px, not designed yet:
+   only patterns already in the design are used), and the Review controls extras.
+   Breakpoints: phone layout up to 1023px (from the design), tablet tweaks
+   from 640px, desktop header from 1280px (the default H3 needs that width). */
+
+body { margin: 0; }
+.d1 { --r-hero: 28px; }
+[hidden] { display: none !important; }
+.d1.page { min-width: 0; }
+.skip { position: absolute; left: 12px; top: -80px; z-index: 50; background: #fff; color: var(--ink); padding: 12px 18px; border-radius: 12px; font-weight: 700; }
+.skip:focus { top: 12px; }
+
+/* Keyboard focus: the design's 3px outline everywhere a component doesn't set its own. */
+.d1 :where(a, button, input, select, textarea, [tabindex]):focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+.d1 :where(.cta-act, .fx.dark, .on-p-text, .hhero.prim) :where(a, button):focus-visible { outline-color: var(--on-p); }
+.d1 :where(.on-dark, .trust.on-photo) :where(a, button):focus-visible { outline-color: #fff; }
+
+/* Icons that swap with state: open shows .i-open, expanded shows .i-close. */
+.i-open, .i-close { display: inline-grid; place-items: center; }
+[aria-expanded="false"] .i-close, [aria-expanded="true"] .i-open { display: none; }
+
+/* ---------- header ---------- */
+.hd-mob { display: none; }
+@media (max-width: 1279px) {
+	.hd-desk { display: none; }
+	.hd-mob { display: block; }
+}
+.nav-link.is-current, .nav-link[aria-current] { background: var(--panel); }
+.dd-inner a svg { opacity: 0; transition: opacity .15s; }
+.dd-inner a:hover svg, .dd-inner a:focus-visible svg { opacity: 1; }
+.dd { z-index: 20; }
+.mmenu { position: relative; z-index: 4; }
+.hd-mob .hdr, .hd-mob .hx-pill, .hd-mob .hx-mbar, .hd-mob .hx-mgrid { gap: 8px; }
+
+/* Uploaded logo (Review controls). */
+.logo.has-upload img { display: block; width: auto; height: auto; max-height: 56px; max-width: 240px; }
+body[data-lshape="stacked"] .logo.has-upload img { max-height: 96px; max-width: 160px; }
+
+/* ---------- utilities ---------- */
+.only-m { display: none !important; }
+@media (max-width: 1023px) {
+	.only-d { display: none !important; }
+	.only-m { display: flex !important; }
+	.btn.only-m { display: inline-flex !important; }
+}
+
+/* ---------- home hero ---------- */
+.hhero .hmedia > .ph { position: absolute; inset: 0; border-radius: 0; }
+.hhero .h-bottom { position: absolute; inset: auto 0 0 0; height: 240px; background: linear-gradient(to top, rgba(12, 14, 16, .5), transparent); }
+.hhero .ex-fill { position: absolute; inset: 0; }
+.hhero .ex-img { position: absolute; top: 0; bottom: 0; right: 0; left: 33.333%; width: 66.667%; height: 100%; object-fit: cover; object-position: 50% 30%; max-width: none; }
+.hhero .ex-fade { position: absolute; top: 0; bottom: 0; left: 33.2%; width: 30%; }
+.hhero .trust { z-index: 4; }
+.hhero .shape { border-style: solid; }
+.hhero .hcontent .lead { opacity: .92; }
+.btn-on-photo { background: transparent; color: #fff; border-color: #fff; }
+.btn-on-photo:hover { background: rgba(255, 255, 255, .14); }
+
+@media (min-width: 1024px) {
+	.hhero .hmedia { position: absolute; inset: 0; }
+	.hhero.is-photo { min-height: 720px; }
+	.hhero.prim, .hhero.light { min-height: 660px; }
+	.hhero .hcontent { padding-bottom: 200px; }
+	.hhero.is-photo .hcontent { padding-top: 132px; }
+	.hhero.prim .hcontent, .hhero.light .hcontent { padding-top: 112px; }
+	.hhero.is-photo .hcontent .h1 { font-size: 60px; max-width: 900px; }
+	.hhero.prim .hcontent .h1, .hhero.light .hcontent .h1 { font-size: 68px; max-width: 900px; }
+	.hhero[data-v="example"] .hcontent .h1 { max-width: 620px; }
+	.hhero .hcontent .lead { max-width: 600px; }
+	.hhero[data-v="example"] .hcontent .lead { max-width: 520px; }
+	.hhero .shape.s1 { width: 780px; height: 780px; right: -170px; top: -280px; border-width: 76px; }
+	.hhero .shape.s2 { width: 340px; height: 340px; right: 300px; top: 300px; border-width: 44px; }
+}
+
+@media (max-width: 1023px) {
+	/* phone: photo first with the trust bar on it, text underneath on white */
+	.hhero.is-photo { background: none; color: var(--ink); overflow: visible; border-radius: 0; }
+	.hhero.is-photo .hmedia { position: relative; aspect-ratio: 4 / 5; border-radius: 24px; overflow: hidden; }
+	.hhero.is-photo .scrim, .hhero .ex-fill, .hhero .ex-fade { display: none; }
+	.hhero .ex-img { left: 0; width: 100%; }
+	.hhero.is-photo .h-bottom { height: 55%; background: linear-gradient(to top, rgba(12, 14, 16, .55), transparent); }
+	.hhero .trust.on-photo { position: absolute; left: 8px; right: 8px; bottom: 8px; }
+	.hhero:not(.is-photo) .trust { margin: 0 8px 8px; }
+	.hhero.is-photo .hcontent { padding: 28px 4px 8px; }
+	.hhero.is-photo .hcontent.on-dark { color: var(--ink); }
+	.hhero.is-photo .hcontent .h1 { color: var(--ink); font-size: 38px; }
+	.hhero.is-photo .hcontent .lead { color: var(--mute); }
+	.hhero .btn-on-photo { background: #fff; color: var(--ink); border-color: var(--ink); }
+	.hhero .shape.s1 { width: 420px; height: 420px; right: -180px; top: -200px; border-width: 44px; }
+	.hhero .shape.s2 { display: none; }
+	.hero-btns { flex-direction: column; align-items: stretch; }
+	.hero-btns .btn { width: 100%; }
+}
+
+/* ---------- home sections ---------- */
+.rv-row { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+.review .rtext.is-open { -webkit-line-clamp: unset; display: block; overflow: visible; }
+.office-body { padding: 28px 20px 0; }
+.office-one { padding: 12px; display: grid; grid-template-columns: 1fr 1.15fr; gap: 12px; }
+.office-map { border-radius: 12px; min-height: 340px; }
+.ftr .fgrid.one { grid-template-columns: 1.25fr 1fr .9fr; }
+.fbadges { margin-top: 16px; flex-direction: row; align-items: center; justify-content: space-between; gap: 24px; padding: 20px 32px; }
+
+.cta-wrap { padding: 0 0 96px; }
+.cta-wrap.after-inset { padding-top: 96px; }
+
+@media (max-width: 1023px) {
+	.g-3, .g-4, .g-2:not(.facts) { grid-template-columns: 1fr; }
+	.facts .fact { padding: 16px; }
+	.facts .fact b { font-size: 26px; }
+	.rv-pager { display: none; }
+	.review .qmark { display: none; }
+	.office { padding: 10px 10px 24px !important; }
+	.office-body { padding: 20px 12px 0; }
+	.office-one { grid-template-columns: 1fr; }
+	.office-one > .stack { padding: 20px 12px 12px !important; }
+	.office-map { min-height: 0; aspect-ratio: 16 / 9; order: -1; }
+	.posts-grid { gap: 32px !important; }
+	.posts-grid .ptitle { font-size: 22px; }
+	.ftr .fgrid.one { grid-template-columns: 1fr; }
+	.fbadges { flex-direction: column; align-items: flex-start; padding: 20px; }
+	.cta-wrap { padding: 0 0 48px; }
+	.cta-wrap.after-inset { padding-top: 48px; }
+	.cta .cta-emo { order: -1; }
+	.cta-act .cta-btns { flex-direction: column; align-items: stretch !important; width: 100%; gap: 12px !important; }
+}
+
+/* ---------- service detail ---------- */
+.sd-hero { padding: 56px 0 72px; }
+.sd-hero-np { padding: 12px 0 0; }
+.sd-main { padding: 96px 0 112px; }
+.sd-main.after-photo { padding-top: 24px; }
+.inophoto .shape { border-style: solid; }
+.inophoto .shape.np1 { width: 620px; height: 620px; right: -140px; top: -210px; border-width: 64px; }
+.inophoto .shape.np2 { width: 300px; height: 300px; right: 140px; bottom: -180px; border-width: 40px; }
+.faq-grid { display: grid; grid-template-columns: 380px 1fr; gap: 64px; align-items: start; }
+.rv-slide .rtext { font-size: 18px; }
+
+@media (max-width: 1023px) {
+	.d1 { --r-hero: 24px; }
+	.sd-hero { padding: 28px 0 8px; }
+	.sd-main, .sd-main.after-photo { padding: 40px 0 48px; }
+	.sd-faq { padding-top: 40px !important; }
+	.faq-grid { grid-template-columns: 1fr; gap: 24px; }
+	.inophoto .shape.np1 { width: 360px; height: 360px; right: -160px; top: -160px; border-width: 40px; }
+	.inophoto .shape.np2 { display: none; }
+	.side-layout .sidebar.sticky { position: static; }
+}
+
+/* ---------- tablet step (640 to 1023 px): two columns where the design has three or more ---------- */
+@media (min-width: 640px) and (max-width: 1023px) {
+	.d1 .wrap { padding: 0 32px; }
+	.g-3, .g-4, .g-2:not(.facts) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+	.grid.g-3 > :last-child:nth-child(odd), .grid.g-2 > :last-child:nth-child(odd) { grid-column: 1 / -1; }
+	.team-grid, .posts-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+	.grid.team-grid > :last-child:nth-child(odd), .grid.posts-grid > :last-child:nth-child(odd) { grid-column: auto; }
+	.posts-grid { gap: 20px !important; }
+	.posts-grid .ptitle { font-size: 21px; }
+	.d1 .brandtile { flex-basis: calc((100% - 24px) / 3); }
+	.hhero.is-photo .hmedia { aspect-ratio: 16 / 10; }
+	.hero-btns { flex-direction: row; align-items: center; }
+	.hero-btns .btn { width: auto; }
+	.office-one { grid-template-columns: 1fr 1fr; }
+	.office-map { aspect-ratio: auto; min-height: 280px; order: 0; }
+	.d1 .cta-act { padding: 48px 40px; }
+	.cta-act .cta-btns { flex-direction: row; width: auto; }
+	.d1 .cta-act .btn { width: auto; }
+	.side-layout .sidebar { display: grid; grid-template-columns: 1fr 1fr; align-items: start; }
+	.d1 .ftr .fgrid, .d1 .ftr .fgrid.one { grid-template-columns: 1fr 1fr; }
+	.d1 .fx-in.fx-f1, .d1 .fx-in.fx-f4, .d1 .fx-in.fx-f6 { grid-template-columns: 1fr 1fr; }
+	.d1 .fx-f6 .fx-2col { grid-template-columns: 1fr 1fr; }
+}
+
+/* ---------- review controls extras ---------- */
+.rc { max-width: calc(100vw - 24px); }
+.rc .rc-body { scrollbar-width: thin; }
+.rc .i-open, .rc .i-close { display: inline-grid; }
+.rc .rc-head[aria-expanded="false"] .i-open, .rc .rc-head[aria-expanded="true"] .i-close { display: none; }
+.rc .rc-head[aria-expanded="false"] .i-close { display: inline-grid; }
+.rc-colors { display: flex; gap: 10px; }
+.rc-colors label { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 13px; flex: 1; font-weight: 700; }
+.rc-colors input { width: 100%; height: 36px; border: 2px solid #C8C8C3; border-radius: 10px; padding: 2px; background: #fff; }
+.rc-field input[type="text"] { min-height: 40px; border-radius: 10px; border: 2px solid #C8C8C3; background: #fff; padding: 0 10px; font: 400 15px var(--bf); color: #1B1F23; }
+.rc-contrast { display: flex; flex-direction: column; gap: 2px; font-size: 13px; line-height: 1.35; }
+.rc-contrast .ok { color: #1F6B3A; }
+.rc-contrast .bad { color: #B42318; font-weight: 700; }
+.rc-note { font-size: 13px; font-weight: 400; color: #5E646B; line-height: 1.35; }
+.rc-note code { font-size: 12px; }
+.rc-logo { display: flex; gap: 8px; }
+.rc-upload, .rc-mini { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 14px; border-radius: 999px; border: 2px solid #C8C8C3; background: #fff; font: 700 14px var(--bf); color: #1B1F23; cursor: pointer; }
+.rc-upload:focus-within { outline: 3px solid #1B1F23; outline-offset: 2px; }
+@media (max-width: 1023px) {
+	.rc { right: 12px; bottom: 12px; width: min(320px, calc(100vw - 24px)); }
+}
+
+/* phone fixes found in the browser check */
+@media (max-width: 1023px) {
+	.hhero .trust .rating { order: -1; }
+	.d1 .brands { gap: 10px; }
+	.d1 .brandtile { flex-basis: calc((100% - 10px) / 2); }
+	.brandtile .lbox { width: auto; max-width: 100%; padding: 0 14px; }
+	.brandtile .lbox img { max-width: 100% !important; }
+}
+
+/* V2: the utility bar's "color: inherit" link rule was turning the Book button's text dark. */
+.hx-util a.btn-primary { color: var(--on-p); }

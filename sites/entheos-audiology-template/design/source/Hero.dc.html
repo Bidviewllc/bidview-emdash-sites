@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Interior page hero</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./d1.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>body{margin:0}</style>
+</helmet>
+<div class="d1 sheet" style="min-height: 2800px; --p: {{P}}; --a: {{A}}; --l: {{L}}; --on-p: {{onP}}; --on-a: {{onA}}; --on-l: {{onL}}; --p-ink: {{pInk}}">
+  <div class="sheet-head">
+    <span class="eyebrow">Component 5</span>
+    <h1 class="sheet-title">Page hero (interior pages)</h1>
+    <p class="sheet-sub">The editor picks photo or no-photo per page. Breadcrumb, intro and buttons are optional; with all of them switched off the hero still holds its shape.</p>
+  </div>
+
+  <div class="spec">Photo version · desktop</div>
+  <div class="vp">
+    <section class="section" style="padding: 72px 0 96px">
+      <div class="wrap ihero">
+        <div class="stack g24">
+          <nav aria-label="Breadcrumb"><ol class="crumbs"><li><a href="#">Home</a></li><li class="sep" aria-hidden="true">/</li><li><a href="#">Services</a></li><li class="sep" aria-hidden="true">/</li><li aria-current="page">Tinnitus care</li></ol></nav>
+          <h1 class="h1">Tinnitus care for ringing that won’t quit</h1>
+          <p class="lead">We find out what’s behind the sound, then build a plan to make it bother you less, day and night.</p>
+          <div class="rowf" style="gap: 12px; margin-top: 8px">
+            <a class="btn btn-primary" href="#">Book appointment</a>
+            <a class="btn btn-secondary" href="tel:+15550100142">Call (555) 010-0142</a>
+          </div>
+        </div>
+        <div class="ph warm"><span class="ph-label">Page hero photo · 3:2 (or 16:9), landscape only</span></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="spec">No-photo version · Light background</div>
+  <div class="vp" style="padding: 24px 0">
+    <section class="inophoto bg-light">
+      <div class="shape" style="width: 620px; height: 620px; right: -140px; top: -210px; border: 64px solid color-mix(in srgb, var(--p) 7%, transparent)"></div>
+      <div class="shape" style="width: 300px; height: 300px; right: 140px; bottom: -180px; border: 40px solid color-mix(in srgb, var(--a) 14%, transparent)"></div>
+      <div class="wrap">
+        <div class="stack g24" style="max-width: 820px">
+          <nav aria-label="Breadcrumb"><ol class="crumbs"><li><a href="#">Home</a></li><li class="sep" aria-hidden="true">/</li><li><a href="#">Services</a></li><li class="sep" aria-hidden="true">/</li><li aria-current="page">Tinnitus care</li></ol></nav>
+          <h1 class="h1 xl">Tinnitus care for ringing that won’t quit</h1>
+          <p class="lead" style="color: var(--on-l); opacity: .82; max-width: 680px">We find out what’s behind the sound, then build a plan to make it bother you less, day and night.</p>
+          <div class="rowf" style="gap: 12px; margin-top: 8px">
+            <a class="btn btn-primary" href="#">Book appointment</a>
+            <a class="btn btn-secondary" href="tel:+15550100142">Call (555) 010-0142</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="spec">No-photo version · Primary background</div>
+  <div class="vp" style="padding: 24px 0">
+    <section class="inophoto on-p-text" style="background: var(--p); color: var(--on-p)">
+      <div class="shape" style="width: 620px; height: 620px; right: -140px; top: -210px; border: 64px solid color-mix(in srgb, var(--on-p) 8%, transparent)"></div>
+      <div class="shape" style="width: 300px; height: 300px; right: 140px; bottom: -180px; border: 40px solid color-mix(in srgb, var(--on-p) 6%, transparent)"></div>
+      <div class="wrap">
+        <div class="stack g24" style="max-width: 820px">
+          <nav aria-label="Breadcrumb"><ol class="crumbs"><li><a href="#">Home</a></li><li class="sep" aria-hidden="true">/</li><li aria-current="page">About us</li></ol></nav>
+          <h1 class="h1 xl" style="color: var(--on-p)">A small practice that knows you by name</h1>
+          <p class="lead" style="color: var(--on-p); opacity: .9; max-width: 680px">Lakeview Hearing Center has cared for Riverside families since [YEAR OPENED].</p>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="row-specs" style="margin-top: 12px">
+    <p class="note" style="max-width: 900px">No-photo heroes inset 12px from the screen edge so the 28px corners show. Two soft rings (Primary and Accent at under 15% strength) keep the panel from feeling empty; they never carry meaning and can be switched off. Shown here without buttons: the larger H1 holds the space on its own.</p>
+  </div>
+
+  <div class="spec">Mobile · photo, Light, Primary</div>
+  <div class="phones">
+    <div class="phone-col">
+      <div class="phone m">
+        <section class="section" style="padding: 28px 0 40px">
+          <div class="wrap ihero">
+            <div class="stack g16">
+              <nav aria-label="Breadcrumb"><ol class="crumbs"><li><a href="#">Home</a></li><li class="sep" aria-hidden="true">/</li><li><a href="#">Services</a></li><li class="sep" aria-hidden="true">/</li><li aria-current="page">Tinnitus care</li></ol></nav>
+              <h1 class="h1">Tinnitus care for ringing that won’t quit</h1>
+              <p class="lead">We find out what’s behind the sound, then build a plan to make it bother you less.</p>
+              <div class="stack g12" style="margin-top: 4px">
+                <a class="btn btn-primary block" href="#">Book appointment</a>
+                <a class="btn btn-secondary block" href="tel:+15550100142">Call (555) 010-0142</a>
+              </div>
+            </div>
+            <div class="ph warm"><span class="ph-label">Hero photo · 3:2</span></div>
+          </div>
+        </section>
+      </div>
+      <span class="note">Text first, photo below and still landscape. Buttons go full width.</span>
+    </div>
+    <div class="phone-col">
+      <div class="phone m" style="padding: 12px 0">
+        <section class="inophoto bg-light" style="margin: 0 12px">
+          <div class="shape" style="width: 300px; height: 300px; right: -120px; top: -110px; border: 36px solid color-mix(in srgb, var(--p) 7%, transparent)"></div>
+          <div class="wrap">
+            <div class="stack g16">
+              <nav aria-label="Breadcrumb"><ol class="crumbs"><li><a href="#">Home</a></li><li class="sep" aria-hidden="true">/</li><li aria-current="page">Tinnitus care</li></ol></nav>
+              <h1 class="h1 xl">Tinnitus care for ringing that won’t quit</h1>
+              <p class="lead" style="color: var(--on-l); opacity: .82">We find out what’s behind the sound, then build a plan to make it bother you less.</p>
+              <a class="btn btn-primary block" href="#" style="margin-top: 4px">Book appointment</a>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+    <div class="phone-col">
+      <div class="phone m" style="padding: 12px 0">
+        <section class="inophoto on-p-text" style="margin: 0 12px; background: var(--p); color: var(--on-p)">
+          <div class="shape" style="width: 300px; height: 300px; right: -120px; top: -110px; border: 36px solid color-mix(in srgb, var(--on-p) 8%, transparent)"></div>
+          <div class="wrap">
+            <div class="stack g16">
+              <nav aria-label="Breadcrumb"><ol class="crumbs"><li><a href="#">Home</a></li><li class="sep" aria-hidden="true">/</li><li aria-current="page">About us</li></ol></nav>
+              <h1 class="h1 xl" style="color: var(--on-p)">A small practice that knows you by name</h1>
+              <p class="lead" style="color: var(--on-p); opacity: .9">Lakeview Hearing Center has cared for Riverside families since [YEAR OPENED].</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"primary":{"editor":"color","default":"#0F5E6B","options":["#0F5E6B","#1E3A5F","#2F5D3A"],"section":"Practice colors"},"accent":{"editor":"color","default":"#E0A33B","options":["#E0A33B","#E8735A","#C9A227"],"section":"Practice colors"},"light":{"editor":"color","default":"#F6F1EA","options":["#F6F1EA","#EEF3F8","#F7F4EC"],"section":"Practice colors"},"$preview":{"width":1440,"height":2800}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const P = this.props.primary ?? '#0F5E6B', A = this.props.accent ?? '#E0A33B', L = this.props.light ?? '#F6F1EA';
+    const hex = (h) => { h = String(h).replace('#', ''); if (h.length === 3) h = h.split('').map((c) => c + c).join(''); return h; };
+    const lum = (h) => { h = hex(h); const v = [0, 2, 4].map((i) => { const c = parseInt(h.substr(i, 2), 16) / 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); }); return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2]; };
+    const cr = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
+    const on = (c) => (cr(c, '#FFFFFF') >= cr(c, '#1B1F23') ? '#FFFFFF' : '#1B1F23');
+    const darken = (h, t) => '#' + [0, 2, 4].map((i) => Math.round(parseInt(hex(h).substr(i, 2), 16) * (1 - t)).toString(16).padStart(2, '0')).join('');
+    let ink = P; for (let t = 0.08; cr(ink, '#FFFFFF') < 4.5 && t < 0.9; t += 0.08) ink = darken(P, t);
+    return { P, A, L, onP: on(P), onA: on(A), onL: on(L), pInk: ink };
+  }
+}
+</script>
+</body>
+</html>

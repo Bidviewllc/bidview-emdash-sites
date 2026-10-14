@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Timeline</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./d1.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>body{margin:0}</style>
+</helmet>
+<div class="d1 sheet" style="min-height: 2300px; --p: {{P}}; --a: {{A}}; --l: {{L}}; --on-p: {{onP}}; --on-a: {{onA}}; --on-l: {{onL}}; --p-ink: {{pInk}}">
+  <div class="sheet-head">
+    <span class="eyebrow">Component 18</span>
+    <h1 class="sheet-title">Timeline</h1>
+    <p class="sheet-sub">Four white milestone cards in a gray panel, each topped with a Primary year bar. Grid version beside the heading, or a horizontal row under it.</p>
+  </div>
+
+  <div class="spec">Grid version · 2 × 2</div>
+  <div class="vp">
+    <section class="section" style="padding: 24px 0 0">
+      <div class="wrap" style="display: grid; grid-template-columns: 5fr 6fr; gap: 80px; align-items: center">
+        <div class="stack g24">
+          <span class="eyebrow">Our journey</span>
+          <h2 class="h2">Caring for Riverside’s hearing since 2009</h2>
+          <p class="lead">From a two-room office to two locations, the same idea has guided us: take the time to listen.</p>
+        </div>
+        <div class="panel grid g-2">
+          <sc-for list="{{ms}}" as="m" hint-placeholder-count="4">
+            <div class="ms"><div class="yr">{{m.y}}</div><p>{{m.t}}</p></div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="spec">Horizontal version · reads left to right</div>
+  <div class="vp">
+    <section class="section" style="padding: 24px 0 0">
+      <div class="wrap stack g48">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: end">
+          <div class="stack g16"><span class="eyebrow">Our journey</span><h2 class="h2">Caring for Riverside’s hearing since 2009</h2></div>
+          <p class="lead">From a two-room office to two locations, the same idea has guided us: take the time to listen.</p>
+        </div>
+        <ol class="panel grid g-4" style="list-style: none; margin: 0">
+          <sc-for list="{{ms}}" as="m" hint-placeholder-count="4">
+            <li class="ms"><div class="yr">{{m.y}}</div><p>{{m.t}}</p></li>
+          </sc-for>
+        </ol>
+      </div>
+    </section>
+  </div>
+  <div class="row-specs" style="margin-top: 16px"><p class="note" style="max-width: 900px">Year bars use Primary with the automatic on-color. Milestones are an ordered list, so screen readers announce “1 of 4”. Three to six milestones work; with more than four, the horizontal row wraps to a second line.</p></div>
+
+  <div class="spec">Mobile · one column</div>
+  <div class="phones">
+    <div class="phone-col">
+      <div class="phone m">
+        <section class="section" style="padding: 40px 0">
+          <div class="wrap stack g24">
+            <div class="stack g12"><span class="eyebrow">Our journey</span><h2 class="h2">Caring for Riverside’s hearing since 2009</h2><p class="lead">The same idea has guided us from the start: take the time to listen.</p></div>
+            <ol class="panel grid" style="list-style: none; margin: 0">
+              <sc-for list="{{ms}}" as="m" hint-placeholder-count="4">
+                <li class="ms"><div class="yr" style="font-size: 23px; min-height: 48px">{{m.y}}</div><p>{{m.t}}</p></li>
+              </sc-for>
+            </ol>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"primary":{"editor":"color","default":"#0F5E6B","options":["#0F5E6B","#1E3A5F","#2F5D3A"],"section":"Practice colors"},"accent":{"editor":"color","default":"#E0A33B","options":["#E0A33B","#E8735A","#C9A227"],"section":"Practice colors"},"light":{"editor":"color","default":"#F6F1EA","options":["#F6F1EA","#EEF3F8","#F7F4EC"],"section":"Practice colors"},"$preview":{"width":1440,"height":2300}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const P = this.props.primary ?? '#0F5E6B', A = this.props.accent ?? '#E0A33B', L = this.props.light ?? '#F6F1EA';
+    const hex = (h) => { h = String(h).replace('#', ''); if (h.length === 3) h = h.split('').map((c) => c + c).join(''); return h; };
+    const lum = (h) => { h = hex(h); const v = [0, 2, 4].map((i) => { const c = parseInt(h.substr(i, 2), 16) / 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); }); return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2]; };
+    const cr = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
+    const on = (c) => (cr(c, '#FFFFFF') >= cr(c, '#1B1F23') ? '#FFFFFF' : '#1B1F23');
+    const darken = (h, t) => '#' + [0, 2, 4].map((i) => Math.round(parseInt(hex(h).substr(i, 2), 16) * (1 - t)).toString(16).padStart(2, '0')).join('');
+    let ink = P; for (let t = 0.08; cr(ink, '#FFFFFF') < 4.5 && t < 0.9; t += 0.08) ink = darken(P, t);
+    const ms = [
+      { y: '2009', t: 'Dr. Jordan Ellis opens Lakeview Hearing Center in a two-room office on Lakeview Parkway.' },
+      { y: '2014', t: 'Dr. Priya Raman joins, and we begin offering dedicated tinnitus care.' },
+      { y: '2019', t: 'Our second office opens in Northfield, two days a week, for patients who live north of the river.' },
+      { y: '2024', t: 'We move to a larger suite with a quiet, step-free waiting room and two new sound booths.' }
+    ];
+    return { P, A, L, onP: on(P), onA: on(A), onL: on(L), pInk: ink, ms };
+  }
+}
+</script>
+</body>
+</html>

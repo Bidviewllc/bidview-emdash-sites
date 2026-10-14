@@ -1,0 +1,298 @@
+---
+// Page 1 · Home (boards Home1 + Home2, HomeMobile, HomeStates).
+// Hero with trust bar → about teaser → providers → services → brands →
+// reviews → locations → latest posts → CTA.
+import CtaBand from "../components/CtaBand.astro";
+import HomeHero from "../components/HomeHero.astro";
+import Headshot from "../components/Headshot.astro";
+import Icon from "../components/Icon.astro";
+import type { Tweak } from "../components/ReviewControls.astro";
+import Stars from "../components/Stars.astro";
+import { brands, posts, practice, providers, reviews, routes, services, telHref } from "../data/practice";
+import Base from "../layouts/Base.astro";
+import { getSettings } from "../lib/settings";
+
+const tweaks: Tweak[] = [
+	{ key: "about", label: "“Read our story” link", type: "bool", default: true },
+	{ key: "provlinks", label: "Provider profiles linked", type: "bool", default: true },
+	{ key: "svclinks", label: "Service “Learn more”", type: "choice", default: "mixed", options: [["mixed", "Mixed (pages that exist)"], ["all", "All cards"], ["none", "None"]] },
+	{ key: "sample", label: "Sample card with photo", type: "bool", default: false },
+	{ key: "brandlinks", label: "Brand tiles", type: "choice", default: "mixed", options: [["mixed", "Mixed (pages that exist)"], ["all", "All linked"], ["none", "All plain"]] },
+	{ key: "revlink", label: "“Read more reviews” link", type: "bool", default: true },
+	{ key: "posts", label: "Latest posts", type: "bool", default: true },
+];
+
+const s = getSettings(Astro.url);
+const h = s.href;
+const aboutLink = s.bool("about", true);
+const provLinked = s.bool("provlinks", true);
+const svcLinks = s.choice("svclinks", ["mixed", "all", "none"], "mixed");
+const sample = s.bool("sample", false);
+const brandLinks = s.choice("brandlinks", ["mixed", "all", "none"], "mixed");
+const revLink = s.bool("revlink", true);
+const showPosts = s.bool("posts", true);
+
+const svc = services.filter((x) => !x.hideFromHub).map((x) => ({ ...x, linked: svcLinks === "all" ? true : svcLinks === "none" ? false : x.hasPage }));
+const brandTiles = brands.map((b) => ({ ...b, linked: brandLinks === "all" ? true : brandLinks === "none" ? false : b.hasPage }));
+const team = providers.map((p) => ({ ...p, linked: provLinked && p.hasPage }));
+const two = s.officeCount === 2;
+const city = practice.city;
+---
+<Base
+	title={`${s.name} | Audiologists in ${city}`}
+	description={practice.tagline}
+	pageName="Home"
+	tweaks={tweaks}
+	heroDefault="photo"
+>
+	<HomeHero />
+
+	<section class="band">
+		<div class="wrap about">
+			<div class="ph stone"><span class="ph-label">Team photo · 3:2</span></div>
+			<div class="stack g24">
+				<span class="eyebrow">About us</span>
+				<h2 class="h2">A locally owned practice in {city}</h2>
+				<p class="body">Nostrud exercitation ullamco laboris nisi ut aliquip ex ea. Commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum. Dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt. Mollit anim id est laborum curabitur pretium tincidunt lacus nulla. Gravida orci a odio nullam varius turpis et commodo pharetra est eros bibendum elit. Nec luctus magna felis sollicitudin mauris integer in mauris eu nibh euismod.</p>
+				<div class="panel grid g-2 facts" style="--pad: 12px">
+					<div class="fact"><b>{practice.years}</b><span>caring for {city}</span></div>
+					<div class="fact"><b>Au.D.</b><span>Doctors of Audiology on staff</span></div>
+				</div>
+				{aboutLink && <a class="link-arrow" href={h(routes.about)} style="align-self: flex-start">Read our story <Icon name="arrowR" size={18} /></a>}
+			</div>
+		</div>
+	</section>
+
+	<section class="band bg-light">
+		<div class="wrap stack g48">
+			<div class="stack g16 text-col">
+				<span class="eyebrow">Our team</span>
+				<h2 class="h2">Meet your hearing care team</h2>
+				<p class="lead">Eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi.</p>
+			</div>
+			<div class="grid g-3 team-grid" style="gap: 16px">
+				{
+					team.map((p) =>
+						p.linked ? (
+							<a class="prov" href={h(routes.provider(p.slug))} aria-label={p.meet}>
+								<span class="arrow" aria-hidden="true"><Icon name="arrowUR" /></span>
+								<div class="who"><h3 class="pname">{p.name}</h3><span class="ptitle">{p.title}</span></div>
+								<Headshot tone={p.tone} />
+							</a>
+						) : (
+							<div class="prov">
+								<div class="who" style="padding-right: 10px"><h3 class="pname">{p.name}</h3><span class="ptitle">{p.title}</span></div>
+								<Headshot tone={p.tone} />
+							</div>
+						),
+					)
+				}
+			</div>
+		</div>
+	</section>
+
+	<section class="band">
+		<div class="wrap stack g48">
+			<div class="stack g16" style="max-width: 760px">
+				<span class="eyebrow">Services</span>
+				<h2 class="h2">Hearing care services in {city}</h2>
+				<p class="lead">Ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum. Dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non. Proident sunt in.</p>
+			</div>
+			<div class="stack g24">
+				<div class="panel grid g-3">
+					{
+						svc.map((x) => (
+							<article class="card">
+								<h3 class="h3">{x.name}</h3>
+								<p class="muted">{x.summary}</p>
+								{x.linked && (
+									<div class="actions">
+										<a class="btn btn-gray sm" href={h(routes.service(x.slug))}>Learn more<span class="sr"> about {x.name}</span></a>
+									</div>
+								)}
+							</article>
+						))
+					}
+				</div>
+				<a class="link-arrow" href={h(routes.services)} style="align-self: flex-start">View all services <Icon name="arrowR" size={18} /></a>
+			</div>
+			{
+				sample && (
+					<div class="stack g12" style="max-width: 400px">
+						<span class="state-label">Card with optional photo (sample, not part of the grid)</span>
+						<div class="panel">
+							<article class="card">
+								<div class="ph sage" style="aspect-ratio: 4/3"><span class="ph-label">Service card image · 4:3</span></div>
+								<h3 class="h3" style="margin-top: 8px">{services[0].name}</h3>
+								<p class="muted">{services[0].summary}</p>
+								<div class="actions"><a class="btn btn-gray sm" href={h(routes.service(services[0].slug))}>Learn more<span class="sr"> about {services[0].name}</span></a></div>
+							</article>
+						</div>
+					</div>
+				)
+			}
+		</div>
+	</section>
+
+	<section class="band bg-light">
+		<div class="wrap stack g48">
+			<div class="stack g16" style="max-width: 760px">
+				<span class="eyebrow">Hearing aids</span>
+				<h2 class="h2">Hearing aid brands we fit and service</h2>
+				<p class="lead">Anim id est laborum curabitur pretium tincidunt lacus nulla gravida orci a odio. Nullam varius turpis et commodo pharetra est eros bibendum elit nec luctus magna felis sollicitudin mauris integer. In mauris eu nibh euismod.</p>
+			</div>
+			<div class="panel" style="--pad: 12px">
+				<ul class="brands" style="list-style: none; margin: 0; padding: 0">
+					{
+						brandTiles.map((b) => (
+							<li style="display: contents">
+								{b.linked ? (
+									<a class="brandtile" href={h(routes.brand(b.slug))}>
+										<span class="go" aria-hidden="true"><Icon name="arrowUR" size={14} /></span>
+										<span class="lbox"><img src={b.logo} alt={b.name} style={`max-width: 160px; max-height: ${b.logoHeight}; width: auto; height: auto; display: block`} /></span>
+										<span class="sr"> hearing aids</span>
+									</a>
+								) : (
+									<div class="brandtile plain">
+										<span class="lbox"><img src={b.logo} alt={b.name} style={`max-width: 160px; max-height: ${b.logoHeight}; width: auto; height: auto; display: block`} /></span>
+									</div>
+								)}
+							</li>
+						))
+					}
+				</ul>
+			</div>
+		</div>
+	</section>
+
+	<section class="band">
+		<div class="wrap stack g48">
+			<div class="stack g16">
+				<span class="eyebrow">Reviews</span>
+				<h2 class="h2">What our patients say</h2>
+				<div class="rowf" style="gap: 12px">
+					<Stars size={24} />
+					<span class="lead" style="color: var(--ink)"><b>{practice.rating.score} out of 5</b> from {practice.rating.count} Google reviews</span>
+				</div>
+			</div>
+			<div class="stack g24" data-review-pager>
+				<div class="panel grid g-2">
+					{
+						reviews.map((r, i) => (
+							<figure class="card review" style="margin: 0" data-review={i} hidden={i > 1}>
+								<div style="display: flex; justify-content: space-between; align-items: flex-start">
+									<span class="qmark only-d" aria-hidden="true"><Icon name="quote" size={28} /></span>
+									<Stars label="5 out of 5 stars" />
+								</div>
+								<blockquote class="rtext" style="margin: 0">{r.text}</blockquote>
+								{r.long && <button class="readmore" type="button" aria-expanded="false">Read more</button>}
+								<figcaption class="rmeta" style="margin-top: auto; padding-top: 8px"><b>{r.name}</b><span>Google review</span><span aria-hidden="true">·</span><span>{r.date}</span></figcaption>
+							</figure>
+						))
+					}
+				</div>
+				<div class="rv-row">
+					<div class="rowf rv-pager" style="gap: 12px">
+						<button class="icon-btn" type="button" data-prev aria-label="Previous reviews" style="background: var(--panel); color: var(--ink)"><Icon name="arrowL" size={22} /></button>
+						<button class="icon-btn" type="button" data-next aria-label="Next reviews" style="background: var(--p); color: var(--on-p)"><Icon name="arrowR" size={22} /></button>
+						<span class="small muted" aria-live="polite" style="margin-left: 6px" data-page-label>1 of {Math.ceil(reviews.length / 2)}</span>
+					</div>
+					{revLink && <a class="link-arrow" href={h(routes.reviews)}>Read more reviews <Icon name="arrowR" size={18} /></a>}
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="band bg-light">
+		<div class="wrap stack g48">
+			<div class="stack g16"><span class="eyebrow">Locations</span><h2 class="h2">{two ? `Visit us in ${s.offices.map((o) => o.shortName).join(" and ")}` : `Visit us in ${s.offices[0].shortName}`}</h2></div>
+			{
+				two ? (
+					<div class="panel grid g-2">
+						{s.offices.map((o, i) => (
+							<article class="card office" style="padding: 12px 12px 32px; gap: 0">
+								<div class:list={["ph", i ? "sage" : "stone"]} style="aspect-ratio: 16/9; border-radius: 12px"><span class="ph-label">Map · loads on tap</span></div>
+								<div class="stack g16 office-body">
+									<h3 class="h3">{o.name}</h3>
+									<div class="drow"><span class="di"><Icon name="pin2" /></span><address style="font-style: normal; padding-top: 6px">{o.street}, {o.city}</address></div>
+									<div class="drow only-d" style="align-items: center"><span class="di"><Icon name="phone" /></span><a href={telHref(o.phone)} style="font-weight: 700; font-size: 20px">{o.phone}</a></div>
+									<div class="drow" style="align-items: center"><span class="di"><Icon name="clock" /></span><span>{o.hoursLine}</span></div>
+									<a class="btn btn-secondary block only-m" href={telHref(o.phone)}>Call {o.phone}</a>
+									<a class="link-arrow" href={o.mapsUrl} style="align-self: flex-start">Get directions <Icon name="arrowUR" size={18} /></a>
+								</div>
+							</article>
+						))}
+					</div>
+				) : (
+					<div class="panel">
+						<article class="card office-one">
+							<div class="stack g16" style="padding: 28px 28px 32px">
+								<h3 class="h3">{s.offices[0].name}</h3>
+								<div class="drow"><span class="di"><Icon name="pin2" /></span><address style="font-style: normal; padding-top: 6px">{s.offices[0].street}, {s.offices[0].city}</address></div>
+								<div class="drow" style="align-items: center"><span class="di"><Icon name="phone" /></span><a href={telHref(s.offices[0].phone)} style="font-weight: 700; font-size: 20px">{s.offices[0].phone}</a></div>
+								<div class="drow" style="align-items: center"><span class="di"><Icon name="clock" /></span><span>{s.offices[0].hoursLine}</span></div>
+								<a class="link-arrow" href={s.offices[0].mapsUrl} style="align-self: flex-start">Get directions <Icon name="arrowUR" size={18} /></a>
+							</div>
+							<div class="ph stone office-map"><span class="ph-label">Map · loads on tap</span></div>
+						</article>
+					</div>
+				)
+			}
+		</div>
+	</section>
+
+	{
+		showPosts && (
+			<section class="band">
+				<div class="wrap stack g48">
+					<div class="shead">
+						<div class="stack g16"><span class="eyebrow">Blog</span><h2 class="h2">From our audiologists</h2></div>
+						<a class="link-arrow" href={h(routes.blog)}>All posts <Icon name="arrowR" size={18} /></a>
+					</div>
+					<div class="grid g-3 posts-grid" style="gap: 32px">
+						{posts.map((p) => (
+							<a class="post" href={h(routes.post(p.slug))}>
+								<div class="img">
+									<div class:list={["ph", p.tone]} style="aspect-ratio: 16/9"><span class="ph-label tl">16:9</span></div>
+									<span class="badge" aria-hidden="true"><Icon name="arrowUR" size={22} /></span>
+								</div>
+								<span class="date">{p.date}</span>
+								<h3 class="ptitle">{p.title}</h3>
+								<p class="sum">{p.summary}</p>
+							</a>
+						))}
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	<div class:list={["cta-wrap", { "after-inset": !showPosts }]}>
+		<CtaBand id="hcta" heading="Take the first step toward better hearing" text="Pretium tincidunt lacus nulla gravida orci a odio nullam varius turpis. Et commodo pharetra est eros bibendum elit." />
+	</div>
+</Base>
+
+<script>
+	// Reviews: two at a time, with previous / next.
+	document.querySelectorAll<HTMLElement>("[data-review-pager]").forEach((box) => {
+		const cards = [...box.querySelectorAll<HTMLElement>("[data-review]")];
+		const pages = Math.ceil(cards.length / 2);
+		const label = box.querySelector<HTMLElement>("[data-page-label]")!;
+		let page = 0;
+		const show = () => {
+			cards.forEach((c, i) => (c.hidden = Math.floor(i / 2) !== page));
+			label.textContent = `${page + 1} of ${pages}`;
+		};
+		box.querySelector("[data-prev]")!.addEventListener("click", () => { page = (page - 1 + pages) % pages; show(); });
+		box.querySelector("[data-next]")!.addEventListener("click", () => { page = (page + 1) % pages; show(); });
+	});
+	// "Read more" opens the full review text.
+	document.querySelectorAll<HTMLButtonElement>(".readmore").forEach((btn) => {
+		btn.addEventListener("click", () => {
+			const text = btn.parentElement!.querySelector(".rtext")!;
+			const open = text.classList.toggle("is-open");
+			btn.setAttribute("aria-expanded", String(open));
+			btn.textContent = open ? "Show less" : "Read more";
+		});
+	});
+</script>

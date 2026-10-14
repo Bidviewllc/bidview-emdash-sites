@@ -1,0 +1,28 @@
+---
+// The demo practice logo: a round mark plus a two-line wordmark, drawn in code
+// so it follows the palette. "wide" sits the mark beside the name (H1 to H3
+// headers, landscape footers); "stacked" puts it above (V headers, vertical
+// footers). A logo uploaded in Review controls replaces it in this browser only.
+import { getSettings } from "../lib/settings";
+
+interface Props {
+	shape?: "wide" | "stacked";
+	/** Mark size in px. */
+	size?: number;
+}
+const { shape = "wide", size = 44 } = Astro.props;
+const s = getSettings(Astro.url);
+const [line1, line2] = s.wordmark;
+---
+<a class:list={["logo", { stk: shape === "stacked" }]} href={s.href("/")} aria-label={`${s.name}, home`} data-logo={shape}>
+	<svg viewBox="0 0 40 40" width={size} height={size} aria-hidden="true">
+		<circle cx="20" cy="20" r="20" style="fill: var(--lg-bg, var(--p))"></circle>
+		<path
+			d="M12 20v0M16 15.5v9M20 11v18M24 15.5v9M28 18.5v3"
+			style="stroke: var(--lg-fg, var(--on-p))"
+			stroke-width="2.6"
+			stroke-linecap="round"
+			fill="none"></path>
+	</svg>
+	<span class="lw"><b>{line1}</b>{line2 && <span>{line2}</span>}</span>
+</a>

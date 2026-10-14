@@ -1,0 +1,12 @@
+---
+// Headshot placeholder (4:5) with a silhouette, until real photos arrive.
+interface Props {
+	tone: string;
+	label?: string;
+}
+const { tone, label = "Headshot · 4:5" } = Astro.props;
+---
+<div class:list={["ph", tone]}>
+	<svg class="sil" viewBox="0 0 200 220" aria-hidden="true"><circle cx="100" cy="80" r="44" fill="currentColor"></circle><path d="M18 220c0-54 37-88 82-88s82 34 82 88z" fill="currentColor"></path></svg>
+	<span class="ph-label tl">{label}</span>
+</div>

@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Palette swap test</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./d1.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>body{margin:0}</style>
+</helmet>
+<div class="d1 sheet" style="min-height: 4200px; padding-top: 56px">
+  <div class="sheet-head">
+    <h1 class="sheet-title" style="font-size: 32px">Palette swap test</h1>
+    <p class="sheet-sub">The same Home hero and service grid with nothing changed except the three practice colors. Text on Primary and Accent is chosen automatically; panels, cards and type stay put.</p>
+  </div>
+
+  <sc-for list="{{pals}}" as="k" hint-placeholder-count="2">
+    <div class="d1" style="--p: {{k.P}}; --a: {{k.A}}; --l: {{k.L}}; --on-p: {{k.onP}}; --on-a: {{k.onA}}; --on-l: {{k.onL}}; --p-ink: {{k.pInk}}">
+      <div class="spec">{{k.label}}</div>
+      <div class="row-specs" style="gap: 12px; margin-bottom: 24px">
+        <span class="tag" style="background: {{k.P}}; color: {{k.onP}}">Primary {{k.P}}</span>
+        <span class="tag" style="background: {{k.A}}; color: {{k.onA}}">Accent {{k.A}}</span>
+        <span class="tag" style="background: {{k.L}}; color: {{k.onL}}; border: 1px solid #DCDCD8">Light {{k.L}}</span>
+      </div>
+      <div class="vp">
+        <header class="hdr">
+          <a class="logo" href="#" aria-label="Lakeview Hearing Center, home"><svg viewBox="0 0 40 40" width="44" height="44" aria-hidden="true"><circle cx="20" cy="20" r="20" style="fill: var(--p)"></circle><path d="M12 20v0M16 15.5v9M20 11v18M24 15.5v9M28 18.5v3" style="stroke: var(--on-p)" stroke-width="2.6" stroke-linecap="round" fill="none"></path></svg><span class="lw"><b>Lakeview</b><span>Hearing Center</span></span></a>
+          <nav aria-label="Main" style="margin: 0 auto">
+            <ul class="nav">
+              <li><button class="nav-link">Services <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></button></li>
+              <li><button class="nav-link">Hearing aids <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></button></li>
+              <li><a class="nav-link" href="#">About</a></li><li><a class="nav-link" href="#">Resources</a></li><li><a class="nav-link" href="#">Blog</a></li><li><a class="nav-link" href="#">Contact</a></li>
+            </ul>
+          </nav>
+          <div class="hdr-right">
+            <a class="tel" href="tel:+15550100142"><span class="ico"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"></path></svg></span>(555) 010-0142</a>
+            <a class="btn btn-primary" href="#">Book appointment</a>
+          </div>
+        </header>
+        <section class="hhero" style="min-height: 680px">
+          <div class="ph dark2"><span class="ph-label tr">Hero photo · 16:9</span></div>
+          <div class="scrim left"></div>
+          <div style="position: absolute; inset: auto 0 0 0; height: 240px; background: linear-gradient(to top, rgba(12,14,16,.5), transparent)"></div>
+          <div class="hcontent on-dark" style="padding: 120px 0 200px">
+            <h1 class="h1">Hearing care that starts with listening to you</h1>
+            <p class="lead" style="max-width: 560px">Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor.</p>
+            <div class="rowf" style="gap: 12px; margin-top: 8px">
+              <a class="btn btn-primary" href="#">Book appointment</a>
+              <a class="btn" href="tel:+15550100142" style="color: #fff; border-color: #fff">Call (555) 010-0142</a>
+            </div>
+          </div>
+          <div class="trust">
+            <div class="track"><ul class="marq" style="list-style: none; margin: 0" aria-label="Hearing aid brands we carry"><sc-for list="{{loop}}" as="b" hint-placeholder-count="14"><li class="tword" aria-hidden="{{b.ah}}">{{b.name}}</li></sc-for></ul></div>
+            <div class="rating"><b>Rated 4.9/5 from 210 Google reviews</b><div class="stars" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg></div></div>
+            <button class="pause" aria-label="Pause logo scrolling"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M9 5v14M15 5v14"></path></svg></button>
+          </div>
+        </section>
+        <section class="band bg-light" style="margin-top: 24px; padding: 88px 0">
+          <div class="wrap stack g48">
+            <div class="stack g16" style="max-width: 760px"><span class="eyebrow">Services</span><h2 class="h2">Hearing care services in Riverside</h2></div>
+            <div class="panel grid g-3">
+              <article class="card"><span class="tag">Most booked</span><h3 class="h3">Hearing Evaluations</h3><p class="muted">Culpa qui officia deserunt mollit anim id est laborum curabitur pretium tincidunt. Lacus nulla gravida orci a odio nullam varius.</p><div class="actions"><a class="btn btn-gray sm" href="#">Learn more</a></div></article>
+              <article class="card"><h3 class="h3">Hearing Aid Fittings</h3><p class="muted">Turpis et commodo pharetra est eros bibendum elit nec luctus magna felis sollicitudin mauris integer. In mauris eu nibh euismod.</p><div class="actions"><a class="btn btn-gray sm is-hover" href="#">Learn more</a></div></article>
+              <article class="card"><h3 class="h3">Ear Wax Removal</h3><p class="muted">Consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore. Et dolore magna aliqua ut enim ad minim veniam quis.</p></article>
+            </div>
+            <a class="link-arrow" href="#" style="align-self: flex-start">View all services <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+          </div>
+        </section>
+        <section class="cta solo" style="margin-top: 24px">
+          <div class="cta-act" style="padding: 56px 80px">
+            <h2 class="h2">Take the first step toward better hearing</h2>
+            <a class="btn btn-inverse" href="#" style="flex: none">Book appointment</a>
+          </div>
+        </section>
+      </div>
+    </div>
+  </sc-for>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":4400}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const hex = (h) => { h = String(h).replace('#', ''); if (h.length === 3) h = h.split('').map((c) => c + c).join(''); return h; };
+    const lum = (h) => { h = hex(h); const v = [0, 2, 4].map((i) => { const c = parseInt(h.substr(i, 2), 16) / 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); }); return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2]; };
+    const cr = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
+    const on = (c) => (cr(c, '#FFFFFF') >= cr(c, '#1B1F23') ? '#FFFFFF' : '#1B1F23');
+    const darken = (h, t) => '#' + [0, 2, 4].map((i) => Math.round(parseInt(hex(h).substr(i, 2), 16) * (1 - t)).toString(16).padStart(2, '0')).join('');
+    const mk = (label, P, A, L) => { let ink = P; for (let t = 0.08; cr(ink, '#FFFFFF') < 4.5 && t < 0.9; t += 0.08) ink = darken(P, t); return { label, P, A, L, onP: on(P), onA: on(A), onL: on(L), pInk: ink }; };
+    const pals = [mk('Navy / Coral / Pale blue', '#1E3A5F', '#E8735A', '#EEF3F8'), mk('Forest / Gold / Cream', '#2F5D3A', '#C9A227', '#F7F4EC')];
+    const names = ['Phonak', 'Oticon', 'ReSound', 'Signia', 'Starkey', 'Widex', 'Unitron'];
+    const loop = [...names.map((name) => ({ name, ah: 'false' })), ...names.map((name) => ({ name, ah: 'true' }))];
+    return { pals, loop };
+  }
+}
+</script>
+</body>
+</html>

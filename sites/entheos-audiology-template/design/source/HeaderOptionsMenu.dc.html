@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Header options, mobile menu open</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./d1.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>body{margin:0}</style>
+</helmet>
+<div class="d1 sheet" style="min-height: 4300px; --p: {{P}}; --a: {{A}}; --l: {{L}}; --on-p: {{onP}}; --on-a: {{onA}}; --on-l: {{onL}}; --p-ink: {{pInk}}">
+  <div class="sheet-head">
+    <span class="eyebrow">Headers &amp; footers</span>
+    <h1 class="sheet-title">Header options · mobile, menu open</h1>
+    <p class="sheet-sub">The open menu is the same nested panel for every header: parent items expand in place, with Book and Call at the bottom.</p>
+  </div>
+  <div class="phones" style="margin-top: 48px">
+    <div class="phone-col"><div class="phone"><dc-import name="SiteHeader" primary="{{P}}" accent="{{A}}" light="{{L}}" variant="H1 · Classic two-bar" mobile="{{true}}" menu-open="{{true}}" hint-size="390px,860px"></dc-import></div><span class="cont">H1 · Classic two-bar</span></div>
+    <div class="phone-col"><div class="phone"><dc-import name="SiteHeader" primary="{{P}}" accent="{{A}}" light="{{L}}" variant="H2 · Floating pill" mobile="{{true}}" menu-open="{{true}}" hint-size="390px,860px"></dc-import></div><span class="cont">H2 · Floating pill</span></div>
+    <div class="phone-col"><div class="phone"><dc-import name="SiteHeader" primary="{{P}}" accent="{{A}}" light="{{L}}" variant="H3 · Single row (current)" mobile="{{true}}" menu-open="{{true}}" hint-size="390px,860px"></dc-import></div><span class="cont">H3 · Single row (current)</span></div>
+    <div class="phone-col"><div class="phone"><dc-import name="SiteHeader" primary="{{P}}" accent="{{A}}" light="{{L}}" variant="V1 · Overhanging logo badge" mobile="{{true}}" menu-open="{{true}}" hint-size="390px,860px"></dc-import></div><span class="cont">V1 · Overhanging logo badge</span></div>
+    <div class="phone-col"><div class="phone"><dc-import name="SiteHeader" primary="{{P}}" accent="{{A}}" light="{{L}}" variant="V2 · Centered logo, split nav" mobile="{{true}}" menu-open="{{true}}" hint-size="390px,860px"></dc-import></div><span class="cont">V2 · Centered logo, split nav</span></div>
+    <div class="phone-col"><div class="phone"><dc-import name="SiteHeader" primary="{{P}}" accent="{{A}}" light="{{L}}" variant="V3 · Logo spans two tiers" mobile="{{true}}" menu-open="{{true}}" hint-size="390px,860px"></dc-import></div><span class="cont">V3 · Logo spans two tiers</span></div>
+    <div class="phone-col"><div class="phone"><dc-import name="SiteHeader" primary="{{P}}" accent="{{A}}" light="{{L}}" variant="V4 · Centered stack" mobile="{{true}}" menu-open="{{true}}" hint-size="390px,860px"></dc-import></div><span class="cont">V4 · Centered stack</span></div>
+    <div class="phone-col"><div class="phone"><dc-import name="SiteHeader" primary="{{P}}" accent="{{A}}" light="{{L}}" variant="V5 · Logo over menu, stacked actions" mobile="{{true}}" menu-open="{{true}}" hint-size="390px,860px"></dc-import></div><span class="cont">V5 · Logo over menu, stacked actions</span></div>
+    <div class="phone-col"><div class="phone"><dc-import name="SiteHeader" primary="{{P}}" accent="{{A}}" light="{{L}}" variant="V6 · Logo over menu, side-by-side actions" mobile="{{true}}" menu-open="{{true}}" hint-size="390px,860px"></dc-import></div><span class="cont">V6 · Logo over menu, side-by-side actions</span></div>
+    <div class="phone-col"><div class="phone"><dc-import name="SiteHeader" primary="{{P}}" accent="{{A}}" light="{{L}}" variant="V7 · Logo over menu, Book only" mobile="{{true}}" menu-open="{{true}}" hint-size="390px,860px"></dc-import></div><span class="cont">V7 · Logo over menu, Book only</span></div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"palette": {"editor": "enum", "options": ["Teal / Amber", "Navy / Coral", "Forest / Gold"], "default": "Teal / Amber", "section": "Practice colors"}, "$preview": {"width": 1440, "height": 4300}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const presets = { 'Teal / Amber': ['#0F5E6B', '#E0A33B', '#F6F1EA'], 'Navy / Coral': ['#1E3A5F', '#E8735A', '#EEF3F8'], 'Forest / Gold': ['#2F5D3A', '#C9A227', '#F7F4EC'] };
+    const [P, A, L] = presets[this.props.palette ?? 'Teal / Amber'] || presets['Teal / Amber'];
+    const hex = (h) => { h = String(h).replace('#', ''); if (h.length === 3) h = h.split('').map((c) => c + c).join(''); return h; };
+    const lum = (h) => { h = hex(h); const x = [0, 2, 4].map((i) => { const c = parseInt(h.substr(i, 2), 16) / 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); }); return 0.2126 * x[0] + 0.7152 * x[1] + 0.0722 * x[2]; };
+    const cr = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
+    const on = (c) => (cr(c, '#FFFFFF') >= cr(c, '#1B1F23') ? '#FFFFFF' : '#1B1F23');
+    const darken = (h, t) => '#' + [0, 2, 4].map((i) => Math.round(parseInt(hex(h).substr(i, 2), 16) * (1 - t)).toString(16).padStart(2, '0')).join('');
+    let ink = P; for (let t = 0.08; cr(ink, '#FFFFFF') < 4.5 && t < 0.9; t += 0.08) ink = darken(P, t);
+    return { P, A, L, onP: on(P), onA: on(A), onL: on(L), pInk: ink };
+  }
+}
+</script>
+</body>
+</html>

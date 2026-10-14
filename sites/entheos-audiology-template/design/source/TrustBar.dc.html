@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Home hero with trust bar</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./d1.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>body{margin:0}</style>
+</helmet>
+<div class="d1 sheet" style="min-height: 3500px; --p: {{P}}; --a: {{A}}; --l: {{L}}; --on-p: {{onP}}; --on-a: {{onA}}; --on-l: {{onL}}; --p-ink: {{pInk}}">
+  <div class="sheet-head">
+    <span class="eyebrow">Component 12 · on the Home hero</span>
+    <h1 class="sheet-title">Trust bar</h1>
+    <p class="sheet-sub">Frosted bar along the bottom of the Home hero. The rating panel stays put; brand logos drift slowly behind it and blur as they pass. Hover, keyboard focus or the pause button stops the drift; reduce-motion users get a still row. Press Play to try it. The Home hero layout itself gets finalised with Page 1.</p>
+  </div>
+
+  <div class="spec">Photo hero · desktop</div>
+  <div class="vp">
+    <section class="hhero">
+      <div class="ph dark2"><span class="ph-label tr">Page hero photo · 16:9</span></div>
+      <div class="scrim left"></div>
+      <div style="position: absolute; inset: auto 0 0 0; height: 260px; background: linear-gradient(to top, rgba(12,14,16,.55), transparent)"></div>
+      <div class="hcontent on-dark">
+        <span class="eyebrow on-dark">Riverside hearing care</span>
+        <h1 class="h1">Hearing care from people who take the time to listen</h1>
+        <p class="lead">Hearing tests, hearing aids and tinnitus care with Dr. Jordan Ellis and Dr. Priya Raman.</p>
+        <div class="rowf" style="gap: 12px; margin-top: 8px">
+          <a class="btn btn-primary" href="#">Book appointment</a>
+          <a class="btn" href="tel:+15550100142" style="color: #fff; border-color: #fff">Call (555) 010-0142</a>
+        </div>
+      </div>
+      <div class="trust {{pausedCls}}">
+        <div class="track">
+          <ul class="marq" style="list-style: none; margin: 0" aria-label="Hearing aid brands we carry">
+            <sc-for list="{{loop}}" as="b" hint-placeholder-count="12">
+              <li class="blogo" aria-hidden="{{b.ah}}">
+                <sc-if value="{{b.ring}}" hint-placeholder-val="{{true}}"><svg viewBox="0 0 28 28" width="28" height="28" aria-hidden="true"><circle cx="14" cy="14" r="11" fill="none" stroke="currentColor" stroke-width="3"></circle><circle cx="14" cy="14" r="4" fill="currentColor"></circle></svg></sc-if>
+                <sc-if value="{{b.diamond}}" hint-placeholder-val="{{false}}"><svg viewBox="0 0 28 28" width="28" height="28" aria-hidden="true"><rect x="6" y="6" width="16" height="16" rx="4" transform="rotate(45 14 14)" fill="currentColor"></rect></svg></sc-if>
+                <sc-if value="{{b.wave}}" hint-placeholder-val="{{false}}"><svg viewBox="0 0 28 28" width="28" height="28" aria-hidden="true"><path d="M3 10c4-4 7 4 11 0s7 4 11 0M3 18c4-4 7 4 11 0s7 4 11 0" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"></path></svg></sc-if>
+                <span>{{b.name}}</span>
+              </li>
+            </sc-for>
+          </ul>
+        </div>
+        <div class="rating">
+          <b>Rated 4.9/5 from 210 Google reviews</b>
+          <div class="stars" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg></div>
+        </div>
+        <button class="pause" onClick="{{toggle}}" aria-label="{{pauseLabel}}">
+          <sc-if value="{{paused}}" hint-placeholder-val="{{false}}"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"></path></svg></sc-if>
+          <sc-if value="{{playing}}" hint-placeholder-val="{{true}}"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M9 5v14M15 5v14"></path></svg></sc-if>
+        </button>
+      </div>
+    </section>
+  </div>
+
+  <div class="spec">No-photo hero · Light background</div>
+  <div class="vp">
+    <section class="hhero light" style="min-height: 660px">
+      <div class="shape" style="width: 760px; height: 760px; right: -160px; top: -260px; border: 72px solid color-mix(in srgb, var(--p) 7%, transparent)"></div>
+      <div class="shape" style="width: 360px; height: 360px; right: 260px; top: 280px; border: 44px solid color-mix(in srgb, var(--a) 14%, transparent)"></div>
+      <div class="hcontent" style="padding: 120px 0 200px">
+        <span class="eyebrow">Riverside hearing care</span>
+        <h1 class="h1">Hearing care from people who take the time to listen</h1>
+        <p class="lead" style="opacity: .85">Hearing tests, hearing aids and tinnitus care with Dr. Jordan Ellis and Dr. Priya Raman.</p>
+        <div class="rowf" style="gap: 12px; margin-top: 8px">
+          <a class="btn btn-primary" href="#">Book appointment</a>
+          <a class="btn btn-secondary" href="tel:+15550100142">Call (555) 010-0142</a>
+        </div>
+      </div>
+      <div class="trust on-light {{pausedCls}}">
+        <div class="track">
+          <ul class="marq" style="list-style: none; margin: 0" aria-label="Hearing aid brands we carry">
+            <sc-for list="{{loop}}" as="b" hint-placeholder-count="12">
+              <li class="blogo" aria-hidden="{{b.ah}}">
+                <sc-if value="{{b.ring}}" hint-placeholder-val="{{true}}"><svg viewBox="0 0 28 28" width="28" height="28" aria-hidden="true"><circle cx="14" cy="14" r="11" fill="none" stroke="currentColor" stroke-width="3"></circle><circle cx="14" cy="14" r="4" fill="currentColor"></circle></svg></sc-if>
+                <sc-if value="{{b.diamond}}" hint-placeholder-val="{{false}}"><svg viewBox="0 0 28 28" width="28" height="28" aria-hidden="true"><rect x="6" y="6" width="16" height="16" rx="4" transform="rotate(45 14 14)" fill="currentColor"></rect></svg></sc-if>
+                <sc-if value="{{b.wave}}" hint-placeholder-val="{{false}}"><svg viewBox="0 0 28 28" width="28" height="28" aria-hidden="true"><path d="M3 10c4-4 7 4 11 0s7 4 11 0M3 18c4-4 7 4 11 0s7 4 11 0" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"></path></svg></sc-if>
+                <span>{{b.name}}</span>
+              </li>
+            </sc-for>
+          </ul>
+        </div>
+        <div class="rating">
+          <b>Rated 4.9/5 from 210 Google reviews</b>
+          <div class="stars" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg></div>
+        </div>
+        <button class="pause" onClick="{{toggle}}" aria-label="{{pauseLabel}}">
+          <sc-if value="{{paused}}" hint-placeholder-val="{{false}}"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"></path></svg></sc-if>
+          <sc-if value="{{playing}}" hint-placeholder-val="{{true}}"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M9 5v14M15 5v14"></path></svg></sc-if>
+        </button>
+      </div>
+    </section>
+  </div>
+
+  <div class="spec">No-photo hero · Primary background · reduced-motion (still row)</div>
+  <div class="vp">
+    <section class="hhero prim" style="min-height: 660px">
+      <div class="shape" style="width: 760px; height: 760px; right: -160px; top: -260px; border: 72px solid color-mix(in srgb, var(--on-p) 7%, transparent)"></div>
+      <div class="hcontent" style="padding: 120px 0 200px">
+        <span class="eyebrow on-p">Riverside hearing care</span>
+        <h1 class="h1">Hearing care from people who take the time to listen</h1>
+        <p class="lead" style="opacity: .9">Hearing tests, hearing aids and tinnitus care with Dr. Jordan Ellis and Dr. Priya Raman.</p>
+        <div class="rowf" style="gap: 12px; margin-top: 8px">
+          <a class="btn btn-inverse" href="#">Book appointment</a>
+          <a class="btn btn-ghost-on-p" href="tel:+15550100142">Call (555) 010-0142</a>
+        </div>
+      </div>
+      <div class="trust on-p static">
+        <div class="track">
+          <ul class="marq" style="list-style: none; margin: 0; padding-left: 380px; gap: 56px" aria-label="Hearing aid brands we carry">
+            <sc-for list="{{logos}}" as="b" hint-placeholder-count="6">
+              <li class="blogo">
+                <sc-if value="{{b.ring}}" hint-placeholder-val="{{true}}"><svg viewBox="0 0 28 28" width="28" height="28" aria-hidden="true"><circle cx="14" cy="14" r="11" fill="none" stroke="currentColor" stroke-width="3"></circle><circle cx="14" cy="14" r="4" fill="currentColor"></circle></svg></sc-if>
+                <sc-if value="{{b.diamond}}" hint-placeholder-val="{{false}}"><svg viewBox="0 0 28 28" width="28" height="28" aria-hidden="true"><rect x="6" y="6" width="16" height="16" rx="4" transform="rotate(45 14 14)" fill="currentColor"></rect></svg></sc-if>
+                <sc-if value="{{b.wave}}" hint-placeholder-val="{{false}}"><svg viewBox="0 0 28 28" width="28" height="28" aria-hidden="true"><path d="M3 10c4-4 7 4 11 0s7 4 11 0M3 18c4-4 7 4 11 0s7 4 11 0" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"></path></svg></sc-if>
+                <span>{{b.name}}</span>
+              </li>
+            </sc-for>
+          </ul>
+        </div>
+        <div class="rating">
+          <b>Rated 4.9/5 from 210 Google reviews</b>
+          <div class="stars" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg></div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="row-specs" style="margin-top: 16px">
+    <p class="note" style="max-width: 980px">Logos in the bar are never links. With reduce-motion on, the row stands still, starts after the rating panel, and the pause button is not shown. Stars use Accent; on a Primary hero whose Accent is too close in tone, stars fall back to the on-Primary text color.</p>
+  </div>
+
+  <div class="spec">Mobile · photo hero (4:5 crop) and Light hero</div>
+  <div class="phones">
+    <div class="phone-col">
+      <div class="phone m" style="padding: 12px 0">
+        <section class="hhero" style="margin: 0 12px">
+          <div class="ph dark2" style="border-radius: 0"><span class="ph-label tr">Hero photo · 4:5 crop</span></div>
+          <div class="scrim"></div>
+          <div class="hcontent on-dark" style="padding-top: 240px">
+            <h1 class="h1">Hearing care from people who take the time to listen</h1>
+            <p class="lead">Hearing tests, hearing aids and tinnitus care in Riverside.</p>
+            <a class="btn btn-primary block" href="#">Book appointment</a>
+          </div>
+          <div class="trust {{pausedCls}}" style="margin: 0 8px 8px">
+            <div class="rating">
+              <b>Rated 4.9/5 from 210 Google reviews</b>
+              <div class="stars" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg></div>
+            </div>
+            <div class="track">
+              <ul class="marq" style="list-style: none; margin: 0" aria-label="Hearing aid brands we carry">
+                <sc-for list="{{loop}}" as="b" hint-placeholder-count="12">
+                  <li class="blogo" aria-hidden="{{b.ah}}">
+                    <sc-if value="{{b.ring}}" hint-placeholder-val="{{true}}"><svg viewBox="0 0 28 28" width="24" height="24" aria-hidden="true"><circle cx="14" cy="14" r="11" fill="none" stroke="currentColor" stroke-width="3"></circle><circle cx="14" cy="14" r="4" fill="currentColor"></circle></svg></sc-if>
+                    <sc-if value="{{b.diamond}}" hint-placeholder-val="{{false}}"><svg viewBox="0 0 28 28" width="24" height="24" aria-hidden="true"><rect x="6" y="6" width="16" height="16" rx="4" transform="rotate(45 14 14)" fill="currentColor"></rect></svg></sc-if>
+                    <sc-if value="{{b.wave}}" hint-placeholder-val="{{false}}"><svg viewBox="0 0 28 28" width="24" height="24" aria-hidden="true"><path d="M3 10c4-4 7 4 11 0s7 4 11 0M3 18c4-4 7 4 11 0s7 4 11 0" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"></path></svg></sc-if>
+                    <span>{{b.name}}</span>
+                  </li>
+                </sc-for>
+              </ul>
+              <button class="pause" onClick="{{toggle}}" aria-label="{{pauseLabel}}">
+                <sc-if value="{{paused}}" hint-placeholder-val="{{false}}"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"></path></svg></sc-if>
+                <sc-if value="{{playing}}" hint-placeholder-val="{{true}}"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M9 5v14M15 5v14"></path></svg></sc-if>
+              </button>
+            </div>
+          </div>
+        </section>
+      </div>
+      <span class="note">Rating panel on its own line; logos drift beneath with the pause button at the right end.</span>
+    </div>
+    <div class="phone-col">
+      <div class="phone m" style="padding: 12px 0">
+        <section class="hhero light" style="margin: 0 12px">
+          <div class="shape" style="width: 320px; height: 320px; right: -130px; top: -120px; border: 40px solid color-mix(in srgb, var(--p) 7%, transparent)"></div>
+          <div class="hcontent" style="padding-top: 48px">
+            <span class="eyebrow">Riverside hearing care</span>
+            <h1 class="h1">Hearing care from people who take the time to listen</h1>
+            <p class="lead" style="opacity: .85">Hearing tests, hearing aids and tinnitus care in Riverside.</p>
+            <a class="btn btn-primary block" href="#">Book appointment</a>
+          </div>
+          <div class="trust on-light {{pausedCls}}" style="margin: 0 8px 8px">
+            <div class="rating">
+              <b>Rated 4.9/5 from 210 Google reviews</b>
+              <div class="stars" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg></div>
+            </div>
+            <div class="track">
+              <ul class="marq" style="list-style: none; margin: 0" aria-label="Hearing aid brands we carry">
+                <sc-for list="{{loop}}" as="b" hint-placeholder-count="12">
+                  <li class="blogo" aria-hidden="{{b.ah}}">
+                    <sc-if value="{{b.ring}}" hint-placeholder-val="{{true}}"><svg viewBox="0 0 28 28" width="24" height="24" aria-hidden="true"><circle cx="14" cy="14" r="11" fill="none" stroke="currentColor" stroke-width="3"></circle><circle cx="14" cy="14" r="4" fill="currentColor"></circle></svg></sc-if>
+                    <sc-if value="{{b.diamond}}" hint-placeholder-val="{{false}}"><svg viewBox="0 0 28 28" width="24" height="24" aria-hidden="true"><rect x="6" y="6" width="16" height="16" rx="4" transform="rotate(45 14 14)" fill="currentColor"></rect></svg></sc-if>
+                    <sc-if value="{{b.wave}}" hint-placeholder-val="{{false}}"><svg viewBox="0 0 28 28" width="24" height="24" aria-hidden="true"><path d="M3 10c4-4 7 4 11 0s7 4 11 0M3 18c4-4 7 4 11 0s7 4 11 0" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"></path></svg></sc-if>
+                    <span>{{b.name}}</span>
+                  </li>
+                </sc-for>
+              </ul>
+              <button class="pause" onClick="{{toggle}}" aria-label="{{pauseLabel}}">
+                <sc-if value="{{paused}}" hint-placeholder-val="{{false}}"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"></path></svg></sc-if>
+                <sc-if value="{{playing}}" hint-placeholder-val="{{true}}"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M9 5v14M15 5v14"></path></svg></sc-if>
+              </button>
+            </div>
+          </div>
+        </section>
+      </div>
+      <span class="note">On Light, logos turn near-black at reduced opacity.</span>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"primary":{"editor":"color","default":"#0F5E6B","options":["#0F5E6B","#1E3A5F","#2F5D3A"],"section":"Practice colors"},"accent":{"editor":"color","default":"#E0A33B","options":["#E0A33B","#E8735A","#C9A227"],"section":"Practice colors"},"light":{"editor":"color","default":"#F6F1EA","options":["#F6F1EA","#EEF3F8","#F7F4EC"],"section":"Practice colors"},"$preview":{"width":1440,"height":3500}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { paused: false }; }
+  renderVals() {
+    const P = this.props.primary ?? '#0F5E6B', A = this.props.accent ?? '#E0A33B', L = this.props.light ?? '#F6F1EA';
+    const hex = (h) => { h = String(h).replace('#', ''); if (h.length === 3) h = h.split('').map((c) => c + c).join(''); return h; };
+    const lum = (h) => { h = hex(h); const v = [0, 2, 4].map((i) => { const c = parseInt(h.substr(i, 2), 16) / 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); }); return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2]; };
+    const cr = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
+    const on = (c) => (cr(c, '#FFFFFF') >= cr(c, '#1B1F23') ? '#FFFFFF' : '#1B1F23');
+    const darken = (h, t) => '#' + [0, 2, 4].map((i) => Math.round(parseInt(hex(h).substr(i, 2), 16) * (1 - t)).toString(16).padStart(2, '0')).join('');
+    let ink = P; for (let t = 0.08; cr(ink, '#FFFFFF') < 4.5 && t < 0.9; t += 0.08) ink = darken(P, t);
+    const kinds = ['ring', 'diamond', 'wave'];
+    const logos = ['Brand One', 'Brand Two', 'Brand Three', 'Brand Four', 'Brand Five', 'Brand Six'].map((name, i) => { const k = kinds[i % 3]; return { name, ring: k === 'ring', diamond: k === 'diamond', wave: k === 'wave' }; });
+    const loop = [...logos.map((l) => ({ ...l, ah: 'false' })), ...logos.map((l) => ({ ...l, ah: 'true' }))];
+    const paused = !!this.state.paused;
+    return {
+      P, A, L, onP: on(P), onA: on(A), onL: on(L), pInk: ink,
+      logos, loop, paused, playing: !paused,
+      pausedCls: paused ? 'paused' : '',
+      pauseLabel: paused ? 'Play logo scrolling' : 'Pause logo scrolling',
+      toggle: () => this.setState({ paused: !this.state.paused })
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Site footer</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./d1.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>body{margin:0}</style>
+</helmet>
+<div class="d1 fxr {{rootCls}}" style="--p: {{P}}; --a: {{A}}; --l: {{L}}; --on-p: {{onP}}; --on-a: {{onA}}; --on-l: {{onL}}; --p-ink: {{pInk}}">
+<sc-if value="{{is_f1}}" hint-placeholder-val="{{false}}">
+<footer class="fx">
+  <div class="fx-in fx-f1 {{vCls}}">
+    <sc-if value="{{vt}}" hint-placeholder-val="{{false}}"><div class="card fx-logo-card"><a class="logo stk" href="#" aria-label="Lakeview Hearing Center, home"><svg viewBox="0 0 40 40" width="76" height="76" aria-hidden="true"><circle cx="20" cy="20" r="20" style="fill: var(--lg-bg, var(--p))"></circle><path d="M12 20v0M16 15.5v9M20 11v18M24 15.5v9M28 18.5v3" style="stroke: var(--lg-fg, var(--on-p))" stroke-width="2.6" stroke-linecap="round" fill="none"></path></svg><span class="lw"><b>Lakeview</b><span>Hearing Center</span></span></a></div></sc-if>
+    <div class="card" style="gap: 18px">
+      <sc-if value="{{lw}}" hint-placeholder-val="{{true}}"><a class="logo" href="#" aria-label="Lakeview Hearing Center, home"><svg viewBox="0 0 40 40" width="44" height="44" aria-hidden="true"><circle cx="20" cy="20" r="20" style="fill: var(--lg-bg, var(--p))"></circle><path d="M12 20v0M16 15.5v9M20 11v18M24 15.5v9M28 18.5v3" style="stroke: var(--lg-fg, var(--on-p))" stroke-width="2.6" stroke-linecap="round" fill="none"></path></svg><span class="lw"><b>Lakeview</b><span>Hearing Center</span></span></a></sc-if>
+      <p class="muted">Independent audiology care for Riverside and Northfield families.</p>
+      <a class="fx-call" href="tel:+15550100142"><span class="ico"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"></path></svg></span><span><small>Call us</small><b>(555) 010-0142</b></span></a>
+      <a class="btn btn-primary" href="#" style="align-self: flex-start">Book appointment</a>
+    </div>
+    <nav class="fx-col" aria-label="Our practice"><h2 class="h4">Our practice</h2><ul class="flinks"><li><a href="#">About us</a></li><li><a href="#">Our team</a></li><li><a href="#">Locations</a></li><li><a href="#">Contact</a></li></ul></nav>
+    <nav class="fx-col" aria-label="Our services"><h2 class="h4">Our services</h2><ul class="flinks"><li><a href="#">Hearing tests</a></li><li><a href="#">Hearing aids</a></li><li><a href="#">Tinnitus care</a></li><li><a href="#">All services</a></li></ul></nav>
+    <nav class="fx-col" aria-label="Patient information"><h2 class="h4">Patient information</h2><ul class="flinks"><li><a href="#">Your first visit</a></li><li><a href="#">Patient forms</a></li><li><a href="#">Insurance &amp; financing</a></li></ul></nav>
+  </div>
+  <div class="fbottom">
+  <span>© 2026 Lakeview Hearing Center. All rights reserved.</span>
+  <nav aria-label="Legal"><ul class="legal"><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Use</a></li><li><a href="#">Accessibility</a></li><li><a href="#">Sitemap</a></li></ul></nav>
+</div>
+</footer>
+</sc-if>
+<sc-if value="{{is_f2}}" hint-placeholder-val="{{false}}">
+<footer class="fx">
+  <div class="fx-in fx-f2">
+    <div class="fx-invite">
+      <h2>Let’s talk about your hearing.</h2>
+      <div class="rowf" style="gap: 12px"><a class="btn btn-inverse" href="#">Book appointment <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a><a class="btn btn-ghost-on-p" href="tel:+15550100142">Call (555) 010-0142</a></div>
+    </div>
+    <div class="card fx-f2c">
+      <sc-if value="{{lw}}" hint-placeholder-val="{{true}}"><a class="logo" href="#" aria-label="Lakeview Hearing Center, home"><svg viewBox="0 0 40 40" width="44" height="44" aria-hidden="true"><circle cx="20" cy="20" r="20" style="fill: var(--lg-bg, var(--p))"></circle><path d="M12 20v0M16 15.5v9M20 11v18M24 15.5v9M28 18.5v3" style="stroke: var(--lg-fg, var(--on-p))" stroke-width="2.6" stroke-linecap="round" fill="none"></path></svg><span class="lw"><b>Lakeview</b><span>Hearing Center</span></span></a><ul class="flinks"><li><a href="tel:+15550100142"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"></path></svg>&nbsp; Call (555) 010-0142</a></li><li><a href="#"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="m4 7 8 6 8-6"></path></svg>&nbsp; Contact us</a></li></ul></sc-if>
+      <sc-if value="{{vt}}" hint-placeholder-val="{{false}}"><div class="fx-lc"><a class="logo stk" href="#" aria-label="Lakeview Hearing Center, home"><svg viewBox="0 0 40 40" width="64" height="64" aria-hidden="true"><circle cx="20" cy="20" r="20" style="fill: var(--lg-bg, var(--p))"></circle><path d="M12 20v0M16 15.5v9M20 11v18M24 15.5v9M28 18.5v3" style="stroke: var(--lg-fg, var(--on-p))" stroke-width="2.6" stroke-linecap="round" fill="none"></path></svg><span class="lw"><b>Lakeview</b><span>Hearing Center</span></span></a><ul class="flinks"><li><a href="tel:+15550100142"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"></path></svg>&nbsp; Call (555) 010-0142</a></li><li><a href="#"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="m4 7 8 6 8-6"></path></svg>&nbsp; Contact us</a></li></ul></div></sc-if>
+      <nav class="fx-sep" aria-label="Footer"><ul class="flinks two"><li><a href="#">About us</a></li><li><a href="#">Services</a></li><li><a href="#">Patient information</a></li><li><a href="#">Locations</a></li></ul></nav>
+    </div>
+  </div>
+  <div class="fbottom">
+  <span>© 2026 Lakeview Hearing Center. All rights reserved.</span>
+  <nav aria-label="Legal"><ul class="legal"><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Use</a></li><li><a href="#">Accessibility</a></li><li><a href="#">Sitemap</a></li></ul></nav>
+</div>
+</footer>
+</sc-if>
+<sc-if value="{{is_f3}}" hint-placeholder-val="{{false}}">
+<footer class="fx light">
+  <div class="fx-f3">
+    <sc-if value="{{lw}}" hint-placeholder-val="{{true}}"><a class="logo" href="#" aria-label="Lakeview Hearing Center, home"><svg viewBox="0 0 40 40" width="56" height="56" aria-hidden="true"><circle cx="20" cy="20" r="20" style="fill: var(--lg-bg, var(--p))"></circle><path d="M12 20v0M16 15.5v9M20 11v18M24 15.5v9M28 18.5v3" style="stroke: var(--lg-fg, var(--on-p))" stroke-width="2.6" stroke-linecap="round" fill="none"></path></svg><span class="lw"><b>Lakeview</b><span>Hearing Center</span></span></a></sc-if><sc-if value="{{vt}}" hint-placeholder-val="{{false}}"><a class="logo stk" href="#" aria-label="Lakeview Hearing Center, home"><svg viewBox="0 0 40 40" width="84" height="84" aria-hidden="true"><circle cx="20" cy="20" r="20" style="fill: var(--lg-bg, var(--p))"></circle><path d="M12 20v0M16 15.5v9M20 11v18M24 15.5v9M28 18.5v3" style="stroke: var(--lg-fg, var(--on-p))" stroke-width="2.6" stroke-linecap="round" fill="none"></path></svg><span class="lw"><b>Lakeview</b><span>Hearing Center</span></span></a></sc-if>
+    <p class="lead" style="margin: 0; max-width: 560px">Independent audiology care for Riverside and Northfield families.</p>
+    <nav aria-label="Footer"><ul class="fx-row"><li><a href="#">About us</a></li><li><a href="#">Services</a></li><li><a href="#">Patient information</a></li><li><a href="#">Contact</a></li></ul></nav>
+    <div class="rowf" style="justify-content: center; gap: 16px 32px"><a class="tel" href="tel:+15550100142"><span class="ico"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"></path></svg></span>(555) 010-0142</a><a class="btn btn-primary" href="#">Book appointment</a></div>
+  </div>
+  <div class="fbottom c">
+  <span>© 2026 Lakeview Hearing Center. All rights reserved.</span>
+  <nav aria-label="Legal"><ul class="legal"><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Use</a></li><li><a href="#">Accessibility</a></li><li><a href="#">Sitemap</a></li></ul></nav>
+</div>
+</footer>
+</sc-if>
+<sc-if value="{{is_f4}}" hint-placeholder-val="{{false}}">
+<footer class="fx">
+  <div class="fx-in fx-f4">
+    <div class="card {{brandCls}}" style="gap: 18px">
+      <sc-if value="{{lw}}" hint-placeholder-val="{{true}}"><a class="logo" href="#" aria-label="Lakeview Hearing Center, home"><svg viewBox="0 0 40 40" width="44" height="44" aria-hidden="true"><circle cx="20" cy="20" r="20" style="fill: var(--lg-bg, var(--p))"></circle><path d="M12 20v0M16 15.5v9M20 11v18M24 15.5v9M28 18.5v3" style="stroke: var(--lg-fg, var(--on-p))" stroke-width="2.6" stroke-linecap="round" fill="none"></path></svg><span class="lw"><b>Lakeview</b><span>Hearing Center</span></span></a></sc-if><sc-if value="{{vt}}" hint-placeholder-val="{{false}}"><a class="logo stk" href="#" aria-label="Lakeview Hearing Center, home"><svg viewBox="0 0 40 40" width="72" height="72" aria-hidden="true"><circle cx="20" cy="20" r="20" style="fill: var(--lg-bg, var(--p))"></circle><path d="M12 20v0M16 15.5v9M20 11v18M24 15.5v9M28 18.5v3" style="stroke: var(--lg-fg, var(--on-p))" stroke-width="2.6" stroke-linecap="round" fill="none"></path></svg><span class="lw"><b>Lakeview</b><span>Hearing Center</span></span></a></sc-if>
+      <p class="muted">Independent audiology care for Riverside and Northfield families.</p>
+      <a class="fx-call" href="tel:+15550100142"><span class="ico"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"></path></svg></span><span><small>Call us</small><b>(555) 010-0142</b></span></a>
+      <a class="btn btn-primary" href="#">Book appointment</a>
+    </div>
+    <nav class="fx-task new" aria-label="New patients"><h2 class="h4 fx-th"><span class="dot" aria-hidden="true"></span>New patients</h2><ul class="fx-tlinks"><li><a href="#">Your first visit <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a></li><li><a href="#">Patient forms <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a></li><li><a href="#">Insurance &amp; financing <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a></li></ul></nav>
+    <nav class="fx-task" aria-label="Current patients"><h2 class="h4 fx-th"><span class="dot o" aria-hidden="true"></span>Current patients</h2><ul class="fx-tlinks"><li><a href="#">Patient portal <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a></li><li><a href="#">Pay a bill <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a></li><li><a href="#">Hearing aid repairs <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a></li></ul></nav>
+    <nav class="fx-col" aria-label="Our practice"><h2 class="h4">Our practice</h2><ul class="flinks"><li><a href="#">About us</a></li><li><a href="#">Our team</a></li><li><a href="#">Locations</a></li><li><a href="#">Contact</a></li></ul></nav>
+  </div>
+  <div class="fbottom">
+  <span>© 2026 Lakeview Hearing Center. All rights reserved.</span>
+  <nav aria-label="Legal"><ul class="legal"><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Use</a></li><li><a href="#">Accessibility</a></li><li><a href="#">Sitemap</a></li></ul></nav>
+</div>
+</footer>
+</sc-if>
+<sc-if value="{{is_f6}}" hint-placeholder-val="{{false}}">
+<footer class="fx dark">
+  <div class="fx-in fx-f6">
+    <div class="stack {{brandCls}}" style="gap: 18px">
+      <sc-if value="{{lw}}" hint-placeholder-val="{{true}}"><a class="logo" href="#" aria-label="Lakeview Hearing Center, home"><svg viewBox="0 0 40 40" width="44" height="44" aria-hidden="true"><circle cx="20" cy="20" r="20" style="fill: var(--lg-bg, var(--p))"></circle><path d="M12 20v0M16 15.5v9M20 11v18M24 15.5v9M28 18.5v3" style="stroke: var(--lg-fg, var(--on-p))" stroke-width="2.6" stroke-linecap="round" fill="none"></path></svg><span class="lw"><b>Lakeview</b><span>Hearing Center</span></span></a></sc-if><sc-if value="{{vt}}" hint-placeholder-val="{{false}}"><a class="logo stk" href="#" aria-label="Lakeview Hearing Center, home"><svg viewBox="0 0 40 40" width="72" height="72" aria-hidden="true"><circle cx="20" cy="20" r="20" style="fill: var(--lg-bg, var(--p))"></circle><path d="M12 20v0M16 15.5v9M20 11v18M24 15.5v9M28 18.5v3" style="stroke: var(--lg-fg, var(--on-p))" stroke-width="2.6" stroke-linecap="round" fill="none"></path></svg><span class="lw"><b>Lakeview</b><span>Hearing Center</span></span></a></sc-if>
+      <p class="muted">Independent audiology care for Riverside and Northfield families.</p>
+      <a class="fx-call" href="tel:+15550100142"><span class="ico"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"></path></svg></span><span><small>Call us</small><b>(555) 010-0142</b></span></a>
+      <a class="btn btn-inverse" href="#" style="align-self: flex-start">Book appointment</a>
+    </div>
+    <div class="fx-2col">
+      <nav aria-label="Our practice"><h2 class="h4">Our practice</h2><ul class="flinks"><li><a href="#">About us</a></li><li><a href="#">Our team</a></li><li><a href="#">Contact</a></li></ul></nav>
+      <nav aria-label="Our services"><h2 class="h4">Our services</h2><ul class="flinks"><li><a href="#">Hearing tests</a></li><li><a href="#">Hearing aids</a></li><li><a href="#">Tinnitus care</a></li><li><a href="#">All services</a></li></ul></nav>
+    </div>
+    <nav class="fx-office" aria-label="Find your office"><h2 class="h4 fx-th"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-12a7 7 0 0 1 14 0c0 5.8-7 12-7 12z"></path><circle cx="12" cy="9" r="2.5"></circle></svg> Find your office</h2><ul class="fx-tlinks"><li><a href="#">Riverside <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a></li><li><a href="#">Northfield <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a></li></ul><a class="link-arrow" href="#">View all locations</a></nav>
+  </div>
+  <div class="fbottom">
+  <span>© 2026 Lakeview Hearing Center. All rights reserved.</span>
+  <nav aria-label="Legal"><ul class="legal"><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Use</a></li><li><a href="#">Accessibility</a></li><li><a href="#">Sitemap</a></li></ul></nav>
+</div>
+</footer>
+</sc-if>
+<sc-if value="{{is_f7}}" hint-placeholder-val="{{true}}">
+  <footer class="ftr">
+    <div class="fgrid">
+      <div class="card {{brandCls}}" style="gap: 18px">
+        <sc-if value="{{lw}}" hint-placeholder-val="{{true}}"><a class="logo" href="#" aria-label="Lakeview Hearing Center, home"><svg viewBox="0 0 40 40" width="44" height="44" aria-hidden="true"><circle cx="20" cy="20" r="20" style="fill: var(--lg-bg, var(--p))"></circle><path d="M12 20v0M16 15.5v9M20 11v18M24 15.5v9M28 18.5v3" style="stroke: var(--lg-fg, var(--on-p))" stroke-width="2.6" stroke-linecap="round" fill="none"></path></svg><span class="lw"><b>Lakeview</b><span>Hearing Center</span></span></a></sc-if><sc-if value="{{vt}}" hint-placeholder-val="{{false}}"><a class="logo stk" href="#" aria-label="Lakeview Hearing Center, home"><svg viewBox="0 0 40 40" width="72" height="72" aria-hidden="true"><circle cx="20" cy="20" r="20" style="fill: var(--lg-bg, var(--p))"></circle><path d="M12 20v0M16 15.5v9M20 11v18M24 15.5v9M28 18.5v3" style="stroke: var(--lg-fg, var(--on-p))" stroke-width="2.6" stroke-linecap="round" fill="none"></path></svg><span class="lw"><b>Lakeview</b><span>Hearing Center</span></span></a></sc-if>
+        <p class="muted">Independent audiology care for Riverside and Northfield families.</p>
+        <a class="btn btn-primary" href="#" style="align-self: flex-start">Book appointment</a>
+        <a href="mailto:hello@lakeviewhearing.example" style="font-size: 18px">hello@lakeviewhearing.example</a>
+        <div class="social" style="margin-top: auto">
+          <a href="#" aria-label="Lakeview Hearing Center on Facebook"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M14 8h3V4h-3a4 4 0 0 0-4 4v3H7v4h3v6h4v-6h3l1-4h-4V8z"></path></svg></a>
+          <a href="#" aria-label="Lakeview Hearing Center on Instagram"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><path d="M17.5 6.5v.01"></path></svg></a>
+          <a href="#" aria-label="Lakeview Hearing Center on YouTube"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="5.5" width="19" height="13" rx="4"></rect><path d="m10 9.5 5 2.5-5 2.5z"></path></svg></a>
+        </div>
+      </div>
+      <div class="card" style="gap: 12px">
+        <h2 class="h4">Riverside office</h2>
+        <address style="font-style: normal">1200 Lakeview Parkway, Suite 210<br>Riverside, ST 00000</address>
+        <a href="tel:+15550100142" style="font-weight: 700; font-size: 19px">(555) 010-0142</a>
+        <dl class="hours" style="margin: 4px 0 0"><dt>Mon – Thu</dt><dd>8:00 – 5:00</dd><dt>Fri</dt><dd>8:00 – 12:00</dd><dt>Sat – Sun</dt><dd>Closed</dd></dl>
+        <a class="link-arrow" href="#" style="font-size: 17px; margin-top: auto">Get directions</a>
+      </div>
+      <div class="card" style="gap: 12px">
+        <h2 class="h4">Northfield office</h2>
+        <address style="font-style: normal">48 Mill Street<br>Northfield, ST 00000</address>
+        <a href="tel:+15550100178" style="font-weight: 700; font-size: 19px">(555) 010-0178</a>
+        <dl class="hours" style="margin: 4px 0 0"><dt>Tue, Thu</dt><dd>9:00 – 4:00</dd><dt>Other days</dt><dd>Closed</dd></dl>
+        <a class="link-arrow" href="#" style="font-size: 17px; margin-top: auto">Get directions</a>
+      </div>
+      <nav class="card" style="gap: 8px" aria-label="Footer">
+        <h2 class="h4">Explore</h2>
+        <ul class="flinks">
+          <li><a href="#">Services</a></li><li><a href="#">Hearing aids</a></li><li><a href="#">About us</a></li><li><a href="#">Patient resources</a></li><li><a href="#">Reviews</a></li><li><a href="#">Blog</a></li><li><a href="#">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+    <sc-if value="{{badges}}" hint-placeholder-val="{{true}}">
+      <div class="card" style="margin-top: 16px; flex-direction: row; align-items: center; justify-content: space-between; gap: 24px; padding: 20px 32px">
+        <span class="state-label" style="font-size: 15px">Memberships and affiliations</span>
+        <div class="badges">
+          <div class="badge-ph"><svg viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="16" cy="13" r="9"></circle><path d="m11 20-2 9 7-3 7 3-2-9"></path></svg>Professional association badge</div>
+          <div class="badge-ph"><svg viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M16 3 5 7v8c0 7 5 12 11 14 6-2 11-7 11-14V7z"></path></svg>Accreditation badge</div>
+        </div>
+      </div>
+    </sc-if>
+    <div class="fbottom">
+      <span>© 2026 Lakeview Hearing Center. All rights reserved.</span>
+      <nav aria-label="Legal"><ul class="legal"><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Use</a></li><li><a href="#">Accessibility</a></li><li><a href="#">Sitemap</a></li></ul></nav>
+    </div>
+  </footer>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"palette": {"editor": "enum", "options": ["Teal / Amber", "Navy / Coral", "Forest / Gold", "Custom"], "default": "Teal / Amber", "section": "Practice colors"}, "primary": {"editor": "color", "default": "#0F5E6B", "section": "Practice colors"}, "accent": {"editor": "color", "default": "#E0A33B", "section": "Practice colors"}, "light": {"editor": "color", "default": "#F6F1EA", "section": "Practice colors"}, "variant": {"editor": "enum", "options": ["F1 · Classic grouped", "F2 · Contact-led split", "F3 · Brand-led minimal", "F4 · Patient-first", "F6 · Multi-location", "F7 · Office cards (current)"], "default": "F7 · Office cards (current)", "section": "Footer"}, "logo": {"editor": "enum", "options": ["Landscape", "Vertical"], "default": "Landscape", "section": "Footer"}, "mobile": {"editor": "boolean", "default": false, "section": "Footer"}, "badges": {"editor": "boolean", "default": true, "section": "Footer"}, "$preview": {"width": 1440, "height": 720}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const p = this.props;
+    const presets = { 'Teal / Amber': ['#0F5E6B', '#E0A33B', '#F6F1EA'], 'Navy / Coral': ['#1E3A5F', '#E8735A', '#EEF3F8'], 'Forest / Gold': ['#2F5D3A', '#C9A227', '#F7F4EC'] };
+    const pr = presets[p.palette ?? 'Custom'];
+    const P = pr ? pr[0] : (p.primary ?? '#0F5E6B'), A = pr ? pr[1] : (p.accent ?? '#E0A33B'), L = pr ? pr[2] : (p.light ?? '#F6F1EA');
+    const hex = (h) => { h = String(h).replace('#', ''); if (h.length === 3) h = h.split('').map((c) => c + c).join(''); return h; };
+    const lum = (h) => { h = hex(h); const x = [0, 2, 4].map((i) => { const c = parseInt(h.substr(i, 2), 16) / 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); }); return 0.2126 * x[0] + 0.7152 * x[1] + 0.0722 * x[2]; };
+    const cr = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
+    const on = (c) => (cr(c, '#FFFFFF') >= cr(c, '#1B1F23') ? '#FFFFFF' : '#1B1F23');
+    const darken = (h, t) => '#' + [0, 2, 4].map((i) => Math.round(parseInt(hex(h).substr(i, 2), 16) * (1 - t)).toString(16).padStart(2, '0')).join('');
+    let ink = P; for (let t = 0.08; cr(ink, '#FFFFFF') < 4.5 && t < 0.9; t += 0.08) ink = darken(P, t);
+    const k = String(p.variant ?? 'F7 · Office cards (current)').slice(0, 2).toLowerCase();
+    const vt = (p.logo ?? 'Landscape') === 'Vertical';
+    return {
+      P, A, L, onP: on(P), onA: on(A), onL: on(L), pInk: ink,
+      rootCls: p.mobile ? 'm' : '',
+      is_f1: k === 'f1', is_f2: k === 'f2', is_f3: k === 'f3', is_f4: k === 'f4', is_f6: k === 'f6', is_f7: k === 'f7',
+      lw: !vt, vt, vCls: vt ? 'v' : '', brandCls: vt ? 'fx-center' : '',
+      badges: p.badges ?? true
+    };
+  }
+}
+</script>
+</body>
+</html>

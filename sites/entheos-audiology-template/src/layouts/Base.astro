@@ -1,0 +1,49 @@
+---
+// Page shell: fonts, styles, practice colours, header, footer and (on review
+// builds) the Review controls panel.
+import "../styles/d1.css";
+import "../styles/site.css";
+import ReviewControls, { type Tweak } from "../components/ReviewControls.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import { roleVars, styleString } from "../lib/color";
+import { getSettings, type HeroKey } from "../lib/settings";
+
+interface Props {
+	title: string;
+	description: string;
+	pageName: string;
+	current?: "services" | "hearing-aids" | "about" | "resources" | "blog" | "contact";
+	tweaks?: Tweak[];
+	heroDefault?: HeroKey;
+}
+const { title, description, pageName, current, tweaks = [], heroDefault } = Astro.props;
+const s = getSettings(Astro.url);
+const style = styleString(roleVars(s.colors));
+---
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<meta name="robots" content="noindex" />
+		<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap"
+			rel="stylesheet"
+		/>
+	</head>
+	<body class="d1 page" style={style} data-lshape={s.logoShape}>
+		<a class="skip" href="#main">Skip to main content</a>
+		<SiteHeader current={current} />
+		<main id="main">
+			<slot />
+		</main>
+		<SiteFooter />
+		{s.showPanel && <ReviewControls pageName={pageName} tweaks={tweaks} heroDefault={heroDefault} />}
+	</body>
+</html>

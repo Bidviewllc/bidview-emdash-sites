@@ -1,0 +1,33 @@
+---
+// Stand-in for pages that are not built yet (Step 2 of the build order).
+// Keeps the header, footer and Review controls working while reviewers click
+// around. Replaced page by page; the real 404 page comes in Step 2 too.
+import Icon from "../components/Icon.astro";
+import { routes, services } from "../data/practice";
+import Base from "../layouts/Base.astro";
+import { getSettings } from "../lib/settings";
+
+const s = getSettings(Astro.url);
+const slug = Astro.params.slug ?? "";
+const last = slug.split("/").filter(Boolean).pop() ?? "";
+const name = last.replace(/-/g, " ").replace(/^\w/, (c) => c.toUpperCase()) || "This page";
+Astro.response.status = 404;
+---
+<Base title={`${name} | ${s.name}`} description="This page is coming in the next build step." pageName={name}>
+	<div style="padding-top: 12px">
+		<section class="inophoto short" style="background: var(--l); color: var(--on-l)">
+			<div class="wrap">
+				<div class="stack g24" style="max-width: 760px">
+					<span class="eyebrow">Coming in Step 2</span>
+					<h1 class="h1">{name}</h1>
+					<p class="lead" style="color: inherit">This page is designed and will be built in the next step. For now, the Home page and the Service detail pages are ready to review.</p>
+					<div class="rowf" style="gap: 12px">
+						<a class="btn btn-primary" href={s.href(routes.home)}>Go to the home page</a>
+						<a class="btn btn-secondary" href={s.href(routes.service(services[0].slug))}>See a service page <Icon name="arrowR" /></a>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+	<div style="height: 96px"></div>
+</Base>

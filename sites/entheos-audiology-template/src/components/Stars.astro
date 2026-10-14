@@ -1,0 +1,13 @@
+---
+import Icon from "./Icon.astro";
+interface Props {
+	size?: number;
+	/** Announce the rating; leave off where the rating is already in the text. */
+	label?: string;
+	style?: string;
+}
+const { size = 22, label, style } = Astro.props;
+---
+<div class="stars" role={label ? "img" : undefined} aria-label={label} aria-hidden={label ? undefined : "true"} style={style}>
+	{[1, 2, 3, 4, 5].map(() => <Icon name="star" size={size} />)}
+</div>

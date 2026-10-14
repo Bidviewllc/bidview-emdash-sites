@@ -1,0 +1,390 @@
+---
+// Site header: one component, ten styles (Review controls → Header style).
+// Each style has a desktop layout and its own phone layout from the
+// "Headers & footers" boards; CSS shows one or the other by screen width.
+// The phone menu (burger) is shared by every style.
+import { routes, services, brands, telHref } from "../data/practice";
+import { getSettings } from "../lib/settings";
+import Icon from "./Icon.astro";
+import Logo from "./Logo.astro";
+import NavItems from "./NavItems.astro";
+
+interface Props {
+	current?: "services" | "hearing-aids" | "about" | "resources" | "blog" | "contact";
+}
+const { current } = Astro.props;
+const s = getSettings(Astro.url);
+const v = s.header;
+const office = s.offices[0];
+const addr = `${office.street.split(",")[0]}, ${office.shortName}`;
+const tel = telHref(s.phone);
+const book = s.href(routes.book);
+const allNav = ["services", "hearing-aids", "about", "resources", "blog", "contact"] as const;
+---
+<div class="site-header">
+	<!-- ===== desktop ===== -->
+	<div class="hd-desk">
+		{
+			v === "h1" && (
+				<>
+					<div class="hx-util">
+						<span class="grp">
+							<Icon name="pin" size={18} />
+							<span>{addr}</span>
+							<a class="u" href={office.mapsUrl}>Get directions</a>
+						</span>
+						<a href={tel}><Icon name="phone" size={18} />{s.phone}</a>
+					</div>
+					<header class="hdr bar">
+						<Logo />
+						<nav aria-label="Main" style="margin: 0 auto"><ul class="nav"><NavItems current={current} /></ul></nav>
+						<a class="btn btn-primary" href={book}>Book appointment</a>
+					</header>
+				</>
+			)
+		}
+		{
+			v === "h2" && (
+				<div class="hx-float">
+					<div class="hx-util plain">
+						<span class="grp">
+							<a href={tel}><Icon name="phone" size={18} />{s.phone}</a>
+							<span class="sep" aria-hidden="true" />
+							<Icon name="pin" size={18} />
+							<span>{addr}</span>
+							<a class="u" href={office.mapsUrl}>Directions</a>
+						</span>
+					</div>
+					<header class="hx-pill">
+						<Logo size={40} />
+						<nav aria-label="Main" style="margin: 0 auto"><ul class="nav"><NavItems current={current} /></ul></nav>
+						<a class="btn btn-primary" href={book}>Book appointment</a>
+					</header>
+				</div>
+			)
+		}
+		{
+			v === "h3" && (
+				<header class="hdr">
+					<Logo />
+					<nav aria-label="Main" style="margin: 0 auto"><ul class="nav"><NavItems current={current} /></ul></nav>
+					<div class="hdr-right">
+						<a class="tel" href={tel}><span class="ico"><Icon name="phone" /></span>{s.phone}</a>
+						<a class="btn btn-primary" href={book}>Book appointment</a>
+					</div>
+				</header>
+			)
+		}
+		{
+			v === "v1" && (
+				<div class="hx-v1">
+					<div class="hx-util">
+						<span class="grp">
+							<a href={tel}><Icon name="phone" size={18} />{s.phone}</a>
+							<span class="sep" aria-hidden="true" />
+							<Icon name="pin" size={18} />
+							<span>{addr}</span>
+							<a class="u" href={office.mapsUrl}>Get directions</a>
+						</span>
+					</div>
+					<header class="hdr bar">
+						<nav aria-label="Main" style="margin: 0 auto 0 0"><ul class="nav"><NavItems current={current} /></ul></nav>
+						<a class="btn btn-primary" href={book}>Book appointment</a>
+					</header>
+					<div class="hx-badge"><Logo shape="stacked" size={68} /></div>
+				</div>
+			)
+		}
+		{
+			v === "v2" && (
+				<>
+					<div class="hx-util gray">
+						<span class="grp">
+							<a href={tel}><Icon name="phone" size={18} />{s.phone}</a>
+							<span class="sep" aria-hidden="true" />
+							<Icon name="pin" size={18} />
+							<span>{addr}</span>
+							<a class="u" href={office.mapsUrl}>Directions</a>
+						</span>
+						<a class="btn btn-primary sm" href={book}>Book appointment</a>
+					</div>
+					<header class="hdr bar hx-split">
+						<nav aria-label="Main, part 1"><ul class="nav"><NavItems items={["services", "hearing-aids", "about"]} current={current} /></ul></nav>
+						<Logo shape="stacked" size={60} />
+						<nav aria-label="Main, part 2"><ul class="nav"><NavItems items={["resources", "blog", "contact"]} current={current} /></ul></nav>
+					</header>
+				</>
+			)
+		}
+		{
+			v === "v3" && (
+				<header class="hdr bar hx-v3">
+					<Logo shape="stacked" size={60} />
+					<span class="hx-div" aria-hidden="true" />
+					<div class="hx-tiers">
+						<div class="hx-tier1">
+							<a href={office.mapsUrl}><Icon name="pin" size={18} />{addr} · <span class="u">Get directions</span></a>
+							<a href={tel}><Icon name="phone" size={18} />{s.phone}</a>
+						</div>
+						<div class="hx-tier2">
+							<nav aria-label="Main"><ul class="nav"><NavItems current={current} /></ul></nav>
+							<a class="btn btn-primary" href={book}>Book appointment</a>
+						</div>
+					</div>
+				</header>
+			)
+		}
+		{
+			v === "v4" && (
+				<header class="hx-stackhdr">
+					<div class="hx-v4top">
+						<div><a class="tel" href={tel}><span class="ico"><Icon name="phone" /></span>{s.phone}</a></div>
+						<Logo shape="stacked" size={76} />
+						<div><a class="btn btn-primary" href={book}>Book appointment</a></div>
+					</div>
+					<nav class="hx-navrow c" aria-label="Main">
+						<ul class="nav"><NavItems current={current} /></ul>
+						<span class="vsep" aria-hidden="true" />
+						<a class="nav-link hx-dir" href={office.mapsUrl}><Icon name="pin" size={18} /> Get directions</a>
+					</nav>
+				</header>
+			)
+		}
+		{
+			(v === "v5" || v === "v6" || v === "v7") && (
+				<header class="hx-stackhdr">
+					<div class="hx-v5top">
+						<Logo shape="stacked" size={68} />
+						{v === "v5" && (
+							<div class="hx-acts col">
+								<a class="btn btn-primary block" href={book}>Book appointment</a>
+								<a class="btn btn-secondary block" href={tel}><Icon name="phone" /> Call {s.phone}</a>
+							</div>
+						)}
+						{v === "v6" && (
+							<div class="hx-acts">
+								<a class="btn btn-secondary" href={tel}><Icon name="phone" /> Call {s.phone}</a>
+								<a class="btn btn-primary" href={book}>Book appointment</a>
+							</div>
+						)}
+						{v === "v7" && (
+							<div class="hx-acts">
+								<a class="btn btn-primary" href={book}>Book appointment</a>
+							</div>
+						)}
+					</div>
+					<nav class="hx-navrow l" aria-label="Main">
+						<ul class="nav"><NavItems current={current} /></ul>
+						<span class="vsep" aria-hidden="true" />
+						<a class="nav-link hx-dir" href={office.mapsUrl}><Icon name="pin" size={18} /> Get directions</a>
+					</nav>
+				</header>
+			)
+		}
+	</div>
+
+	<!-- ===== phone ===== -->
+	<div class="hd-mob">
+		{
+			v === "h1" && (
+				<>
+					<div class="hx-util">
+						<a href={tel}><Icon name="phone" size={18} />{s.phone}</a>
+						<a href={office.mapsUrl}><Icon name="pin" size={18} />Directions</a>
+					</div>
+					<header class="hdr bar">
+						<Logo size={38} />
+						<div class="hx-mr">
+							<a class="btn btn-primary sm" href={book}>Book</a>
+							<button class="icon-btn hx-menu" data-menu-btn aria-label="Open menu" aria-expanded="false" aria-controls="mmenu"><span class="i-open"><Icon name="burger" size={24} /></span><span class="i-close"><Icon name="close" size={24} /></span></button>
+						</div>
+					</header>
+				</>
+			)
+		}
+		{
+			v === "h2" && (
+				<div class="hx-float">
+					<div class="hx-util plain">
+						<a href={tel}><Icon name="phone" size={18} />{s.phone}</a>
+						<a href={office.mapsUrl}><Icon name="pin" size={18} />Directions</a>
+					</div>
+					<header class="hx-pill">
+						<Logo size={36} />
+						<div class="hx-mr">
+							<a class="btn btn-primary sm" href={book}>Book</a>
+							<button class="icon-btn hx-menu" data-menu-btn aria-label="Open menu" aria-expanded="false" aria-controls="mmenu"><span class="i-open"><Icon name="burger" size={24} /></span><span class="i-close"><Icon name="close" size={24} /></span></button>
+						</div>
+					</header>
+				</div>
+			)
+		}
+		{
+			v === "h3" && (
+				<header class="hdr bar">
+					<Logo size={38} />
+					<div class="hx-mr">
+						<a class="icon-btn" href={tel} aria-label={`Call ${s.phone}`} style="background: var(--p); color: var(--on-p)"><Icon name="phone" size={22} /></a>
+						<button class="icon-btn hx-menu" data-menu-btn aria-label="Open menu" aria-expanded="false" aria-controls="mmenu"><span class="i-open"><Icon name="burger" size={24} /></span><span class="i-close"><Icon name="close" size={24} /></span></button>
+					</div>
+				</header>
+			)
+		}
+		{
+			v === "v1" && (
+				<div class="hx-v1">
+					<div class="hx-util">
+						<a href={tel}><Icon name="phone" size={18} />{s.phone}</a>
+						<a href={office.mapsUrl}><Icon name="pin" size={18} />Map</a>
+					</div>
+					<header class="hdr bar">
+						<div class="hx-mr">
+							<a class="btn btn-primary sm" href={book}>Book</a>
+							<button class="icon-btn hx-menu" data-menu-btn aria-label="Open menu" aria-expanded="false" aria-controls="mmenu"><span class="i-open"><Icon name="burger" size={24} /></span><span class="i-close"><Icon name="close" size={24} /></span></button>
+						</div>
+					</header>
+					<div class="hx-badge"><Logo shape="stacked" size={44} /></div>
+				</div>
+			)
+		}
+		{
+			v === "v2" && (
+				<>
+					<a class="hx-bookbar" href={book}>Book appointment <Icon name="arrowR" /></a>
+					<header class="hx-mgrid">
+						<button class="icon-btn hx-menu" data-menu-btn aria-label="Open menu" aria-expanded="false" aria-controls="mmenu"><span class="i-open"><Icon name="burger" size={24} /></span><span class="i-close"><Icon name="close" size={24} /></span></button>
+						<Logo shape="stacked" size={48} />
+						<a class="icon-btn" href={tel} aria-label={`Call ${s.phone}`} style="background: var(--p); color: var(--on-p)"><Icon name="phone" size={22} /></a>
+					</header>
+				</>
+			)
+		}
+		{
+			v === "v3" && (
+				<header class="hdr bar hx-v3">
+					<Logo shape="stacked" size={44} />
+					<span class="hx-div" aria-hidden="true" />
+					<div class="hx-tiers">
+						<div class="hx-tier1"><a href={tel}><Icon name="phone" size={18} />{s.phone}</a></div>
+						<div class="hx-tier2">
+							<a class="btn btn-primary sm" href={book}>Book</a>
+							<button class="icon-btn hx-menu" data-menu-btn aria-label="Open menu" aria-expanded="false" aria-controls="mmenu"><span class="i-open"><Icon name="burger" size={24} /></span><span class="i-close"><Icon name="close" size={24} /></span></button>
+						</div>
+					</div>
+				</header>
+			)
+		}
+		{
+			v === "v4" && (
+				<>
+					<header class="hx-mgrid">
+						<a class="icon-btn" href={tel} aria-label={`Call ${s.phone}`} style="background: var(--p); color: var(--on-p)"><Icon name="phone" size={22} /></a>
+						<Logo shape="stacked" size={52} />
+						<button class="icon-btn hx-menu" data-menu-btn aria-label="Open menu" aria-expanded="false" aria-controls="mmenu"><span class="i-open"><Icon name="burger" size={24} /></span><span class="i-close"><Icon name="close" size={24} /></span></button>
+					</header>
+					<a class="hx-bookbar" href={book}>Book appointment <Icon name="arrowR" /></a>
+				</>
+			)
+		}
+		{
+			(v === "v5" || v === "v6" || v === "v7") && (
+				<header class="hx-mbar">
+					<Logo shape="stacked" size={44} />
+					<div class="hx-mr">
+						{v !== "v7" && (
+							<a class="icon-btn" href={tel} aria-label={`Call ${s.phone}`} style="background: var(--p); color: var(--on-p)"><Icon name="phone" size={22} /></a>
+						)}
+						<a class="btn btn-primary sm" href={book}>Book</a>
+						<button class="icon-btn hx-menu" data-menu-btn aria-label="Open menu" aria-expanded="false" aria-controls="mmenu"><span class="i-open"><Icon name="burger" size={24} /></span><span class="i-close"><Icon name="close" size={24} /></span></button>
+					</div>
+				</header>
+			)
+		}
+
+		<nav class="mmenu" id="mmenu" aria-label="Main menu" hidden>
+			<div class="panel">
+				<ul class="mlist">
+					<li>
+						<button class="mlink" aria-expanded="false" aria-controls="msub-services" data-msub>Services <span class="i-open"><Icon name="plus" size={22} /></span><span class="i-close"><Icon name="minus" size={22} /></span></button>
+						<ul class="msub" id="msub-services" hidden>
+							<li><a href={s.href(routes.services)}>All services</a></li>
+							{services.filter((x) => x.hasPage).map((x) => <li><a href={s.href(routes.service(x.slug))}>{x.navLabel}</a></li>)}
+						</ul>
+					</li>
+					<li>
+						<button class="mlink" aria-expanded="false" aria-controls="msub-hearing-aids" data-msub>Hearing aids <span class="i-open"><Icon name="plus" size={22} /></span><span class="i-close"><Icon name="minus" size={22} /></span></button>
+						<ul class="msub" id="msub-hearing-aids" hidden>
+							<li><a href={s.href(routes.hearingAids)}>All hearing aids</a></li>
+							{brands.filter((b) => b.hasPage).map((b) => <li><a href={s.href(routes.brand(b.slug))}>{b.name} hearing aids</a></li>)}
+						</ul>
+					</li>
+					<li><a class="mlink" href={s.href(routes.about)}>About</a></li>
+					<li><a class="mlink" href={s.href(routes.resources)}>Resources</a></li>
+					<li><a class="mlink" href={s.href(routes.blog)}>Blog</a></li>
+					<li><a class="mlink" href={s.href(routes.contact)}>Contact</a></li>
+				</ul>
+				<div class="stack g12" style="padding: 14px 2px 4px">
+					<a class="btn btn-primary block" href={book}>Book appointment</a>
+					<a class="btn btn-secondary block" href={tel}>Call {s.phone}</a>
+				</div>
+			</div>
+		</nav>
+	</div>
+</div>
+
+<script>
+	// Desktop dropdowns: click or Enter/Space to open, Escape or a click outside to close.
+	const closeAll = (except?: Element) => {
+		document.querySelectorAll<HTMLElement>("[data-dd]").forEach((li) => {
+			if (li === except) return;
+			const btn = li.querySelector("button");
+			const panel = li.querySelector<HTMLElement>(".dd");
+			btn?.setAttribute("aria-expanded", "false");
+			btn?.classList.remove("is-open");
+			if (panel) panel.hidden = true;
+		});
+	};
+	document.querySelectorAll<HTMLElement>("[data-dd]").forEach((li) => {
+		const btn = li.querySelector("button")!;
+		const panel = li.querySelector<HTMLElement>(".dd")!;
+		btn.addEventListener("click", (e) => {
+			e.stopPropagation();
+			const open = btn.getAttribute("aria-expanded") === "true";
+			closeAll(li);
+			btn.setAttribute("aria-expanded", String(!open));
+			btn.classList.toggle("is-open", !open);
+			panel.hidden = open;
+		});
+	});
+	document.addEventListener("click", (e) => {
+		if (!(e.target as Element).closest(".dd")) closeAll();
+	});
+	document.addEventListener("keydown", (e) => {
+		if (e.key !== "Escape") return;
+		const openBtn = document.querySelector<HTMLElement>("[data-dd] button[aria-expanded='true']");
+		closeAll();
+		openBtn?.focus();
+	});
+
+	// Phone menu: one shared panel under the header.
+	const menu = document.getElementById("mmenu");
+	document.querySelectorAll<HTMLButtonElement>("[data-menu-btn]").forEach((btn) => {
+		btn.addEventListener("click", () => {
+			if (!menu) return;
+			const open = menu.hidden;
+			menu.hidden = !open;
+			btn.setAttribute("aria-expanded", String(open));
+			btn.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+			btn.classList.toggle("on", open);
+		});
+	});
+	document.querySelectorAll<HTMLButtonElement>("[data-msub]").forEach((btn) => {
+		btn.addEventListener("click", () => {
+			const sub = document.getElementById(btn.getAttribute("aria-controls")!);
+			if (!sub) return;
+			const open = sub.hidden;
+			sub.hidden = !open;
+			btn.setAttribute("aria-expanded", String(open));
+		});
+	});
+</script>

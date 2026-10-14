@@ -1,0 +1,17 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	// Entheos audiology template, design 1 demo (phase 1: practice data file, no EmDash yet).
+	// Learning account, like the other design sandboxes; public workers.dev URL.
+	"name": "entheos-audiology-template",
+	"account_id": "981338e6544cfe45d9819bf0ea6eb83a",
+	"main": "@astrojs/cloudflare/entrypoints/server",
+	"compatibility_date": "2026-02-24",
+	"compatibility_flags": ["nodejs_compat"],
+	"workers_dev": true,
+	"preview_urls": true,
+	"assets": {
+		"binding": "ASSETS",
+		"directory": "./dist"
+	},
+	"observability": { "enabled": true }
+}
