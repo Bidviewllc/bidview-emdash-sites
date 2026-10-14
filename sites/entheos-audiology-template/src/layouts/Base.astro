@@ -45,5 +45,46 @@ const style = styleString(roleVars(s.colors));
 		</main>
 		<SiteFooter />
 		{s.showPanel && <ReviewControls pageName={pageName} tweaks={tweaks} heroDefault={heroDefault} />}
+		<script>
+			// Accordions (FAQ, tables of contents, resource lists): the button opens and closes its panel.
+			document.querySelectorAll<HTMLElement>("[data-acc]").forEach((acc) => {
+				const btn = acc.querySelector<HTMLButtonElement>("button[aria-controls]");
+				const panel = btn && document.getElementById(btn.getAttribute("aria-controls")!);
+				if (!btn || !panel) return;
+				btn.addEventListener("click", () => {
+					const open = panel.hidden;
+					panel.hidden = !open;
+					btn.setAttribute("aria-expanded", String(open));
+					acc.classList.toggle("open", open);
+				});
+			});
+			// Demo form: checks the required fields and shows the error next to each one,
+			// in words. When it passes, it goes to the thank-you page (nothing is sent yet).
+			document.querySelectorAll<HTMLFormElement>("[data-form]").forEach((form) => {
+				form.addEventListener("submit", (e) => {
+					e.preventDefault();
+					let first: HTMLInputElement | null = null;
+					form.querySelectorAll<HTMLInputElement>("[required]").forEach((input) => {
+						const err = document.getElementById(input.getAttribute("aria-describedby") ?? "");
+						const bad = !input.value.trim() || (input.type === "tel" && input.value.replace(/\D/g, "").length < 7);
+						input.classList.toggle("err", bad);
+						input.setAttribute("aria-invalid", String(bad));
+						if (err) err.hidden = !bad;
+						if (bad && !first) first = input;
+					});
+					if (first) (first as HTMLInputElement).focus();
+					else location.assign(form.getAttribute("action")!);
+				});
+			});
+			// "Read more" on a clamped review opens the full text.
+			document.querySelectorAll<HTMLButtonElement>(".readmore").forEach((btn) => {
+				btn.addEventListener("click", () => {
+					const text = btn.parentElement!.querySelector(".rtext")!;
+					const open = text.classList.toggle("is-open");
+					btn.setAttribute("aria-expanded", String(open));
+					btn.textContent = open ? "Show less" : "Read more";
+				});
+			});
+		</script>
 	</body>
 </html>

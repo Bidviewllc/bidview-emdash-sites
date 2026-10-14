@@ -1,0 +1,34 @@
+---
+// Service cards in a grey panel (Home "Services" style). Each card links to its
+// page when the page exists ("mixed"), or all / none for review.
+import { routes, services as allServices, type Service } from "../data/practice";
+import { getSettings } from "../lib/settings";
+
+interface Props {
+	items?: Service[];
+	links?: "mixed" | "all" | "none";
+	/** Card title tag: h3 under a section h2, h2 when the cards are the page's first section. */
+	titleTag?: "h2" | "h3";
+}
+const { items = allServices.filter((x) => !x.hideFromHub), links = "mixed", titleTag = "h3" } = Astro.props;
+const s = getSettings(Astro.url);
+const T = titleTag;
+---
+<div class="panel grid g-3">
+	{
+		items.map((x) => {
+			const linked = links === "all" ? true : links === "none" ? false : x.hasPage;
+			return (
+				<article class="card">
+					<T class="h3">{x.name}</T>
+					<p class="muted">{x.summary}</p>
+					{linked && (
+						<div class="actions">
+							<a class="btn btn-gray sm" href={s.href(routes.service(x.slug))}>Learn more<span class="sr"> about {x.name}</span></a>
+						</div>
+					)}
+				</article>
+			);
+		})
+	}
+</div>

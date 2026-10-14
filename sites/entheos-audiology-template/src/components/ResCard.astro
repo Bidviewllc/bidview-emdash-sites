@@ -1,0 +1,21 @@
+---
+// Patient resource card: topic tags, title, summary, and either "Learn more"
+// (own page) or "Download PDF / Fill out online" (forms).
+import type { Resource } from "../data/blog";
+import { routes } from "../data/practice";
+import { getSettings } from "../lib/settings";
+import Icon from "./Icon.astro";
+
+interface Props {
+	r: Resource;
+}
+const { r } = Astro.props;
+const s = getSettings(Astro.url);
+---
+<article class="card res-card">
+	<ul class="res-tags" aria-label="Topics">{r.tags.map((t) => <li class="tag">{t}</li>)}</ul>
+	<h3 class="h3">{r.t}</h3>
+	<p class="muted">{r.d}</p>
+	{r.page && <div class="actions"><a class="btn btn-gray sm" href={s.href(routes.resource(r.slug))}>Learn more<span class="sr"> about {r.t}</span></a></div>}
+	{r.forms && <div class="actions rowf" style="gap: 10px"><a class="btn btn-secondary sm" href="#"><Icon name="doc" size={18} /> Download PDF</a><a class="btn btn-primary sm" href="#">Fill out online</a></div>}
+</article>

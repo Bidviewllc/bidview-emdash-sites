@@ -1,0 +1,30 @@
+---
+// Provider card: name on top, 4:5 headshot below. Linked cards get the round
+// arrow and go to the profile page. "horizontal" is the Location page version.
+import { routes, type Provider } from "../data/practice";
+import { getSettings } from "../lib/settings";
+import Headshot from "./Headshot.astro";
+import Icon from "./Icon.astro";
+
+interface Props {
+	p: Provider;
+	linked: boolean;
+	horizontal?: boolean;
+}
+const { p, linked, horizontal = false } = Astro.props;
+const s = getSettings(Astro.url);
+---
+{
+	linked ? (
+		<a class:list={["prov", { provh: horizontal }]} href={s.href(routes.provider(p.slug))} aria-label={p.meet}>
+			<span class="arrow" aria-hidden="true"><Icon name="arrowUR" /></span>
+			<div class="who"><h3 class="pname">{p.name}</h3><span class="ptitle">{p.title}</span><slot /></div>
+			<Headshot tone={p.tone} />
+		</a>
+	) : (
+		<div class:list={["prov", { provh: horizontal }]}>
+			<div class="who" style="padding-right: 10px"><h3 class="pname">{p.name}</h3><span class="ptitle">{p.title}</span><slot /></div>
+			<Headshot tone={p.tone} />
+		</div>
+	)
+}

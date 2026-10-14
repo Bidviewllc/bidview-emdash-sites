@@ -4,11 +4,14 @@
 // reviews → locations → latest posts → CTA.
 import CtaBand from "../components/CtaBand.astro";
 import HomeHero from "../components/HomeHero.astro";
-import Headshot from "../components/Headshot.astro";
+import OfficesSection from "../components/OfficesSection.astro";
+import ProviderCard from "../components/ProviderCard.astro";
+import ReviewCard from "../components/ReviewCard.astro";
+import ServiceCards from "../components/ServiceCards.astro";
 import Icon from "../components/Icon.astro";
 import type { Tweak } from "../components/ReviewControls.astro";
 import Stars from "../components/Stars.astro";
-import { brands, posts, practice, providers, reviews, routes, services, telHref } from "../data/practice";
+import { brands, posts, practice, providers, reviews, routes, services } from "../data/practice";
 import Base from "../layouts/Base.astro";
 import { getSettings } from "../lib/settings";
 
@@ -32,10 +35,8 @@ const brandLinks = s.choice("brandlinks", ["mixed", "all", "none"], "mixed");
 const revLink = s.bool("revlink", true);
 const showPosts = s.bool("posts", true);
 
-const svc = services.filter((x) => !x.hideFromHub).map((x) => ({ ...x, linked: svcLinks === "all" ? true : svcLinks === "none" ? false : x.hasPage }));
 const brandTiles = brands.map((b) => ({ ...b, linked: brandLinks === "all" ? true : brandLinks === "none" ? false : b.hasPage }));
 const team = providers.map((p) => ({ ...p, linked: provLinked && p.hasPage }));
-const two = s.officeCount === 2;
 const city = practice.city;
 ---
 <Base
@@ -71,22 +72,7 @@ const city = practice.city;
 				<p class="lead">Eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi.</p>
 			</div>
 			<div class="grid g-3 team-grid" style="gap: 16px">
-				{
-					team.map((p) =>
-						p.linked ? (
-							<a class="prov" href={h(routes.provider(p.slug))} aria-label={p.meet}>
-								<span class="arrow" aria-hidden="true"><Icon name="arrowUR" /></span>
-								<div class="who"><h3 class="pname">{p.name}</h3><span class="ptitle">{p.title}</span></div>
-								<Headshot tone={p.tone} />
-							</a>
-						) : (
-							<div class="prov">
-								<div class="who" style="padding-right: 10px"><h3 class="pname">{p.name}</h3><span class="ptitle">{p.title}</span></div>
-								<Headshot tone={p.tone} />
-							</div>
-						),
-					)
-				}
+				{team.map((p) => <ProviderCard p={p} linked={p.linked} />)}
 			</div>
 		</div>
 	</section>
@@ -99,21 +85,7 @@ const city = practice.city;
 				<p class="lead">Ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum. Dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non. Proident sunt in.</p>
 			</div>
 			<div class="stack g24">
-				<div class="panel grid g-3">
-					{
-						svc.map((x) => (
-							<article class="card">
-								<h3 class="h3">{x.name}</h3>
-								<p class="muted">{x.summary}</p>
-								{x.linked && (
-									<div class="actions">
-										<a class="btn btn-gray sm" href={h(routes.service(x.slug))}>Learn more<span class="sr"> about {x.name}</span></a>
-									</div>
-								)}
-							</article>
-						))
-					}
-				</div>
+				<ServiceCards links={svcLinks} items={services.filter((x) => x.onHome !== false && !x.hideFromHub)} />
 				<a class="link-arrow" href={h(routes.services)} style="align-self: flex-start">View all services <Icon name="arrowR" size={18} /></a>
 			</div>
 			{
@@ -177,19 +149,7 @@ const city = practice.city;
 			</div>
 			<div class="stack g24" data-review-pager>
 				<div class="panel grid g-2">
-					{
-						reviews.map((r, i) => (
-							<figure class="card review" style="margin: 0" data-review={i} hidden={i > 1}>
-								<div style="display: flex; justify-content: space-between; align-items: flex-start">
-									<span class="qmark only-d" aria-hidden="true"><Icon name="quote" size={28} /></span>
-									<Stars label="5 out of 5 stars" />
-								</div>
-								<blockquote class="rtext" style="margin: 0">{r.text}</blockquote>
-								{r.long && <button class="readmore" type="button" aria-expanded="false">Read more</button>}
-								<figcaption class="rmeta" style="margin-top: auto; padding-top: 8px"><b>{r.name}</b><span>Google review</span><span aria-hidden="true">·</span><span>{r.date}</span></figcaption>
-							</figure>
-						))
-					}
+					{reviews.map((r, i) => <ReviewCard review={r} index={i} hidden={i > 1} />)}
 				</div>
 				<div class="rv-row">
 					<div class="rowf rv-pager" style="gap: 12px">
@@ -203,43 +163,7 @@ const city = practice.city;
 		</div>
 	</section>
 
-	<section class="band bg-light">
-		<div class="wrap stack g48">
-			<div class="stack g16"><span class="eyebrow">Locations</span><h2 class="h2">{two ? `Visit us in ${s.offices.map((o) => o.shortName).join(" and ")}` : `Visit us in ${s.offices[0].shortName}`}</h2></div>
-			{
-				two ? (
-					<div class="panel grid g-2">
-						{s.offices.map((o, i) => (
-							<article class="card office" style="padding: 12px 12px 32px; gap: 0">
-								<div class:list={["ph", i ? "sage" : "stone"]} style="aspect-ratio: 16/9; border-radius: 12px"><span class="ph-label">Map · loads on tap</span></div>
-								<div class="stack g16 office-body">
-									<h3 class="h3">{o.name}</h3>
-									<div class="drow"><span class="di"><Icon name="pin2" /></span><address style="font-style: normal; padding-top: 6px">{o.street}, {o.city}</address></div>
-									<div class="drow only-d" style="align-items: center"><span class="di"><Icon name="phone" /></span><a href={telHref(o.phone)} style="font-weight: 700; font-size: 20px">{o.phone}</a></div>
-									<div class="drow" style="align-items: center"><span class="di"><Icon name="clock" /></span><span>{o.hoursLine}</span></div>
-									<a class="btn btn-secondary block only-m" href={telHref(o.phone)}>Call {o.phone}</a>
-									<a class="link-arrow" href={o.mapsUrl} style="align-self: flex-start">Get directions <Icon name="arrowUR" size={18} /></a>
-								</div>
-							</article>
-						))}
-					</div>
-				) : (
-					<div class="panel">
-						<article class="card office-one">
-							<div class="stack g16" style="padding: 28px 28px 32px">
-								<h3 class="h3">{s.offices[0].name}</h3>
-								<div class="drow"><span class="di"><Icon name="pin2" /></span><address style="font-style: normal; padding-top: 6px">{s.offices[0].street}, {s.offices[0].city}</address></div>
-								<div class="drow" style="align-items: center"><span class="di"><Icon name="phone" /></span><a href={telHref(s.offices[0].phone)} style="font-weight: 700; font-size: 20px">{s.offices[0].phone}</a></div>
-								<div class="drow" style="align-items: center"><span class="di"><Icon name="clock" /></span><span>{s.offices[0].hoursLine}</span></div>
-								<a class="link-arrow" href={s.offices[0].mapsUrl} style="align-self: flex-start">Get directions <Icon name="arrowUR" size={18} /></a>
-							</div>
-							<div class="ph stone office-map"><span class="ph-label">Map · loads on tap</span></div>
-						</article>
-					</div>
-				)
-			}
-		</div>
-	</section>
+	<OfficesSection />
 
 	{
 		showPosts && (
@@ -285,14 +209,5 @@ const city = practice.city;
 		};
 		box.querySelector("[data-prev]")!.addEventListener("click", () => { page = (page - 1 + pages) % pages; show(); });
 		box.querySelector("[data-next]")!.addEventListener("click", () => { page = (page + 1) % pages; show(); });
-	});
-	// "Read more" opens the full review text.
-	document.querySelectorAll<HTMLButtonElement>(".readmore").forEach((btn) => {
-		btn.addEventListener("click", () => {
-			const text = btn.parentElement!.querySelector(".rtext")!;
-			const open = text.classList.toggle("is-open");
-			btn.setAttribute("aria-expanded", String(open));
-			btn.textContent = open ? "Show less" : "Read more";
-		});
 	});
 </script>

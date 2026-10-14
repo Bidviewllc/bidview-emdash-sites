@@ -1,0 +1,149 @@
+---
+// Page 6 · About (boards AboutPage, AboutMobile, AboutPageAlt, AboutPageAltB).
+// Hero → story → journey timeline (grid, horizontal or hidden) → values → team
+// (provider cards, no bios) → community (optional) → credentials (optional) → CTA.
+// Hidden sections never leave a double gap: the next white band drops its top padding.
+import CtaBand from "../../components/CtaBand.astro";
+import Icon from "../../components/Icon.astro";
+import PageHero from "../../components/PageHero.astro";
+import ProviderCard from "../../components/ProviderCard.astro";
+import type { Tweak } from "../../components/ReviewControls.astro";
+import { associations, milestones, practice, providers, values } from "../../data/practice";
+import Base from "../../layouts/Base.astro";
+import { getSettings } from "../../lib/settings";
+
+const tweaks: Tweak[] = [
+	{ key: "journey", label: "Our journey", type: "choice", default: "grid", options: [["grid", "Grid 2 × 2"], ["row", "Horizontal"], ["hidden", "Hidden"]] },
+	{ key: "profiles", label: "Provider profiles linked", type: "bool", default: true },
+	{ key: "community", label: "Community section", type: "bool", default: true },
+	{ key: "creds", label: "Credentials section", type: "bool", default: true },
+];
+const s = getSettings(Astro.url);
+const hero = s.heroFor("photo");
+const withPhoto = hero === "photo" || hero === "example";
+const journey = s.choice("journey", ["grid", "row", "hidden"], "grid");
+const profiles = s.bool("profiles", true);
+const community = s.bool("community", true);
+const creds = s.bool("creds", true);
+const credHeights: Record<string, string> = { ada: "40px", aaa: "50px", aba: "54px", asha: "46px", hearingup: "40px" };
+---
+<Base title={`About us | ${s.name}`} description={practice.tagline} pageName="About" current="about" tweaks={tweaks} heroDefault="photo">
+	<PageHero
+		crumbs={[{ label: "Home" }, { label: "About" }]}
+		title="Hearing care is personal"
+		lead="Ea commodo consequat duis aute irure dolor in reprehenderit. In voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat. Cupidatat non proident sunt in culpa qui officia."
+		photoLabel="Team photo · 3:2"
+	/>
+
+	<section class:list={["band first", { "after-photo": withPhoto }]}>
+		<div class="wrap about" style="align-items: start">
+			<div class="stack g24">
+				<span class="eyebrow">Our story</span>
+				<h2 class="h2">Our story</h2>
+				<p class="body">Deserunt mollit anim id est laborum curabitur pretium tincidunt lacus. Nulla gravida orci a odio nullam varius turpis et commodo pharetra est eros bibendum. Elit nec luctus magna felis sollicitudin mauris integer in mauris eu nibh. Euismod gravida praesent blandit odio eu enim pellentesque sed dapibus est. Sed lacinia sapien vel tellus lorem ipsum dolor sit amet consectetur adipiscing elit sed do.</p>
+				<p class="body">Irure dolor in reprehenderit in voluptate velit esse cillum dolore. Eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui. Officia deserunt mollit anim id est laborum curabitur pretium tincidunt lacus nulla. Gravida orci a odio nullam varius turpis et commodo pharetra est.</p>
+			</div>
+			<div class="ph stone story-photo"><span class="ph-label">Team photo · 3:2</span></div>
+		</div>
+	</section>
+
+	{
+		journey === "grid" && (
+			<section class="band bg-light">
+				<div class="wrap journey-grid">
+					<div class="stack g24">
+						<span class="eyebrow">Our journey</span>
+						<h2 class="h2">From our early days in {practice.city}</h2>
+						<p class="lead">Commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse. Cillum dolore eu fugiat nulla pariatur excepteur sint occaecat.</p>
+					</div>
+					<ol class="panel grid g-2 ms-list" style="list-style: none; margin: 0">
+						{milestones.map((m) => <li class="ms"><div class="yr">{m.y}</div><p>{m.t}</p></li>)}
+					</ol>
+				</div>
+			</section>
+		)
+	}
+	{
+		journey === "row" && (
+			<section class="band bg-light">
+				<div class="wrap stack g48">
+					<div class="two-col" style="align-items: end; gap: 80px">
+						<div class="stack g16"><span class="eyebrow">Our journey</span><h2 class="h2">From our early days in {practice.city}</h2></div>
+						<p class="lead">Commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse. Cillum dolore eu fugiat nulla pariatur excepteur sint occaecat.</p>
+					</div>
+					<ol class="panel grid g-4 ms-list" style="list-style: none; margin: 0">
+						{milestones.map((m) => <li class="ms"><div class="yr">{m.y}</div><p>{m.t}</p></li>)}
+					</ol>
+				</div>
+			</section>
+		)
+	}
+
+	<section class:list={["band", { pt0: journey === "hidden" }]}>
+		<div class="wrap stack g48">
+			<div class="stack g16 text-col">
+				<span class="eyebrow">Our values</span>
+				<h2 class="h2">What guides our care</h2>
+			</div>
+			<div class="panel grid g-4">
+				{
+					values.map((v) => (
+						<article class="card val">
+							<span class="qmark"><Icon name={v.icon} size={28} /></span>
+							<h3 class="h4">{v.t}</h3>
+							<p class="muted">{v.d}</p>
+						</article>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<section class="band bg-light" id="team">
+		<div class="wrap stack g48">
+			<div class="stack g16 text-col">
+				<span class="eyebrow">Our team</span>
+				<h2 class="h2">Meet the team</h2>
+			</div>
+			<div class="grid g-3 team-grid" style="gap: 16px; align-items: start">
+				{providers.map((p) => <ProviderCard p={p} linked={profiles && p.hasPage} />)}
+			</div>
+		</div>
+	</section>
+
+	{
+		community && (
+			<section class="band">
+				<div class="wrap about community">
+					<div class="ph sky"><span class="ph-label">Community photo · 3:2 (event, school screening, sponsorship)</span></div>
+					<div class="stack g24">
+						<span class="eyebrow">Community</span>
+						<h2 class="h2">Part of the {practice.city} community</h2>
+						<p class="body">Mauris integer in mauris eu nibh euismod gravida praesent blandit. Odio eu enim pellentesque sed dapibus est sed lacinia sapien vel tellus lorem ipsum. Dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut. Labore et dolore magna aliqua ut enim ad minim veniam quis. Nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		creds && (
+			<section class="band bg-gray">
+				<div class="wrap stack g32">
+					<div class="two-col" style="align-items: end; gap: 80px">
+						<div class="stack g16"><span class="eyebrow">Credentials</span><h2 class="h2">Credentials and memberships</h2></div>
+						<p class="body">Eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa. Qui officia deserunt mollit anim id est laborum curabitur pretium tincidunt lacus nulla gravida orci a odio. Nullam varius turpis et commodo pharetra est eros bibendum elit.</p>
+					</div>
+					<ul class="creds">
+						{associations.map((a) => <li class="cred"><img src={`/assets/associations/color/${a.key}.png`} alt={a.name} style={`max-height: ${credHeights[a.key] ?? "44px"}`} /></li>)}
+						<li class="cred add"><Icon name="plus" />Additional badge (optional)</li>
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<div class:list={["cta-wrap", { "after-inset": creds || !community }]}>
+		<CtaBand id="acta" heading="Your hearing journey starts with a conversation" text="Nec luctus magna felis sollicitudin mauris integer in mauris eu nibh euismod gravida praesent. Blandit odio eu enim." photoLabel="Lifestyle photo · conversation, meal, outdoors" />
+	</div>
+</Base>

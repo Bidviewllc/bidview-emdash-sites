@@ -38,6 +38,11 @@ handed off from Claude Design in `design/`.
 - Tablet: no separate design; built from patterns already in the design.
 - Demo is public, on the learning account's workers.dev.
 
+## Parked for later (Liz, 2026-10-14)
+- An alternative trust bar style (she doesn't like the current one on mobile).
+- An alternative people / provider card section.
+Build these as switchable variants in Review controls once designed.
+
 ## Working style
 Build in the handoff's order and stop after each step for Liz's review. When the
 design and the handoff disagree, ask before guessing.

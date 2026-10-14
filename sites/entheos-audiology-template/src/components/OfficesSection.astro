@@ -1,0 +1,58 @@
+---
+// "Visit us" locations band (Home, and reused on Provider profile and Contact).
+// Two offices: two cards with a map slot on top. One office: one wide card with
+// the map beside it. Follows Review controls → Offices.
+import { telHref } from "../data/practice";
+import { getSettings } from "../lib/settings";
+import Icon from "./Icon.astro";
+
+interface Props {
+	heading?: string;
+	eyebrow?: string;
+	/** Override the office count (the Provider page has its own switch). */
+	count?: 1 | 2;
+	class?: string;
+}
+const s = getSettings(Astro.url);
+const { eyebrow = "Locations", count = s.officeCount, class: cls } = Astro.props;
+const offices = s.offices.length >= count ? s.offices.slice(0, count) : s.offices;
+const two = offices.length === 2;
+const heading = Astro.props.heading ?? (two ? `Visit us in ${offices.map((o) => o.shortName).join(" and ")}` : `Visit us in ${offices[0].shortName}`);
+---
+<section class:list={["band bg-light", cls]}>
+	<div class="wrap stack g48">
+		<div class="stack g16"><span class="eyebrow">{eyebrow}</span><h2 class="h2">{heading}</h2></div>
+		{
+			two ? (
+				<div class="panel grid g-2">
+					{offices.map((o, i) => (
+						<article class="card office" style="padding: 12px 12px 32px; gap: 0">
+							<div class:list={["ph", i ? "sage" : "stone"]} style="aspect-ratio: 16/9; border-radius: 12px"><span class="ph-label">Map · loads on tap</span></div>
+							<div class="stack g16 office-body">
+								<h3 class="h3">{o.name}</h3>
+								<div class="drow"><span class="di"><Icon name="pin2" /></span><address style="font-style: normal; padding-top: 6px">{o.street}, {o.city}</address></div>
+								<div class="drow only-d" style="align-items: center"><span class="di"><Icon name="phone" /></span><a href={telHref(o.phone)} style="font-weight: 700; font-size: 20px">{o.phone}</a></div>
+								<div class="drow" style="align-items: center"><span class="di"><Icon name="clock" /></span><span>{o.hoursLine}</span></div>
+								<a class="btn btn-secondary block only-m" href={telHref(o.phone)}>Call {o.phone}</a>
+								<a class="link-arrow" href={o.mapsUrl} style="align-self: flex-start">Get directions <Icon name="arrowUR" size={18} /></a>
+							</div>
+						</article>
+					))}
+				</div>
+			) : (
+				<div class="panel">
+					<article class="card office-one">
+						<div class="stack g16" style="padding: 28px 28px 32px">
+							<h3 class="h3">{offices[0].name}</h3>
+							<div class="drow"><span class="di"><Icon name="pin2" /></span><address style="font-style: normal; padding-top: 6px">{offices[0].street}, {offices[0].city}</address></div>
+							<div class="drow" style="align-items: center"><span class="di"><Icon name="phone" /></span><a href={telHref(offices[0].phone)} style="font-weight: 700; font-size: 20px">{offices[0].phone}</a></div>
+							<div class="drow" style="align-items: center"><span class="di"><Icon name="clock" /></span><span>{offices[0].hoursLine}</span></div>
+							<a class="link-arrow" href={offices[0].mapsUrl} style="align-self: flex-start">Get directions <Icon name="arrowUR" size={18} /></a>
+						</div>
+						<div class="ph stone office-map"><span class="ph-label">Map · loads on tap</span></div>
+					</article>
+				</div>
+			)
+		}
+	</div>
+</section>

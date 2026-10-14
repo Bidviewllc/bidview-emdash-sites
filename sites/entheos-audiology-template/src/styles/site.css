@@ -207,3 +207,102 @@ body[data-lshape="stacked"] .logo.has-upload img { max-height: 96px; max-width: 
 
 /* V2: the utility bar's "color: inherit" link rule was turning the Book button's text dark. */
 .hx-util a.btn-primary { color: var(--on-p); }
+
+/* ---------- interior pages (Step 2) ---------- */
+.pg-hero { padding: 56px 0 var(--pb, 88px); }
+.pg-hero-np { padding: 12px 0 0; }
+.band.first { padding-top: 96px; }
+.band.first.after-photo { padding-top: 24px; }
+.band.pt0 { padding-top: 0 !important; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: start; }
+.photo-32 { aspect-ratio: 3 / 2; border-radius: var(--r-hero); overflow: hidden; position: relative; }
+.photo-32 img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; max-width: none; }
+.brand-photo { margin-top: 64px; }
+.brand-np { display: grid; grid-template-columns: 7fr 5fr; gap: 64px; align-items: start; position: relative; }
+.brand-logo-card { margin-top: 72px; }
+.acc-items { display: grid !important; grid-template-columns: 1fr 1fr; gap: 16px 24px !important; }
+.acc-items li { font-weight: 700; }
+.cmp-card { padding: 40px !important; gap: 16px !important; }
+.journey-grid { display: grid; grid-template-columns: 5fr 6fr; gap: 80px; align-items: center; }
+.story-photo { margin-top: 48px; }
+.about.community { grid-template-columns: 5fr 6fr; }
+
+@media (max-width: 1023px) {
+	.pg-hero { padding: 28px 0 8px; }
+	.band.first { padding-top: 48px; }
+	.band.first.after-photo { padding-top: 40px; }
+	.two-col, .brand-np, .journey-grid { grid-template-columns: 1fr; gap: 24px; }
+	.brand-photo, .brand-logo-card, .story-photo { margin-top: 0; }
+	.d1 .about.community { grid-template-columns: 1fr; }
+	.cmp-card { padding: 24px !important; }
+	.d1 .model.hz { grid-template-columns: 1fr; gap: 16px; padding: 12px 12px 20px; }
+	.d1 .model.hz .mtext { padding: 4px 8px 0; }
+}
+.prof-hero { padding: 48px 0 24px; }
+.band.bio-band { padding-top: 72px; }
+.prov.provh .ph { order: -1; }
+.loc-facts a { white-space: nowrap; }
+.loc-prov { display: grid; grid-template-columns: 4fr 8fr; gap: 64px; align-items: center; }
+@media (min-width: 1024px) {
+	.loc-svc .grid.g-3 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+	.c-side { position: sticky; top: 24px; }
+}
+@media (max-width: 1023px) {
+	.prof-hero { padding: 28px 0 8px; }
+	.band.bio-band { padding-top: 40px; }
+	.loc-prov { grid-template-columns: 1fr; gap: 24px; }
+	.form-2 { grid-template-columns: 1fr !important; }
+	.c-grid form .card { padding: 24px !important; }
+}
+.band.bk-top { padding-top: 72px; }
+.bk-where-band { margin-bottom: 96px !important; }
+.inophoto.short .shape.np1 { width: 520px; height: 520px; right: -120px; top: -220px; border-width: 56px; }
+@media (max-width: 1023px) {
+	.band.bk-top { padding-top: 32px; }
+	.bk-where-band { margin-bottom: 48px !important; }
+	.inophoto.short .shape.np1 { width: 300px; height: 300px; right: -140px; top: -150px; border-width: 36px; }
+}
+.band.rv-band { padding-top: 64px; padding-bottom: 0; }
+.stars .dim { opacity: .3; }
+.stars span { display: inline-flex; }
+@media (max-width: 1023px) { .band.rv-band { padding-top: 32px; } }
+
+/* blog, legal, 404, thank-you */
+.band.bl-chips { padding-top: 48px; padding-bottom: 0; }
+.band.bl-feat-band { padding-top: 48px; padding-bottom: 0; }
+.band.bl-main { padding-top: 72px; }
+.bl-feat .feat-title { font-size: 44px; }
+.bl-row .row-title { font-size: 30px; line-height: 1.25; }
+.post-head .post-h1 { font-size: 52px; line-height: 1.12; }
+.post-head .wrap:not(.ihero) .post-h1 { font-size: 56px; }
+.band.legal-band { padding-top: 64px; }
+.ty-wrap { padding-bottom: 96px; }
+.cat-chip { display: inline-flex; align-items: center; text-decoration: none; }
+@media (max-width: 1023px) {
+	.band.bl-chips, .band.bl-feat-band { padding-top: 28px; }
+	.band.bl-main { padding-top: 40px; }
+	.bl-feat .feat-title { font-size: 30px; }
+	.bl-row .row-title { font-size: 24px; }
+	.post-head .post-h1, .post-head .wrap:not(.ihero) .post-h1 { font-size: 34px; }
+	.band.legal-band { padding-top: 32px; }
+	.ty-wrap { padding-bottom: 48px; }
+	.nf-btns { flex-direction: column; align-items: stretch; }
+	.nf-btns .btn { width: 100%; }
+	.res-toc ul { flex-direction: row !important; overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px !important; }
+	.res-toc .side-cat { flex: none; white-space: nowrap; gap: 10px; }
+	.d1 .res-toc { position: static; padding: 12px; }
+	.org-row { grid-template-columns: 1fr 1fr; }
+}
+.rt a.btn { text-decoration: none; }
+.rt a.btn-primary { color: var(--on-p); }
+.res-grouped > * { min-width: 0; }
+@media (max-width: 1023px) {
+	.d1 .chip-row { margin: 0 -16px; padding: 0 16px 6px; }
+	.d1 .res-toc { overflow: hidden; }
+}
+/* d1.css's ".d1 p{margin:0}" outranks ".rt>*+*", so paragraphs in rich text lost their spacing. */
+.d1 .rt > * + p { margin-top: 20px; }
+.d1 .rt > h2 + p, .d1 .rt > h3 + p { margin-top: 14px; }
+@media (max-width: 1023px) {
+	.bk-form .card { padding: 24px !important; }
+}

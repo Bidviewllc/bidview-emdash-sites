@@ -1,0 +1,102 @@
+---
+// Page 4 · Hearing aids hub (boards HearingAidsHub, HearingAidsMobile, HearingAidsAlt).
+// Hero → brand cards → styles (optional) → OTC vs prescription (optional) → CTA.
+import CtaBand from "../../components/CtaBand.astro";
+import PageHero from "../../components/PageHero.astro";
+import type { Tweak } from "../../components/ReviewControls.astro";
+import StyleIllustration from "../../components/StyleIllustration.astro";
+import { brands, hearingAidStyles, practice, routes } from "../../data/practice";
+import Base from "../../layouts/Base.astro";
+import { getSettings } from "../../lib/settings";
+
+const tweaks: Tweak[] = [
+	{ key: "brandlinks", label: "Brand “Learn more”", type: "choice", default: "mixed", options: [["mixed", "Mixed (pages that exist)"], ["all", "All cards"], ["none", "None"]] },
+	{ key: "styles", label: "Hearing aid styles", type: "bool", default: true },
+	{ key: "otc", label: "OTC vs. prescription", type: "bool", default: true },
+];
+const s = getSettings(Astro.url);
+const hero = s.heroFor("photo");
+const withPhoto = hero === "photo" || hero === "example";
+const brandLinks = s.choice("brandlinks", ["mixed", "all", "none"], "mixed");
+const showStyles = s.bool("styles", true);
+const showOtc = s.bool("otc", true);
+---
+<Base title={`Hearing aids in ${practice.city} | ${s.name}`} description="The hearing aid brands we fit and service, the styles to choose from, and how prescription hearing aids compare." pageName="Hearing aids hub" current="hearing-aids" tweaks={tweaks} heroDefault="photo">
+	<PageHero
+		crumbs={[{ label: "Home" }, { label: "Hearing Aids" }]}
+		title={`Hearing aids in ${practice.city}`}
+		lead="Ut aliquip ex ea commodo consequat duis aute irure dolor in. Reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat. Non proident sunt in culpa qui officia deserunt mollit. Anim id est laborum curabitur pretium tincidunt lacus nulla gravida."
+	/>
+
+	<section class:list={["band first", { "after-photo": withPhoto }]}>
+		<div class="wrap stack g48">
+			<div class="stack g16 text-col"><span class="eyebrow">Brands</span><h2 class="h2">Brands we fit and service</h2></div>
+			<div class="panel grid g-4 brand-grid">
+				{
+					brands.map((b) => {
+						const linked = brandLinks === "all" ? true : brandLinks === "none" ? false : b.hasPage;
+						return (
+							<article class="card brand-card" style="padding: 28px">
+								<div class="blogo-slot"><img src={b.logo} alt={`${b.name} logo`} style={`max-height: ${b.logoHeight}`} /></div>
+								<h3 class="h3">{b.name}</h3>
+								<p class="muted" style="font-size: 18px">{b.summary}</p>
+								{linked && (
+									<div class="actions">
+										<a class="btn btn-gray sm" href={s.href(routes.brand(b.slug))}>Learn more<span class="sr"> about {b.name} hearing aids</span></a>
+									</div>
+								)}
+							</article>
+						);
+					})
+				}
+			</div>
+		</div>
+	</section>
+
+	{
+		showStyles && (
+			<section class="band bg-light">
+				<div class="wrap stack g48">
+					<div class="stack g16 text-col"><span class="eyebrow">Styles</span><h2 class="h2">Hearing aid styles</h2></div>
+					<div class="panel grid g-4">
+						{hearingAidStyles.map((st) => (
+							<article class="card" style="padding: 16px 16px 28px">
+								<StyleIllustration k={st.k} alt={st.alt} />
+								<div class="stack g8" style="padding: 0 12px">
+									<h3 class="h4">{st.t}</h3>
+									<p class="muted" style="font-size: 18px">{st.d}</p>
+								</div>
+							</article>
+						))}
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		showOtc && (
+			<section class:list={["band", { pt0: !showStyles }]}>
+				<div class="wrap stack g48">
+					<div class="stack g16 text-col"><span class="eyebrow">Compare</span><h2 class="h2">Over-the-counter vs. prescription hearing aids</h2></div>
+					<div class="panel grid g-2">
+						<article class="card cmp-card">
+							<span class="cmp-tag" style="background: var(--panel); color: var(--ink)">Over-the-counter</span>
+							<h3 class="h3">Over-the-counter</h3>
+							<p>Culpa qui officia deserunt mollit anim id est laborum curabitur pretium tincidunt lacus. Nulla gravida orci a odio nullam varius turpis et commodo pharetra est eros bibendum elit nec luctus. Magna felis sollicitudin mauris integer in mauris eu nibh euismod. Gravida praesent blandit odio eu enim pellentesque sed dapibus est sed lacinia sapien vel. Tellus lorem ipsum dolor sit amet.</p>
+						</article>
+						<article class="card cmp-card">
+							<span class="cmp-tag" style="background: var(--a-tint); color: var(--ink)">Prescription</span>
+							<h3 class="h3">Prescription, fitted by an audiologist</h3>
+							<p>Consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et. Dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut. Aliquip ex ea commodo consequat duis aute irure dolor. In reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur. Sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit.</p>
+						</article>
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	<div class:list={["cta-wrap", { "after-inset": !showOtc }]}>
+		<CtaBand id="hacta" heading="Try hearing aids before you decide" text="Anim id est laborum curabitur pretium tincidunt lacus nulla gravida. Orci a odio nullam varius turpis et commodo." photoLabel="Lifestyle photo · conversation, meal, outdoors" />
+	</div>
+</Base>

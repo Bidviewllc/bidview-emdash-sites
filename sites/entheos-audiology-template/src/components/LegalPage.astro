@@ -1,0 +1,76 @@
+---
+// Page 15 · Legal (boards LegalPage, LegalMobile, LegalPageAlt). One template
+// for Privacy Policy, Terms of Use and Accessibility. Short hero + "Last updated"
+// → full-width rich text with a "Table of contents" accordion (closed by
+// default) → footer. No CTA band.
+import type { Tweak } from "./ReviewControls.astro";
+import { practice, telHref } from "../data/practice";
+import Base from "../layouts/Base.astro";
+import { getSettings } from "../lib/settings";
+import Icon from "./Icon.astro";
+import PageHero from "./PageHero.astro";
+
+interface Props {
+	title: string;
+	updated: string;
+	sections: { id: string; h: string }[];
+}
+const { title, updated, sections } = Astro.props;
+const tweaks: Tweak[] = [{ key: "toc", label: "Table of contents", type: "bool", default: true }];
+const s = getSettings(Astro.url);
+const showToc = s.bool("toc", true);
+const office = s.offices[0];
+const para = [
+	"A odio nullam varius turpis et commodo pharetra est eros bibendum. Elit nec luctus magna felis sollicitudin mauris integer in mauris eu nibh euismod gravida praesent. Blandit odio eu enim pellentesque sed dapibus est sed lacinia sapien vel tellus lorem ipsum dolor sit amet consectetur.",
+	"Adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+];
+---
+<Base title={`${title} | ${s.name}`} description={`${title} for ${s.name}.`} pageName="Legal page" tweaks={tweaks}>
+	<PageHero crumbs={[{ label: "Home" }, { label: title }]} title={title} short book={false}>
+		<p class="body" style="margin: 0; color: inherit"><b>Last updated:</b> <time>{updated}</time></p>
+	</PageHero>
+
+	<section class="band legal-band">
+		<div class="wrap">
+			<div class="stack g48">
+				{
+					showToc && (
+						<nav class="jump acc" aria-label="Table of contents" data-acc>
+							<h2 style="margin: 0">
+								<button class="jump-btn" type="button" aria-expanded="false" aria-controls="jump-list">
+									<span>Table of contents</span>
+									<span class="acc-ic" aria-hidden="true"><span class="i-open"><Icon name="chevD" size={22} /></span><span class="i-close"><Icon name="chevU" size={22} /></span></span>
+								</button>
+							</h2>
+							<div class="jump-body" id="jump-list" hidden>
+								<ol>{sections.map((x) => <li><a href={`#${x.id}`}>{x.h}</a></li>)}</ol>
+							</div>
+						</nav>
+					)
+				}
+				<div class="rt" style="max-width: none">
+					{
+						sections.map((x, i) => (
+							<>
+								<h2 id={x.id}>{x.h}</h2>
+								<p>{para[i % 2]}</p>
+								{i === 1 && (
+									<ul>
+										<li>Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod.</li>
+										<li>Tempor incididunt ut labore et dolore magna aliqua ut enim ad minim.</li>
+										<li>Veniam quis nostrud exercitation ullamco laboris nisi ut aliquip.</li>
+										<li>Ex ea commodo consequat duis aute irure dolor in reprehenderit.</li>
+									</ul>
+								)}
+							</>
+						))
+					}
+					<p>
+						<strong>{s.name}</strong><br />{office.street}, {office.city}<br />
+						<a href={telHref(office.phone)}>{office.phone}</a> · <a href={`mailto:${practice.email}`}>{practice.email}</a>
+					</p>
+				</div>
+			</div>
+		</div>
+	</section>
+</Base>

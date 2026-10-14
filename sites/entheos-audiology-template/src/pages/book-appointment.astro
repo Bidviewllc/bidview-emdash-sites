@@ -1,0 +1,94 @@
+---
+// Page 10 · Book appointment (boards BookPage, BookPageB, BookPageSideA,
+// BookPageSideB, BookMobile). Short no-photo hero → Version A (scheduler embed)
+// or Version B (request form) → "Where to find us". Layout: Full width, or Right
+// sidebar with "Prefer to call?" (Version A only) and compact office cards.
+// No CTA band: this page is the CTA.
+import Icon from "../components/Icon.astro";
+import OfficeCard from "../components/OfficeCard.astro";
+import PageHero from "../components/PageHero.astro";
+import RequestForm from "../components/RequestForm.astro";
+import type { Tweak } from "../components/ReviewControls.astro";
+import { telHref } from "../data/practice";
+import Base from "../layouts/Base.astro";
+import { getSettings } from "../lib/settings";
+
+const tweaks: Tweak[] = [
+	{ key: "version", label: "Booking version", type: "choice", default: "a", options: [["a", "A · Scheduler embed"], ["b", "B · Request form"]] },
+	{ key: "layout", label: "Layout", type: "choice", default: "full", options: [["full", "Full width"], ["side", "Right sidebar"]] },
+];
+const s = getSettings(Astro.url);
+const isA = s.choice("version", ["a", "b"], "a") === "a";
+const side = s.choice("layout", ["full", "side"], "full") === "side";
+const first = s.offices[0];
+---
+<Base title={`Book an appointment | ${s.name}`} description="Book online or ask us to call you back to find a time." pageName="Book appointment" tweaks={tweaks}>
+	<PageHero
+		crumbs={[{ label: "Home" }, { label: "Book Appointment" }]}
+		title="Book your appointment"
+		lead="Tincidunt lacus nulla gravida orci a odio nullam varius turpis et commodo pharetra est eros bibendum elit. Nec luctus magna felis sollicitudin mauris integer in."
+		short
+		book={false}
+	/>
+
+	{
+		!side && (
+			<>
+				<section class="band bk-top">
+					<div class="wrap">
+						{isA ? (
+							<div class="bk-embed" role="region" aria-label="Online scheduler">
+								<span class="bk-embed-ic"><Icon name="calendar" size={32} /></span>
+								<b>Scheduler embed</b>
+								<span>Third-party booking widget · full content width · about 700 tall</span>
+							</div>
+						) : (
+							<RequestForm id="b" />
+						)}
+					</div>
+				</section>
+				<section class="band bg-light bk-where-band">
+					<div class="wrap stack g40">
+						<div class="stack g12"><span class="eyebrow">Locations</span><h2 class="h2">Where to find us</h2></div>
+						<div class:list={["panel grid", s.offices.length > 1 ? "g-2" : ""]}>{s.offices.map((o) => <OfficeCard o={o} />)}</div>
+					</div>
+				</section>
+			</>
+		)
+	}
+	{
+		side && (
+			<section class="band bk-top">
+				<div class="wrap side-layout bk-side">
+					<div class="stack g24">
+						{isA ? (
+							<div class="bk-embed" role="region" aria-label="Online scheduler">
+								<span class="bk-embed-ic"><Icon name="calendar" size={32} /></span>
+								<b>Scheduler embed</b>
+								<span>Third-party booking widget · fills the content column · about 700 tall</span>
+							</div>
+						) : (
+							<RequestForm id="s" side />
+						)}
+					</div>
+					<aside class="sidebar sticky" aria-label="Where to find us">
+						{isA && (
+							<div class="panel">
+								<div class="card" style="gap: 16px">
+									<h2 class="h3">Prefer to call?</h2>
+									<p class="muted" style="margin: 0">Our front desk can find a time with you and answer questions first.</p>
+									<a class="c-big" href={telHref(s.phone)}><span class="di"><Icon name="phone" /></span><span><span class="c-lbl">Call</span><b>{s.phone}</b></span></a>
+									<p class="small muted" style="margin: 0" set:html={first.hoursLong} />
+								</div>
+							</div>
+						)}
+						<div class="panel stack bk-where">
+							<h2 class="h3" style="padding: 12px 16px 4px">Where to find us</h2>
+							{s.offices.map((o) => <OfficeCard o={o} compact />)}
+						</div>
+					</aside>
+				</div>
+			</section>
+		)
+	}
+</Base>
