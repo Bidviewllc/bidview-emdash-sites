@@ -28,7 +28,7 @@ const href = s.href(routes.provider(p.slug));
 {
 	layout === "list" ? (
 		<article class="prov prov-list">
-			<Headshot tone={p.tone} label="4:5" />
+			<Headshot src={p.headshot} tone={p.tone} label="4:5" />
 			<div class="who"><h3 class="pname">{p.name}</h3><span class="ptitle">{p.title}</span></div>
 			<div class="pbody">
 				<p class="pbio">{p.bio}</p>
@@ -38,7 +38,7 @@ const href = s.href(routes.provider(p.slug));
 	) : layout === "side" ? (
 		linked ? (
 			<a class="prov prov-side" href={href} aria-label={p.meet}>
-				<Headshot tone={p.tone} />
+				<Headshot src={p.headshot} tone={p.tone} />
 				<div class="who-row">
 					<div class="who"><h3 class="pname">{p.name}</h3><span class="ptitle">{p.title}</span><slot /></div>
 					<span class="arrow" aria-hidden="true"><Icon name="arrowUR" /></span>
@@ -46,7 +46,7 @@ const href = s.href(routes.provider(p.slug));
 			</a>
 		) : (
 			<div class="prov prov-side">
-				<Headshot tone={p.tone} />
+				<Headshot src={p.headshot} tone={p.tone} />
 				<div class="who"><h3 class="pname">{p.name}</h3><span class="ptitle">{p.title}</span><slot /></div>
 			</div>
 		)
@@ -54,12 +54,12 @@ const href = s.href(routes.provider(p.slug));
 		<a class:list={["prov", { provh: horizontal }]} href={href} aria-label={p.meet}>
 			<span class="arrow" aria-hidden="true"><Icon name="arrowUR" /></span>
 			<div class="who"><h3 class="pname">{p.name}</h3><span class="ptitle">{p.title}</span><slot /></div>
-			<Headshot tone={p.tone} />
+			<Headshot src={p.headshot} tone={p.tone} />
 		</a>
 	) : (
 		<div class:list={["prov", { provh: horizontal }]}>
 			<div class="who" style="padding-right: 10px"><h3 class="pname">{p.name}</h3><span class="ptitle">{p.title}</span><slot /></div>
-			<Headshot tone={p.tone} />
+			<Headshot src={p.headshot} tone={p.tone} />
 		</div>
 	)
 }

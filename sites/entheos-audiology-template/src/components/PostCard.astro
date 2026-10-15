@@ -16,7 +16,13 @@ const s = getSettings(Astro);
 ---
 <a class="post" href={s.href(routes.post(p.slug))}>
 	<div class="img">
-		<div class:list={["ph", p.tone]} style={`aspect-ratio: ${square ? "1/1" : "16/9"}`}><span class="ph-label tl">{square ? "1:1" : "16:9"}</span></div>
+		{
+			p.image ? (
+				<div class:list={["ph", "has-img", p.tone]} style={`aspect-ratio: ${square ? "1/1" : "16/9"}`}><img src={p.image} alt="" loading="lazy" /></div>
+			) : (
+				<div class:list={["ph", p.tone]} style={`aspect-ratio: ${square ? "1/1" : "16/9"}`}><span class="ph-label tl">{square ? "1:1" : "16:9"}</span></div>
+			)
+		}
 		<span class="badge" aria-hidden="true"><Icon name="arrowUR" size={22} /></span>
 	</div>
 	<span class="date">{showCat && <><span class="pcat">{p.cat}</span><span aria-hidden="true"> · </span></>}{p.date}</span>

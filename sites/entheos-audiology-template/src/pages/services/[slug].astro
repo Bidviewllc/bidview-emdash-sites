@@ -11,10 +11,12 @@ import Base from "../../layouts/Base.astro";
 import { getSettings } from "../../lib/settings";
 import { routes, telHref } from "../../lib/routes";
 
-const { faq, latest: posts, practice, services, sidebarReviews } = Astro.locals.site;
+const { latest: posts, practice, services, sidebarReviews } = Astro.locals.site;
 
 const service = services.find((x) => x.slug === Astro.params.slug);
-if (!service) return Astro.rewrite("/404");
+const faq = service?.faq ?? [];
+// "Give this service its own page" off = no page (switch-on rule).
+if (!service || !service.hasPage) return Astro.rewrite("/404");
 
 const tweaks: Tweak[] = [
 	{ key: "reviews", label: "Sidebar reviews", type: "choice", default: "single", options: [["single", "Single review"], ["carousel", "Carousel (3)"]] },

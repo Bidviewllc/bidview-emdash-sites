@@ -15,7 +15,7 @@ import { routes, telHref } from "../../lib/routes";
 const { practice, providers, services } = Astro.locals.site;
 
 const person = providers.find((p) => p.slug === Astro.params.person);
-if (!person) return Astro.rewrite("/404");
+if (!person || !person.hasPage) return Astro.rewrite("/404");
 
 const tweaks: Tweak[] = [{ key: "video", label: "Intro video", type: "bool", default: true }];
 const s = getSettings(Astro);
@@ -26,7 +26,7 @@ const crumbName = person.name.replace(/, Au\.D\.$/, "");
 <Base title={`${person.name}, ${person.title} | ${s.name}`} description={`${person.name} is ${person.title.toLowerCase()} at ${s.name}.`} pageName="Provider profile" current="about" tweaks={tweaks}>
 	<section class="prof-hero">
 		<div class="wrap prof">
-			<div class="panel prof-img"><Headshot tone={person.tone} /></div>
+			<div class="panel prof-img"><Headshot src={person.headshot} tone={person.tone} /></div>
 			<div class="stack g24 prof-txt">
 				<nav aria-label="Breadcrumb">
 					<ol class="crumbs">

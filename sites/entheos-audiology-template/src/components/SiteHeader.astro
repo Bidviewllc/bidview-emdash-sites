@@ -310,14 +310,14 @@ const allNav = ["services", "hearing-aids", "about", "resources", "blog", "conta
 						<button class="mlink" aria-expanded="false" aria-controls="msub-services" data-msub>Services <span class="i-open"><Icon name="plus" size={22} /></span><span class="i-close"><Icon name="minus" size={22} /></span></button>
 						<ul class="msub" id="msub-services" hidden>
 							<li><a href={s.href(routes.services)}>All services</a></li>
-							{services.filter((x) => x.hasPage).map((x) => <li><a href={s.href(routes.service(x.slug))}>{x.navLabel}</a></li>)}
+							{services.filter((x) => x.hasPage && !x.hideFromHub).map((x) => <li><a href={s.href(routes.service(x.slug))}>{x.navLabel}</a></li>)}
 						</ul>
 					</li>
 					<li>
 						<button class="mlink" aria-expanded="false" aria-controls="msub-hearing-aids" data-msub>Hearing aids <span class="i-open"><Icon name="plus" size={22} /></span><span class="i-close"><Icon name="minus" size={22} /></span></button>
 						<ul class="msub" id="msub-hearing-aids" hidden>
 							<li><a href={s.href(routes.hearingAids)}>All hearing aids</a></li>
-							{brands.filter((b) => b.hasPage).map((b) => <li><a href={s.href(routes.brand(b.slug))}>{b.name} hearing aids</a></li>)}
+							{brands.filter((b) => b.hasPage && !b.hideFromHub).map((b) => <li><a href={s.href(routes.brand(b.slug))}>{b.name} hearing aids</a></li>)}
 						</ul>
 					</li>
 					<li><a class="mlink" href={s.href(routes.about)}>About</a></li>

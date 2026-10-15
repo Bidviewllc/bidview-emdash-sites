@@ -1,0 +1,2062 @@
+{
+	"$schema": "https://emdashcms.com/seed.schema.json",
+	"version": "1",
+	"meta": {
+		"name": "Entheos audiology template",
+		"description": "Design 1 template with the Lakeview Hearing Center sample practice",
+		"author": "Bidview Marketing"
+	},
+	"settings": {
+		"title": "Lakeview Hearing Center",
+		"tagline": "Independent audiology care for Riverside and Northfield families.",
+		"social": {
+			"facebook": "#",
+			"instagram": "#",
+			"youtube": "#"
+		}
+	},
+	"collections": [
+		{
+			"slug": "practice",
+			"label": "Practice details",
+			"labelSingular": "Practice details",
+			"description": "One record (slug: main) with the practice-wide details that Settings doesn't cover.",
+			"routable": false,
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Practice name",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "wordmark_1",
+					"label": "Logo wordmark, line 1 (bold)",
+					"type": "string"
+				},
+				{
+					"slug": "wordmark_2",
+					"label": "Logo wordmark, line 2 (small caps)",
+					"type": "string"
+				},
+				{
+					"slug": "short_name",
+					"label": "Short name",
+					"type": "string"
+				},
+				{
+					"slug": "city",
+					"label": "Main city",
+					"type": "string"
+				},
+				{
+					"slug": "email",
+					"label": "Email",
+					"type": "string"
+				},
+				{
+					"slug": "rating_score",
+					"label": "Google rating (e.g. 4.9)",
+					"type": "string"
+				},
+				{
+					"slug": "rating_count",
+					"label": "Number of Google reviews",
+					"type": "integer",
+					"defaultValue": 0
+				},
+				{
+					"slug": "years",
+					"label": "Years in practice (e.g. 35+ years)",
+					"type": "string"
+				},
+				{
+					"slug": "color_primary",
+					"label": "Primary colour (hex, e.g. #0F5E6B)",
+					"type": "string",
+					"validation": {
+						"pattern": "^#[0-9A-Fa-f]{6}$"
+					}
+				},
+				{
+					"slug": "color_accent",
+					"label": "Accent colour (hex)",
+					"type": "string",
+					"validation": {
+						"pattern": "^#[0-9A-Fa-f]{6}$"
+					}
+				},
+				{
+					"slug": "color_light",
+					"label": "Light background colour (hex)",
+					"type": "string",
+					"validation": {
+						"pattern": "^#[0-9A-Fa-f]{6}$"
+					}
+				},
+				{
+					"slug": "memberships",
+					"label": "Memberships (trust bar logos)",
+					"type": "repeater",
+					"validation": {
+						"subFields": [
+							{
+								"slug": "logo",
+								"label": "Logo",
+								"type": "select",
+								"options": [
+									"ada",
+									"aaa",
+									"aba",
+									"asha",
+									"hearingup"
+								]
+							},
+							{
+								"slug": "name",
+								"label": "Name read by screen readers",
+								"type": "string"
+							}
+						]
+					}
+				},
+				{
+					"slug": "first_visit",
+					"label": "Services hub: first visit steps",
+					"type": "repeater",
+					"validation": {
+						"subFields": [
+							{
+								"slug": "t",
+								"label": "Step",
+								"type": "string"
+							},
+							{
+								"slug": "d",
+								"label": "Text",
+								"type": "text"
+							}
+						]
+					}
+				},
+				{
+					"slug": "milestones",
+					"label": "About: our journey",
+					"type": "repeater",
+					"validation": {
+						"subFields": [
+							{
+								"slug": "y",
+								"label": "Year",
+								"type": "string"
+							},
+							{
+								"slug": "t",
+								"label": "Text",
+								"type": "text"
+							}
+						]
+					}
+				},
+				{
+					"slug": "values",
+					"label": "About: what guides our care",
+					"type": "repeater",
+					"validation": {
+						"subFields": [
+							{
+								"slug": "icon",
+								"label": "Icon",
+								"type": "string"
+							},
+							{
+								"slug": "t",
+								"label": "Heading",
+								"type": "string"
+							},
+							{
+								"slug": "d",
+								"label": "Text",
+								"type": "text"
+							}
+						]
+					}
+				},
+				{
+					"slug": "review_controls",
+					"label": "Show the Review controls panel (off for a live site)",
+					"type": "boolean",
+					"defaultValue": true
+				}
+			]
+		},
+		{
+			"slug": "offices",
+			"label": "Offices",
+			"labelSingular": "Office",
+			"urlPattern": "/locations/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Office name",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "short_name",
+					"label": "Town (short name)",
+					"type": "string"
+				},
+				{
+					"slug": "street",
+					"label": "Street address",
+					"type": "string"
+				},
+				{
+					"slug": "city_line",
+					"label": "City, state, ZIP",
+					"type": "string"
+				},
+				{
+					"slug": "phone",
+					"label": "Phone",
+					"type": "string"
+				},
+				{
+					"slug": "hours",
+					"label": "Hours table",
+					"type": "repeater",
+					"validation": {
+						"subFields": [
+							{
+								"slug": "days",
+								"label": "Days",
+								"type": "string"
+							},
+							{
+								"slug": "times",
+								"label": "Times",
+								"type": "string"
+							}
+						]
+					}
+				},
+				{
+					"slug": "hours_line",
+					"label": "Hours on one line (cards)",
+					"type": "string"
+				},
+				{
+					"slug": "hours_long",
+					"label": "Hours, long form (office page; one line per row)",
+					"type": "text"
+				},
+				{
+					"slug": "maps_url",
+					"label": "Google Maps link",
+					"type": "url"
+				},
+				{
+					"slug": "sort_order",
+					"label": "Sort order",
+					"type": "integer",
+					"defaultValue": 0
+				}
+			]
+		},
+		{
+			"slug": "services",
+			"label": "Services",
+			"labelSingular": "Service",
+			"urlPattern": "/services/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Service name",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "nav_label",
+					"label": "Menu label (lower case)",
+					"type": "string"
+				},
+				{
+					"slug": "summary",
+					"label": "Card summary",
+					"type": "text"
+				},
+				{
+					"slug": "has_page",
+					"label": "Give this service its own page",
+					"type": "boolean",
+					"defaultValue": false
+				},
+				{
+					"slug": "hide_from_hub",
+					"label": "Hide from hub (no card on Services or Home)",
+					"type": "boolean",
+					"defaultValue": false
+				},
+				{
+					"slug": "on_home",
+					"label": "Show on the Home page grid",
+					"type": "boolean",
+					"defaultValue": true
+				},
+				{
+					"slug": "book_label",
+					"label": "Booking button label",
+					"type": "string"
+				},
+				{
+					"slug": "cta_heading",
+					"label": "Booking band heading",
+					"type": "string"
+				},
+				{
+					"slug": "faq",
+					"label": "FAQ",
+					"type": "repeater",
+					"validation": {
+						"subFields": [
+							{
+								"slug": "q",
+								"label": "Question",
+								"type": "string"
+							},
+							{
+								"slug": "a",
+								"label": "Answer",
+								"type": "text"
+							}
+						]
+					}
+				},
+				{
+					"slug": "sort_order",
+					"label": "Sort order",
+					"type": "integer",
+					"defaultValue": 0
+				}
+			]
+		},
+		{
+			"slug": "brands",
+			"label": "Hearing aid brands",
+			"labelSingular": "Hearing aid brand",
+			"urlPattern": "/hearing-aids/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Brand name",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "logo",
+					"label": "Logo",
+					"type": "image"
+				},
+				{
+					"slug": "logo_height",
+					"label": "Logo height in the 160 x 60 tile (e.g. 46px)",
+					"type": "string"
+				},
+				{
+					"slug": "summary",
+					"label": "Card summary",
+					"type": "text"
+				},
+				{
+					"slug": "has_page",
+					"label": "Give this brand its own page",
+					"type": "boolean",
+					"defaultValue": false
+				},
+				{
+					"slug": "hide_from_hub",
+					"label": "Hide from hub",
+					"type": "boolean",
+					"defaultValue": false
+				},
+				{
+					"slug": "models",
+					"label": "Current models",
+					"type": "repeater",
+					"validation": {
+						"subFields": [
+							{
+								"slug": "line",
+								"label": "Product line",
+								"type": "string"
+							},
+							{
+								"slug": "name",
+								"label": "Model name",
+								"type": "string"
+							},
+							{
+								"slug": "description",
+								"label": "Description",
+								"type": "text"
+							},
+							{
+								"slug": "features",
+								"label": "Key features (one per line)",
+								"type": "text"
+							}
+						]
+					}
+				},
+				{
+					"slug": "accessories",
+					"label": "Accessories (one per line)",
+					"type": "text"
+				},
+				{
+					"slug": "older_models",
+					"label": "Older models we support (one per line)",
+					"type": "text"
+				},
+				{
+					"slug": "faq",
+					"label": "FAQ",
+					"type": "repeater",
+					"validation": {
+						"subFields": [
+							{
+								"slug": "q",
+								"label": "Question",
+								"type": "string"
+							},
+							{
+								"slug": "a",
+								"label": "Answer",
+								"type": "text"
+							}
+						]
+					}
+				},
+				{
+					"slug": "sort_order",
+					"label": "Sort order",
+					"type": "integer",
+					"defaultValue": 0
+				}
+			]
+		},
+		{
+			"slug": "providers",
+			"label": "Team",
+			"labelSingular": "Team member",
+			"urlPattern": "/about/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Name with credentials",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "job_title",
+					"label": "Job title",
+					"type": "string"
+				},
+				{
+					"slug": "short_name",
+					"label": "Short name (e.g. Dr. Ellis)",
+					"type": "string"
+				},
+				{
+					"slug": "meet_label",
+					"label": "Card link label (e.g. Meet Dr. Ellis)",
+					"type": "string"
+				},
+				{
+					"slug": "headshot",
+					"label": "Headshot (4:5)",
+					"type": "image"
+				},
+				{
+					"slug": "tone",
+					"label": "Placeholder colour (until a headshot is added)",
+					"type": "select",
+					"defaultValue": "warm",
+					"validation": {
+						"options": [
+							"warm",
+							"sage",
+							"sky",
+							"stone",
+							"dark",
+							"dark2"
+						]
+					}
+				},
+				{
+					"slug": "has_page",
+					"label": "Give this person a profile page",
+					"type": "boolean",
+					"defaultValue": false
+				},
+				{
+					"slug": "short_bio",
+					"label": "Short bio (team list layout)",
+					"type": "text"
+				},
+				{
+					"slug": "offices",
+					"label": "Offices they see patients at (office slugs, one per line)",
+					"type": "text"
+				},
+				{
+					"slug": "sort_order",
+					"label": "Sort order",
+					"type": "integer",
+					"defaultValue": 0
+				}
+			]
+		},
+		{
+			"slug": "posts",
+			"label": "Blog posts",
+			"labelSingular": "Blog post",
+			"urlPattern": "/blog/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"search",
+				"seo",
+				"scheduling"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "excerpt",
+					"label": "Summary",
+					"type": "text"
+				},
+				{
+					"slug": "post_date",
+					"label": "Date shown on the post",
+					"type": "datetime"
+				},
+				{
+					"slug": "author",
+					"label": "Author (team member slug)",
+					"type": "string"
+				},
+				{
+					"slug": "featured",
+					"label": "Feature at the top of the blog",
+					"type": "boolean",
+					"defaultValue": false
+				},
+				{
+					"slug": "featured_image",
+					"label": "Featured image (16:9)",
+					"type": "image"
+				},
+				{
+					"slug": "tone",
+					"label": "Placeholder colour (until an image is added)",
+					"type": "select",
+					"defaultValue": "warm",
+					"validation": {
+						"options": [
+							"warm",
+							"sage",
+							"sky",
+							"stone",
+							"dark",
+							"dark2"
+						]
+					}
+				},
+				{
+					"slug": "content",
+					"label": "Article",
+					"type": "portableText",
+					"searchable": true
+				}
+			]
+		},
+		{
+			"slug": "resources",
+			"label": "Patient resources",
+			"labelSingular": "Patient resource",
+			"urlPattern": "/patient-resources/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Headline",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "summary",
+					"label": "Short description",
+					"type": "text"
+				},
+				{
+					"slug": "has_page",
+					"label": "Give this its own page",
+					"type": "boolean",
+					"defaultValue": false
+				},
+				{
+					"slug": "hide_from_hub",
+					"label": "Hide from hub",
+					"type": "boolean",
+					"defaultValue": false
+				},
+				{
+					"slug": "has_forms",
+					"label": "Show the form buttons (Download PDF / Fill out online)",
+					"type": "boolean",
+					"defaultValue": false
+				},
+				{
+					"slug": "content",
+					"label": "Page content",
+					"type": "portableText"
+				},
+				{
+					"slug": "sort_order",
+					"label": "Sort order",
+					"type": "integer",
+					"defaultValue": 0
+				}
+			]
+		}
+	],
+	"taxonomies": [
+		{
+			"name": "category",
+			"label": "Blog categories",
+			"labelSingular": "Blog category",
+			"hierarchical": false,
+			"collections": [
+				"posts"
+			],
+			"terms": [
+				{
+					"slug": "hearing-loss",
+					"label": "Hearing Loss"
+				},
+				{
+					"slug": "hearing-aids",
+					"label": "Hearing Aids"
+				},
+				{
+					"slug": "tinnitus",
+					"label": "Tinnitus"
+				},
+				{
+					"slug": "tips-and-care",
+					"label": "Tips & Care"
+				}
+			]
+		},
+		{
+			"name": "resource_tag",
+			"label": "Resource tags",
+			"labelSingular": "Resource tag",
+			"hierarchical": false,
+			"collections": [
+				"resources"
+			],
+			"terms": [
+				{
+					"slug": "before-your-visit",
+					"label": "Before your visit"
+				},
+				{
+					"slug": "insurance",
+					"label": "Insurance"
+				},
+				{
+					"slug": "financing",
+					"label": "Financing"
+				},
+				{
+					"slug": "after-your-visit",
+					"label": "After your visit"
+				},
+				{
+					"slug": "hearing-aid-care",
+					"label": "Hearing aid care"
+				},
+				{
+					"slug": "outside-organizations",
+					"label": "Outside organizations"
+				},
+				{
+					"slug": "forms",
+					"label": "Forms",
+					"description": "Label only (not a group heading)"
+				}
+			]
+		}
+	],
+	"content": {
+		"practice": [
+			{
+				"id": "practice-main",
+				"slug": "main",
+				"status": "published",
+				"data": {
+					"title": "Lakeview Hearing Center",
+					"wordmark_1": "Lakeview",
+					"wordmark_2": "Hearing Center",
+					"short_name": "Lakeview",
+					"city": "Riverside",
+					"email": "hello@lakeviewhearing.example",
+					"rating_score": "4.9",
+					"rating_count": 210,
+					"years": "35+ years",
+					"color_primary": "#0F5E6B",
+					"color_accent": "#E0A33B",
+					"color_light": "#F6F1EA",
+					"memberships": [
+						{
+							"logo": "ada",
+							"name": "Academy of Doctors of Audiology"
+						},
+						{
+							"logo": "aaa",
+							"name": "American Academy of Audiology"
+						},
+						{
+							"logo": "aba",
+							"name": "American Board of Audiology"
+						},
+						{
+							"logo": "asha",
+							"name": "American Speech-Language-Hearing Association (ASHA)"
+						},
+						{
+							"logo": "hearingup",
+							"name": "HearingUp Network"
+						}
+					],
+					"first_visit": [
+						{
+							"t": "We listen first",
+							"d": "Commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla. Pariatur excepteur sint occaecat cupidatat non proident sunt in culpa. Qui officia deserunt."
+						},
+						{
+							"t": "We test thoroughly",
+							"d": "Mollit anim id est laborum curabitur pretium tincidunt lacus nulla gravida orci. A odio nullam varius turpis et commodo pharetra est eros bibendum. Elit nec luctus magna felis sollicitudin mauris."
+						},
+						{
+							"t": "We explain your results",
+							"d": "Integer in mauris eu nibh euismod gravida praesent blandit. Odio eu enim pellentesque sed dapibus est sed lacinia sapien vel tellus lorem. Ipsum dolor sit amet consectetur adipiscing elit sed."
+						},
+						{
+							"t": "We plan next steps together",
+							"d": "Do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex. Ea commodo consequat duis aute irure."
+						}
+					],
+					"milestones": [
+						{
+							"y": "1990",
+							"t": "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore."
+						},
+						{
+							"y": "2004",
+							"t": "Magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea."
+						},
+						{
+							"y": "2012",
+							"t": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat."
+						},
+						{
+							"y": "2021",
+							"t": "Cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum."
+						}
+					],
+					"values": [
+						{
+							"icon": "chat",
+							"t": "Time to listen",
+							"d": "Nibh euismod gravida praesent blandit odio eu enim pellentesque. Sed dapibus est sed lacinia sapien vel tellus lorem ipsum dolor."
+						},
+						{
+							"icon": "checkCircle",
+							"t": "Clear answers",
+							"d": "Sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut. Enim ad minim."
+						},
+						{
+							"icon": "refresh",
+							"t": "Care that continues",
+							"d": "Veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis. Aute irure dolor in reprehenderit in."
+						},
+						{
+							"icon": "pin2",
+							"t": "Rooted in Riverside",
+							"d": "Voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint. Occaecat cupidatat non proident sunt in culpa qui officia."
+						}
+					],
+					"review_controls": true
+				}
+			}
+		],
+		"offices": [
+			{
+				"id": "office-riverside",
+				"slug": "riverside",
+				"status": "published",
+				"data": {
+					"title": "Riverside office",
+					"short_name": "Riverside",
+					"street": "1200 Lakeview Parkway, Suite 210",
+					"city_line": "Riverside, ST 00000",
+					"phone": "(555) 010-0142",
+					"hours": [
+						{
+							"days": "Mon – Thu",
+							"times": "8:00 – 5:00"
+						},
+						{
+							"days": "Fri",
+							"times": "8:00 – 12:00"
+						},
+						{
+							"days": "Sat – Sun",
+							"times": "Closed"
+						}
+					],
+					"hours_line": "Mon – Thu 8 am – 5 pm · Fri 8 am – 12 pm",
+					"hours_long": "Monday to Thursday, 8:00 am to 5:00 pm\nFriday, 8:00 am to 12:00 pm",
+					"maps_url": "https://www.google.com/maps/search/?api=1&query=1200+Lakeview+Parkway+Riverside",
+					"sort_order": 1
+				}
+			},
+			{
+				"id": "office-northfield",
+				"slug": "northfield",
+				"status": "published",
+				"data": {
+					"title": "Northfield office",
+					"short_name": "Northfield",
+					"street": "48 Mill Street",
+					"city_line": "Northfield, ST 00000",
+					"phone": "(555) 010-0178",
+					"hours": [
+						{
+							"days": "Tue, Thu",
+							"times": "9:00 – 4:00"
+						},
+						{
+							"days": "Other days",
+							"times": "Closed"
+						}
+					],
+					"hours_line": "Tue and Thu 9 am – 4 pm",
+					"hours_long": "Tuesday and Thursday\n9:00 am to 4:00 pm",
+					"maps_url": "https://www.google.com/maps/search/?api=1&query=48+Mill+Street+Northfield",
+					"sort_order": 2
+				}
+			}
+		],
+		"services": [
+			{
+				"id": "service-hearing-evaluations",
+				"slug": "hearing-evaluations",
+				"status": "published",
+				"data": {
+					"title": "Hearing Evaluations",
+					"nav_label": "Hearing evaluations",
+					"summary": "Culpa qui officia deserunt mollit anim id est laborum curabitur pretium tincidunt. Lacus nulla gravida orci a odio nullam varius.",
+					"has_page": true,
+					"hide_from_hub": false,
+					"on_home": true,
+					"book_label": "Book a hearing evaluation",
+					"cta_heading": "One appointment shows you where your hearing stands",
+					"faq": [
+						{
+							"q": "How long does a hearing evaluation take?",
+							"a": "Cupidatat non proident sunt in culpa qui officia deserunt mollit. Anim id est laborum curabitur pretium tincidunt lacus nulla gravida orci a odio nullam. Varius turpis et commodo pharetra est eros bibendum elit nec luctus magna. Felis sollicitudin mauris integer in mauris eu nibh euismod gravida praesent. Blandit odio eu enim pellentesque sed dapibus est sed lacinia sapien vel tellus."
+						},
+						{
+							"q": "Does a hearing test hurt?",
+							"a": "Lorem ipsum dolor sit amet consectetur adipiscing elit sed. Do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad. Minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure. Dolor in reprehenderit in voluptate velit."
+						},
+						{
+							"q": "Should I bring someone with me?",
+							"a": "Esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt. In culpa qui officia deserunt mollit anim id est laborum curabitur pretium. Tincidunt lacus nulla gravida orci a odio nullam varius turpis et. Commodo pharetra est eros bibendum elit nec luctus magna felis sollicitudin mauris integer in mauris. Eu nibh euismod."
+						},
+						{
+							"q": "Will my insurance cover a hearing evaluation?",
+							"a": "Gravida praesent blandit odio eu enim pellentesque sed dapibus est sed lacinia sapien. Vel tellus lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore. Et dolore magna aliqua ut enim ad minim veniam quis. Nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure. Dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla. Pariatur excepteur sint occaecat cupidatat non proident sunt in."
+						}
+					],
+					"sort_order": 1
+				}
+			},
+			{
+				"id": "service-hearing-aid-fittings",
+				"slug": "hearing-aid-fittings",
+				"status": "published",
+				"data": {
+					"title": "Hearing Aid Fittings",
+					"nav_label": "Hearing aid fittings",
+					"summary": "Turpis et commodo pharetra est eros bibendum elit nec luctus magna felis sollicitudin mauris integer. In mauris eu nibh euismod.",
+					"has_page": true,
+					"hide_from_hub": false,
+					"on_home": true,
+					"book_label": "Book a hearing aid fitting",
+					"cta_heading": "Hearing aids that are set up for your ears and your life",
+					"faq": [
+						{
+							"q": "How long does a hearing evaluation take?",
+							"a": "Cupidatat non proident sunt in culpa qui officia deserunt mollit. Anim id est laborum curabitur pretium tincidunt lacus nulla gravida orci a odio nullam. Varius turpis et commodo pharetra est eros bibendum elit nec luctus magna. Felis sollicitudin mauris integer in mauris eu nibh euismod gravida praesent. Blandit odio eu enim pellentesque sed dapibus est sed lacinia sapien vel tellus."
+						},
+						{
+							"q": "Does a hearing test hurt?",
+							"a": "Lorem ipsum dolor sit amet consectetur adipiscing elit sed. Do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad. Minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure. Dolor in reprehenderit in voluptate velit."
+						},
+						{
+							"q": "Should I bring someone with me?",
+							"a": "Esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt. In culpa qui officia deserunt mollit anim id est laborum curabitur pretium. Tincidunt lacus nulla gravida orci a odio nullam varius turpis et. Commodo pharetra est eros bibendum elit nec luctus magna felis sollicitudin mauris integer in mauris. Eu nibh euismod."
+						},
+						{
+							"q": "Will my insurance cover a hearing evaluation?",
+							"a": "Gravida praesent blandit odio eu enim pellentesque sed dapibus est sed lacinia sapien. Vel tellus lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore. Et dolore magna aliqua ut enim ad minim veniam quis. Nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure. Dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla. Pariatur excepteur sint occaecat cupidatat non proident sunt in."
+						}
+					],
+					"sort_order": 2
+				}
+			},
+			{
+				"id": "service-hearing-aid-repairs",
+				"slug": "hearing-aid-repairs",
+				"status": "published",
+				"data": {
+					"title": "Hearing Aid Repairs & Services",
+					"nav_label": "Hearing aid repairs",
+					"summary": "Gravida praesent blandit odio eu enim pellentesque sed dapibus est sed lacinia sapien. Vel tellus lorem ipsum dolor sit amet.",
+					"has_page": false,
+					"hide_from_hub": false,
+					"on_home": true,
+					"book_label": "Book a repair visit",
+					"cta_heading": "Get your hearing aids working again",
+					"faq": [
+						{
+							"q": "How long does a hearing evaluation take?",
+							"a": "Cupidatat non proident sunt in culpa qui officia deserunt mollit. Anim id est laborum curabitur pretium tincidunt lacus nulla gravida orci a odio nullam. Varius turpis et commodo pharetra est eros bibendum elit nec luctus magna. Felis sollicitudin mauris integer in mauris eu nibh euismod gravida praesent. Blandit odio eu enim pellentesque sed dapibus est sed lacinia sapien vel tellus."
+						},
+						{
+							"q": "Does a hearing test hurt?",
+							"a": "Lorem ipsum dolor sit amet consectetur adipiscing elit sed. Do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad. Minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure. Dolor in reprehenderit in voluptate velit."
+						},
+						{
+							"q": "Should I bring someone with me?",
+							"a": "Esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt. In culpa qui officia deserunt mollit anim id est laborum curabitur pretium. Tincidunt lacus nulla gravida orci a odio nullam varius turpis et. Commodo pharetra est eros bibendum elit nec luctus magna felis sollicitudin mauris integer in mauris. Eu nibh euismod."
+						},
+						{
+							"q": "Will my insurance cover a hearing evaluation?",
+							"a": "Gravida praesent blandit odio eu enim pellentesque sed dapibus est sed lacinia sapien. Vel tellus lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore. Et dolore magna aliqua ut enim ad minim veniam quis. Nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure. Dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla. Pariatur excepteur sint occaecat cupidatat non proident sunt in."
+						}
+					],
+					"sort_order": 3
+				}
+			},
+			{
+				"id": "service-ear-wax-removal",
+				"slug": "ear-wax-removal",
+				"status": "published",
+				"data": {
+					"title": "Ear Wax Removal",
+					"nav_label": "Earwax removal",
+					"summary": "Consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore. Et dolore magna aliqua ut enim ad minim veniam quis.",
+					"has_page": true,
+					"hide_from_hub": false,
+					"on_home": true,
+					"book_label": "Book earwax removal",
+					"cta_heading": "Clear ears, in one short visit",
+					"faq": [
+						{
+							"q": "How long does a hearing evaluation take?",
+							"a": "Cupidatat non proident sunt in culpa qui officia deserunt mollit. Anim id est laborum curabitur pretium tincidunt lacus nulla gravida orci a odio nullam. Varius turpis et commodo pharetra est eros bibendum elit nec luctus magna. Felis sollicitudin mauris integer in mauris eu nibh euismod gravida praesent. Blandit odio eu enim pellentesque sed dapibus est sed lacinia sapien vel tellus."
+						},
+						{
+							"q": "Does a hearing test hurt?",
+							"a": "Lorem ipsum dolor sit amet consectetur adipiscing elit sed. Do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad. Minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure. Dolor in reprehenderit in voluptate velit."
+						},
+						{
+							"q": "Should I bring someone with me?",
+							"a": "Esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt. In culpa qui officia deserunt mollit anim id est laborum curabitur pretium. Tincidunt lacus nulla gravida orci a odio nullam varius turpis et. Commodo pharetra est eros bibendum elit nec luctus magna felis sollicitudin mauris integer in mauris. Eu nibh euismod."
+						},
+						{
+							"q": "Will my insurance cover a hearing evaluation?",
+							"a": "Gravida praesent blandit odio eu enim pellentesque sed dapibus est sed lacinia sapien. Vel tellus lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore. Et dolore magna aliqua ut enim ad minim veniam quis. Nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure. Dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla. Pariatur excepteur sint occaecat cupidatat non proident sunt in."
+						}
+					],
+					"sort_order": 4
+				}
+			},
+			{
+				"id": "service-tinnitus",
+				"slug": "tinnitus",
+				"status": "published",
+				"data": {
+					"title": "Tinnitus Evaluation & Management",
+					"nav_label": "Tinnitus care",
+					"summary": "Nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis. Aute irure dolor in reprehenderit in voluptate velit.",
+					"has_page": false,
+					"hide_from_hub": false,
+					"on_home": true,
+					"book_label": "Book a tinnitus evaluation",
+					"cta_heading": "Relief starts with understanding the ringing",
+					"faq": [
+						{
+							"q": "How long does a hearing evaluation take?",
+							"a": "Cupidatat non proident sunt in culpa qui officia deserunt mollit. Anim id est laborum curabitur pretium tincidunt lacus nulla gravida orci a odio nullam. Varius turpis et commodo pharetra est eros bibendum elit nec luctus magna. Felis sollicitudin mauris integer in mauris eu nibh euismod gravida praesent. Blandit odio eu enim pellentesque sed dapibus est sed lacinia sapien vel tellus."
+						},
+						{
+							"q": "Does a hearing test hurt?",
+							"a": "Lorem ipsum dolor sit amet consectetur adipiscing elit sed. Do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad. Minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure. Dolor in reprehenderit in voluptate velit."
+						},
+						{
+							"q": "Should I bring someone with me?",
+							"a": "Esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt. In culpa qui officia deserunt mollit anim id est laborum curabitur pretium. Tincidunt lacus nulla gravida orci a odio nullam varius turpis et. Commodo pharetra est eros bibendum elit nec luctus magna felis sollicitudin mauris integer in mauris. Eu nibh euismod."
+						},
+						{
+							"q": "Will my insurance cover a hearing evaluation?",
+							"a": "Gravida praesent blandit odio eu enim pellentesque sed dapibus est sed lacinia sapien. Vel tellus lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore. Et dolore magna aliqua ut enim ad minim veniam quis. Nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure. Dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla. Pariatur excepteur sint occaecat cupidatat non proident sunt in."
+						}
+					],
+					"sort_order": 5
+				}
+			},
+			{
+				"id": "service-custom-hearing-protection",
+				"slug": "custom-hearing-protection",
+				"status": "published",
+				"data": {
+					"title": "Custom Hearing Protection",
+					"nav_label": "Custom ear protection",
+					"summary": "Esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in. Culpa qui officia deserunt mollit.",
+					"has_page": false,
+					"hide_from_hub": false,
+					"on_home": true,
+					"book_label": "Book a fitting for ear protection",
+					"cta_heading": "Protect the hearing you have",
+					"faq": [
+						{
+							"q": "How long does a hearing evaluation take?",
+							"a": "Cupidatat non proident sunt in culpa qui officia deserunt mollit. Anim id est laborum curabitur pretium tincidunt lacus nulla gravida orci a odio nullam. Varius turpis et commodo pharetra est eros bibendum elit nec luctus magna. Felis sollicitudin mauris integer in mauris eu nibh euismod gravida praesent. Blandit odio eu enim pellentesque sed dapibus est sed lacinia sapien vel tellus."
+						},
+						{
+							"q": "Does a hearing test hurt?",
+							"a": "Lorem ipsum dolor sit amet consectetur adipiscing elit sed. Do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad. Minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure. Dolor in reprehenderit in voluptate velit."
+						},
+						{
+							"q": "Should I bring someone with me?",
+							"a": "Esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt. In culpa qui officia deserunt mollit anim id est laborum curabitur pretium. Tincidunt lacus nulla gravida orci a odio nullam varius turpis et. Commodo pharetra est eros bibendum elit nec luctus magna felis sollicitudin mauris integer in mauris. Eu nibh euismod."
+						},
+						{
+							"q": "Will my insurance cover a hearing evaluation?",
+							"a": "Gravida praesent blandit odio eu enim pellentesque sed dapibus est sed lacinia sapien. Vel tellus lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore. Et dolore magna aliqua ut enim ad minim veniam quis. Nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure. Dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla. Pariatur excepteur sint occaecat cupidatat non proident sunt in."
+						}
+					],
+					"sort_order": 6
+				}
+			},
+			{
+				"id": "service-real-ear-measurement",
+				"slug": "real-ear-measurement",
+				"status": "published",
+				"data": {
+					"title": "Real Ear Measurement",
+					"nav_label": "Real ear measurement",
+					"summary": "Pharetra est eros bibendum elit nec luctus magna felis sollicitudin mauris integer in mauris. Eu nibh euismod gravida praesent blandit odio eu.",
+					"has_page": false,
+					"hide_from_hub": false,
+					"on_home": false,
+					"book_label": "Book a fitting check",
+					"cta_heading": "Make sure your hearing aids are set for your ears",
+					"faq": [
+						{
+							"q": "How long does a hearing evaluation take?",
+							"a": "Cupidatat non proident sunt in culpa qui officia deserunt mollit. Anim id est laborum curabitur pretium tincidunt lacus nulla gravida orci a odio nullam. Varius turpis et commodo pharetra est eros bibendum elit nec luctus magna. Felis sollicitudin mauris integer in mauris eu nibh euismod gravida praesent. Blandit odio eu enim pellentesque sed dapibus est sed lacinia sapien vel tellus."
+						},
+						{
+							"q": "Does a hearing test hurt?",
+							"a": "Lorem ipsum dolor sit amet consectetur adipiscing elit sed. Do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad. Minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure. Dolor in reprehenderit in voluptate velit."
+						},
+						{
+							"q": "Should I bring someone with me?",
+							"a": "Esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt. In culpa qui officia deserunt mollit anim id est laborum curabitur pretium. Tincidunt lacus nulla gravida orci a odio nullam varius turpis et. Commodo pharetra est eros bibendum elit nec luctus magna felis sollicitudin mauris integer in mauris. Eu nibh euismod."
+						},
+						{
+							"q": "Will my insurance cover a hearing evaluation?",
+							"a": "Gravida praesent blandit odio eu enim pellentesque sed dapibus est sed lacinia sapien. Vel tellus lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore. Et dolore magna aliqua ut enim ad minim veniam quis. Nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure. Dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla. Pariatur excepteur sint occaecat cupidatat non proident sunt in."
+						}
+					],
+					"sort_order": 7
+				}
+			},
+			{
+				"id": "service-assistive-listening-devices",
+				"slug": "assistive-listening-devices",
+				"status": "published",
+				"data": {
+					"title": "Assistive Listening Devices",
+					"nav_label": "Assistive listening devices",
+					"summary": "Incididunt ut labore et dolore magna aliqua ut enim. Ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea.",
+					"has_page": false,
+					"hide_from_hub": false,
+					"on_home": false,
+					"book_label": "Book an appointment",
+					"cta_heading": "Hear the TV, the phone and the doorbell again",
+					"faq": [
+						{
+							"q": "How long does a hearing evaluation take?",
+							"a": "Cupidatat non proident sunt in culpa qui officia deserunt mollit. Anim id est laborum curabitur pretium tincidunt lacus nulla gravida orci a odio nullam. Varius turpis et commodo pharetra est eros bibendum elit nec luctus magna. Felis sollicitudin mauris integer in mauris eu nibh euismod gravida praesent. Blandit odio eu enim pellentesque sed dapibus est sed lacinia sapien vel tellus."
+						},
+						{
+							"q": "Does a hearing test hurt?",
+							"a": "Lorem ipsum dolor sit amet consectetur adipiscing elit sed. Do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad. Minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure. Dolor in reprehenderit in voluptate velit."
+						},
+						{
+							"q": "Should I bring someone with me?",
+							"a": "Esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt. In culpa qui officia deserunt mollit anim id est laborum curabitur pretium. Tincidunt lacus nulla gravida orci a odio nullam varius turpis et. Commodo pharetra est eros bibendum elit nec luctus magna felis sollicitudin mauris integer in mauris. Eu nibh euismod."
+						},
+						{
+							"q": "Will my insurance cover a hearing evaluation?",
+							"a": "Gravida praesent blandit odio eu enim pellentesque sed dapibus est sed lacinia sapien. Vel tellus lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore. Et dolore magna aliqua ut enim ad minim veniam quis. Nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure. Dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla. Pariatur excepteur sint occaecat cupidatat non proident sunt in."
+						}
+					],
+					"sort_order": 8
+				}
+			}
+		],
+		"brands": [
+			{
+				"id": "brand-phonak",
+				"slug": "phonak",
+				"status": "published",
+				"data": {
+					"title": "Phonak",
+					"logo": {
+						"$media": {
+							"url": "https://entheos-audiology-template.local-981.workers.dev/assets/brands/phonak.png",
+							"alt": "Phonak logo",
+							"filename": "phonak.png"
+						}
+					},
+					"logo_height": "46px",
+					"summary": "Ut aliquip ex ea commodo consequat duis aute irure. Dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat.",
+					"has_page": true,
+					"hide_from_hub": false,
+					"models": [
+						{
+							"line": "Audéo EON Line",
+							"name": "Audéo EON R",
+							"description": "Ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit. Esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat. Non proident sunt in culpa qui officia deserunt mollit anim id est laborum curabitur pretium. Tincidunt lacus nulla gravida orci a odio nullam varius.",
+							"features": "Mauris integer in mauris eu nibh euismod gravida.\nPraesent blandit odio eu enim pellentesque sed dapibus est.\nSed lacinia sapien vel tellus lorem ipsum."
+						},
+						{
+							"line": "Audéo EON Line",
+							"name": "Audéo EON Sphere",
+							"description": "Dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut. Labore et dolore magna aliqua ut enim ad minim veniam quis. Nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor.",
+							"features": "Lacus nulla gravida orci a odio nullam varius.\nTurpis et commodo pharetra est eros bibendum elit nec luctus."
+						},
+						{
+							"line": "Audéo EON Line",
+							"name": "CROS EON R",
+							"description": "Magna felis sollicitudin mauris integer in mauris eu nibh euismod gravida praesent. Blandit odio eu enim pellentesque sed dapibus est sed lacinia sapien. Vel tellus lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt.",
+							"features": ""
+						},
+						{
+							"line": "Infinio Line",
+							"name": "Audéo Infinio",
+							"description": "Nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit. In voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim.",
+							"features": ""
+						},
+						{
+							"line": "Infinio Line",
+							"name": "Virto R Infinio",
+							"description": "Pretium tincidunt lacus nulla gravida orci a odio nullam varius turpis. Et commodo pharetra est eros bibendum elit nec luctus magna felis sollicitudin mauris integer in. Mauris eu nibh euismod gravida praesent blandit odio eu.",
+							"features": ""
+						},
+						{
+							"line": "Infinio Line",
+							"name": "CROS Infinio",
+							"description": "Enim ad minim veniam quis nostrud exercitation ullamco laboris nisi. Ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate. Velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat.",
+							"features": ""
+						},
+						{
+							"line": "Lumity Line",
+							"name": "Audéo Lumity",
+							"description": "Orci a odio nullam varius turpis et commodo pharetra. Est eros bibendum elit nec luctus magna felis sollicitudin mauris integer in mauris. Eu nibh euismod gravida praesent blandit odio eu enim pellentesque sed dapibus est sed lacinia sapien vel.",
+							"features": ""
+						},
+						{
+							"line": "Lumity Line",
+							"name": "Naída Lumity",
+							"description": "Consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut. Aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit.",
+							"features": ""
+						},
+						{
+							"line": "Lumity Line",
+							"name": "Sky Lumity",
+							"description": "Anim id est laborum curabitur pretium tincidunt lacus nulla gravida orci a odio. Nullam varius turpis et commodo pharetra est eros bibendum elit nec luctus magna felis sollicitudin mauris integer.",
+							"features": ""
+						},
+						{
+							"line": "Lumity Line",
+							"name": "Phonak Slim",
+							"description": "Enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo. Consequat duis aute irure dolor in reprehenderit in voluptate. Velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non.",
+							"features": ""
+						}
+					],
+					"accessories": "Roger On\nTV Connector\nPartnerMic\nCharger Case Go\nPhonak Remote Mic",
+					"older_models": "Audéo Paradise\nNaída Paradise\nAudéo Marvel\nBolero Marvel\nVirto Marvel",
+					"faq": [
+						{
+							"q": "Are Phonak hearing aids rechargeable?",
+							"a": "Nulla pariatur excepteur sint occaecat cupidatat non proident sunt in. Culpa qui officia deserunt mollit anim id est laborum curabitur pretium tincidunt lacus nulla. Gravida orci a odio nullam varius turpis et commodo pharetra est eros."
+						},
+						{
+							"q": "Do Phonak hearing aids work with my phone?",
+							"a": "Enim pellentesque sed dapibus est sed lacinia sapien vel. Tellus lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor. Incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris."
+						},
+						{
+							"q": "Which Phonak model is right for me?",
+							"a": "Cupidatat non proident sunt in culpa qui officia deserunt mollit anim. Id est laborum curabitur pretium tincidunt lacus nulla gravida orci a odio nullam varius turpis. Et commodo pharetra est eros bibendum elit nec luctus."
+						},
+						{
+							"q": "Can you repair my older Phonak hearing aids?",
+							"a": "Eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam. Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum."
+						}
+					],
+					"sort_order": 1
+				}
+			},
+			{
+				"id": "brand-oticon",
+				"slug": "oticon",
+				"status": "published",
+				"data": {
+					"title": "Oticon",
+					"logo": {
+						"$media": {
+							"url": "https://entheos-audiology-template.local-981.workers.dev/assets/brands/oticon.png",
+							"alt": "Oticon logo",
+							"filename": "oticon.png"
+						}
+					},
+					"logo_height": "46px",
+					"summary": "Nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim id. Est laborum curabitur.",
+					"has_page": true,
+					"hide_from_hub": false,
+					"models": [
+						{
+							"line": "Premium line",
+							"name": "Oticon premium rechargeable",
+							"description": "Ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit. Esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat. Non proident sunt in culpa qui officia deserunt mollit anim id est laborum.",
+							"features": "Mauris integer in mauris eu nibh euismod gravida.\nPraesent blandit odio eu enim pellentesque sed dapibus est."
+						},
+						{
+							"line": "Premium line",
+							"name": "Oticon premium custom",
+							"description": "Dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut. Labore et dolore magna aliqua ut enim ad minim veniam quis. Nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+							"features": ""
+						},
+						{
+							"line": "Essential line",
+							"name": "Oticon essential",
+							"description": "Nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit. In voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+							"features": ""
+						}
+					],
+					"accessories": "TV streamer\nPartner microphone\nCharging case\nRemote control",
+					"older_models": "Earlier Oticon rechargeable models\nEarlier Oticon custom models",
+					"faq": [
+						{
+							"q": "Are Oticon hearing aids rechargeable?",
+							"a": "Nulla pariatur excepteur sint occaecat cupidatat non proident sunt in. Culpa qui officia deserunt mollit anim id est laborum curabitur pretium tincidunt lacus nulla. Gravida orci a odio nullam varius turpis et commodo pharetra est eros."
+						},
+						{
+							"q": "Do Oticon hearing aids work with my phone?",
+							"a": "Enim pellentesque sed dapibus est sed lacinia sapien vel. Tellus lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor. Incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris."
+						},
+						{
+							"q": "Which Oticon model is right for me?",
+							"a": "Cupidatat non proident sunt in culpa qui officia deserunt mollit anim. Id est laborum curabitur pretium tincidunt lacus nulla gravida orci a odio nullam varius turpis. Et commodo pharetra est eros bibendum elit nec luctus."
+						},
+						{
+							"q": "Can you repair my older Oticon hearing aids?",
+							"a": "Eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam. Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum."
+						}
+					],
+					"sort_order": 2
+				}
+			},
+			{
+				"id": "brand-resound",
+				"slug": "resound",
+				"status": "published",
+				"data": {
+					"title": "ReSound",
+					"logo": {
+						"$media": {
+							"url": "https://entheos-audiology-template.local-981.workers.dev/assets/brands/resound.png",
+							"alt": "ReSound logo",
+							"filename": "resound.png"
+						}
+					},
+					"logo_height": "54px",
+					"summary": "Pretium tincidunt lacus nulla gravida orci a odio nullam varius turpis et commodo pharetra. Est eros bibendum elit nec luctus.",
+					"has_page": false,
+					"hide_from_hub": false,
+					"models": [
+						{
+							"line": "Premium line",
+							"name": "ReSound premium rechargeable",
+							"description": "Ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit. Esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat. Non proident sunt in culpa qui officia deserunt mollit anim id est laborum.",
+							"features": "Mauris integer in mauris eu nibh euismod gravida.\nPraesent blandit odio eu enim pellentesque sed dapibus est."
+						},
+						{
+							"line": "Premium line",
+							"name": "ReSound premium custom",
+							"description": "Dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut. Labore et dolore magna aliqua ut enim ad minim veniam quis. Nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+							"features": ""
+						},
+						{
+							"line": "Essential line",
+							"name": "ReSound essential",
+							"description": "Nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit. In voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+							"features": ""
+						}
+					],
+					"accessories": "TV streamer\nPartner microphone\nCharging case\nRemote control",
+					"older_models": "Earlier ReSound rechargeable models\nEarlier ReSound custom models",
+					"faq": [
+						{
+							"q": "Are ReSound hearing aids rechargeable?",
+							"a": "Nulla pariatur excepteur sint occaecat cupidatat non proident sunt in. Culpa qui officia deserunt mollit anim id est laborum curabitur pretium tincidunt lacus nulla. Gravida orci a odio nullam varius turpis et commodo pharetra est eros."
+						},
+						{
+							"q": "Do ReSound hearing aids work with my phone?",
+							"a": "Enim pellentesque sed dapibus est sed lacinia sapien vel. Tellus lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor. Incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris."
+						},
+						{
+							"q": "Which ReSound model is right for me?",
+							"a": "Cupidatat non proident sunt in culpa qui officia deserunt mollit anim. Id est laborum curabitur pretium tincidunt lacus nulla gravida orci a odio nullam varius turpis. Et commodo pharetra est eros bibendum elit nec luctus."
+						},
+						{
+							"q": "Can you repair my older ReSound hearing aids?",
+							"a": "Eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam. Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum."
+						}
+					],
+					"sort_order": 3
+				}
+			},
+			{
+				"id": "brand-signia",
+				"slug": "signia",
+				"status": "published",
+				"data": {
+					"title": "Signia",
+					"logo": {
+						"$media": {
+							"url": "https://entheos-audiology-template.local-981.workers.dev/assets/brands/signia.png",
+							"alt": "Signia logo",
+							"filename": "signia.png"
+						}
+					},
+					"logo_height": "60px",
+					"summary": "Magna felis sollicitudin mauris integer in mauris eu nibh euismod gravida. Praesent blandit odio eu enim pellentesque sed dapibus est.",
+					"has_page": true,
+					"hide_from_hub": false,
+					"models": [
+						{
+							"line": "Premium line",
+							"name": "Signia premium rechargeable",
+							"description": "Ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit. Esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat. Non proident sunt in culpa qui officia deserunt mollit anim id est laborum.",
+							"features": "Mauris integer in mauris eu nibh euismod gravida.\nPraesent blandit odio eu enim pellentesque sed dapibus est."
+						},
+						{
+							"line": "Premium line",
+							"name": "Signia premium custom",
+							"description": "Dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut. Labore et dolore magna aliqua ut enim ad minim veniam quis. Nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+							"features": ""
+						},
+						{
+							"line": "Essential line",
+							"name": "Signia essential",
+							"description": "Nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit. In voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+							"features": ""
+						}
+					],
+					"accessories": "TV streamer\nPartner microphone\nCharging case\nRemote control",
+					"older_models": "Earlier Signia rechargeable models\nEarlier Signia custom models",
+					"faq": [
+						{
+							"q": "Are Signia hearing aids rechargeable?",
+							"a": "Nulla pariatur excepteur sint occaecat cupidatat non proident sunt in. Culpa qui officia deserunt mollit anim id est laborum curabitur pretium tincidunt lacus nulla. Gravida orci a odio nullam varius turpis et commodo pharetra est eros."
+						},
+						{
+							"q": "Do Signia hearing aids work with my phone?",
+							"a": "Enim pellentesque sed dapibus est sed lacinia sapien vel. Tellus lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor. Incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris."
+						},
+						{
+							"q": "Which Signia model is right for me?",
+							"a": "Cupidatat non proident sunt in culpa qui officia deserunt mollit anim. Id est laborum curabitur pretium tincidunt lacus nulla gravida orci a odio nullam varius turpis. Et commodo pharetra est eros bibendum elit nec luctus."
+						},
+						{
+							"q": "Can you repair my older Signia hearing aids?",
+							"a": "Eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam. Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum."
+						}
+					],
+					"sort_order": 4
+				}
+			},
+			{
+				"id": "brand-starkey",
+				"slug": "starkey",
+				"status": "published",
+				"data": {
+					"title": "Starkey",
+					"logo": {
+						"$media": {
+							"url": "https://entheos-audiology-template.local-981.workers.dev/assets/brands/starkey.png",
+							"alt": "Starkey logo",
+							"filename": "starkey.png"
+						}
+					},
+					"logo_height": "56px",
+					"summary": "Sed lacinia sapien vel tellus lorem ipsum dolor sit. Amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore.",
+					"has_page": true,
+					"hide_from_hub": false,
+					"models": [
+						{
+							"line": "Premium line",
+							"name": "Starkey premium rechargeable",
+							"description": "Ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit. Esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat. Non proident sunt in culpa qui officia deserunt mollit anim id est laborum.",
+							"features": "Mauris integer in mauris eu nibh euismod gravida.\nPraesent blandit odio eu enim pellentesque sed dapibus est."
+						},
+						{
+							"line": "Premium line",
+							"name": "Starkey premium custom",
+							"description": "Dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut. Labore et dolore magna aliqua ut enim ad minim veniam quis. Nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+							"features": ""
+						},
+						{
+							"line": "Essential line",
+							"name": "Starkey essential",
+							"description": "Nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit. In voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+							"features": ""
+						}
+					],
+					"accessories": "TV streamer\nPartner microphone\nCharging case\nRemote control",
+					"older_models": "Earlier Starkey rechargeable models\nEarlier Starkey custom models",
+					"faq": [
+						{
+							"q": "Are Starkey hearing aids rechargeable?",
+							"a": "Nulla pariatur excepteur sint occaecat cupidatat non proident sunt in. Culpa qui officia deserunt mollit anim id est laborum curabitur pretium tincidunt lacus nulla. Gravida orci a odio nullam varius turpis et commodo pharetra est eros."
+						},
+						{
+							"q": "Do Starkey hearing aids work with my phone?",
+							"a": "Enim pellentesque sed dapibus est sed lacinia sapien vel. Tellus lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor. Incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris."
+						},
+						{
+							"q": "Which Starkey model is right for me?",
+							"a": "Cupidatat non proident sunt in culpa qui officia deserunt mollit anim. Id est laborum curabitur pretium tincidunt lacus nulla gravida orci a odio nullam varius turpis. Et commodo pharetra est eros bibendum elit nec luctus."
+						},
+						{
+							"q": "Can you repair my older Starkey hearing aids?",
+							"a": "Eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam. Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum."
+						}
+					],
+					"sort_order": 5
+				}
+			},
+			{
+				"id": "brand-widex",
+				"slug": "widex",
+				"status": "published",
+				"data": {
+					"title": "Widex",
+					"logo": {
+						"$media": {
+							"url": "https://entheos-audiology-template.local-981.workers.dev/assets/brands/widex.png",
+							"alt": "Widex logo",
+							"filename": "widex.png"
+						}
+					},
+					"logo_height": "42px",
+					"summary": "Et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip. Ex ea commodo.",
+					"has_page": false,
+					"hide_from_hub": false,
+					"models": [
+						{
+							"line": "Premium line",
+							"name": "Widex premium rechargeable",
+							"description": "Ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit. Esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat. Non proident sunt in culpa qui officia deserunt mollit anim id est laborum.",
+							"features": "Mauris integer in mauris eu nibh euismod gravida.\nPraesent blandit odio eu enim pellentesque sed dapibus est."
+						},
+						{
+							"line": "Premium line",
+							"name": "Widex premium custom",
+							"description": "Dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut. Labore et dolore magna aliqua ut enim ad minim veniam quis. Nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+							"features": ""
+						},
+						{
+							"line": "Essential line",
+							"name": "Widex essential",
+							"description": "Nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit. In voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+							"features": ""
+						}
+					],
+					"accessories": "TV streamer\nPartner microphone\nCharging case\nRemote control",
+					"older_models": "Earlier Widex rechargeable models\nEarlier Widex custom models",
+					"faq": [
+						{
+							"q": "Are Widex hearing aids rechargeable?",
+							"a": "Nulla pariatur excepteur sint occaecat cupidatat non proident sunt in. Culpa qui officia deserunt mollit anim id est laborum curabitur pretium tincidunt lacus nulla. Gravida orci a odio nullam varius turpis et commodo pharetra est eros."
+						},
+						{
+							"q": "Do Widex hearing aids work with my phone?",
+							"a": "Enim pellentesque sed dapibus est sed lacinia sapien vel. Tellus lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor. Incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris."
+						},
+						{
+							"q": "Which Widex model is right for me?",
+							"a": "Cupidatat non proident sunt in culpa qui officia deserunt mollit anim. Id est laborum curabitur pretium tincidunt lacus nulla gravida orci a odio nullam varius turpis. Et commodo pharetra est eros bibendum elit nec luctus."
+						},
+						{
+							"q": "Can you repair my older Widex hearing aids?",
+							"a": "Eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam. Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum."
+						}
+					],
+					"sort_order": 6
+				}
+			},
+			{
+				"id": "brand-unitron",
+				"slug": "unitron",
+				"status": "published",
+				"data": {
+					"title": "Unitron",
+					"logo": {
+						"$media": {
+							"url": "https://entheos-audiology-template.local-981.workers.dev/assets/brands/unitron.png",
+							"alt": "Unitron logo",
+							"filename": "unitron.png"
+						}
+					},
+					"logo_height": "30px",
+					"summary": "Consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu. Fugiat nulla pariatur excepteur sint occaecat.",
+					"has_page": false,
+					"hide_from_hub": false,
+					"models": [
+						{
+							"line": "Premium line",
+							"name": "Unitron premium rechargeable",
+							"description": "Ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit. Esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat. Non proident sunt in culpa qui officia deserunt mollit anim id est laborum.",
+							"features": "Mauris integer in mauris eu nibh euismod gravida.\nPraesent blandit odio eu enim pellentesque sed dapibus est."
+						},
+						{
+							"line": "Premium line",
+							"name": "Unitron premium custom",
+							"description": "Dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut. Labore et dolore magna aliqua ut enim ad minim veniam quis. Nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+							"features": ""
+						},
+						{
+							"line": "Essential line",
+							"name": "Unitron essential",
+							"description": "Nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit. In voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+							"features": ""
+						}
+					],
+					"accessories": "TV streamer\nPartner microphone\nCharging case\nRemote control",
+					"older_models": "Earlier Unitron rechargeable models\nEarlier Unitron custom models",
+					"faq": [
+						{
+							"q": "Are Unitron hearing aids rechargeable?",
+							"a": "Nulla pariatur excepteur sint occaecat cupidatat non proident sunt in. Culpa qui officia deserunt mollit anim id est laborum curabitur pretium tincidunt lacus nulla. Gravida orci a odio nullam varius turpis et commodo pharetra est eros."
+						},
+						{
+							"q": "Do Unitron hearing aids work with my phone?",
+							"a": "Enim pellentesque sed dapibus est sed lacinia sapien vel. Tellus lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor. Incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris."
+						},
+						{
+							"q": "Which Unitron model is right for me?",
+							"a": "Cupidatat non proident sunt in culpa qui officia deserunt mollit anim. Id est laborum curabitur pretium tincidunt lacus nulla gravida orci a odio nullam varius turpis. Et commodo pharetra est eros bibendum elit nec luctus."
+						},
+						{
+							"q": "Can you repair my older Unitron hearing aids?",
+							"a": "Eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam. Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum."
+						}
+					],
+					"sort_order": 7
+				}
+			}
+		],
+		"providers": [
+			{
+				"id": "provider-jordan-ellis",
+				"slug": "jordan-ellis",
+				"status": "published",
+				"data": {
+					"title": "Dr. Jordan Ellis, Au.D.",
+					"job_title": "Owner and Audiologist",
+					"short_name": "Dr. Ellis",
+					"meet_label": "Meet Dr. Ellis",
+					"tone": "warm",
+					"has_page": true,
+					"short_bio": "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt. Ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation. Ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor.",
+					"offices": "riverside",
+					"sort_order": 1
+				}
+			},
+			{
+				"id": "provider-priya-raman",
+				"slug": "priya-raman",
+				"status": "published",
+				"data": {
+					"title": "Dr. Priya Raman, Au.D.",
+					"job_title": "Audiologist",
+					"short_name": "Dr. Raman",
+					"meet_label": "Meet Dr. Raman",
+					"tone": "sage",
+					"has_page": true,
+					"short_bio": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat. Nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa. Qui officia deserunt mollit anim id est laborum curabitur pretium.",
+					"offices": "northfield\nriverside",
+					"sort_order": 2
+				}
+			},
+			{
+				"id": "provider-morgan-lee",
+				"slug": "morgan-lee",
+				"status": "published",
+				"data": {
+					"title": "Morgan Lee",
+					"job_title": "Patient Care Coordinator",
+					"short_name": "Morgan",
+					"meet_label": "Meet Morgan Lee",
+					"tone": "sky",
+					"has_page": false,
+					"short_bio": "Curabitur pretium tincidunt lacus nulla gravida orci a odio nullam varius turpis. Et commodo pharetra est eros bibendum elit nec luctus magna felis sollicitudin. Mauris integer in mauris eu nibh euismod gravida.",
+					"offices": "riverside",
+					"sort_order": 3
+				}
+			}
+		],
+		"posts": [
+			{
+				"id": "post-why-most-people-wait-seven-years-to-treat-hearing-loss",
+				"slug": "why-most-people-wait-seven-years-to-treat-hearing-loss",
+				"status": "published",
+				"data": {
+					"title": "Why most people wait seven years to treat hearing loss",
+					"excerpt": "Fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt. In culpa qui officia deserunt mollit anim id est laborum curabitur pretium tincidunt lacus. Nulla gravida orci a odio nullam varius turpis et commodo pharetra est. Eros bibendum elit nec.",
+					"post_date": "2026-10-06T12:00:00.000Z",
+					"author": "jordan-ellis",
+					"featured": true,
+					"tone": "warm"
+				},
+				"taxonomies": {
+					"category": [
+						"hearing-loss"
+					]
+				}
+			},
+			{
+				"id": "post-five-early-signs-of-hearing-loss-that-are-easy-to-explain-away",
+				"slug": "five-early-signs-of-hearing-loss-that-are-easy-to-explain-away",
+				"status": "published",
+				"data": {
+					"title": "Five early signs of hearing loss that are easy to explain away",
+					"excerpt": "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut.",
+					"post_date": "2026-09-22T12:00:00.000Z",
+					"author": "jordan-ellis",
+					"featured": false,
+					"tone": "sage"
+				},
+				"taxonomies": {
+					"category": [
+						"hearing-loss"
+					]
+				}
+			},
+			{
+				"id": "post-what-the-first-two-weeks-with-new-hearing-aids-feel-like",
+				"slug": "what-the-first-two-weeks-with-new-hearing-aids-feel-like",
+				"status": "published",
+				"data": {
+					"title": "What the first two weeks with new hearing aids feel like",
+					"excerpt": "Do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris.",
+					"post_date": "2026-09-09T12:00:00.000Z",
+					"author": "priya-raman",
+					"featured": false,
+					"tone": "sky"
+				},
+				"taxonomies": {
+					"category": [
+						"hearing-aids"
+					]
+				}
+			},
+			{
+				"id": "post-does-insurance-cover-hearing-aids-a-practical-breakdown",
+				"slug": "does-insurance-cover-hearing-aids-a-practical-breakdown",
+				"status": "published",
+				"data": {
+					"title": "Does insurance cover hearing aids? A practical breakdown",
+					"excerpt": "Aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute.",
+					"post_date": "2026-08-28T12:00:00.000Z",
+					"author": "jordan-ellis",
+					"featured": false,
+					"tone": "stone"
+				},
+				"taxonomies": {
+					"category": [
+						"hearing-aids"
+					]
+				}
+			},
+			{
+				"id": "post-over-the-counter-vs-prescription-hearing-aids-an-honest-comparison",
+				"slug": "over-the-counter-vs-prescription-hearing-aids-an-honest-comparison",
+				"status": "published",
+				"data": {
+					"title": "Over-the-counter vs. prescription hearing aids: an honest comparison",
+					"excerpt": "Ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum.",
+					"post_date": "2026-08-14T12:00:00.000Z",
+					"author": "priya-raman",
+					"featured": false,
+					"tone": "warm"
+				},
+				"taxonomies": {
+					"category": [
+						"hearing-aids"
+					]
+				}
+			},
+			{
+				"id": "post-ringing-in-your-ears-what-tinnitus-is-telling-you",
+				"slug": "ringing-in-your-ears-what-tinnitus-is-telling-you",
+				"status": "published",
+				"data": {
+					"title": "Ringing in your ears? What tinnitus is telling you",
+					"excerpt": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat.",
+					"post_date": "2026-07-30T12:00:00.000Z",
+					"author": "jordan-ellis",
+					"featured": false,
+					"tone": "sage"
+				},
+				"taxonomies": {
+					"category": [
+						"tinnitus"
+					]
+				}
+			},
+			{
+				"id": "post-a-five-minute-nightly-routine-that-helps-hearing-aids-last",
+				"slug": "a-five-minute-nightly-routine-that-helps-hearing-aids-last",
+				"status": "published",
+				"data": {
+					"title": "A five-minute nightly routine that helps hearing aids last",
+					"excerpt": "Esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit.",
+					"post_date": "2026-07-16T12:00:00.000Z",
+					"author": "priya-raman",
+					"featured": false,
+					"tone": "sky"
+				},
+				"taxonomies": {
+					"category": [
+						"tips-and-care"
+					]
+				}
+			},
+			{
+				"id": "post-how-hearing-loss-affects-memory-and-focus",
+				"slug": "how-hearing-loss-affects-memory-and-focus",
+				"status": "published",
+				"data": {
+					"title": "How hearing loss affects memory and focus",
+					"excerpt": "Occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum lorem ipsum dolor sit amet.",
+					"post_date": "2026-06-25T12:00:00.000Z",
+					"author": "jordan-ellis",
+					"featured": false,
+					"tone": "stone"
+				},
+				"taxonomies": {
+					"category": [
+						"hearing-loss"
+					]
+				}
+			},
+			{
+				"id": "post-what-to-ask-at-your-first-hearing-aid-appointment",
+				"slug": "what-to-ask-at-your-first-hearing-aid-appointment",
+				"status": "published",
+				"data": {
+					"title": "What to ask at your first hearing aid appointment",
+					"excerpt": "Deserunt mollit anim id est laborum lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut.",
+					"post_date": "2026-06-11T12:00:00.000Z",
+					"author": "priya-raman",
+					"featured": false,
+					"tone": "warm"
+				},
+				"taxonomies": {
+					"category": [
+						"tips-and-care"
+					]
+				}
+			},
+			{
+				"id": "post-hearing-protection-for-concerts-hunting-and-yard-work",
+				"slug": "hearing-protection-for-concerts-hunting-and-yard-work",
+				"status": "published",
+				"data": {
+					"title": "Hearing protection for concerts, hunting and yard work",
+					"excerpt": "Sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim.",
+					"post_date": "2026-05-28T12:00:00.000Z",
+					"author": "jordan-ellis",
+					"featured": false,
+					"tone": "sage"
+				},
+				"taxonomies": {
+					"category": [
+						"tips-and-care"
+					]
+				}
+			}
+		],
+		"resources": [
+			{
+				"id": "resource-what-to-expect-at-your-first-visit",
+				"slug": "what-to-expect-at-your-first-visit",
+				"status": "published",
+				"data": {
+					"title": "What to expect at your first visit",
+					"summary": "Et commodo pharetra est eros bibendum elit nec luctus magna felis. Sollicitudin mauris integer in mauris eu nibh euismod gravida praesent blandit odio eu enim pellentesque. Sed dapibus est sed.",
+					"has_page": true,
+					"hide_from_hub": false,
+					"has_forms": false,
+					"sort_order": 1
+				},
+				"taxonomies": {
+					"resource_tag": [
+						"before-your-visit"
+					]
+				}
+			},
+			{
+				"id": "resource-new-patient-forms",
+				"slug": "new-patient-forms",
+				"status": "published",
+				"data": {
+					"title": "New patient forms",
+					"summary": "Lacinia sapien vel tellus lorem ipsum dolor sit amet consectetur adipiscing elit sed. Do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim.",
+					"has_page": false,
+					"hide_from_hub": false,
+					"has_forms": true,
+					"sort_order": 2
+				},
+				"taxonomies": {
+					"resource_tag": [
+						"before-your-visit",
+						"forms"
+					]
+				}
+			},
+			{
+				"id": "resource-insurance-plans-we-accept",
+				"slug": "insurance-plans-we-accept",
+				"status": "published",
+				"data": {
+					"title": "Insurance plans we accept",
+					"summary": "Ad minim veniam quis nostrud exercitation ullamco laboris nisi ut. Aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit. Esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat.",
+					"has_page": true,
+					"hide_from_hub": false,
+					"has_forms": false,
+					"sort_order": 3
+				},
+				"taxonomies": {
+					"resource_tag": [
+						"insurance"
+					]
+				}
+			},
+			{
+				"id": "resource-how-to-check-your-hearing-aid-coverage",
+				"slug": "how-to-check-your-hearing-aid-coverage",
+				"status": "published",
+				"data": {
+					"title": "How to check your hearing aid coverage",
+					"summary": "Non proident sunt in culpa qui officia deserunt mollit anim id. Est laborum curabitur pretium tincidunt lacus nulla gravida orci a odio nullam varius turpis et. Commodo pharetra est eros bibendum elit nec luctus magna. Felis sollicitudin mauris integer in.",
+					"has_page": false,
+					"hide_from_hub": false,
+					"has_forms": false,
+					"sort_order": 4
+				},
+				"taxonomies": {
+					"resource_tag": [
+						"insurance"
+					]
+				}
+			},
+			{
+				"id": "resource-payment-options",
+				"slug": "payment-options",
+				"status": "published",
+				"data": {
+					"title": "Payment options",
+					"summary": "Mauris eu nibh euismod gravida praesent blandit odio eu enim pellentesque sed dapibus est sed lacinia sapien. Vel tellus lorem ipsum dolor sit amet consectetur adipiscing elit. Sed do eiusmod.",
+					"has_page": false,
+					"hide_from_hub": false,
+					"has_forms": false,
+					"sort_order": 5
+				},
+				"taxonomies": {
+					"resource_tag": [
+						"financing"
+					]
+				}
+			},
+			{
+				"id": "resource-financing-through-carecredit",
+				"slug": "financing-through-carecredit",
+				"status": "published",
+				"data": {
+					"title": "Financing through CareCredit",
+					"summary": "Tempor incididunt ut labore et dolore magna aliqua ut enim ad minim. Veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea. Commodo consequat duis aute irure dolor in.",
+					"has_page": true,
+					"hide_from_hub": false,
+					"has_forms": false,
+					"sort_order": 6
+				},
+				"taxonomies": {
+					"resource_tag": [
+						"financing"
+					]
+				}
+			},
+			{
+				"id": "resource-your-hearing-aid-trial-period",
+				"slug": "your-hearing-aid-trial-period",
+				"status": "published",
+				"data": {
+					"title": "Your hearing aid trial period",
+					"summary": "Reprehenderit in voluptate velit esse cillum dolore eu fugiat. Nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui officia. Deserunt mollit anim id est laborum curabitur pretium tincidunt lacus nulla gravida orci.",
+					"has_page": true,
+					"hide_from_hub": false,
+					"has_forms": false,
+					"sort_order": 7
+				},
+				"taxonomies": {
+					"resource_tag": [
+						"after-your-visit"
+					]
+				}
+			},
+			{
+				"id": "resource-cleaning-and-caring-for-your-hearing-aids",
+				"slug": "cleaning-and-caring-for-your-hearing-aids",
+				"status": "published",
+				"data": {
+					"title": "Cleaning and caring for your hearing aids",
+					"summary": "A odio nullam varius turpis et commodo pharetra est eros. Bibendum elit nec luctus magna felis sollicitudin mauris integer in mauris eu nibh euismod. Gravida praesent blandit odio eu enim pellentesque sed dapibus est sed lacinia. Sapien vel tellus lorem.",
+					"has_page": true,
+					"hide_from_hub": false,
+					"has_forms": false,
+					"sort_order": 8
+				},
+				"taxonomies": {
+					"resource_tag": [
+						"after-your-visit",
+						"hearing-aid-care"
+					]
+				}
+			},
+			{
+				"id": "resource-troubleshooting-no-sound-whistling-won-t-charge",
+				"slug": "troubleshooting-no-sound-whistling-won-t-charge",
+				"status": "published",
+				"data": {
+					"title": "Troubleshooting: no sound, whistling, won’t charge",
+					"summary": "Ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et. Dolore magna aliqua ut enim ad minim veniam quis. Nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute. Irure dolor in reprehenderit in voluptate velit esse.",
+					"has_page": false,
+					"hide_from_hub": false,
+					"has_forms": false,
+					"sort_order": 9
+				},
+				"taxonomies": {
+					"resource_tag": [
+						"hearing-aid-care"
+					]
+				}
+			},
+			{
+				"id": "resource-helpful-hearing-loss-organizations",
+				"slug": "helpful-hearing-loss-organizations",
+				"status": "published",
+				"data": {
+					"title": "Helpful hearing loss organizations",
+					"summary": "Cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat. Non proident sunt in culpa qui officia deserunt mollit anim id est laborum curabitur. Pretium tincidunt lacus nulla gravida orci.",
+					"has_page": false,
+					"hide_from_hub": false,
+					"has_forms": false,
+					"sort_order": 10
+				},
+				"taxonomies": {
+					"resource_tag": [
+						"outside-organizations"
+					]
+				}
+			}
+		]
+	}
+}

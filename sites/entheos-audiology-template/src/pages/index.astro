@@ -39,7 +39,7 @@ const brandLinks = s.choice("brandlinks", ["mixed", "all", "none"], "mixed");
 const revLink = s.bool("revlink", true);
 const showPosts = s.bool("posts", true);
 
-const brandTiles = brands.map((b) => ({ ...b, linked: brandLinks === "all" ? true : brandLinks === "none" ? false : b.hasPage }));
+const brandTiles = brands.filter((b) => !b.hideFromHub).map((b) => ({ ...b, linked: brandLinks === "all" ? true : brandLinks === "none" ? false : b.hasPage }));
 const team = providers.map((p) => ({ ...p, linked: provLinked && p.hasPage }));
 const city = practice.city;
 ---

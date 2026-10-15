@@ -19,12 +19,12 @@ const s = getSettings(Astro);
 const menus = {
 	services: {
 		label: "Services",
-		links: services.filter((x) => x.hasPage).map((x) => ({ label: x.navLabel, href: routes.service(x.slug) })),
+		links: services.filter((x) => x.hasPage && !x.hideFromHub).map((x) => ({ label: x.navLabel, href: routes.service(x.slug) })),
 		all: { label: "All services", href: routes.services },
 	},
 	"hearing-aids": {
 		label: "Hearing aids",
-		links: brands.filter((b) => b.hasPage).map((b) => ({ label: `${b.name} hearing aids`, href: routes.brand(b.slug) })),
+		links: brands.filter((b) => b.hasPage && !b.hideFromHub).map((b) => ({ label: `${b.name} hearing aids`, href: routes.brand(b.slug) })),
 		all: { label: "All hearing aids", href: routes.hearingAids },
 	},
 } as const;

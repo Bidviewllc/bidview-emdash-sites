@@ -21,6 +21,9 @@ export type Post = {
 	cat: string;
 	catSlug: string;
 	author: string;
+	/** Featured image URL; a placeholder shows when there is none. */
+	image?: string;
+	featured?: boolean;
 };
 
 export const posts: Post[] = rawPosts.map((p) => ({
@@ -51,7 +54,7 @@ export const categories = ["Hearing Loss", "Hearing Aids", "Tinnitus", "Tips & C
 /** Article body (same sample body for every post). "MIDCTA" marks where the mid-article booking box goes. */
 export const articleBody: string[] = postBody.body.map((b: string) => b.replace(/src="[^"]*"/, 'src="/assets/photos/consult.jpg" loading="lazy"'));
 
-export type Resource = { slug: string; t: string; d: string; tags: string[]; page: boolean; forms: boolean };
+export type Resource = { slug: string; t: string; d: string; tags: string[]; page: boolean; forms: boolean; hideFromHub?: boolean };
 const R = rawRes.R as Record<string, { t: string; d: string; tags: { t: string }[]; page: boolean; forms: boolean }>;
 export const resources: Resource[] = Object.values(R).map((r) => ({ slug: slugify(r.t), t: r.t, d: r.d, tags: r.tags.map((x) => x.t), page: r.page, forms: r.forms }));
 export const resourceGroups: string[] = rawRes.order;

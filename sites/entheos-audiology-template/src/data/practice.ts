@@ -40,6 +40,8 @@ export type Provider = {
 	short: string;
 	/** Two or three sentences for the team list layout (no profile page needed). */
 	bio: string;
+	/** Headshot URL; a placeholder shows when there is none. */
+	headshot?: string;
 };
 
 export type Service = {
@@ -65,6 +67,7 @@ export type Brand = {
 	/** Max logo height inside the 160 x 60 slot. */
 	logoHeight: string;
 	hasPage: boolean;
+	hideFromHub?: boolean;
 	summary: string;
 };
 

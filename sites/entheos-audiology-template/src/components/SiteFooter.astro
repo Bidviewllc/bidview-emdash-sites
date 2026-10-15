@@ -29,7 +29,7 @@ const practiceLinks = [
 	{ label: "Contact", href: routes.contact },
 ];
 const serviceLinks = [
-	...services.filter((x) => x.hasPage).slice(0, 3).map((x) => ({ label: x.navLabel, href: routes.service(x.slug) })),
+	...services.filter((x) => x.hasPage && !x.hideFromHub).slice(0, 3).map((x) => ({ label: x.navLabel, href: routes.service(x.slug) })),
 	{ label: "All services", href: routes.services },
 ];
 const patientLinks = [

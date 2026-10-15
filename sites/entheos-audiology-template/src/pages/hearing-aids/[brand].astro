@@ -14,7 +14,7 @@ import { routes, telHref } from "../../lib/routes";
 const { brandDetails, brandFaqs, brands, practice } = Astro.locals.site;
 
 const brand = brands.find((b) => b.slug === Astro.params.brand);
-if (!brand) return Astro.rewrite("/404");
+if (!brand || !brand.hasPage) return Astro.rewrite("/404");
 const detail = brandDetails[brand.slug];
 
 const tweaks: Tweak[] = [];

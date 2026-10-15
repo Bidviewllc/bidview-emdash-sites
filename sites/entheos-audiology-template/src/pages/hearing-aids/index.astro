@@ -35,7 +35,7 @@ const showOtc = s.bool("otc", true);
 			<div class="stack g16 text-col"><span class="eyebrow">Brands</span><h2 class="h2">Brands we fit and service</h2></div>
 			<div class="panel grid g-4 brand-grid">
 				{
-					brands.map((b) => {
+					brands.filter((b) => !b.hideFromHub).map((b) => {
 						const linked = brandLinks === "all" ? true : brandLinks === "none" ? false : b.hasPage;
 						return (
 							<article class="card brand-card" style="padding: 28px">

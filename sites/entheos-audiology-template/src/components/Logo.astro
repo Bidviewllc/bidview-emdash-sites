@@ -13,7 +13,12 @@ interface Props {
 const { shape = "wide", size = 44 } = Astro.props;
 const s = getSettings(Astro);
 const [line1, line2] = s.wordmark;
+/** Logo uploaded in EmDash Settings (used unless a review name is typed in). */
+const uploaded = s.name === Astro.locals.site.practice.name ? Astro.locals.site.practice.logo : undefined;
 ---
+{uploaded ? (
+<a class:list={["logo", "has-upload", { stk: shape === "stacked" }]} href={s.href("/")} data-logo={shape}><img src={uploaded} alt={`${s.name}, home`} /></a>
+) : (
 <a class:list={["logo", { stk: shape === "stacked" }]} href={s.href("/")} aria-label={`${s.name}, home`} data-logo={shape}>
 	<svg viewBox="0 0 40 40" width={size} height={size} aria-hidden="true">
 		<circle cx="20" cy="20" r="20" style="fill: var(--lg-bg, var(--p))"></circle>
@@ -26,3 +31,4 @@ const [line1, line2] = s.wordmark;
 	</svg>
 	<span class="lw"><b>{line1}</b>{line2 && <span>{line2}</span>}</span>
 </a>
+)}

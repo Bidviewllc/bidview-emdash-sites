@@ -20,8 +20,16 @@ handed off from Claude Design in `design/`.
 - `src/styles/site.css`: what the boards did inline, the header breakpoint
   (desktop header from 1280px), the tablet step (640 to 1023px) and the Review
   controls extras.
-- `src/data/practice.ts`: the one practice data file. No practice details in
-  components.
+- **Content comes from EmDash (phase 2, from 2026-10-15).** `src/middleware.ts`
+  runs `loadSite()` (`src/data/site.ts`) once per request and puts the result
+  on `Astro.locals.site`; every page and component reads from there. No practice
+  details in components. `site.ts` maps EmDash records into the shapes in
+  `src/data/types.ts`.
+- `src/data/practice.ts` and `blog.ts` are now the **sample content** (Lakeview):
+  `scripts/build-seed.ts` turns them into `seed/seed.json` (`npm run seed:build`,
+  then `npm run seed:check`). A few blocks still read them directly: reviews (to
+  come from Vince's reviews sync), hearing aid style drawings, and the sample
+  article body.
 - `src/lib/settings.ts`: Review controls settings read from the query string.
   Global settings ride along on internal links via `s.href()`; page settings don't.
   Defaults are left out of URLs.
@@ -50,11 +58,37 @@ handed off from Claude Design in `design/`.
 - Still parked: a wholly different trust bar style for mobile, if "still" doesn't
   solve it.
 
+## Phase 2: EmDash (from 2026-10-15)
+- Worker `entheos-template-cms` (learning account), D1 `entheos-template-cms-db`,
+  R2 `entheos-template-cms-media`, KV `entheos-template-cms-session`. The phase 1
+  demo Worker `entheos-audiology-template` is left as it was.
+- Admin: https://entheos-template-cms.local-981.workers.dev/_emdash/admin. Passkeys
+  belong to that hostname (`EMDASH_SITE_URL` in wrangler.jsonc), so version
+  preview URLs show the site but can't log in. The first person to finish the
+  setup wizard becomes the admin.
+- Collections: Practice details (one record, slug `main`: colours, wordmark,
+  rating, memberships, first-visit steps, About journey and values, Review
+  controls switch), Offices, Services, Hearing aid brands (models as a repeater),
+  Team, Blog posts (category taxonomy), Patient resources (resource_tag taxonomy;
+  a tag whose description starts "Label only" is a card label, not a group).
+  Logo, favicon, tagline and social links are EmDash's own Settings.
+- Switch-on rules in code: own page off = 404 and no "Learn more"; hide from hub =
+  no card or menu item, page still live; unpublished = gone everywhere.
+- Records with revisions save as a draft: press Publish for the site to change.
+- The seed applies once, at setup. After that, editing seed.json changes nothing
+  on the live database.
+- Local: `npx astro dev --port 4500`, then
+  `/_emdash/api/setup/dev-bypass?redirect=/_emdash/admin` (seeds the local D1
+  with sample content and signs you in).
+- Not yet in EmDash: menus (header/footer still built from records), header and
+  footer style (Review controls only), page-level switches, reviews, service and
+  profile body text.
+
 ## Working style
 Build in the handoff's order and stop after each step for Liz's review. When the
 design and the handoff disagree, ask before guessing.
 
 ## Commands
 - `npm run dev` (local), `npm run build`
-- Demo deploy: `npm run deploy` (learning account, design sandbox, not a live site).
+- Deploy: `npm run deploy` (learning account, demo, not a live site).
   Preview of a change without replacing the demo: `npx wrangler versions upload --tag <tag> --message "<what>"`.

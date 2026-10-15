@@ -13,7 +13,8 @@ import Base from "../layouts/Base.astro";
 import { getSettings } from "../lib/settings";
 import { routes, slugify } from "../lib/routes";
 
-const { posts, resourceGroups, resources } = Astro.locals.site;
+const { posts, resourceGroups } = Astro.locals.site;
+const resources = Astro.locals.site.resources.filter((r) => !r.hideFromHub);
 
 const tweaks: Tweak[] = [
 	{ key: "layout", label: "Layout", type: "choice", default: "cards", options: [["cards", "Cards"], ["accordion", "Accordion"]] },

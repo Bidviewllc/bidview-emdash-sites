@@ -1,17 +1,47 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	// Entheos audiology template, design 1 demo (phase 1: practice data file, no EmDash yet).
-	// Learning account, like the other design sandboxes; public workers.dev URL.
-	"name": "entheos-audiology-template",
+	// Entheos audiology template, design 1, phase 2: content comes from EmDash.
+	// Learning account, public workers.dev URL. A new Worker name, so the phase 1
+	// demo (entheos-audiology-template) stays as it was for comparison.
+	//
+	// EmDash passkeys belong to one hostname: run the admin setup wizard on
+	// https://entheos-template-cms.local-981.workers.dev and log in there.
+	// Version preview URLs (<id>-entheos-template-cms...) show the site but can't
+	// log in to the admin.
+	"name": "entheos-template-cms",
 	"account_id": "981338e6544cfe45d9819bf0ea6eb83a",
-	"main": "@astrojs/cloudflare/entrypoints/server",
+	"main": "./src/worker.ts",
 	"compatibility_date": "2026-02-24",
 	"compatibility_flags": ["nodejs_compat"],
 	"workers_dev": true,
 	"preview_urls": true,
-	"assets": {
-		"binding": "ASSETS",
-		"directory": "./dist"
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "entheos-template-cms-db",
+			"database_id": "b6aa18db-9a71-4c64-88c2-c2afb6f8b107"
+		}
+	],
+	"r2_buckets": [
+		{
+			"binding": "MEDIA",
+			"bucket_name": "entheos-template-cms-media"
+		}
+	],
+	// Astro sessions (EmDash keeps the signed-in admin here).
+	"kv_namespaces": [
+		{
+			"binding": "SESSION",
+			"id": "ce985c215b974215ba2a081c30d2639c"
+		}
+	],
+	// Hourly EmDash housekeeping (scheduled publishing, cleanup).
+	"triggers": {
+		"crons": ["0 * * * *"]
+	},
+	// The hostname admin passkeys belong to.
+	"vars": {
+		"EMDASH_SITE_URL": "https://entheos-template-cms.local-981.workers.dev"
 	},
 	"observability": { "enabled": true }
 }
