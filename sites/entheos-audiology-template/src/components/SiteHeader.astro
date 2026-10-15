@@ -8,8 +8,7 @@ import Icon from "./Icon.astro";
 import Logo from "./Logo.astro";
 import NavItems from "./NavItems.astro";
 import { routes, telHref } from "../lib/routes";
-
-const { services, brands } = Astro.locals.site;
+import type { NavLink } from "../data/site";
 
 interface Props {
 	current?: "services" | "hearing-aids" | "about" | "resources" | "blog" | "contact";
@@ -21,7 +20,10 @@ const office = s.offices[0];
 const addr = `${office.street.split(",")[0]}, ${office.shortName}`;
 const tel = telHref(s.phone);
 const book = s.href(routes.book);
-const allNav = ["services", "hearing-aids", "about", "resources", "blog", "contact"] as const;
+/** Phone menu: the same EmDash "Header navigation" menu as the desktop nav. */
+const menu = Astro.locals.site.menus.header;
+const msubId = (l: NavLink) => "msub-" + l.label.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+const mhref = (l: NavLink) => (l.href.startsWith("/") ? s.href(l.href) : l.href);
 ---
 <div class="site-header">
 	<!-- ===== desktop ===== -->
@@ -39,7 +41,7 @@ const allNav = ["services", "hearing-aids", "about", "resources", "blog", "conta
 					</div>
 					<header class="hdr bar">
 						<Logo />
-						<nav aria-label="Main" style="margin: 0 auto"><ul class="nav"><NavItems current={current} /></ul></nav>
+						<nav aria-label="Main" style="margin: 0 auto"><ul class="nav"><NavItems /></ul></nav>
 						<a class="btn btn-primary" href={book}>Book appointment</a>
 					</header>
 				</>
@@ -59,7 +61,7 @@ const allNav = ["services", "hearing-aids", "about", "resources", "blog", "conta
 					</div>
 					<header class="hx-pill">
 						<Logo size={40} />
-						<nav aria-label="Main" style="margin: 0 auto"><ul class="nav"><NavItems current={current} /></ul></nav>
+						<nav aria-label="Main" style="margin: 0 auto"><ul class="nav"><NavItems /></ul></nav>
 						<a class="btn btn-primary" href={book}>Book appointment</a>
 					</header>
 				</div>
@@ -69,7 +71,7 @@ const allNav = ["services", "hearing-aids", "about", "resources", "blog", "conta
 			v === "h3" && (
 				<header class="hdr">
 					<Logo />
-					<nav aria-label="Main" style="margin: 0 auto"><ul class="nav"><NavItems current={current} /></ul></nav>
+					<nav aria-label="Main" style="margin: 0 auto"><ul class="nav"><NavItems /></ul></nav>
 					<div class="hdr-right">
 						<a class="tel" href={tel}><span class="ico"><Icon name="phone" /></span>{s.phone}</a>
 						<a class="btn btn-primary" href={book}>Book appointment</a>
@@ -90,7 +92,7 @@ const allNav = ["services", "hearing-aids", "about", "resources", "blog", "conta
 						</span>
 					</div>
 					<header class="hdr bar">
-						<nav aria-label="Main" style="margin: 0 auto 0 0"><ul class="nav"><NavItems current={current} /></ul></nav>
+						<nav aria-label="Main" style="margin: 0 auto 0 0"><ul class="nav"><NavItems /></ul></nav>
 						<a class="btn btn-primary" href={book}>Book appointment</a>
 					</header>
 					<div class="hx-badge"><Logo shape="stacked" size={68} /></div>
@@ -111,9 +113,9 @@ const allNav = ["services", "hearing-aids", "about", "resources", "blog", "conta
 						<a class="btn btn-primary sm" href={book}>Book appointment</a>
 					</div>
 					<header class="hdr bar hx-split">
-						<nav aria-label="Main, part 1"><ul class="nav"><NavItems items={["services", "hearing-aids", "about"]} current={current} /></ul></nav>
+						<nav aria-label="Main, part 1"><ul class="nav"><NavItems part={1} /></ul></nav>
 						<Logo shape="stacked" size={60} />
-						<nav aria-label="Main, part 2"><ul class="nav"><NavItems items={["resources", "blog", "contact"]} current={current} /></ul></nav>
+						<nav aria-label="Main, part 2"><ul class="nav"><NavItems part={2} /></ul></nav>
 					</header>
 				</>
 			)
@@ -129,7 +131,7 @@ const allNav = ["services", "hearing-aids", "about", "resources", "blog", "conta
 							<a href={tel}><Icon name="phone" size={18} />{s.phone}</a>
 						</div>
 						<div class="hx-tier2">
-							<nav aria-label="Main"><ul class="nav"><NavItems current={current} /></ul></nav>
+							<nav aria-label="Main"><ul class="nav"><NavItems /></ul></nav>
 							<a class="btn btn-primary" href={book}>Book appointment</a>
 						</div>
 					</div>
@@ -145,7 +147,7 @@ const allNav = ["services", "hearing-aids", "about", "resources", "blog", "conta
 						<div><a class="btn btn-primary" href={book}>Book appointment</a></div>
 					</div>
 					<nav class="hx-navrow c" aria-label="Main">
-						<ul class="nav"><NavItems current={current} /></ul>
+						<ul class="nav"><NavItems /></ul>
 						<span class="vsep" aria-hidden="true" />
 						<a class="nav-link hx-dir" href={office.mapsUrl}><Icon name="pin" size={18} /> Get directions</a>
 					</nav>
@@ -176,7 +178,7 @@ const allNav = ["services", "hearing-aids", "about", "resources", "blog", "conta
 						)}
 					</div>
 					<nav class="hx-navrow l" aria-label="Main">
-						<ul class="nav"><NavItems current={current} /></ul>
+						<ul class="nav"><NavItems /></ul>
 						<span class="vsep" aria-hidden="true" />
 						<a class="nav-link hx-dir" href={office.mapsUrl}><Icon name="pin" size={18} /> Get directions</a>
 					</nav>
@@ -306,24 +308,21 @@ const allNav = ["services", "hearing-aids", "about", "resources", "blog", "conta
 		<nav class="mmenu" id="mmenu" aria-label="Main menu" hidden>
 			<div class="panel">
 				<ul class="mlist">
-					<li>
-						<button class="mlink" aria-expanded="false" aria-controls="msub-services" data-msub>Services <span class="i-open"><Icon name="plus" size={22} /></span><span class="i-close"><Icon name="minus" size={22} /></span></button>
-						<ul class="msub" id="msub-services" hidden>
-							<li><a href={s.href(routes.services)}>All services</a></li>
-							{services.filter((x) => x.hasPage && !x.hideFromHub).map((x) => <li><a href={s.href(routes.service(x.slug))}>{x.navLabel}</a></li>)}
-						</ul>
-					</li>
-					<li>
-						<button class="mlink" aria-expanded="false" aria-controls="msub-hearing-aids" data-msub>Hearing aids <span class="i-open"><Icon name="plus" size={22} /></span><span class="i-close"><Icon name="minus" size={22} /></span></button>
-						<ul class="msub" id="msub-hearing-aids" hidden>
-							<li><a href={s.href(routes.hearingAids)}>All hearing aids</a></li>
-							{brands.filter((b) => b.hasPage && !b.hideFromHub).map((b) => <li><a href={s.href(routes.brand(b.slug))}>{b.name} hearing aids</a></li>)}
-						</ul>
-					</li>
-					<li><a class="mlink" href={s.href(routes.about)}>About</a></li>
-					<li><a class="mlink" href={s.href(routes.resources)}>Resources</a></li>
-					<li><a class="mlink" href={s.href(routes.blog)}>Blog</a></li>
-					<li><a class="mlink" href={s.href(routes.contact)}>Contact</a></li>
+					{
+						menu.map((l) =>
+							l.children.length ? (
+								<li>
+									<button class="mlink" aria-expanded="false" aria-controls={msubId(l)} data-msub>{l.label} <span class="i-open"><Icon name="plus" size={22} /></span><span class="i-close"><Icon name="minus" size={22} /></span></button>
+									<ul class="msub" id={msubId(l)} hidden>
+										{l.href && l.href !== "#" && <li><a href={mhref(l)}>All {l.label.toLowerCase()}</a></li>}
+										{l.children.map((c) => <li><a href={mhref(c)} target={c.target}>{c.label}</a></li>)}
+									</ul>
+								</li>
+							) : (
+								<li><a class="mlink" href={mhref(l)} target={l.target}>{l.label}</a></li>
+							),
+						)
+					}
 				</ul>
 				<div class="stack g12" style="padding: 14px 2px 4px">
 					<a class="btn btn-primary block" href={book}>Book appointment</a>

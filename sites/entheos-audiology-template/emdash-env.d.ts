@@ -91,6 +91,13 @@ export interface Practice {
   milestones?: { "y"?: string | null; "t"?: string | null }[];
   values?: { "icon"?: string | null; "t"?: string | null; "d"?: string | null }[];
   review_controls?: boolean;
+  header_style?: "H1 · Classic two-bar" | "H2 · Floating pill" | "H3 · Single row" | "V1 · Overhanging logo badge" | "V2 · Centered logo, split nav" | "V3 · Logo spans two tiers" | "V4 · Centered stack" | "V5 · Logo over menu, stacked actions" | "V6 · Logo over menu, side-by-side actions" | "V7 · Logo over menu, Book only";
+  footer_style?: "F1 · Classic grouped" | "F2 · Contact-led split" | "F3 · Brand-led minimal" | "F4 · Patient-first" | "F6 · Multi-location" | "F7 · Office cards";
+  footer_logo?: "Landscape" | "Vertical";
+  footer_badges?: boolean;
+  logo_shape?: "Wide" | "Stacked";
+  team_cards?: "Cards · arrow on photo" | "Cards · arrow beside name" | "List · photo left, short bio";
+  cta_photo?: boolean;
   createdAt: Date;
   updatedAt: Date;
   publishedAt: Date | null;

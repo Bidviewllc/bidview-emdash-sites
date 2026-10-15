@@ -8,6 +8,7 @@
 import { writeFileSync } from "node:fs";
 import * as blog from "../src/data/blog";
 import * as s from "../src/data/practice";
+import { FOOTERS, HEADERS, TEAM_LAYOUTS } from "../src/lib/settings";
 
 /** Brand logos are downloaded into the media library during setup. */
 const ASSET_HOST = "https://entheos-audiology-template.local-981.workers.dev";
@@ -22,6 +23,8 @@ const repeater = (slug: string, label: string, subFields: object[]) => ({ slug, 
 const select = (slug: string, label: string, options: string[], defaultValue: string) => ({ slug, label, type: "select", defaultValue, validation: { options } });
 const image = (slug: string, label: string) => ({ slug, label, type: "image" });
 const faqField = repeater("faq", "FAQ", [sub("q", "Question"), sub("a", "Answer", "text")]);
+/** Select option text from a Review controls label, without "(default)". */
+const clean = (label: string) => label.replace(/\s*\(default\)/, "");
 const TONES = ["warm", "sage", "sky", "stone", "dark", "dark2"];
 const hex = { validation: { pattern: "^#[0-9A-Fa-f]{6}$" } };
 
@@ -54,6 +57,15 @@ const collections = [
 			repeater("milestones", "About: our journey", [sub("y", "Year"), sub("t", "Text", "text")]),
 			repeater("values", "About: what guides our care", [sub("icon", "Icon"), sub("t", "Heading"), sub("d", "Text", "text")]),
 			bool("review_controls", "Show the Review controls panel (off for a live site)", true),
+			// Site design: the starting point for every visitor. Review controls can
+			// still try other choices through the address bar.
+			select("header_style", "Design: header style", Object.values(HEADERS).map(clean), clean(HEADERS.h3)),
+			select("footer_style", "Design: footer style", Object.values(FOOTERS).map(clean), clean(FOOTERS.f7)),
+			select("footer_logo", "Design: footer logo", ["Landscape", "Vertical"], "Landscape"),
+			bool("footer_badges", "Design: membership badge row in the footer (F7)", true),
+			select("logo_shape", "Design: header logo shape", ["Wide", "Stacked"], "Wide"),
+			select("team_cards", "Design: team cards", Object.values(TEAM_LAYOUTS).map(clean), clean(TEAM_LAYOUTS.overlay)),
+			bool("cta_photo", "Design: photo panel in booking bands", true),
 		],
 	},
 	{
@@ -195,6 +207,13 @@ const content = {
 			milestones: s.milestones.map(({ y, t }) => ({ y, t })),
 			values: s.values.map(({ icon, t, d }) => ({ icon, t, d })),
 			review_controls: true,
+			header_style: clean(HEADERS.h3),
+			footer_style: clean(FOOTERS.f7),
+			footer_logo: "Landscape",
+			footer_badges: true,
+			logo_shape: "Wide",
+			team_cards: clean(TEAM_LAYOUTS.overlay),
+			cta_photo: true,
 		}),
 	],
 	offices: s.offices.map((o, i) =>
@@ -282,6 +301,71 @@ const resourceTags = [...new Set([...blog.resourceGroups, ...blog.resources.flat
 	...(blog.resourceGroups.includes(t) ? {} : { description: LABEL_ONLY }),
 }));
 
+// Menus. Every template page is preloaded; the site hides an item whose page
+// isn't live (own page off, unpublished, or deleted), so it appears once the
+// page is switched on. Footer columns are separate menus because each footer
+// style uses different columns; their headings stay in the design.
+const custom = (label: string, url: string, children?: object[]) => ({ type: "custom", label, url, ...(children ? { children } : {}) });
+const entry = (label: string, collection: string, ref: string) => ({ type: "page", collection, ref, label });
+const svc = (slug: string) => entry(s.services.find((x) => x.slug === slug)!.navLabel, "services", `service-${slug}`);
+export const menus = [
+	{
+		name: "header",
+		label: "Header navigation",
+		items: [
+			custom("Services", "/services", s.services.map((x) => svc(x.slug))),
+			custom("Hearing aids", "/hearing-aids", s.brands.map((b) => entry(`${b.name} hearing aids`, "brands", `brand-${b.slug}`))),
+			custom("About", "/about"),
+			custom("Resources", "/patient-resources"),
+			custom("Blog", "/blog"),
+			custom("Contact", "/contact"),
+		],
+	},
+	{
+		name: "footer_practice",
+		label: "Footer: Our practice",
+		items: [custom("About us", "/about"), custom("Our team", "/about#team"), entry("Locations", "offices", `office-${s.offices[0].slug}`), custom("Contact", "/contact")],
+	},
+	{
+		name: "footer_services",
+		label: "Footer: Our services",
+		items: [svc("hearing-evaluations"), svc("hearing-aid-fittings"), svc("ear-wax-removal"), custom("All services", "/services")],
+	},
+	{
+		name: "footer_patients",
+		label: "Footer: Patient information / New patients",
+		items: [custom("Your first visit", "/patient-resources"), custom("Patient forms", "/patient-resources"), custom("Insurance & financing", "/patient-resources")],
+	},
+	{
+		name: "footer_current",
+		label: "Footer: Current patients (F4)",
+		items: [custom("Patient portal", "#"), custom("Pay a bill", "#"), custom("Hearing aid repairs", "/services")],
+	},
+	{
+		name: "footer_quick",
+		label: "Footer: Quick links (F2, F3)",
+		items: [custom("About us", "/about"), custom("Services", "/services"), custom("Patient information", "/patient-resources"), entry("Locations", "offices", `office-${s.offices[0].slug}`)],
+	},
+	{
+		name: "footer_explore",
+		label: "Footer: Explore (F7)",
+		items: [
+			custom("Services", "/services"),
+			custom("Hearing aids", "/hearing-aids"),
+			custom("About us", "/about"),
+			custom("Patient resources", "/patient-resources"),
+			custom("Reviews", "/reviews"),
+			custom("Blog", "/blog"),
+			custom("Contact", "/contact"),
+		],
+	},
+	{
+		name: "footer_legal",
+		label: "Footer: Legal",
+		items: [custom("Privacy Policy", "/privacy-policy"), custom("Terms of Use", "/terms-of-use"), custom("Accessibility", "/accessibility"), custom("Sitemap", "/sitemap")],
+	},
+];
+
 const seed = {
 	$schema: "https://emdashcms.com/seed.schema.json",
 	version: "1",
@@ -292,8 +376,9 @@ const seed = {
 		{ name: "category", label: "Blog categories", labelSingular: "Blog category", hierarchical: false, collections: ["posts"], terms: blog.categories.map((c) => ({ slug: c.slug, label: c.name })) },
 		{ name: "resource_tag", label: "Resource tags", labelSingular: "Resource tag", hierarchical: false, collections: ["resources"], terms: resourceTags },
 	],
+	menus,
 	content,
 };
 
 writeFileSync(new URL("../seed/seed.json", import.meta.url), JSON.stringify(seed, null, "\t") + "\n");
-console.log("seed/seed.json:", Object.entries(content).map(([k, v]) => `${k} ${v.length}`).join(", "));
+console.error("seed/seed.json:", Object.entries(content).map(([k, v]) => `${k} ${v.length}`).join(", "));

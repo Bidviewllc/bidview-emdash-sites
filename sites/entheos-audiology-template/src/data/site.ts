@@ -7,7 +7,7 @@
 // reviews (Vince's reviews sync), the hearing aid style drawings, and the
 // sample article body for posts that have no article text yet.
 
-import { getEmDashCollection, getEmDashEntry, getSiteSettings, getTaxonomyTerms } from "emdash";
+import { getEmDashCollection, getEmDashEntry, getMenu, getSiteSettings, getTaxonomyTerms } from "emdash";
 import * as blog from "./blog";
 import * as sample from "./practice";
 import type { Brand, BrandDetail, Office, Post, Provider, Resource, Service } from "./types";
@@ -31,9 +31,21 @@ const lines = (s: unknown) =>
 		.filter(Boolean);
 const longDate = (d: unknown) =>
 	d ? new Date(d as string).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" }) : "";
+/** "H3 · Single row" → "h3"; "Cards · arrow on photo" → the team layout key. */
+const TEAM_KEYS: Record<string, string> = { "cards · arrow on photo": "overlay", "cards · arrow beside name": "side", "list · photo left, short bio": "list" };
+const code = (v: unknown, d: string) => {
+	const s = String(v ?? "").trim().toLowerCase();
+	if (!s) return d;
+	return TEAM_KEYS[s] ?? s.split(/[\s·]/)[0];
+};
 /** URL for an EmDash image field (local media is served by EmDash's media route). */
 const imgSrc = (v: any): string | undefined =>
 	v?.src ?? v?.url ?? (v?.meta?.storageKey ? `/_emdash/api/media/file/${v.meta.storageKey}` : undefined);
+
+/** A menu link as the templates use it. */
+export type NavLink = { label: string; href: string; target?: string; children: NavLink[] };
+export const MENU_NAMES = ["header", "footer_practice", "footer_services", "footer_patients", "footer_current", "footer_quick", "footer_explore", "footer_legal"] as const;
+export type MenuName = (typeof MENU_NAMES)[number];
 
 export async function loadSite() {
 	const [settings, practiceRes, officeE, serviceE, brandE, providerE, postE, resourceE, catTerms, tagTerms] = await Promise.all([
@@ -48,6 +60,7 @@ export async function loadSite() {
 		getTaxonomyTerms("category"),
 		getTaxonomyTerms("resource_tag"),
 	]);
+	const menuList = await Promise.all(MENU_NAMES.map((n) => getMenu(n)));
 	const p = (practiceRes.entry as Entry | null)?.data;
 	if (!p) throw new NotSetUpError("No practice record (Practice details, slug main).");
 
@@ -74,6 +87,16 @@ export async function loadSite() {
 		logo: imgSrc(settings.logo),
 		favicon: imgSrc(settings.favicon),
 		reviewControls: p.review_controls !== false,
+		/** Site design choices (Practice details); Review controls start from these. */
+		design: {
+			header: code(p.header_style, "h3"),
+			footer: code(p.footer_style, "f7"),
+			footerLogo: code(p.footer_logo, "landscape"),
+			footerBadges: p.footer_badges !== false,
+			logoShape: code(p.logo_shape, "wide"),
+			team: code(p.team_cards, "overlay"),
+			ctaPhoto: p.cta_photo !== false,
+		},
 	};
 
 	const offices: Office[] = officeE.map((e) => ({
@@ -170,8 +193,31 @@ export async function loadSite() {
 		hideFromHub: !!e.data.hide_from_hub,
 	}));
 
+	// Pages that exist right now. A menu item pointing at a record page that
+	// isn't live (own page off, unpublished, deleted) is left out of the menu.
+	const live = new Set<string>([
+		...services.filter((x) => x.hasPage).map((x) => `/services/${x.slug}`),
+		...brands.filter((x) => x.hasPage).map((x) => `/hearing-aids/${x.slug}`),
+		...providers.filter((x) => x.hasPage).map((x) => `/about/${x.slug}`),
+		...offices.map((x) => `/locations/${x.slug}`),
+		...allPosts.map((x) => `/blog/${x.slug}`),
+		...catTerms.map((x) => `/blog/category/${x.slug}`),
+	]);
+	const RECORD_PAGE = /^\/(services|hearing-aids|about|locations|blog(\/category)?)\/[^/#?]+/;
+	const isLive = (href: string) => {
+		const m = href.match(RECORD_PAGE);
+		return !m || live.has(m[0]);
+	};
+	const toLinks = (items: any[] = []): NavLink[] =>
+		items
+			.filter((i) => isLive(i.url))
+			.map((i) => ({ label: i.label, href: i.url, ...(i.target ? { target: i.target } : {}), children: toLinks(i.children) }));
+	const menus = Object.fromEntries(MENU_NAMES.map((n, i) => [n, toLinks(menuList[i]?.items)])) as Record<MenuName, NavLink[]>;
+
 	return {
 		practice,
+		/** Menus from EmDash (Menus screen), with links to pages that aren't live left out. */
+		menus,
 		offices,
 		providers,
 		services,

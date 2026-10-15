@@ -7,7 +7,7 @@ import Icon from "./Icon.astro";
 import Logo from "./Logo.astro";
 import { routes, telHref } from "../lib/routes";
 
-const { practice, services } = Astro.locals.site;
+const { practice } = Astro.locals.site;
 
 const s = getSettings(Astro);
 const v = s.footer;
@@ -16,36 +16,17 @@ const tel = telHref(s.phone);
 const h = s.href;
 const year = 2026;
 
-const legal = [
-	{ label: "Privacy Policy", href: routes.privacy },
-	{ label: "Terms of Use", href: routes.terms },
-	{ label: "Accessibility", href: routes.accessibility },
-	{ label: "Sitemap", href: routes.sitemap },
-];
-const practiceLinks = [
-	{ label: "About us", href: routes.about },
-	{ label: "Our team", href: routes.about + "#team" },
-	{ label: "Locations", href: routes.location(s.offices[0].slug) },
-	{ label: "Contact", href: routes.contact },
-];
-const serviceLinks = [
-	...services.filter((x) => x.hasPage && !x.hideFromHub).slice(0, 3).map((x) => ({ label: x.navLabel, href: routes.service(x.slug) })),
-	{ label: "All services", href: routes.services },
-];
-const patientLinks = [
-	{ label: "Your first visit", href: routes.resources },
-	{ label: "Patient forms", href: routes.resources },
-	{ label: "Insurance & financing", href: routes.resources },
-];
-const explore = [
-	{ label: "Services", href: routes.services },
-	{ label: "Hearing aids", href: routes.hearingAids },
-	{ label: "About us", href: routes.about },
-	{ label: "Patient resources", href: routes.resources },
-	{ label: "Reviews", href: routes.reviews },
-	{ label: "Blog", href: routes.blog },
-	{ label: "Contact", href: routes.contact },
-];
+// Link columns come from the EmDash "Footer: ..." menus (Menus screen). The
+// column headings belong to the design. Links to pages that aren't live are
+// already left out (src/data/site.ts).
+const m = Astro.locals.site.menus;
+const legal = m.footer_legal;
+const practiceLinks = m.footer_practice;
+const serviceLinks = m.footer_services;
+const patientLinks = m.footer_patients;
+const currentLinks = m.footer_current;
+const quickLinks = m.footer_quick;
+const explore = m.footer_explore;
 const social = [
 	{ label: "Facebook", icon: "facebook", href: practice.social.facebook },
 	{ label: "Instagram", icon: "instagram", href: practice.social.instagram },
@@ -65,13 +46,13 @@ const brandCls = vt ? "fx-center" : "";
 						<a class="fx-call" href={tel}><span class="ico"><Icon name="phone" /></span><span><small>Call us</small><b>{s.phone}</b></span></a>
 						<a class="btn btn-primary" href={h(routes.book)} style="align-self: flex-start">Book appointment</a>
 					</div>
-					<nav class="fx-col" aria-label="Our practice"><h2 class="h4">Our practice</h2><ul class="flinks">{practiceLinks.map((l) => <li><a href={h(l.href)}>{l.label}</a></li>)}</ul></nav>
-					<nav class="fx-col" aria-label="Our services"><h2 class="h4">Our services</h2><ul class="flinks">{serviceLinks.map((l) => <li><a href={h(l.href)}>{l.label}</a></li>)}</ul></nav>
-					<nav class="fx-col" aria-label="Patient information"><h2 class="h4">Patient information</h2><ul class="flinks">{patientLinks.map((l) => <li><a href={h(l.href)}>{l.label}</a></li>)}</ul></nav>
+					<nav class="fx-col" aria-label="Our practice"><h2 class="h4">Our practice</h2><ul class="flinks">{practiceLinks.map((l) => <li><a href={h(l.href)} target={l.target}>{l.label}</a></li>)}</ul></nav>
+					<nav class="fx-col" aria-label="Our services"><h2 class="h4">Our services</h2><ul class="flinks">{serviceLinks.map((l) => <li><a href={h(l.href)} target={l.target}>{l.label}</a></li>)}</ul></nav>
+					<nav class="fx-col" aria-label="Patient information"><h2 class="h4">Patient information</h2><ul class="flinks">{patientLinks.map((l) => <li><a href={h(l.href)} target={l.target}>{l.label}</a></li>)}</ul></nav>
 				</div>
 				<div class="fbottom">
 					<span>© {year} {s.name}. All rights reserved.</span>
-					<nav aria-label="Legal"><ul class="legal">{legal.map((l) => <li><a href={h(l.href)}>{l.label}</a></li>)}</ul></nav>
+					<nav aria-label="Legal"><ul class="legal">{legal.map((l) => <li><a href={h(l.href)} target={l.target}>{l.label}</a></li>)}</ul></nav>
 				</div>
 			</footer>
 		)
@@ -107,18 +88,13 @@ const brandCls = vt ? "fx-center" : "";
 							</div>
 						)}
 						<nav class="fx-sep" aria-label="Footer">
-							<ul class="flinks two">
-								<li><a href={h(routes.about)}>About us</a></li>
-								<li><a href={h(routes.services)}>Services</a></li>
-								<li><a href={h(routes.resources)}>Patient information</a></li>
-								<li><a href={h(routes.location(s.offices[0].slug))}>Locations</a></li>
-							</ul>
+							<ul class="flinks two">{quickLinks.map((l) => <li><a href={h(l.href)} target={l.target}>{l.label}</a></li>)}</ul>
 						</nav>
 					</div>
 				</div>
 				<div class="fbottom">
 					<span>© {year} {s.name}. All rights reserved.</span>
-					<nav aria-label="Legal"><ul class="legal">{legal.map((l) => <li><a href={h(l.href)}>{l.label}</a></li>)}</ul></nav>
+					<nav aria-label="Legal"><ul class="legal">{legal.map((l) => <li><a href={h(l.href)} target={l.target}>{l.label}</a></li>)}</ul></nav>
 				</div>
 			</footer>
 		)
@@ -130,12 +106,7 @@ const brandCls = vt ? "fx-center" : "";
 					{vt ? <Logo shape="stacked" size={84} /> : <Logo size={56} />}
 					<p class="lead" style="margin: 0; max-width: 560px">{practice.tagline}</p>
 					<nav aria-label="Footer">
-						<ul class="fx-row">
-							<li><a href={h(routes.about)}>About us</a></li>
-							<li><a href={h(routes.services)}>Services</a></li>
-							<li><a href={h(routes.resources)}>Patient information</a></li>
-							<li><a href={h(routes.contact)}>Contact</a></li>
-						</ul>
+						<ul class="fx-row">{quickLinks.map((l) => <li><a href={h(l.href)} target={l.target}>{l.label}</a></li>)}</ul>
 					</nav>
 					<div class="rowf" style="justify-content: center; gap: 16px 32px">
 						<a class="tel" href={tel}><span class="ico"><Icon name="phone" /></span>{s.phone}</a>
@@ -144,7 +115,7 @@ const brandCls = vt ? "fx-center" : "";
 				</div>
 				<div class="fbottom c">
 					<span>© {year} {s.name}. All rights reserved.</span>
-					<nav aria-label="Legal"><ul class="legal">{legal.map((l) => <li><a href={h(l.href)}>{l.label}</a></li>)}</ul></nav>
+					<nav aria-label="Legal"><ul class="legal">{legal.map((l) => <li><a href={h(l.href)} target={l.target}>{l.label}</a></li>)}</ul></nav>
 				</div>
 			</footer>
 		)
@@ -161,21 +132,17 @@ const brandCls = vt ? "fx-center" : "";
 					</div>
 					<nav class="fx-task new" aria-label="New patients">
 						<h2 class="h4 fx-th"><span class="dot" aria-hidden="true" />New patients</h2>
-						<ul class="fx-tlinks">{patientLinks.map((l) => <li><a href={h(l.href)}>{l.label} <Icon name="arrowR" size={18} /></a></li>)}</ul>
+						<ul class="fx-tlinks">{patientLinks.map((l) => <li><a href={h(l.href)} target={l.target}>{l.label} <Icon name="arrowR" size={18} /></a></li>)}</ul>
 					</nav>
 					<nav class="fx-task" aria-label="Current patients">
 						<h2 class="h4 fx-th"><span class="dot o" aria-hidden="true" />Current patients</h2>
-						<ul class="fx-tlinks">
-							<li><a href="#">Patient portal <Icon name="arrowR" size={18} /></a></li>
-							<li><a href="#">Pay a bill <Icon name="arrowR" size={18} /></a></li>
-							<li><a href={h(routes.services)}>Hearing aid repairs <Icon name="arrowR" size={18} /></a></li>
-						</ul>
+						<ul class="fx-tlinks">{currentLinks.map((l) => <li><a href={h(l.href)} target={l.target}>{l.label} <Icon name="arrowR" size={18} /></a></li>)}</ul>
 					</nav>
-					<nav class="fx-col" aria-label="Our practice"><h2 class="h4">Our practice</h2><ul class="flinks">{practiceLinks.map((l) => <li><a href={h(l.href)}>{l.label}</a></li>)}</ul></nav>
+					<nav class="fx-col" aria-label="Our practice"><h2 class="h4">Our practice</h2><ul class="flinks">{practiceLinks.map((l) => <li><a href={h(l.href)} target={l.target}>{l.label}</a></li>)}</ul></nav>
 				</div>
 				<div class="fbottom">
 					<span>© {year} {s.name}. All rights reserved.</span>
-					<nav aria-label="Legal"><ul class="legal">{legal.map((l) => <li><a href={h(l.href)}>{l.label}</a></li>)}</ul></nav>
+					<nav aria-label="Legal"><ul class="legal">{legal.map((l) => <li><a href={h(l.href)} target={l.target}>{l.label}</a></li>)}</ul></nav>
 				</div>
 			</footer>
 		)
@@ -191,8 +158,8 @@ const brandCls = vt ? "fx-center" : "";
 						<a class="btn btn-inverse" href={h(routes.book)} style="align-self: flex-start">Book appointment</a>
 					</div>
 					<div class="fx-2col">
-						<nav aria-label="Our practice"><h2 class="h4">Our practice</h2><ul class="flinks">{practiceLinks.filter((l) => l.label !== "Locations").map((l) => <li><a href={h(l.href)}>{l.label}</a></li>)}</ul></nav>
-						<nav aria-label="Our services"><h2 class="h4">Our services</h2><ul class="flinks">{serviceLinks.map((l) => <li><a href={h(l.href)}>{l.label}</a></li>)}</ul></nav>
+						<nav aria-label="Our practice"><h2 class="h4">Our practice</h2><ul class="flinks">{practiceLinks.filter((l) => !l.href.startsWith("/locations/")).map((l) => <li><a href={h(l.href)} target={l.target}>{l.label}</a></li>)}</ul></nav>
+						<nav aria-label="Our services"><h2 class="h4">Our services</h2><ul class="flinks">{serviceLinks.map((l) => <li><a href={h(l.href)} target={l.target}>{l.label}</a></li>)}</ul></nav>
 					</div>
 					<nav class="fx-office" aria-label="Find your office">
 						<h2 class="h4 fx-th"><Icon name="pin" /> Find your office</h2>
@@ -202,7 +169,7 @@ const brandCls = vt ? "fx-center" : "";
 				</div>
 				<div class="fbottom">
 					<span>© {year} {s.name}. All rights reserved.</span>
-					<nav aria-label="Legal"><ul class="legal">{legal.map((l) => <li><a href={h(l.href)}>{l.label}</a></li>)}</ul></nav>
+					<nav aria-label="Legal"><ul class="legal">{legal.map((l) => <li><a href={h(l.href)} target={l.target}>{l.label}</a></li>)}</ul></nav>
 				</div>
 			</footer>
 		)
@@ -231,7 +198,7 @@ const brandCls = vt ? "fx-center" : "";
 					))}
 					<nav class="card" style="gap: 8px" aria-label="Footer">
 						<h2 class="h4">Explore</h2>
-						<ul class="flinks">{explore.map((l) => <li><a href={h(l.href)}>{l.label}</a></li>)}</ul>
+						<ul class="flinks">{explore.map((l) => <li><a href={h(l.href)} target={l.target}>{l.label}</a></li>)}</ul>
 					</nav>
 				</div>
 				{s.footerBadges && (
@@ -251,7 +218,7 @@ const brandCls = vt ? "fx-center" : "";
 				)}
 				<div class="fbottom">
 					<span>© {year} {s.name}. All rights reserved.</span>
-					<nav aria-label="Legal"><ul class="legal">{legal.map((l) => <li><a href={h(l.href)}>{l.label}</a></li>)}</ul></nav>
+					<nav aria-label="Legal"><ul class="legal">{legal.map((l) => <li><a href={h(l.href)} target={l.target}>{l.label}</a></li>)}</ul></nav>
 				</div>
 			</footer>
 		)

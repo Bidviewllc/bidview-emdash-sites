@@ -80,9 +80,24 @@ handed off from Claude Design in `design/`.
 - Local: `npx astro dev --port 4500`, then
   `/_emdash/api/setup/dev-bypass?redirect=/_emdash/admin` (seeds the local D1
   with sample content and signs you in).
-- Not yet in EmDash: menus (header/footer still built from records), header and
-  footer style (Review controls only), page-level switches, reviews, service and
-  profile body text.
+- Menus (Menus screen): `header` (one dropdown level; a parent's own link becomes
+  "All ..." under the dropdown) and seven footer menus, one per footer column:
+  `footer_practice`, `footer_services`, `footer_patients`, `footer_current` (F4),
+  `footer_quick` (F2, F3), `footer_explore` (F7), `footer_legal`. Column headings
+  belong to the design. Items are preloaded for every template page; links to a
+  record page that isn't live are dropped in `site.ts` (own page off, unpublished).
+- Site design choices are fields on Practice details (header style, footer style,
+  footer logo, badge row, logo shape, team cards, CTA photo). Review controls start
+  from them; the address bar still overrides for review.
+- A site set up before menus or new fields were in the seed doesn't get them from
+  the seed. Menus: `npx tsx scripts/menus-sql.ts > menus.sql`, then
+  `npx wrangler d1 execute DB --remote --file menus.sql` (skips menus that exist).
+  Fields: add with the EmDash CLI after `npx emdash login --url <site>`. Until a
+  field exists the site uses the design default.
+- D1 export fails on this database (FTS tables); take a Time Travel bookmark
+  (`npx wrangler d1 time-travel info entheos-template-cms-db`) before SQL changes.
+- Not yet in EmDash: page-level switches and template-page publishing, reviews,
+  service and profile body text.
 
 ## Working style
 Build in the handoff's order and stop after each step for Liz's review. When the

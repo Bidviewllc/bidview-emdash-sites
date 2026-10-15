@@ -191,6 +191,91 @@
 					"label": "Show the Review controls panel (off for a live site)",
 					"type": "boolean",
 					"defaultValue": true
+				},
+				{
+					"slug": "header_style",
+					"label": "Design: header style",
+					"type": "select",
+					"defaultValue": "H3 · Single row",
+					"validation": {
+						"options": [
+							"H1 · Classic two-bar",
+							"H2 · Floating pill",
+							"H3 · Single row",
+							"V1 · Overhanging logo badge",
+							"V2 · Centered logo, split nav",
+							"V3 · Logo spans two tiers",
+							"V4 · Centered stack",
+							"V5 · Logo over menu, stacked actions",
+							"V6 · Logo over menu, side-by-side actions",
+							"V7 · Logo over menu, Book only"
+						]
+					}
+				},
+				{
+					"slug": "footer_style",
+					"label": "Design: footer style",
+					"type": "select",
+					"defaultValue": "F7 · Office cards",
+					"validation": {
+						"options": [
+							"F1 · Classic grouped",
+							"F2 · Contact-led split",
+							"F3 · Brand-led minimal",
+							"F4 · Patient-first",
+							"F6 · Multi-location",
+							"F7 · Office cards"
+						]
+					}
+				},
+				{
+					"slug": "footer_logo",
+					"label": "Design: footer logo",
+					"type": "select",
+					"defaultValue": "Landscape",
+					"validation": {
+						"options": [
+							"Landscape",
+							"Vertical"
+						]
+					}
+				},
+				{
+					"slug": "footer_badges",
+					"label": "Design: membership badge row in the footer (F7)",
+					"type": "boolean",
+					"defaultValue": true
+				},
+				{
+					"slug": "logo_shape",
+					"label": "Design: header logo shape",
+					"type": "select",
+					"defaultValue": "Wide",
+					"validation": {
+						"options": [
+							"Wide",
+							"Stacked"
+						]
+					}
+				},
+				{
+					"slug": "team_cards",
+					"label": "Design: team cards",
+					"type": "select",
+					"defaultValue": "Cards · arrow on photo",
+					"validation": {
+						"options": [
+							"Cards · arrow on photo",
+							"Cards · arrow beside name",
+							"List · photo left, short bio"
+						]
+					}
+				},
+				{
+					"slug": "cta_photo",
+					"label": "Design: photo panel in booking bands",
+					"type": "boolean",
+					"defaultValue": true
 				}
 			]
 		},
@@ -743,6 +828,330 @@
 			]
 		}
 	],
+	"menus": [
+		{
+			"name": "header",
+			"label": "Header navigation",
+			"items": [
+				{
+					"type": "custom",
+					"label": "Services",
+					"url": "/services",
+					"children": [
+						{
+							"type": "page",
+							"collection": "services",
+							"ref": "service-hearing-evaluations",
+							"label": "Hearing evaluations"
+						},
+						{
+							"type": "page",
+							"collection": "services",
+							"ref": "service-hearing-aid-fittings",
+							"label": "Hearing aid fittings"
+						},
+						{
+							"type": "page",
+							"collection": "services",
+							"ref": "service-hearing-aid-repairs",
+							"label": "Hearing aid repairs"
+						},
+						{
+							"type": "page",
+							"collection": "services",
+							"ref": "service-ear-wax-removal",
+							"label": "Earwax removal"
+						},
+						{
+							"type": "page",
+							"collection": "services",
+							"ref": "service-tinnitus",
+							"label": "Tinnitus care"
+						},
+						{
+							"type": "page",
+							"collection": "services",
+							"ref": "service-custom-hearing-protection",
+							"label": "Custom ear protection"
+						},
+						{
+							"type": "page",
+							"collection": "services",
+							"ref": "service-real-ear-measurement",
+							"label": "Real ear measurement"
+						},
+						{
+							"type": "page",
+							"collection": "services",
+							"ref": "service-assistive-listening-devices",
+							"label": "Assistive listening devices"
+						}
+					]
+				},
+				{
+					"type": "custom",
+					"label": "Hearing aids",
+					"url": "/hearing-aids",
+					"children": [
+						{
+							"type": "page",
+							"collection": "brands",
+							"ref": "brand-phonak",
+							"label": "Phonak hearing aids"
+						},
+						{
+							"type": "page",
+							"collection": "brands",
+							"ref": "brand-oticon",
+							"label": "Oticon hearing aids"
+						},
+						{
+							"type": "page",
+							"collection": "brands",
+							"ref": "brand-resound",
+							"label": "ReSound hearing aids"
+						},
+						{
+							"type": "page",
+							"collection": "brands",
+							"ref": "brand-signia",
+							"label": "Signia hearing aids"
+						},
+						{
+							"type": "page",
+							"collection": "brands",
+							"ref": "brand-starkey",
+							"label": "Starkey hearing aids"
+						},
+						{
+							"type": "page",
+							"collection": "brands",
+							"ref": "brand-widex",
+							"label": "Widex hearing aids"
+						},
+						{
+							"type": "page",
+							"collection": "brands",
+							"ref": "brand-unitron",
+							"label": "Unitron hearing aids"
+						}
+					]
+				},
+				{
+					"type": "custom",
+					"label": "About",
+					"url": "/about"
+				},
+				{
+					"type": "custom",
+					"label": "Resources",
+					"url": "/patient-resources"
+				},
+				{
+					"type": "custom",
+					"label": "Blog",
+					"url": "/blog"
+				},
+				{
+					"type": "custom",
+					"label": "Contact",
+					"url": "/contact"
+				}
+			]
+		},
+		{
+			"name": "footer_practice",
+			"label": "Footer: Our practice",
+			"items": [
+				{
+					"type": "custom",
+					"label": "About us",
+					"url": "/about"
+				},
+				{
+					"type": "custom",
+					"label": "Our team",
+					"url": "/about#team"
+				},
+				{
+					"type": "page",
+					"collection": "offices",
+					"ref": "office-riverside",
+					"label": "Locations"
+				},
+				{
+					"type": "custom",
+					"label": "Contact",
+					"url": "/contact"
+				}
+			]
+		},
+		{
+			"name": "footer_services",
+			"label": "Footer: Our services",
+			"items": [
+				{
+					"type": "page",
+					"collection": "services",
+					"ref": "service-hearing-evaluations",
+					"label": "Hearing evaluations"
+				},
+				{
+					"type": "page",
+					"collection": "services",
+					"ref": "service-hearing-aid-fittings",
+					"label": "Hearing aid fittings"
+				},
+				{
+					"type": "page",
+					"collection": "services",
+					"ref": "service-ear-wax-removal",
+					"label": "Earwax removal"
+				},
+				{
+					"type": "custom",
+					"label": "All services",
+					"url": "/services"
+				}
+			]
+		},
+		{
+			"name": "footer_patients",
+			"label": "Footer: Patient information / New patients",
+			"items": [
+				{
+					"type": "custom",
+					"label": "Your first visit",
+					"url": "/patient-resources"
+				},
+				{
+					"type": "custom",
+					"label": "Patient forms",
+					"url": "/patient-resources"
+				},
+				{
+					"type": "custom",
+					"label": "Insurance & financing",
+					"url": "/patient-resources"
+				}
+			]
+		},
+		{
+			"name": "footer_current",
+			"label": "Footer: Current patients (F4)",
+			"items": [
+				{
+					"type": "custom",
+					"label": "Patient portal",
+					"url": "#"
+				},
+				{
+					"type": "custom",
+					"label": "Pay a bill",
+					"url": "#"
+				},
+				{
+					"type": "custom",
+					"label": "Hearing aid repairs",
+					"url": "/services"
+				}
+			]
+		},
+		{
+			"name": "footer_quick",
+			"label": "Footer: Quick links (F2, F3)",
+			"items": [
+				{
+					"type": "custom",
+					"label": "About us",
+					"url": "/about"
+				},
+				{
+					"type": "custom",
+					"label": "Services",
+					"url": "/services"
+				},
+				{
+					"type": "custom",
+					"label": "Patient information",
+					"url": "/patient-resources"
+				},
+				{
+					"type": "page",
+					"collection": "offices",
+					"ref": "office-riverside",
+					"label": "Locations"
+				}
+			]
+		},
+		{
+			"name": "footer_explore",
+			"label": "Footer: Explore (F7)",
+			"items": [
+				{
+					"type": "custom",
+					"label": "Services",
+					"url": "/services"
+				},
+				{
+					"type": "custom",
+					"label": "Hearing aids",
+					"url": "/hearing-aids"
+				},
+				{
+					"type": "custom",
+					"label": "About us",
+					"url": "/about"
+				},
+				{
+					"type": "custom",
+					"label": "Patient resources",
+					"url": "/patient-resources"
+				},
+				{
+					"type": "custom",
+					"label": "Reviews",
+					"url": "/reviews"
+				},
+				{
+					"type": "custom",
+					"label": "Blog",
+					"url": "/blog"
+				},
+				{
+					"type": "custom",
+					"label": "Contact",
+					"url": "/contact"
+				}
+			]
+		},
+		{
+			"name": "footer_legal",
+			"label": "Footer: Legal",
+			"items": [
+				{
+					"type": "custom",
+					"label": "Privacy Policy",
+					"url": "/privacy-policy"
+				},
+				{
+					"type": "custom",
+					"label": "Terms of Use",
+					"url": "/terms-of-use"
+				},
+				{
+					"type": "custom",
+					"label": "Accessibility",
+					"url": "/accessibility"
+				},
+				{
+					"type": "custom",
+					"label": "Sitemap",
+					"url": "/sitemap"
+				}
+			]
+		}
+	],
 	"content": {
 		"practice": [
 			{
@@ -842,7 +1251,14 @@
 							"d": "Voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint. Occaecat cupidatat non proident sunt in culpa qui officia."
 						}
 					],
-					"review_controls": true
+					"review_controls": true,
+					"header_style": "H3 · Single row",
+					"footer_style": "F7 · Office cards",
+					"footer_logo": "Landscape",
+					"footer_badges": true,
+					"logo_shape": "Wide",
+					"team_cards": "Cards · arrow on photo",
+					"cta_photo": true
 				}
 			}
 		],
