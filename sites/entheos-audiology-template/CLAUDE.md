@@ -100,6 +100,15 @@ handed off from Claude Design in `design/`.
   with the page name. Settings feed the Review controls starting values
   (`s.bool`/`s.choice`/`heroFor` read the record first). A site without the
   Pages list treats every page as on.
+- The `page-settings` plugin (`src/plugins/page-settings/`, registered in
+  astro.config.mjs) gives every Pages-list setting field the widget
+  `page-settings:scoped`, which shows the field only on the records that use it
+  (looked up in page-settings.ts by field slug; the admin passes select choices,
+  not widget options, to select fields). It finds the open record's slug from the
+  admin address plus one API call; until then it shows the field.
+- Changes to the Pages list only reach the main address after the version is
+  promoted; the admin always edits the shared database, so a preview URL shows
+  admin edits straight away.
 - A site set up before menus or new fields were in the seed doesn't get them from
   the seed. Collections and fields: `npx tsx scripts/sync-schema.ts <site>` (dry
   run), then `--apply` (a new collection also gets the seed's records). Menus: `npx tsx scripts/menus-sql.ts > menus.sql`, then

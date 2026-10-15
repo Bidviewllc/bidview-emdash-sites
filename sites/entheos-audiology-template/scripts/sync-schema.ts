@@ -53,8 +53,23 @@ for (const col of seed.collections) {
 		}
 		continue;
 	}
-	const have = new Set((await client.collection(col.slug)).fields.map((f: { slug: string }) => f.slug));
+	const current = (await client.collection(col.slug)).fields as { slug: string; widget?: string | null; options?: unknown; validation?: unknown }[];
+	const have = new Set(current.map((f) => f.slug));
 	const missing = col.fields.filter((f: { slug: string }) => !have.has(f.slug));
+
+	// Existing fields: only the admin editing widget is brought in line (e.g. the
+	// page-settings widget on the Pages list). Type, label and choices are left alone.
+	for (const f of col.fields as { slug: string; widget?: string; options?: unknown }[]) {
+		const now = current.find((c) => c.slug === f.slug);
+		if (!now || (now.widget ?? "") === (f.widget ?? "")) continue;
+		console.log(`~ widget ${col.slug}.${f.slug}: ${now.widget || "default"} -> ${f.widget || "default"}`);
+		if (apply)
+			await (client as any).request("PUT", `/schema/collections/${col.slug}/fields/${f.slug}`, {
+				widget: f.widget ?? "",
+				options: f.options ?? {},
+				validation: now.validation ?? null,
+			});
+	}
 	for (const f of missing) {
 		console.log(`+ field ${col.slug}.${f.slug} (${f.type})`);
 		if (apply) await client.createField(col.slug, f);

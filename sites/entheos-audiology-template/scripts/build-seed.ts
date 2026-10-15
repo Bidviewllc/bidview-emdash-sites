@@ -33,8 +33,13 @@ const hex = { validation: { pattern: "^#[0-9A-Fa-f]{6}$" } };
 // setting; pages that share a setting share the field).
 const pageSettingFields = [...new Map(PAGES.flatMap((p) => p.settings).map((st) => [st.field, st])).values()];
 const label = (st: PageSetting, v: string | boolean) => (st.type === "bool" ? v : st.options.find(([k]) => k === v)![1]);
-const pageField = (st: PageSetting) =>
-	st.type === "bool" ? bool(st.field, st.label, st.default) : select(st.field, st.label, st.options.map(([, l]) => l), label(st, st.default) as string);
+/** Shown only on the Pages records that use it (page-settings plugin). */
+const scoped = (pages: string[]) => ({ widget: "page-settings:scoped", options: { pages } });
+const pagesUsing = (field: string) => PAGES.filter((p) => p.settings.some((st) => st.field === field)).map((p) => p.slug);
+const pageField = (st: PageSetting) => ({
+	...(st.type === "bool" ? bool(st.field, st.label, st.default) : select(st.field, st.label, st.options.map(([, l]) => l), label(st, st.default) as string)),
+	...scoped(pagesUsing(st.field)),
+});
 
 const collections = [
 	{
@@ -85,7 +90,7 @@ const collections = [
 		supports: ["drafts", "revisions"],
 		fields: [
 			title("Page"),
-			select("hero", "Hero (pages with a hero)", HERO_OPTIONS.map(([, l]) => l), HERO_OPTIONS[0][1]),
+			{ ...select("hero", "Hero", HERO_OPTIONS.map(([, l]) => l), HERO_OPTIONS[0][1]), ...scoped(PAGES.filter((p) => p.hero).map((p) => p.slug)) },
 			...pageSettingFields.map(pageField),
 		],
 	},

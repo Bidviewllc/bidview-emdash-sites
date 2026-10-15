@@ -299,7 +299,7 @@
 				},
 				{
 					"slug": "hero",
-					"label": "Hero (pages with a hero)",
+					"label": "Hero",
 					"type": "select",
 					"defaultValue": "Page default",
 					"validation": {
@@ -309,6 +309,20 @@
 							"Example photo",
 							"No photo · Primary",
 							"No photo · Light"
+						]
+					},
+					"widget": "page-settings:scoped",
+					"options": {
+						"pages": [
+							"home",
+							"services",
+							"hearing-aids",
+							"about",
+							"contact",
+							"patient-resources",
+							"service-pages",
+							"brand-pages",
+							"location-pages"
 						]
 					}
 				},
@@ -322,6 +336,12 @@
 							"Scrolling (with pause)",
 							"Still"
 						]
+					},
+					"widget": "page-settings:scoped",
+					"options": {
+						"pages": [
+							"home"
+						]
 					}
 				},
 				{
@@ -334,37 +354,73 @@
 							"In its own box",
 							"Plain (no box)"
 						]
+					},
+					"widget": "page-settings:scoped",
+					"options": {
+						"pages": [
+							"home"
+						]
 					}
 				},
 				{
 					"slug": "home_latest_posts",
 					"label": "Home: latest posts section",
 					"type": "boolean",
-					"defaultValue": true
+					"defaultValue": true,
+					"widget": "page-settings:scoped",
+					"options": {
+						"pages": [
+							"home"
+						]
+					}
 				},
 				{
 					"slug": "home_sample_card",
 					"label": "Home: sample service card with photo",
 					"type": "boolean",
-					"defaultValue": false
+					"defaultValue": false,
+					"widget": "page-settings:scoped",
+					"options": {
+						"pages": [
+							"home"
+						]
+					}
 				},
 				{
 					"slug": "services_first_visit",
 					"label": "Services: “What to expect at your first visit” steps",
 					"type": "boolean",
-					"defaultValue": true
+					"defaultValue": true,
+					"widget": "page-settings:scoped",
+					"options": {
+						"pages": [
+							"services"
+						]
+					}
 				},
 				{
 					"slug": "hearing_aids_styles",
 					"label": "Hearing aids: hearing aid styles section",
 					"type": "boolean",
-					"defaultValue": true
+					"defaultValue": true,
+					"widget": "page-settings:scoped",
+					"options": {
+						"pages": [
+							"hearing-aids"
+						]
+					}
 				},
 				{
 					"slug": "hearing_aids_otc",
 					"label": "Hearing aids: OTC vs. prescription section",
 					"type": "boolean",
-					"defaultValue": true
+					"defaultValue": true,
+					"widget": "page-settings:scoped",
+					"options": {
+						"pages": [
+							"hearing-aids"
+						]
+					}
 				},
 				{
 					"slug": "about_journey",
@@ -377,19 +433,37 @@
 							"Horizontal",
 							"Hidden"
 						]
+					},
+					"widget": "page-settings:scoped",
+					"options": {
+						"pages": [
+							"about"
+						]
 					}
 				},
 				{
 					"slug": "about_community",
 					"label": "About: community section",
 					"type": "boolean",
-					"defaultValue": true
+					"defaultValue": true,
+					"widget": "page-settings:scoped",
+					"options": {
+						"pages": [
+							"about"
+						]
+					}
 				},
 				{
 					"slug": "about_credentials",
 					"label": "About: credentials section",
 					"type": "boolean",
-					"defaultValue": true
+					"defaultValue": true,
+					"widget": "page-settings:scoped",
+					"options": {
+						"pages": [
+							"about"
+						]
+					}
 				},
 				{
 					"slug": "book_version",
@@ -400,6 +474,12 @@
 						"options": [
 							"A · Scheduler embed",
 							"B · Request form"
+						]
+					},
+					"widget": "page-settings:scoped",
+					"options": {
+						"pages": [
+							"book-appointment"
 						]
 					}
 				},
@@ -413,6 +493,12 @@
 							"Full width",
 							"Right sidebar"
 						]
+					},
+					"widget": "page-settings:scoped",
+					"options": {
+						"pages": [
+							"book-appointment"
+						]
 					}
 				},
 				{
@@ -424,6 +510,12 @@
 						"options": [
 							"Primary colour",
 							"White with outline"
+						]
+					},
+					"widget": "page-settings:scoped",
+					"options": {
+						"pages": [
+							"reviews"
 						]
 					}
 				},
@@ -438,6 +530,12 @@
 							"Grid · square",
 							"List"
 						]
+					},
+					"widget": "page-settings:scoped",
+					"options": {
+						"pages": [
+							"blog"
+						]
 					}
 				},
 				{
@@ -449,6 +547,12 @@
 						"options": [
 							"Cards",
 							"Accordion"
+						]
+					},
+					"widget": "page-settings:scoped",
+					"options": {
+						"pages": [
+							"patient-resources"
 						]
 					}
 				},
@@ -462,13 +566,27 @@
 							"None",
 							"Tag"
 						]
+					},
+					"widget": "page-settings:scoped",
+					"options": {
+						"pages": [
+							"patient-resources"
+						]
 					}
 				},
 				{
 					"slug": "legal_toc",
 					"label": "Legal pages: table of contents",
 					"type": "boolean",
-					"defaultValue": true
+					"defaultValue": true,
+					"widget": "page-settings:scoped",
+					"options": {
+						"pages": [
+							"privacy-policy",
+							"terms-of-use",
+							"accessibility"
+						]
+					}
 				},
 				{
 					"slug": "service_sidebar_reviews",
@@ -480,31 +598,61 @@
 							"Single review",
 							"Carousel (3)"
 						]
+					},
+					"widget": "page-settings:scoped",
+					"options": {
+						"pages": [
+							"service-pages"
+						]
 					}
 				},
 				{
 					"slug": "service_posts_card",
 					"label": "Service pages: recent posts card",
 					"type": "boolean",
-					"defaultValue": true
+					"defaultValue": true,
+					"widget": "page-settings:scoped",
+					"options": {
+						"pages": [
+							"service-pages"
+						]
+					}
 				},
 				{
 					"slug": "service_sticky",
 					"label": "Service pages: sticky sidebar",
 					"type": "boolean",
-					"defaultValue": true
+					"defaultValue": true,
+					"widget": "page-settings:scoped",
+					"options": {
+						"pages": [
+							"service-pages"
+						]
+					}
 				},
 				{
 					"slug": "profile_video",
 					"label": "Team profiles: intro video",
 					"type": "boolean",
-					"defaultValue": true
+					"defaultValue": true,
+					"widget": "page-settings:scoped",
+					"options": {
+						"pages": [
+							"team-profiles"
+						]
+					}
 				},
 				{
 					"slug": "post_image",
 					"label": "Blog posts: featured image",
 					"type": "boolean",
-					"defaultValue": true
+					"defaultValue": true,
+					"widget": "page-settings:scoped",
+					"options": {
+						"pages": [
+							"blog-posts"
+						]
+					}
 				}
 			]
 		},
