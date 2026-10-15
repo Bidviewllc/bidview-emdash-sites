@@ -14,10 +14,13 @@ import Base from "../../layouts/Base.astro";
 import ContentPage from "../../components/ContentPage.astro";
 import type { Block } from "../../lib/content-blocks";
 
-const takeaways: string[] = [
+const takeaways: (string | { text: string; link?: { text: string; href: string } })[] = [
  "The best way to clean ears is to let the outer ear clean itself with occasional gentle wiping, while a trained professional handles any wax buildup deeper in the canal.",
  "Cotton swabs and ear candles don't remove wax. They pack it tighter against the eardrum, which is how simple buildup turns into hearing loss, infection, or a punctured eardrum.",
- "Liberty Hearing Center provides safe, professional earwax removal for patients across College Station and the greater Brazos Valley."
+ {
+  text: "Liberty Hearing Center provides safe, professional ear wax removal for patients across College Station and the greater Brazos Valley.",
+  link: { text: "professional ear wax removal", href: "https://libertyhearingcentertx.com/ear-wax-removal/" }
+ }
 ];
 const blocks: Block[] = [
  {

@@ -18,7 +18,8 @@ import type { Block } from "../lib/content-blocks";
 interface Props {
 	h1: string;
 	crumb: string;
-	takeaways?: string[];
+	/** A plain string, or { text, link } when one phrase in the line is an in-text link (`link.text` must appear in `text`). */
+	takeaways?: (string | { text: string; link?: { text: string; href: string } })[];
 	blocks: Block[];
 }
 const { h1, crumb, takeaways = [], blocks } = Astro.props;
@@ -80,7 +81,11 @@ const BTN_GHOST = "display:inline-flex;min-height:52px;align-items:center;justif
 
 {takeaways.length > 0 && (
 <ul style="margin:0 0 44px;padding-left:22px;max-width:760px;display:flex;flex-direction:column;gap:12px;font-size:18px;line-height:1.7">
-{takeaways.map((t) => <li style="text-wrap:pretty;color:var(--text-body)">{t}</li>)}
+{takeaways.map((t) => typeof t !== "string" && t.link && t.text.includes(t.link.text) ? (
+<li style="text-wrap:pretty;color:var(--text-body)">{t.text.slice(0, t.text.indexOf(t.link.text))}<a href={t.link.href} style="color:var(--brand-red);font-weight:700">{t.link.text}</a>{t.text.slice(t.text.indexOf(t.link.text) + t.link.text.length)}</li>
+) : (
+<li style="text-wrap:pretty;color:var(--text-body)">{typeof t === "string" ? t : t.text}</li>
+))}
 </ul>
 )}
 
