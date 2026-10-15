@@ -9,15 +9,15 @@ import OfficeCard from "../components/OfficeCard.astro";
 import PageHero from "../components/PageHero.astro";
 import RequestForm from "../components/RequestForm.astro";
 import type { Tweak } from "../components/ReviewControls.astro";
-import { telHref } from "../data/practice";
 import Base from "../layouts/Base.astro";
 import { getSettings } from "../lib/settings";
+import { telHref } from "../lib/routes";
 
 const tweaks: Tweak[] = [
 	{ key: "version", label: "Booking version", type: "choice", default: "a", options: [["a", "A · Scheduler embed"], ["b", "B · Request form"]] },
 	{ key: "layout", label: "Layout", type: "choice", default: "full", options: [["full", "Full width"], ["side", "Right sidebar"]] },
 ];
-const s = getSettings(Astro.url);
+const s = getSettings(Astro);
 const isA = s.choice("version", ["a", "b"], "a") === "a";
 const side = s.choice("layout", ["full", "side"], "full") === "side";
 const first = s.offices[0];

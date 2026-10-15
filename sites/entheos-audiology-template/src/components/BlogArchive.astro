@@ -3,8 +3,6 @@
 // BlogPageCategory, BlogMobile). Shared by /blog and /blog/category/<cat>.
 // Short no-photo hero → category chips (real links) → featured post (All only)
 // → grid or list → pager → CTA.
-import { categories, featured, posts, type Post } from "../data/blog";
-import { routes } from "../data/practice";
 import Base from "../layouts/Base.astro";
 import { getSettings } from "../lib/settings";
 import CtaBand from "./CtaBand.astro";
@@ -12,6 +10,10 @@ import Icon from "./Icon.astro";
 import PageHero from "./PageHero.astro";
 import PostCard from "./PostCard.astro";
 import type { Tweak } from "./ReviewControls.astro";
+import { routes } from "../lib/routes";
+import type { Post } from "../data/types";
+
+const { categories, featured, posts } = Astro.locals.site;
 
 interface Props {
 	cat?: { name: string; slug: string };
@@ -20,7 +22,7 @@ const { cat } = Astro.props;
 const tweaks: Tweak[] = [
 	{ key: "layout", label: "Layout", type: "choice", default: "grid", options: [["grid", "Grid · 16:9"], ["square", "Grid · square"], ["list", "List"]] },
 ];
-const s = getSettings(Astro.url);
+const s = getSettings(Astro);
 const h = s.href;
 const layout = s.choice("layout", ["grid", "square", "list"], "grid");
 const shown: Post[] = cat ? posts.filter((p) => p.catSlug === cat.slug) : posts;

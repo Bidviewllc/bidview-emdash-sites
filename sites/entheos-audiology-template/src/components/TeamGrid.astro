@@ -1,16 +1,16 @@
 ---
 // "Meet the team" cards, laid out by the Review controls · Team cards choice:
 // a three-column grid for the card layouts, one column for the list layout.
-import type { Provider } from "../data/practice";
 import { getSettings } from "../lib/settings";
 import ProviderCard from "./ProviderCard.astro";
+import type { Provider } from "../data/types";
 
 interface Props {
 	people: (Provider & { linked: boolean })[];
 	alignStart?: boolean;
 }
 const { people, alignStart = false } = Astro.props;
-const s = getSettings(Astro.url);
+const s = getSettings(Astro);
 ---
 {
 	s.team === "list" ? (

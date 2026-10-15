@@ -6,16 +6,17 @@ import PageHero from "../../components/PageHero.astro";
 import ReviewsBand from "../../components/ReviewsBand.astro";
 import type { Tweak } from "../../components/ReviewControls.astro";
 import ServiceCards from "../../components/ServiceCards.astro";
-import { firstVisitSteps, practice, reviews } from "../../data/practice";
 import Base from "../../layouts/Base.astro";
 import { getSettings } from "../../lib/settings";
+
+const { firstVisitSteps, practice, reviews } = Astro.locals.site;
 
 const tweaks: Tweak[] = [
 	{ key: "steps", label: "“First visit” steps", type: "bool", default: true },
 	{ key: "revlink", label: "“Read more reviews” link", type: "bool", default: true },
 	{ key: "svclinks", label: "Service “Learn more”", type: "choice", default: "mixed", options: [["mixed", "Mixed (pages that exist)"], ["all", "All cards"], ["none", "None"]] },
 ];
-const s = getSettings(Astro.url);
+const s = getSettings(Astro);
 const hero = s.heroFor("photo");
 const withPhoto = hero === "photo" || hero === "example";
 const showSteps = s.bool("steps", true);

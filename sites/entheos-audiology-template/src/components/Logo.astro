@@ -11,7 +11,7 @@ interface Props {
 	size?: number;
 }
 const { shape = "wide", size = 44 } = Astro.props;
-const s = getSettings(Astro.url);
+const s = getSettings(Astro);
 const [line1, line2] = s.wordmark;
 ---
 <a class:list={["logo", { stk: shape === "stacked" }]} href={s.href("/")} aria-label={`${s.name}, home`} data-logo={shape}>

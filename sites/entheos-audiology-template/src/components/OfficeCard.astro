@@ -1,8 +1,9 @@
 ---
 // Compact office card (Book appointment): address, tap-to-call phone, hours,
 // "Get directions" to Google Maps. No map embed.
-import { telHref, type Office } from "../data/practice";
 import Icon from "./Icon.astro";
+import { telHref } from "../lib/routes";
+import type { Office } from "../data/types";
 
 interface Props {
 	o: Office;

@@ -4,11 +4,13 @@
 // → full-width rich text with a "Table of contents" accordion (closed by
 // default) → footer. No CTA band.
 import type { Tweak } from "./ReviewControls.astro";
-import { practice, telHref } from "../data/practice";
 import Base from "../layouts/Base.astro";
 import { getSettings } from "../lib/settings";
 import Icon from "./Icon.astro";
 import PageHero from "./PageHero.astro";
+import { telHref } from "../lib/routes";
+
+const { practice } = Astro.locals.site;
 
 interface Props {
 	title: string;
@@ -17,7 +19,7 @@ interface Props {
 }
 const { title, updated, sections } = Astro.props;
 const tweaks: Tweak[] = [{ key: "toc", label: "Table of contents", type: "bool", default: true }];
-const s = getSettings(Astro.url);
+const s = getSettings(Astro);
 const showToc = s.bool("toc", true);
 const office = s.offices[0];
 const para = [

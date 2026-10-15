@@ -9,16 +9,17 @@ import PageHero from "../components/PageHero.astro";
 import PostCard from "../components/PostCard.astro";
 import ResCard from "../components/ResCard.astro";
 import type { Tweak } from "../components/ReviewControls.astro";
-import { posts, resourceGroups, resources, slugify } from "../data/blog";
-import { routes } from "../data/practice";
 import Base from "../layouts/Base.astro";
 import { getSettings } from "../lib/settings";
+import { routes, slugify } from "../lib/routes";
+
+const { posts, resourceGroups, resources } = Astro.locals.site;
 
 const tweaks: Tweak[] = [
 	{ key: "layout", label: "Layout", type: "choice", default: "cards", options: [["cards", "Cards"], ["accordion", "Accordion"]] },
 	{ key: "group", label: "Group by", type: "choice", default: "none", options: [["none", "None"], ["tag", "Tag"]] },
 ];
-const s = getSettings(Astro.url);
+const s = getSettings(Astro);
 const h = s.href;
 const hero = s.heroFor("photo");
 const withPhoto = hero === "photo" || hero === "example";

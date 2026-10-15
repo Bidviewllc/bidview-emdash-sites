@@ -1,11 +1,14 @@
 ---
 // "What our patients say": rating line, "Read more reviews" on the right and two
 // review cards (Services hub, Location).
-import { practice, reviews as allReviews, routes, type Review } from "../data/practice";
 import { getSettings } from "../lib/settings";
 import Icon from "./Icon.astro";
 import ReviewCard from "./ReviewCard.astro";
 import Stars from "./Stars.astro";
+import { routes } from "../lib/routes";
+import type { Review } from "../data/types";
+
+const { practice, reviews: allReviews } = Astro.locals.site;
 
 interface Props {
 	reviews?: Review[];
@@ -14,7 +17,7 @@ interface Props {
 	class?: string;
 }
 const { reviews = allReviews.slice(0, 2), link = true, heading = "What our patients say", class: cls } = Astro.props;
-const s = getSettings(Astro.url);
+const s = getSettings(Astro);
 ---
 <section class:list={["band", cls]}>
 	<div class="wrap stack g48">

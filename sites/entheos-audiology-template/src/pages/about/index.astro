@@ -8,9 +8,10 @@ import Icon from "../../components/Icon.astro";
 import PageHero from "../../components/PageHero.astro";
 import TeamGrid from "../../components/TeamGrid.astro";
 import type { Tweak } from "../../components/ReviewControls.astro";
-import { associations, milestones, practice, providers, values } from "../../data/practice";
 import Base from "../../layouts/Base.astro";
 import { getSettings } from "../../lib/settings";
+
+const { associations, milestones, practice, providers, values } = Astro.locals.site;
 
 const tweaks: Tweak[] = [
 	{ key: "journey", label: "Our journey", type: "choice", default: "grid", options: [["grid", "Grid 2 × 2"], ["row", "Horizontal"], ["hidden", "Hidden"]] },
@@ -18,7 +19,7 @@ const tweaks: Tweak[] = [
 	{ key: "community", label: "Community section", type: "bool", default: true },
 	{ key: "creds", label: "Credentials section", type: "bool", default: true },
 ];
-const s = getSettings(Astro.url);
+const s = getSettings(Astro);
 const hero = s.heroFor("photo");
 const withPhoto = hero === "photo" || hero === "example";
 const journey = s.choice("journey", ["grid", "row", "hidden"], "grid");

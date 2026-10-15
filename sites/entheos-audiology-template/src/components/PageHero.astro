@@ -4,9 +4,9 @@
 // No photo · Light. Photo versions put the text left and a 3:2 photo right;
 // no-photo versions sit in a rounded colour panel with two soft rings.
 // "short" is the utility-page version: no photo, less height.
-import { routes, telHref } from "../data/practice";
 import type { HeroKey } from "../lib/settings";
 import { getSettings } from "../lib/settings";
+import { routes, telHref } from "../lib/routes";
 
 interface Props {
 	crumbs: { label: string; href?: string }[];
@@ -34,7 +34,7 @@ const {
 	photoBottom = 88,
 	short = false,
 } = Astro.props;
-const s = getSettings(Astro.url);
+const s = getSettings(Astro);
 const hero = short ? "light" : s.heroFor(heroDefault);
 const withPhoto = hero === "photo" || hero === "example";
 const prim = hero === "primary";

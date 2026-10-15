@@ -3,12 +3,12 @@
 // No photo · Primary, No photo · Light.
 // Desktop: text over the photo. Phone: the photo comes first (4:5) with the
 // trust bar on it, and the text sits on white underneath (HomeMobile board).
-import { routes, telHref } from "../data/practice";
 import { cr, darken, on } from "../lib/color";
 import { getSettings } from "../lib/settings";
 import TrustBar from "./TrustBar.astro";
+import { routes, telHref } from "../lib/routes";
 
-const s = getSettings(Astro.url);
+const s = getSettings(Astro);
 const hero = s.heroFor("photo");
 const { P, A } = s.colors;
 const onP = on(P);

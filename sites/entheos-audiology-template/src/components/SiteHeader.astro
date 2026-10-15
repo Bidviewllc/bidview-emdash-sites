@@ -3,17 +3,19 @@
 // Each style has a desktop layout and its own phone layout from the
 // "Headers & footers" boards; CSS shows one or the other by screen width.
 // The phone menu (burger) is shared by every style.
-import { routes, services, brands, telHref } from "../data/practice";
 import { getSettings } from "../lib/settings";
 import Icon from "./Icon.astro";
 import Logo from "./Logo.astro";
 import NavItems from "./NavItems.astro";
+import { routes, telHref } from "../lib/routes";
+
+const { services, brands } = Astro.locals.site;
 
 interface Props {
 	current?: "services" | "hearing-aids" | "about" | "resources" | "blog" | "contact";
 }
 const { current } = Astro.props;
-const s = getSettings(Astro.url);
+const s = getSettings(Astro);
 const v = s.header;
 const office = s.offices[0];
 const addr = `${office.street.split(",")[0]}, ${office.shortName}`;

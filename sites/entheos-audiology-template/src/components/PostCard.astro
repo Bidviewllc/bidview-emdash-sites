@@ -1,9 +1,10 @@
 ---
 // Blog card: image (16:9 or square, set once per site), category and date,
 // title, summary. The whole card is the link.
-import { routes, type Post } from "../data/practice";
 import { getSettings } from "../lib/settings";
 import Icon from "./Icon.astro";
+import { routes } from "../lib/routes";
+import type { Post } from "../data/types";
 
 interface Props {
 	p: Post;
@@ -11,7 +12,7 @@ interface Props {
 	showCat?: boolean;
 }
 const { p, square = false, showCat = true } = Astro.props;
-const s = getSettings(Astro.url);
+const s = getSettings(Astro);
 ---
 <a class="post" href={s.href(routes.post(p.slug))}>
 	<div class="img">

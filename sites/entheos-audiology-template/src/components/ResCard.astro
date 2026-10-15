@@ -1,16 +1,16 @@
 ---
 // Patient resource card: topic tags, title, summary, and either "Learn more"
 // (own page) or "Download PDF / Fill out online" (forms).
-import type { Resource } from "../data/blog";
-import { routes } from "../data/practice";
 import { getSettings } from "../lib/settings";
 import Icon from "./Icon.astro";
+import { routes } from "../lib/routes";
+import type { Resource } from "../data/types";
 
 interface Props {
 	r: Resource;
 }
 const { r } = Astro.props;
-const s = getSettings(Astro.url);
+const s = getSettings(Astro);
 ---
 <article class="card res-card">
 	<ul class="res-tags" aria-label="Topics">{r.tags.map((t) => <li class="tag">{t}</li>)}</ul>

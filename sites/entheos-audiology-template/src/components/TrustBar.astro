@@ -4,10 +4,11 @@
 // on hover or keyboard focus, and stands still for "reduce motion".
 // Review controls (Home): "trustmove=still" shows the logos once, standing
 // still, with no pause button; "trustrating=plain" drops the rating's own box.
-import { associations, practice } from "../data/practice";
 import Icon from "./Icon.astro";
 import { getSettings } from "../lib/settings";
 import Stars from "./Stars.astro";
+
+const { associations, practice } = Astro.locals.site;
 
 interface Props {
 	/** "on-photo" | "on-p" | "on-light" */
@@ -17,7 +18,7 @@ interface Props {
 	starsColor: string;
 }
 const { variant, tone, starsColor } = Astro.props;
-const s = getSettings(Astro.url);
+const s = getSettings(Astro);
 const still = s.choice("trustmove", ["scroll", "still"], "scroll") === "still";
 const plain = s.choice("trustrating", ["boxed", "plain"], "boxed") === "plain";
 

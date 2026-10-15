@@ -9,11 +9,13 @@ import ProviderCard from "../../components/ProviderCard.astro";
 import ReviewCard from "../../components/ReviewCard.astro";
 import type { Tweak } from "../../components/ReviewControls.astro";
 import ServiceCards from "../../components/ServiceCards.astro";
-import { offices as allOffices, providers, reviews, routes, services, telHref } from "../../data/practice";
 import Base from "../../layouts/Base.astro";
 import { getSettings } from "../../lib/settings";
+import { routes, telHref } from "../../lib/routes";
 
-const s = getSettings(Astro.url);
+const { offices: allOffices, providers, reviews, services } = Astro.locals.site;
+
+const s = getSettings(Astro);
 const office = s.offices.find((o) => o.slug === Astro.params.office) ?? allOffices.find((o) => o.slug === Astro.params.office);
 if (!office) return Astro.rewrite("/404");
 

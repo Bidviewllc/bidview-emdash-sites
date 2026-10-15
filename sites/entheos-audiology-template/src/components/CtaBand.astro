@@ -1,8 +1,8 @@
 ---
 // CTA band: a Primary action panel next to an emotional photo panel, or the
 // Primary panel alone (Review controls → CTA photo panel off).
-import { routes, telHref } from "../data/practice";
 import { getSettings } from "../lib/settings";
+import { routes, telHref } from "../lib/routes";
 
 interface Props {
 	id: string;
@@ -21,7 +21,7 @@ const {
 	photoLabel = "Older adult laughing with family at a table, or on a walk with a friend",
 	callFirst = false,
 } = Astro.props;
-const s = getSettings(Astro.url);
+const s = getSettings(Astro);
 const tel = telHref(s.phone);
 ---
 {

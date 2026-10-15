@@ -8,15 +8,17 @@ import Icon from "../../components/Icon.astro";
 import OfficesSection from "../../components/OfficesSection.astro";
 import type { Tweak } from "../../components/ReviewControls.astro";
 import ServiceCards from "../../components/ServiceCards.astro";
-import { practice, providers, routes, services, telHref } from "../../data/practice";
 import Base from "../../layouts/Base.astro";
 import { getSettings } from "../../lib/settings";
+import { routes, telHref } from "../../lib/routes";
+
+const { practice, providers, services } = Astro.locals.site;
 
 const person = providers.find((p) => p.slug === Astro.params.person);
 if (!person) return Astro.rewrite("/404");
 
 const tweaks: Tweak[] = [{ key: "video", label: "Intro video", type: "bool", default: true }];
-const s = getSettings(Astro.url);
+const s = getSettings(Astro);
 const h = s.href;
 const showVideo = s.bool("video", true);
 const crumbName = person.name.replace(/, Au\.D\.$/, "");

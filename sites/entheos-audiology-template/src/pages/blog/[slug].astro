@@ -8,10 +8,11 @@ import CtaBand from "../../components/CtaBand.astro";
 import Icon from "../../components/Icon.astro";
 import PostCard from "../../components/PostCard.astro";
 import type { Tweak } from "../../components/ReviewControls.astro";
-import { articleBody, featured, posts } from "../../data/blog";
-import { providers, routes, telHref } from "../../data/practice";
 import Base from "../../layouts/Base.astro";
 import { getSettings } from "../../lib/settings";
+import { routes, telHref } from "../../lib/routes";
+
+const { articleBody, featured, posts, providers } = Astro.locals.site;
 
 const post = [featured, ...posts].find((p) => p.slug === Astro.params.slug);
 if (!post) return Astro.rewrite("/404");
@@ -20,7 +21,7 @@ const tweaks: Tweak[] = [
 	{ key: "image", label: "Featured image", type: "bool", default: true },
 	{ key: "authorlink", label: "Author profile linked", type: "bool", default: true },
 ];
-const s = getSettings(Astro.url);
+const s = getSettings(Astro);
 const h = s.href;
 const showImage = s.bool("image", true);
 const authorLinked = s.bool("authorlink", true);

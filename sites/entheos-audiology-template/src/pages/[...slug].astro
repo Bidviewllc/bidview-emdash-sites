@@ -4,11 +4,13 @@
 // "coming later" note; everything else gets the designed 404 page.
 import Icon from "../components/Icon.astro";
 import NotFound from "../components/NotFound.astro";
-import { routes, services } from "../data/practice";
 import Base from "../layouts/Base.astro";
 import { getSettings } from "../lib/settings";
+import { routes } from "../lib/routes";
 
-const s = getSettings(Astro.url);
+const { services } = Astro.locals.site;
+
+const s = getSettings(Astro);
 const slug = Astro.params.slug ?? "";
 const later = /^(patient-resources\/|sitemap$|review$)/.test(slug);
 const last = slug.split("/").filter(Boolean).pop() ?? "";

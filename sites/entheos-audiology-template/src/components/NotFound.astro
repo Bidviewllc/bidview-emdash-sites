@@ -2,14 +2,14 @@
 // Page 16 · 404 (boards NotFoundPage, NotFoundMobile, NotFoundPageAlt).
 // No-photo Light hero: large "404", H1, text, search box (optional), Book and
 // "Go to the home page" → "Popular pages" (4 cards).
-import { routes } from "../data/practice";
 import Base from "../layouts/Base.astro";
 import { getSettings } from "../lib/settings";
 import Icon from "./Icon.astro";
 import type { Tweak } from "./ReviewControls.astro";
+import { routes } from "../lib/routes";
 
 const tweaks: Tweak[] = [{ key: "search", label: "Search box", type: "bool", default: true }];
-const s = getSettings(Astro.url);
+const s = getSettings(Astro);
 const h = s.href;
 const showSearch = s.bool("search", true);
 const popular = [

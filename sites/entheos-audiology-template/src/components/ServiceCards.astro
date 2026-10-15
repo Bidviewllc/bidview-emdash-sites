@@ -1,8 +1,11 @@
 ---
 // Service cards in a grey panel (Home "Services" style). Each card links to its
 // page when the page exists ("mixed"), or all / none for review.
-import { routes, services as allServices, type Service } from "../data/practice";
 import { getSettings } from "../lib/settings";
+import { routes } from "../lib/routes";
+import type { Service } from "../data/types";
+
+const { services: allServices } = Astro.locals.site;
 
 interface Props {
 	items?: Service[];
@@ -11,7 +14,7 @@ interface Props {
 	titleTag?: "h2" | "h3";
 }
 const { items = allServices.filter((x) => !x.hideFromHub), links = "mixed", titleTag = "h3" } = Astro.props;
-const s = getSettings(Astro.url);
+const s = getSettings(Astro);
 const T = titleTag;
 ---
 <div class="panel grid g-3">

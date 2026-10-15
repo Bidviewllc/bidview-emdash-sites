@@ -2,9 +2,11 @@
 // Top-level menu items for the desktop headers. Services and Hearing aids open a
 // dropdown (a grey panel holding a white list). Dropdown links are built from the
 // records that have their own page, so a page switched on joins the menu.
-import { brands, routes, services } from "../data/practice";
 import { getSettings } from "../lib/settings";
 import Icon from "./Icon.astro";
+import { routes } from "../lib/routes";
+
+const { brands, services } = Astro.locals.site;
 
 type Key = "services" | "hearing-aids" | "about" | "resources" | "blog" | "contact";
 interface Props {
@@ -12,7 +14,7 @@ interface Props {
 	current?: Key;
 }
 const { items = ["services", "hearing-aids", "about", "resources", "blog", "contact"], current } = Astro.props;
-const s = getSettings(Astro.url);
+const s = getSettings(Astro);
 
 const menus = {
 	services: {

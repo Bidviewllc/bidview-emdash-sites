@@ -5,9 +5,10 @@
 //
 // Every setting is written to the address bar, so a shared link reproduces the
 // view. Values equal to the default are left out to keep links short.
-import { practice } from "../data/practice";
-import { FOOTERS, GLOBAL_DEFAULTS, HEADERS, HEROES, PALETTES, TEAM_LAYOUTS, getSettings, type HeroKey } from "../lib/settings";
+import { FOOTERS, globalDefaults, HEADERS, HEROES, PALETTES, TEAM_LAYOUTS, getSettings, type HeroKey } from "../lib/settings";
 import Icon from "./Icon.astro";
+
+const { practice } = Astro.locals.site;
 
 export type Tweak =
 	| { key: string; label: string; type: "bool"; default: boolean }
@@ -20,12 +21,12 @@ interface Props {
 	heroDefault?: HeroKey;
 }
 const { pageName, tweaks, heroDefault } = Astro.props;
-const s = getSettings(Astro.url);
+const s = getSettings(Astro);
 const q = s.query;
 
 const pageDefaults: Record<string, string> = {};
 for (const t of tweaks) pageDefaults[t.key] = t.type === "bool" ? (t.default ? "1" : "0") : t.default;
-const defaults = { ...GLOBAL_DEFAULTS, ...pageDefaults, ...(heroDefault ? { hero: heroDefault } : {}) };
+const defaults = { ...globalDefaults(Astro.locals.site), ...pageDefaults, ...(heroDefault ? { hero: heroDefault } : {}) };
 
 const cur = (k: string, d: string) => q.get(k) ?? d;
 const hex = (c: string) => c.toLowerCase();
@@ -39,6 +40,7 @@ const hex = (c: string) => c.toLowerCase();
 		<span class="rc-group">Colours</span>
 		<label class="rc-field">Palette
 			<select name="palette">
+				<option value="practice" selected={s.paletteKey === "practice"}>Practice colours (from settings)</option>
 				{Object.entries(PALETTES).map(([k, p]) => <option value={k} selected={s.paletteKey === k}>{p.label}</option>)}
 				<option value="custom" selected={s.paletteKey === "custom"}>Custom (pick below)</option>
 			</select>

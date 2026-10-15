@@ -3,11 +3,11 @@
 // is sent. Centred Light panel: check mark, H1, callback line with a tappable
 // phone number, "Back to home" and "Read our patient resources".
 import Icon from "../components/Icon.astro";
-import { routes, telHref } from "../data/practice";
 import Base from "../layouts/Base.astro";
 import { getSettings } from "../lib/settings";
+import { routes, telHref } from "../lib/routes";
 
-const s = getSettings(Astro.url);
+const s = getSettings(Astro);
 ---
 <Base title={`Thank you | ${s.name}`} description="We got your message." pageName="Thank you">
 	<div class="pg-hero-np ty-wrap">

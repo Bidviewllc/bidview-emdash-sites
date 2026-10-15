@@ -7,9 +7,11 @@ import CtaBand from "../../components/CtaBand.astro";
 import Icon from "../../components/Icon.astro";
 import type { Tweak } from "../../components/ReviewControls.astro";
 import Stars from "../../components/Stars.astro";
-import { faq, posts, practice, routes, services, sidebarReviews, telHref } from "../../data/practice";
 import Base from "../../layouts/Base.astro";
 import { getSettings } from "../../lib/settings";
+import { routes, telHref } from "../../lib/routes";
+
+const { faq, latest: posts, practice, services, sidebarReviews } = Astro.locals.site;
 
 const service = services.find((x) => x.slug === Astro.params.slug);
 if (!service) return Astro.rewrite("/404");
@@ -21,7 +23,7 @@ const tweaks: Tweak[] = [
 	{ key: "sticky", label: "Sticky sidebar", type: "bool", default: true },
 ];
 
-const s = getSettings(Astro.url);
+const s = getSettings(Astro);
 const h = s.href;
 const hero = s.heroFor("photo");
 const withPhoto = hero === "photo" || hero === "example";

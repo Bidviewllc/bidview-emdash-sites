@@ -2,12 +2,14 @@
 // Site footer: one component, six styles (Review controls → Footer style), each
 // with a landscape or vertical logo. Offices, phone and hours come from the
 // practice data, so the office cards follow the "Offices: One / Two" setting.
-import { practice, routes, services, telHref } from "../data/practice";
 import { getSettings } from "../lib/settings";
 import Icon from "./Icon.astro";
 import Logo from "./Logo.astro";
+import { routes, telHref } from "../lib/routes";
 
-const s = getSettings(Astro.url);
+const { practice, services } = Astro.locals.site;
+
+const s = getSettings(Astro);
 const v = s.footer;
 const vt = s.footerLogo === "vertical";
 const tel = telHref(s.phone);

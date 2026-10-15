@@ -5,12 +5,14 @@
 // address. Global settings ride along on every internal link; page settings
 // belong to the page they were set on.
 //
-// Phase 2: the global settings become the EmDash site settings page (palette,
-// header and footer style) and the page settings become fields on each record.
+// Phase 2: the defaults come from the practice's own content (EmDash), and the
+// query string overrides them for review. Later the header and footer styles
+// move onto the EmDash settings page too.
 
-import { offices as baseOffices, practice } from "../data/practice";
+import type { SiteData } from "../data/site";
 import type { Palette } from "./color";
 
+/** Test palettes. "practice" (the default) is the practice's own colours. */
 export const PALETTES: Record<string, { label: string; colors: Palette }> = {
 	teal: { label: "Teal / Amber", colors: { P: "#0F5E6B", A: "#E0A33B", L: "#F6F1EA" } },
 	navy: { label: "Navy / Coral", colors: { P: "#1E3A5F", A: "#E8735A", L: "#EEF3F8" } },
@@ -59,8 +61,8 @@ export type FooterKey = keyof typeof FOOTERS;
 export type HeroKey = keyof typeof HEROES;
 
 /** Global settings and their defaults. These are carried on internal links. */
-export const GLOBAL_DEFAULTS = {
-	palette: "teal",
+export const globalDefaults = ({ practice, offices }: SiteData) => ({
+	palette: "practice",
 	p: practice.colors.primary.slice(1),
 	a: practice.colors.accent.slice(1),
 	l: practice.colors.light.slice(1),
@@ -74,26 +76,35 @@ export const GLOBAL_DEFAULTS = {
 	ctaphoto: "1",
 	team: "overlay",
 	name: practice.name,
-	phone: baseOffices[0].phone,
+	phone: offices[0]?.phone ?? "",
 	lshape: "wide",
 	panel: "on",
-} as const;
+});
 
-export type GlobalKey = keyof typeof GLOBAL_DEFAULTS;
-const GLOBAL_KEYS = Object.keys(GLOBAL_DEFAULTS) as GlobalKey[];
+export type GlobalKey = keyof ReturnType<typeof globalDefaults>;
 
 const pick = <T extends Record<string, unknown>>(table: T, v: string | null, d: keyof T) =>
 	(v && v in table ? v : d) as keyof T;
 
 const isHex = (v: string | null) => !!v && /^[0-9a-fA-F]{6}$/.test(v);
 
-export function getSettings(url: URL) {
+/** Called as getSettings(Astro): needs the request URL and the site data. */
+export function getSettings({ url, locals }: { url: URL; locals: App.Locals }) {
+	const site = locals.site;
+	const { practice } = site;
+	const baseOffices = site.offices;
+	const GLOBAL_DEFAULTS = globalDefaults(site);
+	const GLOBAL_KEYS = Object.keys(GLOBAL_DEFAULTS) as GlobalKey[];
 	const q = url.searchParams;
 	const raw = (k: GlobalKey) => q.get(k) ?? GLOBAL_DEFAULTS[k];
 
-	const paletteKey = q.get("palette") === "custom" ? "custom" : (pick(PALETTES, q.get("palette"), "teal") as string);
+	const own: Palette = { P: practice.colors.primary, A: practice.colors.accent, L: practice.colors.light };
+	const v = q.get("palette");
+	const paletteKey = v === "custom" ? "custom" : v && v in PALETTES ? v : "practice";
 	const colors: Palette =
-		paletteKey === "custom"
+		paletteKey === "practice"
+			? own
+			: paletteKey === "custom"
 			? {
 					P: "#" + (isHex(q.get("p")) ? q.get("p") : GLOBAL_DEFAULTS.p),
 					A: "#" + (isHex(q.get("a")) ? q.get("a") : GLOBAL_DEFAULTS.a),
@@ -110,7 +121,7 @@ export function getSettings(url: URL) {
 				? [name.slice(0, name.indexOf(" ")), name.slice(name.indexOf(" ") + 1)]
 				: [name, ""];
 
-	const officeCount = raw("offices") === "1" ? 1 : 2;
+	const officeCount = raw("offices") === "1" ? 1 : baseOffices.length;
 	const offices = baseOffices.slice(0, officeCount).map((o, i) => (i === 0 ? { ...o, phone } : o));
 
 	/** Global values that differ from the default, for carrying on links. */

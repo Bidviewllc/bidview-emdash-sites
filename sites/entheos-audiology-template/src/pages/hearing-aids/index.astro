@@ -5,16 +5,18 @@ import CtaBand from "../../components/CtaBand.astro";
 import PageHero from "../../components/PageHero.astro";
 import type { Tweak } from "../../components/ReviewControls.astro";
 import StyleIllustration from "../../components/StyleIllustration.astro";
-import { brands, hearingAidStyles, practice, routes } from "../../data/practice";
 import Base from "../../layouts/Base.astro";
 import { getSettings } from "../../lib/settings";
+import { routes } from "../../lib/routes";
+
+const { brands, hearingAidStyles, practice } = Astro.locals.site;
 
 const tweaks: Tweak[] = [
 	{ key: "brandlinks", label: "Brand “Learn more”", type: "choice", default: "mixed", options: [["mixed", "Mixed (pages that exist)"], ["all", "All cards"], ["none", "None"]] },
 	{ key: "styles", label: "Hearing aid styles", type: "bool", default: true },
 	{ key: "otc", label: "OTC vs. prescription", type: "bool", default: true },
 ];
-const s = getSettings(Astro.url);
+const s = getSettings(Astro);
 const hero = s.heroFor("photo");
 const withPhoto = hero === "photo" || hero === "example";
 const brandLinks = s.choice("brandlinks", ["mixed", "all", "none"], "mixed");

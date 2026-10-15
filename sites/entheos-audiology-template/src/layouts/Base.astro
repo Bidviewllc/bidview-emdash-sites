@@ -18,7 +18,7 @@ interface Props {
 	heroDefault?: HeroKey;
 }
 const { title, description, pageName, current, tweaks = [], heroDefault } = Astro.props;
-const s = getSettings(Astro.url);
+const s = getSettings(Astro);
 const style = styleString(roleVars(s.colors));
 ---
 <!doctype html>

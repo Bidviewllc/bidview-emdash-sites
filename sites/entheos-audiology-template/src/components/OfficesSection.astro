@@ -2,9 +2,9 @@
 // "Visit us" locations band (Home, and reused on Provider profile and Contact).
 // Two offices: two cards with a map slot on top. One office: one wide card with
 // the map beside it. Follows Review controls → Offices.
-import { telHref } from "../data/practice";
 import { getSettings } from "../lib/settings";
 import Icon from "./Icon.astro";
+import { telHref } from "../lib/routes";
 
 interface Props {
 	heading?: string;
@@ -13,7 +13,7 @@ interface Props {
 	count?: 1 | 2;
 	class?: string;
 }
-const s = getSettings(Astro.url);
+const s = getSettings(Astro);
 const { eyebrow = "Locations", count = s.officeCount, class: cls } = Astro.props;
 const offices = s.offices.length >= count ? s.offices.slice(0, count) : s.offices;
 const two = offices.length === 2;
