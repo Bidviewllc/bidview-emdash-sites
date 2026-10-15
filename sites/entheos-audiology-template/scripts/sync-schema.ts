@@ -1,6 +1,6 @@
 // Brings a site that is already set up in line with the seed's schema: adds
 // collections and fields that are missing. Never removes or changes existing
-// fields, and never touches content except where noted below.
+// fields. Content: a new collection gets the seed records; see below for fields.
 //
 //   npx emdash login --url <site>          (once; the site admin approves a code)
 //   npx tsx scripts/sync-schema.ts <site>  (dry run: lists what it would add)
@@ -39,10 +39,17 @@ const existing = new Set((await client.collections()).map((c: { slug: string }) 
 for (const col of seed.collections) {
 	if (!existing.has(col.slug)) {
 		console.log(`+ collection ${col.slug} (${col.fields.length} fields)`);
+		const entries = (seed.content?.[col.slug] ?? []) as { slug: string; status?: string; data: Record<string, unknown> }[];
+		if (entries.length) console.log(`  + ${entries.length} starting records`);
 		if (apply) {
 			const { fields, ...rest } = col;
 			await client.createCollection(rest);
 			for (const f of fields) await client.createField(col.slug, f);
+			// A new collection gets the seed's records (e.g. the Pages list), published.
+			for (const e of entries) {
+				const item = await client.create(col.slug, { slug: e.slug, data: e.data });
+				if (e.status === "published") await client.publish(col.slug, item.id);
+			}
 		}
 		continue;
 	}

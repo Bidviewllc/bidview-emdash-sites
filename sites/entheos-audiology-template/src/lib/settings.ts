@@ -9,6 +9,7 @@
 // query string overrides them for review. Later the header and footer styles
 // move onto the EmDash settings page too.
 
+import { pageFor } from "../data/page-settings";
 import type { SiteData } from "../data/site";
 import type { Palette } from "./color";
 
@@ -133,8 +134,16 @@ export function getSettings({ url, locals }: { url: URL; locals: App.Locals }) {
 		carried.set(k, v);
 	}
 
+	/** This address's Pages record: its settings are the page switches' starting values. */
+	const pageDef = pageFor(url.pathname);
+	const pageRec = pageDef ? site.pages[pageDef.slug] : undefined;
+	/** Starting value of a page switch (Pages record, else undefined). */
+	const pageValue = (k: string): string | boolean | undefined => pageRec?.values[k];
+
 	/** An internal link that keeps the global review settings. */
-	const href = (path: string) => {
+	const href = (target: string) => {
+		// No booking page yet: booking buttons go to Contact.
+		const path = target.split("#")[0] === "/book-appointment" && !site.pages["book-appointment"]?.on ? "/contact" : target;
 		const qs = carried.toString();
 		if (!qs || /^(https?:|tel:|mailto:|#)/.test(path)) return path;
 		const [p, hash] = path.split("#");
@@ -144,11 +153,13 @@ export function getSettings({ url, locals }: { url: URL; locals: App.Locals }) {
 	/** Page-level switches: bool(key, default) and choice(key, options, default). */
 	const bool = (k: string, d: boolean) => {
 		const v = q.get(k);
-		return v === null ? d : v === "1";
+		const pv = pageValue(k);
+		return v === null ? (typeof pv === "boolean" ? pv : d) : v === "1";
 	};
 	const choice = <T extends string>(k: string, options: readonly T[], d: T): T => {
 		const v = q.get(k) as T | null;
-		return v && options.includes(v) ? v : d;
+		const pv = pageValue(k) as T | undefined;
+		return v && options.includes(v) ? v : pv && options.includes(pv) ? pv : d;
 	};
 
 	return {
@@ -163,8 +174,12 @@ export function getSettings({ url, locals }: { url: URL; locals: App.Locals }) {
 		/** This page's hero: the Review controls choice, else the page's own default. */
 		heroFor: (pageDefault: HeroKey): HeroKey => {
 			const v = q.get("hero");
-			return v && v in HEROES ? (v as HeroKey) : pageDefault;
+			const own = pageRec?.hero;
+			return v && v in HEROES ? (v as HeroKey) : own && own in HEROES ? (own as HeroKey) : pageDefault;
 		},
+		pageValue,
+		/** Hero chosen on this page's Pages record, if any. */
+		pageHero: pageRec?.hero,
 		ctaPhoto: raw("ctaphoto") !== "0",
 		team: pick(TEAM_LAYOUTS, raw("team"), "overlay") as TeamLayout,
 		name,

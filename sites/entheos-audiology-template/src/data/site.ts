@@ -9,6 +9,7 @@
 
 import { getEmDashCollection, getEmDashEntry, getMenu, getSiteSettings, getTaxonomyTerms } from "emdash";
 import * as blog from "./blog";
+import { HERO_OPTIONS, PAGES } from "./page-settings";
 import * as sample from "./practice";
 import type { Brand, BrandDetail, Office, Post, Provider, Resource, Service } from "./types";
 
@@ -60,7 +61,11 @@ export async function loadSite() {
 		getTaxonomyTerms("category"),
 		getTaxonomyTerms("resource_tag"),
 	]);
-	const menuList = await Promise.all(MENU_NAMES.map((n) => getMenu(n)));
+	const [menuList, pageE] = await Promise.all([
+		Promise.all(MENU_NAMES.map((n) => getMenu(n))),
+		// Published Pages records only; a site without the Pages list counts every page as on.
+		getEmDashCollection("site_pages", { limit: 100 }).then((r) => (r.error ? [] : (r.entries as Entry[]))),
+	]);
 	const p = (practiceRes.entry as Entry | null)?.data;
 	if (!p) throw new NotSetUpError("No practice record (Practice details, slug main).");
 
@@ -193,8 +198,37 @@ export async function loadSite() {
 		hideFromHub: !!e.data.hide_from_hub,
 	}));
 
-	// Pages that exist right now. A menu item pointing at a record page that
-	// isn't live (own page off, unpublished, deleted) is left out of the menu.
+	// Template pages (the Pages list): published = on. Each page's settings
+	// become the starting values of its Review controls settings.
+	const pageRecords = new Map(pageE.map((e) => [slugOf(e), e.data]));
+	const pageOn = (slug: string) => {
+		const def = PAGES.find((d) => d.slug === slug);
+		return !pageE.length || !!def?.alwaysOn || pageRecords.has(slug);
+	};
+	const pages: Record<string, { on: boolean; hero?: string; values: Record<string, string | boolean> }> = {};
+	for (const def of PAGES) {
+		const d = pageRecords.get(def.slug) ?? {};
+		const values: Record<string, string | boolean> = {};
+		for (const st of def.settings) {
+			const v = d[st.field];
+			if (v === undefined || v === null || v === "") continue;
+			values[st.key] = st.type === "bool" ? !!v : (st.options.find(([, label]) => label === v)?.[0] ?? st.default);
+		}
+		const hero = HERO_OPTIONS.find(([, label]) => label === d.hero)?.[0];
+		pages[def.slug] = { on: pageOn(def.slug), ...(hero ? { hero } : {}), values };
+	}
+	// Switch-on rules that follow other pages being on.
+	pages.home.values.about = pageOn("about");
+	pages.home.values.revlink = pageOn("reviews");
+	pages.home.values.posts = (pages.home.values.posts ?? true) && pageOn("blog") && postE.length > 0;
+	pages.services.values.revlink = pageOn("reviews");
+	pages["service-pages"].values.revlink = pageOn("reviews");
+	pages["service-pages"].values.posts = (pages["service-pages"].values.posts ?? true) && pageOn("blog") && postE.length > 0;
+
+	// Pages that exist right now. A menu item pointing at a page that isn't live
+	// (own page off, unpublished, deleted, or a template page switched off) is
+	// left out of the menu.
+	const offPaths = new Set(PAGES.filter((d) => d.path && !pages[d.slug].on).map((d) => d.path!));
 	const live = new Set<string>([
 		...services.filter((x) => x.hasPage).map((x) => `/services/${x.slug}`),
 		...brands.filter((x) => x.hasPage).map((x) => `/hearing-aids/${x.slug}`),
@@ -205,6 +239,8 @@ export async function loadSite() {
 	]);
 	const RECORD_PAGE = /^\/(services|hearing-aids|about|locations|blog(\/category)?)\/[^/#?]+/;
 	const isLive = (href: string) => {
+		const path = href.split(/[?#]/)[0].replace(/\/$/, "") || "/";
+		if (offPaths.has(path) || (path.startsWith("/blog") && offPaths.has("/blog"))) return false;
 		const m = href.match(RECORD_PAGE);
 		return !m || live.has(m[0]);
 	};
@@ -218,6 +254,8 @@ export async function loadSite() {
 		practice,
 		/** Menus from EmDash (Menus screen), with links to pages that aren't live left out. */
 		menus,
+		/** Pages list: on/off, hero choice and settings per template page (keyed by PAGES slug). */
+		pages,
 		offices,
 		providers,
 		services,

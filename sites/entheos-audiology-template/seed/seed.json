@@ -280,6 +280,235 @@
 			]
 		},
 		{
+			"slug": "site_pages",
+			"label": "Pages",
+			"labelSingular": "Page",
+			"description": "One record per template page. Publish = page on (and its links); unpublish = page off. Each setting starts with the page it belongs to.",
+			"routable": false,
+			"supports": [
+				"drafts",
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Page",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "hero",
+					"label": "Hero (pages with a hero)",
+					"type": "select",
+					"defaultValue": "Page default",
+					"validation": {
+						"options": [
+							"Page default",
+							"Photo",
+							"Example photo",
+							"No photo · Primary",
+							"No photo · Light"
+						]
+					}
+				},
+				{
+					"slug": "home_trust_logos",
+					"label": "Home: trust bar logos",
+					"type": "select",
+					"defaultValue": "Scrolling (with pause)",
+					"validation": {
+						"options": [
+							"Scrolling (with pause)",
+							"Still"
+						]
+					}
+				},
+				{
+					"slug": "home_trust_rating",
+					"label": "Home: trust bar rating",
+					"type": "select",
+					"defaultValue": "In its own box",
+					"validation": {
+						"options": [
+							"In its own box",
+							"Plain (no box)"
+						]
+					}
+				},
+				{
+					"slug": "home_latest_posts",
+					"label": "Home: latest posts section",
+					"type": "boolean",
+					"defaultValue": true
+				},
+				{
+					"slug": "home_sample_card",
+					"label": "Home: sample service card with photo",
+					"type": "boolean",
+					"defaultValue": false
+				},
+				{
+					"slug": "services_first_visit",
+					"label": "Services: “What to expect at your first visit” steps",
+					"type": "boolean",
+					"defaultValue": true
+				},
+				{
+					"slug": "hearing_aids_styles",
+					"label": "Hearing aids: hearing aid styles section",
+					"type": "boolean",
+					"defaultValue": true
+				},
+				{
+					"slug": "hearing_aids_otc",
+					"label": "Hearing aids: OTC vs. prescription section",
+					"type": "boolean",
+					"defaultValue": true
+				},
+				{
+					"slug": "about_journey",
+					"label": "About: our journey",
+					"type": "select",
+					"defaultValue": "Grid 2 × 2",
+					"validation": {
+						"options": [
+							"Grid 2 × 2",
+							"Horizontal",
+							"Hidden"
+						]
+					}
+				},
+				{
+					"slug": "about_community",
+					"label": "About: community section",
+					"type": "boolean",
+					"defaultValue": true
+				},
+				{
+					"slug": "about_credentials",
+					"label": "About: credentials section",
+					"type": "boolean",
+					"defaultValue": true
+				},
+				{
+					"slug": "book_version",
+					"label": "Book appointment: booking",
+					"type": "select",
+					"defaultValue": "A · Scheduler embed",
+					"validation": {
+						"options": [
+							"A · Scheduler embed",
+							"B · Request form"
+						]
+					}
+				},
+				{
+					"slug": "book_layout",
+					"label": "Book appointment: layout",
+					"type": "select",
+					"defaultValue": "Full width",
+					"validation": {
+						"options": [
+							"Full width",
+							"Right sidebar"
+						]
+					}
+				},
+				{
+					"slug": "reviews_button",
+					"label": "Reviews: “Leave us a review” button",
+					"type": "select",
+					"defaultValue": "Primary colour",
+					"validation": {
+						"options": [
+							"Primary colour",
+							"White with outline"
+						]
+					}
+				},
+				{
+					"slug": "blog_layout",
+					"label": "Blog: layout",
+					"type": "select",
+					"defaultValue": "Grid · 16:9",
+					"validation": {
+						"options": [
+							"Grid · 16:9",
+							"Grid · square",
+							"List"
+						]
+					}
+				},
+				{
+					"slug": "resources_layout",
+					"label": "Patient resources: layout",
+					"type": "select",
+					"defaultValue": "Cards",
+					"validation": {
+						"options": [
+							"Cards",
+							"Accordion"
+						]
+					}
+				},
+				{
+					"slug": "resources_group",
+					"label": "Patient resources: group by",
+					"type": "select",
+					"defaultValue": "None",
+					"validation": {
+						"options": [
+							"None",
+							"Tag"
+						]
+					}
+				},
+				{
+					"slug": "legal_toc",
+					"label": "Legal pages: table of contents",
+					"type": "boolean",
+					"defaultValue": true
+				},
+				{
+					"slug": "service_sidebar_reviews",
+					"label": "Service pages: sidebar reviews",
+					"type": "select",
+					"defaultValue": "Single review",
+					"validation": {
+						"options": [
+							"Single review",
+							"Carousel (3)"
+						]
+					}
+				},
+				{
+					"slug": "service_posts_card",
+					"label": "Service pages: recent posts card",
+					"type": "boolean",
+					"defaultValue": true
+				},
+				{
+					"slug": "service_sticky",
+					"label": "Service pages: sticky sidebar",
+					"type": "boolean",
+					"defaultValue": true
+				},
+				{
+					"slug": "profile_video",
+					"label": "Team profiles: intro video",
+					"type": "boolean",
+					"defaultValue": true
+				},
+				{
+					"slug": "post_image",
+					"label": "Blog posts: featured image",
+					"type": "boolean",
+					"defaultValue": true
+				}
+			]
+		},
+		{
 			"slug": "offices",
 			"label": "Offices",
 			"labelSingular": "Office",
@@ -1259,6 +1488,185 @@
 					"logo_shape": "Wide",
 					"team_cards": "Cards · arrow on photo",
 					"cta_photo": true
+				}
+			}
+		],
+		"site_pages": [
+			{
+				"id": "page-home",
+				"slug": "home",
+				"status": "published",
+				"data": {
+					"title": "Home",
+					"hero": "Page default",
+					"home_trust_logos": "Scrolling (with pause)",
+					"home_trust_rating": "In its own box",
+					"home_latest_posts": true,
+					"home_sample_card": false
+				}
+			},
+			{
+				"id": "page-services",
+				"slug": "services",
+				"status": "published",
+				"data": {
+					"title": "Services",
+					"hero": "Page default",
+					"services_first_visit": true
+				}
+			},
+			{
+				"id": "page-hearing-aids",
+				"slug": "hearing-aids",
+				"status": "published",
+				"data": {
+					"title": "Hearing aids",
+					"hero": "Page default",
+					"hearing_aids_styles": true,
+					"hearing_aids_otc": true
+				}
+			},
+			{
+				"id": "page-about",
+				"slug": "about",
+				"status": "published",
+				"data": {
+					"title": "About",
+					"hero": "Page default",
+					"about_journey": "Grid 2 × 2",
+					"about_community": true,
+					"about_credentials": true
+				}
+			},
+			{
+				"id": "page-contact",
+				"slug": "contact",
+				"status": "published",
+				"data": {
+					"title": "Contact",
+					"hero": "Page default"
+				}
+			},
+			{
+				"id": "page-book-appointment",
+				"slug": "book-appointment",
+				"status": "published",
+				"data": {
+					"title": "Book appointment",
+					"hero": "Page default",
+					"book_version": "A · Scheduler embed",
+					"book_layout": "Full width"
+				}
+			},
+			{
+				"id": "page-reviews",
+				"slug": "reviews",
+				"status": "published",
+				"data": {
+					"title": "Reviews",
+					"hero": "Page default",
+					"reviews_button": "Primary colour"
+				}
+			},
+			{
+				"id": "page-blog",
+				"slug": "blog",
+				"status": "published",
+				"data": {
+					"title": "Blog",
+					"hero": "Page default",
+					"blog_layout": "Grid · 16:9"
+				}
+			},
+			{
+				"id": "page-patient-resources",
+				"slug": "patient-resources",
+				"status": "published",
+				"data": {
+					"title": "Patient resources",
+					"hero": "Page default",
+					"resources_layout": "Cards",
+					"resources_group": "None"
+				}
+			},
+			{
+				"id": "page-privacy-policy",
+				"slug": "privacy-policy",
+				"status": "published",
+				"data": {
+					"title": "Privacy policy",
+					"hero": "Page default",
+					"legal_toc": true
+				}
+			},
+			{
+				"id": "page-terms-of-use",
+				"slug": "terms-of-use",
+				"status": "published",
+				"data": {
+					"title": "Terms of use",
+					"hero": "Page default",
+					"legal_toc": true
+				}
+			},
+			{
+				"id": "page-accessibility",
+				"slug": "accessibility",
+				"status": "published",
+				"data": {
+					"title": "Accessibility",
+					"hero": "Page default",
+					"legal_toc": true
+				}
+			},
+			{
+				"id": "page-service-pages",
+				"slug": "service-pages",
+				"status": "published",
+				"data": {
+					"title": "Template: service pages",
+					"hero": "Page default",
+					"service_sidebar_reviews": "Single review",
+					"service_posts_card": true,
+					"service_sticky": true
+				}
+			},
+			{
+				"id": "page-brand-pages",
+				"slug": "brand-pages",
+				"status": "published",
+				"data": {
+					"title": "Template: hearing aid brand pages",
+					"hero": "Page default"
+				}
+			},
+			{
+				"id": "page-team-profiles",
+				"slug": "team-profiles",
+				"status": "published",
+				"data": {
+					"title": "Template: team profiles",
+					"hero": "Page default",
+					"profile_video": true
+				}
+			},
+			{
+				"id": "page-location-pages",
+				"slug": "location-pages",
+				"status": "published",
+				"data": {
+					"title": "Template: location pages",
+					"hero": "Page default"
+				}
+			},
+			{
+				"id": "page-blog-posts",
+				"slug": "blog-posts",
+				"status": "published",
+				"data": {
+					"title": "Template: blog posts",
+					"hero": "Page default",
+					"post_image": true
 				}
 			}
 		],

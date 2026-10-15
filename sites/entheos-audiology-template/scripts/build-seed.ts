@@ -9,6 +9,7 @@ import { writeFileSync } from "node:fs";
 import * as blog from "../src/data/blog";
 import * as s from "../src/data/practice";
 import { FOOTERS, HEADERS, TEAM_LAYOUTS } from "../src/lib/settings";
+import { HERO_OPTIONS, PAGES, type PageSetting } from "../src/data/page-settings";
 
 /** Brand logos are downloaded into the media library during setup. */
 const ASSET_HOST = "https://entheos-audiology-template.local-981.workers.dev";
@@ -27,6 +28,13 @@ const faqField = repeater("faq", "FAQ", [sub("q", "Question"), sub("a", "Answer"
 const clean = (label: string) => label.replace(/\s*\(default\)/, "");
 const TONES = ["warm", "sage", "sky", "stone", "dark", "dark2"];
 const hex = { validation: { pattern: "^#[0-9A-Fa-f]{6}$" } };
+
+// Pages list fields: the hero choice plus every page's settings (one field per
+// setting; pages that share a setting share the field).
+const pageSettingFields = [...new Map(PAGES.flatMap((p) => p.settings).map((st) => [st.field, st])).values()];
+const label = (st: PageSetting, v: string | boolean) => (st.type === "bool" ? v : st.options.find(([k]) => k === v)![1]);
+const pageField = (st: PageSetting) =>
+	st.type === "bool" ? bool(st.field, st.label, st.default) : select(st.field, st.label, st.options.map(([, l]) => l), label(st, st.default) as string);
 
 const collections = [
 	{
@@ -66,6 +74,19 @@ const collections = [
 			select("logo_shape", "Design: header logo shape", ["Wide", "Stacked"], "Wide"),
 			select("team_cards", "Design: team cards", Object.values(TEAM_LAYOUTS).map(clean), clean(TEAM_LAYOUTS.overlay)),
 			bool("cta_photo", "Design: photo panel in booking bands", true),
+		],
+	},
+	{
+		slug: "site_pages",
+		label: "Pages",
+		labelSingular: "Page",
+		description: "One record per template page. Publish = page on (and its links); unpublish = page off. Each setting starts with the page it belongs to.",
+		routable: false,
+		supports: ["drafts", "revisions"],
+		fields: [
+			title("Page"),
+			select("hero", "Hero (pages with a hero)", HERO_OPTIONS.map(([, l]) => l), HERO_OPTIONS[0][1]),
+			...pageSettingFields.map(pageField),
 		],
 	},
 	{
@@ -216,6 +237,13 @@ const content = {
 			cta_photo: true,
 		}),
 	],
+	site_pages: PAGES.map((p) =>
+		pub(`page-${p.slug}`, p.slug, {
+			title: p.title,
+			hero: HERO_OPTIONS[0][1],
+			...Object.fromEntries(p.settings.map((st) => [st.field, label(st, st.default)])),
+		}),
+	),
 	offices: s.offices.map((o, i) =>
 		pub(`office-${o.slug}`, o.slug, {
 			title: o.name,

@@ -169,6 +169,42 @@ export interface Service {
   terms?: Record<string, TaxonomyTerm[]>;
 }
 
+export interface SitePage {
+  id: string;
+  slug: string | null;
+  status: string;
+  title: string;
+  hero?: "Page default" | "Photo" | "Example photo" | "No photo · Primary" | "No photo · Light";
+  home_trust_logos?: "Scrolling (with pause)" | "Still";
+  home_trust_rating?: "In its own box" | "Plain (no box)";
+  home_latest_posts?: boolean;
+  home_sample_card?: boolean;
+  services_first_visit?: boolean;
+  hearing_aids_styles?: boolean;
+  hearing_aids_otc?: boolean;
+  about_journey?: "Grid 2 × 2" | "Horizontal" | "Hidden";
+  about_community?: boolean;
+  about_credentials?: boolean;
+  book_version?: "A · Scheduler embed" | "B · Request form";
+  book_layout?: "Full width" | "Right sidebar";
+  reviews_button?: "Primary colour" | "White with outline";
+  blog_layout?: "Grid · 16:9" | "Grid · square" | "List";
+  resources_layout?: "Cards" | "Accordion";
+  resources_group?: "None" | "Tag";
+  legal_toc?: boolean;
+  service_sidebar_reviews?: "Single review" | "Carousel (3)";
+  service_posts_card?: boolean;
+  service_sticky?: boolean;
+  profile_video?: boolean;
+  post_image?: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  byline?: BylineSummary | null;
+  bylines?: ContentBylineCredit[];
+  terms?: Record<string, TaxonomyTerm[]>;
+}
+
 declare module "emdash" {
   interface EmDashCollections {
     brands: Brand;
@@ -178,5 +214,6 @@ declare module "emdash" {
     providers: Provider;
     resources: Resource;
     services: Service;
+    site_pages: SitePage;
   }
 }

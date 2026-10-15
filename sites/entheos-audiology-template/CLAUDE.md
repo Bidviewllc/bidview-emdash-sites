@@ -89,15 +89,27 @@ handed off from Claude Design in `design/`.
 - Site design choices are fields on Practice details (header style, footer style,
   footer logo, badge row, logo shape, team cards, CTA photo). Review controls start
   from them; the address bar still overrides for review.
+- **Pages list** (collection `site_pages`, defined in `src/data/page-settings.ts`):
+  one record per template page plus "Template:" records for service pages, brand
+  pages, team profiles, location pages and blog posts. Published = page on;
+  unpublished = 404 (middleware), its menu links hidden, and switch-on links that
+  depend on it hidden (Home "Read our story" needs About; "Read more reviews"
+  needs Reviews; latest/recent posts need Blog and a post; Book buttons go to
+  Contact when Book appointment is off). Each record holds the hero choice and
+  that page's settings; every setting field shows on every record, so labels start
+  with the page name. Settings feed the Review controls starting values
+  (`s.bool`/`s.choice`/`heroFor` read the record first). A site without the
+  Pages list treats every page as on.
 - A site set up before menus or new fields were in the seed doesn't get them from
-  the seed. Menus: `npx tsx scripts/menus-sql.ts > menus.sql`, then
+  the seed. Collections and fields: `npx tsx scripts/sync-schema.ts <site>` (dry
+  run), then `--apply` (a new collection also gets the seed's records). Menus: `npx tsx scripts/menus-sql.ts > menus.sql`, then
   `npx wrangler d1 execute DB --remote --file menus.sql` (skips menus that exist).
-  Fields: add with the EmDash CLI after `npx emdash login --url <site>`. Until a
-  field exists the site uses the design default.
+  The CLI needs `npx emdash login --url <site>` once (an admin approves a code).
+  Until a field exists the site uses the design default.
 - D1 export fails on this database (FTS tables); take a Time Travel bookmark
   (`npx wrangler d1 time-travel info entheos-template-cms-db`) before SQL changes.
-- Not yet in EmDash: page-level switches and template-page publishing, reviews,
-  service and profile body text.
+- Not yet in EmDash: page text (headings, intros, sections), reviews, service and
+  profile body text.
 
 ## Working style
 Build in the handoff's order and stop after each step for Liz's review. When the

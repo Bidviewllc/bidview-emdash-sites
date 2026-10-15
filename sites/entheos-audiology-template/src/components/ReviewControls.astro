@@ -24,9 +24,15 @@ const { pageName, tweaks, heroDefault } = Astro.props;
 const s = getSettings(Astro);
 const q = s.query;
 
+// A page switch starts from the page's Pages record (EmDash), else its design default.
+const start = (t: Tweak) => {
+	const v = s.pageValue(t.key) ?? t.default;
+	return t.type === "bool" ? (v === true || v === "1" ? "1" : "0") : String(v);
+};
 const pageDefaults: Record<string, string> = {};
-for (const t of tweaks) pageDefaults[t.key] = t.type === "bool" ? (t.default ? "1" : "0") : t.default;
-const defaults = { ...globalDefaults(Astro.locals.site), ...pageDefaults, ...(heroDefault ? { hero: heroDefault } : {}) };
+for (const t of tweaks) pageDefaults[t.key] = start(t);
+const heroStart = heroDefault ? (s.pageHero ?? heroDefault) : undefined;
+const defaults = { ...globalDefaults(Astro.locals.site), ...pageDefaults, ...(heroStart ? { hero: heroStart } : {}) };
 
 const cur = (k: string, d: string) => q.get(k) ?? d;
 const hex = (c: string) => c.toLowerCase();
@@ -114,13 +120,13 @@ const hex = (c: string) => c.toLowerCase();
 					{tweaks.map((t) =>
 						t.type === "bool" ? (
 							<label class="rc-check">
-								<input type="checkbox" name={t.key} checked={cur(t.key, t.default ? "1" : "0") === "1"} /> {t.label}
+								<input type="checkbox" name={t.key} checked={cur(t.key, start(t)) === "1"} /> {t.label}
 							</label>
 						) : (
 							<label class="rc-field">
 								{t.label}
 								<select name={t.key}>
-									{t.options.map(([v, l]) => <option value={v} selected={cur(t.key, t.default) === v}>{l}</option>)}
+									{t.options.map(([v, l]) => <option value={v} selected={cur(t.key, start(t)) === v}>{l}</option>)}
 								</select>
 							</label>
 						),
