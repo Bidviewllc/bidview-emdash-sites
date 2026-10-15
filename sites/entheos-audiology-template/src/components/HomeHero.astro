@@ -1,6 +1,7 @@
 ---
 // Home hero with the trust bar. Four versions: Photo, Example photo,
-// No photo · Primary, No photo · Light.
+// No photo · Primary, No photo · Light. "Photo" uses the photo uploaded on the
+// Home record in the Pages list (a placeholder until then; see heroFor).
 // Desktop: text over the photo. Phone: the photo comes first (4:5) with the
 // trust bar on it, and the text sits on white underneath (HomeMobile board).
 import { cr, darken, on } from "../lib/color";
@@ -10,6 +11,8 @@ import { routes, telHref } from "../lib/routes";
 
 const s = getSettings(Astro);
 const hero = s.heroFor("photo");
+/** Uploaded hero photo (Pages: Home), or the review-only example photo. */
+const img = hero === "example" ? { src: "/assets/photos/consult.jpg", alt: "An audiologist smiling as she talks with a patient across her desk" } : s.pageHeroImage;
 const { P, A } = s.colors;
 const onP = on(P);
 const isPhoto = hero === "photo" || hero === "example";
@@ -30,7 +33,7 @@ const shapeB = isPrim ? "color-mix(in srgb, var(--on-p) 5%, transparent)" : "col
 	{
 		isPhoto && (
 			<div class="hmedia">
-				{hero === "photo" ? (
+				{!img ? (
 					<>
 						<div class="ph dark2"><span class="ph-label tr">Hero photo · 16:9 · calm, even area on the left</span></div>
 						<div class="scrim left" />
@@ -38,7 +41,7 @@ const shapeB = isPrim ? "color-mix(in srgb, var(--on-p) 5%, transparent)" : "col
 				) : (
 					<>
 						<div class="ex-fill" style={`background: ${fade}`} />
-						<img class="ex-img" src="/assets/photos/consult.jpg" alt="An audiologist smiling as she talks with a patient across her desk" />
+						<img class="ex-img" src={img.src} alt={img.alt} />
 						<div class="ex-fade" style={`background: linear-gradient(to right, ${fade} 0%, ${fade}C8 45%, ${fade}00 100%)`} />
 					</>
 				)}

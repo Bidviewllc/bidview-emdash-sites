@@ -106,6 +106,15 @@ handed off from Claude Design in `design/`.
   (looked up in page-settings.ts by field slug; the admin passes select choices,
   not widget options, to select fields). It finds the open record's slug from the
   admin address plus one API call; until then it shows the field.
+- **Photos** (`Photo.astro` for plain slots): hero photo on each Pages record (Home
+  16:9, others 3:2) and on Services, Brands and Offices (`photo` = exterior);
+  community photo on the About record; team, booking-band and office-interior
+  photos on Practice details. "Photo" hero with no photo: labelled placeholder
+  while Review controls are on, the no-photo Light hero when they're off (live).
+  The example photo (`/assets/photos`) is review-only: Review controls' "Example
+  photo" hero, the sample article body and the sample video poster. The admin
+  hides Pages photo fields on records they don't belong to via a style rule from
+  the page-settings widget (`PAGE_PHOTO_FIELDS`).
 - Changes to the Pages list only reach the main address after the version is
   promoted; the admin always edits the shared database, so a preview URL shows
   admin edits straight away.

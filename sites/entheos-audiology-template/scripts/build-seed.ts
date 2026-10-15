@@ -79,6 +79,10 @@ const collections = [
 			select("logo_shape", "Design: header logo shape", ["Wide", "Stacked"], "Wide"),
 			select("team_cards", "Design: team cards", Object.values(TEAM_LAYOUTS).map(clean), clean(TEAM_LAYOUTS.overlay)),
 			bool("cta_photo", "Design: photo panel in booking bands", true),
+			// Site-wide photos. Placeholders show until these are uploaded.
+			image("team_photo", "Photo: team (3:2; Home about section and About story)"),
+			image("cta_photo_image", "Photo: booking band (older adult laughing with family, or on a walk)"),
+			image("office_photo", "Photo: office interior (3:2; brand pages, care section)"),
 		],
 	},
 	{
@@ -91,6 +95,8 @@ const collections = [
 		fields: [
 			title("Page"),
 			{ ...select("hero", "Hero", HERO_OPTIONS.map(([, l]) => l), HERO_OPTIONS[0][1]), ...scoped(PAGES.filter((p) => p.hero).map((p) => p.slug)) },
+			image("hero_image", "Hero photo (used when Hero is Photo; Home 16:9 with a calm area on the left, other pages 3:2)"),
+			image("community_photo", "About: community photo (3:2)"),
 			...pageSettingFields.map(pageField),
 		],
 	},
@@ -110,6 +116,7 @@ const collections = [
 			str("hours_line", "Hours on one line (cards)"),
 			txt("hours_long", "Hours, long form (office page; one line per row)"),
 			{ slug: "maps_url", label: "Google Maps link", type: "url" },
+			image("photo", "Office exterior photo (3:2; location page hero)"),
 			int("sort_order", "Sort order"),
 		],
 	},
@@ -128,6 +135,7 @@ const collections = [
 			bool("on_home", "Show on the Home page grid", true),
 			str("book_label", "Booking button label"),
 			str("cta_heading", "Booking band heading"),
+			image("hero_image", "Hero photo (3:2, landscape)"),
 			faqField,
 			int("sort_order", "Sort order"),
 		],
@@ -141,6 +149,7 @@ const collections = [
 		fields: [
 			title("Brand name"),
 			image("logo", "Logo"),
+			image("hero_image", "Hero photo (3:2; product lifestyle from the manufacturer)"),
 			str("logo_height", "Logo height in the 160 x 60 tile (e.g. 46px)"),
 			txt("summary", "Card summary"),
 			bool("has_page", "Give this brand its own page"),

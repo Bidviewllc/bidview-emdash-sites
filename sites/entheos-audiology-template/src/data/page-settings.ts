@@ -104,15 +104,24 @@ export const PAGES: PageDef[] = [
 	{ slug: "blog-posts", title: "Template: blog posts", alwaysOn: true, settings: [bool("post_image", "Blog posts: featured image", "image")] },
 ];
 
-/** The hero choice, shared by every record (labels match Review controls). */
+/** The hero choice on Pages records. "Example photo" is review-only (Review controls). */
 export const HERO_FIELD = "hero";
 export const HERO_OPTIONS: [string, string][] = [
 	["", "Page default"],
 	["photo", "Photo"],
-	["example", "Example photo"],
 	["primary", "No photo · Primary"],
 	["light", "No photo · Light"],
 ];
+
+/**
+ * Photo fields on the Pages list and the records they belong to. The admin
+ * can't give image fields a custom widget, so the page-settings plugin hides
+ * them with a style rule on the other records.
+ */
+export const PAGE_PHOTO_FIELDS: Record<string, string[]> = {
+	hero_image: PAGES.filter((p) => p.hero).map((p) => p.slug),
+	community_photo: ["about"],
+};
 
 /** Which Pages record governs an address. */
 export function pageFor(pathname: string): PageDef | undefined {

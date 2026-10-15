@@ -276,6 +276,21 @@
 					"label": "Design: photo panel in booking bands",
 					"type": "boolean",
 					"defaultValue": true
+				},
+				{
+					"slug": "team_photo",
+					"label": "Photo: team (3:2; Home about section and About story)",
+					"type": "image"
+				},
+				{
+					"slug": "cta_photo_image",
+					"label": "Photo: booking band (older adult laughing with family, or on a walk)",
+					"type": "image"
+				},
+				{
+					"slug": "office_photo",
+					"label": "Photo: office interior (3:2; brand pages, care section)",
+					"type": "image"
 				}
 			]
 		},
@@ -306,7 +321,6 @@
 						"options": [
 							"Page default",
 							"Photo",
-							"Example photo",
 							"No photo · Primary",
 							"No photo · Light"
 						]
@@ -325,6 +339,16 @@
 							"location-pages"
 						]
 					}
+				},
+				{
+					"slug": "hero_image",
+					"label": "Hero photo (used when Hero is Photo; Home 16:9 with a calm area on the left, other pages 3:2)",
+					"type": "image"
+				},
+				{
+					"slug": "community_photo",
+					"label": "About: community photo (3:2)",
+					"type": "image"
 				},
 				{
 					"slug": "home_trust_logos",
@@ -729,6 +753,11 @@
 					"type": "url"
 				},
 				{
+					"slug": "photo",
+					"label": "Office exterior photo (3:2; location page hero)",
+					"type": "image"
+				},
+				{
 					"slug": "sort_order",
 					"label": "Sort order",
 					"type": "integer",
@@ -794,6 +823,11 @@
 					"type": "string"
 				},
 				{
+					"slug": "hero_image",
+					"label": "Hero photo (3:2, landscape)",
+					"type": "image"
+				},
+				{
 					"slug": "faq",
 					"label": "FAQ",
 					"type": "repeater",
@@ -842,6 +876,11 @@
 				{
 					"slug": "logo",
 					"label": "Logo",
+					"type": "image"
+				},
+				{
+					"slug": "hero_image",
+					"label": "Hero photo (3:2; product lifestyle from the manufacturer)",
 					"type": "image"
 				},
 				{

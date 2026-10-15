@@ -10,7 +10,7 @@
 // move onto the EmDash settings page too.
 
 import { pageFor } from "../data/page-settings";
-import type { SiteData } from "../data/site";
+import type { Photo, SiteData } from "../data/site";
 import type { Palette } from "./color";
 
 /** Test palettes. "practice" (the default) is the practice's own colours. */
@@ -171,12 +171,20 @@ export function getSettings({ url, locals }: { url: URL; locals: App.Locals }) {
 		footerBadges: raw("badges") !== "0",
 		officeCount,
 		offices,
-		/** This page's hero: the Review controls choice, else the page's own default. */
-		heroFor: (pageDefault: HeroKey): HeroKey => {
+		/**
+		 * This page's hero: the Review controls choice, else the Pages record's,
+		 * else the page's own default. "Photo" with no photo uploaded shows a
+		 * labelled placeholder while Review controls are on, and the no-photo
+		 * Light version on a live site. `image` defaults to the Pages record's photo.
+		 */
+		heroFor: (pageDefault: HeroKey, image: Photo | undefined = pageRec?.heroImage): HeroKey => {
 			const v = q.get("hero");
 			const own = pageRec?.hero;
-			return v && v in HEROES ? (v as HeroKey) : own && own in HEROES ? (own as HeroKey) : pageDefault;
+			const key = v && v in HEROES ? (v as HeroKey) : own && own in HEROES ? (own as HeroKey) : pageDefault;
+			return key === "photo" && !image && !practice.reviewControls ? "light" : key;
 		},
+		/** Photo uploaded on this page's Pages record. */
+		pageHeroImage: pageRec?.heroImage,
 		pageValue,
 		/** Hero chosen on this page's Pages record, if any. */
 		pageHero: pageRec?.hero,

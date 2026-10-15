@@ -27,7 +27,7 @@ const tweaks: Tweak[] = [
 
 const s = getSettings(Astro);
 const h = s.href;
-const hero = s.heroFor("photo");
+const hero = s.heroFor("photo", service.heroImage);
 const withPhoto = hero === "photo" || hero === "example";
 const prim = hero === "primary";
 const carousel = s.choice("reviews", ["single", "carousel"], "single") === "carousel";
@@ -82,6 +82,8 @@ const crumbs = (
 					</div>
 					{hero === "example" ? (
 						<div class="phimg"><img src="/assets/photos/consult.jpg" alt="An audiologist smiling as she talks with a patient across her desk" style="object-position: 55% 30%" /></div>
+					) : service.heroImage ? (
+						<div class="phimg"><img src={service.heroImage.src} alt={service.heroImage.alt} /></div>
 					) : (
 						<div class="ph warm" style="aspect-ratio: 3/2; border-radius: var(--r-hero)"><span class="ph-label">Page hero photo · 3:2, landscape</span></div>
 					)}

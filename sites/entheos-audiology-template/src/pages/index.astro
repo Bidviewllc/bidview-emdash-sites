@@ -14,6 +14,7 @@ import Stars from "../components/Stars.astro";
 import Base from "../layouts/Base.astro";
 import { getSettings } from "../lib/settings";
 import { routes } from "../lib/routes";
+import Photo from "../components/Photo.astro";
 
 const { brands, latest: posts, practice, providers, reviews, services } = Astro.locals.site;
 
@@ -54,7 +55,7 @@ const city = practice.city;
 
 	<section class="band">
 		<div class="wrap about">
-			<div class="ph stone"><span class="ph-label">Team photo · 3:2</span></div>
+			<Photo photo={practice.photos.team} label="Team photo · 3:2" tone="stone" />
 			<div class="stack g24">
 				<span class="eyebrow">About us</span>
 				<h2 class="h2">A locally owned practice in {city}</h2>

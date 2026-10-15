@@ -4,6 +4,7 @@
 // No photo · Light. Photo versions put the text left and a 3:2 photo right;
 // no-photo versions sit in a rounded colour panel with two soft rings.
 // "short" is the utility-page version: no photo, less height.
+import type { Photo } from "../data/site";
 import type { HeroKey } from "../lib/settings";
 import { getSettings } from "../lib/settings";
 import { routes, telHref } from "../lib/routes";
@@ -21,6 +22,8 @@ interface Props {
 	/** Bottom padding of the photo version (the boards use 72 or 88). */
 	photoBottom?: number;
 	short?: boolean;
+	/** Hero photo of a record page (office, service...); fixed pages use their Pages record's. */
+	image?: Photo;
 }
 const {
 	crumbs,
@@ -33,9 +36,11 @@ const {
 	photoTone = "warm",
 	photoBottom = 88,
 	short = false,
+	image: ownImage,
 } = Astro.props;
 const s = getSettings(Astro);
-const hero = short ? "light" : s.heroFor(heroDefault);
+const image = ownImage ?? s.pageHeroImage;
+const hero = short ? "light" : s.heroFor(heroDefault, image);
 const withPhoto = hero === "photo" || hero === "example";
 const prim = hero === "primary";
 const shapeA = prim ? "color-mix(in srgb, var(--on-p) 8%, transparent)" : "color-mix(in srgb, var(--p) 7%, transparent)";
@@ -74,6 +79,8 @@ const hasSlot = Astro.slots.has("default");
 				</div>
 				{hero === "example" ? (
 					<div class="phimg"><img src="/assets/photos/consult.jpg" alt="An audiologist smiling as she talks with a patient across her desk" style="object-position: 55% 30%" /></div>
+				) : image ? (
+					<div class="phimg"><img src={image.src} alt={image.alt} /></div>
 				) : (
 					<div class:list={["ph", photoTone]} style="aspect-ratio: 3/2; border-radius: var(--r-hero)"><span class="ph-label">{photoLabel}</span></div>
 				)}

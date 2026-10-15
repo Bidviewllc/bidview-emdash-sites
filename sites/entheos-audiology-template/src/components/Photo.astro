@@ -1,0 +1,32 @@
+---
+// A photo slot: the uploaded photo, or a labelled placeholder until one is
+// uploaded in EmDash. The placeholder keeps the slot's shape, so the layout
+// never has a gap.
+import type { Photo } from "../data/site";
+
+interface Props {
+	photo?: Photo;
+	/** Placeholder text: what the photo should show. */
+	label: string;
+	/** Placeholder colour. */
+	tone?: string;
+	class?: string;
+	style?: string;
+	/** Placeholder label position: "tl", "tr" or bottom-left (default). */
+	labelPos?: "tl" | "tr";
+	/** Below-the-fold photos load lazily. */
+	eager?: boolean;
+}
+const { photo, label, tone = "warm", class: cls, style, labelPos, eager = false } = Astro.props;
+---
+{
+	photo ? (
+		<div class:list={["ph", "has-img", cls]} style={style}>
+			<img src={photo.src} alt={photo.alt} loading={eager ? undefined : "lazy"} />
+		</div>
+	) : (
+		<div class:list={["ph", tone, cls]} style={style}>
+			<span class:list={["ph-label", labelPos]}>{label}</span>
+		</div>
+	)
+}

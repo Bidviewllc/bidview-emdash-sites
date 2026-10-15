@@ -3,6 +3,7 @@
 // Primary panel alone (Review controls → CTA photo panel off).
 import { getSettings } from "../lib/settings";
 import { routes, telHref } from "../lib/routes";
+import Photo from "./Photo.astro";
 
 interface Props {
 	id: string;
@@ -39,7 +40,7 @@ const tel = telHref(s.phone);
 				</div>
 			</div>
 			<div class="cta-emo on-dark">
-				<div class="ph dark"><span class="ph-label tr">{photoLabel}</span></div>
+				<Photo photo={Astro.locals.site.practice.photos.cta} label={photoLabel} tone="dark" labelPos="tr" />
 				<div class="scrim" />
 				<div class="inner">
 					<span class="eyebrow on-dark">Start your hearing journey</span>

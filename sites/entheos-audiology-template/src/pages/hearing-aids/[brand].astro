@@ -10,6 +10,7 @@ import type { Tweak } from "../../components/ReviewControls.astro";
 import Base from "../../layouts/Base.astro";
 import { getSettings } from "../../lib/settings";
 import { routes, telHref } from "../../lib/routes";
+import Photo from "../../components/Photo.astro";
 
 const { brandDetails, brandFaqs, brands, practice } = Astro.locals.site;
 
@@ -20,7 +21,7 @@ const detail = brandDetails[brand.slug];
 const tweaks: Tweak[] = [];
 const s = getSettings(Astro);
 const h = s.href;
-const hero = s.heroFor("photo");
+const hero = s.heroFor("photo", brand.heroImage);
 const withPhoto = hero === "photo" || hero === "example";
 const prim = hero === "primary";
 const tel = telHref(s.phone);
@@ -55,6 +56,8 @@ const productSvg = `<path d="M60 14c11 0 18 9 18 20v24c0 9-7 16-16 16s-16-7-16-1
 					</div>
 					{hero === "example" ? (
 						<div class="phimg brand-photo"><img src="/assets/photos/consult.jpg" alt="An audiologist smiling as she talks with a patient across her desk" style="object-position: 55% 30%" /></div>
+					) : brand.heroImage ? (
+						<div class="phimg brand-photo"><img src={brand.heroImage.src} alt={brand.heroImage.alt} /></div>
 					) : (
 						<div class="ph sky brand-photo" style="aspect-ratio: 3/2; border-radius: var(--r-hero)"><span class="ph-label">Product lifestyle photo · 3:2 (from the manufacturer)</span></div>
 					)}
@@ -170,7 +173,13 @@ const productSvg = `<path d="M60 14c11 0 18 9 18 20v24c0 9-7 16-16 16s-16-7-16-1
 				<h2 class="h2">{brand.name} hearing aid care at {s.name}</h2>
 				<p class="body">Culpa qui officia deserunt mollit anim id est laborum. Curabitur pretium tincidunt lacus nulla gravida orci a odio nullam varius turpis et. Commodo pharetra est eros bibendum elit nec luctus magna felis sollicitudin mauris integer in mauris eu nibh. Euismod gravida praesent blandit odio eu enim pellentesque sed dapibus. Est sed lacinia sapien vel tellus lorem ipsum dolor sit amet consectetur adipiscing elit.</p>
 			</div>
-			<div class="photo-32"><img src="/assets/photos/waiting-room.jpg" alt={`The ${s.name} waiting room`} loading="lazy" /></div>
+			{
+				practice.photos.office ? (
+					<div class="photo-32"><img src={practice.photos.office.src} alt={practice.photos.office.alt} loading="lazy" /></div>
+				) : (
+					<Photo label="Office interior photo · 3:2 (Practice details)" tone="stone" style="aspect-ratio: 3/2; border-radius: var(--r-hero)" />
+				)
+			}
 		</div>
 	</section>
 

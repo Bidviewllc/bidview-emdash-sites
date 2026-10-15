@@ -23,6 +23,8 @@ export type Office = {
 	mapsUrl: string;
 	/** Long-form hours for the office page. */
 	hoursLong: string;
+	/** Office exterior photo (location page hero). */
+	photo?: { src: string; alt: string };
 };
 
 export type Provider = {
@@ -58,6 +60,8 @@ export type Service = {
 	onHome?: boolean;
 	bookLabel: string;
 	ctaHeading: string;
+	/** Uploaded photo, if any. */
+	heroImage?: { src: string; alt: string };
 };
 
 export type Brand = {
@@ -69,6 +73,8 @@ export type Brand = {
 	hasPage: boolean;
 	hideFromHub?: boolean;
 	summary: string;
+	/** Uploaded photo, if any. */
+	heroImage?: { src: string; alt: string };
 };
 
 export type Association = {

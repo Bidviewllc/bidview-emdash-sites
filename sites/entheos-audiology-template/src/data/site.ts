@@ -43,6 +43,13 @@ const code = (v: unknown, d: string) => {
 const imgSrc = (v: any): string | undefined =>
 	v?.src ?? v?.url ?? (v?.meta?.storageKey ? `/_emdash/api/media/file/${v.meta.storageKey}` : undefined);
 
+/** An uploaded photo. */
+export type Photo = { src: string; alt: string };
+const photo = (v: any): Photo | undefined => {
+	const src = imgSrc(v);
+	return src ? { src, alt: v?.alt ?? "" } : undefined;
+};
+
 /** A menu link as the templates use it. */
 export type NavLink = { label: string; href: string; target?: string; children: NavLink[] };
 export const MENU_NAMES = ["header", "footer_practice", "footer_services", "footer_patients", "footer_current", "footer_quick", "footer_explore", "footer_legal"] as const;
@@ -92,6 +99,8 @@ export async function loadSite() {
 		logo: imgSrc(settings.logo),
 		favicon: imgSrc(settings.favicon),
 		reviewControls: p.review_controls !== false,
+		/** Site-wide photos (Practice details); placeholders show until uploaded. */
+		photos: { team: photo(p.team_photo), cta: photo(p.cta_photo_image), office: photo(p.office_photo) },
 		/** Site design choices (Practice details); Review controls start from these. */
 		design: {
 			header: code(p.header_style, "h3"),
@@ -115,6 +124,7 @@ export async function loadSite() {
 		hoursLine: e.data.hours_line ?? "",
 		hoursLong: lines(e.data.hours_long).join("<br>"),
 		mapsUrl: e.data.maps_url ?? "",
+		photo: photo(e.data.photo),
 	}));
 
 	const services: (Service & { faq: { q: string; a: string }[] })[] = serviceE.map((e) => ({
@@ -128,6 +138,7 @@ export async function loadSite() {
 		bookLabel: e.data.book_label || "Book an appointment",
 		ctaHeading: e.data.cta_heading || "Book your appointment",
 		faq: e.data.faq ?? [],
+		heroImage: photo(e.data.hero_image),
 	}));
 
 	const brands: Brand[] = brandE.map((e) => ({
@@ -138,6 +149,7 @@ export async function loadSite() {
 		hasPage: !!e.data.has_page,
 		hideFromHub: !!e.data.hide_from_hub,
 		summary: e.data.summary ?? "",
+		heroImage: photo(e.data.hero_image),
 	}));
 	const brandDetails: Record<string, BrandDetail> = {};
 	const brandFaqs: Record<string, { q: string; a: string }[]> = {};
@@ -205,7 +217,7 @@ export async function loadSite() {
 		const def = PAGES.find((d) => d.slug === slug);
 		return !pageE.length || !!def?.alwaysOn || pageRecords.has(slug);
 	};
-	const pages: Record<string, { on: boolean; hero?: string; values: Record<string, string | boolean> }> = {};
+	const pages: Record<string, { on: boolean; hero?: string; heroImage?: Photo; communityPhoto?: Photo; values: Record<string, string | boolean> }> = {};
 	for (const def of PAGES) {
 		const d = pageRecords.get(def.slug) ?? {};
 		const values: Record<string, string | boolean> = {};
@@ -215,7 +227,7 @@ export async function loadSite() {
 			values[st.key] = st.type === "bool" ? !!v : (st.options.find(([, label]) => label === v)?.[0] ?? st.default);
 		}
 		const hero = HERO_OPTIONS.find(([, label]) => label === d.hero)?.[0];
-		pages[def.slug] = { on: pageOn(def.slug), ...(hero ? { hero } : {}), values };
+		pages[def.slug] = { on: pageOn(def.slug), ...(hero ? { hero } : {}), heroImage: photo(d.hero_image), communityPhoto: photo(d.community_photo), values };
 	}
 	// Switch-on rules that follow other pages being on.
 	pages.home.values.about = pageOn("about");

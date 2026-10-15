@@ -24,7 +24,7 @@ const tweaks: Tweak[] = [
 	{ key: "provlinks", label: "Provider profile linked", type: "bool", default: true },
 ];
 const h = s.href;
-const hero = s.heroFor("photo");
+const hero = s.heroFor("photo", office.photo);
 const withPhoto = hero === "photo" || hero === "example";
 const svcLinks = s.choice("svclinks", ["mixed", "all", "none"], "mixed");
 const provLinked = s.bool("provlinks", true);
@@ -39,6 +39,7 @@ const others = (p: (typeof providers)[number]) =>
 		title={`Hearing care in ${town}`}
 		lead="Id est laborum curabitur pretium tincidunt lacus nulla gravida orci. A odio nullam varius turpis et commodo pharetra est eros bibendum elit nec luctus. Magna felis sollicitudin mauris integer in mauris eu nibh euismod gravida."
 		photoLabel="Office exterior photo · 3:2"
+		image={office.photo}
 		photoTone="stone"
 	/>
 

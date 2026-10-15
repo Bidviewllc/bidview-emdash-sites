@@ -12,7 +12,7 @@
  * widget looks the field up by its id, "field-<slug>").
  */
 import { useEffect, useState, type CSSProperties } from "react";
-import { PAGES } from "../../data/page-settings";
+import { PAGE_PHOTO_FIELDS, PAGES } from "../../data/page-settings";
 
 type Props = {
 	value: unknown;
@@ -74,8 +74,26 @@ const control: CSSProperties = {
 	maxWidth: 420,
 };
 
-function ScopedField({ value, onChange, label, id, validation }: Props) {
+/** Style rule hiding the photo fields that don't belong to this record. */
+function photoRule(slug: string | null | undefined) {
+	if (!slug) return null;
+	const hide = Object.entries(PAGE_PHOTO_FIELDS)
+		.filter(([, pages]) => !pages.includes(slug))
+		.map(([f]) => `#field-${f}`);
+	return hide.length ? <style>{`${hide.join(", ")} { display: none !important; }`}</style> : null;
+}
+
+function ScopedField(props: Props) {
 	const slug = useCurrentSlug();
+	return (
+		<>
+			{photoRule(slug)}
+			<ScopedControl {...props} slug={slug} />
+		</>
+	);
+}
+
+function ScopedControl({ value, onChange, label, id, validation, slug }: Props & { slug: string | null | undefined }) {
 	const field = id.replace(/^field-/, "");
 	const pages =
 		field === "hero" ? PAGES.filter((p) => p.hero).map((p) => p.slug) : PAGES.filter((p) => p.settings.some((st) => st.field === field)).map((p) => p.slug);

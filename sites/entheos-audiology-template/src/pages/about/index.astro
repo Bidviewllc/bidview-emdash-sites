@@ -10,6 +10,7 @@ import TeamGrid from "../../components/TeamGrid.astro";
 import type { Tweak } from "../../components/ReviewControls.astro";
 import Base from "../../layouts/Base.astro";
 import { getSettings } from "../../lib/settings";
+import Photo from "../../components/Photo.astro";
 
 const { associations, milestones, practice, providers, values } = Astro.locals.site;
 
@@ -44,7 +45,7 @@ const credHeights: Record<string, string> = { ada: "40px", aaa: "50px", aba: "54
 				<p class="body">Deserunt mollit anim id est laborum curabitur pretium tincidunt lacus. Nulla gravida orci a odio nullam varius turpis et commodo pharetra est eros bibendum. Elit nec luctus magna felis sollicitudin mauris integer in mauris eu nibh. Euismod gravida praesent blandit odio eu enim pellentesque sed dapibus est. Sed lacinia sapien vel tellus lorem ipsum dolor sit amet consectetur adipiscing elit sed do.</p>
 				<p class="body">Irure dolor in reprehenderit in voluptate velit esse cillum dolore. Eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui. Officia deserunt mollit anim id est laborum curabitur pretium tincidunt lacus nulla. Gravida orci a odio nullam varius turpis et commodo pharetra est.</p>
 			</div>
-			<div class="ph stone story-photo"><span class="ph-label">Team photo · 3:2</span></div>
+			<Photo photo={practice.photos.team} label="Team photo · 3:2" tone="stone" class="story-photo" />
 		</div>
 	</section>
 
@@ -114,7 +115,7 @@ const credHeights: Record<string, string> = { ada: "40px", aaa: "50px", aba: "54
 		community && (
 			<section class="band">
 				<div class="wrap about community">
-					<div class="ph sky"><span class="ph-label">Community photo · 3:2 (event, school screening, sponsorship)</span></div>
+					<Photo photo={Astro.locals.site.pages.about.communityPhoto} label="Community photo · 3:2 (event, school screening, sponsorship)" tone="sky" />
 					<div class="stack g24">
 						<span class="eyebrow">Community</span>
 						<h2 class="h2">Part of the {practice.city} community</h2>
