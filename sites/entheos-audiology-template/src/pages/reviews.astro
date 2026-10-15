@@ -9,13 +9,19 @@ import Stars from "../components/Stars.astro";
 import { practice, routes } from "../data/practice";
 import all from "../data/content/revs.json";
 import Base from "../layouts/Base.astro";
+import type { Tweak } from "../components/ReviewControls.astro";
 import { getSettings } from "../lib/settings";
 
+// The design's gray button blended into the Light hero (Liz, 2026-10-15).
+const tweaks: Tweak[] = [
+	{ key: "reviewbtn", label: "“Leave us a review” button", type: "choice", default: "primary", options: [["primary", "Primary colour"], ["outline", "White with outline"]] },
+];
 const s = getSettings(Astro.url);
+const reviewBtn = s.choice("reviewbtn", ["primary", "outline"], "primary");
 const two = s.officeCount === 2;
 const filters = ["All", ...s.offices.map((o) => o.shortName)];
 ---
-<Base title={`Patient reviews | ${s.name}`} description={`Rated ${practice.rating.score} out of 5 from ${practice.rating.count} Google reviews.`} pageName="Reviews">
+<Base title={`Patient reviews | ${s.name}`} description={`Rated ${practice.rating.score} out of 5 from ${practice.rating.count} Google reviews.`} pageName="Reviews" tweaks={tweaks}>
 	<div class="pg-hero-np">
 		<section class="inophoto short" style="background: var(--l); color: var(--on-l)">
 			<div class="shape np1" style="border-color: color-mix(in srgb, var(--p) 7%, transparent)" />
@@ -29,7 +35,7 @@ const filters = ["All", ...s.offices.map((o) => o.shortName)];
 						<Stars label={`${practice.rating.score} out of 5 stars`} />
 						<span class="body"><b>{practice.rating.score} out of 5</b> from {practice.rating.count} Google reviews</span>
 					</div>
-					<a class="btn btn-gray" href="#">Leave us a review on Google</a>
+					<a class:list={["btn", reviewBtn === "outline" ? "btn-secondary" : "btn-primary"]} href="#">Leave us a review on Google <Icon name="arrowUR" size={18} /></a>
 				</div>
 			</div>
 		</section>
