@@ -46,6 +46,14 @@ export const HEROES = {
 	light: "No photo · Light",
 } as const;
 
+/** Team card layouts (Home and About "Meet the team"). */
+export const TEAM_LAYOUTS = {
+	overlay: "Cards · arrow on photo (default)",
+	side: "Cards · arrow beside name",
+	list: "List · photo left, short bio",
+} as const;
+
+export type TeamLayout = keyof typeof TEAM_LAYOUTS;
 export type HeaderKey = keyof typeof HEADERS;
 export type FooterKey = keyof typeof FOOTERS;
 export type HeroKey = keyof typeof HEROES;
@@ -64,6 +72,7 @@ export const GLOBAL_DEFAULTS = {
 	/** Empty = each page uses its own default hero. */
 	hero: "",
 	ctaphoto: "1",
+	team: "overlay",
 	name: practice.name,
 	phone: baseOffices[0].phone,
 	lshape: "wide",
@@ -146,6 +155,7 @@ export function getSettings(url: URL) {
 			return v && v in HEROES ? (v as HeroKey) : pageDefault;
 		},
 		ctaPhoto: raw("ctaphoto") !== "0",
+		team: pick(TEAM_LAYOUTS, q.get("team"), "overlay") as TeamLayout,
 		name,
 		wordmark,
 		phone,

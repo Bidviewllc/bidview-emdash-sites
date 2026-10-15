@@ -38,6 +38,8 @@ export type Provider = {
 	offices: string[];
 	/** Short name for headings, e.g. "Dr. Ellis". */
 	short: string;
+	/** Two or three sentences for the team list layout (no profile page needed). */
+	bio: string;
 };
 
 export type Service = {
@@ -136,9 +138,9 @@ export const offices: Office[] = [
 ];
 
 export const providers: Provider[] = [
-	{ slug: "jordan-ellis", name: "Dr. Jordan Ellis, Au.D.", title: "Owner and Audiologist", meet: "Meet Dr. Ellis", hasPage: true, tone: "warm", offices: ["riverside"], short: "Dr. Ellis" },
-	{ slug: "priya-raman", name: "Dr. Priya Raman, Au.D.", title: "Audiologist", meet: "Meet Dr. Raman", hasPage: true, tone: "sage", offices: ["northfield", "riverside"], short: "Dr. Raman" },
-	{ slug: "morgan-lee", name: "Morgan Lee", title: "Patient Care Coordinator", meet: "Meet Morgan Lee", hasPage: false, tone: "sky", offices: ["riverside"], short: "Morgan" },
+	{ slug: "jordan-ellis", name: "Dr. Jordan Ellis, Au.D.", title: "Owner and Audiologist", meet: "Meet Dr. Ellis", hasPage: true, tone: "warm", offices: ["riverside"], short: "Dr. Ellis", bio: "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt. Ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation. Ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor." },
+	{ slug: "priya-raman", name: "Dr. Priya Raman, Au.D.", title: "Audiologist", meet: "Meet Dr. Raman", hasPage: true, tone: "sage", offices: ["northfield", "riverside"], short: "Dr. Raman", bio: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat. Nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa. Qui officia deserunt mollit anim id est laborum curabitur pretium." },
+	{ slug: "morgan-lee", name: "Morgan Lee", title: "Patient Care Coordinator", meet: "Meet Morgan Lee", hasPage: false, tone: "sky", offices: ["riverside"], short: "Morgan", bio: "Curabitur pretium tincidunt lacus nulla gravida orci a odio nullam varius turpis. Et commodo pharetra est eros bibendum elit nec luctus magna felis sollicitudin. Mauris integer in mauris eu nibh euismod gravida." },
 ];
 
 export const services: Service[] = [

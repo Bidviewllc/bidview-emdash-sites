@@ -6,7 +6,7 @@
 // Every setting is written to the address bar, so a shared link reproduces the
 // view. Values equal to the default are left out to keep links short.
 import { practice } from "../data/practice";
-import { FOOTERS, GLOBAL_DEFAULTS, HEADERS, HEROES, PALETTES, getSettings, type HeroKey } from "../lib/settings";
+import { FOOTERS, GLOBAL_DEFAULTS, HEADERS, HEROES, PALETTES, TEAM_LAYOUTS, getSettings, type HeroKey } from "../lib/settings";
 import Icon from "./Icon.astro";
 
 export type Tweak =
@@ -101,6 +101,9 @@ const hex = (c: string) => c.toLowerCase();
 			)
 		}
 		<label class="rc-check"><input type="checkbox" name="ctaphoto" checked={s.ctaPhoto} /> CTA photo panel</label>
+		<label class="rc-field">Team cards
+			<select name="team">{Object.entries(TEAM_LAYOUTS).map(([k, l]) => <option value={k} selected={s.team === k}>{l}</option>)}</select>
+		</label>
 
 		{
 			tweaks.length > 0 && (

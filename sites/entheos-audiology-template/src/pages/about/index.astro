@@ -6,7 +6,7 @@
 import CtaBand from "../../components/CtaBand.astro";
 import Icon from "../../components/Icon.astro";
 import PageHero from "../../components/PageHero.astro";
-import ProviderCard from "../../components/ProviderCard.astro";
+import TeamGrid from "../../components/TeamGrid.astro";
 import type { Tweak } from "../../components/ReviewControls.astro";
 import { associations, milestones, practice, providers, values } from "../../data/practice";
 import Base from "../../layouts/Base.astro";
@@ -105,9 +105,7 @@ const credHeights: Record<string, string> = { ada: "40px", aaa: "50px", aba: "54
 				<span class="eyebrow">Our team</span>
 				<h2 class="h2">Meet the team</h2>
 			</div>
-			<div class="grid g-3 team-grid" style="gap: 16px; align-items: start">
-				{providers.map((p) => <ProviderCard p={p} linked={profiles && p.hasPage} />)}
-			</div>
+			<TeamGrid people={providers.map((p) => ({ ...p, linked: profiles && p.hasPage }))} alignStart />
 		</div>
 	</section>
 

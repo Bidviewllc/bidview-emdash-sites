@@ -2,8 +2,11 @@
 // Trust bar: the Google rating plus a slowly scrolling row of association logos.
 // The one exception to "nothing moves on its own": it has a pause button, stops
 // on hover or keyboard focus, and stands still for "reduce motion".
+// Review controls (Home): "trustmove=still" shows the logos once, standing
+// still, with no pause button; "trustrating=plain" drops the rating's own box.
 import { associations, practice } from "../data/practice";
 import Icon from "./Icon.astro";
+import { getSettings } from "../lib/settings";
 import Stars from "./Stars.astro";
 
 interface Props {
@@ -14,14 +17,17 @@ interface Props {
 	starsColor: string;
 }
 const { variant, tone, starsColor } = Astro.props;
+const s = getSettings(Astro.url);
+const still = s.choice("trustmove", ["scroll", "still"], "scroll") === "still";
+const plain = s.choice("trustrating", ["boxed", "plain"], "boxed") === "plain";
 
 // The row moves by half its width, so it holds two identical halves.
-// Only the first copy of each logo is announced.
-const logos = [0, 1, 2, 3].flatMap((copy) =>
+// Only the first copy of each logo is announced. A still row needs one copy.
+const logos = (still ? [0] : [0, 1, 2, 3]).flatMap((copy) =>
 	associations.map((a) => ({ ...a, hidden: copy > 0, src: `/assets/associations/${tone}/${a.key}.png` })),
 );
 ---
-<div class:list={["trust", variant]}>
+<div class:list={["trust", variant, { still, plain }]}>
 	<div class="track">
 		<ul class="marq" style="list-style: none; margin: 0" aria-label="Professional memberships and affiliations">
 			{
@@ -37,9 +43,9 @@ const logos = [0, 1, 2, 3].flatMap((copy) =>
 		<b>Rated {practice.rating.score}/5 from {practice.rating.count} Google reviews</b>
 		<Stars size={20} style={`color: ${starsColor}`} />
 	</div>
-	<button class="pause" type="button" aria-label="Pause logo scrolling">
+	{!still && <button class="pause" type="button" aria-label="Pause logo scrolling">
 		<span class="i-open"><Icon name="pause" /></span><span class="i-close" hidden><Icon name="play" /></span>
-	</button>
+	</button>}
 </div>
 
 <script>

@@ -5,7 +5,7 @@
 import CtaBand from "../components/CtaBand.astro";
 import HomeHero from "../components/HomeHero.astro";
 import OfficesSection from "../components/OfficesSection.astro";
-import ProviderCard from "../components/ProviderCard.astro";
+import TeamGrid from "../components/TeamGrid.astro";
 import ReviewCard from "../components/ReviewCard.astro";
 import ServiceCards from "../components/ServiceCards.astro";
 import Icon from "../components/Icon.astro";
@@ -23,6 +23,8 @@ const tweaks: Tweak[] = [
 	{ key: "brandlinks", label: "Brand tiles", type: "choice", default: "mixed", options: [["mixed", "Mixed (pages that exist)"], ["all", "All linked"], ["none", "All plain"]] },
 	{ key: "revlink", label: "“Read more reviews” link", type: "bool", default: true },
 	{ key: "posts", label: "Latest posts", type: "bool", default: true },
+	{ key: "trustmove", label: "Trust bar logos", type: "choice", default: "scroll", options: [["scroll", "Scrolling (with pause)"], ["still", "Still"]] },
+	{ key: "trustrating", label: "Trust bar rating", type: "choice", default: "boxed", options: [["boxed", "In its own box"], ["plain", "Plain (no box)"]] },
 ];
 
 const s = getSettings(Astro.url);
@@ -71,9 +73,7 @@ const city = practice.city;
 				<h2 class="h2">Meet your hearing care team</h2>
 				<p class="lead">Eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi.</p>
 			</div>
-			<div class="grid g-3 team-grid" style="gap: 16px">
-				{team.map((p) => <ProviderCard p={p} linked={p.linked} />)}
-			</div>
+			<TeamGrid people={team} />
 		</div>
 	</section>
 

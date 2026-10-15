@@ -38,10 +38,17 @@ handed off from Claude Design in `design/`.
 - Tablet: no separate design; built from patterns already in the design.
 - Demo is public, on the learning account's workers.dev.
 
-## Parked for later (Liz, 2026-10-14)
-- An alternative trust bar style (she doesn't like the current one on mobile).
-- An alternative people / provider card section.
-Build these as switchable variants in Review controls once designed.
+## Variants added after Step 2 (Liz, 2026-10-15)
+- Team cards (global setting `team`, used on Home and About): `overlay` (the design's
+  arrow on the photo, default), `side` (arrow to the right of name and title),
+  `list` (photo left, name, title and short bio right; for team members with no
+  profile page). Bios are `providers[].bio` in practice.ts. Location page cards
+  are unchanged.
+- Trust bar (Home page settings): `trustmove=still` shows the logos once, standing
+  still, no pause button (wraps into rows on phones); `trustrating=plain` drops
+  the rating's own box and outline.
+- Still parked: a wholly different trust bar style for mobile, if "still" doesn't
+  solve it.
 
 ## Working style
 Build in the handoff's order and stop after each step for Liz's review. When the
