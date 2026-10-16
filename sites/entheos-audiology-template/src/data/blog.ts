@@ -56,7 +56,20 @@ export const categories = ["Hearing Loss", "Hearing Aids", "Tinnitus", "Tips & C
 /** Article body (same sample body for every post). "MIDCTA" marks where the mid-article booking box goes. */
 export const articleBody: string[] = postBody.body.map((b: string) => b.replace(/src="[^"]*"/, 'src="/assets/photos/consult.jpg" loading="lazy"'));
 
-export type Resource = { slug: string; t: string; d: string; tags: string[]; page: boolean; forms: boolean; hideFromHub?: boolean };
+export type Resource = {
+	slug: string;
+	t: string;
+	d: string;
+	tags: string[];
+	page: boolean;
+	forms: boolean;
+	hideFromHub?: boolean;
+	/** Own page content (rich text). */
+	content?: import("../lib/portable-text").PTBlock[];
+	/** Form buttons: PDF file and online form link (buttons show only when set, or while reviewing). */
+	formsPdf?: string;
+	formsUrl?: string;
+};
 const R = rawRes.R as Record<string, { t: string; d: string; tags: { t: string }[]; page: boolean; forms: boolean }>;
 export const resources: Resource[] = Object.values(R).map((r) => ({ slug: slugify(r.t), t: r.t, d: r.d, tags: r.tags.map((x) => x.t), page: r.page, forms: r.forms }));
 export const resourceGroups: string[] = rawRes.order;

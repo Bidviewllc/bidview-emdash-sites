@@ -132,6 +132,15 @@ handed off from Claude Design in `design/`.
   they're off (live). The example photo (`/assets/photos`) is review-only: Review
   controls' "Example photo" hero, the sample article body and the sample video
   poster.
+- **Patient resource pages** (2026-10-16, not in the design boards; built from
+  the Service detail patterns): `/patient-resources/<slug>` for resources with
+  "Give this its own page" on (off = 404 and no "Learn more"). Short Light hero
+  with the topic tags → rich text (`content`; H2s make "Jump to") beside a
+  sidebar (Forms card when "has_forms", booking card) → three more resources (same
+  first topic first) → the shared booking band (`site.sharedBand`). Forms:
+  `forms_pdf` (file) and `forms_url` (link) drive "Download PDF" / "Fill out
+  online" (`FormButtons.astro`); a missing one shows as a placeholder only while
+  reviewing. Sample text: `src/data/content/resource-body.md`.
 - **Reviews** (2026-10-16): Google reviews live in the site's own D1 tables
   `reviews` / `review_meta` / `review_jobs`, the same schema Vince's
   `workers/reviews-sync` (on main) fills weekly; location key = office slug.

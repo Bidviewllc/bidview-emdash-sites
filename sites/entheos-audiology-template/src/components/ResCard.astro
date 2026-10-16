@@ -2,7 +2,7 @@
 // Patient resource card: topic tags, title, summary, and either "Learn more"
 // (own page) or "Download PDF / Fill out online" (forms).
 import { getSettings } from "../lib/settings";
-import Icon from "./Icon.astro";
+import FormButtons from "./FormButtons.astro";
 import { routes } from "../lib/routes";
 import type { Resource } from "../data/types";
 
@@ -17,5 +17,5 @@ const s = getSettings(Astro);
 	<h3 class="h3">{r.t}</h3>
 	<p class="muted">{r.d}</p>
 	{r.page && <div class="actions"><a class="btn btn-gray sm" href={s.href(routes.resource(r.slug))}>Learn more<span class="sr"> about {r.t}</span></a></div>}
-	{r.forms && <div class="actions rowf" style="gap: 10px"><a class="btn btn-secondary sm" href="#"><Icon name="doc" size={18} /> Download PDF</a><a class="btn btn-primary sm" href="#">Fill out online</a></div>}
+	{r.forms && <FormButtons r={r} />}
 </article>

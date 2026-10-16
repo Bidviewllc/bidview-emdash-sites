@@ -467,6 +467,8 @@ export interface Resource {
   has_page?: boolean;
   hide_from_hub?: boolean;
   has_forms?: boolean;
+  forms_pdf?: { id: string; url?: string; src?: string; filename?: string; mimeType?: string; size?: number; provider?: string; meta?: Record<string, unknown> };
+  forms_url?: string;
   content?: PortableTextBlock[];
   sort_order?: number;
   createdAt: Date;

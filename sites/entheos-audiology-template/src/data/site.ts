@@ -234,6 +234,9 @@ export async function loadSite() {
 		page: !!e.data.has_page,
 		forms: !!e.data.has_forms,
 		hideFromHub: !!e.data.hide_from_hub,
+		content: Array.isArray(e.data.content) ? e.data.content : undefined,
+		formsPdf: imgSrc(e.data.forms_pdf),
+		formsUrl: e.data.forms_url || undefined,
 	}));
 
 	// Template pages: each fixed page is its own one-record content type;
@@ -294,8 +297,9 @@ export async function loadSite() {
 		...offices.map((x) => `/locations/${x.slug}`),
 		...allPosts.map((x) => `/blog/${x.slug}`),
 		...catTerms.map((x) => `/blog/category/${x.slug}`),
+		...resources.filter((x) => x.page).map((x) => `/patient-resources/${x.slug}`),
 	]);
-	const RECORD_PAGE = /^\/(services|hearing-aids|about|locations|blog(\/category)?)\/[^/#?]+/;
+	const RECORD_PAGE = /^\/(services|hearing-aids|about|locations|patient-resources|blog(\/category)?)\/[^/#?]+/;
 	const isLive = (href: string) => {
 		const path = href.split(/[?#]/)[0].replace(/\/$/, "") || "/";
 		if (offPaths.has(path) || (path.startsWith("/blog") && offPaths.has("/blog"))) return false;
@@ -354,6 +358,11 @@ export async function loadSite() {
 		reviewsPage: reviewsPage ?? reviewList,
 		reviewsByLocation,
 		reviewsFromGoogle: fromGoogle,
+		/** The shared booking band (Shared sections), for pages without their own. */
+		sharedBand: {
+			heading: (typeof shared.cta_heading === "string" && shared.cta_heading.trim()) || SHARED_DEFAULTS.cta_heading,
+			text: (typeof shared.cta_text === "string" && shared.cta_text.trim()) || SHARED_DEFAULTS.cta_text,
+		},
 		/** Google "write a review" link (first office with a Place ID), else none. */
 		reviewLink: reviewPlace ? `https://search.google.com/local/writereview?placeid=${encodeURIComponent(reviewPlace)}` : undefined,
 		/** Menus from EmDash (Menus screen), with links to pages that aren't live left out. */

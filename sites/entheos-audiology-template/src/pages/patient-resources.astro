@@ -7,6 +7,7 @@ import CtaBand from "../components/CtaBand.astro";
 import Icon from "../components/Icon.astro";
 import PageHero from "../components/PageHero.astro";
 import PostCard from "../components/PostCard.astro";
+import FormButtons from "../components/FormButtons.astro";
 import ResCard from "../components/ResCard.astro";
 import type { Tweak } from "../components/ReviewControls.astro";
 import Base from "../layouts/Base.astro";
@@ -63,7 +64,7 @@ const groups = resourceGroups
 								<div class="acc-body" id={`res-${i}`} hidden>
 									<p>{r.d}</p>
 									{r.page && <div class="actions"><a class="btn btn-gray sm" href={h(routes.resource(r.slug))}>Learn more<span class="sr"> about {r.t}</span></a></div>}
-									{r.forms && <div class="actions rowf" style="gap: 10px"><a class="btn btn-secondary sm" href="#"><Icon name="doc" size={18} /> Download PDF</a><a class="btn btn-primary sm" href="#">Fill out online</a></div>}
+									{r.forms && <FormButtons r={r} />}
 								</div>
 							</div>
 						))}

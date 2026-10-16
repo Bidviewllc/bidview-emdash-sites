@@ -287,6 +287,8 @@ const collections = [
 			bool("has_page", "Give this its own page"),
 			bool("hide_from_hub", "Hide from hub"),
 			bool("has_forms", "Show the form buttons (Download PDF / Fill out online)"),
+			{ slug: "forms_pdf", label: "Form PDF (Download PDF button)", type: "file" },
+			{ slug: "forms_url", label: "Online form link (Fill out online button)", type: "url" },
 			{ slug: "content", label: "Page content", type: "portableText" },
 			int("sort_order", "Sort order"),
 		],
@@ -438,7 +440,12 @@ const content = {
 		),
 	),
 	resources: blog.resources.map((r, i) =>
-		pub(`resource-${r.slug}`, r.slug, { title: r.t, summary: r.d, has_page: r.page, hide_from_hub: false, has_forms: r.forms, sort_order: i + 1 }, { resource_tag: r.tags.map(blog.slugify) }),
+		pub(
+			`resource-${r.slug}`,
+			r.slug,
+			{ title: r.t, summary: r.d, has_page: r.page, hide_from_hub: false, has_forms: r.forms, ...(r.page ? { content: md("resource-body.md") } : {}), sort_order: i + 1 },
+			{ resource_tag: r.tags.map(blog.slugify) },
+		),
 	),
 };
 

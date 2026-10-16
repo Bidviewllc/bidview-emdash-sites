@@ -1,6 +1,6 @@
 ---
 // Anything without a page of its own. Paths for content that comes later
-// (resource articles, the sitemap, the /review hub in Step 3) get a short
+// (the sitemap, the /review hub in Step 3) get a short
 // "coming later" note; everything else gets the designed 404 page.
 import Icon from "../components/Icon.astro";
 import NotFound from "../components/NotFound.astro";
@@ -12,7 +12,7 @@ const { services } = Astro.locals.site;
 
 const s = getSettings(Astro);
 const slug = Astro.params.slug ?? "";
-const later = /^(patient-resources\/|sitemap$|review$)/.test(slug);
+const later = /^(sitemap$|review$)/.test(slug);
 const last = slug.split("/").filter(Boolean).pop() ?? "";
 const name = last.replace(/-/g, " ").replace(/^\w/, (c) => c.toUpperCase()) || "This page";
 ---

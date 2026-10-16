@@ -1,0 +1,103 @@
+---
+// Patient resource page (not in the design boards; built from the Service
+// detail patterns). Short hero with the resource's tags → its content (rich
+// text, H2s make a "Jump to" list) beside a sidebar (booking card, form
+// buttons when the resource has forms) → more resources on the same topic →
+// the shared booking band. Only resources with "Give this its own page" on.
+import CtaBand from "../../components/CtaBand.astro";
+import FormButtons from "../../components/FormButtons.astro";
+import Icon from "../../components/Icon.astro";
+import PageHero from "../../components/PageHero.astro";
+import ResCard from "../../components/ResCard.astro";
+import Base from "../../layouts/Base.astro";
+import { ptHas, ptToHtml } from "../../lib/portable-text";
+import { routes, telHref } from "../../lib/routes";
+import { getSettings } from "../../lib/settings";
+
+const { resources, sharedBand } = Astro.locals.site;
+const r = resources.find((x) => x.slug === Astro.params.slug);
+if (!r || !r.page) return Astro.rewrite("/404");
+
+const s = getSettings(Astro);
+const h = s.href;
+const tel = telHref(s.phone);
+const rich = ptHas(r.content) ? ptToHtml(r.content) : undefined;
+const html = rich ? s.fill(rich.html) : "";
+const toc = rich?.headings ?? [];
+/** Other resources on the same first topic, then any others, up to three. */
+const others = resources.filter((x) => x.slug !== r.slug && !x.hideFromHub);
+const related = [...others.filter((x) => x.tags[0] === r.tags[0]), ...others.filter((x) => x.tags[0] !== r.tags[0])].slice(0, 3);
+---
+<Base title={`${r.t} | ${s.name}`} description={r.d} pageName="Patient resource" current="resources" tweaks={[]}>
+	<PageHero
+		crumbs={[{ label: "Home" }, { label: "Patient Resources", href: routes.resources }, { label: r.t }]}
+		title={r.t}
+		lead={r.d}
+		heroDefault="light"
+	>
+		<ul class="res-tags" aria-label="Topics" style="margin: 0">{r.tags.map((t) => <li class="tag">{t}</li>)}</ul>
+	</PageHero>
+
+	<section class="sd-main">
+		<div class="wrap side-layout">
+			<div class="stack g32">
+				{
+					toc.length > 1 && (
+						<nav class="jump acc" aria-label="On this page" data-acc>
+							<h2 style="margin: 0">
+								<button class="jump-btn" type="button" aria-expanded="false" aria-controls="res-toc">
+									<span>Jump to</span>
+									<span class="acc-ic" aria-hidden="true"><span class="i-open"><Icon name="chevD" size={22} /></span><span class="i-close"><Icon name="chevU" size={22} /></span></span>
+								</button>
+							</h2>
+							<div class="jump-body" id="res-toc" hidden>
+								<ol>{toc.map((t) => <li><a href={`#${t.id}`}>{t.label}</a></li>)}</ol>
+							</div>
+						</nav>
+					)
+				}
+				{html ? <article class="rt" set:html={html} /> : <article class="rt"><p>{r.d}</p></article>}
+			</div>
+
+			<aside class="sidebar sticky" aria-label="Book and forms">
+				{
+					r.forms && (
+						<div class="panel">
+							<div class="card side-card">
+								<h2 class="h3">Forms</h2>
+								<p class="muted">Fill these out before your visit to save time on the day.</p>
+								<FormButtons r={r} block />
+							</div>
+						</div>
+					)
+				}
+				<div class="panel">
+					<div class="card side-card">
+						<h2 class="h3">Questions about this?</h2>
+						<p class="muted">Call us or book a visit and we'll walk you through it.</p>
+						<a class="btn btn-primary block" href={h(routes.book)}>Book appointment</a>
+						<a class="tel" href={tel} style="justify-content: center"><span class="ico"><Icon name="phone" /></span>{s.phone}</a>
+					</div>
+				</div>
+			</aside>
+		</div>
+	</section>
+
+	{
+		related.length > 0 && (
+			<section class="band bg-light">
+				<div class="wrap stack g48">
+					<div class="shead">
+						<div class="stack g16"><span class="eyebrow">Patient resources</span><h2 class="h2">More patient resources</h2></div>
+						<a class="link-arrow" href={h(routes.resources)}>All resources <Icon name="arrowR" size={18} /></a>
+					</div>
+					<div class="panel grid g-3">{related.map((x) => <ResCard r={x} />)}</div>
+				</div>
+			</section>
+		)
+	}
+
+	<div class="cta-wrap after-inset">
+		<CtaBand id="rescta" heading={s.fill(sharedBand.heading)} text={s.fill(sharedBand.text)} />
+	</div>
+</Base>
