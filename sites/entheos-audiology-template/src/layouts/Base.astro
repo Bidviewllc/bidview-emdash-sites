@@ -46,6 +46,7 @@ const style = styleString(roleVars(s.colors));
 		<SiteFooter />
 		{s.showPanel && <ReviewControls pageName={pageName} tweaks={tweaks} heroDefault={heroDefault} />}
 		<script>
+			import { referral } from "../scripts/referral";
 			// Accordions (FAQ, tables of contents, resource lists): the button opens and closes its panel.
 			document.querySelectorAll<HTMLElement>("[data-acc]").forEach((acc) => {
 				const btn = acc.querySelector<HTMLButtonElement>("button[aria-controls]");
@@ -58,22 +59,58 @@ const style = styleString(roleVars(s.colors));
 					acc.classList.toggle("open", open);
 				});
 			});
-			// Demo form: checks the required fields and shows the error next to each one,
-			// in words. When it passes, it goes to the thank-you page (nothing is sent yet).
+			// Lead source: recorded on every page view, written into each form at send time.
+			const lead = referral();
+			const shownAt = Date.now();
+			// Forms (SiteForm.astro): check the required fields and show the error next to
+			// each one, in words; then send to /api/form with the lead source, the page and
+			// the time spent on the page (bot check), and go to the thank-you page.
 			document.querySelectorAll<HTMLFormElement>("[data-form]").forEach((form) => {
-				form.addEventListener("submit", (e) => {
+				const set = (name: string, v: string) => {
+					const input = form.querySelector<HTMLInputElement>(`input[type=hidden][name="${name}"]`);
+					if (input) input.value = v;
+				};
+				form.addEventListener("submit", async (e) => {
 					e.preventDefault();
-					let first: HTMLInputElement | null = null;
-					form.querySelectorAll<HTMLInputElement>("[required]").forEach((input) => {
-						const err = document.getElementById(input.getAttribute("aria-describedby") ?? "");
-						const bad = !input.value.trim() || (input.type === "tel" && input.value.replace(/\D/g, "").length < 7);
+					let first: HTMLElement | null = null;
+					const errFor = (el: Element) =>
+						(el.getAttribute("aria-describedby") ?? "").split(" ").map((id) => document.getElementById(id)).find((x) => x?.classList.contains("errmsg"));
+					form.querySelectorAll<HTMLInputElement>(".input[required], input[type=checkbox][required]").forEach((input) => {
+						const v = input.type === "checkbox" ? (input.checked ? "1" : "") : input.value.trim();
+						const bad = !v || (input.type === "tel" && v.replace(/\D/g, "").length < 7) || (input.type === "email" && !/^[^@\s]+@[^@\s.]+\.[^@\s]+$/.test(v));
 						input.classList.toggle("err", bad);
 						input.setAttribute("aria-invalid", String(bad));
+						const err = errFor(input);
 						if (err) err.hidden = !bad;
 						if (bad && !first) first = input;
 					});
-					if (first) (first as HTMLInputElement).focus();
-					else location.assign(form.getAttribute("action")!);
+					form.querySelectorAll<HTMLFieldSetElement>("fieldset[data-group]").forEach((fs) => {
+						const bad = !fs.querySelector("input:checked");
+						const err = errFor(fs);
+						if (err) err.hidden = !bad;
+						if (bad && !first) first = fs.querySelector("input");
+					});
+					if (first) return (first as HTMLElement).focus();
+					set("referral_source", lead.source);
+					set("referral_detail", lead.detail);
+					set("page_url", location.pathname);
+					set("_fs", String(Date.now() - shownAt));
+					const btn = form.querySelector<HTMLButtonElement>("button[type=submit]");
+					const failMsg = form.querySelector<HTMLElement>("[data-form-error]");
+					if (btn) btn.disabled = true;
+					if (failMsg) failMsg.hidden = true;
+					try {
+						const res = await fetch(form.action, { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } });
+						const out = await res.json().catch(() => ({}));
+						if (!res.ok || !out.ok) throw new Error(out.error || res.statusText);
+						location.assign(out.redirect || "/thank-you");
+					} catch {
+						if (btn) btn.disabled = false;
+						if (failMsg) {
+							failMsg.hidden = false;
+							failMsg.focus?.();
+						}
+					}
 				});
 			});
 			// "Read more" on a clamped review opens the full text.

@@ -9,6 +9,7 @@ import PageHero from "../components/PageHero.astro";
 import Base from "../layouts/Base.astro";
 import { getSettings } from "../lib/settings";
 import { routes, telHref } from "../lib/routes";
+import SiteForm from "../components/SiteForm.astro";
 
 const { practice } = Astro.locals.site;
 
@@ -30,33 +31,10 @@ const hoursSentence = "A real person answers, Monday to Thursday 8 am to 5 pm an
 
 	<section class:list={["band first", { "after-photo": withPhoto }]}>
 		<div class="wrap c-grid">
-			<form class="panel" aria-labelledby="formh" novalidate data-form action={h(routes.thankYou)}>
+			<form class="panel" aria-labelledby="formh" novalidate data-form method="post" action="/api/form">
 				<div class="card" style="gap: 24px; padding: 40px">
 					<h2 class="h2" id="formh">{tx("contact_form_heading")}</h2>
-					<p class="small muted" style="margin-top: -12px">Fields marked <span aria-hidden="true">*</span><span class="sr">with an asterisk</span> are required.</p>
-					<div class="grid g-2 form-2" style="gap: 20px">
-						<div class="field">
-							<label for="c-first">First name <span aria-hidden="true">*</span></label>
-							<input class="input" id="c-first" name="first" type="text" autocomplete="given-name" required aria-describedby="c-first-err" />
-							<p class="errmsg" id="c-first-err" hidden><Icon name="alert" /> Please enter your first name.</p>
-						</div>
-						<div class="field"><label for="c-last">Last name</label><input class="input" id="c-last" name="last" type="text" autocomplete="family-name" /></div>
-						<div class="field">
-							<label for="c-phone">Phone <span aria-hidden="true">*</span></label>
-							<input class="input" id="c-phone" name="phone" type="tel" autocomplete="tel" required aria-describedby="c-phone-err" />
-							<p class="errmsg" id="c-phone-err" hidden><Icon name="alert" /> Please enter a phone number so we can call you back, for example (555) 010-0142.</p>
-						</div>
-						<div class="field"><label for="c-email">Email</label><input class="input" id="c-email" name="email" type="email" autocomplete="email" /></div>
-					</div>
-					<div class="field">
-						<label for="c-loc">Preferred location</label>
-						<select class="input" id="c-loc" name="location">{s.offices.map((o) => <option>{o.shortName}</option>)}</select>
-					</div>
-					<div class="field"><label for="c-msg">Message</label><textarea class="input" id="c-msg" name="message" rows="5"></textarea></div>
-					<div class="stack g16">
-						<button class="btn btn-primary" type="submit" style="align-self: flex-start">Send message</button>
-						<p class="small muted" style="margin: 0; max-width: 560px">We’ll call you back within one business day.</p>
-					</div>
+					<SiteForm slug="contact" id="c" after="We’ll call you back within one business day." />
 				</div>
 			</form>
 			<aside class="panel stack c-side" aria-label="Contact details">

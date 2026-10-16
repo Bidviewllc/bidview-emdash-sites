@@ -1,10 +1,9 @@
 ---
 // Version B of Book appointment: an appointment request form (need, days,
-// times, location). The practice calls back to confirm. Demo only: when the
-// required fields pass, it goes to the thank-you page; nothing is sent yet.
+// times, location). The practice calls back to confirm. Fields come from the
+// admin (Plugins → Forms → Appointment request).
 import { getSettings } from "../lib/settings";
-import Icon from "./Icon.astro";
-import { routes } from "../lib/routes";
+import SiteForm from "./SiteForm.astro";
 
 interface Props {
 	id: string;
@@ -15,47 +14,12 @@ const s = getSettings(Astro);
 const tx = s.text;
 const f = (n: string) => `${id}-${n}`;
 ---
-<form class:list={["panel bk-form", { side }]} aria-labelledby={f("h")} novalidate data-form action={s.href(routes.thankYou)}>
+<form class:list={["panel bk-form", { side }]} aria-labelledby={f("h")} novalidate data-form method="post" action="/api/form">
 	<div class="card" style={`gap: 28px; padding: ${side ? 40 : 48}px`}>
 		<div class="stack g12">
 			<h2 class="h2" id={f("h")}>{tx("book_form_heading")}</h2>
 			<p class="body" style="margin: 0">{tx("book_form_intro")}</p>
-			<p class="small muted" style="margin: 0">Fields marked <span aria-hidden="true">*</span><span class="sr">with an asterisk</span> are required.</p>
 		</div>
-		<div class="field">
-			<label for={f("first")}>First name <span aria-hidden="true">*</span></label>
-			<input class="input" id={f("first")} type="text" autocomplete="given-name" required aria-describedby={f("first-err")} />
-			<p class="errmsg" id={f("first-err")} hidden><Icon name="alert" /> Please enter your first name.</p>
-		</div>
-		<div class="field"><label for={f("last")}>Last name</label><input class="input" id={f("last")} type="text" autocomplete="family-name" /></div>
-		<div class="field">
-			<label for={f("phone")}>Phone <span aria-hidden="true">*</span></label>
-			<input class="input" id={f("phone")} type="tel" autocomplete="tel" required aria-describedby={f("phone-err")} />
-			<p class="errmsg" id={f("phone-err")} hidden><Icon name="alert" /> Please enter a phone number so we can call you back, for example (555) 010-0142.</p>
-		</div>
-		<div class="field"><label for={f("email")}>Email</label><input class="input" id={f("email")} type="email" autocomplete="email" /></div>
-		<div class="field">
-			<label for={f("need")}>What do you need?</label>
-			<select class="input" id={f("need")}>
-				<option value="">Choose one</option><option>Hearing evaluation</option><option>Hearing aid consultation</option><option>Hearing aid repair or adjustment</option><option>Ear wax removal</option><option>Tinnitus</option><option>Something else</option>
-			</select>
-		</div>
-		<div class="field"><label for={f("more")}>Anything else we should know? <span style="font-weight: 400; color: var(--mute)">(optional)</span></label><textarea class="input" id={f("more")} rows="4"></textarea></div>
-		<fieldset class="field">
-			<legend style="margin-bottom: 8px">What days of the week work for you?</legend>
-			<div class="checks bk-days">{["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"].map((d) => <label class="check"><input type="checkbox" /> {d}</label>)}</div>
-		</fieldset>
-		<fieldset class="field">
-			<legend style="margin-bottom: 8px">What times of day work for you?</legend>
-			<div class="checks">{["Morning", "Afternoon"].map((d) => <label class="check"><input type="checkbox" /> {d}</label>)}</div>
-		</fieldset>
-		<div class="field">
-			<label for={f("loc")}>Preferred location</label>
-			<select class="input" id={f("loc")}>{s.offices.map((o) => <option>{o.shortName}</option>)}{s.offices.length > 1 && <option>No preference</option>}</select>
-		</div>
-		<div class="stack g16" style="padding-top: 4px">
-			<button class="btn btn-primary block" type="submit">Request appointment</button>
-			<p class="small muted" style="margin: 0; text-align: center">{tx("book_form_after")}</p>
-		</div>
+		<SiteForm slug="appointment-request" id={id} blockButton after={tx("book_form_after")} />
 	</div>
 </form>

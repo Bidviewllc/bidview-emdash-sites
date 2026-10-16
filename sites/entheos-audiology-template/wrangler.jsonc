@@ -39,6 +39,8 @@
 	"triggers": {
 		"crons": ["0 * * * *"]
 	},
+	// Workers AI: the spam check on form submissions (src/pages/api/form.ts).
+	"ai": { "binding": "AI" },
 	// The hostname admin passkeys belong to.
 	"vars": {
 		"EMDASH_SITE_URL": "https://entheos-template-cms.local-981.workers.dev"

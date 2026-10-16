@@ -382,3 +382,9 @@ a.tag::after { content: ""; position: absolute; inset: -9px 0; }
 /* Trust bar on a Primary hero: lighter tints keep white text at 4.5:1 on darker palettes. */
 .trust.on-p { background: color-mix(in srgb, var(--on-p) 6%, transparent); }
 .trust.on-p .rating { background: color-mix(in srgb, var(--on-p) 8%, transparent); }
+
+/* Forms (SiteForm.astro): the hidden trap field bots fill in. */
+.site-form .hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+.site-form [data-form-error]:focus { outline: none; }
+/* Check-box pills keep their 20px side padding inside a .field (handoff decision). */
+.field label.check { padding: 0 20px; font: 400 18px/1.3 var(--bf); }

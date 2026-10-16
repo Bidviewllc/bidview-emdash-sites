@@ -1,6 +1,7 @@
 import cloudflare from "@astrojs/cloudflare";
 import react from "@astrojs/react";
 import { d1, r2 } from "@emdash-cms/cloudflare";
+import { formsPlugin } from "@emdash-cms/plugin-forms";
 import { defineConfig } from "astro/config";
 import emdash from "emdash/astro";
 
@@ -18,6 +19,9 @@ export default defineConfig({
 			database: d1({ binding: "DB", session: "auto" }),
 			storage: r2({ binding: "MEDIA" }),
 			plugins: [
+				// Forms (Plugins → Forms, Submissions): the site's forms and their inbox. The site
+				// draws them and takes submissions itself (src/lib/forms.ts, src/pages/api/form.ts).
+				formsPlugin(),
 				{
 					// Admin "Reviews" screen: hide or show each synced Google review.
 					// Absolute file URLs: the virtual plugin modules have no folder to resolve from.

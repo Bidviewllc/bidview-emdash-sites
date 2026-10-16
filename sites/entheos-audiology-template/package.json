@@ -17,6 +17,7 @@
     "@astrojs/cloudflare": "^14.3.4",
     "@astrojs/react": "^7.1.0",
     "@emdash-cms/cloudflare": "^1.2.0",
+    "@emdash-cms/plugin-forms": "0.2.10",
     "astro": "^7.3.8",
     "emdash": "^1.2.0",
     "react": "^19.2.4",
