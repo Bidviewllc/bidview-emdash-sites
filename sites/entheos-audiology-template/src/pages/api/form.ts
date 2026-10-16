@@ -72,8 +72,13 @@ async function turnstileReason(token: string, request: Request): Promise<string>
  * Workers AI reads the free text and says whether it's spam. Only flags; any
  * error or slow answer counts as "not spam", so the AI can never lose a lead.
  */
+let aiNote = "";
 async function aiReason(practice: string, text: string): Promise<string> {
-	if (!E.AI || !text.trim()) return "";
+	if (!text.trim()) return "";
+	if (!E.AI) {
+		aiNote = "AI check not set up";
+		return "";
+	}
 	try {
 		const out = (await Promise.race([
 			E.AI.run(AI_MODEL, {
@@ -88,13 +93,24 @@ async function aiReason(practice: string, text: string): Promise<string> {
 				max_tokens: 60,
 			}),
 			new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), 6000)),
-		])) as { response?: string };
-		const m = String(out?.response ?? "").match(/\{[\s\S]*\}/);
-		if (!m) return "";
-		const v = JSON.parse(m[0]) as { spam?: boolean; reason?: string };
+		])) as { response?: unknown };
+		// Some models hand back the JSON already parsed, others as text.
+		type Verdict = { spam?: boolean | string; reason?: string };
+		let v: Verdict | null = null;
+		if (out?.response && typeof out.response === "object") v = out.response as Verdict;
+		else {
+			const m = String(out?.response ?? "").match(/\{[\s\S]*\}/);
+			if (m) v = JSON.parse(m[0]) as Verdict;
+		}
+		if (!v) {
+			aiNote = `AI check gave no answer: ${JSON.stringify(out?.response ?? "").slice(0, 60)}`;
+			return "";
+		}
+		v.spam = v.spam === true || v.spam === "true";
 		return v.spam ? `AI: ${String(v.reason || "looks like spam").slice(0, 80)}` : "";
 	} catch (err) {
 		console.error("AI spam check skipped:", err);
+		aiNote = `AI check didn't run: ${String(err).slice(0, 80)}`;
 		return "";
 	}
 }
@@ -134,6 +150,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
 
 	// Checks. A missing required field from a person is caught in the browser first,
 	// so here it's either a bot or JavaScript off: still saved, flagged.
+	aiNote = "";
 	const freeText = fields.filter((f) => f.type === "textarea" || f.type === "text").map((f) => valueText(data[f.name])).join("\n");
 	const reason =
 		(one("website") && "hidden trap field filled in") ||
@@ -142,7 +159,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
 		(await turnstileReason(one("cf-turnstile-response"), request)) ||
 		ruleReason(freeText) ||
 		(await aiReason(practiceName, freeText));
-	if (fields.some((f) => f.name === "spam_check")) data.spam_check = reason ? `Likely spam: ${reason}` : "Passed";
+	if (fields.some((f) => f.name === "spam_check")) data.spam_check = reason ? `Likely spam: ${reason}` : aiNote ? `Passed (${aiNote})` : "Passed";
 
 	// 1. Save first.
 	const createdAt = new Date().toISOString();

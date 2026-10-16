@@ -185,6 +185,25 @@ handed off from Claude Design in `design/`.
   over every hub link at 390, 768 and 1440px. Known exceptions: the logo's
   "Hearing Center" line (logotype) and links inside sentences.
 
+## Forms (2026-10-16)
+- Built in the admin with EmDash's Forms plugin (`@emdash-cms/plugin-forms`):
+  Plugins → Forms (fields, "Notify emails"), Plugins → Submissions (inbox).
+  Two forms, slugs `contact` and `appointment-request`; a site gets them from
+  `DEFAULT_FORMS` in `src/lib/forms.ts` the first time the page is viewed.
+- The site draws them (`SiteForm.astro`: half-width pairs, pill check boxes, a
+  `location` select filled with the offices) and takes submissions itself at
+  `/api/form` (Liberty's handler lessons), writing into the plugin's storage so
+  the inbox shows them. Checks: trap field, time on page, Turnstile if
+  `TURNSTILE_SECRET` is set, spam words/links, Workers AI (binding `AI`).
+  Failing ones are saved as Archived with the reason in "Spam check", never
+  emailed, never dropped.
+- Lead source: `src/scripts/referral.ts` (port of AudioHelp's Get Referrer v2.3)
+  fills the hidden `referral_source` / `referral_detail` fields; `page_url` too.
+  Keep the hidden fields on the forms.
+- Email: Resend (`RESEND_API_KEY` secret, from noreply@bidview.net) to the form's
+  Notify emails, else the Practice details email; hidden copy to `LEAD_BCC`
+  (default local@bidviewmarketing.com).
+
 ## Admin scripts
 - `scripts/keep-draft.ts`: scripts that change live records use `saveKeepingDraft`,
   so someone's unpublished edits are never published by a script.
