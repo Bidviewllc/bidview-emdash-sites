@@ -7,6 +7,10 @@ import ReviewControls, { type Tweak } from "../components/ReviewControls.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
 import Tracking from "../components/Tracking.astro";
+import { EmDashHead } from "emdash/ui";
+import { createPublicPageContext } from "emdash/page";
+import { schemaGraph } from "../lib/schema";
+import { fullTitle, robotsFor, seoEntry, siteOrigin, titleCore } from "../lib/seo";
 import { active, getMarketing, onLiveDomain } from "../lib/marketing";
 import { roleVars, styleString } from "../lib/color";
 import { getSettings, type HeroKey } from "../lib/settings";
@@ -18,12 +22,44 @@ interface Props {
 	current?: "services" | "hearing-aids" | "about" | "resources" | "blog" | "contact";
 	tweaks?: Tweak[];
 	heroDefault?: HeroKey;
+	/** Keep this page out of search results. */
+	noindex?: boolean;
 }
-const { title, description, pageName, current, tweaks = [], heroDefault } = Astro.props;
+const { title, description, pageName, current, tweaks = [], heroDefault, noindex = false } = Astro.props;
 const s = getSettings(Astro);
 const style = styleString(roleVars(s.colors));
 /** Marketing & tracking (Admin-only page): tracking runs on the live domain only. */
 const mk = await getMarketing();
+// SEO (src/lib/seo.ts): the page's SEO panel in the admin wins over the template's
+// title and description; one set of meta tags, written by EmDash's head component.
+const site = Astro.locals.site;
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const entry = await seoEntry(path);
+const names = [...new Set([s.name, site.practice.name])];
+const pageTitle = titleCore(entry?.seo?.title || title, names);
+const docTitle = fullTitle(pageTitle, names[0]);
+const desc = entry?.seo?.description || description;
+const origin = siteOrigin(mk, Astro.url);
+const canonical = origin + (path === "/" ? "/" : path);
+const robots = robotsFor(mk, Astro.url, { noindex, panel: entry?.seo, status: Astro.response.status });
+const pageCtx = createPublicPageContext({
+	Astro,
+	kind: entry ? "content" : "custom",
+	// "website" everywhere: blog posts get our own BlogPosting (src/lib/schema.ts), not EmDash's.
+	pageType: "website",
+	title: docTitle,
+	pageTitle,
+	description: desc,
+	canonical,
+	content: entry ? { collection: entry.collection, id: entry.id, slug: entry.slug } : undefined,
+	seo: robots ? { robots } : undefined,
+	siteUrl: origin,
+});
+// Breadcrumbs for structured data: Home → section hub → this page.
+const HUBS: Record<string, string> = { services: "Services", "hearing-aids": "Hearing Aids", about: "About", blog: "Blog", "patient-resources": "Patient Resources" };
+const seg = path.split("/").filter(Boolean);
+const crumbs: [string, string][] = path === "/" ? [["Home", "/"]] : [["Home", "/"], ...(seg.length > 1 && HUBS[seg[0]] ? [[HUBS[seg[0]], `/${seg[0]}`] as [string, string]] : []), [pageTitle, path]];
+const jsonLd = Astro.response.status < 400 ? JSON.stringify(schemaGraph({ site, origin, path, title: pageTitle, description: desc, crumbs })).replace(/</g, "\\u003c") : "";
 const adsForm = onLiveDomain(mk, Astro.url.host) && /^AW-\d+$/i.test(active(mk, "gads")) && active(mk, "gads_form_label") ? `${active(mk, "gads")}/${active(mk, "gads_form_label")}` : undefined;
 ---
 <!doctype html>
@@ -31,10 +67,11 @@ const adsForm = onLiveDomain(mk, Astro.url.host) && /^AW-\d+$/i.test(active(mk, 
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<title>{title}</title>
-		<meta name="description" content={description} />
-		<meta name="robots" content="noindex" />
-		{Astro.locals.site.practice.favicon ? <link rel="icon" href={Astro.locals.site.practice.favicon} /> : <link rel="icon" href="/favicon.svg" type="image/svg+xml" />}
+		<title>{docTitle}</title>
+		<EmDashHead page={pageCtx} />
+		<meta property="og:site_name" content={site.practice.name} />
+		{jsonLd && <script type="application/ld+json" set:html={jsonLd} />}
+		{!site.practice.favicon && <link rel="icon" href="/favicon.svg" type="image/svg+xml" />}
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link

@@ -101,6 +101,9 @@ export async function loadSite() {
 		},
 		rating: { score: String(p.rating_score ?? ""), count: Number(p.rating_count ?? 0) },
 		/** Home page record ("About us – Years in practice"); Practice details on older sites. */
+		/** Schema extras (Practice details): NPI number and other profile links. */
+		npi: (p.npi ?? "").trim(),
+		sameAs: lines(p.same_as),
 		years: (pageData[PAGES.findIndex((d) => d.slug === "home")]?.years ?? p.years ?? "") as string,
 		social: {
 			facebook: settings.social?.facebook ?? "",
@@ -222,6 +225,7 @@ export async function loadSite() {
 			author: providers.find((x) => x.slug === e.data.author)?.name ?? "",
 			image: imgSrc(e.data.featured_image),
 			featured: !!e.data.featured,
+			iso: when ? new Date(when).toISOString() : undefined,
 			content: Array.isArray(e.data.content) ? e.data.content : undefined,
 			sortDate: when ? new Date(when).getTime() : 0,
 		};

@@ -24,6 +24,8 @@ export type Post = {
 	/** Featured image URL; a placeholder shows when there is none. */
 	image?: string;
 	featured?: boolean;
+	/** Publish date for structured data. */
+	iso?: string;
 	/** Article (rich text); the sample body shows when empty. */
 	content?: import("../lib/portable-text").PTBlock[];
 };

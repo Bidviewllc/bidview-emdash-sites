@@ -21,6 +21,8 @@ export interface Practice {
   color_accent?: string;
   color_light?: string;
   memberships?: { "logo"?: "ada" | "aaa" | "aba" | "asha" | "hearingup" | null; "name"?: string | null }[];
+  npi?: string;
+  same_as?: string;
   review_controls?: boolean;
   reviews_min_rating?: "All ratings" | "3 stars and up" | "4 stars and up" | "5 stars only";
   header_style?: "H1 · Classic two-bar" | "H2 · Floating pill" | "H3 · Single row" | "V1 · Overhanging logo badge" | "V2 · Centered logo, split nav" | "V3 · Logo spans two tiers" | "V4 · Centered stack" | "V5 · Logo over menu, stacked actions" | "V6 · Logo over menu, side-by-side actions" | "V7 · Logo over menu, Book only";

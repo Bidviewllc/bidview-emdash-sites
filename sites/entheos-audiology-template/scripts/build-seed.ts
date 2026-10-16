@@ -83,7 +83,7 @@ const pageCollections = PAGES.filter((p) => p.collection).map((p, i) => {
 		group: "Pages",
 		sortOrder: i + 1,
 		routable: false,
-		supports: ["drafts", "revisions"],
+		supports: ["drafts", "revisions", "seo"],
 		fields: [
 			title("Page name"),
 			...(p.hero ? [heroSelect("hero", "Hero"), image("hero_image", p.slug === "home" ? "Hero photo (16:9, calm area on the left)" : "Hero photo (3:2)")] : []),
@@ -164,6 +164,8 @@ const collections = [
 				sub("logo", "Logo", "select", { options: s.associations.map((a) => a.key) }),
 				sub("name", "Name read by screen readers"),
 			]),
+			str("npi", "Search engines: NPI number (optional)"),
+			txt("same_as", "Search engines: other profile links, one per line (Healthgrades, Yelp, LinkedIn…)"),
 			bool("review_controls", "Show the Review controls panel (off for a live site)", true),
 			select("reviews_min_rating", "Reviews: lowest star rating to show", ["All ratings", "3 stars and up", "4 stars and up", "5 stars only"], "4 stars and up"),
 			// Site design: the starting point for every visitor. Review controls can

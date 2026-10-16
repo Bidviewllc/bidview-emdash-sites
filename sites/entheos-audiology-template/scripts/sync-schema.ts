@@ -54,7 +54,13 @@ for (const col of seed.collections) {
 		}
 		continue;
 	}
-	const current = (await client.collection(col.slug)).fields as { slug: string; widget?: string | null; options?: unknown; validation?: unknown }[];
+	const live = (await client.collection(col.slug)) as { fields: unknown; hasSeo?: boolean; supports?: string[] };
+	// The SEO panel ("seo" in the seed's supports) is its own switch on a live collection.
+	if ((col.supports ?? []).includes("seo") && !live.hasSeo && !(live.supports ?? []).includes("seo")) {
+		console.log(`~ SEO panel on for ${col.slug}`);
+		if (apply) await (client as any).request("PUT", `/schema/collections/${col.slug}`, { hasSeo: true });
+	}
+	const current = live.fields as { slug: string; widget?: string | null; options?: unknown; validation?: unknown }[];
 	const have = new Set(current.map((f) => f.slug));
 	const missing = col.fields.filter((f: { slug: string }) => !have.has(f.slug));
 

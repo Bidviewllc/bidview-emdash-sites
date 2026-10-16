@@ -218,6 +218,21 @@ handed off from Claude Design in `design/`.
 - Events: `click_phone_number` and `form_submit` (with lead_source) go to gtag
   or the dataLayer; optional Google Ads conversion on form sends.
 
+## SEO (2026-10-16, Vince's rules in page-templates.md)
+- Every page and record has EmDash's SEO panel (title, description, share image,
+  canonical, hide from search). `Base.astro`: our `<title>` (panel title or the
+  page's, practice name taken out then added once: `src/lib/seo.ts`), and
+  EmDash's `<EmDashHead>` for the one set of meta/OG tags (plus Settings → SEO
+  verification codes).
+- Indexing only on the live domain (Marketing & tracking); previews, workers.dev
+  and the demo are noindex. Thank-you, legal, review pages and errors always noindex.
+- Structured data: `src/lib/schema.ts` (one office: MedicalBusiness site-wide;
+  several: Organization + MedicalBusiness per location page; Service + FAQPage,
+  Person, Brand + FAQPage, BlogPosting, BreadcrumbList; no rating schema; hours
+  only when they parse). Practice details: NPI and extra profile links (sameAs).
+- `/sitemap.xml` is ours (live, indexable pages only, panel-hidden ones out);
+  EmDash's per-collection sitemaps return 404. robots.txt is EmDash's (Settings → SEO).
+
 ## Admin scripts
 - `scripts/keep-draft.ts`: scripts that change live records use `saveKeepingDraft`,
   so someone's unpublished edits are never published by a script.

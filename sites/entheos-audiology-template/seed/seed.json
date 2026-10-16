@@ -121,6 +121,16 @@
 					}
 				},
 				{
+					"slug": "npi",
+					"label": "Search engines: NPI number (optional)",
+					"type": "string"
+				},
+				{
+					"slug": "same_as",
+					"label": "Search engines: other profile links, one per line (Healthgrades, Yelp, LinkedIn…)",
+					"type": "text"
+				},
+				{
 					"slug": "review_controls",
 					"label": "Show the Review controls panel (off for a live site)",
 					"type": "boolean",
@@ -237,7 +247,8 @@
 			"routable": false,
 			"supports": [
 				"drafts",
-				"revisions"
+				"revisions",
+				"seo"
 			],
 			"fields": [
 				{
@@ -401,7 +412,8 @@
 			"routable": false,
 			"supports": [
 				"drafts",
-				"revisions"
+				"revisions",
+				"seo"
 			],
 			"fields": [
 				{
@@ -509,7 +521,8 @@
 			"routable": false,
 			"supports": [
 				"drafts",
-				"revisions"
+				"revisions",
+				"seo"
 			],
 			"fields": [
 				{
@@ -634,7 +647,8 @@
 			"routable": false,
 			"supports": [
 				"drafts",
-				"revisions"
+				"revisions",
+				"seo"
 			],
 			"fields": [
 				{
@@ -830,7 +844,8 @@
 			"routable": false,
 			"supports": [
 				"drafts",
-				"revisions"
+				"revisions",
+				"seo"
 			],
 			"fields": [
 				{
@@ -913,7 +928,8 @@
 			"routable": false,
 			"supports": [
 				"drafts",
-				"revisions"
+				"revisions",
+				"seo"
 			],
 			"fields": [
 				{
@@ -999,7 +1015,8 @@
 			"routable": false,
 			"supports": [
 				"drafts",
-				"revisions"
+				"revisions",
+				"seo"
 			],
 			"fields": [
 				{
@@ -1060,7 +1077,8 @@
 			"routable": false,
 			"supports": [
 				"drafts",
-				"revisions"
+				"revisions",
+				"seo"
 			],
 			"fields": [
 				{
@@ -1132,7 +1150,8 @@
 			"routable": false,
 			"supports": [
 				"drafts",
-				"revisions"
+				"revisions",
+				"seo"
 			],
 			"fields": [
 				{
@@ -1244,7 +1263,8 @@
 			"routable": false,
 			"supports": [
 				"drafts",
-				"revisions"
+				"revisions",
+				"seo"
 			],
 			"fields": [
 				{
@@ -1283,7 +1303,8 @@
 			"routable": false,
 			"supports": [
 				"drafts",
-				"revisions"
+				"revisions",
+				"seo"
 			],
 			"fields": [
 				{
@@ -1322,7 +1343,8 @@
 			"routable": false,
 			"supports": [
 				"drafts",
-				"revisions"
+				"revisions",
+				"seo"
 			],
 			"fields": [
 				{
