@@ -25,7 +25,10 @@ export default defineConfig({
 					version: "0.1.0",
 					entrypoint: new URL("./src/plugins/page-settings/index.ts", import.meta.url).href,
 					adminEntry: new URL("./src/plugins/page-settings/admin.tsx", import.meta.url).href,
-					fieldWidgets: [{ name: "scoped", label: "Page setting (shown only on its page)", fieldTypes: ["boolean", "select"] }],
+					fieldWidgets: [
+						{ name: "scoped", label: "Page setting (shown only on its page)", fieldTypes: ["boolean", "select"] },
+						{ name: "text", label: "Page text slot (labelled for its page)", fieldTypes: ["text"] },
+					],
 				},
 			],
 		}),

@@ -15,7 +15,10 @@ const definition: PluginDefinition = {
 	id: "page-settings",
 	version: "0.1.0",
 	admin: {
-		fieldWidgets: [{ name: "scoped", label: "Page setting (shown only on its page)", fieldTypes: ["boolean", "select"] }],
+		fieldWidgets: [
+			{ name: "scoped", label: "Page setting (shown only on its page)", fieldTypes: ["boolean", "select"] },
+			{ name: "text", label: "Page text slot (labelled for its page)", fieldTypes: ["text"] },
+		],
 	},
 };
 

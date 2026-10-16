@@ -13,16 +13,17 @@ import { routes, telHref } from "../lib/routes";
 const { practice } = Astro.locals.site;
 
 const s = getSettings(Astro);
+const tx = s.text;
 const h = s.href;
 const hero = s.heroFor("light");
 const withPhoto = hero === "photo" || hero === "example";
 const hoursSentence = "A real person answers, Monday to Thursday 8 am to 5 pm and Friday 8 am to noon.";
 ---
-<Base title={`Contact us | ${s.name}`} description="Call, email or send us a message. We'll get back to you within one business day." pageName="Contact" current="contact" heroDefault="light">
+<Base title={`Contact us | ${s.name}`} description={tx("description")} pageName="Contact" current="contact" heroDefault="light">
 	<PageHero
 		crumbs={[{ label: "Home" }, { label: "Contact" }]}
-		title="Start a conversation about better hearing"
-		lead="Ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex. Ea commodo consequat duis aute irure dolor in reprehenderit in voluptate. Velit esse cillum dolore eu fugiat nulla."
+		title={tx("heading")}
+		lead={tx("intro")}
 		heroDefault="light"
 		book={false}
 	/>
@@ -31,7 +32,7 @@ const hoursSentence = "A real person answers, Monday to Thursday 8 am to 5 pm an
 		<div class="wrap c-grid">
 			<form class="panel" aria-labelledby="formh" novalidate data-form action={h(routes.thankYou)}>
 				<div class="card" style="gap: 24px; padding: 40px">
-					<h2 class="h2" id="formh">Send us a message</h2>
+					<h2 class="h2" id="formh">{tx("contact_form_heading")}</h2>
 					<p class="small muted" style="margin-top: -12px">Fields marked <span aria-hidden="true">*</span><span class="sr">with an asterisk</span> are required.</p>
 					<div class="grid g-2 form-2" style="gap: 20px">
 						<div class="field">
@@ -60,7 +61,7 @@ const hoursSentence = "A real person answers, Monday to Thursday 8 am to 5 pm an
 			</form>
 			<aside class="panel stack c-side" aria-label="Contact details">
 				<div class="card" style="gap: 18px">
-					<h2 class="h3">Talk to us</h2>
+					<h2 class="h3">{tx("contact_side_heading")}</h2>
 					<a class="c-big" href={telHref(s.phone)}><span class="di"><Icon name="phone" /></span><span><span class="c-lbl">Call</span><b>{s.phone}</b></span></a>
 					<a class="c-big" href={`mailto:${practice.email}`}><span class="di"><Icon name="mail" /></span><span><span class="c-lbl">Email</span><b>{practice.email}</b></span></a>
 					<a class="btn btn-primary block" href={h(routes.book)} style="margin-top: 4px"><Icon name="calendar" /> Schedule an appointment</a>
@@ -72,7 +73,7 @@ const hoursSentence = "A real person answers, Monday to Thursday 8 am to 5 pm an
 	<OfficesSection />
 
 	<div class="cta-wrap after-inset">
-		<CtaBand id="ccta" heading="Call us to talk it through" text={hoursSentence} callFirst photoLabel="Lifestyle photo · conversation, meal, outdoors" />
+		<CtaBand id="ccta" heading={tx("cta_heading")} text={hoursSentence} callFirst photoLabel="Lifestyle photo · conversation, meal, outdoors" />
 	</div>
 </Base>
 

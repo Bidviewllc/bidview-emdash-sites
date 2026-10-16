@@ -9,7 +9,7 @@ import { writeFileSync } from "node:fs";
 import * as blog from "../src/data/blog";
 import * as s from "../src/data/practice";
 import { FOOTERS, HEADERS, TEAM_LAYOUTS } from "../src/lib/settings";
-import { HERO_OPTIONS, PAGES, type PageSetting } from "../src/data/page-settings";
+import { HERO_OPTIONS, PAGE_TEXT, PAGES, SHARED_TEXT, slotName, TEXT_SLOTS, TEXT_STORAGE, type PageSetting } from "../src/data/page-settings";
 
 /** Brand logos are downloaded into the media library during setup. */
 const ASSET_HOST = "https://entheos-audiology-template.local-981.workers.dev";
@@ -40,6 +40,13 @@ const pageField = (st: PageSetting) => ({
 	...(st.type === "bool" ? bool(st.field, st.label, st.default) : select(st.field, st.label, st.options.map(([, l]) => l), label(st, st.default) as string)),
 	...scoped(pagesUsing(st.field)),
 });
+
+// Page text fields (one per distinct field; shared ones like "heading" are used by many pages).
+const sharedText = SHARED_TEXT.map((field) => Object.values(PAGE_TEXT).flat().find((f) => f.field === field)!).map((f) =>
+	f.kind === "line" ? str(f.field, f.label) : txt(f.field, f.label),
+);
+const textSlots = Array.from({ length: TEXT_SLOTS }, (_, i) => ({ ...txt(slotName(i + 1), `Page text ${i + 1}`), widget: "page-settings:text" }));
+const pageTextFields = [...sharedText, ...textSlots];
 
 const collections = [
 	{
@@ -96,6 +103,7 @@ const collections = [
 			title("Page"),
 			{ ...select("hero", "Hero", HERO_OPTIONS.map(([, l]) => l), HERO_OPTIONS[0][1]), ...scoped(PAGES.filter((p) => p.hero).map((p) => p.slug)) },
 			image("hero_image", "Hero photo (used when Hero is Photo; Home 16:9 with a calm area on the left, other pages 3:2)"),
+			...pageTextFields,
 			image("community_photo", "About: community photo (3:2)"),
 			...pageSettingFields.map(pageField),
 		],
@@ -255,6 +263,7 @@ const content = {
 		pub(`page-${p.slug}`, p.slug, {
 			title: p.title,
 			hero: HERO_OPTIONS[0][1],
+			...Object.fromEntries((PAGE_TEXT[p.slug] ?? []).map((f) => [TEXT_STORAGE[p.slug][f.field], f.default])),
 			...Object.fromEntries(p.settings.map((st) => [st.field, label(st, st.default)])),
 		}),
 	),

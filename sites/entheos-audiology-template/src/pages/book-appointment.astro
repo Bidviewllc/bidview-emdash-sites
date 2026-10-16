@@ -18,15 +18,16 @@ const tweaks: Tweak[] = [
 	{ key: "layout", label: "Layout", type: "choice", default: "full", options: [["full", "Full width"], ["side", "Right sidebar"]] },
 ];
 const s = getSettings(Astro);
+const tx = s.text;
 const isA = s.choice("version", ["a", "b"], "a") === "a";
 const side = s.choice("layout", ["full", "side"], "full") === "side";
 const first = s.offices[0];
 ---
-<Base title={`Book an appointment | ${s.name}`} description="Book online or ask us to call you back to find a time." pageName="Book appointment" tweaks={tweaks}>
+<Base title={`Book an appointment | ${s.name}`} description={tx("description")} pageName="Book appointment" tweaks={tweaks}>
 	<PageHero
 		crumbs={[{ label: "Home" }, { label: "Book Appointment" }]}
-		title="Book your appointment"
-		lead="Tincidunt lacus nulla gravida orci a odio nullam varius turpis et commodo pharetra est eros bibendum elit. Nec luctus magna felis sollicitudin mauris integer in."
+		title={tx("heading")}
+		lead={tx("intro")}
 		short
 		book={false}
 	/>
@@ -49,7 +50,7 @@ const first = s.offices[0];
 				</section>
 				<section class="band bg-light bk-where-band">
 					<div class="wrap stack g40">
-						<div class="stack g12"><span class="eyebrow">Locations</span><h2 class="h2">Where to find us</h2></div>
+						<div class="stack g12"><span class="eyebrow">Locations</span><h2 class="h2">{tx("book_offices_heading")}</h2></div>
 						<div class:list={["panel grid", s.offices.length > 1 ? "g-2" : ""]}>{s.offices.map((o) => <OfficeCard o={o} />)}</div>
 					</div>
 				</section>
@@ -75,7 +76,7 @@ const first = s.offices[0];
 						{isA && (
 							<div class="panel">
 								<div class="card" style="gap: 16px">
-									<h2 class="h3">Prefer to call?</h2>
+									<h2 class="h3">{tx("book_call_heading")}</h2>
 									<p class="muted" style="margin: 0">Our front desk can find a time with you and answer questions first.</p>
 									<a class="c-big" href={telHref(s.phone)}><span class="di"><Icon name="phone" /></span><span><span class="c-lbl">Call</span><b>{s.phone}</b></span></a>
 									<p class="small muted" style="margin: 0" set:html={first.hoursLong} />
@@ -83,7 +84,7 @@ const first = s.offices[0];
 							</div>
 						)}
 						<div class="panel stack bk-where">
-							<h2 class="h3" style="padding: 12px 16px 4px">Where to find us</h2>
+							<h2 class="h3" style="padding: 12px 16px 4px">{tx("book_offices_heading")}</h2>
 							{s.offices.map((o) => <OfficeCard o={o} compact />)}
 						</div>
 					</aside>

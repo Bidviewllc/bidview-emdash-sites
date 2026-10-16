@@ -10,6 +10,35 @@
 // `key` is the matching Review controls setting, so the address bar can still
 // try the other choices during review. Choice labels match Review controls.
 
+import pageText from "./page-text.json";
+
+/**
+ * Page text: headings, intros and section copy for each Pages record, with
+ * the template's starting wording (src/data/page-text.json). "line" fields are
+ * one line; "para" fields are paragraphs (a blank line starts a new one).
+ * Text may use {city}, {name}, {short} and {phone}; the site fills them in.
+ */
+export type PageText = { field: string; label: string; kind: "line" | "para"; default: string };
+export const PAGE_TEXT = pageText as Record<string, PageText[]>;
+
+/**
+ * Where page text is stored. D1 allows 100 columns per table, so page-specific
+ * text doesn't get a column per page: each page's own text fields share the
+ * slots text_01 ... text_16, in order, and the page-settings plugin labels each
+ * slot for the record that's open. Text every page has (heading, intro,
+ * description, booking band) keeps its own field.
+ */
+export const SHARED_TEXT = ["heading", "intro", "description", "cta_heading", "cta_text"];
+export const TEXT_SLOTS = 16;
+export const slotName = (n: number) => `text_${String(n).padStart(2, "0")}`;
+/** Page slug -> { text field -> stored field } */
+export const TEXT_STORAGE: Record<string, Record<string, string>> = {};
+for (const [page, fields] of Object.entries(PAGE_TEXT)) {
+	let n = 0;
+	TEXT_STORAGE[page] = Object.fromEntries(fields.map((f) => [f.field, SHARED_TEXT.includes(f.field) ? f.field : slotName(++n)]));
+	if (n > TEXT_SLOTS) throw new Error(`Page "${page}" has ${n} text fields; raise TEXT_SLOTS (and add the fields).`);
+}
+
 export type PageSetting =
 	| { field: string; label: string; key: string; type: "bool"; default: boolean }
 	| { field: string; label: string; key: string; type: "choice"; default: string; options: [string, string][] };
@@ -122,6 +151,11 @@ export const PAGE_PHOTO_FIELDS: Record<string, string[]> = {
 	hero_image: PAGES.filter((p) => p.hero).map((p) => p.slug),
 	community_photo: ["about"],
 };
+
+/** Every Pages field shown only on some records (photos and text), and those records. */
+export const PAGE_SCOPED_FIELDS: Record<string, string[]> = { ...PAGE_PHOTO_FIELDS };
+for (const [page, fields] of Object.entries(PAGE_TEXT))
+	for (const f of fields) if (SHARED_TEXT.includes(f.field)) (PAGE_SCOPED_FIELDS[f.field] ??= []).push(page);
 
 /** Which Pages record governs an address. */
 export function pageFor(pathname: string): PageDef | undefined {

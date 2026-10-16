@@ -106,6 +106,17 @@ handed off from Claude Design in `design/`.
   (looked up in page-settings.ts by field slug; the admin passes select choices,
   not widget options, to select fields). It finds the open record's slug from the
   admin address plus one API call; until then it shows the field.
+- **Page text** (`src/data/page-text.json`, starting wording per page): headings,
+  intros, section labels/headings/text and booking bands of the fixed pages.
+  Pages read it with `s.text("field")` / `s.paras("field")` (blank line = new
+  paragraph); `{city}`, `{name}`, `{short}`, `{phone}` are filled in. Storage:
+  D1 allows 100 columns per table, so shared text (heading, intro, description,
+  cta_heading, cta_text) has its own fields and each page's own text shares slots
+  `text_01`...`text_16` (`TEXT_STORAGE`); the plugin's `page-settings:text`
+  widget labels each slot for the open record and hides unused ones. Adding a
+  page-text field: add it to page-text.json and the page, keep each page within
+  16, then sync-schema (it fills new fields on existing records from the seed).
+  Record pages (service, brand, location, profile, post) aren't in this yet.
 - **Photos** (`Photo.astro` for plain slots): hero photo on each Pages record (Home
   16:9, others 3:2) and on Services, Brands and Offices (`photo` = exterior);
   community photo on the About record; team, booking-band and office-interior

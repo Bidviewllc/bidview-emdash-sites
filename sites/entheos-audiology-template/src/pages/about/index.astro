@@ -21,6 +21,7 @@ const tweaks: Tweak[] = [
 	{ key: "creds", label: "Credentials section", type: "bool", default: true },
 ];
 const s = getSettings(Astro);
+const tx = s.text;
 const hero = s.heroFor("photo");
 const withPhoto = hero === "photo" || hero === "example";
 const journey = s.choice("journey", ["grid", "row", "hidden"], "grid");
@@ -32,18 +33,17 @@ const credHeights: Record<string, string> = { ada: "40px", aaa: "50px", aba: "54
 <Base title={`About us | ${s.name}`} description={practice.tagline} pageName="About" current="about" tweaks={tweaks} heroDefault="photo">
 	<PageHero
 		crumbs={[{ label: "Home" }, { label: "About" }]}
-		title="Hearing care is personal"
-		lead="Ea commodo consequat duis aute irure dolor in reprehenderit. In voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat. Cupidatat non proident sunt in culpa qui officia."
+		title={tx("heading")}
+		lead={tx("intro")}
 		photoLabel="Team photo · 3:2"
 	/>
 
 	<section class:list={["band first", { "after-photo": withPhoto }]}>
 		<div class="wrap about" style="align-items: start">
 			<div class="stack g24">
-				<span class="eyebrow">Our story</span>
-				<h2 class="h2">Our story</h2>
-				<p class="body">Deserunt mollit anim id est laborum curabitur pretium tincidunt lacus. Nulla gravida orci a odio nullam varius turpis et commodo pharetra est eros bibendum. Elit nec luctus magna felis sollicitudin mauris integer in mauris eu nibh. Euismod gravida praesent blandit odio eu enim pellentesque sed dapibus est. Sed lacinia sapien vel tellus lorem ipsum dolor sit amet consectetur adipiscing elit sed do.</p>
-				<p class="body">Irure dolor in reprehenderit in voluptate velit esse cillum dolore. Eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui. Officia deserunt mollit anim id est laborum curabitur pretium tincidunt lacus nulla. Gravida orci a odio nullam varius turpis et commodo pharetra est.</p>
+				<span class="eyebrow">{tx("about_story_eyebrow")}</span>
+				<h2 class="h2">{tx("about_story_heading")}</h2>
+				{s.paras("about_story_text").map((p) => <p class="body">{p}</p>)}
 			</div>
 			<Photo photo={practice.photos.team} label="Team photo · 3:2" tone="stone" class="story-photo" />
 		</div>
@@ -54,9 +54,9 @@ const credHeights: Record<string, string> = { ada: "40px", aaa: "50px", aba: "54
 			<section class="band bg-light">
 				<div class="wrap journey-grid">
 					<div class="stack g24">
-						<span class="eyebrow">Our journey</span>
-						<h2 class="h2">From our early days in {practice.city}</h2>
-						<p class="lead">Commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse. Cillum dolore eu fugiat nulla pariatur excepteur sint occaecat.</p>
+						<span class="eyebrow">{tx("about_journey_eyebrow")}</span>
+						<h2 class="h2">{tx("about_journey_heading")}</h2>
+						<p class="lead">{tx("about_journey_intro")}</p>
 					</div>
 					<ol class="panel grid g-2 ms-list" style="list-style: none; margin: 0">
 						{milestones.map((m) => <li class="ms"><div class="yr">{m.y}</div><p>{m.t}</p></li>)}
@@ -70,8 +70,8 @@ const credHeights: Record<string, string> = { ada: "40px", aaa: "50px", aba: "54
 			<section class="band bg-light">
 				<div class="wrap stack g48">
 					<div class="two-col" style="align-items: end; gap: 80px">
-						<div class="stack g16"><span class="eyebrow">Our journey</span><h2 class="h2">From our early days in {practice.city}</h2></div>
-						<p class="lead">Commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse. Cillum dolore eu fugiat nulla pariatur excepteur sint occaecat.</p>
+						<div class="stack g16"><span class="eyebrow">{tx("about_journey_eyebrow")}</span><h2 class="h2">{tx("about_journey_heading")}</h2></div>
+						<p class="lead">{tx("about_journey_intro")}</p>
 					</div>
 					<ol class="panel grid g-4 ms-list" style="list-style: none; margin: 0">
 						{milestones.map((m) => <li class="ms"><div class="yr">{m.y}</div><p>{m.t}</p></li>)}
@@ -84,8 +84,8 @@ const credHeights: Record<string, string> = { ada: "40px", aaa: "50px", aba: "54
 	<section class:list={["band", { pt0: journey === "hidden" }]}>
 		<div class="wrap stack g48">
 			<div class="stack g16 text-col">
-				<span class="eyebrow">Our values</span>
-				<h2 class="h2">What guides our care</h2>
+				<span class="eyebrow">{tx("about_values_eyebrow")}</span>
+				<h2 class="h2">{tx("about_values_heading")}</h2>
 			</div>
 			<div class="panel grid g-4">
 				{
@@ -104,8 +104,8 @@ const credHeights: Record<string, string> = { ada: "40px", aaa: "50px", aba: "54
 	<section class="band bg-light" id="team">
 		<div class="wrap stack g48">
 			<div class="stack g16 text-col">
-				<span class="eyebrow">Our team</span>
-				<h2 class="h2">Meet the team</h2>
+				<span class="eyebrow">{tx("about_team_eyebrow")}</span>
+				<h2 class="h2">{tx("about_team_heading")}</h2>
 			</div>
 			<TeamGrid people={providers.map((p) => ({ ...p, linked: profiles && p.hasPage }))} alignStart />
 		</div>
@@ -117,9 +117,9 @@ const credHeights: Record<string, string> = { ada: "40px", aaa: "50px", aba: "54
 				<div class="wrap about community">
 					<Photo photo={Astro.locals.site.pages.about.communityPhoto} label="Community photo · 3:2 (event, school screening, sponsorship)" tone="sky" />
 					<div class="stack g24">
-						<span class="eyebrow">Community</span>
-						<h2 class="h2">Part of the {practice.city} community</h2>
-						<p class="body">Mauris integer in mauris eu nibh euismod gravida praesent blandit. Odio eu enim pellentesque sed dapibus est sed lacinia sapien vel tellus lorem ipsum. Dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut. Labore et dolore magna aliqua ut enim ad minim veniam quis. Nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+						<span class="eyebrow">{tx("about_community_eyebrow")}</span>
+						<h2 class="h2">{tx("about_community_heading")}</h2>
+						<p class="body">{tx("about_community_text")}</p>
 					</div>
 				</div>
 			</section>
@@ -131,8 +131,8 @@ const credHeights: Record<string, string> = { ada: "40px", aaa: "50px", aba: "54
 			<section class="band bg-gray">
 				<div class="wrap stack g32">
 					<div class="two-col" style="align-items: end; gap: 80px">
-						<div class="stack g16"><span class="eyebrow">Credentials</span><h2 class="h2">Credentials and memberships</h2></div>
-						<p class="body">Eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa. Qui officia deserunt mollit anim id est laborum curabitur pretium tincidunt lacus nulla gravida orci a odio. Nullam varius turpis et commodo pharetra est eros bibendum elit.</p>
+						<div class="stack g16"><span class="eyebrow">{tx("about_creds_eyebrow")}</span><h2 class="h2">{tx("about_creds_heading")}</h2></div>
+						<p class="body">{tx("about_creds_text")}</p>
 					</div>
 					<ul class="creds">
 						{associations.map((a) => <li class="cred"><img src={`/assets/associations/color/${a.key}.png`} alt={a.name} style={`max-height: ${credHeights[a.key] ?? "44px"}`} /></li>)}
@@ -144,6 +144,6 @@ const credHeights: Record<string, string> = { ada: "40px", aaa: "50px", aba: "54
 	}
 
 	<div class:list={["cta-wrap", { "after-inset": creds || !community }]}>
-		<CtaBand id="acta" heading="Your hearing journey starts with a conversation" text="Nec luctus magna felis sollicitudin mauris integer in mauris eu nibh euismod gravida praesent. Blandit odio eu enim." photoLabel="Lifestyle photo · conversation, meal, outdoors" />
+		<CtaBand id="acta" heading={tx("cta_heading")} text={tx("cta_text")} photoLabel="Lifestyle photo · conversation, meal, outdoors" />
 	</div>
 </Base>

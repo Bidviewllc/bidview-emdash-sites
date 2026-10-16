@@ -17,9 +17,11 @@ interface Props {
 	updated: string;
 	sections: { id: string; h: string }[];
 }
-const { title, updated, sections } = Astro.props;
+const { title: defaultTitle, updated, sections } = Astro.props;
 const tweaks: Tweak[] = [{ key: "toc", label: "Table of contents", type: "bool", default: true }];
 const s = getSettings(Astro);
+const tx = s.text;
+const title = tx("heading") || defaultTitle;
 const showToc = s.bool("toc", true);
 const office = s.offices[0];
 const para = [

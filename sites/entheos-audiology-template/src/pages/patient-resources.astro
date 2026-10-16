@@ -21,6 +21,7 @@ const tweaks: Tweak[] = [
 	{ key: "group", label: "Group by", type: "choice", default: "none", options: [["none", "None"], ["tag", "Tag"]] },
 ];
 const s = getSettings(Astro);
+const tx = s.text;
 const h = s.href;
 const hero = s.heroFor("photo");
 const withPhoto = hero === "photo" || hero === "example";
@@ -31,11 +32,11 @@ const groups = resourceGroups
 	.filter((g) => g.items.length)
 	.map((g, i) => ({ ...g, n: i + 1 }));
 ---
-<Base title={`Patient resources | ${s.name}`} description="What to expect, insurance and financing, forms and hearing aid care, in one place." pageName="Patient resources" current="resources" tweaks={tweaks} heroDefault="photo">
+<Base title={`Patient resources | ${s.name}`} description={tx("description")} pageName="Patient resources" current="resources" tweaks={tweaks} heroDefault="photo">
 	<PageHero
 		crumbs={[{ label: "Home" }, { label: "Patient Resources" }]}
-		title="Patient resources"
-		lead="Pariatur excepteur sint occaecat cupidatat non proident sunt in culpa. Qui officia deserunt mollit anim id est laborum curabitur pretium tincidunt lacus nulla gravida. Orci a odio nullam varius turpis."
+		title={tx("heading")}
+		lead={tx("intro")}
 		photoLabel="Page hero photo · 3:2"
 	/>
 
@@ -93,7 +94,7 @@ const groups = resourceGroups
 	<section class="band bg-light">
 		<div class="wrap stack g48">
 			<div class="shead">
-				<div class="stack g16"><span class="eyebrow">From our blog</span><h2 class="h2">Latest articles</h2></div>
+				<div class="stack g16"><span class="eyebrow">{tx("res_blog_eyebrow")}</span><h2 class="h2">{tx("res_blog_heading")}</h2></div>
 				<a class="link-arrow" href={h(routes.blog)}>All articles <Icon name="arrowR" size={18} /></a>
 			</div>
 			<div class="grid g-3 posts-grid" style="gap: 32px">{posts.slice(0, 3).map((p) => <PostCard p={p} />)}</div>
@@ -102,7 +103,7 @@ const groups = resourceGroups
 
 	<section class="band">
 		<div class="wrap stack g32">
-			<div class="stack g12"><span class="eyebrow">Outside organizations</span><h2 class="h2">Helpful organizations</h2></div>
+			<div class="stack g12"><span class="eyebrow">{tx("res_orgs_eyebrow")}</span><h2 class="h2">{tx("res_orgs_heading")}</h2></div>
 			<ul class="creds org-row">
 				<li><a class="cred org" href="#"><span class="org-word">Hearing Loss Association of America</span><span class="org-note">Logo placeholder</span></a></li>
 				<li><a class="cred org" href="#"><img src="/assets/associations/color/aaa.png" alt="American Academy of Audiology" style="max-height: 50px" /></a></li>
@@ -113,6 +114,6 @@ const groups = resourceGroups
 	</section>
 
 	<div class="cta-wrap">
-		<CtaBand id="prcta" heading="Take the first step toward better hearing" text="Pretium tincidunt lacus nulla gravida orci a odio nullam varius turpis. Et commodo pharetra est eros bibendum elit." photoLabel="Lifestyle photo · conversation, meal, outdoors" />
+		<CtaBand id="prcta" heading={tx("cta_heading")} text={tx("cta_text")} photoLabel="Lifestyle photo · conversation, meal, outdoors" />
 	</div>
 </Base>

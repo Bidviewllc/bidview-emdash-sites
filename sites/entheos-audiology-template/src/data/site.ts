@@ -9,7 +9,7 @@
 
 import { getEmDashCollection, getEmDashEntry, getMenu, getSiteSettings, getTaxonomyTerms } from "emdash";
 import * as blog from "./blog";
-import { HERO_OPTIONS, PAGES } from "./page-settings";
+import { HERO_OPTIONS, PAGE_TEXT, PAGES, TEXT_STORAGE } from "./page-settings";
 import * as sample from "./practice";
 import type { Brand, BrandDetail, Office, Post, Provider, Resource, Service } from "./types";
 
@@ -217,7 +217,7 @@ export async function loadSite() {
 		const def = PAGES.find((d) => d.slug === slug);
 		return !pageE.length || !!def?.alwaysOn || pageRecords.has(slug);
 	};
-	const pages: Record<string, { on: boolean; hero?: string; heroImage?: Photo; communityPhoto?: Photo; values: Record<string, string | boolean> }> = {};
+	const pages: Record<string, { on: boolean; hero?: string; heroImage?: Photo; communityPhoto?: Photo; values: Record<string, string | boolean>; text: Record<string, string> }> = {};
 	for (const def of PAGES) {
 		const d = pageRecords.get(def.slug) ?? {};
 		const values: Record<string, string | boolean> = {};
@@ -227,7 +227,11 @@ export async function loadSite() {
 			values[st.key] = st.type === "bool" ? !!v : (st.options.find(([, label]) => label === v)?.[0] ?? st.default);
 		}
 		const hero = HERO_OPTIONS.find(([, label]) => label === d.hero)?.[0];
-		pages[def.slug] = { on: pageOn(def.slug), ...(hero ? { hero } : {}), heroImage: photo(d.hero_image), communityPhoto: photo(d.community_photo), values };
+		const store = TEXT_STORAGE[def.slug] ?? {};
+		const text = Object.fromEntries(
+			(PAGE_TEXT[def.slug] ?? []).map((f) => [f.field, d[store[f.field]]]).filter(([, v]) => typeof v === "string" && v.trim()),
+		) as Record<string, string>;
+		pages[def.slug] = { on: pageOn(def.slug), ...(hero ? { hero } : {}), heroImage: photo(d.hero_image), communityPhoto: photo(d.community_photo), values, text };
 	}
 	// Switch-on rules that follow other pages being on.
 	pages.home.values.about = pageOn("about");

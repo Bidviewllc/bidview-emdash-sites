@@ -10,6 +10,7 @@ import TrustBar from "./TrustBar.astro";
 import { routes, telHref } from "../lib/routes";
 
 const s = getSettings(Astro);
+const tx = s.text;
 const hero = s.heroFor("photo");
 /** Uploaded hero photo (Pages: Home), or the review-only example photo. */
 const img = hero === "example" ? { src: "/assets/photos/consult.jpg", alt: "An audiologist smiling as she talks with a patient across her desk" } : s.pageHeroImage;
@@ -59,8 +60,8 @@ const shapeB = isPrim ? "color-mix(in srgb, var(--on-p) 5%, transparent)" : "col
 		)
 	}
 	<div class:list={["hcontent", contentCls]}>
-		<h1 class="h1">Hearing care that starts with listening to you</h1>
-		<p class="lead">Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor.</p>
+		<h1 class="h1">{tx("heading")}</h1>
+		<p class="lead">{tx("intro")}</p>
 		<div class="rowf hero-btns" style="gap: 12px; margin-top: 8px">
 			<a class:list={["btn", btn1]} href={s.href(routes.book)}>Book appointment</a>
 			<a class:list={["btn", btn2]} href={telHref(s.phone)}>Call {s.phone}</a>

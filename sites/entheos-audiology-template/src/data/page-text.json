@@ -1,0 +1,602 @@
+{
+	"home": [
+		{
+			"field": "heading",
+			"label": "Page heading (H1)",
+			"kind": "line",
+			"default": "Hearing care that starts with listening to you"
+		},
+		{
+			"field": "intro",
+			"label": "Intro under the heading",
+			"kind": "para",
+			"default": "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor."
+		},
+		{
+			"field": "home_about_eyebrow",
+			"label": "Home: about section label",
+			"kind": "line",
+			"default": "About us"
+		},
+		{
+			"field": "home_about_heading",
+			"label": "Home: about section heading",
+			"kind": "line",
+			"default": "A locally owned practice in {city}"
+		},
+		{
+			"field": "home_about_text",
+			"label": "Home: about section text",
+			"kind": "para",
+			"default": "Nostrud exercitation ullamco laboris nisi ut aliquip ex ea. Commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum. Dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt. Mollit anim id est laborum curabitur pretium tincidunt lacus nulla. Gravida orci a odio nullam varius turpis et commodo pharetra est eros bibendum elit. Nec luctus magna felis sollicitudin mauris integer in mauris eu nibh euismod."
+		},
+		{
+			"field": "home_team_eyebrow",
+			"label": "Home: team section label",
+			"kind": "line",
+			"default": "Our team"
+		},
+		{
+			"field": "home_team_heading",
+			"label": "Home: team section heading",
+			"kind": "line",
+			"default": "Meet your hearing care team"
+		},
+		{
+			"field": "home_team_intro",
+			"label": "Home: team section intro",
+			"kind": "para",
+			"default": "Eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi."
+		},
+		{
+			"field": "home_services_eyebrow",
+			"label": "Home: services section label",
+			"kind": "line",
+			"default": "Services"
+		},
+		{
+			"field": "home_services_heading",
+			"label": "Home: services section heading",
+			"kind": "line",
+			"default": "Hearing care services in {city}"
+		},
+		{
+			"field": "home_services_intro",
+			"label": "Home: services section intro",
+			"kind": "para",
+			"default": "Ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum. Dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non. Proident sunt in."
+		},
+		{
+			"field": "home_brands_eyebrow",
+			"label": "Home: hearing aids section label",
+			"kind": "line",
+			"default": "Hearing aids"
+		},
+		{
+			"field": "home_brands_heading",
+			"label": "Home: hearing aids section heading",
+			"kind": "line",
+			"default": "Hearing aid brands we fit and service"
+		},
+		{
+			"field": "home_brands_intro",
+			"label": "Home: hearing aids section intro",
+			"kind": "para",
+			"default": "Anim id est laborum curabitur pretium tincidunt lacus nulla gravida orci a odio. Nullam varius turpis et commodo pharetra est eros bibendum elit nec luctus magna felis sollicitudin mauris integer. In mauris eu nibh euismod."
+		},
+		{
+			"field": "home_reviews_eyebrow",
+			"label": "Home: reviews section label",
+			"kind": "line",
+			"default": "Reviews"
+		},
+		{
+			"field": "home_reviews_heading",
+			"label": "Home: reviews section heading",
+			"kind": "line",
+			"default": "What our patients say"
+		},
+		{
+			"field": "home_blog_eyebrow",
+			"label": "Home: blog section label",
+			"kind": "line",
+			"default": "Blog"
+		},
+		{
+			"field": "home_blog_heading",
+			"label": "Home: blog section heading",
+			"kind": "line",
+			"default": "From our audiologists"
+		},
+		{
+			"field": "cta_heading",
+			"label": "Booking band heading",
+			"kind": "line",
+			"default": "Take the first step toward better hearing"
+		},
+		{
+			"field": "cta_text",
+			"label": "Booking band text",
+			"kind": "para",
+			"default": "Pretium tincidunt lacus nulla gravida orci a odio nullam varius turpis. Et commodo pharetra est eros bibendum elit."
+		}
+	],
+	"services": [
+		{
+			"field": "heading",
+			"label": "Page heading (H1)",
+			"kind": "line",
+			"default": "Audiology services in {city}"
+		},
+		{
+			"field": "intro",
+			"label": "Intro under the heading",
+			"kind": "para",
+			"default": "Nec luctus magna felis sollicitudin mauris integer in mauris. Eu nibh euismod gravida praesent blandit odio eu enim pellentesque sed dapibus est. Sed lacinia sapien vel tellus lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor. Incididunt ut labore et dolore magna."
+		},
+		{
+			"field": "description",
+			"label": "Search result description",
+			"kind": "para",
+			"default": "Every hearing care service we offer, from hearing evaluations to hearing aid repairs."
+		},
+		{
+			"field": "services_steps_eyebrow",
+			"label": "Services: first visit label",
+			"kind": "line",
+			"default": "Your first visit"
+		},
+		{
+			"field": "services_steps_heading",
+			"label": "Services: first visit heading",
+			"kind": "line",
+			"default": "What to expect at your first visit"
+		},
+		{
+			"field": "cta_heading",
+			"label": "Booking band heading",
+			"kind": "line",
+			"default": "Start with a hearing evaluation"
+		},
+		{
+			"field": "cta_text",
+			"label": "Booking band text",
+			"kind": "para",
+			"default": "Labore et dolore magna aliqua ut enim ad minim veniam quis. Nostrud exercitation ullamco laboris nisi ut aliquip."
+		}
+	],
+	"hearing-aids": [
+		{
+			"field": "heading",
+			"label": "Page heading (H1)",
+			"kind": "line",
+			"default": "Hearing aids in {city}"
+		},
+		{
+			"field": "intro",
+			"label": "Intro under the heading",
+			"kind": "para",
+			"default": "Ut aliquip ex ea commodo consequat duis aute irure dolor in. Reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat. Non proident sunt in culpa qui officia deserunt mollit. Anim id est laborum curabitur pretium tincidunt lacus nulla gravida."
+		},
+		{
+			"field": "description",
+			"label": "Search result description (about 150 characters)",
+			"kind": "para",
+			"default": "The hearing aid brands we fit and service, the styles to choose from, and how prescription hearing aids compare."
+		},
+		{
+			"field": "ha_brands_eyebrow",
+			"label": "Hearing aids: brands label",
+			"kind": "line",
+			"default": "Brands"
+		},
+		{
+			"field": "ha_brands_heading",
+			"label": "Hearing aids: brands heading",
+			"kind": "line",
+			"default": "Brands we fit and service"
+		},
+		{
+			"field": "ha_styles_eyebrow",
+			"label": "Hearing aids: styles label",
+			"kind": "line",
+			"default": "Styles"
+		},
+		{
+			"field": "ha_styles_heading",
+			"label": "Hearing aids: styles heading",
+			"kind": "line",
+			"default": "Hearing aid styles"
+		},
+		{
+			"field": "ha_compare_eyebrow",
+			"label": "Hearing aids: comparison label",
+			"kind": "line",
+			"default": "Compare"
+		},
+		{
+			"field": "ha_compare_heading",
+			"label": "Hearing aids: comparison heading",
+			"kind": "line",
+			"default": "Over-the-counter vs. prescription hearing aids"
+		},
+		{
+			"field": "ha_otc_heading",
+			"label": "Hearing aids: over-the-counter heading",
+			"kind": "line",
+			"default": "Over-the-counter"
+		},
+		{
+			"field": "ha_otc_text",
+			"label": "Hearing aids: over-the-counter text",
+			"kind": "para",
+			"default": "Culpa qui officia deserunt mollit anim id est laborum curabitur pretium tincidunt lacus. Nulla gravida orci a odio nullam varius turpis et commodo pharetra est eros bibendum elit nec luctus. Magna felis sollicitudin mauris integer in mauris eu nibh euismod. Gravida praesent blandit odio eu enim pellentesque sed dapibus est sed lacinia sapien vel. Tellus lorem ipsum dolor sit amet."
+		},
+		{
+			"field": "ha_rx_heading",
+			"label": "Hearing aids: prescription heading",
+			"kind": "line",
+			"default": "Prescription, fitted by an audiologist"
+		},
+		{
+			"field": "ha_rx_text",
+			"label": "Hearing aids: prescription text",
+			"kind": "para",
+			"default": "Consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et. Dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut. Aliquip ex ea commodo consequat duis aute irure dolor. In reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur. Sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit."
+		},
+		{
+			"field": "cta_heading",
+			"label": "Booking band heading",
+			"kind": "line",
+			"default": "Try hearing aids before you decide"
+		},
+		{
+			"field": "cta_text",
+			"label": "Booking band text",
+			"kind": "para",
+			"default": "Anim id est laborum curabitur pretium tincidunt lacus nulla gravida. Orci a odio nullam varius turpis et commodo."
+		}
+	],
+	"about": [
+		{
+			"field": "heading",
+			"label": "Page heading (H1)",
+			"kind": "line",
+			"default": "Hearing care is personal"
+		},
+		{
+			"field": "intro",
+			"label": "Intro under the heading",
+			"kind": "para",
+			"default": "Ea commodo consequat duis aute irure dolor in reprehenderit. In voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat. Cupidatat non proident sunt in culpa qui officia."
+		},
+		{
+			"field": "about_story_eyebrow",
+			"label": "About: story label",
+			"kind": "line",
+			"default": "Our story"
+		},
+		{
+			"field": "about_story_heading",
+			"label": "About: story heading",
+			"kind": "line",
+			"default": "Our story"
+		},
+		{
+			"field": "about_journey_eyebrow",
+			"label": "About: journey label",
+			"kind": "line",
+			"default": "Our journey"
+		},
+		{
+			"field": "about_journey_heading",
+			"label": "About: journey heading",
+			"kind": "line",
+			"default": "From our early days in {city}"
+		},
+		{
+			"field": "about_journey_intro",
+			"label": "About: journey intro",
+			"kind": "para",
+			"default": "Commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse. Cillum dolore eu fugiat nulla pariatur excepteur sint occaecat."
+		},
+		{
+			"field": "about_values_eyebrow",
+			"label": "About: values label",
+			"kind": "line",
+			"default": "Our values"
+		},
+		{
+			"field": "about_values_heading",
+			"label": "About: values heading",
+			"kind": "line",
+			"default": "What guides our care"
+		},
+		{
+			"field": "about_team_eyebrow",
+			"label": "About: team label",
+			"kind": "line",
+			"default": "Our team"
+		},
+		{
+			"field": "about_team_heading",
+			"label": "About: team heading",
+			"kind": "line",
+			"default": "Meet the team"
+		},
+		{
+			"field": "about_community_eyebrow",
+			"label": "About: community label",
+			"kind": "line",
+			"default": "Community"
+		},
+		{
+			"field": "about_community_heading",
+			"label": "About: community heading",
+			"kind": "line",
+			"default": "Part of the {city} community"
+		},
+		{
+			"field": "about_community_text",
+			"label": "About: community text",
+			"kind": "para",
+			"default": "Mauris integer in mauris eu nibh euismod gravida praesent blandit. Odio eu enim pellentesque sed dapibus est sed lacinia sapien vel tellus lorem ipsum. Dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut. Labore et dolore magna aliqua ut enim ad minim veniam quis. Nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+		},
+		{
+			"field": "about_creds_eyebrow",
+			"label": "About: credentials label",
+			"kind": "line",
+			"default": "Credentials"
+		},
+		{
+			"field": "about_creds_heading",
+			"label": "About: credentials heading",
+			"kind": "line",
+			"default": "Credentials and memberships"
+		},
+		{
+			"field": "about_creds_text",
+			"label": "About: credentials text",
+			"kind": "para",
+			"default": "Eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa. Qui officia deserunt mollit anim id est laborum curabitur pretium tincidunt lacus nulla gravida orci a odio. Nullam varius turpis et commodo pharetra est eros bibendum elit."
+		},
+		{
+			"field": "cta_heading",
+			"label": "Booking band heading",
+			"kind": "line",
+			"default": "Your hearing journey starts with a conversation"
+		},
+		{
+			"field": "cta_text",
+			"label": "Booking band text",
+			"kind": "para",
+			"default": "Nec luctus magna felis sollicitudin mauris integer in mauris eu nibh euismod gravida praesent. Blandit odio eu enim."
+		},
+		{
+			"field": "about_story_text",
+			"label": "About: story text (blank line between paragraphs)",
+			"kind": "para",
+			"default": "Deserunt mollit anim id est laborum curabitur pretium tincidunt lacus. Nulla gravida orci a odio nullam varius turpis et commodo pharetra est eros bibendum. Elit nec luctus magna felis sollicitudin mauris integer in mauris eu nibh. Euismod gravida praesent blandit odio eu enim pellentesque sed dapibus est. Sed lacinia sapien vel tellus lorem ipsum dolor sit amet consectetur adipiscing elit sed do.\n\nIrure dolor in reprehenderit in voluptate velit esse cillum dolore. Eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui. Officia deserunt mollit anim id est laborum curabitur pretium tincidunt lacus nulla. Gravida orci a odio nullam varius turpis et commodo pharetra est."
+		}
+	],
+	"contact": [
+		{
+			"field": "heading",
+			"label": "Page heading (H1)",
+			"kind": "line",
+			"default": "Start a conversation about better hearing"
+		},
+		{
+			"field": "intro",
+			"label": "Intro under the heading",
+			"kind": "para",
+			"default": "Ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex. Ea commodo consequat duis aute irure dolor in reprehenderit in voluptate. Velit esse cillum dolore eu fugiat nulla."
+		},
+		{
+			"field": "description",
+			"label": "Search result description (about 150 characters)",
+			"kind": "para",
+			"default": "Call, email or send us a message. We'll get back to you within one business day."
+		},
+		{
+			"field": "contact_form_heading",
+			"label": "Contact: form heading",
+			"kind": "line",
+			"default": "Send us a message"
+		},
+		{
+			"field": "contact_side_heading",
+			"label": "Contact: details heading",
+			"kind": "line",
+			"default": "Talk to us"
+		},
+		{
+			"field": "cta_heading",
+			"label": "Booking band heading",
+			"kind": "line",
+			"default": "Call us to talk it through"
+		}
+	],
+	"book-appointment": [
+		{
+			"field": "heading",
+			"label": "Page heading (H1)",
+			"kind": "line",
+			"default": "Book your appointment"
+		},
+		{
+			"field": "intro",
+			"label": "Intro under the heading",
+			"kind": "para",
+			"default": "Tincidunt lacus nulla gravida orci a odio nullam varius turpis et commodo pharetra est eros bibendum elit. Nec luctus magna felis sollicitudin mauris integer in."
+		},
+		{
+			"field": "description",
+			"label": "Search result description (about 150 characters)",
+			"kind": "para",
+			"default": "Book online or ask us to call you back to find a time."
+		},
+		{
+			"field": "book_call_heading",
+			"label": "Book appointment: call heading",
+			"kind": "line",
+			"default": "Prefer to call?"
+		},
+		{
+			"field": "book_offices_heading",
+			"label": "Book appointment: offices heading",
+			"kind": "line",
+			"default": "Where to find us"
+		},
+		{
+			"field": "book_form_heading",
+			"label": "Book appointment: request form heading",
+			"kind": "line",
+			"default": "Request an appointment"
+		},
+		{
+			"field": "book_form_intro",
+			"label": "Book appointment: request form intro",
+			"kind": "para",
+			"default": "Mauris eu nibh euismod gravida praesent blandit odio eu enim pellentesque sed dapibus est. Sed lacinia sapien vel tellus lorem ipsum dolor sit amet consectetur."
+		},
+		{
+			"field": "book_form_after",
+			"label": "Book appointment: line under the button",
+			"kind": "line",
+			"default": "We’ll call you within one business day to confirm a time."
+		}
+	],
+	"reviews": [
+		{
+			"field": "heading",
+			"label": "Page heading (H1)",
+			"kind": "line",
+			"default": "Patient reviews"
+		},
+		{
+			"field": "cta_heading",
+			"label": "Booking band heading",
+			"kind": "line",
+			"default": "Join our patients"
+		},
+		{
+			"field": "cta_text",
+			"label": "Booking band text",
+			"kind": "para",
+			"default": "Adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore. Magna aliqua ut enim ad minim veniam."
+		}
+	],
+	"blog": [
+		{
+			"field": "heading",
+			"label": "Page heading (H1)",
+			"kind": "line",
+			"default": "Hearing health articles"
+		},
+		{
+			"field": "intro",
+			"label": "Intro under the heading",
+			"kind": "para",
+			"default": "Quis nostrud exercitation ullamco laboris nisi ut aliquip ex. Ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse. Cillum dolore eu."
+		},
+		{
+			"field": "description",
+			"label": "Search result description (about 150 characters)",
+			"kind": "para",
+			"default": "Plain-language articles from our audiologists on hearing loss, hearing aids, tinnitus and everyday hearing care."
+		},
+		{
+			"field": "cta_heading",
+			"label": "Booking band heading",
+			"kind": "line",
+			"default": "Take the first step toward better hearing"
+		},
+		{
+			"field": "cta_text",
+			"label": "Booking band text",
+			"kind": "para",
+			"default": "Pretium tincidunt lacus nulla gravida orci a odio nullam varius turpis. Et commodo pharetra est eros bibendum elit."
+		}
+	],
+	"patient-resources": [
+		{
+			"field": "heading",
+			"label": "Page heading (H1)",
+			"kind": "line",
+			"default": "Patient resources"
+		},
+		{
+			"field": "intro",
+			"label": "Intro under the heading",
+			"kind": "para",
+			"default": "Pariatur excepteur sint occaecat cupidatat non proident sunt in culpa. Qui officia deserunt mollit anim id est laborum curabitur pretium tincidunt lacus nulla gravida. Orci a odio nullam varius turpis."
+		},
+		{
+			"field": "description",
+			"label": "Search result description (about 150 characters)",
+			"kind": "para",
+			"default": "What to expect, insurance and financing, forms and hearing aid care, in one place."
+		},
+		{
+			"field": "res_blog_eyebrow",
+			"label": "Patient resources: blog label",
+			"kind": "line",
+			"default": "From our blog"
+		},
+		{
+			"field": "res_blog_heading",
+			"label": "Patient resources: blog heading",
+			"kind": "line",
+			"default": "Latest articles"
+		},
+		{
+			"field": "res_orgs_eyebrow",
+			"label": "Patient resources: organizations label",
+			"kind": "line",
+			"default": "Outside organizations"
+		},
+		{
+			"field": "res_orgs_heading",
+			"label": "Patient resources: organizations heading",
+			"kind": "line",
+			"default": "Helpful organizations"
+		},
+		{
+			"field": "cta_heading",
+			"label": "Booking band heading",
+			"kind": "line",
+			"default": "Take the first step toward better hearing"
+		},
+		{
+			"field": "cta_text",
+			"label": "Booking band text",
+			"kind": "para",
+			"default": "Pretium tincidunt lacus nulla gravida orci a odio nullam varius turpis. Et commodo pharetra est eros bibendum elit."
+		}
+	],
+	"privacy-policy": [
+		{
+			"field": "heading",
+			"label": "Page heading (H1)",
+			"kind": "line",
+			"default": "Privacy Policy"
+		}
+	],
+	"terms-of-use": [
+		{
+			"field": "heading",
+			"label": "Page heading (H1)",
+			"kind": "line",
+			"default": "Terms of Use"
+		}
+	],
+	"accessibility": [
+		{
+			"field": "heading",
+			"label": "Page heading (H1)",
+			"kind": "line",
+			"default": "Accessibility Statement"
+		}
+	]
+}

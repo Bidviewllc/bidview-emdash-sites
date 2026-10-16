@@ -31,6 +31,7 @@ const tweaks: Tweak[] = [
 ];
 
 const s = getSettings(Astro);
+const tx = s.text;
 const h = s.href;
 const aboutLink = s.bool("about", true);
 const provLinked = s.bool("provlinks", true);
@@ -57,9 +58,9 @@ const city = practice.city;
 		<div class="wrap about">
 			<Photo photo={practice.photos.team} label="Team photo · 3:2" tone="stone" />
 			<div class="stack g24">
-				<span class="eyebrow">About us</span>
-				<h2 class="h2">A locally owned practice in {city}</h2>
-				<p class="body">Nostrud exercitation ullamco laboris nisi ut aliquip ex ea. Commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum. Dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt. Mollit anim id est laborum curabitur pretium tincidunt lacus nulla. Gravida orci a odio nullam varius turpis et commodo pharetra est eros bibendum elit. Nec luctus magna felis sollicitudin mauris integer in mauris eu nibh euismod.</p>
+				<span class="eyebrow">{tx("home_about_eyebrow")}</span>
+				<h2 class="h2">{tx("home_about_heading")}</h2>
+				<p class="body">{tx("home_about_text")}</p>
 				<div class="panel grid g-2 facts" style="--pad: 12px">
 					<div class="fact"><b>{practice.years}</b><span>caring for {city}</span></div>
 					<div class="fact"><b>Au.D.</b><span>Doctors of Audiology on staff</span></div>
@@ -72,9 +73,9 @@ const city = practice.city;
 	<section class="band bg-light">
 		<div class="wrap stack g48">
 			<div class="stack g16 text-col">
-				<span class="eyebrow">Our team</span>
-				<h2 class="h2">Meet your hearing care team</h2>
-				<p class="lead">Eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi.</p>
+				<span class="eyebrow">{tx("home_team_eyebrow")}</span>
+				<h2 class="h2">{tx("home_team_heading")}</h2>
+				<p class="lead">{tx("home_team_intro")}</p>
 			</div>
 			<TeamGrid people={team} />
 		</div>
@@ -83,9 +84,9 @@ const city = practice.city;
 	<section class="band">
 		<div class="wrap stack g48">
 			<div class="stack g16" style="max-width: 760px">
-				<span class="eyebrow">Services</span>
-				<h2 class="h2">Hearing care services in {city}</h2>
-				<p class="lead">Ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum. Dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non. Proident sunt in.</p>
+				<span class="eyebrow">{tx("home_services_eyebrow")}</span>
+				<h2 class="h2">{tx("home_services_heading")}</h2>
+				<p class="lead">{tx("home_services_intro")}</p>
 			</div>
 			<div class="stack g24">
 				<ServiceCards links={svcLinks} items={services.filter((x) => x.onHome !== false && !x.hideFromHub)} />
@@ -112,9 +113,9 @@ const city = practice.city;
 	<section class="band bg-light">
 		<div class="wrap stack g48">
 			<div class="stack g16" style="max-width: 760px">
-				<span class="eyebrow">Hearing aids</span>
-				<h2 class="h2">Hearing aid brands we fit and service</h2>
-				<p class="lead">Anim id est laborum curabitur pretium tincidunt lacus nulla gravida orci a odio. Nullam varius turpis et commodo pharetra est eros bibendum elit nec luctus magna felis sollicitudin mauris integer. In mauris eu nibh euismod.</p>
+				<span class="eyebrow">{tx("home_brands_eyebrow")}</span>
+				<h2 class="h2">{tx("home_brands_heading")}</h2>
+				<p class="lead">{tx("home_brands_intro")}</p>
 			</div>
 			<div class="panel" style="--pad: 12px">
 				<ul class="brands" style="list-style: none; margin: 0; padding: 0">
@@ -143,8 +144,8 @@ const city = practice.city;
 	<section class="band">
 		<div class="wrap stack g48">
 			<div class="stack g16">
-				<span class="eyebrow">Reviews</span>
-				<h2 class="h2">What our patients say</h2>
+				<span class="eyebrow">{tx("home_reviews_eyebrow")}</span>
+				<h2 class="h2">{tx("home_reviews_heading")}</h2>
 				<div class="rowf" style="gap: 12px">
 					<Stars size={24} />
 					<span class="lead" style="color: var(--ink)"><b>{practice.rating.score} out of 5</b> from {practice.rating.count} Google reviews</span>
@@ -173,7 +174,7 @@ const city = practice.city;
 			<section class="band">
 				<div class="wrap stack g48">
 					<div class="shead">
-						<div class="stack g16"><span class="eyebrow">Blog</span><h2 class="h2">From our audiologists</h2></div>
+						<div class="stack g16"><span class="eyebrow">{tx("home_blog_eyebrow")}</span><h2 class="h2">{tx("home_blog_heading")}</h2></div>
 						<a class="link-arrow" href={h(routes.blog)}>All posts <Icon name="arrowR" size={18} /></a>
 					</div>
 					<div class="grid g-3 posts-grid" style="gap: 32px">
@@ -195,7 +196,7 @@ const city = practice.city;
 	}
 
 	<div class:list={["cta-wrap", { "after-inset": !showPosts }]}>
-		<CtaBand id="hcta" heading="Take the first step toward better hearing" text="Pretium tincidunt lacus nulla gravida orci a odio nullam varius turpis. Et commodo pharetra est eros bibendum elit." />
+		<CtaBand id="hcta" heading={tx("cta_heading")} text={tx("cta_text")} />
 	</div>
 </Base>
 

@@ -12,13 +12,14 @@ interface Props {
 }
 const { id, side = false } = Astro.props;
 const s = getSettings(Astro);
+const tx = s.text;
 const f = (n: string) => `${id}-${n}`;
 ---
 <form class:list={["panel bk-form", { side }]} aria-labelledby={f("h")} novalidate data-form action={s.href(routes.thankYou)}>
 	<div class="card" style={`gap: 28px; padding: ${side ? 40 : 48}px`}>
 		<div class="stack g12">
-			<h2 class="h2" id={f("h")}>Request an appointment</h2>
-			<p class="body" style="margin: 0">Mauris eu nibh euismod gravida praesent blandit odio eu enim pellentesque sed dapibus est. Sed lacinia sapien vel tellus lorem ipsum dolor sit amet consectetur.</p>
+			<h2 class="h2" id={f("h")}>{tx("book_form_heading")}</h2>
+			<p class="body" style="margin: 0">{tx("book_form_intro")}</p>
 			<p class="small muted" style="margin: 0">Fields marked <span aria-hidden="true">*</span><span class="sr">with an asterisk</span> are required.</p>
 		</div>
 		<div class="field">
@@ -54,7 +55,7 @@ const f = (n: string) => `${id}-${n}`;
 		</div>
 		<div class="stack g16" style="padding-top: 4px">
 			<button class="btn btn-primary block" type="submit">Request appointment</button>
-			<p class="small muted" style="margin: 0; text-align: center">We’ll call you within one business day to confirm a time.</p>
+			<p class="small muted" style="margin: 0; text-align: center">{tx("book_form_after")}</p>
 		</div>
 	</div>
 </form>

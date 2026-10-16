@@ -17,17 +17,18 @@ const tweaks: Tweak[] = [
 	{ key: "svclinks", label: "Service “Learn more”", type: "choice", default: "mixed", options: [["mixed", "Mixed (pages that exist)"], ["all", "All cards"], ["none", "None"]] },
 ];
 const s = getSettings(Astro);
+const tx = s.text;
 const hero = s.heroFor("photo");
 const withPhoto = hero === "photo" || hero === "example";
 const showSteps = s.bool("steps", true);
 const revLink = s.bool("revlink", true);
 const svcLinks = s.choice("svclinks", ["mixed", "all", "none"], "mixed");
 ---
-<Base title={`Audiology services in ${practice.city} | ${s.name}`} description="Every hearing care service we offer, from hearing evaluations to hearing aid repairs." pageName="Services hub" current="services" tweaks={tweaks} heroDefault="photo">
+<Base title={`${tx("heading")} | ${s.name}`} description={tx("description")} pageName="Services hub" current="services" tweaks={tweaks} heroDefault="photo">
 	<PageHero
 		crumbs={[{ label: "Home" }, { label: "Services" }]}
-		title={`Audiology services in ${practice.city}`}
-		lead="Nec luctus magna felis sollicitudin mauris integer in mauris. Eu nibh euismod gravida praesent blandit odio eu enim pellentesque sed dapibus est. Sed lacinia sapien vel tellus lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor. Incididunt ut labore et dolore magna."
+		title={tx("heading")}
+		lead={tx("intro")}
 	/>
 
 	<section class:list={["band first", { "after-photo": withPhoto }]}>
@@ -42,8 +43,8 @@ const svcLinks = s.choice("svclinks", ["mixed", "all", "none"], "mixed");
 			<section class="band bg-light">
 				<div class="wrap stack g48">
 					<div class="stack g16 text-col">
-						<span class="eyebrow">Your first visit</span>
-						<h2 class="h2">What to expect at your first visit</h2>
+						<span class="eyebrow">{tx("services_steps_eyebrow")}</span>
+						<h2 class="h2">{tx("services_steps_heading")}</h2>
 					</div>
 					<ol class="panel grid g-4 steps-grid" style="list-style: none; margin: 0">
 						{firstVisitSteps.map((st, i) => (
@@ -58,6 +59,6 @@ const svcLinks = s.choice("svclinks", ["mixed", "all", "none"], "mixed");
 	<ReviewsBand reviews={[reviews[0], reviews[1]]} link={revLink} class={showSteps ? undefined : "pt0"} />
 
 	<div class="cta-wrap">
-		<CtaBand id="scta" heading="Start with a hearing evaluation" text="Labore et dolore magna aliqua ut enim ad minim veniam quis. Nostrud exercitation ullamco laboris nisi ut aliquip." photoLabel="Lifestyle photo · conversation, meal, outdoors" />
+		<CtaBand id="scta" heading={tx("cta_heading")} text={tx("cta_text")} photoLabel="Lifestyle photo · conversation, meal, outdoors" />
 	</div>
 </Base>

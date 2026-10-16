@@ -23,16 +23,17 @@ const tweaks: Tweak[] = [
 	{ key: "layout", label: "Layout", type: "choice", default: "grid", options: [["grid", "Grid · 16:9"], ["square", "Grid · square"], ["list", "List"]] },
 ];
 const s = getSettings(Astro);
+const tx = s.text;
 const h = s.href;
 const layout = s.choice("layout", ["grid", "square", "list"], "grid");
 const shown: Post[] = cat ? posts.filter((p) => p.catSlug === cat.slug) : posts;
-const title = cat ? `${cat.name} articles` : "Hearing health articles";
+const title = cat ? `${cat.name} articles` : tx("heading");
 ---
-<Base title={`${title} | ${s.name}`} description="Plain-language articles from our audiologists on hearing loss, hearing aids, tinnitus and everyday hearing care." pageName={cat ? "Blog category" : "Blog archive"} current="blog" tweaks={tweaks}>
+<Base title={`${title} | ${s.name}`} description={tx("description")} pageName={cat ? "Blog category" : "Blog archive"} current="blog" tweaks={tweaks}>
 	<PageHero
 		crumbs={cat ? [{ label: "Home" }, { label: "Blog", href: routes.blog }, { label: cat.name }] : [{ label: "Home" }, { label: "Blog" }]}
 		title={title}
-		lead="Quis nostrud exercitation ullamco laboris nisi ut aliquip ex. Ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse. Cillum dolore eu."
+		lead={tx("intro")}
 		short
 		book={false}
 	/>
@@ -105,6 +106,6 @@ const title = cat ? `${cat.name} articles` : "Hearing health articles";
 	</section>
 
 	<div class="cta-wrap">
-		<CtaBand id="blcta" heading="Take the first step toward better hearing" text="Pretium tincidunt lacus nulla gravida orci a odio nullam varius turpis. Et commodo pharetra est eros bibendum elit." photoLabel="Lifestyle photo · conversation, meal, outdoors" />
+		<CtaBand id="blcta" heading={tx("cta_heading")} text={tx("cta_text")} photoLabel="Lifestyle photo · conversation, meal, outdoors" />
 	</div>
 </Base>

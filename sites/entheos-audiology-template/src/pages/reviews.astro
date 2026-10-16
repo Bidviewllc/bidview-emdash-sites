@@ -19,6 +19,7 @@ const tweaks: Tweak[] = [
 	{ key: "reviewbtn", label: "“Leave us a review” button", type: "choice", default: "primary", options: [["primary", "Primary colour"], ["outline", "White with outline"]] },
 ];
 const s = getSettings(Astro);
+const tx = s.text;
 const reviewBtn = s.choice("reviewbtn", ["primary", "outline"], "primary");
 const two = s.officeCount === 2;
 const filters = ["All", ...s.offices.map((o) => o.shortName)];
@@ -30,7 +31,7 @@ const filters = ["All", ...s.offices.map((o) => o.shortName)];
 			<div class="wrap rv-hero">
 				<div class="stack g20" style="position: relative">
 					<nav aria-label="Breadcrumb"><ol class="crumbs"><li><a href={s.href(routes.home)}>Home</a></li><li class="sep" aria-hidden="true">/</li><li aria-current="page">Reviews</li></ol></nav>
-					<h1 class="h1 xl" style="color: inherit">Patient reviews</h1>
+					<h1 class="h1 xl" style="color: inherit">{tx("heading")}</h1>
 				</div>
 				<div class="rv-inline" style="position: relative">
 					<div class="rowf" style="gap: 12px; align-items: center">
@@ -78,7 +79,7 @@ const filters = ["All", ...s.offices.map((o) => o.shortName)];
 	</section>
 
 	<div class="cta-wrap after-inset">
-		<CtaBand id="rvcta" heading="Join our patients" text="Adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore. Magna aliqua ut enim ad minim veniam." photoLabel="Lifestyle photo · conversation, meal, outdoors" />
+		<CtaBand id="rvcta" heading={tx("cta_heading")} text={tx("cta_text")} photoLabel="Lifestyle photo · conversation, meal, outdoors" />
 	</div>
 </Base>
 

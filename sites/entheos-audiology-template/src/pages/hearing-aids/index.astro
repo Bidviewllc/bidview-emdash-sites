@@ -17,22 +17,23 @@ const tweaks: Tweak[] = [
 	{ key: "otc", label: "OTC vs. prescription", type: "bool", default: true },
 ];
 const s = getSettings(Astro);
+const tx = s.text;
 const hero = s.heroFor("photo");
 const withPhoto = hero === "photo" || hero === "example";
 const brandLinks = s.choice("brandlinks", ["mixed", "all", "none"], "mixed");
 const showStyles = s.bool("styles", true);
 const showOtc = s.bool("otc", true);
 ---
-<Base title={`Hearing aids in ${practice.city} | ${s.name}`} description="The hearing aid brands we fit and service, the styles to choose from, and how prescription hearing aids compare." pageName="Hearing aids hub" current="hearing-aids" tweaks={tweaks} heroDefault="photo">
+<Base title={`${tx("heading")} | ${s.name}`} description={tx("description")} pageName="Hearing aids hub" current="hearing-aids" tweaks={tweaks} heroDefault="photo">
 	<PageHero
 		crumbs={[{ label: "Home" }, { label: "Hearing Aids" }]}
-		title={`Hearing aids in ${practice.city}`}
-		lead="Ut aliquip ex ea commodo consequat duis aute irure dolor in. Reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat. Non proident sunt in culpa qui officia deserunt mollit. Anim id est laborum curabitur pretium tincidunt lacus nulla gravida."
+		title={tx("heading")}
+		lead={tx("intro")}
 	/>
 
 	<section class:list={["band first", { "after-photo": withPhoto }]}>
 		<div class="wrap stack g48">
-			<div class="stack g16 text-col"><span class="eyebrow">Brands</span><h2 class="h2">Brands we fit and service</h2></div>
+			<div class="stack g16 text-col"><span class="eyebrow">{tx("ha_brands_eyebrow")}</span><h2 class="h2">{tx("ha_brands_heading")}</h2></div>
 			<div class="panel grid g-4 brand-grid">
 				{
 					brands.filter((b) => !b.hideFromHub).map((b) => {
@@ -59,7 +60,7 @@ const showOtc = s.bool("otc", true);
 		showStyles && (
 			<section class="band bg-light">
 				<div class="wrap stack g48">
-					<div class="stack g16 text-col"><span class="eyebrow">Styles</span><h2 class="h2">Hearing aid styles</h2></div>
+					<div class="stack g16 text-col"><span class="eyebrow">{tx("ha_styles_eyebrow")}</span><h2 class="h2">{tx("ha_styles_heading")}</h2></div>
 					<div class="panel grid g-4">
 						{hearingAidStyles.map((st) => (
 							<article class="card" style="padding: 16px 16px 28px">
@@ -80,17 +81,17 @@ const showOtc = s.bool("otc", true);
 		showOtc && (
 			<section class:list={["band", { pt0: !showStyles }]}>
 				<div class="wrap stack g48">
-					<div class="stack g16 text-col"><span class="eyebrow">Compare</span><h2 class="h2">Over-the-counter vs. prescription hearing aids</h2></div>
+					<div class="stack g16 text-col"><span class="eyebrow">{tx("ha_compare_eyebrow")}</span><h2 class="h2">{tx("ha_compare_heading")}</h2></div>
 					<div class="panel grid g-2">
 						<article class="card cmp-card">
 							<span class="cmp-tag" style="background: var(--panel); color: var(--ink)">Over-the-counter</span>
-							<h3 class="h3">Over-the-counter</h3>
-							<p>Culpa qui officia deserunt mollit anim id est laborum curabitur pretium tincidunt lacus. Nulla gravida orci a odio nullam varius turpis et commodo pharetra est eros bibendum elit nec luctus. Magna felis sollicitudin mauris integer in mauris eu nibh euismod. Gravida praesent blandit odio eu enim pellentesque sed dapibus est sed lacinia sapien vel. Tellus lorem ipsum dolor sit amet.</p>
+							<h3 class="h3">{tx("ha_otc_heading")}</h3>
+							<p>{tx("ha_otc_text")}</p>
 						</article>
 						<article class="card cmp-card">
 							<span class="cmp-tag" style="background: var(--a-tint); color: var(--ink)">Prescription</span>
-							<h3 class="h3">Prescription, fitted by an audiologist</h3>
-							<p>Consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et. Dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut. Aliquip ex ea commodo consequat duis aute irure dolor. In reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur. Sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit.</p>
+							<h3 class="h3">{tx("ha_rx_heading")}</h3>
+							<p>{tx("ha_rx_text")}</p>
 						</article>
 					</div>
 				</div>
@@ -99,6 +100,6 @@ const showOtc = s.bool("otc", true);
 	}
 
 	<div class:list={["cta-wrap", { "after-inset": !showOtc }]}>
-		<CtaBand id="hacta" heading="Try hearing aids before you decide" text="Anim id est laborum curabitur pretium tincidunt lacus nulla gravida. Orci a odio nullam varius turpis et commodo." photoLabel="Lifestyle photo · conversation, meal, outdoors" />
+		<CtaBand id="hacta" heading={tx("cta_heading")} text={tx("cta_text")} photoLabel="Lifestyle photo · conversation, meal, outdoors" />
 	</div>
 </Base>

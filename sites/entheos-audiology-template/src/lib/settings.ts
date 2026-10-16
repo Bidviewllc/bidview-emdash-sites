@@ -9,7 +9,7 @@
 // query string overrides them for review. Later the header and footer styles
 // move onto the EmDash settings page too.
 
-import { pageFor } from "../data/page-settings";
+import { PAGE_TEXT, pageFor } from "../data/page-settings";
 import type { Photo, SiteData } from "../data/site";
 import type { Palette } from "./color";
 
@@ -137,6 +137,20 @@ export function getSettings({ url, locals }: { url: URL; locals: App.Locals }) {
 	/** This address's Pages record: its settings are the page switches' starting values. */
 	const pageDef = pageFor(url.pathname);
 	const pageRec = pageDef ? site.pages[pageDef.slug] : undefined;
+	/**
+	 * Page text from this page's Pages record, else the template's wording,
+	 * with {city}, {name}, {short} and {phone} filled in.
+	 */
+	const fill = (v: string) =>
+		v.replace(/\{city\}/g, practice.city).replace(/\{name\}/g, name).replace(/\{short\}/g, practice.shortName).replace(/\{phone\}/g, phone);
+	const text = (field: string): string => {
+		const own = pageRec?.text[field];
+		const d = pageDef ? PAGE_TEXT[pageDef.slug]?.find((f) => f.field === field)?.default : undefined;
+		return fill((own ?? d ?? "").trim());
+	};
+	/** Page text split into paragraphs (blank line between them). */
+	const paras = (field: string) => text(field).split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
+
 	/** Starting value of a page switch (Pages record, else undefined). */
 	const pageValue = (k: string): string | boolean | undefined => pageRec?.values[k];
 
@@ -186,6 +200,8 @@ export function getSettings({ url, locals }: { url: URL; locals: App.Locals }) {
 		/** Photo uploaded on this page's Pages record. */
 		pageHeroImage: pageRec?.heroImage,
 		pageValue,
+		text,
+		paras,
 		/** Hero chosen on this page's Pages record, if any. */
 		pageHero: pageRec?.hero,
 		ctaPhoto: raw("ctaphoto") !== "0",
