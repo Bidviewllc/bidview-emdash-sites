@@ -66,7 +66,7 @@ handed off from Claude Design in `design/`.
   belong to that hostname (`EMDASH_SITE_URL` in wrangler.jsonc), so version
   preview URLs show the site but can't log in. The first person to finish the
   setup wizard becomes the admin.
-- Collections: Practice details (one record, slug `main`: colours, wordmark,
+- Collections: Practice details (pinned first in the admin sidebar: seed `sortOrder: 0`; on a live site `npx tsx scripts/pin-collections.ts <site> practice`, which keeps the Pages order) (one record, slug `main`: colours, wordmark,
   rating, memberships, first-visit steps, About journey and values, Review
   controls switch), Offices, Services, Hearing aid brands (models as a repeater),
   Team, Blog posts (category taxonomy), Patient resources (resource_tag taxonomy;

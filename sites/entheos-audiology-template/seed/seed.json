@@ -19,6 +19,7 @@
 		{
 			"slug": "practice",
 			"label": "Practice details",
+			"sortOrder": 0,
 			"labelSingular": "Practice details",
 			"description": "One record (slug: main) with the practice-wide details that Settings doesn't cover.",
 			"routable": false,
@@ -309,7 +310,7 @@
 			"labelSingular": "Home page",
 			"description": "The Home page. Publish = page on (and its links); unpublish = page off. Keep the one record.",
 			"group": "Pages",
-			"sortOrder": 0,
+			"sortOrder": 1,
 			"routable": false,
 			"supports": [
 				"drafts",
@@ -468,7 +469,7 @@
 			"labelSingular": "Services page",
 			"description": "The Services page. Publish = page on (and its links); unpublish = page off. Keep the one record.",
 			"group": "Pages",
-			"sortOrder": 1,
+			"sortOrder": 2,
 			"routable": false,
 			"supports": [
 				"drafts",
@@ -557,7 +558,7 @@
 			"labelSingular": "Hearing aids page",
 			"description": "The Hearing aids page. Publish = page on (and its links); unpublish = page off. Keep the one record.",
 			"group": "Pages",
-			"sortOrder": 2,
+			"sortOrder": 3,
 			"routable": false,
 			"supports": [
 				"drafts",
@@ -682,7 +683,7 @@
 			"labelSingular": "About page",
 			"description": "The About page. Publish = page on (and its links); unpublish = page off. Keep the one record.",
 			"group": "Pages",
-			"sortOrder": 3,
+			"sortOrder": 4,
 			"routable": false,
 			"supports": [
 				"drafts",
@@ -835,7 +836,7 @@
 			"labelSingular": "Contact page",
 			"description": "The Contact page. Publish = page on (and its links); unpublish = page off. Keep the one record.",
 			"group": "Pages",
-			"sortOrder": 4,
+			"sortOrder": 5,
 			"routable": false,
 			"supports": [
 				"drafts",
@@ -918,7 +919,7 @@
 			"labelSingular": "Book appointment page",
 			"description": "The Book appointment page. Publish = page on (and its links); unpublish = page off. Keep the one record.",
 			"group": "Pages",
-			"sortOrder": 5,
+			"sortOrder": 6,
 			"routable": false,
 			"supports": [
 				"drafts",
@@ -1004,7 +1005,7 @@
 			"labelSingular": "Reviews page",
 			"description": "The Reviews page. Publish = page on (and its links); unpublish = page off. Keep the one record.",
 			"group": "Pages",
-			"sortOrder": 6,
+			"sortOrder": 7,
 			"routable": false,
 			"supports": [
 				"drafts",
@@ -1065,7 +1066,7 @@
 			"labelSingular": "Blog page",
 			"description": "The Blog page. Publish = page on (and its links); unpublish = page off. Keep the one record.",
 			"group": "Pages",
-			"sortOrder": 7,
+			"sortOrder": 8,
 			"routable": false,
 			"supports": [
 				"drafts",
@@ -1137,7 +1138,7 @@
 			"labelSingular": "Patient resources page",
 			"description": "The Patient resources page. Publish = page on (and its links); unpublish = page off. Keep the one record.",
 			"group": "Pages",
-			"sortOrder": 8,
+			"sortOrder": 9,
 			"routable": false,
 			"supports": [
 				"drafts",
@@ -1249,7 +1250,7 @@
 			"labelSingular": "Privacy policy page",
 			"description": "The Privacy policy page. Publish = page on (and its links); unpublish = page off. Keep the one record.",
 			"group": "Pages",
-			"sortOrder": 9,
+			"sortOrder": 10,
 			"routable": false,
 			"supports": [
 				"drafts",
@@ -1288,7 +1289,7 @@
 			"labelSingular": "Terms of use page",
 			"description": "The Terms of use page. Publish = page on (and its links); unpublish = page off. Keep the one record.",
 			"group": "Pages",
-			"sortOrder": 10,
+			"sortOrder": 11,
 			"routable": false,
 			"supports": [
 				"drafts",
@@ -1327,7 +1328,7 @@
 			"labelSingular": "Accessibility page",
 			"description": "The Accessibility page. Publish = page on (and its links); unpublish = page off. Keep the one record.",
 			"group": "Pages",
-			"sortOrder": 11,
+			"sortOrder": 12,
 			"routable": false,
 			"supports": [
 				"drafts",

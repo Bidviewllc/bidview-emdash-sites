@@ -65,7 +65,7 @@ const pageCollections = PAGES.filter((p) => p.collection).map((p, i) => {
 		labelSingular: `${p.title} page`,
 		description: `The ${p.title} page. Publish = page on (and its links); unpublish = page off. Keep the one record.`,
 		group: "Pages",
-		sortOrder: i,
+		sortOrder: i + 1,
 		routable: false,
 		supports: ["drafts", "revisions"],
 		fields: [
@@ -121,6 +121,8 @@ const collections = [
 	{
 		slug: "practice",
 		label: "Practice details",
+		// First in the admin sidebar: the practice-wide details (Liz, 2026-10-16).
+		sortOrder: 0,
 		labelSingular: "Practice details",
 		description: "One record (slug: main) with the practice-wide details that Settings doesn't cover.",
 		routable: false,
