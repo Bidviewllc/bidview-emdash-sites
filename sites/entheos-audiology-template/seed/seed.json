@@ -283,11 +283,6 @@
 					"type": "image"
 				},
 				{
-					"slug": "cta_photo_image",
-					"label": "Photo: booking band (older adult laughing with family, or on a walk)",
-					"type": "image"
-				},
-				{
 					"slug": "office_photo",
 					"label": "Photo: office interior (3:2; brand pages, care section)",
 					"type": "image"
@@ -295,10 +290,12 @@
 			]
 		},
 		{
-			"slug": "site_pages",
-			"label": "Pages",
-			"labelSingular": "Page",
-			"description": "One record per template page. Publish = page on (and its links); unpublish = page off. Each setting starts with the page it belongs to.",
+			"slug": "page_home",
+			"label": "Home page",
+			"labelSingular": "Home page",
+			"description": "The Home page. Publish = page on (and its links); unpublish = page off. Keep the one record.",
+			"group": "Pages",
+			"sortOrder": 0,
 			"routable": false,
 			"supports": [
 				"drafts",
@@ -307,7 +304,7 @@
 			"fields": [
 				{
 					"slug": "title",
-					"label": "Page",
+					"label": "Page name",
 					"type": "string",
 					"required": true,
 					"searchable": true
@@ -324,25 +321,11 @@
 							"No photo · Primary",
 							"No photo · Light"
 						]
-					},
-					"widget": "page-settings:scoped",
-					"options": {
-						"pages": [
-							"home",
-							"services",
-							"hearing-aids",
-							"about",
-							"contact",
-							"patient-resources",
-							"service-pages",
-							"brand-pages",
-							"location-pages"
-						]
 					}
 				},
 				{
 					"slug": "hero_image",
-					"label": "Hero photo (used when Hero is Photo; Home 16:9 with a calm area on the left, other pages 3:2)",
+					"label": "Hero photo (16:9, calm area on the left)",
 					"type": "image"
 				},
 				{
@@ -406,9 +389,202 @@
 					"type": "string"
 				},
 				{
+					"slug": "cta_mode",
+					"label": "Booking band",
+					"type": "select",
+					"defaultValue": "Use the shared booking band",
+					"validation": {
+						"options": [
+							"Use the shared booking band",
+							"Customize for this page"
+						]
+					}
+				},
+				{
+					"slug": "cta_heading",
+					"label": "Booking band – Headline (only when customized)",
+					"type": "string"
+				},
+				{
+					"slug": "cta_text",
+					"label": "Booking band – Description (only when customized)",
+					"type": "text"
+				},
+				{
+					"slug": "home_trust_logos",
+					"label": "Trust bar logos",
+					"type": "select",
+					"defaultValue": "Scrolling (with pause)",
+					"validation": {
+						"options": [
+							"Scrolling (with pause)",
+							"Still"
+						]
+					}
+				},
+				{
+					"slug": "home_trust_rating",
+					"label": "Trust bar rating",
+					"type": "select",
+					"defaultValue": "In its own box",
+					"validation": {
+						"options": [
+							"In its own box",
+							"Plain (no box)"
+						]
+					}
+				},
+				{
+					"slug": "home_latest_posts",
+					"label": "Latest posts section",
+					"type": "boolean",
+					"defaultValue": true
+				},
+				{
+					"slug": "home_sample_card",
+					"label": "Sample service card with photo",
+					"type": "boolean",
+					"defaultValue": false
+				}
+			]
+		},
+		{
+			"slug": "page_services",
+			"label": "Services page",
+			"labelSingular": "Services page",
+			"description": "The Services page. Publish = page on (and its links); unpublish = page off. Keep the one record.",
+			"group": "Pages",
+			"sortOrder": 1,
+			"routable": false,
+			"supports": [
+				"drafts",
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Page name",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "hero",
+					"label": "Hero",
+					"type": "select",
+					"defaultValue": "Page default",
+					"validation": {
+						"options": [
+							"Page default",
+							"Photo",
+							"No photo · Primary",
+							"No photo · Light"
+						]
+					}
+				},
+				{
+					"slug": "hero_image",
+					"label": "Hero photo (3:2)",
+					"type": "image"
+				},
+				{
+					"slug": "heading",
+					"label": "Hero – Headline",
+					"type": "string"
+				},
+				{
+					"slug": "intro",
+					"label": "Hero – Description",
+					"type": "text"
+				},
+				{
 					"slug": "services_steps_heading",
 					"label": "Your first visit – Headline",
 					"type": "string"
+				},
+				{
+					"slug": "cta_mode",
+					"label": "Booking band",
+					"type": "select",
+					"defaultValue": "Use the shared booking band",
+					"validation": {
+						"options": [
+							"Use the shared booking band",
+							"Customize for this page"
+						]
+					}
+				},
+				{
+					"slug": "cta_heading",
+					"label": "Booking band – Headline (only when customized)",
+					"type": "string"
+				},
+				{
+					"slug": "cta_text",
+					"label": "Booking band – Description (only when customized)",
+					"type": "text"
+				},
+				{
+					"slug": "description",
+					"label": "Search results – Description (about 150 characters)",
+					"type": "text"
+				},
+				{
+					"slug": "services_first_visit",
+					"label": "“What to expect at your first visit” steps",
+					"type": "boolean",
+					"defaultValue": true
+				}
+			]
+		},
+		{
+			"slug": "page_hearing_aids",
+			"label": "Hearing aids page",
+			"labelSingular": "Hearing aids page",
+			"description": "The Hearing aids page. Publish = page on (and its links); unpublish = page off. Keep the one record.",
+			"group": "Pages",
+			"sortOrder": 2,
+			"routable": false,
+			"supports": [
+				"drafts",
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Page name",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "hero",
+					"label": "Hero",
+					"type": "select",
+					"defaultValue": "Page default",
+					"validation": {
+						"options": [
+							"Page default",
+							"Photo",
+							"No photo · Primary",
+							"No photo · Light"
+						]
+					}
+				},
+				{
+					"slug": "hero_image",
+					"label": "Hero photo (3:2)",
+					"type": "image"
+				},
+				{
+					"slug": "heading",
+					"label": "Hero – Headline",
+					"type": "string"
+				},
+				{
+					"slug": "intro",
+					"label": "Hero – Description",
+					"type": "text"
 				},
 				{
 					"slug": "ha_brands_heading",
@@ -443,6 +619,96 @@
 				{
 					"slug": "ha_rx_text",
 					"label": "Prescription card – Description",
+					"type": "text"
+				},
+				{
+					"slug": "cta_mode",
+					"label": "Booking band",
+					"type": "select",
+					"defaultValue": "Use the shared booking band",
+					"validation": {
+						"options": [
+							"Use the shared booking band",
+							"Customize for this page"
+						]
+					}
+				},
+				{
+					"slug": "cta_heading",
+					"label": "Booking band – Headline (only when customized)",
+					"type": "string"
+				},
+				{
+					"slug": "cta_text",
+					"label": "Booking band – Description (only when customized)",
+					"type": "text"
+				},
+				{
+					"slug": "description",
+					"label": "Search results – Description (about 150 characters)",
+					"type": "text"
+				},
+				{
+					"slug": "hearing_aids_styles",
+					"label": "Hearing aid styles section",
+					"type": "boolean",
+					"defaultValue": true
+				},
+				{
+					"slug": "hearing_aids_otc",
+					"label": "OTC vs. prescription section",
+					"type": "boolean",
+					"defaultValue": true
+				}
+			]
+		},
+		{
+			"slug": "page_about",
+			"label": "About page",
+			"labelSingular": "About page",
+			"description": "The About page. Publish = page on (and its links); unpublish = page off. Keep the one record.",
+			"group": "Pages",
+			"sortOrder": 3,
+			"routable": false,
+			"supports": [
+				"drafts",
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Page name",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "hero",
+					"label": "Hero",
+					"type": "select",
+					"defaultValue": "Page default",
+					"validation": {
+						"options": [
+							"Page default",
+							"Photo",
+							"No photo · Primary",
+							"No photo · Light"
+						]
+					}
+				},
+				{
+					"slug": "hero_image",
+					"label": "Hero photo (3:2)",
+					"type": "image"
+				},
+				{
+					"slug": "heading",
+					"label": "Hero – Headline",
+					"type": "string"
+				},
+				{
+					"slug": "intro",
+					"label": "Hero – Description",
 					"type": "text"
 				},
 				{
@@ -496,6 +762,109 @@
 					"type": "text"
 				},
 				{
+					"slug": "community_photo",
+					"label": "Community – Photo (3:2)",
+					"type": "image"
+				},
+				{
+					"slug": "cta_mode",
+					"label": "Booking band",
+					"type": "select",
+					"defaultValue": "Use the shared booking band",
+					"validation": {
+						"options": [
+							"Use the shared booking band",
+							"Customize for this page"
+						]
+					}
+				},
+				{
+					"slug": "cta_heading",
+					"label": "Booking band – Headline (only when customized)",
+					"type": "string"
+				},
+				{
+					"slug": "cta_text",
+					"label": "Booking band – Description (only when customized)",
+					"type": "text"
+				},
+				{
+					"slug": "about_journey",
+					"label": "Our journey",
+					"type": "select",
+					"defaultValue": "Grid 2 × 2",
+					"validation": {
+						"options": [
+							"Grid 2 × 2",
+							"Horizontal",
+							"Hidden"
+						]
+					}
+				},
+				{
+					"slug": "about_community",
+					"label": "Community section",
+					"type": "boolean",
+					"defaultValue": true
+				},
+				{
+					"slug": "about_credentials",
+					"label": "Credentials section",
+					"type": "boolean",
+					"defaultValue": true
+				}
+			]
+		},
+		{
+			"slug": "page_contact",
+			"label": "Contact page",
+			"labelSingular": "Contact page",
+			"description": "The Contact page. Publish = page on (and its links); unpublish = page off. Keep the one record.",
+			"group": "Pages",
+			"sortOrder": 4,
+			"routable": false,
+			"supports": [
+				"drafts",
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Page name",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "hero",
+					"label": "Hero",
+					"type": "select",
+					"defaultValue": "Page default",
+					"validation": {
+						"options": [
+							"Page default",
+							"Photo",
+							"No photo · Primary",
+							"No photo · Light"
+						]
+					}
+				},
+				{
+					"slug": "hero_image",
+					"label": "Hero photo (3:2)",
+					"type": "image"
+				},
+				{
+					"slug": "heading",
+					"label": "Hero – Headline",
+					"type": "string"
+				},
+				{
+					"slug": "intro",
+					"label": "Hero – Description",
+					"type": "text"
+				},
+				{
 					"slug": "contact_form_heading",
 					"label": "Message form – Headline",
 					"type": "string"
@@ -504,6 +873,60 @@
 					"slug": "contact_side_heading",
 					"label": "Contact details – Headline",
 					"type": "string"
+				},
+				{
+					"slug": "cta_mode",
+					"label": "Booking band",
+					"type": "select",
+					"defaultValue": "Use the shared booking band",
+					"validation": {
+						"options": [
+							"Use the shared booking band",
+							"Customize for this page"
+						]
+					}
+				},
+				{
+					"slug": "cta_heading",
+					"label": "Booking band – Headline (only when customized)",
+					"type": "string"
+				},
+				{
+					"slug": "description",
+					"label": "Search results – Description (about 150 characters)",
+					"type": "text"
+				}
+			]
+		},
+		{
+			"slug": "page_book_appointment",
+			"label": "Book appointment page",
+			"labelSingular": "Book appointment page",
+			"description": "The Book appointment page. Publish = page on (and its links); unpublish = page off. Keep the one record.",
+			"group": "Pages",
+			"sortOrder": 5,
+			"routable": false,
+			"supports": [
+				"drafts",
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Page name",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "heading",
+					"label": "Hero – Headline",
+					"type": "string"
+				},
+				{
+					"slug": "intro",
+					"label": "Hero – Description",
+					"type": "text"
 				},
 				{
 					"slug": "book_call_heading",
@@ -531,6 +954,219 @@
 					"type": "string"
 				},
 				{
+					"slug": "description",
+					"label": "Search results – Description (about 150 characters)",
+					"type": "text"
+				},
+				{
+					"slug": "book_version",
+					"label": "Booking",
+					"type": "select",
+					"defaultValue": "A · Scheduler embed",
+					"validation": {
+						"options": [
+							"A · Scheduler embed",
+							"B · Request form"
+						]
+					}
+				},
+				{
+					"slug": "book_layout",
+					"label": "Layout",
+					"type": "select",
+					"defaultValue": "Full width",
+					"validation": {
+						"options": [
+							"Full width",
+							"Right sidebar"
+						]
+					}
+				}
+			]
+		},
+		{
+			"slug": "page_reviews",
+			"label": "Reviews page",
+			"labelSingular": "Reviews page",
+			"description": "The Reviews page. Publish = page on (and its links); unpublish = page off. Keep the one record.",
+			"group": "Pages",
+			"sortOrder": 6,
+			"routable": false,
+			"supports": [
+				"drafts",
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Page name",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "heading",
+					"label": "Hero – Headline",
+					"type": "string"
+				},
+				{
+					"slug": "cta_mode",
+					"label": "Booking band",
+					"type": "select",
+					"defaultValue": "Use the shared booking band",
+					"validation": {
+						"options": [
+							"Use the shared booking band",
+							"Customize for this page"
+						]
+					}
+				},
+				{
+					"slug": "cta_heading",
+					"label": "Booking band – Headline (only when customized)",
+					"type": "string"
+				},
+				{
+					"slug": "cta_text",
+					"label": "Booking band – Description (only when customized)",
+					"type": "text"
+				},
+				{
+					"slug": "reviews_button",
+					"label": "“Leave us a review” button",
+					"type": "select",
+					"defaultValue": "Primary colour",
+					"validation": {
+						"options": [
+							"Primary colour",
+							"White with outline"
+						]
+					}
+				}
+			]
+		},
+		{
+			"slug": "page_blog",
+			"label": "Blog page",
+			"labelSingular": "Blog page",
+			"description": "The Blog page. Publish = page on (and its links); unpublish = page off. Keep the one record.",
+			"group": "Pages",
+			"sortOrder": 7,
+			"routable": false,
+			"supports": [
+				"drafts",
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Page name",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "heading",
+					"label": "Hero – Headline",
+					"type": "string"
+				},
+				{
+					"slug": "intro",
+					"label": "Hero – Description",
+					"type": "text"
+				},
+				{
+					"slug": "cta_mode",
+					"label": "Booking band",
+					"type": "select",
+					"defaultValue": "Use the shared booking band",
+					"validation": {
+						"options": [
+							"Use the shared booking band",
+							"Customize for this page"
+						]
+					}
+				},
+				{
+					"slug": "cta_heading",
+					"label": "Booking band – Headline (only when customized)",
+					"type": "string"
+				},
+				{
+					"slug": "cta_text",
+					"label": "Booking band – Description (only when customized)",
+					"type": "text"
+				},
+				{
+					"slug": "description",
+					"label": "Search results – Description (about 150 characters)",
+					"type": "text"
+				},
+				{
+					"slug": "blog_layout",
+					"label": "Layout",
+					"type": "select",
+					"defaultValue": "Grid · 16:9",
+					"validation": {
+						"options": [
+							"Grid · 16:9",
+							"Grid · square",
+							"List"
+						]
+					}
+				}
+			]
+		},
+		{
+			"slug": "page_patient_resources",
+			"label": "Patient resources page",
+			"labelSingular": "Patient resources page",
+			"description": "The Patient resources page. Publish = page on (and its links); unpublish = page off. Keep the one record.",
+			"group": "Pages",
+			"sortOrder": 8,
+			"routable": false,
+			"supports": [
+				"drafts",
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Page name",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "hero",
+					"label": "Hero",
+					"type": "select",
+					"defaultValue": "Page default",
+					"validation": {
+						"options": [
+							"Page default",
+							"Photo",
+							"No photo · Primary",
+							"No photo · Light"
+						]
+					}
+				},
+				{
+					"slug": "hero_image",
+					"label": "Hero photo (3:2)",
+					"type": "image"
+				},
+				{
+					"slug": "heading",
+					"label": "Hero – Headline",
+					"type": "string"
+				},
+				{
+					"slug": "intro",
+					"label": "Hero – Description",
+					"type": "text"
+				},
+				{
 					"slug": "res_blog_heading",
 					"label": "From our blog – Headline",
 					"type": "string"
@@ -539,6 +1175,276 @@
 					"slug": "res_orgs_heading",
 					"label": "Outside organizations – Headline",
 					"type": "string"
+				},
+				{
+					"slug": "cta_mode",
+					"label": "Booking band",
+					"type": "select",
+					"defaultValue": "Use the shared booking band",
+					"validation": {
+						"options": [
+							"Use the shared booking band",
+							"Customize for this page"
+						]
+					}
+				},
+				{
+					"slug": "cta_heading",
+					"label": "Booking band – Headline (only when customized)",
+					"type": "string"
+				},
+				{
+					"slug": "cta_text",
+					"label": "Booking band – Description (only when customized)",
+					"type": "text"
+				},
+				{
+					"slug": "description",
+					"label": "Search results – Description (about 150 characters)",
+					"type": "text"
+				},
+				{
+					"slug": "resources_layout",
+					"label": "Layout",
+					"type": "select",
+					"defaultValue": "Cards",
+					"validation": {
+						"options": [
+							"Cards",
+							"Accordion"
+						]
+					}
+				},
+				{
+					"slug": "resources_group",
+					"label": "Group by",
+					"type": "select",
+					"defaultValue": "None",
+					"validation": {
+						"options": [
+							"None",
+							"Tag"
+						]
+					}
+				}
+			]
+		},
+		{
+			"slug": "page_privacy_policy",
+			"label": "Privacy policy page",
+			"labelSingular": "Privacy policy page",
+			"description": "The Privacy policy page. Publish = page on (and its links); unpublish = page off. Keep the one record.",
+			"group": "Pages",
+			"sortOrder": 9,
+			"routable": false,
+			"supports": [
+				"drafts",
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Page name",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "heading",
+					"label": "Hero – Headline",
+					"type": "string"
+				},
+				{
+					"slug": "legal_toc",
+					"label": "Table of contents",
+					"type": "boolean",
+					"defaultValue": true
+				}
+			]
+		},
+		{
+			"slug": "page_terms_of_use",
+			"label": "Terms of use page",
+			"labelSingular": "Terms of use page",
+			"description": "The Terms of use page. Publish = page on (and its links); unpublish = page off. Keep the one record.",
+			"group": "Pages",
+			"sortOrder": 10,
+			"routable": false,
+			"supports": [
+				"drafts",
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Page name",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "heading",
+					"label": "Hero – Headline",
+					"type": "string"
+				},
+				{
+					"slug": "legal_toc",
+					"label": "Table of contents",
+					"type": "boolean",
+					"defaultValue": true
+				}
+			]
+		},
+		{
+			"slug": "page_accessibility",
+			"label": "Accessibility page",
+			"labelSingular": "Accessibility page",
+			"description": "The Accessibility page. Publish = page on (and its links); unpublish = page off. Keep the one record.",
+			"group": "Pages",
+			"sortOrder": 11,
+			"routable": false,
+			"supports": [
+				"drafts",
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Page name",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "heading",
+					"label": "Hero – Headline",
+					"type": "string"
+				},
+				{
+					"slug": "legal_toc",
+					"label": "Table of contents",
+					"type": "boolean",
+					"defaultValue": true
+				}
+			]
+		},
+		{
+			"slug": "page_templates",
+			"label": "Page templates",
+			"labelSingular": "Page templates",
+			"description": "Settings for every service, brand, team, location and blog post page. Keep the one record.",
+			"group": "Pages",
+			"sortOrder": 50,
+			"routable": false,
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Name",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "service_hero",
+					"label": "Service pages – Hero",
+					"type": "select",
+					"defaultValue": "Page default",
+					"validation": {
+						"options": [
+							"Page default",
+							"Photo",
+							"No photo · Primary",
+							"No photo · Light"
+						]
+					}
+				},
+				{
+					"slug": "service_sidebar_reviews",
+					"label": "Service pages – Sidebar reviews",
+					"type": "select",
+					"defaultValue": "Single review",
+					"validation": {
+						"options": [
+							"Single review",
+							"Carousel (3)"
+						]
+					}
+				},
+				{
+					"slug": "service_posts_card",
+					"label": "Service pages – Recent posts card",
+					"type": "boolean",
+					"defaultValue": true
+				},
+				{
+					"slug": "service_sticky",
+					"label": "Service pages – Sticky sidebar",
+					"type": "boolean",
+					"defaultValue": true
+				},
+				{
+					"slug": "brand_hero",
+					"label": "Hearing aid brand pages – Hero",
+					"type": "select",
+					"defaultValue": "Page default",
+					"validation": {
+						"options": [
+							"Page default",
+							"Photo",
+							"No photo · Primary",
+							"No photo · Light"
+						]
+					}
+				},
+				{
+					"slug": "profile_video",
+					"label": "Team profiles – Intro video",
+					"type": "boolean",
+					"defaultValue": true
+				},
+				{
+					"slug": "location_hero",
+					"label": "Location pages – Hero",
+					"type": "select",
+					"defaultValue": "Page default",
+					"validation": {
+						"options": [
+							"Page default",
+							"Photo",
+							"No photo · Primary",
+							"No photo · Light"
+						]
+					}
+				},
+				{
+					"slug": "post_image",
+					"label": "Blog posts – Featured image",
+					"type": "boolean",
+					"defaultValue": true
+				}
+			]
+		},
+		{
+			"slug": "shared_sections",
+			"label": "Shared sections",
+			"labelSingular": "Shared sections",
+			"description": "Sections used on many pages. A page uses these unless it is set to customize. Keep the one record.",
+			"group": "Pages",
+			"sortOrder": 51,
+			"routable": false,
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Name",
+					"type": "string",
+					"required": true,
+					"searchable": true
 				},
 				{
 					"slug": "cta_heading",
@@ -551,342 +1457,9 @@
 					"type": "text"
 				},
 				{
-					"slug": "description",
-					"label": "Search results – Description (about 150 characters)",
-					"type": "text"
-				},
-				{
-					"slug": "community_photo",
-					"label": "About: community photo (3:2)",
+					"slug": "cta_photo",
+					"label": "Booking band – Photo (older adult laughing with family, or on a walk)",
 					"type": "image"
-				},
-				{
-					"slug": "home_trust_logos",
-					"label": "Home: trust bar logos",
-					"type": "select",
-					"defaultValue": "Scrolling (with pause)",
-					"validation": {
-						"options": [
-							"Scrolling (with pause)",
-							"Still"
-						]
-					},
-					"widget": "page-settings:scoped",
-					"options": {
-						"pages": [
-							"home"
-						]
-					}
-				},
-				{
-					"slug": "home_trust_rating",
-					"label": "Home: trust bar rating",
-					"type": "select",
-					"defaultValue": "In its own box",
-					"validation": {
-						"options": [
-							"In its own box",
-							"Plain (no box)"
-						]
-					},
-					"widget": "page-settings:scoped",
-					"options": {
-						"pages": [
-							"home"
-						]
-					}
-				},
-				{
-					"slug": "home_latest_posts",
-					"label": "Home: latest posts section",
-					"type": "boolean",
-					"defaultValue": true,
-					"widget": "page-settings:scoped",
-					"options": {
-						"pages": [
-							"home"
-						]
-					}
-				},
-				{
-					"slug": "home_sample_card",
-					"label": "Home: sample service card with photo",
-					"type": "boolean",
-					"defaultValue": false,
-					"widget": "page-settings:scoped",
-					"options": {
-						"pages": [
-							"home"
-						]
-					}
-				},
-				{
-					"slug": "services_first_visit",
-					"label": "Services: “What to expect at your first visit” steps",
-					"type": "boolean",
-					"defaultValue": true,
-					"widget": "page-settings:scoped",
-					"options": {
-						"pages": [
-							"services"
-						]
-					}
-				},
-				{
-					"slug": "hearing_aids_styles",
-					"label": "Hearing aids: hearing aid styles section",
-					"type": "boolean",
-					"defaultValue": true,
-					"widget": "page-settings:scoped",
-					"options": {
-						"pages": [
-							"hearing-aids"
-						]
-					}
-				},
-				{
-					"slug": "hearing_aids_otc",
-					"label": "Hearing aids: OTC vs. prescription section",
-					"type": "boolean",
-					"defaultValue": true,
-					"widget": "page-settings:scoped",
-					"options": {
-						"pages": [
-							"hearing-aids"
-						]
-					}
-				},
-				{
-					"slug": "about_journey",
-					"label": "About: our journey",
-					"type": "select",
-					"defaultValue": "Grid 2 × 2",
-					"validation": {
-						"options": [
-							"Grid 2 × 2",
-							"Horizontal",
-							"Hidden"
-						]
-					},
-					"widget": "page-settings:scoped",
-					"options": {
-						"pages": [
-							"about"
-						]
-					}
-				},
-				{
-					"slug": "about_community",
-					"label": "About: community section",
-					"type": "boolean",
-					"defaultValue": true,
-					"widget": "page-settings:scoped",
-					"options": {
-						"pages": [
-							"about"
-						]
-					}
-				},
-				{
-					"slug": "about_credentials",
-					"label": "About: credentials section",
-					"type": "boolean",
-					"defaultValue": true,
-					"widget": "page-settings:scoped",
-					"options": {
-						"pages": [
-							"about"
-						]
-					}
-				},
-				{
-					"slug": "book_version",
-					"label": "Book appointment: booking",
-					"type": "select",
-					"defaultValue": "A · Scheduler embed",
-					"validation": {
-						"options": [
-							"A · Scheduler embed",
-							"B · Request form"
-						]
-					},
-					"widget": "page-settings:scoped",
-					"options": {
-						"pages": [
-							"book-appointment"
-						]
-					}
-				},
-				{
-					"slug": "book_layout",
-					"label": "Book appointment: layout",
-					"type": "select",
-					"defaultValue": "Full width",
-					"validation": {
-						"options": [
-							"Full width",
-							"Right sidebar"
-						]
-					},
-					"widget": "page-settings:scoped",
-					"options": {
-						"pages": [
-							"book-appointment"
-						]
-					}
-				},
-				{
-					"slug": "reviews_button",
-					"label": "Reviews: “Leave us a review” button",
-					"type": "select",
-					"defaultValue": "Primary colour",
-					"validation": {
-						"options": [
-							"Primary colour",
-							"White with outline"
-						]
-					},
-					"widget": "page-settings:scoped",
-					"options": {
-						"pages": [
-							"reviews"
-						]
-					}
-				},
-				{
-					"slug": "blog_layout",
-					"label": "Blog: layout",
-					"type": "select",
-					"defaultValue": "Grid · 16:9",
-					"validation": {
-						"options": [
-							"Grid · 16:9",
-							"Grid · square",
-							"List"
-						]
-					},
-					"widget": "page-settings:scoped",
-					"options": {
-						"pages": [
-							"blog"
-						]
-					}
-				},
-				{
-					"slug": "resources_layout",
-					"label": "Patient resources: layout",
-					"type": "select",
-					"defaultValue": "Cards",
-					"validation": {
-						"options": [
-							"Cards",
-							"Accordion"
-						]
-					},
-					"widget": "page-settings:scoped",
-					"options": {
-						"pages": [
-							"patient-resources"
-						]
-					}
-				},
-				{
-					"slug": "resources_group",
-					"label": "Patient resources: group by",
-					"type": "select",
-					"defaultValue": "None",
-					"validation": {
-						"options": [
-							"None",
-							"Tag"
-						]
-					},
-					"widget": "page-settings:scoped",
-					"options": {
-						"pages": [
-							"patient-resources"
-						]
-					}
-				},
-				{
-					"slug": "legal_toc",
-					"label": "Legal pages: table of contents",
-					"type": "boolean",
-					"defaultValue": true,
-					"widget": "page-settings:scoped",
-					"options": {
-						"pages": [
-							"privacy-policy",
-							"terms-of-use",
-							"accessibility"
-						]
-					}
-				},
-				{
-					"slug": "service_sidebar_reviews",
-					"label": "Service pages: sidebar reviews",
-					"type": "select",
-					"defaultValue": "Single review",
-					"validation": {
-						"options": [
-							"Single review",
-							"Carousel (3)"
-						]
-					},
-					"widget": "page-settings:scoped",
-					"options": {
-						"pages": [
-							"service-pages"
-						]
-					}
-				},
-				{
-					"slug": "service_posts_card",
-					"label": "Service pages: recent posts card",
-					"type": "boolean",
-					"defaultValue": true,
-					"widget": "page-settings:scoped",
-					"options": {
-						"pages": [
-							"service-pages"
-						]
-					}
-				},
-				{
-					"slug": "service_sticky",
-					"label": "Service pages: sticky sidebar",
-					"type": "boolean",
-					"defaultValue": true,
-					"widget": "page-settings:scoped",
-					"options": {
-						"pages": [
-							"service-pages"
-						]
-					}
-				},
-				{
-					"slug": "profile_video",
-					"label": "Team profiles: intro video",
-					"type": "boolean",
-					"defaultValue": true,
-					"widget": "page-settings:scoped",
-					"options": {
-						"pages": [
-							"team-profiles"
-						]
-					}
-				},
-				{
-					"slug": "post_image",
-					"label": "Blog posts: featured image",
-					"type": "boolean",
-					"defaultValue": true,
-					"widget": "page-settings:scoped",
-					"options": {
-						"pages": [
-							"blog-posts"
-						]
-					}
 				}
 			]
 		},
@@ -1888,10 +2461,10 @@
 				}
 			}
 		],
-		"site_pages": [
+		"page_home": [
 			{
 				"id": "page-home",
-				"slug": "home",
+				"slug": "main",
 				"status": "published",
 				"data": {
 					"title": "Home",
@@ -1910,15 +2483,18 @@
 					"home_blog_heading": "From our audiologists",
 					"cta_heading": "Take the first step toward better hearing",
 					"cta_text": "Pretium tincidunt lacus nulla gravida orci a odio nullam varius turpis. Et commodo pharetra est eros bibendum elit.",
+					"cta_mode": "Use the shared booking band",
 					"home_trust_logos": "Scrolling (with pause)",
 					"home_trust_rating": "In its own box",
 					"home_latest_posts": true,
 					"home_sample_card": false
 				}
-			},
+			}
+		],
+		"page_services": [
 			{
 				"id": "page-services",
-				"slug": "services",
+				"slug": "main",
 				"status": "published",
 				"data": {
 					"title": "Services",
@@ -1929,12 +2505,15 @@
 					"services_steps_heading": "What to expect at your first visit",
 					"cta_heading": "Start with a hearing evaluation",
 					"cta_text": "Labore et dolore magna aliqua ut enim ad minim veniam quis. Nostrud exercitation ullamco laboris nisi ut aliquip.",
+					"cta_mode": "Customize for this page",
 					"services_first_visit": true
 				}
-			},
+			}
+		],
+		"page_hearing_aids": [
 			{
 				"id": "page-hearing-aids",
-				"slug": "hearing-aids",
+				"slug": "main",
 				"status": "published",
 				"data": {
 					"title": "Hearing aids",
@@ -1951,13 +2530,16 @@
 					"ha_rx_text": "Consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et. Dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut. Aliquip ex ea commodo consequat duis aute irure dolor. In reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur. Sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit.",
 					"cta_heading": "Try hearing aids before you decide",
 					"cta_text": "Anim id est laborum curabitur pretium tincidunt lacus nulla gravida. Orci a odio nullam varius turpis et commodo.",
+					"cta_mode": "Customize for this page",
 					"hearing_aids_styles": true,
 					"hearing_aids_otc": true
 				}
-			},
+			}
+		],
+		"page_about": [
 			{
 				"id": "page-about",
-				"slug": "about",
+				"slug": "main",
 				"status": "published",
 				"data": {
 					"title": "About",
@@ -1976,14 +2558,17 @@
 					"about_creds_text": "Eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa. Qui officia deserunt mollit anim id est laborum curabitur pretium tincidunt lacus nulla gravida orci a odio. Nullam varius turpis et commodo pharetra est eros bibendum elit.",
 					"cta_heading": "Your hearing journey starts with a conversation",
 					"cta_text": "Nec luctus magna felis sollicitudin mauris integer in mauris eu nibh euismod gravida praesent. Blandit odio eu enim.",
+					"cta_mode": "Customize for this page",
 					"about_journey": "Grid 2 × 2",
 					"about_community": true,
 					"about_credentials": true
 				}
-			},
+			}
+		],
+		"page_contact": [
 			{
 				"id": "page-contact",
-				"slug": "contact",
+				"slug": "main",
 				"status": "published",
 				"data": {
 					"title": "Contact",
@@ -1993,16 +2578,18 @@
 					"description": "Call, email or send us a message. We'll get back to you within one business day.",
 					"contact_form_heading": "Send us a message",
 					"contact_side_heading": "Talk to us",
-					"cta_heading": "Call us to talk it through"
+					"cta_heading": "Call us to talk it through",
+					"cta_mode": "Customize for this page"
 				}
-			},
+			}
+		],
+		"page_book_appointment": [
 			{
 				"id": "page-book-appointment",
-				"slug": "book-appointment",
+				"slug": "main",
 				"status": "published",
 				"data": {
 					"title": "Book appointment",
-					"hero": "Page default",
 					"heading": "Book your appointment",
 					"intro": "Tincidunt lacus nulla gravida orci a odio nullam varius turpis et commodo pharetra est eros bibendum elit. Nec luctus magna felis sollicitudin mauris integer in.",
 					"description": "Book online or ask us to call you back to find a time.",
@@ -2014,38 +2601,44 @@
 					"book_version": "A · Scheduler embed",
 					"book_layout": "Full width"
 				}
-			},
+			}
+		],
+		"page_reviews": [
 			{
 				"id": "page-reviews",
-				"slug": "reviews",
+				"slug": "main",
 				"status": "published",
 				"data": {
 					"title": "Reviews",
-					"hero": "Page default",
 					"heading": "Patient reviews",
 					"cta_heading": "Join our patients",
 					"cta_text": "Adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore. Magna aliqua ut enim ad minim veniam.",
+					"cta_mode": "Customize for this page",
 					"reviews_button": "Primary colour"
 				}
-			},
+			}
+		],
+		"page_blog": [
 			{
 				"id": "page-blog",
-				"slug": "blog",
+				"slug": "main",
 				"status": "published",
 				"data": {
 					"title": "Blog",
-					"hero": "Page default",
 					"heading": "Hearing health articles",
 					"intro": "Quis nostrud exercitation ullamco laboris nisi ut aliquip ex. Ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse. Cillum dolore eu.",
 					"description": "Plain-language articles from our audiologists on hearing loss, hearing aids, tinnitus and everyday hearing care.",
 					"cta_heading": "Take the first step toward better hearing",
 					"cta_text": "Pretium tincidunt lacus nulla gravida orci a odio nullam varius turpis. Et commodo pharetra est eros bibendum elit.",
+					"cta_mode": "Use the shared booking band",
 					"blog_layout": "Grid · 16:9"
 				}
-			},
+			}
+		],
+		"page_patient_resources": [
 			{
 				"id": "page-patient-resources",
-				"slug": "patient-resources",
+				"slug": "main",
 				"status": "published",
 				"data": {
 					"title": "Patient resources",
@@ -2057,91 +2650,75 @@
 					"res_orgs_heading": "Helpful organizations",
 					"cta_heading": "Take the first step toward better hearing",
 					"cta_text": "Pretium tincidunt lacus nulla gravida orci a odio nullam varius turpis. Et commodo pharetra est eros bibendum elit.",
+					"cta_mode": "Use the shared booking band",
 					"resources_layout": "Cards",
 					"resources_group": "None"
 				}
-			},
+			}
+		],
+		"page_privacy_policy": [
 			{
 				"id": "page-privacy-policy",
-				"slug": "privacy-policy",
+				"slug": "main",
 				"status": "published",
 				"data": {
 					"title": "Privacy policy",
-					"hero": "Page default",
 					"heading": "Privacy Policy",
 					"legal_toc": true
 				}
-			},
+			}
+		],
+		"page_terms_of_use": [
 			{
 				"id": "page-terms-of-use",
-				"slug": "terms-of-use",
+				"slug": "main",
 				"status": "published",
 				"data": {
 					"title": "Terms of use",
-					"hero": "Page default",
 					"heading": "Terms of Use",
 					"legal_toc": true
 				}
-			},
+			}
+		],
+		"page_accessibility": [
 			{
 				"id": "page-accessibility",
-				"slug": "accessibility",
+				"slug": "main",
 				"status": "published",
 				"data": {
 					"title": "Accessibility",
-					"hero": "Page default",
 					"heading": "Accessibility Statement",
 					"legal_toc": true
 				}
-			},
+			}
+		],
+		"page_templates": [
 			{
-				"id": "page-service-pages",
-				"slug": "service-pages",
+				"id": "page-templates",
+				"slug": "main",
 				"status": "published",
 				"data": {
-					"title": "Template: service pages",
-					"hero": "Page default",
+					"title": "Page templates",
+					"service_hero": "Page default",
 					"service_sidebar_reviews": "Single review",
 					"service_posts_card": true,
-					"service_sticky": true
-				}
-			},
-			{
-				"id": "page-brand-pages",
-				"slug": "brand-pages",
-				"status": "published",
-				"data": {
-					"title": "Template: hearing aid brand pages",
-					"hero": "Page default"
-				}
-			},
-			{
-				"id": "page-team-profiles",
-				"slug": "team-profiles",
-				"status": "published",
-				"data": {
-					"title": "Template: team profiles",
-					"hero": "Page default",
-					"profile_video": true
-				}
-			},
-			{
-				"id": "page-location-pages",
-				"slug": "location-pages",
-				"status": "published",
-				"data": {
-					"title": "Template: location pages",
-					"hero": "Page default"
-				}
-			},
-			{
-				"id": "page-blog-posts",
-				"slug": "blog-posts",
-				"status": "published",
-				"data": {
-					"title": "Template: blog posts",
-					"hero": "Page default",
+					"service_sticky": true,
+					"brand_hero": "Page default",
+					"profile_video": true,
+					"location_hero": "Page default",
 					"post_image": true
+				}
+			}
+		],
+		"shared_sections": [
+			{
+				"id": "shared-sections",
+				"slug": "main",
+				"status": "published",
+				"data": {
+					"title": "Shared sections",
+					"cta_heading": "Take the first step toward better hearing",
+					"cta_text": "Pretium tincidunt lacus nulla gravida orci a odio nullam varius turpis. Et commodo pharetra est eros bibendum elit."
 				}
 			}
 		],

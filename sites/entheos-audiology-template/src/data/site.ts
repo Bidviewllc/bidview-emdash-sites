@@ -9,7 +9,7 @@
 
 import { getEmDashCollection, getEmDashEntry, getMenu, getSiteSettings, getTaxonomyTerms } from "emdash";
 import * as blog from "./blog";
-import { HERO_OPTIONS, PAGE_TEXT, PAGES } from "./page-settings";
+import { CTA_FIELDS, CTA_MODE_OPTIONS, HERO_OPTIONS, MAIN, PAGE_TEXT, PAGES, SHARED_COLLECTION, SHARED_DEFAULTS, TEMPLATES_COLLECTION } from "./page-settings";
 import * as sample from "./practice";
 import type { Brand, BrandDetail, Office, Post, Provider, Resource, Service } from "./types";
 
@@ -68,10 +68,17 @@ export async function loadSite() {
 		getTaxonomyTerms("category"),
 		getTaxonomyTerms("resource_tag"),
 	]);
-	const [menuList, pageE] = await Promise.all([
+	/** One-record content type: its published record's data, null if unpublished, undefined if the type doesn't exist. */
+	const single = (type: string) =>
+		getEmDashEntry(type, MAIN).then(
+			(r) => (r.error ? undefined : ((r.entry as Entry | null)?.data ?? null)),
+			() => undefined,
+		);
+	const [menuList, pageData, templatesData, sharedData] = await Promise.all([
 		Promise.all(MENU_NAMES.map((n) => getMenu(n))),
-		// Published Pages records only; a site without the Pages list counts every page as on.
-		getEmDashCollection("site_pages", { limit: 100 }).then((r) => (r.error ? [] : (r.entries as Entry[]))),
+		Promise.all(PAGES.map((d) => (d.collection ? single(d.collection) : Promise.resolve(undefined)))),
+		single(TEMPLATES_COLLECTION),
+		single(SHARED_COLLECTION),
 	]);
 	const p = (practiceRes.entry as Entry | null)?.data;
 	if (!p) throw new NotSetUpError("No practice record (Practice details, slug main).");
@@ -100,7 +107,7 @@ export async function loadSite() {
 		favicon: imgSrc(settings.favicon),
 		reviewControls: p.review_controls !== false,
 		/** Site-wide photos (Practice details); placeholders show until uploaded. */
-		photos: { team: photo(p.team_photo), cta: photo(p.cta_photo_image), office: photo(p.office_photo) },
+		photos: { team: photo(p.team_photo), cta: undefined as Photo | undefined, office: photo(p.office_photo) },
 		/** Site design choices (Practice details); Review controls start from these. */
 		design: {
 			header: code(p.header_style, "h3"),
@@ -210,16 +217,29 @@ export async function loadSite() {
 		hideFromHub: !!e.data.hide_from_hub,
 	}));
 
-	// Template pages (the Pages list): published = on. Each page's settings
-	// become the starting values of its Review controls settings.
-	const pageRecords = new Map(pageE.map((e) => [slugOf(e), e.data]));
+	// Template pages: each fixed page is its own one-record content type;
+	// published = on. A content type that doesn't exist (a site set up before
+	// it) counts as on with the template's defaults. Record-page settings come
+	// from the Page templates record. Each page's settings become the starting
+	// values of its Review controls settings.
+	const shared = sharedData ?? {};
+	practice.photos.cta = photo(shared.cta_photo) ?? photo(p.cta_photo_image);
+	const dataFor = (i: number): Data => {
+		const def = PAGES[i];
+		if (def.template) {
+			const tpl = templatesData ?? {};
+			return { ...tpl, hero: tpl[`${def.template}_hero`] };
+		}
+		return pageData[i] ?? {};
+	};
 	const pageOn = (slug: string) => {
-		const def = PAGES.find((d) => d.slug === slug);
-		return !pageE.length || !!def?.alwaysOn || pageRecords.has(slug);
+		const i = PAGES.findIndex((d) => d.slug === slug);
+		const def = PAGES[i];
+		return !!def?.alwaysOn || !def?.collection || pageData[i] !== null;
 	};
 	const pages: Record<string, { on: boolean; hero?: string; heroImage?: Photo; communityPhoto?: Photo; values: Record<string, string | boolean>; text: Record<string, string> }> = {};
-	for (const def of PAGES) {
-		const d = pageRecords.get(def.slug) ?? {};
+	for (const [i, def] of PAGES.entries()) {
+		const d = dataFor(i);
 		const values: Record<string, string | boolean> = {};
 		for (const st of def.settings) {
 			const v = d[st.field];
@@ -230,6 +250,10 @@ export async function loadSite() {
 		const text = Object.fromEntries(
 			(PAGE_TEXT[def.slug] ?? []).map((f) => [f.field, d[f.field]]).filter(([, v]) => typeof v === "string" && v.trim()),
 		) as Record<string, string>;
+		// Booking band: the shared one unless this page is set to customize it.
+		if ((PAGE_TEXT[def.slug] ?? []).some((f) => CTA_FIELDS.includes(f.field)) && d.cta_mode !== CTA_MODE_OPTIONS[1]) {
+			for (const k of CTA_FIELDS) text[k] = (typeof shared[k] === "string" && shared[k].trim()) || SHARED_DEFAULTS[k as keyof typeof SHARED_DEFAULTS];
+		}
 		pages[def.slug] = { on: pageOn(def.slug), ...(hero ? { hero } : {}), heroImage: photo(d.hero_image), communityPhoto: photo(d.community_photo), values, text };
 	}
 	// Switch-on rules that follow other pages being on.

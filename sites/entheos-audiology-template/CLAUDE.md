@@ -89,45 +89,41 @@ handed off from Claude Design in `design/`.
 - Site design choices are fields on Practice details (header style, footer style,
   footer logo, badge row, logo shape, team cards, CTA photo). Review controls start
   from them; the address bar still overrides for review.
-- **Pages list** (collection `site_pages`, defined in `src/data/page-settings.ts`):
-  one record per template page plus "Template:" records for service pages, brand
-  pages, team profiles, location pages and blog posts. Published = page on;
-  unpublished = 404 (middleware), its menu links hidden, and switch-on links that
-  depend on it hidden (Home "Read our story" needs About; "Read more reviews"
-  needs Reviews; latest/recent posts need Blog and a post; Book buttons go to
-  Contact when Book appointment is off). Each record holds the hero choice and
-  that page's settings; every setting field shows on every record, so labels start
-  with the page name. Settings feed the Review controls starting values
-  (`s.bool`/`s.choice`/`heroFor` read the record first). A site without the
-  Pages list treats every page as on.
-- The `page-settings` plugin (`src/plugins/page-settings/`, registered in
-  astro.config.mjs) gives every Pages-list setting field the widget
-  `page-settings:scoped`, which shows the field only on the records that use it
-  (looked up in page-settings.ts by field slug; the admin passes select choices,
-  not widget options, to select fields). It finds the open record's slug from the
-  admin address plus one API call; until then it shows the field.
+- **Template pages** (defined in `src/data/page-settings.ts`; Liz chose this
+  over a single Pages list on 2026-10-16): each fixed page is its own content type
+  (`page_home`, `page_about`...; admin label "Home page" etc.) with one record,
+  slug `main`, grouped in a "Pages" sidebar folder, so its screen shows only its
+  own fields (no hiding add-on). Published = page on; unpublished = 404
+  (middleware), its menu links hidden, and switch-on links that depend on it
+  hidden (Home "Read our story" needs About; "Read more reviews" needs Reviews;
+  latest/recent posts need Blog and a post; Book buttons go to Contact when Book
+  appointment is off). A page type that doesn't exist counts as on with defaults.
+  Each record holds the hero choice and photo, the page text and that page's
+  settings, which feed the Review controls starting values (`s.bool`/`s.choice`/
+  `heroFor` read the record first). "Page templates" (`page_templates`) holds
+  settings for record pages (service/brand/location hero, service sidebar, profile
+  video, post image). "Shared sections" (`shared_sections`) holds the shared
+  booking band (headline, description, photo); each page with a band has
+  "Booking band: Use the shared booking band / Customize for this page".
 - **Page text** (`src/data/page-text.json`, starting wording per page): hero
   headline/description, section headlines/descriptions, booking band and search
-  description of the fixed pages, one named field each on the Pages list,
-  labelled "<section> – Headline/Description" and shown only on its own record.
-  Section labels above headlines ("eyebrows") are fixed text in the pages, not
-  editable (Liz, 2026-10-16). Pages read text with `s.text("field")` /
-  `s.paras("field")` (blank line = new paragraph); `{city}`, `{name}`,
-  `{short}`, `{phone}` are filled in. The Pages list uses 83 of D1's 100
-  columns per table; new page-wide fields beyond ~15 need another collection.
-  Record pages (service, brand, location, profile, post) aren't in this yet.
-- **Photos** (`Photo.astro` for plain slots): hero photo on each Pages record (Home
+  description, labelled "<section> – Headline/Description". Section labels above
+  headlines ("eyebrows") are fixed text in the pages, not editable (Liz,
+  2026-10-16). Pages read text with `s.text("field")` / `s.paras("field")`
+  (blank line = new paragraph); `{city}`, `{name}`, `{short}`, `{phone}` are
+  filled in. Record pages (service, brand, location, profile, post) aren't in
+  this yet.
+- **Photos** (`Photo.astro` for plain slots): hero photo on each page record (Home
   16:9, others 3:2) and on Services, Brands and Offices (`photo` = exterior);
-  community photo on the About record; team, booking-band and office-interior
-  photos on Practice details. "Photo" hero with no photo: labelled placeholder
-  while Review controls are on, the no-photo Light hero when they're off (live).
-  The example photo (`/assets/photos`) is review-only: Review controls' "Example
-  photo" hero, the sample article body and the sample video poster. The admin
-  hides Pages photo fields on records they don't belong to via a style rule from
-  the page-settings widget (`PAGE_PHOTO_FIELDS`).
-- Changes to the Pages list only reach the main address after the version is
-  promoted; the admin always edits the shared database, so a preview URL shows
-  admin edits straight away.
+  community photo on the About page; team and office-interior photos on Practice
+  details; booking band photo on Shared sections. "Photo" hero with no photo:
+  labelled placeholder while Review controls are on, the no-photo Light hero when
+  they're off (live). The example photo (`/assets/photos`) is review-only: Review
+  controls' "Example photo" hero, the sample article body and the sample video
+  poster.
+- Code changes only reach the main address after the version is promoted; the
+  admin always edits the shared database, so a preview URL shows admin edits
+  straight away.
 - A site set up before menus or new fields were in the seed doesn't get them from
   the seed. Collections and fields: `npx tsx scripts/sync-schema.ts <site>` (dry
   run), then `--apply` (a new collection also gets the seed's records). Menus: `npx tsx scripts/menus-sql.ts > menus.sql`, then

@@ -5,6 +5,317 @@
 
 import type { BylineSummary, ContentBylineCredit, TaxonomyTerm, PortableTextBlock } from "emdash";
 
+export interface PageHome {
+  id: string;
+  slug: string | null;
+  status: string;
+  title: string;
+  hero?: "Page default" | "Photo" | "No photo · Primary" | "No photo · Light";
+  hero_image?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown>; darkVariant?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> } };
+  heading?: string;
+  intro?: string;
+  home_about_heading?: string;
+  home_about_text?: string;
+  home_team_heading?: string;
+  home_team_intro?: string;
+  home_services_heading?: string;
+  home_services_intro?: string;
+  home_brands_heading?: string;
+  home_brands_intro?: string;
+  home_reviews_heading?: string;
+  home_blog_heading?: string;
+  cta_mode?: "Use the shared booking band" | "Customize for this page";
+  cta_heading?: string;
+  cta_text?: string;
+  home_trust_logos?: "Scrolling (with pause)" | "Still";
+  home_trust_rating?: "In its own box" | "Plain (no box)";
+  home_latest_posts?: boolean;
+  home_sample_card?: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  byline?: BylineSummary | null;
+  bylines?: ContentBylineCredit[];
+  terms?: Record<string, TaxonomyTerm[]>;
+}
+
+export interface PageService {
+  id: string;
+  slug: string | null;
+  status: string;
+  title: string;
+  hero?: "Page default" | "Photo" | "No photo · Primary" | "No photo · Light";
+  hero_image?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown>; darkVariant?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> } };
+  heading?: string;
+  intro?: string;
+  services_steps_heading?: string;
+  cta_mode?: "Use the shared booking band" | "Customize for this page";
+  cta_heading?: string;
+  cta_text?: string;
+  description?: string;
+  services_first_visit?: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  byline?: BylineSummary | null;
+  bylines?: ContentBylineCredit[];
+  terms?: Record<string, TaxonomyTerm[]>;
+}
+
+export interface PageHearingAid {
+  id: string;
+  slug: string | null;
+  status: string;
+  title: string;
+  hero?: "Page default" | "Photo" | "No photo · Primary" | "No photo · Light";
+  hero_image?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown>; darkVariant?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> } };
+  heading?: string;
+  intro?: string;
+  ha_brands_heading?: string;
+  ha_styles_heading?: string;
+  ha_compare_heading?: string;
+  ha_otc_heading?: string;
+  ha_otc_text?: string;
+  ha_rx_heading?: string;
+  ha_rx_text?: string;
+  cta_mode?: "Use the shared booking band" | "Customize for this page";
+  cta_heading?: string;
+  cta_text?: string;
+  description?: string;
+  hearing_aids_styles?: boolean;
+  hearing_aids_otc?: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  byline?: BylineSummary | null;
+  bylines?: ContentBylineCredit[];
+  terms?: Record<string, TaxonomyTerm[]>;
+}
+
+export interface PageAbout {
+  id: string;
+  slug: string | null;
+  status: string;
+  title: string;
+  hero?: "Page default" | "Photo" | "No photo · Primary" | "No photo · Light";
+  hero_image?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown>; darkVariant?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> } };
+  heading?: string;
+  intro?: string;
+  about_story_heading?: string;
+  about_story_text?: string;
+  about_journey_heading?: string;
+  about_journey_intro?: string;
+  about_values_heading?: string;
+  about_team_heading?: string;
+  about_community_heading?: string;
+  about_community_text?: string;
+  about_creds_heading?: string;
+  about_creds_text?: string;
+  community_photo?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown>; darkVariant?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> } };
+  cta_mode?: "Use the shared booking band" | "Customize for this page";
+  cta_heading?: string;
+  cta_text?: string;
+  about_journey?: "Grid 2 × 2" | "Horizontal" | "Hidden";
+  about_community?: boolean;
+  about_credentials?: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  byline?: BylineSummary | null;
+  bylines?: ContentBylineCredit[];
+  terms?: Record<string, TaxonomyTerm[]>;
+}
+
+export interface PageContact {
+  id: string;
+  slug: string | null;
+  status: string;
+  title: string;
+  hero?: "Page default" | "Photo" | "No photo · Primary" | "No photo · Light";
+  hero_image?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown>; darkVariant?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> } };
+  heading?: string;
+  intro?: string;
+  contact_form_heading?: string;
+  contact_side_heading?: string;
+  cta_mode?: "Use the shared booking band" | "Customize for this page";
+  cta_heading?: string;
+  description?: string;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  byline?: BylineSummary | null;
+  bylines?: ContentBylineCredit[];
+  terms?: Record<string, TaxonomyTerm[]>;
+}
+
+export interface PageBookAppointment {
+  id: string;
+  slug: string | null;
+  status: string;
+  title: string;
+  heading?: string;
+  intro?: string;
+  book_call_heading?: string;
+  book_offices_heading?: string;
+  book_form_heading?: string;
+  book_form_intro?: string;
+  book_form_after?: string;
+  description?: string;
+  book_version?: "A · Scheduler embed" | "B · Request form";
+  book_layout?: "Full width" | "Right sidebar";
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  byline?: BylineSummary | null;
+  bylines?: ContentBylineCredit[];
+  terms?: Record<string, TaxonomyTerm[]>;
+}
+
+export interface PageReview {
+  id: string;
+  slug: string | null;
+  status: string;
+  title: string;
+  heading?: string;
+  cta_mode?: "Use the shared booking band" | "Customize for this page";
+  cta_heading?: string;
+  cta_text?: string;
+  reviews_button?: "Primary colour" | "White with outline";
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  byline?: BylineSummary | null;
+  bylines?: ContentBylineCredit[];
+  terms?: Record<string, TaxonomyTerm[]>;
+}
+
+export interface PageBlog {
+  id: string;
+  slug: string | null;
+  status: string;
+  title: string;
+  heading?: string;
+  intro?: string;
+  cta_mode?: "Use the shared booking band" | "Customize for this page";
+  cta_heading?: string;
+  cta_text?: string;
+  description?: string;
+  blog_layout?: "Grid · 16:9" | "Grid · square" | "List";
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  byline?: BylineSummary | null;
+  bylines?: ContentBylineCredit[];
+  terms?: Record<string, TaxonomyTerm[]>;
+}
+
+export interface PagePatientResource {
+  id: string;
+  slug: string | null;
+  status: string;
+  title: string;
+  hero?: "Page default" | "Photo" | "No photo · Primary" | "No photo · Light";
+  hero_image?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown>; darkVariant?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> } };
+  heading?: string;
+  intro?: string;
+  res_blog_heading?: string;
+  res_orgs_heading?: string;
+  cta_mode?: "Use the shared booking band" | "Customize for this page";
+  cta_heading?: string;
+  cta_text?: string;
+  description?: string;
+  resources_layout?: "Cards" | "Accordion";
+  resources_group?: "None" | "Tag";
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  byline?: BylineSummary | null;
+  bylines?: ContentBylineCredit[];
+  terms?: Record<string, TaxonomyTerm[]>;
+}
+
+export interface PagePrivacyPolicy {
+  id: string;
+  slug: string | null;
+  status: string;
+  title: string;
+  heading?: string;
+  legal_toc?: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  byline?: BylineSummary | null;
+  bylines?: ContentBylineCredit[];
+  terms?: Record<string, TaxonomyTerm[]>;
+}
+
+export interface PageTermsOfUse {
+  id: string;
+  slug: string | null;
+  status: string;
+  title: string;
+  heading?: string;
+  legal_toc?: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  byline?: BylineSummary | null;
+  bylines?: ContentBylineCredit[];
+  terms?: Record<string, TaxonomyTerm[]>;
+}
+
+export interface PageAccessibility {
+  id: string;
+  slug: string | null;
+  status: string;
+  title: string;
+  heading?: string;
+  legal_toc?: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  byline?: BylineSummary | null;
+  bylines?: ContentBylineCredit[];
+  terms?: Record<string, TaxonomyTerm[]>;
+}
+
+export interface PageTemplate {
+  id: string;
+  slug: string | null;
+  status: string;
+  title: string;
+  service_hero?: "Page default" | "Photo" | "No photo · Primary" | "No photo · Light";
+  service_sidebar_reviews?: "Single review" | "Carousel (3)";
+  service_posts_card?: boolean;
+  service_sticky?: boolean;
+  brand_hero?: "Page default" | "Photo" | "No photo · Primary" | "No photo · Light";
+  profile_video?: boolean;
+  location_hero?: "Page default" | "Photo" | "No photo · Primary" | "No photo · Light";
+  post_image?: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  byline?: BylineSummary | null;
+  bylines?: ContentBylineCredit[];
+  terms?: Record<string, TaxonomyTerm[]>;
+}
+
+export interface SharedSection {
+  id: string;
+  slug: string | null;
+  status: string;
+  title: string;
+  cta_heading?: string;
+  cta_text?: string;
+  cta_photo?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown>; darkVariant?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> } };
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  byline?: BylineSummary | null;
+  bylines?: ContentBylineCredit[];
+  terms?: Record<string, TaxonomyTerm[]>;
+}
+
 export interface Brand {
   id: string;
   slug: string | null;
@@ -101,7 +412,6 @@ export interface Practice {
   team_cards?: "Cards · arrow on photo" | "Cards · arrow beside name" | "List · photo left, short bio";
   cta_photo?: boolean;
   team_photo?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown>; darkVariant?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> } };
-  cta_photo_image?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown>; darkVariant?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> } };
   office_photo?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown>; darkVariant?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> } };
   createdAt: Date;
   updatedAt: Date;
@@ -175,88 +485,22 @@ export interface Service {
   terms?: Record<string, TaxonomyTerm[]>;
 }
 
-export interface SitePage {
-  id: string;
-  slug: string | null;
-  status: string;
-  title: string;
-  hero?: "Page default" | "Photo" | "No photo · Primary" | "No photo · Light";
-  hero_image?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown>; darkVariant?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> } };
-  heading?: string;
-  intro?: string;
-  home_about_heading?: string;
-  home_about_text?: string;
-  home_team_heading?: string;
-  home_team_intro?: string;
-  home_services_heading?: string;
-  home_services_intro?: string;
-  home_brands_heading?: string;
-  home_brands_intro?: string;
-  home_reviews_heading?: string;
-  home_blog_heading?: string;
-  cta_heading?: string;
-  cta_text?: string;
-  description?: string;
-  services_steps_heading?: string;
-  ha_brands_heading?: string;
-  ha_styles_heading?: string;
-  ha_compare_heading?: string;
-  ha_otc_heading?: string;
-  ha_otc_text?: string;
-  ha_rx_heading?: string;
-  ha_rx_text?: string;
-  about_story_heading?: string;
-  about_story_text?: string;
-  about_journey_heading?: string;
-  about_journey_intro?: string;
-  about_values_heading?: string;
-  about_team_heading?: string;
-  about_community_heading?: string;
-  about_community_text?: string;
-  about_creds_heading?: string;
-  about_creds_text?: string;
-  contact_form_heading?: string;
-  contact_side_heading?: string;
-  book_call_heading?: string;
-  book_offices_heading?: string;
-  book_form_heading?: string;
-  book_form_intro?: string;
-  book_form_after?: string;
-  res_blog_heading?: string;
-  res_orgs_heading?: string;
-  community_photo?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown>; darkVariant?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> } };
-  home_trust_logos?: "Scrolling (with pause)" | "Still";
-  home_trust_rating?: "In its own box" | "Plain (no box)";
-  home_latest_posts?: boolean;
-  home_sample_card?: boolean;
-  services_first_visit?: boolean;
-  hearing_aids_styles?: boolean;
-  hearing_aids_otc?: boolean;
-  about_journey?: "Grid 2 × 2" | "Horizontal" | "Hidden";
-  about_community?: boolean;
-  about_credentials?: boolean;
-  book_version?: "A · Scheduler embed" | "B · Request form";
-  book_layout?: "Full width" | "Right sidebar";
-  reviews_button?: "Primary colour" | "White with outline";
-  blog_layout?: "Grid · 16:9" | "Grid · square" | "List";
-  resources_layout?: "Cards" | "Accordion";
-  resources_group?: "None" | "Tag";
-  legal_toc?: boolean;
-  service_sidebar_reviews?: "Single review" | "Carousel (3)";
-  service_posts_card?: boolean;
-  service_sticky?: boolean;
-  profile_video?: boolean;
-  post_image?: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-  publishedAt: Date | null;
-  byline?: BylineSummary | null;
-  bylines?: ContentBylineCredit[];
-  terms?: Record<string, TaxonomyTerm[]>;
-}
-
 declare module "emdash" {
   interface EmDashCollections {
+    page_home: PageHome;
+    page_services: PageService;
+    page_hearing_aids: PageHearingAid;
+    page_about: PageAbout;
+    page_contact: PageContact;
+    page_book_appointment: PageBookAppointment;
+    page_reviews: PageReview;
+    page_blog: PageBlog;
+    page_patient_resources: PagePatientResource;
+    page_privacy_policy: PagePrivacyPolicy;
+    page_terms_of_use: PageTermsOfUse;
+    page_accessibility: PageAccessibility;
+    page_templates: PageTemplate;
+    shared_sections: SharedSection;
     brands: Brand;
     offices: Office;
     posts: Post;
@@ -264,6 +508,5 @@ declare module "emdash" {
     providers: Provider;
     resources: Resource;
     services: Service;
-    site_pages: SitePage;
   }
 }

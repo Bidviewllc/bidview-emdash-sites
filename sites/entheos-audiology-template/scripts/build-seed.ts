@@ -9,7 +9,7 @@ import { writeFileSync } from "node:fs";
 import * as blog from "../src/data/blog";
 import * as s from "../src/data/practice";
 import { FOOTERS, HEADERS, TEAM_LAYOUTS } from "../src/lib/settings";
-import { HERO_OPTIONS, PAGE_TEXT, PAGE_TEXT_FIELDS, PAGES, type PageSetting } from "../src/data/page-settings";
+import { CTA_FIELDS, CTA_MODE_OPTIONS, HERO_OPTIONS, MAIN, PAGE_TEXT, PAGES, SHARED_COLLECTION, SHARED_DEFAULTS, TEMPLATES_COLLECTION, type PageSetting } from "../src/data/page-settings";
 
 /** Brand logos are downloaded into the media library during setup. */
 const ASSET_HOST = "https://entheos-audiology-template.local-981.workers.dev";
@@ -29,20 +29,82 @@ const clean = (label: string) => label.replace(/\s*\(default\)/, "");
 const TONES = ["warm", "sage", "sky", "stone", "dark", "dark2"];
 const hex = { validation: { pattern: "^#[0-9A-Fa-f]{6}$" } };
 
-// Pages list fields: the hero choice plus every page's settings (one field per
-// setting; pages that share a setting share the field).
-const pageSettingFields = [...new Map(PAGES.flatMap((p) => p.settings).map((st) => [st.field, st])).values()];
+// Template pages: one content type per fixed page (one record, slug "main"),
+// grouped under "Pages" in the admin sidebar, plus "Page templates" (settings
+// for record pages) and "Shared sections" (the shared booking band).
 const label = (st: PageSetting, v: string | boolean) => (st.type === "bool" ? v : st.options.find(([k]) => k === v)![1]);
-/** Shown only on the Pages records that use it (page-settings plugin). */
-const scoped = (pages: string[]) => ({ widget: "page-settings:scoped", options: { pages } });
-const pagesUsing = (field: string) => PAGES.filter((p) => p.settings.some((st) => st.field === field)).map((p) => p.slug);
-const pageField = (st: PageSetting) => ({
-	...(st.type === "bool" ? bool(st.field, st.label, st.default) : select(st.field, st.label, st.options.map(([, l]) => l), label(st, st.default) as string)),
-	...scoped(pagesUsing(st.field)),
-});
+const settingField = (st: PageSetting, lbl = st.label) =>
+	st.type === "bool" ? bool(st.field, lbl, st.default) : select(st.field, lbl, st.options.map(([, l]) => l), label(st, st.default) as string);
+const heroSelect = (slug: string, lbl: string) => select(slug, lbl, HERO_OPTIONS.map(([, l]) => l), HERO_OPTIONS[0][1]);
+const textField = (f: { field: string; label: string; kind: string }, lbl = f.label) => (f.kind === "line" ? str(f.field, lbl) : txt(f.field, lbl));
+const hasCta = (slug: string) => (PAGE_TEXT[slug] ?? []).some((f) => CTA_FIELDS.includes(f.field));
+/** Sample pages whose booking band differs from the shared one start as "Customize". */
+const ctaMode = (slug: string) => {
+	const own = Object.fromEntries((PAGE_TEXT[slug] ?? []).map((f) => [f.field, f.default]));
+	const same = CTA_FIELDS.every((k) => own[k] === undefined || own[k] === SHARED_DEFAULTS[k as keyof typeof SHARED_DEFAULTS]);
+	return CTA_MODE_OPTIONS[same ? 0 : 1];
+};
 
-// Page text fields (one per distinct field; shared ones like "heading" are used by many pages).
-const pageTextFields = PAGE_TEXT_FIELDS.map((f) => (f.kind === "line" ? str(f.field, f.label) : txt(f.field, f.label)));
+const pageCollections = PAGES.filter((p) => p.collection).map((p, i) => {
+	const text = PAGE_TEXT[p.slug] ?? [];
+	const body = text.filter((f) => !CTA_FIELDS.includes(f.field) && f.field !== "description");
+	return {
+		slug: p.collection!,
+		// "Services page" etc., so they read apart from the Services and Patient resources record lists.
+		label: `${p.title} page`,
+		labelSingular: `${p.title} page`,
+		description: `The ${p.title} page. Publish = page on (and its links); unpublish = page off. Keep the one record.`,
+		group: "Pages",
+		sortOrder: i,
+		routable: false,
+		supports: ["drafts", "revisions"],
+		fields: [
+			title("Page name"),
+			...(p.hero ? [heroSelect("hero", "Hero"), image("hero_image", p.slug === "home" ? "Hero photo (16:9, calm area on the left)" : "Hero photo (3:2)")] : []),
+			...body.map((f) => textField(f)),
+			...(p.slug === "about" ? [image("community_photo", "Community – Photo (3:2)")] : []),
+			...(hasCta(p.slug)
+				? [
+						select("cta_mode", "Booking band", [...CTA_MODE_OPTIONS], CTA_MODE_OPTIONS[0]),
+						...text.filter((f) => CTA_FIELDS.includes(f.field)).map((f) => textField(f, `${f.label} (only when customized)`)),
+					]
+				: []),
+			...text.filter((f) => f.field === "description").map((f) => textField(f)),
+			...p.settings.map((st) => settingField(st)),
+		],
+	};
+});
+const templateDefs = PAGES.filter((p) => p.template);
+const templatesCollection = {
+	slug: TEMPLATES_COLLECTION,
+	label: "Page templates",
+	labelSingular: "Page templates",
+	description: "Settings for every service, brand, team, location and blog post page. Keep the one record.",
+	group: "Pages",
+	sortOrder: 50,
+	routable: false,
+	supports: ["revisions"],
+	fields: [
+		title("Name"),
+		...templateDefs.flatMap((p) => [...(p.hero ? [heroSelect(`${p.template}_hero`, `${p.title} – Hero`)] : []), ...p.settings.map((st) => settingField(st))]),
+	],
+};
+const sharedCollection = {
+	slug: SHARED_COLLECTION,
+	label: "Shared sections",
+	labelSingular: "Shared sections",
+	description: "Sections used on many pages. A page uses these unless it is set to customize. Keep the one record.",
+	group: "Pages",
+	sortOrder: 51,
+	routable: false,
+	supports: ["revisions"],
+	fields: [
+		title("Name"),
+		str("cta_heading", "Booking band – Headline"),
+		txt("cta_text", "Booking band – Description"),
+		image("cta_photo", "Booking band – Photo (older adult laughing with family, or on a walk)"),
+	],
+};
 
 const collections = [
 	{
@@ -84,26 +146,12 @@ const collections = [
 			bool("cta_photo", "Design: photo panel in booking bands", true),
 			// Site-wide photos. Placeholders show until these are uploaded.
 			image("team_photo", "Photo: team (3:2; Home about section and About story)"),
-			image("cta_photo_image", "Photo: booking band (older adult laughing with family, or on a walk)"),
 			image("office_photo", "Photo: office interior (3:2; brand pages, care section)"),
 		],
 	},
-	{
-		slug: "site_pages",
-		label: "Pages",
-		labelSingular: "Page",
-		description: "One record per template page. Publish = page on (and its links); unpublish = page off. Each setting starts with the page it belongs to.",
-		routable: false,
-		supports: ["drafts", "revisions"],
-		fields: [
-			title("Page"),
-			{ ...select("hero", "Hero", HERO_OPTIONS.map(([, l]) => l), HERO_OPTIONS[0][1]), ...scoped(PAGES.filter((p) => p.hero).map((p) => p.slug)) },
-			image("hero_image", "Hero photo (used when Hero is Photo; Home 16:9 with a calm area on the left, other pages 3:2)"),
-			...pageTextFields,
-			image("community_photo", "About: community photo (3:2)"),
-			...pageSettingFields.map(pageField),
-		],
-	},
+	...pageCollections,
+	templatesCollection,
+	sharedCollection,
 	{
 		slug: "offices",
 		label: "Offices",
@@ -255,14 +303,27 @@ const content = {
 			cta_photo: true,
 		}),
 	],
-	site_pages: PAGES.map((p) =>
-		pub(`page-${p.slug}`, p.slug, {
-			title: p.title,
-			hero: HERO_OPTIONS[0][1],
-			...Object.fromEntries((PAGE_TEXT[p.slug] ?? []).map((f) => [f.field, f.default])),
-			...Object.fromEntries(p.settings.map((st) => [st.field, label(st, st.default)])),
-		}),
+	...Object.fromEntries(
+		PAGES.filter((p) => p.collection).map((p) => [
+			p.collection!,
+			[
+				pub(`page-${p.slug}`, MAIN, {
+					title: p.title,
+					...(p.hero ? { hero: HERO_OPTIONS[0][1] } : {}),
+					...Object.fromEntries((PAGE_TEXT[p.slug] ?? []).map((f) => [f.field, f.default])),
+					...(hasCta(p.slug) ? { cta_mode: ctaMode(p.slug) } : {}),
+					...Object.fromEntries(p.settings.map((st) => [st.field, label(st, st.default)])),
+				}),
+			],
+		]),
 	),
+	[TEMPLATES_COLLECTION]: [
+		pub("page-templates", MAIN, {
+			title: "Page templates",
+			...Object.fromEntries(templateDefs.flatMap((p) => [...(p.hero ? [[`${p.template}_hero`, HERO_OPTIONS[0][1]]] : []), ...p.settings.map((st) => [st.field, label(st, st.default)])])),
+		}),
+	],
+	[SHARED_COLLECTION]: [pub("shared-sections", MAIN, { title: "Shared sections", ...SHARED_DEFAULTS })],
 	offices: s.offices.map((o, i) =>
 		pub(`office-${o.slug}`, o.slug, {
 			title: o.name,

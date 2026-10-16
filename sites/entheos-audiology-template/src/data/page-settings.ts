@@ -1,11 +1,12 @@
-// The Pages list in EmDash: one record per template page (slug = the key
-// below). Publishing a record switches that page on, and its links elsewhere;
-// an unpublished page answers "page not found" and its links are hidden.
+// Template pages in EmDash. Each fixed page (Home, About, Services...) is its
+// own content type with one record (slug "main"), grouped in the admin sidebar
+// under "Pages", so its editing screen shows only its own fields. Publishing
+// the record switches the page on, and its links elsewhere; an unpublished page
+// answers "page not found" and its links are hidden.
 //
-// Each record also holds that page's settings. The admin shows every setting
-// field on every record, so each label starts with the page it belongs to.
-// "Template:" records hold settings for a kind of page (every service page,
-// every team profile...); they're always on.
+// Settings for kinds of pages (every service page, every team profile...) are
+// on one "Page templates" record. Content shared by many pages (the booking
+// band) is on one "Shared sections" record; each page can use it or customize.
 //
 // `key` is the matching Review controls setting, so the address bar can still
 // try the other choices during review. Choice labels match Review controls.
@@ -21,21 +22,22 @@ import pageText from "./page-text.json";
 export type PageText = { field: string; label: string; kind: "line" | "para"; default: string };
 export const PAGE_TEXT = pageText as Record<string, PageText[]>;
 
-/**
- * Each text field is its own field on the Pages list (a column in D1, which
- * allows 100 per table; the list uses about 85). Labels are "<section> –
- * Headline/Description"; the section labels above headings ("eyebrows") are
- * fixed in the design. Fields show only on the records that use them.
- */
-const ALL_TEXT = [...new Map(Object.values(PAGE_TEXT).flat().map((f) => [f.field, f])).values()];
-const FIRST = ["heading", "intro"];
-const LAST = ["cta_heading", "cta_text", "description"];
-/** Admin order: hero text, each page's sections, booking band, search description. */
-export const PAGE_TEXT_FIELDS = [
-	...FIRST.map((k) => ALL_TEXT.find((f) => f.field === k)!),
-	...ALL_TEXT.filter((f) => !FIRST.includes(f.field) && !LAST.includes(f.field)),
-	...LAST.map((k) => ALL_TEXT.find((f) => f.field === k)!),
-];
+/** Booking band (CTA) text fields; every page with one can use the shared band or customize. */
+export const CTA_FIELDS = ["cta_heading", "cta_text"];
+export const CTA_MODE_OPTIONS = ["Use the shared booking band", "Customize for this page"] as const;
+
+/** The Shared sections record (one record, slug "main"). */
+export const SHARED_COLLECTION = "shared_sections";
+export const SHARED_DEFAULTS = {
+	cta_heading: "Take the first step toward better hearing",
+	cta_text: "Pretium tincidunt lacus nulla gravida orci a odio nullam varius turpis. Et commodo pharetra est eros bibendum elit.",
+};
+
+/** The Page templates record: settings for each kind of record page. */
+export const TEMPLATES_COLLECTION = "page_templates";
+
+/** The one record in each page's content type. */
+export const MAIN = "main";
 
 export type PageSetting =
 	| { field: string; label: string; key: string; type: "bool"; default: boolean }
@@ -44,6 +46,10 @@ export type PageSetting =
 export type PageDef = {
 	slug: string;
 	title: string;
+	/** Fixed pages: the content type holding this page (one record, slug "main"). */
+	collection?: string;
+	/** Record-page templates: field prefix on the Page templates record (e.g. "service" -> service_hero). */
+	template?: string;
 	/** Address of the page; template records have none. */
 	path?: string;
 	/** Pages always on (Home); unpublishing them does nothing. */
@@ -58,80 +64,80 @@ const choice = (field: string, label: string, key: string, options: [string, str
 
 export const PAGES: PageDef[] = [
 	{
-		slug: "home",
+		slug: "home", collection: "page_home",
 		title: "Home",
 		path: "/",
 		alwaysOn: true,
 		hero: true,
 		settings: [
-			choice("home_trust_logos", "Home: trust bar logos", "trustmove", [["scroll", "Scrolling (with pause)"], ["still", "Still"]]),
-			choice("home_trust_rating", "Home: trust bar rating", "trustrating", [["boxed", "In its own box"], ["plain", "Plain (no box)"]]),
-			bool("home_latest_posts", "Home: latest posts section", "posts"),
-			bool("home_sample_card", "Home: sample service card with photo", "sample", false),
+			choice("home_trust_logos", "Trust bar logos", "trustmove", [["scroll", "Scrolling (with pause)"], ["still", "Still"]]),
+			choice("home_trust_rating", "Trust bar rating", "trustrating", [["boxed", "In its own box"], ["plain", "Plain (no box)"]]),
+			bool("home_latest_posts", "Latest posts section", "posts"),
+			bool("home_sample_card", "Sample service card with photo", "sample", false),
 		],
 	},
-	{ slug: "services", title: "Services", path: "/services", hero: true, settings: [bool("services_first_visit", "Services: “What to expect at your first visit” steps", "steps")] },
+	{ slug: "services", collection: "page_services", title: "Services", path: "/services", hero: true, settings: [bool("services_first_visit", "“What to expect at your first visit” steps", "steps")] },
 	{
-		slug: "hearing-aids",
+		slug: "hearing-aids", collection: "page_hearing_aids",
 		title: "Hearing aids",
 		path: "/hearing-aids",
 		hero: true,
-		settings: [bool("hearing_aids_styles", "Hearing aids: hearing aid styles section", "styles"), bool("hearing_aids_otc", "Hearing aids: OTC vs. prescription section", "otc")],
+		settings: [bool("hearing_aids_styles", "Hearing aid styles section", "styles"), bool("hearing_aids_otc", "OTC vs. prescription section", "otc")],
 	},
 	{
-		slug: "about",
+		slug: "about", collection: "page_about",
 		title: "About",
 		path: "/about",
 		hero: true,
 		settings: [
-			choice("about_journey", "About: our journey", "journey", [["grid", "Grid 2 × 2"], ["row", "Horizontal"], ["hidden", "Hidden"]]),
-			bool("about_community", "About: community section", "community"),
-			bool("about_credentials", "About: credentials section", "creds"),
+			choice("about_journey", "Our journey", "journey", [["grid", "Grid 2 × 2"], ["row", "Horizontal"], ["hidden", "Hidden"]]),
+			bool("about_community", "Community section", "community"),
+			bool("about_credentials", "Credentials section", "creds"),
 		],
 	},
-	{ slug: "contact", title: "Contact", path: "/contact", hero: true, settings: [] },
+	{ slug: "contact", collection: "page_contact", title: "Contact", path: "/contact", hero: true, settings: [] },
 	{
-		slug: "book-appointment",
+		slug: "book-appointment", collection: "page_book_appointment",
 		title: "Book appointment",
 		path: "/book-appointment",
 		settings: [
-			choice("book_version", "Book appointment: booking", "version", [["a", "A · Scheduler embed"], ["b", "B · Request form"]]),
-			choice("book_layout", "Book appointment: layout", "layout", [["full", "Full width"], ["side", "Right sidebar"]]),
+			choice("book_version", "Booking", "version", [["a", "A · Scheduler embed"], ["b", "B · Request form"]]),
+			choice("book_layout", "Layout", "layout", [["full", "Full width"], ["side", "Right sidebar"]]),
 		],
 	},
-	{ slug: "reviews", title: "Reviews", path: "/reviews", settings: [choice("reviews_button", "Reviews: “Leave us a review” button", "reviewbtn", [["primary", "Primary colour"], ["outline", "White with outline"]])] },
-	{ slug: "blog", title: "Blog", path: "/blog", settings: [choice("blog_layout", "Blog: layout", "layout", [["grid", "Grid · 16:9"], ["square", "Grid · square"], ["list", "List"]])] },
+	{ slug: "reviews", collection: "page_reviews", title: "Reviews", path: "/reviews", settings: [choice("reviews_button", "“Leave us a review” button", "reviewbtn", [["primary", "Primary colour"], ["outline", "White with outline"]])] },
+	{ slug: "blog", collection: "page_blog", title: "Blog", path: "/blog", settings: [choice("blog_layout", "Layout", "layout", [["grid", "Grid · 16:9"], ["square", "Grid · square"], ["list", "List"]])] },
 	{
-		slug: "patient-resources",
+		slug: "patient-resources", collection: "page_patient_resources",
 		title: "Patient resources",
 		path: "/patient-resources",
 		hero: true,
 		settings: [
-			choice("resources_layout", "Patient resources: layout", "layout", [["cards", "Cards"], ["accordion", "Accordion"]]),
-			choice("resources_group", "Patient resources: group by", "group", [["none", "None"], ["tag", "Tag"]]),
+			choice("resources_layout", "Layout", "layout", [["cards", "Cards"], ["accordion", "Accordion"]]),
+			choice("resources_group", "Group by", "group", [["none", "None"], ["tag", "Tag"]]),
 		],
 	},
-	{ slug: "privacy-policy", title: "Privacy policy", path: "/privacy-policy", settings: [bool("legal_toc", "Legal pages: table of contents", "toc")] },
-	{ slug: "terms-of-use", title: "Terms of use", path: "/terms-of-use", settings: [bool("legal_toc", "Legal pages: table of contents", "toc")] },
-	{ slug: "accessibility", title: "Accessibility", path: "/accessibility", settings: [bool("legal_toc", "Legal pages: table of contents", "toc")] },
+	{ slug: "privacy-policy", collection: "page_privacy_policy", title: "Privacy policy", path: "/privacy-policy", settings: [bool("legal_toc", "Table of contents", "toc")] },
+	{ slug: "terms-of-use", collection: "page_terms_of_use", title: "Terms of use", path: "/terms-of-use", settings: [bool("legal_toc", "Table of contents", "toc")] },
+	{ slug: "accessibility", collection: "page_accessibility", title: "Accessibility", path: "/accessibility", settings: [bool("legal_toc", "Table of contents", "toc")] },
 	{
-		slug: "service-pages",
-		title: "Template: service pages",
+		slug: "service-pages", template: "service",
+		title: "Service pages",
 		hero: true,
 		alwaysOn: true,
 		settings: [
-			choice("service_sidebar_reviews", "Service pages: sidebar reviews", "reviews", [["single", "Single review"], ["carousel", "Carousel (3)"]]),
-			bool("service_posts_card", "Service pages: recent posts card", "posts"),
-			bool("service_sticky", "Service pages: sticky sidebar", "sticky"),
+			choice("service_sidebar_reviews", "Service pages – Sidebar reviews", "reviews", [["single", "Single review"], ["carousel", "Carousel (3)"]]),
+			bool("service_posts_card", "Service pages – Recent posts card", "posts"),
+			bool("service_sticky", "Service pages – Sticky sidebar", "sticky"),
 		],
 	},
-	{ slug: "brand-pages", title: "Template: hearing aid brand pages", hero: true, alwaysOn: true, settings: [] },
-	{ slug: "team-profiles", title: "Template: team profiles", alwaysOn: true, settings: [bool("profile_video", "Team profiles: intro video", "video")] },
-	{ slug: "location-pages", title: "Template: location pages", hero: true, alwaysOn: true, settings: [] },
-	{ slug: "blog-posts", title: "Template: blog posts", alwaysOn: true, settings: [bool("post_image", "Blog posts: featured image", "image")] },
+	{ slug: "brand-pages", template: "brand", title: "Hearing aid brand pages", hero: true, alwaysOn: true, settings: [] },
+	{ slug: "team-profiles", template: "profile", title: "Team profiles", alwaysOn: true, settings: [bool("profile_video", "Team profiles – Intro video", "video")] },
+	{ slug: "location-pages", template: "location", title: "Location pages", hero: true, alwaysOn: true, settings: [] },
+	{ slug: "blog-posts", template: "post", title: "Blog posts", alwaysOn: true, settings: [bool("post_image", "Blog posts – Featured image", "image")] },
 ];
 
-/** The hero choice on Pages records. "Example photo" is review-only (Review controls). */
+/** The hero choice on page records. "Example photo" is review-only (Review controls). */
 export const HERO_FIELD = "hero";
 export const HERO_OPTIONS: [string, string][] = [
 	["", "Page default"],
@@ -140,22 +146,7 @@ export const HERO_OPTIONS: [string, string][] = [
 	["light", "No photo · Light"],
 ];
 
-/**
- * Photo fields on the Pages list and the records they belong to. The admin
- * can't give image fields a custom widget, so the page-settings plugin hides
- * them with a style rule on the other records.
- */
-export const PAGE_PHOTO_FIELDS: Record<string, string[]> = {
-	hero_image: PAGES.filter((p) => p.hero).map((p) => p.slug),
-	community_photo: ["about"],
-};
-
-/** Every Pages field shown only on some records (photos and text), and those records. */
-export const PAGE_SCOPED_FIELDS: Record<string, string[]> = { ...PAGE_PHOTO_FIELDS };
-for (const [page, fields] of Object.entries(PAGE_TEXT))
-	for (const f of fields) (PAGE_SCOPED_FIELDS[f.field] ??= []).push(page);
-
-/** Which Pages record governs an address. */
+/** Which page definition governs an address. */
 export function pageFor(pathname: string): PageDef | undefined {
 	const p = pathname.replace(/\/$/, "") || "/";
 	const exact = PAGES.find((d) => d.path === p);

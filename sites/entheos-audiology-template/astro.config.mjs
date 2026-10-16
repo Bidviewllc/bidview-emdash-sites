@@ -17,19 +17,6 @@ export default defineConfig({
 		emdash({
 			database: d1({ binding: "DB", session: "auto" }),
 			storage: r2({ binding: "MEDIA" }),
-			plugins: [
-				{
-					// Shows each Pages-list setting only on its own page (see the plugin file).
-					// Absolute file URLs: the virtual plugin modules have no folder to resolve from.
-					id: "page-settings",
-					version: "0.1.0",
-					entrypoint: new URL("./src/plugins/page-settings/index.ts", import.meta.url).href,
-					adminEntry: new URL("./src/plugins/page-settings/admin.tsx", import.meta.url).href,
-					fieldWidgets: [
-						{ name: "scoped", label: "Page setting (shown only on its page)", fieldTypes: ["boolean", "select"] },
-					],
-				},
-			],
 		}),
 	],
 	devToolbar: { enabled: false },
