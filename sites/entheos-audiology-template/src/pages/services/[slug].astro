@@ -4,6 +4,7 @@
 // Hero → rich text with a right sidebar (Book card, reviews, recent posts) →
 // FAQ → related services → CTA.
 import CtaBand from "../../components/CtaBand.astro";
+import DetailHero from "../../components/DetailHero.astro";
 import Icon from "../../components/Icon.astro";
 import type { Tweak } from "../../components/ReviewControls.astro";
 import Stars from "../../components/Stars.astro";
@@ -50,14 +51,6 @@ const sampleToc = [
 	{ id: "sd-why", label: `Why patients choose ${s.name}` },
 ];
 const toc = rich ? rich.headings : sampleToc;
-const shapeA = prim ? "color-mix(in srgb, var(--on-p) 8%, transparent)" : "color-mix(in srgb, var(--p) 7%, transparent)";
-const shapeB = prim ? "color-mix(in srgb, var(--on-p) 6%, transparent)" : "color-mix(in srgb, var(--a) 14%, transparent)";
-const crumbs = (
-	[
-		["Home", routes.home],
-		["Services", routes.services],
-	] as const
-);
 ---
 <Base
 	title={`${title} | ${s.name}`}
@@ -67,58 +60,7 @@ const crumbs = (
 	tweaks={tweaks}
 	heroDefault="photo"
 >
-	{
-		withPhoto ? (
-			<section class="sd-hero">
-				<div class="wrap ihero">
-					<div class="stack g24">
-						<nav aria-label="Breadcrumb">
-							<ol class="crumbs">
-								{crumbs.map(([l, u]) => (<><li><a href={h(u)}>{l}</a></li><li class="sep" aria-hidden="true">/</li></>))}
-								<li aria-current="page">{service.name}</li>
-							</ol>
-						</nav>
-						<h1 class="h1">{title}</h1>
-						<p class="lead">{s.fill(service.intro ?? "")}</p>
-						<div class="rowf hero-btns" style="gap: 12px; margin-top: 4px">
-							<a class="btn btn-primary" href={h(routes.book)}>{service.bookLabel}</a>
-							<a class="btn btn-secondary" href={tel}>Call {s.phone}</a>
-						</div>
-					</div>
-					{hero === "example" ? (
-						<div class="phimg"><img src="/assets/photos/consult.jpg" alt="An audiologist smiling as she talks with a patient across her desk" style="object-position: 55% 30%" /></div>
-					) : service.heroImage ? (
-						<div class="phimg"><img src={service.heroImage.src} alt={service.heroImage.alt} /></div>
-					) : (
-						<div class="ph warm" style="aspect-ratio: 3/2; border-radius: var(--r-hero)"><span class="ph-label">Page hero photo · 3:2, landscape</span></div>
-					)}
-				</div>
-			</section>
-		) : (
-			<div class="sd-hero-np">
-				<section class:list={["inophoto", { "on-p-text": prim }]} style={prim ? "background: var(--p); color: var(--on-p)" : "background: var(--l); color: var(--on-l)"}>
-					<div class="shape np1" style={`border-color: ${shapeA}`} />
-					<div class="shape np2" style={`border-color: ${shapeB}`} />
-					<div class="wrap">
-						<div class="stack g24" style="max-width: 860px">
-							<nav aria-label="Breadcrumb">
-								<ol class="crumbs">
-									{crumbs.map(([l, u]) => (<><li><a href={h(u)}>{l}</a></li><li class="sep" aria-hidden="true">/</li></>))}
-									<li aria-current="page">{service.name}</li>
-								</ol>
-							</nav>
-							<h1 class="h1 xl" style="color: inherit">{title}</h1>
-							<p class="lead" style="color: inherit; opacity: .88; max-width: 720px">Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod. Tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud. Exercitation ullamco laboris nisi ut aliquip ex ea commodo. Consequat duis aute irure dolor in reprehenderit in voluptate velit.</p>
-							<div class="rowf hero-btns" style="gap: 12px; margin-top: 4px">
-								<a class:list={["btn", prim ? "btn-inverse" : "btn-primary"]} href={h(routes.book)}>{service.bookLabel}</a>
-								<a class:list={["btn", prim ? "btn-ghost-on-p" : "btn-secondary"]} href={tel}>Call {s.phone}</a>
-							</div>
-						</div>
-					</div>
-				</section>
-			</div>
-		)
-	}
+	<DetailHero crumbs={[["Home", routes.home], ["Services", routes.services]]} current={service.name} title={title} intro={s.fill(service.intro ?? "")} bookLabel={service.bookLabel} hero={hero} image={service.heroImage} />
 
 	<section class:list={["sd-main", { "after-photo": withPhoto }]}>
 		<div class="wrap side-layout">

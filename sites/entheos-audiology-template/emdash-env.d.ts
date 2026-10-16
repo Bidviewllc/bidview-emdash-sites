@@ -295,6 +295,7 @@ export interface PageTemplate {
   profile_video?: boolean;
   location_hero?: "Page default" | "Photo" | "No photo · Primary" | "No photo · Light";
   post_image?: boolean;
+  resource_hero?: "Page default" | "Photo" | "No photo · Primary" | "No photo · Light";
   createdAt: Date;
   updatedAt: Date;
   publishedAt: Date | null;
@@ -470,6 +471,7 @@ export interface Resource {
   forms_pdf?: { id: string; url?: string; src?: string; filename?: string; mimeType?: string; size?: number; provider?: string; meta?: Record<string, unknown> };
   forms_url?: string;
   content?: PortableTextBlock[];
+  hero_image?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown>; darkVariant?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> } };
   sort_order?: number;
   createdAt: Date;
   updatedAt: Date;

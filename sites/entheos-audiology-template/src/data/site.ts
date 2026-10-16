@@ -237,6 +237,7 @@ export async function loadSite() {
 		content: Array.isArray(e.data.content) ? e.data.content : undefined,
 		formsPdf: imgSrc(e.data.forms_pdf),
 		formsUrl: e.data.forms_url || undefined,
+		heroImage: photo(e.data.hero_image),
 	}));
 
 	// Template pages: each fixed page is its own one-record content type;

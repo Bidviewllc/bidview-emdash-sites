@@ -134,9 +134,9 @@ handed off from Claude Design in `design/`.
   poster.
 - **Patient resource pages** (2026-10-16, not in the design boards; built from
   the Service detail patterns): `/patient-resources/<slug>` for resources with
-  "Give this its own page" on (off = 404 and no "Learn more"). Short Light hero
+  "Give this its own page" on (off = 404 and no "Learn more"). Hero
   with the topic tags → rich text (`content`; H2s make "Jump to") beside a
-  sidebar (Forms card when "has_forms", booking card) → three more resources (same
+  sidebar (Forms card when "has_forms", booking card). Hero: the service pages' DetailHero (hero choice "Patient resource pages – Hero" on Page templates, photo = `hero_image` on the resource) → three more resources (same
   first topic first) → the shared booking band (`site.sharedBand`). Forms:
   `forms_pdf` (file) and `forms_url` (link) drive "Download PDF" / "Fill out
   online" (`FormButtons.astro`); a missing one shows as a placeholder only while

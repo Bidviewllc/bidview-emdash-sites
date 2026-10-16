@@ -135,6 +135,7 @@ export const PAGES: PageDef[] = [
 	{ slug: "team-profiles", template: "profile", title: "Team profiles", alwaysOn: true, settings: [bool("profile_video", "Team profiles – Intro video", "video")] },
 	{ slug: "location-pages", template: "location", title: "Location pages", hero: true, alwaysOn: true, settings: [] },
 	{ slug: "blog-posts", template: "post", title: "Blog posts", alwaysOn: true, settings: [bool("post_image", "Blog posts – Featured image", "image")] },
+	{ slug: "resource-pages", template: "resource", title: "Patient resource pages", hero: true, alwaysOn: true, settings: [] },
 ];
 
 /** The hero choice on page records. "Example photo" is review-only (Review controls). */
@@ -157,6 +158,7 @@ export function pageFor(pathname: string): PageDef | undefined {
 		"hearing-aids": "brand-pages",
 		about: "team-profiles",
 		locations: "location-pages",
+		"patient-resources": "resource-pages",
 	};
 	if (first === "blog") return PAGES.find((d) => d.slug === (p.startsWith("/blog/category/") ? "blog" : "blog-posts"));
 	return PAGES.find((d) => d.slug === template[first]);

@@ -290,6 +290,7 @@ const collections = [
 			{ slug: "forms_pdf", label: "Form PDF (Download PDF button)", type: "file" },
 			{ slug: "forms_url", label: "Online form link (Fill out online button)", type: "url" },
 			{ slug: "content", label: "Page content", type: "portableText" },
+			image("hero_image", "Hero photo (3:2; own page only)"),
 			int("sort_order", "Sort order"),
 		],
 	},

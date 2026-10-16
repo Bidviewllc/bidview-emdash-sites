@@ -1,13 +1,13 @@
 ---
 // Patient resource page (not in the design boards; built from the Service
-// detail patterns). Short hero with the resource's tags → its content (rich
+// detail patterns). The service pages' two-column hero (DetailHero) with the tags → its content (rich
 // text, H2s make a "Jump to" list) beside a sidebar (booking card, form
 // buttons when the resource has forms) → more resources on the same topic →
 // the shared booking band. Only resources with "Give this its own page" on.
 import CtaBand from "../../components/CtaBand.astro";
+import DetailHero from "../../components/DetailHero.astro";
 import FormButtons from "../../components/FormButtons.astro";
 import Icon from "../../components/Icon.astro";
-import PageHero from "../../components/PageHero.astro";
 import ResCard from "../../components/ResCard.astro";
 import Base from "../../layouts/Base.astro";
 import { ptHas, ptToHtml } from "../../lib/portable-text";
@@ -21,6 +21,9 @@ if (!r || !r.page) return Astro.rewrite("/404");
 const s = getSettings(Astro);
 const h = s.href;
 const tel = telHref(s.phone);
+/** Same hero as service pages: hero choice on Page templates, photo on the resource. */
+const hero = s.heroFor("photo", r.heroImage);
+const withPhoto = hero === "photo" || hero === "example";
 const rich = ptHas(r.content) ? ptToHtml(r.content) : undefined;
 const html = rich ? s.fill(rich.html) : "";
 const toc = rich?.headings ?? [];
@@ -28,17 +31,12 @@ const toc = rich?.headings ?? [];
 const others = resources.filter((x) => x.slug !== r.slug && !x.hideFromHub);
 const related = [...others.filter((x) => x.tags[0] === r.tags[0]), ...others.filter((x) => x.tags[0] !== r.tags[0])].slice(0, 3);
 ---
-<Base title={`${r.t} | ${s.name}`} description={r.d} pageName="Patient resource" current="resources" tweaks={[]}>
-	<PageHero
-		crumbs={[{ label: "Home" }, { label: "Patient Resources", href: routes.resources }, { label: r.t }]}
-		title={r.t}
-		lead={r.d}
-		heroDefault="light"
-	>
+<Base title={`${r.t} | ${s.name}`} description={r.d} pageName="Patient resource" current="resources" tweaks={[]} heroDefault="photo">
+	<DetailHero crumbs={[["Home", routes.home], ["Patient Resources", routes.resources]]} current={r.t} title={r.t} intro={r.d} hero={hero} image={r.heroImage}>
 		<ul class="res-tags" aria-label="Topics" style="margin: 0">{r.tags.map((t) => <li class="tag">{t}</li>)}</ul>
-	</PageHero>
+	</DetailHero>
 
-	<section class="sd-main">
+	<section class:list={["sd-main", { "after-photo": withPhoto }]}>
 		<div class="wrap side-layout">
 			<div class="stack g32">
 				{

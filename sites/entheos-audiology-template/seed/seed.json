@@ -1456,6 +1456,20 @@
 					"label": "Blog posts – Featured image",
 					"type": "boolean",
 					"defaultValue": true
+				},
+				{
+					"slug": "resource_hero",
+					"label": "Patient resource pages – Hero",
+					"type": "select",
+					"defaultValue": "Page default",
+					"validation": {
+						"options": [
+							"Page default",
+							"Photo",
+							"No photo · Primary",
+							"No photo · Light"
+						]
+					}
 				}
 			]
 		},
@@ -2062,6 +2076,11 @@
 					"slug": "content",
 					"label": "Page content",
 					"type": "portableText"
+				},
+				{
+					"slug": "hero_image",
+					"label": "Hero photo (3:2; own page only)",
+					"type": "image"
 				},
 				{
 					"slug": "sort_order",
@@ -3505,7 +3524,8 @@
 					"brand_hero": "Page default",
 					"profile_video": true,
 					"location_hero": "Page default",
-					"post_image": true
+					"post_image": true,
+					"resource_hero": "Page default"
 				}
 			}
 		],
