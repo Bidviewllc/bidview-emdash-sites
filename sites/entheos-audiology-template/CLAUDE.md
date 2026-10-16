@@ -132,6 +132,20 @@ handed off from Claude Design in `design/`.
   they're off (live). The example photo (`/assets/photos`) is review-only: Review
   controls' "Example photo" hero, the sample article body and the sample video
   poster.
+- **Reviews** (2026-10-16): Google reviews live in the site's own D1 tables
+  `reviews` / `review_meta` / `review_jobs`, the same schema Vince's
+  `workers/reviews-sync` (on main) fills weekly; location key = office slug.
+  `src/lib/reviews-reader.mjs` is a byte-identical copy of his canonical reader
+  (his test checks copies; edit his, then copy). `site.ts` reads every office,
+  drops text-less reviews and those below Practice details "Reviews: lowest star
+  rating to show", and takes the rating and count from Google's totals. No synced
+  reviews yet = the sample reviews. Offices have `google_place_id` (sync + the
+  "Leave us a review" link). Admin screen: the `reviews` plugin
+  (`src/plugins/reviews/`; Plugins → Reviews) lists every review with Hide/Show,
+  via its routes `list` / `hide`, which use the D1 binding through
+  `cloudflare:workers` env. Hidden stays hidden through syncs. The demo database
+  has the sample reviews loaded (`node scripts/reviews-sample-sql.mjs`); the demo
+  practice is fictional, so nothing syncs.
 - Code changes only reach the main address after the version is promoted; the
   admin always edits the shared database, so a preview URL shows admin edits
   straight away.

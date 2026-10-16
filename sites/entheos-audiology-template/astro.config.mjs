@@ -17,6 +17,17 @@ export default defineConfig({
 		emdash({
 			database: d1({ binding: "DB", session: "auto" }),
 			storage: r2({ binding: "MEDIA" }),
+			plugins: [
+				{
+					// Admin "Reviews" screen: hide or show each synced Google review.
+					// Absolute file URLs: the virtual plugin modules have no folder to resolve from.
+					id: "reviews",
+					version: "0.1.0",
+					entrypoint: new URL("./src/plugins/reviews/index.ts", import.meta.url).href,
+					adminEntry: new URL("./src/plugins/reviews/admin.tsx", import.meta.url).href,
+					adminPages: [{ path: "/", label: "Reviews", icon: "star" }],
+				},
+			],
 		}),
 	],
 	devToolbar: { enabled: false },

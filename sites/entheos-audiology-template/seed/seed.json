@@ -193,6 +193,20 @@
 					"defaultValue": true
 				},
 				{
+					"slug": "reviews_min_rating",
+					"label": "Reviews: lowest star rating to show",
+					"type": "select",
+					"defaultValue": "4 stars and up",
+					"validation": {
+						"options": [
+							"All ratings",
+							"3 stars and up",
+							"4 stars and up",
+							"5 stars only"
+						]
+					}
+				},
+				{
 					"slug": "header_style",
 					"label": "Design: header style",
 					"type": "select",
@@ -1559,6 +1573,11 @@
 					"type": "image"
 				},
 				{
+					"slug": "google_place_id",
+					"label": "Google Place ID (weekly review sync and the “Leave us a review” link)",
+					"type": "string"
+				},
+				{
 					"slug": "intro",
 					"label": "Hero – Description",
 					"type": "text"
@@ -2536,6 +2555,7 @@
 						}
 					],
 					"review_controls": true,
+					"reviews_min_rating": "4 stars and up",
 					"header_style": "H3 · Single row",
 					"footer_style": "F7 · Office cards",
 					"footer_logo": "Landscape",

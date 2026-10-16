@@ -25,6 +25,8 @@ export type Office = {
 	hoursLong: string;
 	/** Office exterior photo (location page hero). */
 	photo?: { src: string; alt: string };
+	/** Google Place ID: the weekly review sync and the "Leave us a review" link use it. */
+	placeId?: string;
 	intro?: string;
 	directions?: string;
 	accessNotes?: string;
@@ -106,6 +108,10 @@ export type Review = {
 	text: string;
 	/** Long enough to need "Read more". */
 	long?: boolean;
+	/** Stars, 1 to 5 (5 when not given). */
+	rating?: number;
+	/** Office short name (Reviews page filter). */
+	loc?: string;
 };
 
 export const practice = {

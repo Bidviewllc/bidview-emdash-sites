@@ -7,12 +7,15 @@
 // reviews (Vince's reviews sync), the hearing aid style drawings, and the
 // sample article body for posts that have no article text yet.
 
+import { env } from "cloudflare:workers";
+import { getLocationReviews } from "../lib/reviews-reader.mjs";
+import revsSample from "./content/revs.json";
 import { getEmDashCollection, getEmDashEntry, getMenu, getSiteSettings, getTaxonomyTerms } from "emdash";
 import * as blog from "./blog";
 import recordText from "./content/record-text.json";
 import { CTA_FIELDS, CTA_MODE_OPTIONS, HERO_OPTIONS, MAIN, PAGE_TEXT, PAGES, SHARED_COLLECTION, SHARED_DEFAULTS, TEMPLATES_COLLECTION } from "./page-settings";
 import * as sample from "./practice";
-import type { Brand, BrandDetail, Office, Post, Provider, Resource, Service } from "./types";
+import type { Brand, BrandDetail, Office, Post, Provider, Resource, Review, Service } from "./types";
 
 /** Thrown when the site has no practice record yet (setup not finished). */
 export class NotSetUpError extends Error {}
@@ -133,6 +136,7 @@ export async function loadSite() {
 		hoursLong: lines(e.data.hours_long).join("<br>"),
 		mapsUrl: e.data.maps_url ?? "",
 		photo: photo(e.data.photo),
+		placeId: e.data.google_place_id || undefined,
 		intro: e.data.intro || recordText.office_intro,
 		directions: e.data.directions || recordText.office_directions,
 		accessNotes: e.data.access_notes || recordText.office_access,
@@ -304,8 +308,54 @@ export async function loadSite() {
 			.map((i) => ({ label: i.label, href: i.url, ...(i.target ? { target: i.target } : {}), children: toLinks(i.children) }));
 	const menus = Object.fromEntries(MENU_NAMES.map((n, i) => [n, toLinks(menuList[i]?.items)])) as Record<MenuName, NavLink[]>;
 
+	// Google reviews: the site's own D1 tables (filled weekly by the reviews sync;
+	// hidden ones are left out by the reader). Until a sync has run, the sample
+	// reviews show. Google's own rating and count win over Practice details.
+	const minStars = Number(String(p.reviews_min_rating ?? "").match(/[1-5]/)?.[0] ?? 1);
+	const monthYear = (iso: string) => (iso ? new Date(iso).toLocaleDateString("en-US", { month: "long", year: "numeric", timeZone: "UTC" }) : "");
+	const toReview = (r: any, loc?: string): Review => ({ name: r.author || "Google user", date: monthYear(r.publishedAt) || r.timeAgo, text: r.text, rating: r.rating ?? 5, long: r.text.length > 260, loc });
+	const synced = await Promise.all(offices.map((o) => getLocationReviews((env as any).DB, o.slug, undefined)));
+	const fromGoogle = synced.some((x) => x.source === "d1");
+	const reviewsByLocation: Record<string, Review[]> = {};
+	let reviewList: Review[];
+	let sidebarList: Review[];
+	/** The Reviews page list (the sample set there is bigger than Home's). */
+	let reviewsPage: Review[] | undefined;
+	if (fromGoogle) {
+		offices.forEach((o, i) => {
+			reviewsByLocation[o.slug] = (synced[i].reviews ?? []).filter((r: any) => r.text?.trim() && (r.rating ?? 5) >= minStars).map((r: any) => toReview(r, o.shortName));
+		});
+		const dated = offices.flatMap((o, i) => (synced[i].reviews ?? []).map((r: any) => ({ r, o })));
+		reviewList = dated
+			.filter(({ r }) => r.text?.trim() && (r.rating ?? 5) >= minStars)
+			.sort((a, b) => String(b.r.publishedAt).localeCompare(String(a.r.publishedAt)))
+			.map(({ r, o }) => toReview(r, o.shortName));
+		sidebarList = (reviewList.filter((r) => r.text.length <= 320).length >= 3 ? reviewList.filter((r) => r.text.length <= 320) : reviewList).slice(0, 3);
+		const counted = synced.filter((x) => x.source === "d1" && x.votesCount);
+		const votes = counted.reduce((n, x) => n + Number(x.votesCount), 0);
+		if (votes) {
+			const avg = counted.reduce((n, x) => n + Number(x.rating ?? 0) * Number(x.votesCount), 0) / votes;
+			practice.rating = { score: avg.toFixed(1), count: votes };
+		}
+	} else {
+		const sampleAll = (revsSample as { name: string; date: string; loc: string; text: string; four: boolean }[]).map((r) => ({ name: r.name, date: r.date, text: r.text, rating: r.four ? 4 : 5, long: r.text.length > 260, loc: r.loc }));
+		for (const o of offices) reviewsByLocation[o.slug] = sampleAll.filter((r) => r.loc === o.shortName);
+		reviewList = sample.reviews;
+		sidebarList = sample.sidebarReviews;
+		reviewsPage = sampleAll;
+	}
+	const reviewPlace = offices.find((o) => o.placeId)?.placeId;
+
 	return {
 		practice,
+		/** Reviews, newest first (min-star setting applied). Sample reviews until the first sync. */
+		reviews: reviewList,
+		sidebarReviews: sidebarList,
+		reviewsPage: reviewsPage ?? reviewList,
+		reviewsByLocation,
+		reviewsFromGoogle: fromGoogle,
+		/** Google "write a review" link (first office with a Place ID), else none. */
+		reviewLink: reviewPlace ? `https://search.google.com/local/writereview?placeid=${encodeURIComponent(reviewPlace)}` : undefined,
 		/** Menus from EmDash (Menus screen), with links to pages that aren't live left out. */
 		menus,
 		/** Pages list: on/off, hero choice and settings per template page (keyed by PAGES slug). */
@@ -336,8 +386,6 @@ export async function loadSite() {
 		/** Group headings for "Group by tag": tags not marked "Label only". */
 		resourceGroups: tagTerms.filter((t) => !/^label only/i.test(t.description ?? "")).map((t) => t.label),
 		// Still sample content in code (see the note at the top).
-		reviews: sample.reviews,
-		sidebarReviews: sample.sidebarReviews,
 		hearingAidStyles: sample.hearingAidStyles,
 		articleBody: blog.articleBody,
 	};

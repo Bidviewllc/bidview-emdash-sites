@@ -362,6 +362,7 @@ export interface Office {
   hours_long?: string;
   maps_url?: string;
   photo?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown>; darkVariant?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> } };
+  google_place_id?: string;
   intro?: string;
   directions?: string;
   access_notes?: string;
@@ -415,6 +416,7 @@ export interface Practice {
   milestones?: { "y"?: string | null; "t"?: string | null }[];
   values?: { "icon"?: string | null; "t"?: string | null; "d"?: string | null }[];
   review_controls?: boolean;
+  reviews_min_rating?: "All ratings" | "3 stars and up" | "4 stars and up" | "5 stars only";
   header_style?: "H1 · Classic two-bar" | "H2 · Floating pill" | "H3 · Single row" | "V1 · Overhanging logo badge" | "V2 · Centered logo, split nav" | "V3 · Logo spans two tiers" | "V4 · Centered stack" | "V5 · Logo over menu, stacked actions" | "V6 · Logo over menu, side-by-side actions" | "V7 · Logo over menu, Book only";
   footer_style?: "F1 · Classic grouped" | "F2 · Contact-led split" | "F3 · Brand-led minimal" | "F4 · Patient-first" | "F6 · Multi-location" | "F7 · Office cards";
   footer_logo?: "Landscape" | "Vertical";

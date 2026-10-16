@@ -146,6 +146,7 @@ const collections = [
 			repeater("milestones", "About: our journey", [sub("y", "Year"), sub("t", "Text", "text")]),
 			repeater("values", "About: what guides our care", [sub("icon", "Icon"), sub("t", "Heading"), sub("d", "Text", "text")]),
 			bool("review_controls", "Show the Review controls panel (off for a live site)", true),
+			select("reviews_min_rating", "Reviews: lowest star rating to show", ["All ratings", "3 stars and up", "4 stars and up", "5 stars only"], "4 stars and up"),
 			// Site design: the starting point for every visitor. Review controls can
 			// still try other choices through the address bar.
 			select("header_style", "Design: header style", Object.values(HEADERS).map(clean), clean(HEADERS.h3)),
@@ -180,6 +181,7 @@ const collections = [
 			txt("hours_long", "Hours, long form (office page; one line per row)"),
 			{ slug: "maps_url", label: "Google Maps link", type: "url" },
 			image("photo", "Office exterior photo (3:2; location page hero)"),
+			str("google_place_id", "Google Place ID (weekly review sync and the “Leave us a review” link)"),
 			txt("intro", "Hero – Description"),
 			txt("directions", "Directions and parking"),
 			txt("access_notes", "Accessibility"),
@@ -318,6 +320,7 @@ const content = {
 			milestones: s.milestones.map(({ y, t }) => ({ y, t })),
 			values: s.values.map(({ icon, t, d }) => ({ icon, t, d })),
 			review_controls: true,
+			reviews_min_rating: "4 stars and up",
 			header_style: clean(HEADERS.h3),
 			footer_style: clean(FOOTERS.f7),
 			footer_logo: "Landscape",
