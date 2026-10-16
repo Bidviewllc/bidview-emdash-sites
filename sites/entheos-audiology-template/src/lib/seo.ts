@@ -21,7 +21,7 @@ const TEMPLATE_COLLECTION: Record<string, string> = {
 };
 
 /** Paths kept out of search results whatever the panel says. */
-const NOINDEX = /^\/(thank-you|privacy-policy|terms-of-use|accessibility|review)(\/|$)/;
+const NOINDEX = /^\/(thank-you|privacy-policy|terms-of-use|accessibility|review|search)(\/|$)/;
 
 export type PanelSeo = { title?: string | null; description?: string | null; noIndex?: boolean } | undefined;
 

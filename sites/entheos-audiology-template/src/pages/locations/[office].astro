@@ -4,6 +4,7 @@
 // (horizontal cards) → services (Home card style) → reviews → CTA.
 import CtaBand from "../../components/CtaBand.astro";
 import Icon from "../../components/Icon.astro";
+import MapEmbed from "../../components/MapEmbed.astro";
 import PageHero from "../../components/PageHero.astro";
 import ProviderCard from "../../components/ProviderCard.astro";
 import ReviewCard from "../../components/ReviewCard.astro";
@@ -61,7 +62,7 @@ const others = (p: (typeof providers)[number]) =>
 					</div>
 					<a class="btn btn-primary" href={office.mapsUrl} style="align-self: flex-start">Get directions <Icon name="arrowUR" /></a>
 				</div>
-				<div class="ph stone loc-map"><span class="ph-label">Map · loads on tap</span></div>
+				<MapEmbed o={office} class="loc-map" />
 			</div>
 		</div>
 	</section>

@@ -98,6 +98,7 @@ const pageCollections = PAGES.filter((p) => p.collection).map((p, i) => {
 				: []),
 			...text.filter((f) => f.field === "description").map((f) => textField(f)),
 			...p.settings.map((st) => settingField(st)),
+			...(p.slug === "book-appointment" ? [txt("scheduler_embed", "Scheduler embed code (used when Booking is “A · Scheduler embed”; paste the code from the scheduling tool)")] : []),
 		],
 	};
 });

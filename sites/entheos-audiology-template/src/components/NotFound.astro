@@ -31,7 +31,7 @@ Astro.response.status = 404;
 					<p class="lead" style="color: inherit; margin: 0">Qui officia deserunt mollit anim id est laborum curabitur pretium. Tincidunt lacus nulla gravida orci a odio nullam varius turpis.</p>
 					{
 						showSearch && (
-							<form class="nf-search" role="search" aria-label="Search the site" action={h(routes.home)}>
+							<form class="nf-search" role="search" aria-label="Search the site" action="/search">
 								<label class="sr" for="nf-q">Search the site</label>
 								<input class="input" id="nf-q" type="search" name="q" placeholder="Search for a service, topic or page" />
 								<button class="btn btn-primary" type="submit"><Icon name="search" /> Search</button>

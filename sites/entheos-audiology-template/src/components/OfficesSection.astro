@@ -4,6 +4,7 @@
 // the map beside it. Follows Review controls → Offices.
 import { getSettings } from "../lib/settings";
 import Icon from "./Icon.astro";
+import MapEmbed from "./MapEmbed.astro";
 import { telHref } from "../lib/routes";
 
 interface Props {
@@ -27,7 +28,7 @@ const heading = Astro.props.heading ?? (two ? `Visit us in ${offices.map((o) => 
 				<div class="panel grid g-2">
 					{offices.map((o, i) => (
 						<article class="card office" style="padding: 12px 12px 32px; gap: 0">
-							<div class:list={["ph", i ? "sage" : "stone"]} style="aspect-ratio: 16/9; border-radius: 12px"><span class="ph-label">Map · loads on tap</span></div>
+							<MapEmbed o={o} style="aspect-ratio: 16/9; border-radius: 12px" />
 							<div class="stack g16 office-body">
 								<h3 class="h3">{o.name}</h3>
 								<div class="drow"><span class="di"><Icon name="pin2" /></span><address style="font-style: normal; padding-top: 6px">{o.street}, {o.city}</address></div>
@@ -49,7 +50,7 @@ const heading = Astro.props.heading ?? (two ? `Visit us in ${offices.map((o) => 
 							<div class="drow" style="align-items: center"><span class="di"><Icon name="clock" /></span><span>{offices[0].hoursLine}</span></div>
 							<a class="link-arrow" href={offices[0].mapsUrl} style="align-self: flex-start">Get directions <Icon name="arrowUR" size={18} /></a>
 						</div>
-						<div class="ph stone office-map"><span class="ph-label">Map · loads on tap</span></div>
+						<MapEmbed o={offices[0]} class="office-map" />
 					</article>
 				</div>
 			)

@@ -211,6 +211,7 @@ const entries: Entry[] = [
 		alts: [["Search box hidden", "search=0"]],
 	},
 	{ name: "Thank you", path: routes.thankYou, note: "Shown after a form is sent." },
+	{ name: "Search results", path: "/search?q=hearing", note: "Not in the design boards. From the 404 search box: services, hearing aids, articles, patient resources, team, offices and pages that are live.", alts: [["No results", "q=zzzz"]] },
 ];
 
 const isOff = (e: Entry) => !!e.slug && pages[e.slug] && !pages[e.slug].on;

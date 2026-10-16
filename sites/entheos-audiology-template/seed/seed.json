@@ -1002,6 +1002,11 @@
 							"Right sidebar"
 						]
 					}
+				},
+				{
+					"slug": "scheduler_embed",
+					"label": "Scheduler embed code (used when Booking is “A · Scheduler embed”; paste the code from the scheduling tool)",
+					"type": "text"
 				}
 			]
 		},

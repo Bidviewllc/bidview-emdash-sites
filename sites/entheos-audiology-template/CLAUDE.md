@@ -233,6 +233,16 @@ handed off from Claude Design in `design/`.
 - `/sitemap.xml` is ours (live, indexable pages only, panel-hidden ones out);
   EmDash's per-collection sitemaps return 404. robots.txt is EmDash's (Settings → SEO).
 
+## Booking embed, maps, search (2026-10-16)
+- Book appointment page record: "Scheduler embed code" (editors can paste it).
+  Version A shows it; with no code, the labelled slot while reviewing and the
+  request form on a live site.
+- Maps: `MapEmbed.astro`, a keyless Google Map searched by practice name and
+  address, so Google shows the business card (Liz chose this over the API key).
+- Search: `/search` (EmDash full-text search over services, brands, posts,
+  resources, plus team, offices and fixed pages by name; live pages only;
+  noindex). The 404 search box posts there.
+
 ## Admin scripts
 - `scripts/keep-draft.ts`: scripts that change live records use `saveKeepingDraft`,
   so someone's unpublished edits are never published by a script.

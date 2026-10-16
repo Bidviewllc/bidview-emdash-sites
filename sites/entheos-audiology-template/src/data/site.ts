@@ -268,7 +268,7 @@ export async function loadSite() {
 		const def = PAGES[i];
 		return !!def?.alwaysOn || !def?.collection || pageData[i] !== null;
 	};
-	const pages: Record<string, { on: boolean; body?: unknown[]; hero?: string; heroImage?: Photo; communityPhoto?: Photo; values: Record<string, string | boolean>; text: Record<string, string> }> = {};
+	const pages: Record<string, { on: boolean; body?: unknown[]; hero?: string; heroImage?: Photo; communityPhoto?: Photo; embed?: string; values: Record<string, string | boolean>; text: Record<string, string> }> = {};
 	for (const [i, def] of PAGES.entries()) {
 		const d = dataFor(i);
 		const values: Record<string, string | boolean> = {};
@@ -285,7 +285,7 @@ export async function loadSite() {
 		if ((PAGE_TEXT[def.slug] ?? []).some((f) => CTA_FIELDS.includes(f.field)) && d.cta_mode !== CTA_MODE_OPTIONS[1]) {
 			for (const k of CTA_FIELDS) text[k] = (typeof shared[k] === "string" && shared[k].trim()) || SHARED_DEFAULTS[k as keyof typeof SHARED_DEFAULTS];
 		}
-		pages[def.slug] = { body: Array.isArray(d.body) ? d.body : undefined, on: pageOn(def.slug), ...(hero ? { hero } : {}), heroImage: photo(d.hero_image), communityPhoto: photo(d.community_photo), values, text };
+		pages[def.slug] = { body: Array.isArray(d.body) ? d.body : undefined, on: pageOn(def.slug), ...(hero ? { hero } : {}), heroImage: photo(d.hero_image), communityPhoto: photo(d.community_photo), embed: typeof d.scheduler_embed === "string" && d.scheduler_embed.trim() ? d.scheduler_embed : undefined, values, text };
 	}
 	/** A list field on a template page's record, if that field exists there. */
 	const pageList = (slug: string, field: string) => {

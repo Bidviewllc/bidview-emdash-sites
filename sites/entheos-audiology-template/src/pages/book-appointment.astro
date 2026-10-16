@@ -19,7 +19,11 @@ const tweaks: Tweak[] = [
 ];
 const s = getSettings(Astro);
 const tx = s.text;
-const isA = s.choice("version", ["a", "b"], "a") === "a";
+/** Scheduler embed code from the Book appointment page record. */
+const embed = Astro.locals.site.pages["book-appointment"]?.embed;
+const review = Astro.locals.site.practice.reviewControls;
+// Version A without embed code: the labelled slot while reviewing, the request form on a live site.
+const isA = s.choice("version", ["a", "b"], "a") === "a" && (!!embed || review);
 const side = s.choice("layout", ["full", "side"], "full") === "side";
 const first = s.offices[0];
 ---
@@ -38,11 +42,15 @@ const first = s.offices[0];
 				<section class="band bk-top">
 					<div class="wrap">
 						{isA ? (
-							<div class="bk-embed" role="region" aria-label="Online scheduler">
-								<span class="bk-embed-ic"><Icon name="calendar" size={32} /></span>
-								<b>Scheduler embed</b>
-								<span>Third-party booking widget · full content width · about 700 tall</span>
-							</div>
+							embed ? (
+								<div class="bk-embed-code" role="region" aria-label="Online scheduler" set:html={embed} />
+							) : (
+								<div class="bk-embed" role="region" aria-label="Online scheduler">
+									<span class="bk-embed-ic"><Icon name="calendar" size={32} /></span>
+									<b>Scheduler embed</b>
+									<span>Third-party booking widget · full content width · about 700 tall · paste the code on the Book appointment page in the admin</span>
+								</div>
+							)
 						) : (
 							<RequestForm id="b" />
 						)}
@@ -63,11 +71,15 @@ const first = s.offices[0];
 				<div class="wrap side-layout bk-side">
 					<div class="stack g24">
 						{isA ? (
-							<div class="bk-embed" role="region" aria-label="Online scheduler">
-								<span class="bk-embed-ic"><Icon name="calendar" size={32} /></span>
-								<b>Scheduler embed</b>
-								<span>Third-party booking widget · fills the content column · about 700 tall</span>
-							</div>
+							embed ? (
+								<div class="bk-embed-code" role="region" aria-label="Online scheduler" set:html={embed} />
+							) : (
+								<div class="bk-embed" role="region" aria-label="Online scheduler">
+									<span class="bk-embed-ic"><Icon name="calendar" size={32} /></span>
+									<b>Scheduler embed</b>
+									<span>Third-party booking widget · fills the content column · about 700 tall · paste the code on the Book appointment page in the admin</span>
+								</div>
+							)
 						) : (
 							<RequestForm id="s" side />
 						)}
