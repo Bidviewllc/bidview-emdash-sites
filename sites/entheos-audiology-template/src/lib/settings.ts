@@ -139,10 +139,16 @@ export function getSettings({ url, locals }: { url: URL; locals: App.Locals }) {
 	const pageRec = pageDef ? site.pages[pageDef.slug] : undefined;
 	/**
 	 * Page text from this page's Pages record, else the template's wording,
-	 * with {city}, {name}, {short} and {phone} filled in.
+	 * with {city}, {name}, {short}, {phone}, {email} and {address} filled in.
 	 */
 	const fill = (v: string) =>
-		v.replace(/\{city\}/g, practice.city).replace(/\{name\}/g, name).replace(/\{short\}/g, practice.shortName).replace(/\{phone\}/g, phone);
+		v
+			.replace(/\{city\}/g, practice.city)
+			.replace(/\{name\}/g, name)
+			.replace(/\{short\}/g, practice.shortName)
+			.replace(/\{phone\}/g, phone)
+			.replace(/\{email\}/g, practice.email)
+			.replace(/\{address\}/g, baseOffices[0] ? `${baseOffices[0].street}, ${baseOffices[0].city}` : "");
 	const text = (field: string): string => {
 		const own = pageRec?.text[field];
 		const d = pageDef ? PAGE_TEXT[pageDef.slug]?.find((f) => f.field === field)?.default : undefined;
@@ -200,8 +206,12 @@ export function getSettings({ url, locals }: { url: URL; locals: App.Locals }) {
 		/** Photo uploaded on this page's Pages record. */
 		pageHeroImage: pageRec?.heroImage,
 		pageValue,
+		/** Fill {city}, {name}, {short}, {phone} in any text. */
+		fill,
 		text,
 		paras,
+		/** This address's page definition slug (home, about, privacy-policy...). */
+		pageSlug: pageDef?.slug,
 		/** Hero chosen on this page's Pages record, if any. */
 		pageHero: pageRec?.hero,
 		ctaPhoto: raw("ctaphoto") !== "0",

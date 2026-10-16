@@ -26,10 +26,7 @@ const withPhoto = hero === "photo" || hero === "example";
 const prim = hero === "primary";
 const tel = telHref(s.phone);
 const title = `${brand.name} Hearing Aids in ${practice.city}`;
-const intro = [
-	"Pharetra est eros bibendum elit nec luctus magna felis sollicitudin mauris integer. In mauris eu nibh euismod gravida praesent blandit odio eu enim. Pellentesque sed dapibus est sed lacinia sapien vel tellus lorem ipsum dolor sit amet consectetur. Adipiscing elit sed do eiusmod tempor incididunt ut labore. Et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco.",
-	"Eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui. Officia deserunt mollit anim id est laborum curabitur pretium tincidunt lacus nulla. Gravida orci a odio nullam varius turpis et commodo pharetra est. Eros bibendum elit nec luctus magna felis sollicitudin mauris integer in mauris eu nibh euismod.",
-];
+const intro = s.fill(brand.intro ?? "").split(/\n\s*\n/).filter((p) => p.trim());
 const shapeA = prim ? "color-mix(in srgb, var(--on-p) 8%, transparent)" : "color-mix(in srgb, var(--p) 7%, transparent)";
 const productSvg = `<path d="M60 14c11 0 18 9 18 20v24c0 9-7 16-16 16s-16-7-16-16V32c0-10 5-18 14-18z" fill="currentColor" fill-opacity=".14" stroke="currentColor" stroke-width="2.5"></path><path d="M50 66C36 72 28 80 28 88" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"></path><circle cx="28" cy="88" r="5" fill="currentColor" fill-opacity=".4"></circle>`;
 ---
@@ -99,7 +96,7 @@ const productSvg = `<path d="M60 14c11 0 18 9 18 20v24c0 9-7 16-16 16s-16-7-16-1
 			<div class="stack g16 text-col">
 				<span class="eyebrow">Current models</span>
 				<h2 class="h2">Current {brand.name} hearing aid models</h2>
-				<p class="lead">Sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut. Enim ad minim veniam quis nostrud exercitation ullamco laboris nisi. Ut aliquip ex.</p>
+				<p class="lead">{s.fill(brand.modelsIntro ?? "")}</p>
 			</div>
 			{
 				detail.lines.map((ln) => (
@@ -136,7 +133,7 @@ const productSvg = `<path d="M60 14c11 0 18 9 18 20v24c0 9-7 16-16 16s-16-7-16-1
 			<div class="stack g24">
 				<span class="eyebrow">Accessories</span>
 				<h2 class="h2">{brand.name} accessories and assistive technology</h2>
-				<p class="body">Orci a odio nullam varius turpis et commodo pharetra est eros bibendum elit nec. Luctus magna felis sollicitudin mauris integer in mauris eu nibh euismod gravida. Praesent blandit odio eu enim pellentesque sed dapibus est sed lacinia. Sapien vel tellus lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor.</p>
+				<p class="body">{s.fill(brand.accessoriesIntro ?? "")}</p>
 			</div>
 			<div class="panel">
 				<div class="card" style="padding: 32px">
@@ -150,7 +147,7 @@ const productSvg = `<path d="M60 14c11 0 18 9 18 20v24c0 9-7 16-16 16s-16-7-16-1
 		<div class="wrap stack g24">
 			<span class="eyebrow">Older models</span>
 			<h2 class="h2">Older {brand.name} models we support</h2>
-			<p class="body text-col">Enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex. Ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat.</p>
+			<p class="body text-col">{s.fill(brand.olderIntro ?? "")}</p>
 			<div style="align-self: flex-start"><ul class="chips">{detail.older.map((o) => <li>{o}</li>)}</ul></div>
 		</div>
 	</section>
@@ -171,7 +168,7 @@ const productSvg = `<path d="M60 14c11 0 18 9 18 20v24c0 9-7 16-16 16s-16-7-16-1
 			<div class="stack g24">
 				<span class="eyebrow">Care at {practice.shortName}</span>
 				<h2 class="h2">{brand.name} hearing aid care at {s.name}</h2>
-				<p class="body">Culpa qui officia deserunt mollit anim id est laborum. Curabitur pretium tincidunt lacus nulla gravida orci a odio nullam varius turpis et. Commodo pharetra est eros bibendum elit nec luctus magna felis sollicitudin mauris integer in mauris eu nibh. Euismod gravida praesent blandit odio eu enim pellentesque sed dapibus. Est sed lacinia sapien vel tellus lorem ipsum dolor sit amet consectetur adipiscing elit.</p>
+				<p class="body">{s.fill(brand.careText ?? "")}</p>
 			</div>
 			{
 				practice.photos.office ? (

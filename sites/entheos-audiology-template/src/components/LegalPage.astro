@@ -5,6 +5,7 @@
 // default) → footer. No CTA band.
 import type { Tweak } from "./ReviewControls.astro";
 import Base from "../layouts/Base.astro";
+import { ptHas, ptToHtml, type PTBlock } from "../lib/portable-text";
 import { getSettings } from "../lib/settings";
 import Icon from "./Icon.astro";
 import PageHero from "./PageHero.astro";
@@ -23,6 +24,10 @@ const s = getSettings(Astro);
 const tx = s.text;
 const title = tx("heading") || defaultTitle;
 const showToc = s.bool("toc", true);
+/** Page content from EmDash; the sample sections show until there is some. */
+const pageBody = Astro.locals.site.pages[s.pageSlug ?? ""]?.body as PTBlock[] | undefined;
+const rich = ptHas(pageBody) ? ptToHtml(pageBody) : undefined;
+const toc = rich ? rich.headings.map((x) => ({ id: x.id, h: x.label })) : sections;
 const office = s.offices[0];
 const para = [
 	"A odio nullam varius turpis et commodo pharetra est eros bibendum. Elit nec luctus magna felis sollicitudin mauris integer in mauris eu nibh euismod gravida praesent. Blandit odio eu enim pellentesque sed dapibus est sed lacinia sapien vel tellus lorem ipsum dolor sit amet consectetur.",
@@ -47,33 +52,35 @@ const para = [
 								</button>
 							</h2>
 							<div class="jump-body" id="jump-list" hidden>
-								<ol>{sections.map((x) => <li><a href={`#${x.id}`}>{x.h}</a></li>)}</ol>
+								<ol>{toc.map((x) => <li><a href={`#${x.id}`}>{x.h}</a></li>)}</ol>
 							</div>
 						</nav>
 					)
 				}
-				<div class="rt" style="max-width: none">
-					{
-						sections.map((x, i) => (
-							<>
-								<h2 id={x.id}>{x.h}</h2>
-								<p>{para[i % 2]}</p>
-								{i === 1 && (
-									<ul>
-										<li>Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod.</li>
-										<li>Tempor incididunt ut labore et dolore magna aliqua ut enim ad minim.</li>
-										<li>Veniam quis nostrud exercitation ullamco laboris nisi ut aliquip.</li>
-										<li>Ex ea commodo consequat duis aute irure dolor in reprehenderit.</li>
-									</ul>
-								)}
-							</>
-						))
-					}
-					<p>
-						<strong>{s.name}</strong><br />{office.street}, {office.city}<br />
-						<a href={telHref(office.phone)}>{office.phone}</a> · <a href={`mailto:${practice.email}`}>{practice.email}</a>
-					</p>
-				</div>
+				{rich ? <div class="rt" style="max-width: none" set:html={s.fill(rich.html)} /> : (
+					<div class="rt" style="max-width: none">
+						{
+							sections.map((x, i) => (
+								<>
+									<h2 id={x.id}>{x.h}</h2>
+									<p>{para[i % 2]}</p>
+									{i === 1 && (
+										<ul>
+											<li>Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod.</li>
+											<li>Tempor incididunt ut labore et dolore magna aliqua ut enim ad minim.</li>
+											<li>Veniam quis nostrud exercitation ullamco laboris nisi ut aliquip.</li>
+											<li>Ex ea commodo consequat duis aute irure dolor in reprehenderit.</li>
+										</ul>
+									)}
+								</>
+							))
+						}
+						<p>
+							<strong>{s.name}</strong><br />{office.street}, {office.city}<br />
+							<a href={telHref(office.phone)}>{office.phone}</a> · <a href={`mailto:${practice.email}`}>{practice.email}</a>
+						</p>
+					</div>
+				)}
 			</div>
 		</div>
 	</section>

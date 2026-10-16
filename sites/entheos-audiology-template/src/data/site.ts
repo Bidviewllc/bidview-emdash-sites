@@ -9,6 +9,7 @@
 
 import { getEmDashCollection, getEmDashEntry, getMenu, getSiteSettings, getTaxonomyTerms } from "emdash";
 import * as blog from "./blog";
+import recordText from "./content/record-text.json";
 import { CTA_FIELDS, CTA_MODE_OPTIONS, HERO_OPTIONS, MAIN, PAGE_TEXT, PAGES, SHARED_COLLECTION, SHARED_DEFAULTS, TEMPLATES_COLLECTION } from "./page-settings";
 import * as sample from "./practice";
 import type { Brand, BrandDetail, Office, Post, Provider, Resource, Service } from "./types";
@@ -132,6 +133,9 @@ export async function loadSite() {
 		hoursLong: lines(e.data.hours_long).join("<br>"),
 		mapsUrl: e.data.maps_url ?? "",
 		photo: photo(e.data.photo),
+		intro: e.data.intro || recordText.office_intro,
+		directions: e.data.directions || recordText.office_directions,
+		accessNotes: e.data.access_notes || recordText.office_access,
 	}));
 
 	const services: (Service & { faq: { q: string; a: string }[] })[] = serviceE.map((e) => ({
@@ -146,6 +150,9 @@ export async function loadSite() {
 		ctaHeading: e.data.cta_heading || "Book your appointment",
 		faq: e.data.faq ?? [],
 		heroImage: photo(e.data.hero_image),
+		intro: e.data.intro || recordText.service_intro,
+		content: Array.isArray(e.data.content) ? e.data.content : undefined,
+		sidebarText: e.data.sidebar_text || recordText.service_sidebar,
 	}));
 
 	const brands: Brand[] = brandE.map((e) => ({
@@ -157,6 +164,11 @@ export async function loadSite() {
 		hideFromHub: !!e.data.hide_from_hub,
 		summary: e.data.summary ?? "",
 		heroImage: photo(e.data.hero_image),
+		intro: e.data.intro || recordText.brand_intro,
+		modelsIntro: e.data.models_intro || recordText.brand_models_intro,
+		accessoriesIntro: e.data.accessories_intro || recordText.brand_accessories_intro,
+		olderIntro: e.data.older_intro || recordText.brand_older_intro,
+		careText: e.data.care_text || recordText.brand_care,
 	}));
 	const brandDetails: Record<string, BrandDetail> = {};
 	const brandFaqs: Record<string, { q: string; a: string }[]> = {};
@@ -184,6 +196,8 @@ export async function loadSite() {
 		short: e.data.short_name || e.data.title,
 		bio: e.data.short_bio ?? "",
 		headshot: imgSrc(e.data.headshot),
+		bioRich: Array.isArray(e.data.bio) ? e.data.bio : undefined,
+		videoUrl: e.data.video_url || undefined,
 	}));
 
 	const toPost = (e: Entry): Post & { sortDate: number } => {
@@ -200,6 +214,7 @@ export async function loadSite() {
 			author: providers.find((x) => x.slug === e.data.author)?.name ?? "",
 			image: imgSrc(e.data.featured_image),
 			featured: !!e.data.featured,
+			content: Array.isArray(e.data.content) ? e.data.content : undefined,
 			sortDate: when ? new Date(when).getTime() : 0,
 		};
 	};
@@ -237,7 +252,7 @@ export async function loadSite() {
 		const def = PAGES[i];
 		return !!def?.alwaysOn || !def?.collection || pageData[i] !== null;
 	};
-	const pages: Record<string, { on: boolean; hero?: string; heroImage?: Photo; communityPhoto?: Photo; values: Record<string, string | boolean>; text: Record<string, string> }> = {};
+	const pages: Record<string, { on: boolean; body?: unknown[]; hero?: string; heroImage?: Photo; communityPhoto?: Photo; values: Record<string, string | boolean>; text: Record<string, string> }> = {};
 	for (const [i, def] of PAGES.entries()) {
 		const d = dataFor(i);
 		const values: Record<string, string | boolean> = {};
@@ -254,7 +269,7 @@ export async function loadSite() {
 		if ((PAGE_TEXT[def.slug] ?? []).some((f) => CTA_FIELDS.includes(f.field)) && d.cta_mode !== CTA_MODE_OPTIONS[1]) {
 			for (const k of CTA_FIELDS) text[k] = (typeof shared[k] === "string" && shared[k].trim()) || SHARED_DEFAULTS[k as keyof typeof SHARED_DEFAULTS];
 		}
-		pages[def.slug] = { on: pageOn(def.slug), ...(hero ? { hero } : {}), heroImage: photo(d.hero_image), communityPhoto: photo(d.community_photo), values, text };
+		pages[def.slug] = { body: Array.isArray(d.body) ? d.body : undefined, on: pageOn(def.slug), ...(hero ? { hero } : {}), heroImage: photo(d.hero_image), communityPhoto: photo(d.community_photo), values, text };
 	}
 	// Switch-on rules that follow other pages being on.
 	pages.home.values.about = pageOn("about");

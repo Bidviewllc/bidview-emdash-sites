@@ -37,7 +37,7 @@ const others = (p: (typeof providers)[number]) =>
 	<PageHero
 		crumbs={[{ label: "Home" }, { label: "Locations", href: routes.contact }, { label: town }]}
 		title={`Hearing care in ${town}`}
-		lead="Id est laborum curabitur pretium tincidunt lacus nulla gravida orci. A odio nullam varius turpis et commodo pharetra est eros bibendum elit nec luctus. Magna felis sollicitudin mauris integer in mauris eu nibh euismod gravida."
+		lead={s.fill(office.intro ?? "")}
 		photoLabel="Office exterior photo · 3:2"
 		image={office.photo}
 		photoTone="stone"
@@ -54,8 +54,8 @@ const others = (p: (typeof providers)[number]) =>
 						<div class="drow"><span class="di"><Icon name="clock" /></span><div class="stack g4"><span class="feat-h">Hours</span><span set:html={office.hoursLong} /></div></div>
 					</div>
 					<div class="loc-notes">
-						<div class="drow"><span class="di"><Icon name="car" /></span><div class="stack g4"><h3 class="h4">Directions and parking</h3><p class="muted">Praesent blandit odio eu enim pellentesque sed dapibus est sed lacinia. Sapien vel tellus lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor. Incididunt ut labore et dolore magna aliqua ut enim.</p></div></div>
-						<div class="drow"><span class="di"><Icon name="access" /></span><div class="stack g4"><h3 class="h4">Accessibility</h3><p class="muted">Exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in. Voluptate velit esse.</p></div></div>
+						<div class="drow"><span class="di"><Icon name="car" /></span><div class="stack g4"><h3 class="h4">Directions and parking</h3><p class="muted">{s.fill(office.directions ?? "")}</p></div></div>
+						<div class="drow"><span class="di"><Icon name="access" /></span><div class="stack g4"><h3 class="h4">Accessibility</h3><p class="muted">{s.fill(office.accessNotes ?? "")}</p></div></div>
 					</div>
 					<a class="btn btn-primary" href={office.mapsUrl} style="align-self: flex-start">Get directions <Icon name="arrowUR" /></a>
 				</div>

@@ -5,7 +5,8 @@
 // request, its sample content when someone runs the admin setup wizard with
 // sample content included. After that, edits happen in the admin, and
 // changing this file changes nothing on a site that is already set up.
-import { writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
+import { markdownToPortableText } from "emdash/client";
 import * as blog from "../src/data/blog";
 import * as s from "../src/data/practice";
 import { FOOTERS, HEADERS, TEAM_LAYOUTS } from "../src/lib/settings";
@@ -13,6 +14,14 @@ import { CTA_FIELDS, CTA_MODE_OPTIONS, HERO_OPTIONS, MAIN, PAGE_TEXT, PAGES, SHA
 
 /** Brand logos are downloaded into the media library during setup. */
 const ASSET_HOST = "https://entheos-audiology-template.local-981.workers.dev";
+
+/** Sample body text (Markdown in src/data/content) as EmDash rich text. */
+const md = (file: string, vars: Record<string, string> = {}) =>
+	markdownToPortableText(
+		Object.entries(vars).reduce((s, [k, v]) => s.split(`{${k}}`).join(v), readFileSync(new URL(`../src/data/content/${file}`, import.meta.url), "utf8")),
+	);
+const RT = JSON.parse(readFileSync(new URL("../src/data/content/record-text.json", import.meta.url), "utf8")) as Record<string, string>;
+const richText = (slug: string, label: string) => ({ slug, label, type: "portableText", searchable: true });
 
 const str = (slug: string, label: string, extra: object = {}) => ({ slug, label, type: "string", ...extra });
 const txt = (slug: string, label: string, extra: object = {}) => ({ slug, label, type: "text", ...extra });
@@ -45,6 +54,7 @@ const ctaMode = (slug: string) => {
 	return CTA_MODE_OPTIONS[same ? 0 : 1];
 };
 
+const LEGAL = ["privacy-policy", "terms-of-use", "accessibility"];
 const pageCollections = PAGES.filter((p) => p.collection).map((p, i) => {
 	const text = PAGE_TEXT[p.slug] ?? [];
 	const body = text.filter((f) => !CTA_FIELDS.includes(f.field) && f.field !== "description");
@@ -63,6 +73,7 @@ const pageCollections = PAGES.filter((p) => p.collection).map((p, i) => {
 			...(p.hero ? [heroSelect("hero", "Hero"), image("hero_image", p.slug === "home" ? "Hero photo (16:9, calm area on the left)" : "Hero photo (3:2)")] : []),
 			...body.map((f) => textField(f)),
 			...(p.slug === "about" ? [image("community_photo", "Community – Photo (3:2)")] : []),
+			...(LEGAL.includes(p.slug) ? [richText("body", "Page content (H2 headings make the table of contents)")] : []),
 			...(hasCta(p.slug)
 				? [
 						select("cta_mode", "Booking band", [...CTA_MODE_OPTIONS], CTA_MODE_OPTIONS[0]),
@@ -169,6 +180,9 @@ const collections = [
 			txt("hours_long", "Hours, long form (office page; one line per row)"),
 			{ slug: "maps_url", label: "Google Maps link", type: "url" },
 			image("photo", "Office exterior photo (3:2; location page hero)"),
+			txt("intro", "Hero – Description"),
+			txt("directions", "Directions and parking"),
+			txt("access_notes", "Accessibility"),
 			int("sort_order", "Sort order"),
 		],
 	},
@@ -188,6 +202,9 @@ const collections = [
 			str("book_label", "Booking button label"),
 			str("cta_heading", "Booking band heading"),
 			image("hero_image", "Hero photo (3:2, landscape)"),
+			txt("intro", "Hero – Description"),
+			richText("content", "Page content (H2 headings make the “Jump to” list)"),
+			txt("sidebar_text", "Booking card – Description"),
 			faqField,
 			int("sort_order", "Sort order"),
 		],
@@ -202,6 +219,11 @@ const collections = [
 			title("Brand name"),
 			image("logo", "Logo"),
 			image("hero_image", "Hero photo (3:2; product lifestyle from the manufacturer)"),
+			txt("intro", "Hero – Description (blank line between paragraphs)"),
+			txt("models_intro", "Current models – Description"),
+			txt("accessories_intro", "Accessories – Description"),
+			txt("older_intro", "Older models – Description"),
+			txt("care_text", "Care at the practice – Description"),
 			str("logo_height", "Logo height in the 160 x 60 tile (e.g. 46px)"),
 			txt("summary", "Card summary"),
 			bool("has_page", "Give this brand its own page"),
@@ -228,6 +250,8 @@ const collections = [
 			select("tone", "Placeholder colour (until a headshot is added)", TONES, "warm"),
 			bool("has_page", "Give this person a profile page"),
 			txt("short_bio", "Short bio (team list layout)"),
+			richText("bio", "Profile – Bio"),
+			{ slug: "video_url", label: "Profile – Intro video link (YouTube or Vimeo)", type: "url" },
 			txt("offices", "Offices they see patients at (office slugs, one per line)"),
 			int("sort_order", "Sort order"),
 		],
@@ -312,6 +336,7 @@ const content = {
 					...(p.hero ? { hero: HERO_OPTIONS[0][1] } : {}),
 					...Object.fromEntries((PAGE_TEXT[p.slug] ?? []).map((f) => [f.field, f.default])),
 					...(hasCta(p.slug) ? { cta_mode: ctaMode(p.slug) } : {}),
+					...(LEGAL.includes(p.slug) ? { body: md(`legal-${p.slug}.md`) } : {}),
 					...Object.fromEntries(p.settings.map((st) => [st.field, label(st, st.default)])),
 				}),
 			],
@@ -335,6 +360,9 @@ const content = {
 			hours_line: o.hoursLine,
 			hours_long: o.hoursLong.split("<br>").join("\n"),
 			maps_url: o.mapsUrl,
+			intro: RT.office_intro,
+			directions: RT.office_directions,
+			access_notes: RT.office_access,
 			sort_order: i + 1,
 		}),
 	),
@@ -348,6 +376,9 @@ const content = {
 			on_home: x.onHome !== false,
 			book_label: x.bookLabel,
 			cta_heading: x.ctaHeading,
+			intro: RT.service_intro,
+			content: md("service-body.md", { service: x.name.toLowerCase(), name: s.practice.name }),
+			sidebar_text: RT.service_sidebar,
 			faq: s.faq,
 			sort_order: i + 1,
 		}),
@@ -364,6 +395,11 @@ const content = {
 			models: d.lines.flatMap((l) => l.models.map((m) => ({ line: l.t, name: m.n, description: m.d, features: lines(m.f ?? []) }))),
 			accessories: lines(d.accessories),
 			older_models: lines(d.older),
+			intro: RT.brand_intro,
+			models_intro: RT.brand_models_intro,
+			accessories_intro: RT.brand_accessories_intro,
+			older_intro: RT.brand_older_intro,
+			care_text: RT.brand_care,
 			faq: s.brandFaq(b.name),
 			sort_order: i + 1,
 		});
@@ -377,6 +413,7 @@ const content = {
 			tone: p.tone,
 			has_page: p.hasPage,
 			short_bio: p.bio,
+			...(p.hasPage ? { bio: md("profile-bio.md") } : {}),
 			offices: lines(p.offices),
 			sort_order: i + 1,
 		}),
@@ -391,6 +428,7 @@ const content = {
 				post_date: dateIso(p.date),
 				author: s.providers.find((x) => x.name === p.author)?.slug ?? s.providers[0].slug,
 				featured: p.slug === blog.featured.slug,
+				content: md("post-body.md"),
 				tone: p.tone,
 			},
 			{ category: [p.catSlug] },

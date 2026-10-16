@@ -240,6 +240,7 @@ export interface PagePrivacyPolicy {
   status: string;
   title: string;
   heading?: string;
+  body?: PortableTextBlock[];
   legal_toc?: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -255,6 +256,7 @@ export interface PageTermsOfUse {
   status: string;
   title: string;
   heading?: string;
+  body?: PortableTextBlock[];
   legal_toc?: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -270,6 +272,7 @@ export interface PageAccessibility {
   status: string;
   title: string;
   heading?: string;
+  body?: PortableTextBlock[];
   legal_toc?: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -323,6 +326,11 @@ export interface Brand {
   title: string;
   logo?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown>; darkVariant?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> } };
   hero_image?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown>; darkVariant?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> } };
+  intro?: string;
+  models_intro?: string;
+  accessories_intro?: string;
+  older_intro?: string;
+  care_text?: string;
   logo_height?: string;
   summary?: string;
   has_page?: boolean;
@@ -354,6 +362,9 @@ export interface Office {
   hours_long?: string;
   maps_url?: string;
   photo?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown>; darkVariant?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> } };
+  intro?: string;
+  directions?: string;
+  access_notes?: string;
   sort_order?: number;
   createdAt: Date;
   updatedAt: Date;
@@ -433,6 +444,8 @@ export interface Provider {
   tone?: "warm" | "sage" | "sky" | "stone" | "dark" | "dark2";
   has_page?: boolean;
   short_bio?: string;
+  bio?: PortableTextBlock[];
+  video_url?: string;
   offices?: string;
   sort_order?: number;
   createdAt: Date;
@@ -475,6 +488,9 @@ export interface Service {
   book_label?: string;
   cta_heading?: string;
   hero_image?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown>; darkVariant?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> } };
+  intro?: string;
+  content?: PortableTextBlock[];
+  sidebar_text?: string;
   faq?: { "q"?: string | null; "a"?: string | null }[];
   sort_order?: number;
   createdAt: Date;

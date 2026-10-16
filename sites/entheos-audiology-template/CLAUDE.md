@@ -111,8 +111,19 @@ handed off from Claude Design in `design/`.
   headlines ("eyebrows") are fixed text in the pages, not editable (Liz,
   2026-10-16). Pages read text with `s.text("field")` / `s.paras("field")`
   (blank line = new paragraph); `{city}`, `{name}`, `{short}`, `{phone}` are
-  filled in. Record pages (service, brand, location, profile, post) aren't in
-  this yet.
+  filled in (also `{email}`, `{address}`).
+- **Body text** (2026-10-16): rich text renders through `src/lib/portable-text.ts`
+  (our own renderer, so H2s get ids for the "Jump to"/table-of-contents lists and
+  the blog's booking box can sit before the third H2). Services: `intro`,
+  `content` (rich text), `sidebar_text`. Brands: `intro` (paragraphs),
+  `models_intro`, `accessories_intro`, `older_intro`, `care_text`. Offices:
+  `intro`, `directions`, `access_notes`. Team: `bio` (rich text), `video_url`
+  (YouTube/Vimeo embed; with no link the sample player shows only in review mode).
+  Blog posts: `content`. Legal pages: `body`. Starting wording lives in
+  `src/data/content/*.md` (rich text, converted with EmDash's
+  markdownToPortableText in the seed) and `record-text.json` (plain text, also the
+  fallback when a field is empty). Empty rich text falls back to the old sample
+  markup in the page.
 - **Photos** (`Photo.astro` for plain slots): hero photo on each page record (Home
   16:9, others 3:2) and on Services, Brands and Offices (`photo` = exterior);
   community photo on the About page; team and office-interior photos on Practice

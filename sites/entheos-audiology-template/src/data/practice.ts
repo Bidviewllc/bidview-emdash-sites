@@ -25,6 +25,9 @@ export type Office = {
 	hoursLong: string;
 	/** Office exterior photo (location page hero). */
 	photo?: { src: string; alt: string };
+	intro?: string;
+	directions?: string;
+	accessNotes?: string;
 };
 
 export type Provider = {
@@ -44,6 +47,10 @@ export type Provider = {
 	bio: string;
 	/** Headshot URL; a placeholder shows when there is none. */
 	headshot?: string;
+	/** Profile bio (rich text). */
+	bioRich?: import("../lib/portable-text").PTBlock[];
+	/** YouTube or Vimeo link for the intro video. */
+	videoUrl?: string;
 };
 
 export type Service = {
@@ -62,6 +69,10 @@ export type Service = {
 	ctaHeading: string;
 	/** Uploaded photo, if any. */
 	heroImage?: { src: string; alt: string };
+	intro?: string;
+	/** Page content (rich text). */
+	content?: import("../lib/portable-text").PTBlock[];
+	sidebarText?: string;
 };
 
 export type Brand = {
@@ -75,6 +86,11 @@ export type Brand = {
 	summary: string;
 	/** Uploaded photo, if any. */
 	heroImage?: { src: string; alt: string };
+	intro?: string;
+	modelsIntro?: string;
+	accessoriesIntro?: string;
+	olderIntro?: string;
+	careText?: string;
 };
 
 export type Association = {

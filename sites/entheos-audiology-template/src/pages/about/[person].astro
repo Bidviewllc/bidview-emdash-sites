@@ -9,6 +9,7 @@ import OfficesSection from "../../components/OfficesSection.astro";
 import type { Tweak } from "../../components/ReviewControls.astro";
 import ServiceCards from "../../components/ServiceCards.astro";
 import Base from "../../layouts/Base.astro";
+import { ptHas, ptToHtml } from "../../lib/portable-text";
 import { getSettings } from "../../lib/settings";
 import { routes, telHref } from "../../lib/routes";
 
@@ -20,7 +21,18 @@ if (!person || !person.hasPage) return Astro.rewrite("/404");
 const tweaks: Tweak[] = [{ key: "video", label: "Intro video", type: "bool", default: true }];
 const s = getSettings(Astro);
 const h = s.href;
-const showVideo = s.bool("video", true);
+/** Bio from EmDash; the sample below shows until there is one. */
+const bio = ptHas(person.bioRich) ? s.fill(ptToHtml(person.bioRich).html) : undefined;
+/** YouTube or Vimeo link as an embed address. */
+const embed = (() => {
+	const u = person.videoUrl ?? "";
+	const yt = u.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{6,})/);
+	if (yt) return `https://www.youtube-nocookie.com/embed/${yt[1]}`;
+	const vm = u.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+	return vm ? `https://player.vimeo.com/video/${vm[1]}` : undefined;
+})();
+// No video link: the sample player shows only while Review controls are on.
+const showVideo = s.bool("video", true) && (!!embed || Astro.locals.site.practice.reviewControls);
 const crumbName = person.name.replace(/, Au\.D\.$/, "");
 ---
 <Base title={`${person.name}, ${person.title} | ${s.name}`} description={`${person.name} is ${person.title.toLowerCase()} at ${s.name}.`} pageName="Provider profile" current="about" tweaks={tweaks}>
@@ -49,20 +61,22 @@ const crumbName = person.name.replace(/, Au\.D\.$/, "");
 
 	<section class="band bio-band">
 		<div class="wrap">
-			<div class="rt" style="max-width: none">
-				<p>Pellentesque sed dapibus est sed lacinia sapien vel tellus lorem ipsum. Dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore. Magna aliqua ut enim ad minim veniam quis nostrud. <strong>Exercitation ullamco laboris nisi ut aliquip</strong> ex ea commodo consequat duis aute irure. Dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident.</p>
-				<p>Tincidunt lacus nulla gravida orci a odio nullam varius turpis et commodo. Pharetra est eros bibendum elit nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod gravida praesent blandit odio eu enim pellentesque sed dapibus. Est sed lacinia sapien vel tellus lorem ipsum dolor. Sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-				<h3>Clinical interests</h3>
-				<p>Ad minim veniam quis nostrud exercitation ullamco laboris nisi ut. Aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit. Esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non. Proident sunt in culpa qui officia deserunt mollit anim id est.</p>
-				<h3>Education and credentials</h3>
-				<ul>
-					<li><strong>Doctor of Audiology,</strong> Felis sollicitudin mauris integer in mauris.</li>
-					<li><strong>Bachelor of Science,</strong> Eu nibh euismod gravida praesent.</li>
-					<li><strong>Board certified,</strong> Blandit odio eu enim pellentesque sed.</li>
-				</ul>
-				<h3>Outside the clinic</h3>
-				<p>Dapibus est sed lacinia sapien vel tellus lorem ipsum dolor sit amet consectetur adipiscing. Elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi. Ut aliquip ex ea commodo consequat duis aute irure dolor in <a href={h(routes.about)}>reprehenderit in voluptate</a> velit.</p>
-			</div>
+			{bio ? <div class="rt" style="max-width: none" set:html={bio} /> : (
+				<div class="rt" style="max-width: none">
+					<p>Pellentesque sed dapibus est sed lacinia sapien vel tellus lorem ipsum. Dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore. Magna aliqua ut enim ad minim veniam quis nostrud. <strong>Exercitation ullamco laboris nisi ut aliquip</strong> ex ea commodo consequat duis aute irure. Dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident.</p>
+					<p>Tincidunt lacus nulla gravida orci a odio nullam varius turpis et commodo. Pharetra est eros bibendum elit nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod gravida praesent blandit odio eu enim pellentesque sed dapibus. Est sed lacinia sapien vel tellus lorem ipsum dolor. Sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+					<h3>Clinical interests</h3>
+					<p>Ad minim veniam quis nostrud exercitation ullamco laboris nisi ut. Aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit. Esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non. Proident sunt in culpa qui officia deserunt mollit anim id est.</p>
+					<h3>Education and credentials</h3>
+					<ul>
+						<li><strong>Doctor of Audiology,</strong> Felis sollicitudin mauris integer in mauris.</li>
+						<li><strong>Bachelor of Science,</strong> Eu nibh euismod gravida praesent.</li>
+						<li><strong>Board certified,</strong> Blandit odio eu enim pellentesque sed.</li>
+					</ul>
+					<h3>Outside the clinic</h3>
+					<p>Dapibus est sed lacinia sapien vel tellus lorem ipsum dolor sit amet consectetur adipiscing. Elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi. Ut aliquip ex ea commodo consequat duis aute irure dolor in <a href={h(routes.about)}>reprehenderit in voluptate</a> velit.</p>
+				</div>
+			)}
 		</div>
 	</section>
 
@@ -71,21 +85,27 @@ const crumbName = person.name.replace(/, Au\.D\.$/, "");
 			<section class="band pt0">
 				<div class="wrap stack g32" style="max-width: 1040px">
 					<h2 class="h2">Meet {person.short}</h2>
-					<div class="vplayer" data-video>
-						<img class="vposter" src="/assets/photos/consult.jpg" alt="" />
-						<div class="vshade" />
-						<button class="vbig" type="button" data-play aria-label={`Play video: Meet ${person.short} (2:14)`}><Icon name="play" size={40} /></button>
-						<p class="vcap" hidden><span>Captions appear here, in large, high-contrast text.</span></p>
-						<div class="vbar">
-							<button class="vbtn" type="button" data-play aria-label="Play"><span class="i-play"><Icon name="play" size={22} /></span><span class="i-pause" hidden><Icon name="pause" size={22} /></span></button>
-							<div class="vtrack" role="presentation"><span style="width: 0%" /></div>
-							<span class="vtime">0:00 / 2:14</span>
-							<button class="vbtn" type="button" aria-label="Mute"><Icon name="volume" size={22} /></button>
-							<button class="vbtn" type="button" data-cc aria-pressed="false" aria-label="Captions"><Icon name="captions" size={22} /></button>
-							<button class="vbtn" type="button" aria-label="Full screen"><Icon name="fullscreen" size={22} /></button>
-						</div>
-					</div>
-					<p class="small muted">Sample player: the practice's own video goes here, with captions.</p>
+					{embed ? (
+						<div class="vplayer"><iframe src={embed} title={`Meet ${person.short}`} loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="position: absolute; inset: 0; width: 100%; height: 100%; border: 0" /></div>
+					) : (
+						<>
+							<div class="vplayer" data-video>
+								<img class="vposter" src="/assets/photos/consult.jpg" alt="" />
+								<div class="vshade" />
+								<button class="vbig" type="button" data-play aria-label={`Play video: Meet ${person.short} (2:14)`}><Icon name="play" size={40} /></button>
+								<p class="vcap" hidden><span>Captions appear here, in large, high-contrast text.</span></p>
+								<div class="vbar">
+									<button class="vbtn" type="button" data-play aria-label="Play"><span class="i-play"><Icon name="play" size={22} /></span><span class="i-pause" hidden><Icon name="pause" size={22} /></span></button>
+									<div class="vtrack" role="presentation"><span style="width: 0%" /></div>
+									<span class="vtime">0:00 / 2:14</span>
+									<button class="vbtn" type="button" aria-label="Mute"><Icon name="volume" size={22} /></button>
+									<button class="vbtn" type="button" data-cc aria-pressed="false" aria-label="Captions"><Icon name="captions" size={22} /></button>
+									<button class="vbtn" type="button" aria-label="Full screen"><Icon name="fullscreen" size={22} /></button>
+								</div>
+							</div>
+														<p class="small muted">Sample player: the practice's own video goes here, with captions.</p>
+						</>
+					)}
 				</div>
 			</section>
 		)
