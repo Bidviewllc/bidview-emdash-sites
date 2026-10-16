@@ -12,7 +12,7 @@
  * widget looks the field up by its id, "field-<slug>").
  */
 import { useEffect, useState, type CSSProperties } from "react";
-import { PAGE_SCOPED_FIELDS, PAGE_TEXT, PAGES, TEXT_STORAGE } from "../../data/page-settings";
+import { PAGE_SCOPED_FIELDS, PAGES } from "../../data/page-settings";
 
 type Props = {
 	value: unknown;
@@ -126,31 +126,4 @@ function ScopedControl({ value, onChange, label, id, validation, slug }: Props &
 	);
 }
 
-/**
- * A page text slot (text_01 ...): labelled and shaped (one line or paragraphs)
- * for the record that's open; hidden on records that don't use it.
- */
-function TextSlot({ value, onChange, id }: Props) {
-	const slug = useCurrentSlug();
-	const slot = id.replace(/^field-/, "");
-	if (slug === undefined) return null;
-	const field = slug ? Object.entries(TEXT_STORAGE[slug] ?? {}).find(([, s]) => s === slot)?.[0] : undefined;
-	const def = field ? PAGE_TEXT[slug!]?.find((f) => f.field === field) : undefined;
-	if (!def) return null;
-	const v = typeof value === "string" ? value : "";
-	return (
-		<div style={box}>
-			<label htmlFor={id} style={labelStyle}>
-				{def.label}
-			</label>
-			{def.kind === "line" ? (
-				<input id={id} type="text" style={{ ...control, maxWidth: "100%" }} value={v} onChange={(e) => onChange(e.target.value)} />
-			) : (
-				<textarea id={id} rows={5} style={{ ...control, maxWidth: "100%", lineHeight: 1.5, resize: "vertical" }} value={v} onChange={(e) => onChange(e.target.value)} />
-			)}
-			<span style={{ fontSize: 12, opacity: 0.7 }}>Starting text: {def.default.length > 90 ? def.default.slice(0, 90) + "…" : def.default}</span>
-		</div>
-	);
-}
-
-export const fields = { scoped: ScopedField, text: TextSlot };
+export const fields = { scoped: ScopedField };

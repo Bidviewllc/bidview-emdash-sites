@@ -9,7 +9,7 @@
 
 import { getEmDashCollection, getEmDashEntry, getMenu, getSiteSettings, getTaxonomyTerms } from "emdash";
 import * as blog from "./blog";
-import { HERO_OPTIONS, PAGE_TEXT, PAGES, TEXT_STORAGE } from "./page-settings";
+import { HERO_OPTIONS, PAGE_TEXT, PAGES } from "./page-settings";
 import * as sample from "./practice";
 import type { Brand, BrandDetail, Office, Post, Provider, Resource, Service } from "./types";
 
@@ -227,9 +227,8 @@ export async function loadSite() {
 			values[st.key] = st.type === "bool" ? !!v : (st.options.find(([, label]) => label === v)?.[0] ?? st.default);
 		}
 		const hero = HERO_OPTIONS.find(([, label]) => label === d.hero)?.[0];
-		const store = TEXT_STORAGE[def.slug] ?? {};
 		const text = Object.fromEntries(
-			(PAGE_TEXT[def.slug] ?? []).map((f) => [f.field, d[store[f.field]]]).filter(([, v]) => typeof v === "string" && v.trim()),
+			(PAGE_TEXT[def.slug] ?? []).map((f) => [f.field, d[f.field]]).filter(([, v]) => typeof v === "string" && v.trim()),
 		) as Record<string, string>;
 		pages[def.slug] = { on: pageOn(def.slug), ...(hero ? { hero } : {}), heroImage: photo(d.hero_image), communityPhoto: photo(d.community_photo), values, text };
 	}

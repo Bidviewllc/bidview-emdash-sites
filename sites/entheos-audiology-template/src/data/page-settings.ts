@@ -22,22 +22,20 @@ export type PageText = { field: string; label: string; kind: "line" | "para"; de
 export const PAGE_TEXT = pageText as Record<string, PageText[]>;
 
 /**
- * Where page text is stored. D1 allows 100 columns per table, so page-specific
- * text doesn't get a column per page: each page's own text fields share the
- * slots text_01 ... text_16, in order, and the page-settings plugin labels each
- * slot for the record that's open. Text every page has (heading, intro,
- * description, booking band) keeps its own field.
+ * Each text field is its own field on the Pages list (a column in D1, which
+ * allows 100 per table; the list uses about 85). Labels are "<section> –
+ * Headline/Description"; the section labels above headings ("eyebrows") are
+ * fixed in the design. Fields show only on the records that use them.
  */
-export const SHARED_TEXT = ["heading", "intro", "description", "cta_heading", "cta_text"];
-export const TEXT_SLOTS = 16;
-export const slotName = (n: number) => `text_${String(n).padStart(2, "0")}`;
-/** Page slug -> { text field -> stored field } */
-export const TEXT_STORAGE: Record<string, Record<string, string>> = {};
-for (const [page, fields] of Object.entries(PAGE_TEXT)) {
-	let n = 0;
-	TEXT_STORAGE[page] = Object.fromEntries(fields.map((f) => [f.field, SHARED_TEXT.includes(f.field) ? f.field : slotName(++n)]));
-	if (n > TEXT_SLOTS) throw new Error(`Page "${page}" has ${n} text fields; raise TEXT_SLOTS (and add the fields).`);
-}
+const ALL_TEXT = [...new Map(Object.values(PAGE_TEXT).flat().map((f) => [f.field, f])).values()];
+const FIRST = ["heading", "intro"];
+const LAST = ["cta_heading", "cta_text", "description"];
+/** Admin order: hero text, each page's sections, booking band, search description. */
+export const PAGE_TEXT_FIELDS = [
+	...FIRST.map((k) => ALL_TEXT.find((f) => f.field === k)!),
+	...ALL_TEXT.filter((f) => !FIRST.includes(f.field) && !LAST.includes(f.field)),
+	...LAST.map((k) => ALL_TEXT.find((f) => f.field === k)!),
+];
 
 export type PageSetting =
 	| { field: string; label: string; key: string; type: "bool"; default: boolean }
@@ -155,7 +153,7 @@ export const PAGE_PHOTO_FIELDS: Record<string, string[]> = {
 /** Every Pages field shown only on some records (photos and text), and those records. */
 export const PAGE_SCOPED_FIELDS: Record<string, string[]> = { ...PAGE_PHOTO_FIELDS };
 for (const [page, fields] of Object.entries(PAGE_TEXT))
-	for (const f of fields) if (SHARED_TEXT.includes(f.field)) (PAGE_SCOPED_FIELDS[f.field] ??= []).push(page);
+	for (const f of fields) (PAGE_SCOPED_FIELDS[f.field] ??= []).push(page);
 
 /** Which Pages record governs an address. */
 export function pageFor(pathname: string): PageDef | undefined {

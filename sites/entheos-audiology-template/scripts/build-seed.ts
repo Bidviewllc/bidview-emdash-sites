@@ -9,7 +9,7 @@ import { writeFileSync } from "node:fs";
 import * as blog from "../src/data/blog";
 import * as s from "../src/data/practice";
 import { FOOTERS, HEADERS, TEAM_LAYOUTS } from "../src/lib/settings";
-import { HERO_OPTIONS, PAGE_TEXT, PAGES, SHARED_TEXT, slotName, TEXT_SLOTS, TEXT_STORAGE, type PageSetting } from "../src/data/page-settings";
+import { HERO_OPTIONS, PAGE_TEXT, PAGE_TEXT_FIELDS, PAGES, type PageSetting } from "../src/data/page-settings";
 
 /** Brand logos are downloaded into the media library during setup. */
 const ASSET_HOST = "https://entheos-audiology-template.local-981.workers.dev";
@@ -42,11 +42,7 @@ const pageField = (st: PageSetting) => ({
 });
 
 // Page text fields (one per distinct field; shared ones like "heading" are used by many pages).
-const sharedText = SHARED_TEXT.map((field) => Object.values(PAGE_TEXT).flat().find((f) => f.field === field)!).map((f) =>
-	f.kind === "line" ? str(f.field, f.label) : txt(f.field, f.label),
-);
-const textSlots = Array.from({ length: TEXT_SLOTS }, (_, i) => ({ ...txt(slotName(i + 1), `Page text ${i + 1}`), widget: "page-settings:text" }));
-const pageTextFields = [...sharedText, ...textSlots];
+const pageTextFields = PAGE_TEXT_FIELDS.map((f) => (f.kind === "line" ? str(f.field, f.label) : txt(f.field, f.label)));
 
 const collections = [
 	{
@@ -263,7 +259,7 @@ const content = {
 		pub(`page-${p.slug}`, p.slug, {
 			title: p.title,
 			hero: HERO_OPTIONS[0][1],
-			...Object.fromEntries((PAGE_TEXT[p.slug] ?? []).map((f) => [TEXT_STORAGE[p.slug][f.field], f.default])),
+			...Object.fromEntries((PAGE_TEXT[p.slug] ?? []).map((f) => [f.field, f.default])),
 			...Object.fromEntries(p.settings.map((st) => [st.field, label(st, st.default)])),
 		}),
 	),

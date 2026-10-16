@@ -41,7 +41,7 @@ const credHeights: Record<string, string> = { ada: "40px", aaa: "50px", aba: "54
 	<section class:list={["band first", { "after-photo": withPhoto }]}>
 		<div class="wrap about" style="align-items: start">
 			<div class="stack g24">
-				<span class="eyebrow">{tx("about_story_eyebrow")}</span>
+				<span class="eyebrow">Our story</span>
 				<h2 class="h2">{tx("about_story_heading")}</h2>
 				{s.paras("about_story_text").map((p) => <p class="body">{p}</p>)}
 			</div>
@@ -54,7 +54,7 @@ const credHeights: Record<string, string> = { ada: "40px", aaa: "50px", aba: "54
 			<section class="band bg-light">
 				<div class="wrap journey-grid">
 					<div class="stack g24">
-						<span class="eyebrow">{tx("about_journey_eyebrow")}</span>
+						<span class="eyebrow">Our journey</span>
 						<h2 class="h2">{tx("about_journey_heading")}</h2>
 						<p class="lead">{tx("about_journey_intro")}</p>
 					</div>
@@ -70,7 +70,7 @@ const credHeights: Record<string, string> = { ada: "40px", aaa: "50px", aba: "54
 			<section class="band bg-light">
 				<div class="wrap stack g48">
 					<div class="two-col" style="align-items: end; gap: 80px">
-						<div class="stack g16"><span class="eyebrow">{tx("about_journey_eyebrow")}</span><h2 class="h2">{tx("about_journey_heading")}</h2></div>
+						<div class="stack g16"><span class="eyebrow">Our journey</span><h2 class="h2">{tx("about_journey_heading")}</h2></div>
 						<p class="lead">{tx("about_journey_intro")}</p>
 					</div>
 					<ol class="panel grid g-4 ms-list" style="list-style: none; margin: 0">
@@ -84,7 +84,7 @@ const credHeights: Record<string, string> = { ada: "40px", aaa: "50px", aba: "54
 	<section class:list={["band", { pt0: journey === "hidden" }]}>
 		<div class="wrap stack g48">
 			<div class="stack g16 text-col">
-				<span class="eyebrow">{tx("about_values_eyebrow")}</span>
+				<span class="eyebrow">Our values</span>
 				<h2 class="h2">{tx("about_values_heading")}</h2>
 			</div>
 			<div class="panel grid g-4">
@@ -104,7 +104,7 @@ const credHeights: Record<string, string> = { ada: "40px", aaa: "50px", aba: "54
 	<section class="band bg-light" id="team">
 		<div class="wrap stack g48">
 			<div class="stack g16 text-col">
-				<span class="eyebrow">{tx("about_team_eyebrow")}</span>
+				<span class="eyebrow">Our team</span>
 				<h2 class="h2">{tx("about_team_heading")}</h2>
 			</div>
 			<TeamGrid people={providers.map((p) => ({ ...p, linked: profiles && p.hasPage }))} alignStart />
@@ -117,7 +117,7 @@ const credHeights: Record<string, string> = { ada: "40px", aaa: "50px", aba: "54
 				<div class="wrap about community">
 					<Photo photo={Astro.locals.site.pages.about.communityPhoto} label="Community photo · 3:2 (event, school screening, sponsorship)" tone="sky" />
 					<div class="stack g24">
-						<span class="eyebrow">{tx("about_community_eyebrow")}</span>
+						<span class="eyebrow">Community</span>
 						<h2 class="h2">{tx("about_community_heading")}</h2>
 						<p class="body">{tx("about_community_text")}</p>
 					</div>
@@ -131,7 +131,7 @@ const credHeights: Record<string, string> = { ada: "40px", aaa: "50px", aba: "54
 			<section class="band bg-gray">
 				<div class="wrap stack g32">
 					<div class="two-col" style="align-items: end; gap: 80px">
-						<div class="stack g16"><span class="eyebrow">{tx("about_creds_eyebrow")}</span><h2 class="h2">{tx("about_creds_heading")}</h2></div>
+						<div class="stack g16"><span class="eyebrow">Credentials</span><h2 class="h2">{tx("about_creds_heading")}</h2></div>
 						<p class="body">{tx("about_creds_text")}</p>
 					</div>
 					<ul class="creds">

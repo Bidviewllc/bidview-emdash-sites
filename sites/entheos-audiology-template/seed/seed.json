@@ -347,124 +347,213 @@
 				},
 				{
 					"slug": "heading",
-					"label": "Page heading (H1)",
+					"label": "Hero – Headline",
 					"type": "string"
 				},
 				{
 					"slug": "intro",
-					"label": "Intro under the heading",
+					"label": "Hero – Description",
 					"type": "text"
 				},
 				{
-					"slug": "description",
-					"label": "Search result description",
+					"slug": "home_about_heading",
+					"label": "About us – Headline",
+					"type": "string"
+				},
+				{
+					"slug": "home_about_text",
+					"label": "About us – Description",
 					"type": "text"
+				},
+				{
+					"slug": "home_team_heading",
+					"label": "Our team – Headline",
+					"type": "string"
+				},
+				{
+					"slug": "home_team_intro",
+					"label": "Our team – Description",
+					"type": "text"
+				},
+				{
+					"slug": "home_services_heading",
+					"label": "Services – Headline",
+					"type": "string"
+				},
+				{
+					"slug": "home_services_intro",
+					"label": "Services – Description",
+					"type": "text"
+				},
+				{
+					"slug": "home_brands_heading",
+					"label": "Hearing aids – Headline",
+					"type": "string"
+				},
+				{
+					"slug": "home_brands_intro",
+					"label": "Hearing aids – Description",
+					"type": "text"
+				},
+				{
+					"slug": "home_reviews_heading",
+					"label": "Reviews – Headline",
+					"type": "string"
+				},
+				{
+					"slug": "home_blog_heading",
+					"label": "Articles – Headline",
+					"type": "string"
+				},
+				{
+					"slug": "services_steps_heading",
+					"label": "Your first visit – Headline",
+					"type": "string"
+				},
+				{
+					"slug": "ha_brands_heading",
+					"label": "Brands – Headline",
+					"type": "string"
+				},
+				{
+					"slug": "ha_styles_heading",
+					"label": "Styles – Headline",
+					"type": "string"
+				},
+				{
+					"slug": "ha_compare_heading",
+					"label": "Compare – Headline",
+					"type": "string"
+				},
+				{
+					"slug": "ha_otc_heading",
+					"label": "Over-the-counter card – Headline",
+					"type": "string"
+				},
+				{
+					"slug": "ha_otc_text",
+					"label": "Over-the-counter card – Description",
+					"type": "text"
+				},
+				{
+					"slug": "ha_rx_heading",
+					"label": "Prescription card – Headline",
+					"type": "string"
+				},
+				{
+					"slug": "ha_rx_text",
+					"label": "Prescription card – Description",
+					"type": "text"
+				},
+				{
+					"slug": "about_story_heading",
+					"label": "Our story – Headline",
+					"type": "string"
+				},
+				{
+					"slug": "about_story_text",
+					"label": "Our story – Description (blank line between paragraphs)",
+					"type": "text"
+				},
+				{
+					"slug": "about_journey_heading",
+					"label": "Our journey – Headline",
+					"type": "string"
+				},
+				{
+					"slug": "about_journey_intro",
+					"label": "Our journey – Description",
+					"type": "text"
+				},
+				{
+					"slug": "about_values_heading",
+					"label": "Our values – Headline",
+					"type": "string"
+				},
+				{
+					"slug": "about_team_heading",
+					"label": "Our team – Headline",
+					"type": "string"
+				},
+				{
+					"slug": "about_community_heading",
+					"label": "Community – Headline",
+					"type": "string"
+				},
+				{
+					"slug": "about_community_text",
+					"label": "Community – Description",
+					"type": "text"
+				},
+				{
+					"slug": "about_creds_heading",
+					"label": "Credentials – Headline",
+					"type": "string"
+				},
+				{
+					"slug": "about_creds_text",
+					"label": "Credentials – Description",
+					"type": "text"
+				},
+				{
+					"slug": "contact_form_heading",
+					"label": "Message form – Headline",
+					"type": "string"
+				},
+				{
+					"slug": "contact_side_heading",
+					"label": "Contact details – Headline",
+					"type": "string"
+				},
+				{
+					"slug": "book_call_heading",
+					"label": "Prefer to call – Headline",
+					"type": "string"
+				},
+				{
+					"slug": "book_offices_heading",
+					"label": "Offices – Headline",
+					"type": "string"
+				},
+				{
+					"slug": "book_form_heading",
+					"label": "Request form – Headline",
+					"type": "string"
+				},
+				{
+					"slug": "book_form_intro",
+					"label": "Request form – Description",
+					"type": "text"
+				},
+				{
+					"slug": "book_form_after",
+					"label": "Request form – Line under the button",
+					"type": "string"
+				},
+				{
+					"slug": "res_blog_heading",
+					"label": "From our blog – Headline",
+					"type": "string"
+				},
+				{
+					"slug": "res_orgs_heading",
+					"label": "Outside organizations – Headline",
+					"type": "string"
 				},
 				{
 					"slug": "cta_heading",
-					"label": "Booking band heading",
+					"label": "Booking band – Headline",
 					"type": "string"
 				},
 				{
 					"slug": "cta_text",
-					"label": "Booking band text",
+					"label": "Booking band – Description",
 					"type": "text"
 				},
 				{
-					"slug": "text_01",
-					"label": "Page text 1",
-					"type": "text",
-					"widget": "page-settings:text"
-				},
-				{
-					"slug": "text_02",
-					"label": "Page text 2",
-					"type": "text",
-					"widget": "page-settings:text"
-				},
-				{
-					"slug": "text_03",
-					"label": "Page text 3",
-					"type": "text",
-					"widget": "page-settings:text"
-				},
-				{
-					"slug": "text_04",
-					"label": "Page text 4",
-					"type": "text",
-					"widget": "page-settings:text"
-				},
-				{
-					"slug": "text_05",
-					"label": "Page text 5",
-					"type": "text",
-					"widget": "page-settings:text"
-				},
-				{
-					"slug": "text_06",
-					"label": "Page text 6",
-					"type": "text",
-					"widget": "page-settings:text"
-				},
-				{
-					"slug": "text_07",
-					"label": "Page text 7",
-					"type": "text",
-					"widget": "page-settings:text"
-				},
-				{
-					"slug": "text_08",
-					"label": "Page text 8",
-					"type": "text",
-					"widget": "page-settings:text"
-				},
-				{
-					"slug": "text_09",
-					"label": "Page text 9",
-					"type": "text",
-					"widget": "page-settings:text"
-				},
-				{
-					"slug": "text_10",
-					"label": "Page text 10",
-					"type": "text",
-					"widget": "page-settings:text"
-				},
-				{
-					"slug": "text_11",
-					"label": "Page text 11",
-					"type": "text",
-					"widget": "page-settings:text"
-				},
-				{
-					"slug": "text_12",
-					"label": "Page text 12",
-					"type": "text",
-					"widget": "page-settings:text"
-				},
-				{
-					"slug": "text_13",
-					"label": "Page text 13",
-					"type": "text",
-					"widget": "page-settings:text"
-				},
-				{
-					"slug": "text_14",
-					"label": "Page text 14",
-					"type": "text",
-					"widget": "page-settings:text"
-				},
-				{
-					"slug": "text_15",
-					"label": "Page text 15",
-					"type": "text",
-					"widget": "page-settings:text"
-				},
-				{
-					"slug": "text_16",
-					"label": "Page text 16",
-					"type": "text",
-					"widget": "page-settings:text"
+					"slug": "description",
+					"label": "Search results – Description (about 150 characters)",
+					"type": "text"
 				},
 				{
 					"slug": "community_photo",
@@ -1809,22 +1898,16 @@
 					"hero": "Page default",
 					"heading": "Hearing care that starts with listening to you",
 					"intro": "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor.",
-					"text_01": "About us",
-					"text_02": "A locally owned practice in {city}",
-					"text_03": "Nostrud exercitation ullamco laboris nisi ut aliquip ex ea. Commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum. Dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt. Mollit anim id est laborum curabitur pretium tincidunt lacus nulla. Gravida orci a odio nullam varius turpis et commodo pharetra est eros bibendum elit. Nec luctus magna felis sollicitudin mauris integer in mauris eu nibh euismod.",
-					"text_04": "Our team",
-					"text_05": "Meet your hearing care team",
-					"text_06": "Eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi.",
-					"text_07": "Services",
-					"text_08": "Hearing care services in {city}",
-					"text_09": "Ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum. Dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non. Proident sunt in.",
-					"text_10": "Hearing aids",
-					"text_11": "Hearing aid brands we fit and service",
-					"text_12": "Anim id est laborum curabitur pretium tincidunt lacus nulla gravida orci a odio. Nullam varius turpis et commodo pharetra est eros bibendum elit nec luctus magna felis sollicitudin mauris integer. In mauris eu nibh euismod.",
-					"text_13": "Reviews",
-					"text_14": "What our patients say",
-					"text_15": "Blog",
-					"text_16": "From our audiologists",
+					"home_about_heading": "A locally owned practice in {city}",
+					"home_about_text": "Nostrud exercitation ullamco laboris nisi ut aliquip ex ea. Commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum. Dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt. Mollit anim id est laborum curabitur pretium tincidunt lacus nulla. Gravida orci a odio nullam varius turpis et commodo pharetra est eros bibendum elit. Nec luctus magna felis sollicitudin mauris integer in mauris eu nibh euismod.",
+					"home_team_heading": "Meet your hearing care team",
+					"home_team_intro": "Eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi.",
+					"home_services_heading": "Hearing care services in {city}",
+					"home_services_intro": "Ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum. Dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non. Proident sunt in.",
+					"home_brands_heading": "Hearing aid brands we fit and service",
+					"home_brands_intro": "Anim id est laborum curabitur pretium tincidunt lacus nulla gravida orci a odio. Nullam varius turpis et commodo pharetra est eros bibendum elit nec luctus magna felis sollicitudin mauris integer. In mauris eu nibh euismod.",
+					"home_reviews_heading": "What our patients say",
+					"home_blog_heading": "From our audiologists",
 					"cta_heading": "Take the first step toward better hearing",
 					"cta_text": "Pretium tincidunt lacus nulla gravida orci a odio nullam varius turpis. Et commodo pharetra est eros bibendum elit.",
 					"home_trust_logos": "Scrolling (with pause)",
@@ -1843,8 +1926,7 @@
 					"heading": "Audiology services in {city}",
 					"intro": "Nec luctus magna felis sollicitudin mauris integer in mauris. Eu nibh euismod gravida praesent blandit odio eu enim pellentesque sed dapibus est. Sed lacinia sapien vel tellus lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor. Incididunt ut labore et dolore magna.",
 					"description": "Every hearing care service we offer, from hearing evaluations to hearing aid repairs.",
-					"text_01": "Your first visit",
-					"text_02": "What to expect at your first visit",
+					"services_steps_heading": "What to expect at your first visit",
 					"cta_heading": "Start with a hearing evaluation",
 					"cta_text": "Labore et dolore magna aliqua ut enim ad minim veniam quis. Nostrud exercitation ullamco laboris nisi ut aliquip.",
 					"services_first_visit": true
@@ -1860,16 +1942,13 @@
 					"heading": "Hearing aids in {city}",
 					"intro": "Ut aliquip ex ea commodo consequat duis aute irure dolor in. Reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat. Non proident sunt in culpa qui officia deserunt mollit. Anim id est laborum curabitur pretium tincidunt lacus nulla gravida.",
 					"description": "The hearing aid brands we fit and service, the styles to choose from, and how prescription hearing aids compare.",
-					"text_01": "Brands",
-					"text_02": "Brands we fit and service",
-					"text_03": "Styles",
-					"text_04": "Hearing aid styles",
-					"text_05": "Compare",
-					"text_06": "Over-the-counter vs. prescription hearing aids",
-					"text_07": "Over-the-counter",
-					"text_08": "Culpa qui officia deserunt mollit anim id est laborum curabitur pretium tincidunt lacus. Nulla gravida orci a odio nullam varius turpis et commodo pharetra est eros bibendum elit nec luctus. Magna felis sollicitudin mauris integer in mauris eu nibh euismod. Gravida praesent blandit odio eu enim pellentesque sed dapibus est sed lacinia sapien vel. Tellus lorem ipsum dolor sit amet.",
-					"text_09": "Prescription, fitted by an audiologist",
-					"text_10": "Consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et. Dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut. Aliquip ex ea commodo consequat duis aute irure dolor. In reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur. Sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit.",
+					"ha_brands_heading": "Brands we fit and service",
+					"ha_styles_heading": "Hearing aid styles",
+					"ha_compare_heading": "Over-the-counter vs. prescription hearing aids",
+					"ha_otc_heading": "Over-the-counter",
+					"ha_otc_text": "Culpa qui officia deserunt mollit anim id est laborum curabitur pretium tincidunt lacus. Nulla gravida orci a odio nullam varius turpis et commodo pharetra est eros bibendum elit nec luctus. Magna felis sollicitudin mauris integer in mauris eu nibh euismod. Gravida praesent blandit odio eu enim pellentesque sed dapibus est sed lacinia sapien vel. Tellus lorem ipsum dolor sit amet.",
+					"ha_rx_heading": "Prescription, fitted by an audiologist",
+					"ha_rx_text": "Consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et. Dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut. Aliquip ex ea commodo consequat duis aute irure dolor. In reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur. Sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit.",
 					"cta_heading": "Try hearing aids before you decide",
 					"cta_text": "Anim id est laborum curabitur pretium tincidunt lacus nulla gravida. Orci a odio nullam varius turpis et commodo.",
 					"hearing_aids_styles": true,
@@ -1885,24 +1964,18 @@
 					"hero": "Page default",
 					"heading": "Hearing care is personal",
 					"intro": "Ea commodo consequat duis aute irure dolor in reprehenderit. In voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat. Cupidatat non proident sunt in culpa qui officia.",
-					"text_01": "Our story",
-					"text_02": "Our story",
-					"text_03": "Our journey",
-					"text_04": "From our early days in {city}",
-					"text_05": "Commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse. Cillum dolore eu fugiat nulla pariatur excepteur sint occaecat.",
-					"text_06": "Our values",
-					"text_07": "What guides our care",
-					"text_08": "Our team",
-					"text_09": "Meet the team",
-					"text_10": "Community",
-					"text_11": "Part of the {city} community",
-					"text_12": "Mauris integer in mauris eu nibh euismod gravida praesent blandit. Odio eu enim pellentesque sed dapibus est sed lacinia sapien vel tellus lorem ipsum. Dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut. Labore et dolore magna aliqua ut enim ad minim veniam quis. Nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-					"text_13": "Credentials",
-					"text_14": "Credentials and memberships",
-					"text_15": "Eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa. Qui officia deserunt mollit anim id est laborum curabitur pretium tincidunt lacus nulla gravida orci a odio. Nullam varius turpis et commodo pharetra est eros bibendum elit.",
+					"about_story_heading": "Our story",
+					"about_story_text": "Deserunt mollit anim id est laborum curabitur pretium tincidunt lacus. Nulla gravida orci a odio nullam varius turpis et commodo pharetra est eros bibendum. Elit nec luctus magna felis sollicitudin mauris integer in mauris eu nibh. Euismod gravida praesent blandit odio eu enim pellentesque sed dapibus est. Sed lacinia sapien vel tellus lorem ipsum dolor sit amet consectetur adipiscing elit sed do.\n\nIrure dolor in reprehenderit in voluptate velit esse cillum dolore. Eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui. Officia deserunt mollit anim id est laborum curabitur pretium tincidunt lacus nulla. Gravida orci a odio nullam varius turpis et commodo pharetra est.",
+					"about_journey_heading": "From our early days in {city}",
+					"about_journey_intro": "Commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse. Cillum dolore eu fugiat nulla pariatur excepteur sint occaecat.",
+					"about_values_heading": "What guides our care",
+					"about_team_heading": "Meet the team",
+					"about_community_heading": "Part of the {city} community",
+					"about_community_text": "Mauris integer in mauris eu nibh euismod gravida praesent blandit. Odio eu enim pellentesque sed dapibus est sed lacinia sapien vel tellus lorem ipsum. Dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut. Labore et dolore magna aliqua ut enim ad minim veniam quis. Nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+					"about_creds_heading": "Credentials and memberships",
+					"about_creds_text": "Eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa. Qui officia deserunt mollit anim id est laborum curabitur pretium tincidunt lacus nulla gravida orci a odio. Nullam varius turpis et commodo pharetra est eros bibendum elit.",
 					"cta_heading": "Your hearing journey starts with a conversation",
 					"cta_text": "Nec luctus magna felis sollicitudin mauris integer in mauris eu nibh euismod gravida praesent. Blandit odio eu enim.",
-					"text_16": "Deserunt mollit anim id est laborum curabitur pretium tincidunt lacus. Nulla gravida orci a odio nullam varius turpis et commodo pharetra est eros bibendum. Elit nec luctus magna felis sollicitudin mauris integer in mauris eu nibh. Euismod gravida praesent blandit odio eu enim pellentesque sed dapibus est. Sed lacinia sapien vel tellus lorem ipsum dolor sit amet consectetur adipiscing elit sed do.\n\nIrure dolor in reprehenderit in voluptate velit esse cillum dolore. Eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui. Officia deserunt mollit anim id est laborum curabitur pretium tincidunt lacus nulla. Gravida orci a odio nullam varius turpis et commodo pharetra est.",
 					"about_journey": "Grid 2 × 2",
 					"about_community": true,
 					"about_credentials": true
@@ -1918,8 +1991,8 @@
 					"heading": "Start a conversation about better hearing",
 					"intro": "Ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex. Ea commodo consequat duis aute irure dolor in reprehenderit in voluptate. Velit esse cillum dolore eu fugiat nulla.",
 					"description": "Call, email or send us a message. We'll get back to you within one business day.",
-					"text_01": "Send us a message",
-					"text_02": "Talk to us",
+					"contact_form_heading": "Send us a message",
+					"contact_side_heading": "Talk to us",
 					"cta_heading": "Call us to talk it through"
 				}
 			},
@@ -1933,11 +2006,11 @@
 					"heading": "Book your appointment",
 					"intro": "Tincidunt lacus nulla gravida orci a odio nullam varius turpis et commodo pharetra est eros bibendum elit. Nec luctus magna felis sollicitudin mauris integer in.",
 					"description": "Book online or ask us to call you back to find a time.",
-					"text_01": "Prefer to call?",
-					"text_02": "Where to find us",
-					"text_03": "Request an appointment",
-					"text_04": "Mauris eu nibh euismod gravida praesent blandit odio eu enim pellentesque sed dapibus est. Sed lacinia sapien vel tellus lorem ipsum dolor sit amet consectetur.",
-					"text_05": "We’ll call you within one business day to confirm a time.",
+					"book_call_heading": "Prefer to call?",
+					"book_offices_heading": "Where to find us",
+					"book_form_heading": "Request an appointment",
+					"book_form_intro": "Mauris eu nibh euismod gravida praesent blandit odio eu enim pellentesque sed dapibus est. Sed lacinia sapien vel tellus lorem ipsum dolor sit amet consectetur.",
+					"book_form_after": "We’ll call you within one business day to confirm a time.",
 					"book_version": "A · Scheduler embed",
 					"book_layout": "Full width"
 				}
@@ -1980,10 +2053,8 @@
 					"heading": "Patient resources",
 					"intro": "Pariatur excepteur sint occaecat cupidatat non proident sunt in culpa. Qui officia deserunt mollit anim id est laborum curabitur pretium tincidunt lacus nulla gravida. Orci a odio nullam varius turpis.",
 					"description": "What to expect, insurance and financing, forms and hearing aid care, in one place.",
-					"text_01": "From our blog",
-					"text_02": "Latest articles",
-					"text_03": "Outside organizations",
-					"text_04": "Helpful organizations",
+					"res_blog_heading": "Latest articles",
+					"res_orgs_heading": "Helpful organizations",
 					"cta_heading": "Take the first step toward better hearing",
 					"cta_text": "Pretium tincidunt lacus nulla gravida orci a odio nullam varius turpis. Et commodo pharetra est eros bibendum elit.",
 					"resources_layout": "Cards",

@@ -94,7 +94,7 @@ const groups = resourceGroups
 	<section class="band bg-light">
 		<div class="wrap stack g48">
 			<div class="shead">
-				<div class="stack g16"><span class="eyebrow">{tx("res_blog_eyebrow")}</span><h2 class="h2">{tx("res_blog_heading")}</h2></div>
+				<div class="stack g16"><span class="eyebrow">From our blog</span><h2 class="h2">{tx("res_blog_heading")}</h2></div>
 				<a class="link-arrow" href={h(routes.blog)}>All articles <Icon name="arrowR" size={18} /></a>
 			</div>
 			<div class="grid g-3 posts-grid" style="gap: 32px">{posts.slice(0, 3).map((p) => <PostCard p={p} />)}</div>
@@ -103,7 +103,7 @@ const groups = resourceGroups
 
 	<section class="band">
 		<div class="wrap stack g32">
-			<div class="stack g12"><span class="eyebrow">{tx("res_orgs_eyebrow")}</span><h2 class="h2">{tx("res_orgs_heading")}</h2></div>
+			<div class="stack g12"><span class="eyebrow">Outside organizations</span><h2 class="h2">{tx("res_orgs_heading")}</h2></div>
 			<ul class="creds org-row">
 				<li><a class="cred org" href="#"><span class="org-word">Hearing Loss Association of America</span><span class="org-note">Logo placeholder</span></a></li>
 				<li><a class="cred org" href="#"><img src="/assets/associations/color/aaa.png" alt="American Academy of Audiology" style="max-height: 50px" /></a></li>

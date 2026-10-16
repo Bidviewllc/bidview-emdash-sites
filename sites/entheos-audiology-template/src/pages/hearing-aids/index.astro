@@ -33,7 +33,7 @@ const showOtc = s.bool("otc", true);
 
 	<section class:list={["band first", { "after-photo": withPhoto }]}>
 		<div class="wrap stack g48">
-			<div class="stack g16 text-col"><span class="eyebrow">{tx("ha_brands_eyebrow")}</span><h2 class="h2">{tx("ha_brands_heading")}</h2></div>
+			<div class="stack g16 text-col"><span class="eyebrow">Brands</span><h2 class="h2">{tx("ha_brands_heading")}</h2></div>
 			<div class="panel grid g-4 brand-grid">
 				{
 					brands.filter((b) => !b.hideFromHub).map((b) => {
@@ -60,7 +60,7 @@ const showOtc = s.bool("otc", true);
 		showStyles && (
 			<section class="band bg-light">
 				<div class="wrap stack g48">
-					<div class="stack g16 text-col"><span class="eyebrow">{tx("ha_styles_eyebrow")}</span><h2 class="h2">{tx("ha_styles_heading")}</h2></div>
+					<div class="stack g16 text-col"><span class="eyebrow">Styles</span><h2 class="h2">{tx("ha_styles_heading")}</h2></div>
 					<div class="panel grid g-4">
 						{hearingAidStyles.map((st) => (
 							<article class="card" style="padding: 16px 16px 28px">
@@ -81,7 +81,7 @@ const showOtc = s.bool("otc", true);
 		showOtc && (
 			<section class:list={["band", { pt0: !showStyles }]}>
 				<div class="wrap stack g48">
-					<div class="stack g16 text-col"><span class="eyebrow">{tx("ha_compare_eyebrow")}</span><h2 class="h2">{tx("ha_compare_heading")}</h2></div>
+					<div class="stack g16 text-col"><span class="eyebrow">Compare</span><h2 class="h2">{tx("ha_compare_heading")}</h2></div>
 					<div class="panel grid g-2">
 						<article class="card cmp-card">
 							<span class="cmp-tag" style="background: var(--panel); color: var(--ink)">Over-the-counter</span>
