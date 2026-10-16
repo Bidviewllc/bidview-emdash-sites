@@ -35,7 +35,7 @@ handed off from Claude Design in `design/`.
   Defaults are left out of URLs.
 - `src/lib/color.ts`: the colour logic, ported exactly. The same maths is
   duplicated in `ReviewControls.astro` for live colour previews; keep them in step.
-- `src/pages/[...slug].astro`: a stand-in for pages not built yet.
+- `src/pages/[...slug].astro`: a stand-in for pages not built yet (the sitemap).
 
 ## Decisions (Liz, 2026-10-14)
 - Service detail: recent posts card is ON by default, in the sidebar (Vince: no
@@ -168,6 +168,20 @@ handed off from Claude Design in `design/`.
   (`npx wrangler d1 time-travel info entheos-template-cms-db`) before SQL changes.
 - Not yet in EmDash: page text (headings, intros, sections), reviews, service and
   profile body text.
+
+## Step 3 (2026-10-16)
+- Review hub `/review` (`src/pages/review/index.astro`): one card per page
+  template (default view, hero versions, alternate states, the design boards' alt
+  states, other records on the same template) and site-wide looks. Header and
+  footer galleries `/review/headers`, `/review/footers` (`ReviewGallery.astro`:
+  the home page in frames, cropped and scaled). All three exist only while Review
+  controls are on. When a page gets a new Review controls switch, add it to the hub.
+- Accessibility pass: rules at the end of `site.css`. Small links reach 48px with
+  padding cancelled by a negative margin (crumbs, tel/mailto links, byline) or an
+  invisible ::after (blog tag), so the look doesn't change. Checked with axe
+  (WCAG A/AA), a 48px-target, 15px-text and sideways-scroll sweep and a Tab walk
+  over every hub link at 390, 768 and 1440px. Known exceptions: the logo's
+  "Hearing Center" line (logotype) and links inside sentences.
 
 ## Working style
 Build in the handoff's order and stop after each step for Liz's review. When the

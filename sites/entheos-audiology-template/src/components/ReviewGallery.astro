@@ -1,0 +1,100 @@
+---
+// Header or footer gallery for the Review hub: every style, desktop and phone,
+// side by side. Each preview is the real home page in a frame (Review controls
+// off), cropped to the header or footer and scaled to fit. The script sizes the
+// frames once they load. Only while Review controls are on.
+import Base from "../layouts/Base.astro";
+import { FOOTERS, HEADERS, getSettings } from "../lib/settings";
+import Icon from "./Icon.astro";
+
+interface Props {
+	kind: "header" | "footer";
+}
+const { kind } = Astro.props;
+const s = getSettings(Astro);
+const styles = Object.entries(kind === "header" ? HEADERS : FOOTERS) as [string, string][];
+const link = (path: string, qs = "") => {
+	const u = new URL(s.href(path), "http://x");
+	for (const [k, v] of new URLSearchParams(qs)) u.searchParams.set(k, v);
+	return u.pathname + u.search;
+};
+const title = kind === "header" ? "Header gallery" : "Footer gallery";
+const vertical = s.footerLogo === "vertical";
+---
+<Base title={`${title} | ${s.name}`} description={`Every ${kind} style, desktop and phone.`} pageName={title}>
+	<div class="pg-hero-np">
+		<section class="inophoto short" style="background: var(--l); color: var(--on-l)">
+			<div class="wrap">
+				<div class="stack g24" style="max-width: 820px">
+					<nav aria-label="Breadcrumb"><ol class="crumbs"><li><a href={link("/review")}>Review hub</a></li><li class="sep" aria-hidden="true">/</li><li aria-current="page">{title}</li></ol></nav>
+					<h1 class="h1">{title}</h1>
+					<p class="lead" style="color: inherit">
+						{kind === "header"
+							? "All ten header styles on a desktop and a phone. Wide logos suit H1 to H3; square and vertical logos suit V1 to V7."
+							: `All six footer styles on a desktop and a phone, with the ${vertical ? "vertical" : "landscape"} logo.`}
+					</p>
+					<div class="rowf" style="gap: 12px">
+						{kind === "footer" && (
+							<a class="btn btn-primary" href={link("/review/footers", `flogo=${vertical ? "landscape" : "vertical"}`)}>Show the {vertical ? "landscape" : "vertical"} logo</a>
+						)}
+						<a class="btn btn-secondary" href={link(kind === "header" ? "/review/footers" : "/review/headers")}>{kind === "header" ? "Footer" : "Header"} gallery</a>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+
+	<section class="band rh-band">
+		<div class="wrap stack g64">
+			{
+				styles.map(([k, label]) => {
+					const src = link("/", `${kind}=${k}&panel=off`);
+					return (
+						<div class="stack g16 rg-item">
+							<div class="shead" style="align-items: center">
+								<h2 class="h3">{label}</h2>
+								<a class="link-arrow" href={link("/", `${kind}=${k}`)}>Open on the home page <Icon name="arrowR" size={18} /></a>
+							</div>
+							<div class="rg-row">
+								<figure class="rg-desk">
+									<div class="rg-frame" data-w="1440"><iframe src={src} title={`${label}, desktop`} loading="lazy" tabindex="-1" data-kind={kind} /></div>
+									<figcaption class="muted small">Desktop, 1440px wide (scaled)</figcaption>
+								</figure>
+								<figure class="rg-phone">
+									<div class="rg-frame" data-w="390"><iframe src={src} title={`${label}, phone`} loading="lazy" tabindex="-1" data-kind={kind} /></div>
+									<figcaption class="muted small">Phone, 390px wide</figcaption>
+								</figure>
+							</div>
+						</div>
+					);
+				})
+			}
+		</div>
+	</section>
+</Base>
+
+<script>
+	// Crop each frame to the page's header or footer, then scale it to the column.
+	const fit = (f: HTMLIFrameElement) => {
+		const box = f.parentElement as HTMLElement;
+		const w = Number(box.dataset.w);
+		const doc = f.contentDocument;
+		if (!doc) return;
+		const kind = f.dataset.kind;
+		const el = doc.querySelector<HTMLElement>(kind === "header" ? ".site-header" : ".fxr");
+		if (!el) return;
+		const h = kind === "header" ? el.offsetHeight + 8 : el.offsetHeight;
+		f.style.width = w + "px";
+		f.style.height = h + "px";
+		if (kind === "footer") f.contentWindow?.scrollTo(0, el.getBoundingClientRect().top + f.contentWindow.scrollY);
+		const scale = Math.min(1, box.clientWidth / w);
+		f.style.transform = `scale(${scale})`;
+		box.style.height = h * scale + "px";
+	};
+	const frames = [...document.querySelectorAll<HTMLIFrameElement>(".rg-frame iframe")];
+	for (const f of frames) {
+		f.addEventListener("load", () => fit(f));
+		if (f.contentDocument?.readyState === "complete" && f.contentDocument.querySelector(".site-header")) fit(f);
+	}
+	addEventListener("resize", () => frames.forEach(fit));
+</script>

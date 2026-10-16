@@ -1,0 +1,7 @@
+---
+// Review hub: every header style, desktop and phone (ReviewGallery).
+import ReviewGallery from "../../components/ReviewGallery.astro";
+
+if (!Astro.locals.site.practice.reviewControls) return Astro.rewrite("/404");
+---
+<ReviewGallery kind="header" />

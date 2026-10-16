@@ -341,3 +341,44 @@ body[data-lshape="stacked"] .logo.has-upload img { max-height: 96px; max-width: 
 
 /* Photos uploaded in EmDash fill their placeholder frame. */
 .ph.has-img > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+/* Review hub (/review) and the header and footer galleries. */
+.rh-band { padding-top: 72px; }
+.rh-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.rh-card { gap: 14px; border: 1px solid var(--line); }
+.bg-light .rh-card { border: 0; }
+.rh-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.rh-card .h3 { margin: 0; }
+.rh-card p { margin: 0; }
+.rh-path { font-family: ui-monospace, Consolas, monospace; word-break: break-all; }
+.rh-off { background: var(--panel); }
+.rh-sub { margin: 4px 0 0; font: 700 16px/1.3 var(--bf); color: var(--mute); }
+.rh-chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.rh-chip { display: inline-flex; align-items: center; min-height: 48px; padding: 0 18px; border: 2px solid var(--line); border-radius: 999px; background: #fff; color: var(--ink); font: 600 16px/1.25 var(--bf); text-decoration: none; }
+.rh-chip:hover { border-color: var(--ink); }
+.rh-chip:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+.rg-row { display: grid; grid-template-columns: minmax(0, 1fr) 390px; gap: 24px; align-items: start; }
+.rg-row figure { margin: 0; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.rg-frame { overflow: hidden; border: 1px solid var(--line); border-radius: 12px; background: #fff; height: 160px; }
+.rg-frame iframe { display: block; border: 0; width: 100%; height: 160px; transform-origin: 0 0; }
+@media (max-width: 1023px) {
+	.rh-grid { grid-template-columns: minmax(0, 1fr); }
+	.rg-row { grid-template-columns: minmax(0, 1fr); }
+	.rg-phone .rg-frame { max-width: 390px; }
+}
+
+/* Accessibility pass (Step 3, 2026-10-16). 48px targets without changing the
+   look: small links get invisible padding cancelled by a negative margin. */
+a.logo { min-height: 48px; }
+.crumbs a { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; min-width: 48px; margin: -13px 0; }
+a[href^="tel:"]:not([class]), a[href^="mailto:"]:not([class]) { display: inline-block; padding-block: 10px; margin-block: -10px; }
+.by-name a { display: inline-block; padding-block: 11px; margin-block: -11px; }
+a.tag { position: relative; }
+a.tag::after { content: ""; position: absolute; inset: -9px 0; }
+.d1 .seg-btn { min-width: 48px; }
+/* Nothing under 15px: placeholder labels and the organisation logo note. */
+.ph-label, .org-note, .state-label { font-size: 15px; }
+.d1 .prov.prov-list .pbio { font-size: 18px; }
+/* Trust bar on a Primary hero: lighter tints keep white text at 4.5:1 on darker palettes. */
+.trust.on-p { background: color-mix(in srgb, var(--on-p) 6%, transparent); }
+.trust.on-p .rating { background: color-mix(in srgb, var(--on-p) 8%, transparent); }
