@@ -13,6 +13,7 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
 import { EmDashClient } from "emdash/client";
+import { saveKeepingDraft } from "./keep-draft";
 
 const [site, flag] = process.argv.slice(2);
 if (!site) throw new Error("Usage: npx tsx scripts/sync-schema.ts <site url> [--apply]");
@@ -84,9 +85,8 @@ for (const col of seed.collections) {
 		if (!sample) continue;
 		const data = Object.fromEntries(missing.filter((f: { slug: string }) => f.slug in sample).map((f: { slug: string }) => [f.slug, sample[f.slug]]));
 		if (!Object.keys(data).length) continue;
-		await client.update(col.slug, item.id, { data });
-		if (item.status === "published") await client.publish(col.slug, item.id);
-		console.log(`  filled ${col.slug}/${item.slug}: ${Object.keys(data).join(", ")}`);
+		const how = await saveKeepingDraft(client, col.slug, item.slug!, data);
+		console.log(`  filled ${col.slug}/${item.slug}: ${Object.keys(data).join(", ")} (${how})`);
 	}
 }
 console.log(apply ? "Done." : "Dry run. Add --apply to make these changes.");

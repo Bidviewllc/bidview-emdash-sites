@@ -5,6 +5,39 @@
 
 import type { BylineSummary, ContentBylineCredit, TaxonomyTerm, PortableTextBlock } from "emdash";
 
+export interface Practice {
+  id: string;
+  slug: string | null;
+  status: string;
+  title: string;
+  wordmark_1?: string;
+  wordmark_2?: string;
+  short_name?: string;
+  city?: string;
+  email?: string;
+  rating_score?: string;
+  rating_count?: number;
+  color_primary?: string;
+  color_accent?: string;
+  color_light?: string;
+  memberships?: { "logo"?: "ada" | "aaa" | "aba" | "asha" | "hearingup" | null; "name"?: string | null }[];
+  review_controls?: boolean;
+  reviews_min_rating?: "All ratings" | "3 stars and up" | "4 stars and up" | "5 stars only";
+  header_style?: "H1 · Classic two-bar" | "H2 · Floating pill" | "H3 · Single row" | "V1 · Overhanging logo badge" | "V2 · Centered logo, split nav" | "V3 · Logo spans two tiers" | "V4 · Centered stack" | "V5 · Logo over menu, stacked actions" | "V6 · Logo over menu, side-by-side actions" | "V7 · Logo over menu, Book only";
+  footer_style?: "F1 · Classic grouped" | "F2 · Contact-led split" | "F3 · Brand-led minimal" | "F4 · Patient-first" | "F6 · Multi-location" | "F7 · Office cards";
+  footer_logo?: "Landscape" | "Vertical";
+  footer_badges?: boolean;
+  logo_shape?: "Wide" | "Stacked";
+  team_cards?: "Cards · arrow on photo" | "Cards · arrow beside name" | "List · photo left, short bio";
+  cta_photo?: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  byline?: BylineSummary | null;
+  bylines?: ContentBylineCredit[];
+  terms?: Record<string, TaxonomyTerm[]>;
+}
+
 export interface PageHome {
   id: string;
   slug: string | null;
@@ -16,6 +49,7 @@ export interface PageHome {
   intro?: string;
   home_about_heading?: string;
   home_about_text?: string;
+  years?: string;
   home_team_heading?: string;
   home_team_intro?: string;
   home_services_heading?: string;
@@ -49,6 +83,7 @@ export interface PageService {
   heading?: string;
   intro?: string;
   services_steps_heading?: string;
+  first_visit?: { "t"?: string | null; "d"?: string | null }[];
   cta_mode?: "Use the shared booking band" | "Customize for this page";
   cta_heading?: string;
   cta_text?: string;
@@ -105,7 +140,9 @@ export interface PageAbout {
   about_story_text?: string;
   about_journey_heading?: string;
   about_journey_intro?: string;
+  milestones?: { "y"?: string | null; "t"?: string | null }[];
   about_values_heading?: string;
+  values?: { "icon"?: string | null; "t"?: string | null; "d"?: string | null }[];
   about_team_heading?: string;
   about_community_heading?: string;
   about_community_text?: string;
@@ -292,6 +329,7 @@ export interface PageTemplate {
   service_posts_card?: boolean;
   service_sticky?: boolean;
   brand_hero?: "Page default" | "Photo" | "No photo · Primary" | "No photo · Light";
+  office_photo?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown>; darkVariant?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> } };
   profile_video?: boolean;
   location_hero?: "Page default" | "Photo" | "No photo · Primary" | "No photo · Light";
   post_image?: boolean;
@@ -312,6 +350,7 @@ export interface SharedSection {
   cta_heading?: string;
   cta_text?: string;
   cta_photo?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown>; darkVariant?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> } };
+  team_photo?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown>; darkVariant?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> } };
   createdAt: Date;
   updatedAt: Date;
   publishedAt: Date | null;
@@ -396,45 +435,6 @@ export interface Post {
   terms?: Record<string, TaxonomyTerm[]>;
 }
 
-export interface Practice {
-  id: string;
-  slug: string | null;
-  status: string;
-  title: string;
-  wordmark_1?: string;
-  wordmark_2?: string;
-  short_name?: string;
-  city?: string;
-  email?: string;
-  rating_score?: string;
-  rating_count?: number;
-  years?: string;
-  color_primary?: string;
-  color_accent?: string;
-  color_light?: string;
-  memberships?: { "logo"?: "ada" | "aaa" | "aba" | "asha" | "hearingup" | null; "name"?: string | null }[];
-  first_visit?: { "t"?: string | null; "d"?: string | null }[];
-  milestones?: { "y"?: string | null; "t"?: string | null }[];
-  values?: { "icon"?: string | null; "t"?: string | null; "d"?: string | null }[];
-  review_controls?: boolean;
-  reviews_min_rating?: "All ratings" | "3 stars and up" | "4 stars and up" | "5 stars only";
-  header_style?: "H1 · Classic two-bar" | "H2 · Floating pill" | "H3 · Single row" | "V1 · Overhanging logo badge" | "V2 · Centered logo, split nav" | "V3 · Logo spans two tiers" | "V4 · Centered stack" | "V5 · Logo over menu, stacked actions" | "V6 · Logo over menu, side-by-side actions" | "V7 · Logo over menu, Book only";
-  footer_style?: "F1 · Classic grouped" | "F2 · Contact-led split" | "F3 · Brand-led minimal" | "F4 · Patient-first" | "F6 · Multi-location" | "F7 · Office cards";
-  footer_logo?: "Landscape" | "Vertical";
-  footer_badges?: boolean;
-  logo_shape?: "Wide" | "Stacked";
-  team_cards?: "Cards · arrow on photo" | "Cards · arrow beside name" | "List · photo left, short bio";
-  cta_photo?: boolean;
-  team_photo?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown>; darkVariant?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> } };
-  office_photo?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown>; darkVariant?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> } };
-  createdAt: Date;
-  updatedAt: Date;
-  publishedAt: Date | null;
-  byline?: BylineSummary | null;
-  bylines?: ContentBylineCredit[];
-  terms?: Record<string, TaxonomyTerm[]>;
-}
-
 export interface Provider {
   id: string;
   slug: string | null;
@@ -509,6 +509,7 @@ export interface Service {
 
 declare module "emdash" {
   interface EmDashCollections {
+    practice: Practice;
     page_home: PageHome;
     page_services: PageService;
     page_hearing_aids: PageHearingAid;
@@ -526,7 +527,6 @@ declare module "emdash" {
     brands: Brand;
     offices: Office;
     posts: Post;
-    practice: Practice;
     providers: Provider;
     resources: Resource;
     services: Service;

@@ -71,11 +71,6 @@
 					"defaultValue": 0
 				},
 				{
-					"slug": "years",
-					"label": "Years in practice (e.g. 35+ years)",
-					"type": "string"
-				},
-				{
 					"slug": "color_primary",
 					"label": "Primary colour (hex, e.g. #0F5E6B)",
 					"type": "string",
@@ -121,68 +116,6 @@
 								"slug": "name",
 								"label": "Name read by screen readers",
 								"type": "string"
-							}
-						]
-					}
-				},
-				{
-					"slug": "first_visit",
-					"label": "Services hub: first visit steps",
-					"type": "repeater",
-					"validation": {
-						"subFields": [
-							{
-								"slug": "t",
-								"label": "Step",
-								"type": "string"
-							},
-							{
-								"slug": "d",
-								"label": "Text",
-								"type": "text"
-							}
-						]
-					}
-				},
-				{
-					"slug": "milestones",
-					"label": "About: our journey",
-					"type": "repeater",
-					"validation": {
-						"subFields": [
-							{
-								"slug": "y",
-								"label": "Year",
-								"type": "string"
-							},
-							{
-								"slug": "t",
-								"label": "Text",
-								"type": "text"
-							}
-						]
-					}
-				},
-				{
-					"slug": "values",
-					"label": "About: what guides our care",
-					"type": "repeater",
-					"validation": {
-						"subFields": [
-							{
-								"slug": "icon",
-								"label": "Icon",
-								"type": "string"
-							},
-							{
-								"slug": "t",
-								"label": "Heading",
-								"type": "string"
-							},
-							{
-								"slug": "d",
-								"label": "Text",
-								"type": "text"
 							}
 						]
 					}
@@ -291,16 +224,6 @@
 					"label": "Design: photo panel in booking bands",
 					"type": "boolean",
 					"defaultValue": true
-				},
-				{
-					"slug": "team_photo",
-					"label": "Photo: team (3:2; Home about section and About story)",
-					"type": "image"
-				},
-				{
-					"slug": "office_photo",
-					"label": "Photo: office interior (3:2; brand pages, care section)",
-					"type": "image"
 				}
 			]
 		},
@@ -362,6 +285,11 @@
 					"slug": "home_about_text",
 					"label": "About us – Description",
 					"type": "text"
+				},
+				{
+					"slug": "years",
+					"label": "About us – Years in practice (e.g. 35+ years)",
+					"type": "string"
 				},
 				{
 					"slug": "home_team_heading",
@@ -516,6 +444,25 @@
 					"slug": "services_steps_heading",
 					"label": "Your first visit – Headline",
 					"type": "string"
+				},
+				{
+					"slug": "first_visit",
+					"label": "Your first visit – Steps",
+					"type": "repeater",
+					"validation": {
+						"subFields": [
+							{
+								"slug": "t",
+								"label": "Step",
+								"type": "string"
+							},
+							{
+								"slug": "d",
+								"label": "Text",
+								"type": "text"
+							}
+						]
+					}
 				},
 				{
 					"slug": "cta_mode",
@@ -747,9 +694,52 @@
 					"type": "text"
 				},
 				{
+					"slug": "milestones",
+					"label": "Our journey – Milestones",
+					"type": "repeater",
+					"validation": {
+						"subFields": [
+							{
+								"slug": "y",
+								"label": "Year",
+								"type": "string"
+							},
+							{
+								"slug": "t",
+								"label": "Text",
+								"type": "text"
+							}
+						]
+					}
+				},
+				{
 					"slug": "about_values_heading",
 					"label": "Our values – Headline",
 					"type": "string"
+				},
+				{
+					"slug": "values",
+					"label": "Our values – Values",
+					"type": "repeater",
+					"validation": {
+						"subFields": [
+							{
+								"slug": "icon",
+								"label": "Icon",
+								"type": "string"
+							},
+							{
+								"slug": "t",
+								"label": "Heading",
+								"type": "string"
+							},
+							{
+								"slug": "d",
+								"label": "Text",
+								"type": "text"
+							}
+						]
+					}
 				},
 				{
 					"slug": "about_team_heading",
@@ -1433,6 +1423,11 @@
 					}
 				},
 				{
+					"slug": "office_photo",
+					"label": "Hearing aid brand pages – Office interior photo (3:2; care section)",
+					"type": "image"
+				},
+				{
 					"slug": "profile_video",
 					"label": "Team profiles – Intro video",
 					"type": "boolean",
@@ -1506,6 +1501,11 @@
 				{
 					"slug": "cta_photo",
 					"label": "Booking band – Photo (older adult laughing with family, or on a walk)",
+					"type": "image"
+				},
+				{
+					"slug": "team_photo",
+					"label": "Team photo – Home “About us” and About “Our story” (3:2)",
 					"type": "image"
 				}
 			]
@@ -2500,7 +2500,6 @@
 					"email": "hello@lakeviewhearing.example",
 					"rating_score": "4.9",
 					"rating_count": 210,
-					"years": "35+ years",
 					"color_primary": "#0F5E6B",
 					"color_accent": "#E0A33B",
 					"color_light": "#F6F1EA",
@@ -2524,64 +2523,6 @@
 						{
 							"logo": "hearingup",
 							"name": "HearingUp Network"
-						}
-					],
-					"first_visit": [
-						{
-							"t": "We listen first",
-							"d": "Commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla. Pariatur excepteur sint occaecat cupidatat non proident sunt in culpa. Qui officia deserunt."
-						},
-						{
-							"t": "We test thoroughly",
-							"d": "Mollit anim id est laborum curabitur pretium tincidunt lacus nulla gravida orci. A odio nullam varius turpis et commodo pharetra est eros bibendum. Elit nec luctus magna felis sollicitudin mauris."
-						},
-						{
-							"t": "We explain your results",
-							"d": "Integer in mauris eu nibh euismod gravida praesent blandit. Odio eu enim pellentesque sed dapibus est sed lacinia sapien vel tellus lorem. Ipsum dolor sit amet consectetur adipiscing elit sed."
-						},
-						{
-							"t": "We plan next steps together",
-							"d": "Do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex. Ea commodo consequat duis aute irure."
-						}
-					],
-					"milestones": [
-						{
-							"y": "1990",
-							"t": "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore."
-						},
-						{
-							"y": "2004",
-							"t": "Magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea."
-						},
-						{
-							"y": "2012",
-							"t": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat."
-						},
-						{
-							"y": "2021",
-							"t": "Cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum."
-						}
-					],
-					"values": [
-						{
-							"icon": "chat",
-							"t": "Time to listen",
-							"d": "Nibh euismod gravida praesent blandit odio eu enim pellentesque. Sed dapibus est sed lacinia sapien vel tellus lorem ipsum dolor."
-						},
-						{
-							"icon": "checkCircle",
-							"t": "Clear answers",
-							"d": "Sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut. Enim ad minim."
-						},
-						{
-							"icon": "refresh",
-							"t": "Care that continues",
-							"d": "Veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis. Aute irure dolor in reprehenderit in."
-						},
-						{
-							"icon": "pin2",
-							"t": "Rooted in Riverside",
-							"d": "Voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint. Occaecat cupidatat non proident sunt in culpa qui officia."
 						}
 					],
 					"review_controls": true,
@@ -2619,6 +2560,7 @@
 					"cta_heading": "Take the first step toward better hearing",
 					"cta_text": "Pretium tincidunt lacus nulla gravida orci a odio nullam varius turpis. Et commodo pharetra est eros bibendum elit.",
 					"cta_mode": "Use the shared booking band",
+					"years": "35+ years",
 					"home_trust_logos": "Scrolling (with pause)",
 					"home_trust_rating": "In its own box",
 					"home_latest_posts": true,
@@ -2641,6 +2583,24 @@
 					"cta_heading": "Start with a hearing evaluation",
 					"cta_text": "Labore et dolore magna aliqua ut enim ad minim veniam quis. Nostrud exercitation ullamco laboris nisi ut aliquip.",
 					"cta_mode": "Customize for this page",
+					"first_visit": [
+						{
+							"t": "We listen first",
+							"d": "Commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla. Pariatur excepteur sint occaecat cupidatat non proident sunt in culpa. Qui officia deserunt."
+						},
+						{
+							"t": "We test thoroughly",
+							"d": "Mollit anim id est laborum curabitur pretium tincidunt lacus nulla gravida orci. A odio nullam varius turpis et commodo pharetra est eros bibendum. Elit nec luctus magna felis sollicitudin mauris."
+						},
+						{
+							"t": "We explain your results",
+							"d": "Integer in mauris eu nibh euismod gravida praesent blandit. Odio eu enim pellentesque sed dapibus est sed lacinia sapien vel tellus lorem. Ipsum dolor sit amet consectetur adipiscing elit sed."
+						},
+						{
+							"t": "We plan next steps together",
+							"d": "Do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex. Ea commodo consequat duis aute irure."
+						}
+					],
 					"services_first_visit": true
 				}
 			}
@@ -2694,6 +2654,46 @@
 					"cta_heading": "Your hearing journey starts with a conversation",
 					"cta_text": "Nec luctus magna felis sollicitudin mauris integer in mauris eu nibh euismod gravida praesent. Blandit odio eu enim.",
 					"cta_mode": "Customize for this page",
+					"milestones": [
+						{
+							"y": "1990",
+							"t": "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore."
+						},
+						{
+							"y": "2004",
+							"t": "Magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea."
+						},
+						{
+							"y": "2012",
+							"t": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat."
+						},
+						{
+							"y": "2021",
+							"t": "Cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum."
+						}
+					],
+					"values": [
+						{
+							"icon": "chat",
+							"t": "Time to listen",
+							"d": "Nibh euismod gravida praesent blandit odio eu enim pellentesque. Sed dapibus est sed lacinia sapien vel tellus lorem ipsum dolor."
+						},
+						{
+							"icon": "checkCircle",
+							"t": "Clear answers",
+							"d": "Sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut. Enim ad minim."
+						},
+						{
+							"icon": "refresh",
+							"t": "Care that continues",
+							"d": "Veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis. Aute irure dolor in reprehenderit in."
+						},
+						{
+							"icon": "pin2",
+							"t": "Rooted in Riverside",
+							"d": "Voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint. Occaecat cupidatat non proident sunt in culpa qui officia."
+						}
+					],
 					"about_journey": "Grid 2 × 2",
 					"about_community": true,
 					"about_credentials": true

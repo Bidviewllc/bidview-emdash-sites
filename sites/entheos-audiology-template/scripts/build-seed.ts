@@ -55,6 +55,22 @@ const ctaMode = (slug: string) => {
 };
 
 const LEGAL = ["privacy-policy", "terms-of-use", "accessibility"];
+/**
+ * Lists and facts that belong to one page sit on that page's record, right after
+ * the section text they go with (moved off Practice details, Liz 2026-10-16).
+ */
+const AFTER_TEXT: Record<string, object[]> = {
+	home_about_text: [str("years", "About us – Years in practice (e.g. 35+ years)")],
+	services_steps_heading: [repeater("first_visit", "Your first visit – Steps", [sub("t", "Step"), sub("d", "Text", "text")])],
+	about_journey_intro: [repeater("milestones", "Our journey – Milestones", [sub("y", "Year"), sub("t", "Text", "text")])],
+	about_values_heading: [repeater("values", "Our values – Values", [sub("icon", "Icon"), sub("t", "Heading"), sub("d", "Text", "text")])],
+};
+/** Sample values for those fields. */
+const AFTER_TEXT_SAMPLES: Record<string, Record<string, unknown>> = {
+	home: { years: s.practice.years },
+	services: { first_visit: s.firstVisitSteps.map(({ t, d }) => ({ t, d })) },
+	about: { milestones: s.milestones.map(({ y, t }) => ({ y, t })), values: s.values.map(({ icon, t, d }) => ({ icon, t, d })) },
+};
 const pageCollections = PAGES.filter((p) => p.collection).map((p, i) => {
 	const text = PAGE_TEXT[p.slug] ?? [];
 	const body = text.filter((f) => !CTA_FIELDS.includes(f.field) && f.field !== "description");
@@ -71,7 +87,7 @@ const pageCollections = PAGES.filter((p) => p.collection).map((p, i) => {
 		fields: [
 			title("Page name"),
 			...(p.hero ? [heroSelect("hero", "Hero"), image("hero_image", p.slug === "home" ? "Hero photo (16:9, calm area on the left)" : "Hero photo (3:2)")] : []),
-			...body.map((f) => textField(f)),
+			...body.flatMap((f) => [textField(f), ...(AFTER_TEXT[f.field] ?? [])]),
 			...(p.slug === "about" ? [image("community_photo", "Community – Photo (3:2)")] : []),
 			...(LEGAL.includes(p.slug) ? [richText("body", "Page content (H2 headings make the table of contents)")] : []),
 			...(hasCta(p.slug)
@@ -97,7 +113,11 @@ const templatesCollection = {
 	supports: ["revisions"],
 	fields: [
 		title("Name"),
-		...templateDefs.flatMap((p) => [...(p.hero ? [heroSelect(`${p.template}_hero`, `${p.title} – Hero`)] : []), ...p.settings.map((st) => settingField(st))]),
+		...templateDefs.flatMap((p) => [
+			...(p.hero ? [heroSelect(`${p.template}_hero`, `${p.title} – Hero`)] : []),
+			...(p.template === "brand" ? [image("office_photo", `${p.title} – Office interior photo (3:2; care section)`)] : []),
+			...p.settings.map((st) => settingField(st)),
+		]),
 	],
 };
 const sharedCollection = {
@@ -114,6 +134,7 @@ const sharedCollection = {
 		str("cta_heading", "Booking band – Headline"),
 		txt("cta_text", "Booking band – Description"),
 		image("cta_photo", "Booking band – Photo (older adult laughing with family, or on a walk)"),
+		image("team_photo", "Team photo – Home “About us” and About “Our story” (3:2)"),
 	],
 };
 
@@ -136,7 +157,6 @@ const collections = [
 			str("email", "Email"),
 			str("rating_score", "Google rating (e.g. 4.9)"),
 			int("rating_count", "Number of Google reviews"),
-			str("years", "Years in practice (e.g. 35+ years)"),
 			str("color_primary", "Primary colour (hex, e.g. #0F5E6B)", hex),
 			str("color_accent", "Accent colour (hex)", hex),
 			str("color_light", "Light background colour (hex)", hex),
@@ -144,9 +164,6 @@ const collections = [
 				sub("logo", "Logo", "select", { options: s.associations.map((a) => a.key) }),
 				sub("name", "Name read by screen readers"),
 			]),
-			repeater("first_visit", "Services hub: first visit steps", [sub("t", "Step"), sub("d", "Text", "text")]),
-			repeater("milestones", "About: our journey", [sub("y", "Year"), sub("t", "Text", "text")]),
-			repeater("values", "About: what guides our care", [sub("icon", "Icon"), sub("t", "Heading"), sub("d", "Text", "text")]),
 			bool("review_controls", "Show the Review controls panel (off for a live site)", true),
 			select("reviews_min_rating", "Reviews: lowest star rating to show", ["All ratings", "3 stars and up", "4 stars and up", "5 stars only"], "4 stars and up"),
 			// Site design: the starting point for every visitor. Review controls can
@@ -158,9 +175,6 @@ const collections = [
 			select("logo_shape", "Design: header logo shape", ["Wide", "Stacked"], "Wide"),
 			select("team_cards", "Design: team cards", Object.values(TEAM_LAYOUTS).map(clean), clean(TEAM_LAYOUTS.overlay)),
 			bool("cta_photo", "Design: photo panel in booking bands", true),
-			// Site-wide photos. Placeholders show until these are uploaded.
-			image("team_photo", "Photo: team (3:2; Home about section and About story)"),
-			image("office_photo", "Photo: office interior (3:2; brand pages, care section)"),
 		],
 	},
 	...pageCollections,
@@ -316,14 +330,10 @@ const content = {
 			email: s.practice.email,
 			rating_score: s.practice.rating.score,
 			rating_count: s.practice.rating.count,
-			years: s.practice.years,
 			color_primary: s.practice.colors.primary,
 			color_accent: s.practice.colors.accent,
 			color_light: s.practice.colors.light,
 			memberships: s.associations.map((a) => ({ logo: a.key, name: a.name })),
-			first_visit: s.firstVisitSteps.map(({ t, d }) => ({ t, d })),
-			milestones: s.milestones.map(({ y, t }) => ({ y, t })),
-			values: s.values.map(({ icon, t, d }) => ({ icon, t, d })),
 			review_controls: true,
 			reviews_min_rating: "4 stars and up",
 			header_style: clean(HEADERS.h3),
@@ -345,6 +355,7 @@ const content = {
 					...Object.fromEntries((PAGE_TEXT[p.slug] ?? []).map((f) => [f.field, f.default])),
 					...(hasCta(p.slug) ? { cta_mode: ctaMode(p.slug) } : {}),
 					...(LEGAL.includes(p.slug) ? { body: md(`legal-${p.slug}.md`) } : {}),
+					...(AFTER_TEXT_SAMPLES[p.slug] ?? {}),
 					...Object.fromEntries(p.settings.map((st) => [st.field, label(st, st.default)])),
 				}),
 			],

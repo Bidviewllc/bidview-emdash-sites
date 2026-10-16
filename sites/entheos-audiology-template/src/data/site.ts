@@ -100,7 +100,8 @@ export async function loadSite() {
 			light: p.color_light || sample.practice.colors.light,
 		},
 		rating: { score: String(p.rating_score ?? ""), count: Number(p.rating_count ?? 0) },
-		years: p.years ?? "",
+		/** Home page record ("About us – Years in practice"); Practice details on older sites. */
+		years: (pageData[PAGES.findIndex((d) => d.slug === "home")]?.years ?? p.years ?? "") as string,
 		social: {
 			facebook: settings.social?.facebook ?? "",
 			instagram: settings.social?.instagram ?? "",
@@ -110,8 +111,11 @@ export async function loadSite() {
 		logo: imgSrc(settings.logo),
 		favicon: imgSrc(settings.favicon),
 		reviewControls: p.review_controls !== false,
-		/** Site-wide photos (Practice details); placeholders show until uploaded. */
-		photos: { team: photo(p.team_photo), cta: undefined as Photo | undefined, office: photo(p.office_photo) },
+		/**
+		 * Shared photos; placeholders show until uploaded. Team photo on Shared
+		 * sections, office interior on Page templates (Practice details on older sites).
+		 */
+		photos: { team: photo(sharedData?.team_photo) ?? photo(p.team_photo), cta: undefined as Photo | undefined, office: photo(templatesData?.office_photo) ?? photo(p.office_photo) },
 		/** Site design choices (Practice details); Review controls start from these. */
 		design: {
 			header: code(p.header_style, "h3"),
@@ -279,6 +283,11 @@ export async function loadSite() {
 		}
 		pages[def.slug] = { body: Array.isArray(d.body) ? d.body : undefined, on: pageOn(def.slug), ...(hero ? { hero } : {}), heroImage: photo(d.hero_image), communityPhoto: photo(d.community_photo), values, text };
 	}
+	/** A list field on a template page's record, if that field exists there. */
+	const pageList = (slug: string, field: string) => {
+		const v = pageData[PAGES.findIndex((d) => d.slug === slug)]?.[field];
+		return Array.isArray(v) ? v : undefined;
+	};
 	// Switch-on rules that follow other pages being on.
 	pages.home.values.about = pageOn("about");
 	pages.home.values.revlink = pageOn("reviews");
@@ -383,9 +392,10 @@ export async function loadSite() {
 				return lib && { ...lib, name: m.name || lib.name };
 			})
 			.filter(Boolean) as typeof sample.associations,
-		firstVisitSteps: (p.first_visit ?? []) as { t: string; d: string }[],
-		milestones: (p.milestones ?? []) as { y: string; t: string }[],
-		values: (p.values ?? []) as { icon: string; t: string; d: string }[],
+		/** Lists that belong to one page: on that page's record (Practice details on older sites). */
+		firstVisitSteps: (pageList("services", "first_visit") ?? p.first_visit ?? []) as { t: string; d: string }[],
+		milestones: (pageList("about", "milestones") ?? p.milestones ?? []) as { y: string; t: string }[],
+		values: (pageList("about", "values") ?? p.values ?? []) as { icon: string; t: string; d: string }[],
 		/** Every post except the featured one, newest first. */
 		posts,
 		/** The newest three after the featured post, for Home and the sidebars. */

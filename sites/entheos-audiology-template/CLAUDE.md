@@ -67,8 +67,10 @@ handed off from Claude Design in `design/`.
   preview URLs show the site but can't log in. The first person to finish the
   setup wizard becomes the admin.
 - Collections: Practice details (pinned first in the admin sidebar: seed `sortOrder: 0`; on a live site `npx tsx scripts/pin-collections.ts <site> practice`, which keeps the Pages order) (one record, slug `main`: colours, wordmark,
-  rating, memberships, first-visit steps, About journey and values, Review
-  controls switch), Offices, Services, Hearing aid brands (models as a repeater),
+  rating, memberships, Review controls switch, design choices; page-specific
+  lists live on their page: Home "years", Services "first_visit", About
+  "milestones"/"values", team photo on Shared sections, office interior photo
+  on Page templates; moved 2026-10-16 with `scripts/move-practice-fields.ts`), Offices, Services, Hearing aid brands (models as a repeater),
   Team, Blog posts (category taxonomy), Patient resources (resource_tag taxonomy;
   a tag whose description starts "Label only" is a card label, not a group).
   Logo, favicon, tagline and social links are EmDash's own Settings.
@@ -182,6 +184,10 @@ handed off from Claude Design in `design/`.
   (WCAG A/AA), a 48px-target, 15px-text and sideways-scroll sweep and a Tab walk
   over every hub link at 390, 768 and 1440px. Known exceptions: the logo's
   "Hearing Center" line (logotype) and links inside sentences.
+
+## Admin scripts
+- `scripts/keep-draft.ts`: scripts that change live records use `saveKeepingDraft`,
+  so someone's unpublished edits are never published by a script.
 
 ## Working style
 Build in the handoff's order and stop after each step for Liz's review. When the
