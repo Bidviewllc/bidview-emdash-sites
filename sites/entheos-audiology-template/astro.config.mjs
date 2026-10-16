@@ -31,6 +31,14 @@ export default defineConfig({
 					adminEntry: new URL("./src/plugins/reviews/admin.tsx", import.meta.url).href,
 					adminPages: [{ path: "/", label: "Reviews", icon: "star" }],
 				},
+				{
+					// Admin "Marketing & tracking" page (Admins only): Resend key, spam, tracking, custom code.
+					id: "marketing",
+					version: "0.1.0",
+					entrypoint: new URL("./src/plugins/marketing/index.ts", import.meta.url).href,
+					adminEntry: new URL("./src/plugins/marketing/admin.tsx", import.meta.url).href,
+					adminPages: [{ path: "/", label: "Marketing & tracking", icon: "chart" }],
+				},
 			],
 		}),
 	],

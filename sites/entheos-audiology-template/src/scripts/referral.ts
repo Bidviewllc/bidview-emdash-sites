@@ -15,17 +15,19 @@ var TTL_DAYS = 90;
 var STORE_KEY = "bvReferral";
 var OWN_HOSTS = [location.hostname.replace(/^www\./, "")];
 
+// Labels (Liz, 2026-10-16): paid = "PPC - ...", newsletters = "Email"; the rest as AudioHelp.
 var LABEL = {
-  SEARCH_ADS:  'Marketing - Digital Search Ads',
-  DISPLAY_ADS: 'Marketing - Display Ads',
-  META_ADS:    'Marketing - Meta Ads',              // Facebook / Instagram paid
-  PAID_SOCIAL: 'Marketing - Paid Social - ',        // + platform, for other paid social
-  YELP_ADS:    'Marketing - Yelp Ads',
-  OTHER_PAID:  'Marketing - Other Paid',
+  PPC_GOOGLE:  'PPC - Google',
+  PPC_MS:      'PPC - Microsoft',
+  DISPLAY_ADS: 'PPC - Display Ads',
+  META_ADS:    'PPC - Meta Ads',                    // Facebook / Instagram paid
+  PAID_SOCIAL: 'PPC - Paid Social - ',              // + platform, for other paid social
+  YELP_ADS:    'PPC - Yelp Ads',
+  OTHER_PAID:  'PPC - Other Paid',
   ORG_SEARCH:  'Organic - Organic Search Listing',
   ORG_SOCIAL:  'Organic - Organic Social',
   GBP:         'Organic - Google Business Profile',
-  EMAIL:       'Marketing - Newsletter',
+  EMAIL:       'Email',
   LLM:         'LLM Search - ',                     // + assistant name, lower-cased
   DIRECT:      'Direct - No Referrer'
 };
@@ -34,17 +36,18 @@ var META_NAMES = ['Facebook/Instagram', 'Facebook', 'Instagram'];
 var PAID_MEDIUMS   = ['cpc', 'ppc', 'paid', 'paidsearch', 'paid_search', 'paid-search', 'sem',
                       'paidsocial', 'paid_social', 'paid-social', 'display', 'cpm', 'banner',
                       'retargeting', 'remarketing'];
+var DISPLAY_MEDIUMS = ['display', 'cpm', 'banner', 'retargeting', 'remarketing'];
 var EMAIL_MEDIUMS  = ['email', 'e-mail', 'newsletter'];
 var SOCIAL_MEDIUMS = ['social', 'organic_social', 'organic-social'];
 
 // ---- Layer 1: click IDs. [param, label (null = decide paid/organic from utm_medium), platform] ----
 var CLICK_IDS = [
-  ['gclid',      LABEL.SEARCH_ADS,  'Google Ads'],
-  ['gbraid',     LABEL.SEARCH_ADS,  'Google Ads'],
-  ['wbraid',     LABEL.SEARCH_ADS,  'Google Ads'],
-  ['gad_source', LABEL.SEARCH_ADS,  'Google Ads'],
+  ['gclid',      LABEL.PPC_GOOGLE,  'Google Ads'],
+  ['gbraid',     LABEL.PPC_GOOGLE,  'Google Ads'],
+  ['wbraid',     LABEL.PPC_GOOGLE,  'Google Ads'],
+  ['gad_source', LABEL.PPC_GOOGLE,  'Google Ads'],
   ['dclid',      LABEL.DISPLAY_ADS, 'Google Display'],
-  ['msclkid',    LABEL.SEARCH_ADS,  'Microsoft Ads'],
+  ['msclkid',    LABEL.PPC_MS,  'Microsoft Ads'],
   ['ttclid',     LABEL.PAID_SOCIAL + 'TikTok',   'TikTok Ads'],
   ['li_fat_id',  LABEL.PAID_SOCIAL + 'LinkedIn', 'LinkedIn Ads'],
   ['twclid',     LABEL.PAID_SOCIAL + 'X',        'X Ads'],
@@ -127,9 +130,12 @@ var REF_HOSTS = [
 ];
 
 // ---------------------------------------------------------------------------------------
-function labelFor(kind, name, paid) {
+function labelFor(kind, name, paid, med) {
   switch (kind) {
-    case 'search':    return paid ? LABEL.SEARCH_ADS : LABEL.ORG_SEARCH;
+    case 'search':
+      if (!paid) return LABEL.ORG_SEARCH;
+      if (DISPLAY_MEDIUMS.indexOf(med) !== -1) return LABEL.DISPLAY_ADS;
+      return name === 'Google' ? LABEL.PPC_GOOGLE : name === 'Bing' ? LABEL.PPC_MS : LABEL.OTHER_PAID;
     case 'orgsearch': return LABEL.ORG_SEARCH;
     case 'social':
       if (!paid) return LABEL.ORG_SOCIAL;
@@ -191,8 +197,8 @@ function classify(loc, referrer) {
   }
   if (src) {                                                                 // 2. UTM
     var m = matchUtmSource(src);
-    if (m) { ev.platform = m[2]; return done(labelFor(m[1], m[2], paid)); }
-    if (paid) return done(LABEL.OTHER_PAID);
+    if (m) { ev.platform = m[2]; return done(labelFor(m[1], m[2], paid, med)); }
+    if (paid) return done(DISPLAY_MEDIUMS.indexOf(med) !== -1 ? LABEL.DISPLAY_ADS : LABEL.OTHER_PAID);
     if (EMAIL_MEDIUMS.indexOf(med) !== -1) return done(LABEL.EMAIL);
     if (SOCIAL_MEDIUMS.indexOf(med) !== -1) return done(LABEL.ORG_SOCIAL);
     return done('Other - utm:' + src);

@@ -5,6 +5,7 @@
 // (lead source, page, spam check) and the bot traps are filled in by the page
 // script in Base.astro. Submissions go to /api/form.
 import { fieldsOf, getForm, LOCATION_FIELD, TRACKING_FIELDS, type FormField } from "../lib/forms";
+import { active, getMarketing, onLiveDomain } from "../lib/marketing";
 import { getSettings } from "../lib/settings";
 import Icon from "./Icon.astro";
 
@@ -48,6 +49,9 @@ for (const f of visible) {
 	else rows.push([f]);
 }
 const hasRequired = visible.some((f) => f.required);
+// Cloudflare Turnstile (Marketing & tracking): live domain only, when both keys are saved.
+const mk = await getMarketing();
+const turnstile = onLiveDomain(mk, Astro.url.host) && active(mk, "turnstile_secret") ? active(mk, "turnstile_site_key") : "";
 ---
 <div class="stack site-form" style="gap: 24px">
 	{hasRequired && <p class="small muted" style="margin: 0">Fields marked <span aria-hidden="true">*</span><span class="sr">with an asterisk</span> are required.</p>}
@@ -106,6 +110,8 @@ const hasRequired = visible.some((f) => f.required);
 	<input type="hidden" name="_fs" value="" data-fs />
 	{hidden.map((f) => <input type="hidden" name={f.name} value={(TRACKING_FIELDS as readonly string[]).includes(f.name) ? "" : (f.defaultValue ?? "")} />)}
 	<div class="hp" aria-hidden="true"><label for={fid("website")}>Website</label><input id={fid("website")} name="website" type="text" tabindex="-1" autocomplete="off" /></div>
+	{turnstile && <div class="cf-turnstile" data-sitekey={turnstile} data-action="form" data-size="flexible" />}
+	{turnstile && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer />}
 	<p class="errmsg" data-form-error hidden role="alert" tabindex="-1"><Icon name="alert" /> <span>Sorry, that didn’t send. Please try again, or call us at {s.phone}.</span></p>
 	<div class="stack g16" style="padding-top: 4px">
 		<button class:list={["btn btn-primary", { block: blockButton }]} type="submit" style={blockButton ? undefined : "align-self: flex-start"} data-form-id={formId}>{form.settings.submitLabel || "Send"}</button>

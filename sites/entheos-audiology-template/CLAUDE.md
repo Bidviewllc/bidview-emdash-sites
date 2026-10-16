@@ -200,9 +200,23 @@ handed off from Claude Design in `design/`.
 - Lead source: `src/scripts/referral.ts` (port of AudioHelp's Get Referrer v2.3)
   fills the hidden `referral_source` / `referral_detail` fields; `page_url` too.
   Keep the hidden fields on the forms.
-- Email: Resend (`RESEND_API_KEY` secret, from noreply@bidview.net) to the form's
-  Notify emails, else the Practice details email; hidden copy to `LEAD_BCC`
-  (default local@bidviewmarketing.com).
+- Email: Resend (key on Marketing & tracking, from noreply@bidview.net) to the
+  form's Notify emails, else the Practice details email; hidden copy to the
+  "Hidden copy" address (default local@bidviewmarketing.com).
+- Lead source labels (Liz, 2026-10-16): paid = "PPC - Google / Microsoft /
+  Display Ads / Meta Ads / Paid Social - X / Yelp Ads / Other Paid", newsletters
+  = "Email"; Organic, LLM Search, Directory, Referral, Other, Direct as AudioHelp.
+
+## Marketing & tracking (Admins only: Bidview and Entheos)
+- Plugin `src/plugins/marketing` (routes need settings:manage); items in
+  `src/data/marketing-items.ts`, stored in the D1 table `marketing_settings`
+  (`src/lib/marketing.ts`), each with an on/off switch. Secrets (Resend key,
+  Turnstile secret) are write-only and never reach a page.
+- Live domain: tracking (GTM, GA4, Google Ads, Clarity, call tracking), custom
+  code (head / body start / body end) and Turnstile run only when the request is
+  on that domain (`Tracking.astro`). Empty = never (previews and the demo).
+- Events: `click_phone_number` and `form_submit` (with lead_source) go to gtag
+  or the dataLayer; optional Google Ads conversion on form sends.
 
 ## Admin scripts
 - `scripts/keep-draft.ts`: scripts that change live records use `saveKeepingDraft`,

@@ -6,6 +6,8 @@ import "../styles/site.css";
 import ReviewControls, { type Tweak } from "../components/ReviewControls.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
+import Tracking from "../components/Tracking.astro";
+import { active, getMarketing, onLiveDomain } from "../lib/marketing";
 import { roleVars, styleString } from "../lib/color";
 import { getSettings, type HeroKey } from "../lib/settings";
 
@@ -20,6 +22,9 @@ interface Props {
 const { title, description, pageName, current, tweaks = [], heroDefault } = Astro.props;
 const s = getSettings(Astro);
 const style = styleString(roleVars(s.colors));
+/** Marketing & tracking (Admin-only page): tracking runs on the live domain only. */
+const mk = await getMarketing();
+const adsForm = onLiveDomain(mk, Astro.url.host) && /^AW-\d+$/i.test(active(mk, "gads")) && active(mk, "gads_form_label") ? `${active(mk, "gads")}/${active(mk, "gads_form_label")}` : undefined;
 ---
 <!doctype html>
 <html lang="en">
@@ -36,8 +41,10 @@ const style = styleString(roleVars(s.colors));
 			href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap"
 			rel="stylesheet"
 		/>
+		<Tracking mk={mk} place="head" />
 	</head>
-	<body class="d1 page" style={style} data-lshape={s.logoShape}>
+	<body class="d1 page" style={style} data-lshape={s.logoShape} data-ads-form={adsForm}>
+		<Tracking mk={mk} place="body-start" />
 		<a class="skip" href="#main">Skip to main content</a>
 		<SiteHeader current={current} />
 		<main id="main">
@@ -58,6 +65,17 @@ const style = styleString(roleVars(s.colors));
 					btn.setAttribute("aria-expanded", String(open));
 					acc.classList.toggle("open", open);
 				});
+			});
+			// Events for whichever tracking is on (Marketing & tracking): gtag when GA4 or Ads
+			// is loaded, else the Tag Manager dataLayer.
+			const track = (event: string, params: Record<string, string> = {}) => {
+				const w = window as unknown as { gtag?: (...a: unknown[]) => void; dataLayer?: unknown[] };
+				if (w.gtag) w.gtag("event", event, params);
+				else (w.dataLayer = w.dataLayer || []).push({ event, ...params });
+			};
+			document.addEventListener("click", (e) => {
+				const a = (e.target as Element).closest?.('a[href^="tel:"]');
+				if (a) track("click_phone_number", { phone_number: a.getAttribute("href")!.slice(4), link_text: (a.textContent || "").trim().slice(0, 60) });
 			});
 			// Lead source: recorded on every page view, written into each form at send time.
 			const lead = referral();
@@ -103,6 +121,11 @@ const style = styleString(roleVars(s.colors));
 						const res = await fetch(form.action, { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } });
 						const out = await res.json().catch(() => ({}));
 						if (!res.ok || !out.ok) throw new Error(out.error || res.statusText);
+						const formName = (form.querySelector<HTMLInputElement>("input[name=_form]")?.value) || "form";
+						track("form_submit", { form_name: formName, lead_source: lead.source });
+						const ads = document.body.dataset.adsForm;
+						if (ads) track("conversion", { send_to: ads });
+						await new Promise((r) => setTimeout(r, 300));
 						location.assign(out.redirect || "/thank-you");
 					} catch {
 						if (btn) btn.disabled = false;
@@ -123,5 +146,6 @@ const style = styleString(roleVars(s.colors));
 				});
 			});
 		</script>
+		<Tracking mk={mk} place="body-end" />
 	</body>
 </html>

@@ -7,23 +7,20 @@
 //  - Bots get the same "thank you" as people, so they learn nothing.
 //  - No rejecting non-English letters: accented names and em dashes are normal.
 // Checks, in order: hidden "website" trap field, time on the page (the page script
-// sends it), Cloudflare Turnstile when TURNSTILE_SECRET is set, spam words and
-// links, then an AI check (Workers AI) that only flags, never deletes.
-// Email: Resend (RESEND_API_KEY secret) to the form's "Notify emails" in the
-// admin, else the practice email on Practice details, with a hidden copy to
-// Bidview (LEAD_BCC, default local@bidviewmarketing.com).
+// sends it), Cloudflare Turnstile (live domain only), spam words and links,
+// then an AI check (Workers AI) that only flags, never deletes.
+// Email: Resend to the form's "Notify emails" in the admin, else the practice
+// email on Practice details, with a hidden copy to Bidview. The Resend key, the
+// copy address, Turnstile and the AI switch are on the Admin-only
+// "Marketing & tracking" page (src/lib/marketing.ts).
 import type { APIRoute } from "astro";
 import { env } from "cloudflare:workers";
 import { fieldsOf, getForm, saveSubmission, TRACKING_FIELDS, type FormField } from "../../lib/forms";
+import { active, getMarketing, onLiveDomain } from "../../lib/marketing";
 
 export const prerender = false;
 
-type Env = {
-	AI?: { run(model: string, input: unknown): Promise<unknown> };
-	RESEND_API_KEY?: string;
-	LEAD_BCC?: string;
-	TURNSTILE_SECRET?: string;
-};
+type Env = { AI?: { run(model: string, input: unknown): Promise<unknown> } };
 const E = env as unknown as Env;
 
 const LEAD_FROM = "noreply@bidview.net"; // bidview.net is Bidview's verified Resend domain
@@ -52,14 +49,14 @@ function timingReason(raw: string): string {
 	return "";
 }
 
-async function turnstileReason(token: string, request: Request): Promise<string> {
-	if (!E.TURNSTILE_SECRET) return "";
+async function turnstileReason(secret: string, token: string, request: Request): Promise<string> {
+	if (!secret) return "";
 	if (!token) return "Turnstile token missing";
 	try {
 		const res = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
 			method: "POST",
 			signal: AbortSignal.timeout(10_000),
-			body: new URLSearchParams({ secret: E.TURNSTILE_SECRET, response: token, remoteip: request.headers.get("CF-Connecting-IP") || "" }),
+			body: new URLSearchParams({ secret, response: token, remoteip: request.headers.get("CF-Connecting-IP") || "" }),
 		});
 		const r = (await res.json()) as { success?: boolean; "error-codes"?: string[] };
 		return r.success ? "" : `Turnstile failed ${(r["error-codes"] || []).join(",")}`.trim();
@@ -73,8 +70,8 @@ async function turnstileReason(token: string, request: Request): Promise<string>
  * error or slow answer counts as "not spam", so the AI can never lose a lead.
  */
 let aiNote = "";
-async function aiReason(practice: string, text: string): Promise<string> {
-	if (!text.trim()) return "";
+async function aiReason(practice: string, text: string, on: boolean): Promise<string> {
+	if (!text.trim() || !on) return "";
 	if (!E.AI) {
 		aiNote = "AI check not set up";
 		return "";
@@ -151,14 +148,18 @@ export const POST: APIRoute = async ({ request, locals }) => {
 	// Checks. A missing required field from a person is caught in the browser first,
 	// so here it's either a bot or JavaScript off: still saved, flagged.
 	aiNote = "";
+	const mk = await getMarketing();
+	const turnstileSecret = onLiveDomain(mk, new URL(request.url).host) && active(mk, "turnstile_site_key") ? active(mk, "turnstile_secret") : "";
+	const resendKey = active(mk, "resend_key");
+	const bcc = active(mk, "lead_bcc").split(",").map((a) => a.trim()).filter((a) => /@/.test(a));
 	const freeText = fields.filter((f) => f.type === "textarea" || f.type === "text").map((f) => valueText(data[f.name])).join("\n");
 	const reason =
 		(one("website") && "hidden trap field filled in") ||
 		(missing.length ? `required field missing (${missing.map((f) => f.label).join(", ")})` : "") ||
 		timingReason(one("_fs")) ||
-		(await turnstileReason(one("cf-turnstile-response"), request)) ||
+		(await turnstileReason(turnstileSecret, one("cf-turnstile-response"), request)) ||
 		ruleReason(freeText) ||
-		(await aiReason(practiceName, freeText));
+		(await aiReason(practiceName, freeText, !!mk.ai_spam?.on));
 	if (fields.some((f) => f.name === "spam_check")) data.spam_check = reason ? `Likely spam: ${reason}` : aiNote ? `Passed (${aiNote})` : "Passed";
 
 	// 1. Save first.
@@ -190,8 +191,8 @@ export const POST: APIRoute = async ({ request, locals }) => {
 	// 2. Email the practice.
 	const to = (form.settings.notifyEmails?.length ? form.settings.notifyEmails : [practice?.email ?? ""]).map((a) => a.trim()).filter((a) => /@/.test(a) && !/\.example$/.test(a));
 	const name = [data.first, data.last].filter(Boolean).join(" ") || valueText(data.name) || "a website visitor";
-	if (!E.RESEND_API_KEY || !to.length) {
-		console.error(`Form email not sent (saved=${saved}): ${!E.RESEND_API_KEY ? "RESEND_API_KEY missing. " : ""}${!to.length ? "no recipient." : ""}`);
+	if (!resendKey || !to.length) {
+		console.error(`Form email not sent (saved=${saved}): ${!resendKey ? "no Resend key on Marketing & tracking. " : ""}${!to.length ? "no recipient." : ""}`);
 		if (!saved) return fail("Sorry, that didn't send.", 500);
 		return done(form.settings.redirectUrl);
 	}
@@ -208,11 +209,11 @@ export const POST: APIRoute = async ({ request, locals }) => {
 		const email = valueText(data.email);
 		const res = await fetch("https://api.resend.com/emails", {
 			method: "POST",
-			headers: { Authorization: `Bearer ${E.RESEND_API_KEY}`, "Content-Type": "application/json" },
+			headers: { Authorization: `Bearer ${resendKey}`, "Content-Type": "application/json" },
 			body: JSON.stringify({
 				from: `${practiceName} <${LEAD_FROM}>`,
 				to,
-				bcc: [E.LEAD_BCC || "local@bidviewmarketing.com"],
+				...(bcc.length ? { bcc } : {}),
 				...(/@/.test(email) ? { reply_to: `${name} <${email}>` } : {}),
 				subject: `New ${form.name.toLowerCase()}: ${name}`,
 				text: lines.join("\n").trim(),
