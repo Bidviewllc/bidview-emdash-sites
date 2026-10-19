@@ -1,0 +1,30 @@
+---
+// The HSNC design's own icons (design/hsnc/*.dc.html), drawn inline so they take
+// the text colour. Decorative: aria-hidden; give the link or button a label.
+interface Props {
+	name: "pin" | "phone" | "phone2" | "fax" | "clock" | "facebook" | "youtube" | "arrow" | "arrowUp" | "prev" | "next" | "plus" | "menu" | "close" | "star" | "quote" | "chevron";
+	size?: number;
+	class?: string;
+	style?: string;
+}
+const { name, size = 20, class: cls, style } = Astro.props;
+const stroke = { fill: "none", stroke: "currentColor", "stroke-width": "2", "stroke-linecap": "round", "stroke-linejoin": "round" };
+const filled = { fill: "currentColor" };
+---
+{name === "pin" && <svg width={size} height={size} viewBox="0 0 24 24" {...stroke} aria-hidden="true" class={cls} style={style}><path d="M12 21s-7-6.2-7-12a7 7 0 0 1 14 0c0 5.8-7 12-7 12z" /><circle cx="12" cy="9" r="2.5" /></svg>}
+{name === "phone" && <svg width={size} height={size} viewBox="0 0 24 24" {...stroke} aria-hidden="true" class={cls} style={style}><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2" /></svg>}
+{name === "phone2" && <svg width={size} height={size} viewBox="0 0 24 24" {...stroke} aria-hidden="true" class={cls} style={style}><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z" /></svg>}
+{name === "fax" && <svg width={size} height={size} viewBox="0 0 24 24" {...stroke} aria-hidden="true" class={cls} style={style}><path d="M6 9V3h12v6" /><rect x="3" y="9" width="18" height="9" rx="2" /><path d="M6 14h12v7H6z" /></svg>}
+{name === "clock" && <svg width={size} height={size} viewBox="0 0 24 24" {...stroke} aria-hidden="true" class={cls} style={style}><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg>}
+{name === "facebook" && <svg width={size} height={size} viewBox="0 0 24 24" {...filled} aria-hidden="true" class={cls} style={style}><path d="M14 8h3V4h-3c-2.8 0-4.5 1.8-4.5 4.6V11H7v4h2.5v9h4v-9h3l.5-4h-3.5V9c0-.6.4-1 1-1z" /></svg>}
+{name === "youtube" && <svg width={size} height={size} viewBox="0 0 24 24" {...filled} aria-hidden="true" class={cls} style={style}><path d="M21.6 7.2c-.2-.9-.9-1.6-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4c-.9.2-1.6.9-1.8 1.8C2 8.8 2 12 2 12s0 3.2.4 4.8c.2.9.9 1.6 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4c.9-.2 1.6-.9 1.8-1.8.4-1.6.4-4.8.4-4.8s0-3.2-.4-4.8zM10 15V9l5.2 3L10 15z" /></svg>}
+{name === "arrow" && <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class={cls} style={style}><path d="M5 12h14M13 6l6 6-6 6" /></svg>}
+{name === "arrowUp" && <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class={cls} style={style}><path d="M7 17 17 7M8 7h9v9" /></svg>}
+{name === "prev" && <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" class={cls} style={style}><path d="M15 5l-7 7 7 7" /></svg>}
+{name === "next" && <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" class={cls} style={style}><path d="M9 5l7 7-7 7" /></svg>}
+{name === "chevron" && <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class={cls} style={style}><path d="M6 9l6 6 6-6" /></svg>}
+{name === "plus" && <svg width={size} height={size} viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" class={cls} style={`flex:none;${style ?? ""}`}><path d="M8 2v12M2 8h12" /></svg>}
+{name === "menu" && <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" class={cls} style={style}><path d="M4 7h16M4 12h16M4 17h16" /></svg>}
+{name === "close" && <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" class={cls} style={style}><path d="M6 6l12 12M18 6 6 18" /></svg>}
+{name === "star" && <svg width={size} height={size} viewBox="0 0 24 24" {...filled} aria-hidden="true" class={cls} style={style}><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z" /></svg>}
+{name === "quote" && <svg width={size} height={size} viewBox="0 0 24 24" {...filled} aria-hidden="true" class={cls} style={style}><path d="M9.5 6C6.5 7.3 4.5 10 4.5 13.6V18h5.5v-5.5H7.3c.2-2 1.3-3.6 3.2-4.6zm9 0c-3 1.3-5 4-5 7.6V18H19v-5.5h-2.7c.2-2 1.3-3.6 3.2-4.6z" /></svg>}

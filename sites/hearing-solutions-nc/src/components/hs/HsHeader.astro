@@ -1,0 +1,78 @@
+---
+// HSNC site header (design/hsnc boards): logo spanning two tiers. Top tier:
+// address with "Get directions", phone, Facebook and YouTube. Bottom tier: the
+// EmDash "header" menu and the Call button. Phones (820px and under): logo, phone,
+// a short "Call us" button and the burger, which opens the same menu.
+import { getSettings } from "../../lib/settings";
+import { telHref } from "../../lib/routes";
+import HsIcon from "./HsIcon.astro";
+
+const s = getSettings(Astro);
+const site = Astro.locals.site;
+const office = s.offices[0];
+const tel = telHref(s.phone);
+const logo = site.practice.logo ?? "/assets/hsnc/logo.png";
+const street = office.street.replace(/\bBoulevard\b/, "Blvd").replace(/\bWest\b$/, "W");
+const { facebook, youtube } = site.practice.social;
+/** One level only: the design has no dropdowns. */
+const menu = site.menus.header;
+const here = Astro.url.pathname.replace(/\/$/, "") || "/";
+const isCurrent = (href: string) => {
+	const p = href.split(/[?#]/)[0].replace(/\/$/, "") || "/";
+	return p === "/" ? here === "/" : here === p || here.startsWith(p + "/");
+};
+const href = (h: string) => (h.startsWith("/") ? s.href(h) : h);
+---
+<header class="hs-header">
+	<div class="hs-wrap hs-hrow">
+		<a class="hs-hlogo" href={s.href("/")}><img src={logo} alt={`${s.name}, home`} width="240" height="105" /></a>
+		<span class="hs-hdiv" aria-hidden="true"></span>
+		<div class="hs-hmain">
+			<div class="hs-htop">
+				<a class="hs-hide-m" href={office.mapsUrl}><HsIcon name="pin" size={15} />{street}, {office.shortName} · <span class="hs-dir">Get directions</span></a>
+				<a class="hs-tel" href={tel}><HsIcon name="phone" size={15} />{s.phone}</a>
+				<div class="hs-hide-m" style="display:flex;gap:8px">
+					{facebook && <a href={facebook} aria-label="Facebook" class="hs-soc"><HsIcon name="facebook" size={14} /></a>}
+					{youtube && <a href={youtube} aria-label="YouTube" class="hs-soc"><HsIcon name="youtube" size={16} /></a>}
+				</div>
+			</div>
+			<div class="hs-hbot">
+				<nav class="hs-hide-m" aria-label="Main">
+					<ul class="hs-nav">
+						{menu.map((l) => <li><a href={href(l.href)} target={l.target} aria-current={isCurrent(l.href) ? "page" : undefined}>{l.label}</a></li>)}
+					</ul>
+				</nav>
+				<div class="hs-hbtns">
+					<a class="hs-btn" href={tel}>Call us<span class="hs-hide-m">: {s.phone}</span></a>
+					<button class="hs-burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="hs-mmenu" data-hs-menu><HsIcon name="menu" size={22} /></button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="hs-mmenu" id="hs-mmenu" hidden>
+		<div class="hs-wrap">
+			<ul>
+				{menu.map((l) => <li><a href={href(l.href)} target={l.target} aria-current={isCurrent(l.href) ? "page" : undefined}>{l.label}</a></li>)}
+			</ul>
+			<div class="hs-mextra">
+				<a href={office.mapsUrl} style="display:inline-flex;gap:8px;align-items:flex-start;text-decoration:none"><HsIcon name="pin" size={18} style="margin-top:4px" /><span>{office.street}, {office.city} · <span class="hs-dir" style="color:var(--hs-green);font-weight:600;text-decoration:underline">Get directions</span></span></a>
+				<div style="display:flex;gap:8px">
+					{facebook && <a href={facebook} aria-label="Facebook" class="hs-soc"><HsIcon name="facebook" size={14} /></a>}
+					{youtube && <a href={youtube} aria-label="YouTube" class="hs-soc"><HsIcon name="youtube" size={16} /></a>}
+				</div>
+			</div>
+		</div>
+	</div>
+</header>
+<script>
+	document.querySelectorAll<HTMLButtonElement>("[data-hs-menu]").forEach((btn) => {
+		const menu = document.getElementById(btn.getAttribute("aria-controls")!);
+		btn.addEventListener("click", () => {
+			if (!menu) return;
+			const open = menu.hidden;
+			menu.hidden = !open;
+			btn.setAttribute("aria-expanded", String(open));
+			btn.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+		});
+	});
+</script>

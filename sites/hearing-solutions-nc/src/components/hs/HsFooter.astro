@@ -1,0 +1,61 @@
+---
+// HSNC site footer (design/hsnc/Footer-V2.dc.html). Navy band: logo and the green
+// Call button beside the practice block (address, directions, phone, fax, hours);
+// the main link row (EmDash menu "footer_explore"); the Resources row
+// ("footer_patients"). Dark bar: copyright, Facebook and YouTube, legal links
+// ("footer_legal").
+import { getSettings } from "../../lib/settings";
+import { telHref } from "../../lib/routes";
+import HsIcon from "./HsIcon.astro";
+
+const s = getSettings(Astro);
+const site = Astro.locals.site;
+const office = s.offices[0];
+const tel = telHref(s.phone);
+const logo = site.practice.logo ?? "/assets/hsnc/logo.png";
+const { facebook, youtube } = site.practice.social;
+const { footer_explore: main, footer_patients: resources, footer_legal: legal } = site.menus;
+const href = (h: string) => (h.startsWith("/") ? s.href(h) : h);
+const year = new Date().getFullYear();
+---
+<footer class="hs-footer">
+	<div class="hs-fmain">
+		<div class="hs-wrap" style="padding-top:72px">
+			<div class="hs-fgrid">
+				<div class="hs-r1">
+					<div class="hs-r1-col hs-r1-brand">
+						<a href={s.href("/")} style="display:inline-flex"><img class="hs-flogo" src={logo} alt={`${s.name}, home`} width="280" height="122" loading="lazy" /></a>
+						<a class="hs-btn hs-btn-g" href={tel}>Call us: {s.phone}</a>
+					</div>
+					<div class="hs-r1-col hs-r1-info">
+						<h2>{s.name}</h2>
+						<div class="hs-r1-pair">
+							<div class="hs-r1-col" style="gap:4px">
+								<p style="margin:0;display:flex;gap:10px;align-items:flex-start"><HsIcon name="pin" size={20} style="flex:none;margin-top:4px;color:var(--hs-lime)" /><span>{office.street}<br />{office.city}</span></p>
+								<a class="hs-fdir" href={office.mapsUrl}>Get directions<HsIcon name="arrow" size={18} /></a>
+							</div>
+							<div class="hs-r1-col">
+								<p style="margin:0"><span class="hs-lbl">Phone:</span> <a href={tel} style="text-decoration:none">{s.phone}</a></p>
+								{office.fax && <p style="margin:0"><span class="hs-lbl">Fax:</span> {office.fax}</p>}
+								{(office.hoursLong || office.hoursLine) && <p style="margin:0"><span class="hs-lbl">Hours:</span> <Fragment set:html={office.hoursLong || office.hoursLine} /></p>}
+							</div>
+						</div>
+					</div>
+				</div>
+				{main.length > 0 && <nav class="hs-fnav" aria-label="Footer">{main.map((l) => <a href={href(l.href)} target={l.target}>{l.label}</a>)}</nav>}
+			</div>
+			{resources.length > 0 && <nav class="hs-fres" aria-label="Resources">{resources.map((l) => <a href={href(l.href)} target={l.target}>{l.label}</a>)}</nav>}
+			{resources.length === 0 && <div style="height:48px"></div>}
+		</div>
+	</div>
+	<div class="hs-fbar-bg">
+		<div class="hs-wrap hs-fbar">
+			<p>© {year} {s.name}</p>
+			<div class="hs-fsocs">
+				{facebook && <a href={facebook} aria-label="Facebook" class="hs-fsoc"><HsIcon name="facebook" size={16} /></a>}
+				{youtube && <a href={youtube} aria-label="YouTube" class="hs-fsoc"><HsIcon name="youtube" size={18} /></a>}
+			</div>
+			<nav class="hs-flegal" aria-label="Legal">{legal.map((l) => <a href={href(l.href)} target={l.target}>{l.label}</a>)}</nav>
+		</div>
+	</div>
+</footer>

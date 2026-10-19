@@ -16,6 +16,8 @@ export type Office = {
 	street: string;
 	city: string;
 	phone: string;
+	/** Fax number (HSNC footer and location card). */
+	fax?: string;
 	/** Rows for the hours table, as [days, times]. */
 	hours: [string, string][];
 	/** One-line hours for cards. */
@@ -115,140 +117,66 @@ export type Review = {
 };
 
 export const practice = {
-	name: "Lakeview Hearing Center",
-	/** The logo wordmark: first line bold, second line small caps. */
-	wordmark: ["Lakeview", "Hearing Center"] as [string, string],
-	shortName: "Lakeview",
-	city: "Riverside",
-	tagline: "Independent audiology care for Riverside and Northfield families.",
-	email: "hello@lakeviewhearing.example",
-	colors: { primary: "#0F5E6B", accent: "#E0A33B", light: "#F6F1EA" },
-	rating: { score: "4.9", count: 210 },
-	years: "35+ years",
+	name: "Hearing Solutions of North Carolina",
+	/** The logo wordmark (only used if no logo is uploaded). */
+	wordmark: ["Hearing Solutions", "of North Carolina"] as [string, string],
+	shortName: "Hearing Solutions",
+	city: "Salisbury",
+	tagline: "Audiology care in Salisbury, NC.",
+	email: "",
+	colors: { primary: "#252F5B", accent: "#86BA32", light: "#EFF4E6" },
+	rating: { score: "4.9", count: 0 },
+	years: "15+ years",
 	social: {
-		facebook: "#",
-		instagram: "#",
-		youtube: "#",
+		facebook: "https://www.facebook.com/HearingSolutionsofNorthCarolina",
+		instagram: "",
+		youtube: "https://www.youtube.com/channel/UCaUH-REuaSn0cJEVI1KZwbQ/",
 	},
-	/** Shows the floating Review controls panel. Off for a real launch. */
-	reviewControls: true,
+	/** Shows the floating Review controls panel. Off: HSNC is a custom build. */
+	reviewControls: false,
 };
 
 export const offices: Office[] = [
 	{
-		slug: "riverside",
-		name: "Riverside office",
-		shortName: "Riverside",
-		street: "1200 Lakeview Parkway, Suite 210",
-		city: "Riverside, ST 00000",
-		phone: "(555) 010-0142",
+		slug: "salisbury",
+		name: "Hearing Solutions of North Carolina",
+		shortName: "Salisbury",
+		street: "464 Jake Alexander Boulevard West",
+		city: "Salisbury, NC 28147",
+		phone: "(704) 633-0023",
+		fax: "(704) 705-2363",
 		hours: [
-			["Mon – Thu", "8:00 – 5:00"],
-			["Fri", "8:00 – 12:00"],
-			["Sat – Sun", "Closed"],
+			["Monday – Friday", "8:00 a.m. – 5:00 p.m."],
+			["Saturday – Sunday", "Closed"],
 		],
-		hoursLine: "Mon – Thu 8 am – 5 pm · Fri 8 am – 12 pm",
-		hoursLong: "Monday to Thursday, 8:00 am to 5:00 pm<br>Friday, 8:00 am to 12:00 pm",
-		mapsUrl: "https://www.google.com/maps/search/?api=1&query=1200+Lakeview+Parkway+Riverside",
-	},
-	{
-		slug: "northfield",
-		name: "Northfield office",
-		shortName: "Northfield",
-		street: "48 Mill Street",
-		city: "Northfield, ST 00000",
-		phone: "(555) 010-0178",
-		hours: [
-			["Tue, Thu", "9:00 – 4:00"],
-			["Other days", "Closed"],
-		],
-		hoursLine: "Tue and Thu 9 am – 4 pm",
-		hoursLong: "Tuesday and Thursday<br>9:00 am to 4:00 pm",
-		mapsUrl: "https://www.google.com/maps/search/?api=1&query=48+Mill+Street+Northfield",
+		hoursLine: "Monday–Friday, 8:00 a.m.–5:00 p.m.",
+		hoursLong: "Monday–Friday,<br>8:00 a.m.–5:00 p.m.",
+		mapsUrl: "https://www.google.com/maps/search/?api=1&query=Hearing+Solutions+of+North+Carolina+464+Jake+Alexander+Blvd+W+Salisbury+NC+28147",
 	},
 ];
 
+/** Team, in the About page's order. Bios come over from the current site. */
 export const providers: Provider[] = [
-	{ slug: "jordan-ellis", name: "Dr. Jordan Ellis, Au.D.", title: "Owner and Audiologist", meet: "Meet Dr. Ellis", hasPage: true, tone: "warm", offices: ["riverside"], short: "Dr. Ellis", bio: "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt. Ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation. Ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor." },
-	{ slug: "priya-raman", name: "Dr. Priya Raman, Au.D.", title: "Audiologist", meet: "Meet Dr. Raman", hasPage: true, tone: "sage", offices: ["northfield", "riverside"], short: "Dr. Raman", bio: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat. Nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa. Qui officia deserunt mollit anim id est laborum curabitur pretium." },
-	{ slug: "morgan-lee", name: "Morgan Lee", title: "Patient Care Coordinator", meet: "Meet Morgan Lee", hasPage: false, tone: "sky", offices: ["riverside"], short: "Morgan", bio: "Curabitur pretium tincidunt lacus nulla gravida orci a odio nullam varius turpis. Et commodo pharetra est eros bibendum elit nec luctus magna felis sollicitudin. Mauris integer in mauris eu nibh euismod gravida." },
+	{ slug: "lorin-oden", name: "Dr. Lorin S. Oden", title: "Board Certified Audiologist", meet: "Meet Dr. Oden", hasPage: true, tone: "warm", offices: ["salisbury"], short: "Dr. Oden", bio: "", headshot: "/assets/hsnc/team-lorin-oden.jpg" },
+	{ slug: "sadie-mussler", name: "Dr. Sadie L. Mussler", title: "Audiologist", meet: "Meet Dr. Mussler", hasPage: true, tone: "sage", offices: ["salisbury"], short: "Dr. Mussler", bio: "", headshot: "/assets/hsnc/team-sadie-mussler.jpg" },
+	{ slug: "sierra-carpenter", name: "Dr. Sierra Carpenter", title: "Audiologist", meet: "Meet Dr. Carpenter", hasPage: true, tone: "sky", offices: ["salisbury"], short: "Dr. Carpenter", bio: "", headshot: "/assets/hsnc/team-sierra-carpenter.jpg" },
+	{ slug: "jane-walters", name: "Jane Walters, BC-HIS", title: "Board Certified in Hearing Instrument Sciences", meet: "Meet Jane", hasPage: true, tone: "warm", offices: ["salisbury"], short: "Jane", bio: "", headshot: "/assets/hsnc/team-jane-walters.jpg" },
+	{ slug: "cheryl-keene", name: "Cheryl Keene, HIS", title: "Hearing Instrument Sciences", meet: "Meet Cheryl", hasPage: true, tone: "sage", offices: ["salisbury"], short: "Cheryl", bio: "", headshot: "/assets/hsnc/team-cheryl-keene.jpg" },
+	{ slug: "katlin-futch", name: "Katlin Futch", title: "Audiology Assistant", meet: "Meet Katlin", hasPage: true, tone: "sky", offices: ["salisbury"], short: "Katlin", bio: "", headshot: "/assets/hsnc/team-katlin-futch.jpg" },
+	{ slug: "diane-pullium", name: "Diane Pullium", title: "Office Manager", meet: "Meet Diane", hasPage: true, tone: "warm", offices: ["salisbury"], short: "Diane", bio: "", headshot: "/assets/hsnc/team-diane-pullium.jpg" },
+	{ slug: "jamie-webb", name: "Jamie Webb", title: "Patient Care Coordinator", meet: "Meet Jamie", hasPage: true, tone: "sage", offices: ["salisbury"], short: "Jamie", bio: "", headshot: "/assets/hsnc/team-jamie-webb.jpg" },
 ];
 
+/**
+ * Services, in the Services page's order. Each one is written out in full on the
+ * Services hub (the slug is its anchor there); "own page" is off for launch.
+ */
 export const services: Service[] = [
-	{
-		slug: "hearing-evaluations",
-		name: "Hearing Evaluations",
-		navLabel: "Hearing evaluations",
-		summary: "Culpa qui officia deserunt mollit anim id est laborum curabitur pretium tincidunt. Lacus nulla gravida orci a odio nullam varius.",
-		hasPage: true,
-		bookLabel: "Book a hearing evaluation",
-		ctaHeading: "One appointment shows you where your hearing stands",
-	},
-	{
-		slug: "hearing-aid-fittings",
-		name: "Hearing Aid Fittings",
-		navLabel: "Hearing aid fittings",
-		summary: "Turpis et commodo pharetra est eros bibendum elit nec luctus magna felis sollicitudin mauris integer. In mauris eu nibh euismod.",
-		hasPage: true,
-		bookLabel: "Book a hearing aid fitting",
-		ctaHeading: "Hearing aids that are set up for your ears and your life",
-	},
-	{
-		slug: "hearing-aid-repairs",
-		name: "Hearing Aid Repairs & Services",
-		navLabel: "Hearing aid repairs",
-		summary: "Gravida praesent blandit odio eu enim pellentesque sed dapibus est sed lacinia sapien. Vel tellus lorem ipsum dolor sit amet.",
-		hasPage: false,
-		bookLabel: "Book a repair visit",
-		ctaHeading: "Get your hearing aids working again",
-	},
-	{
-		slug: "ear-wax-removal",
-		name: "Ear Wax Removal",
-		navLabel: "Earwax removal",
-		summary: "Consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore. Et dolore magna aliqua ut enim ad minim veniam quis.",
-		hasPage: true,
-		bookLabel: "Book earwax removal",
-		ctaHeading: "Clear ears, in one short visit",
-	},
-	{
-		slug: "tinnitus",
-		name: "Tinnitus Evaluation & Management",
-		navLabel: "Tinnitus care",
-		summary: "Nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis. Aute irure dolor in reprehenderit in voluptate velit.",
-		hasPage: false,
-		bookLabel: "Book a tinnitus evaluation",
-		ctaHeading: "Relief starts with understanding the ringing",
-	},
-	{
-		slug: "custom-hearing-protection",
-		name: "Custom Hearing Protection",
-		navLabel: "Custom ear protection",
-		summary: "Esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in. Culpa qui officia deserunt mollit.",
-		hasPage: false,
-		bookLabel: "Book a fitting for ear protection",
-		ctaHeading: "Protect the hearing you have",
-	},
-	{
-		slug: "real-ear-measurement",
-		name: "Real Ear Measurement",
-		navLabel: "Real ear measurement",
-		summary: "Pharetra est eros bibendum elit nec luctus magna felis sollicitudin mauris integer in mauris. Eu nibh euismod gravida praesent blandit odio eu.",
-		hasPage: false,
-		onHome: false,
-		bookLabel: "Book a fitting check",
-		ctaHeading: "Make sure your hearing aids are set for your ears",
-	},
-	{
-		slug: "assistive-listening-devices",
-		name: "Assistive Listening Devices",
-		navLabel: "Assistive listening devices",
-		summary: "Incididunt ut labore et dolore magna aliqua ut enim. Ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea.",
-		hasPage: false,
-		onHome: false,
-		bookLabel: "Book an appointment",
-		ctaHeading: "Hear the TV, the phone and the doorbell again",
-	},
+	{ slug: "hearing-loss", name: "Hearing Loss", navLabel: "Hearing Loss", summary: "", hasPage: false, onHome: false, bookLabel: "Call to book", ctaHeading: "" },
+	{ slug: "hearing-aids", name: "Hearing Aids", navLabel: "Hearing Aids", summary: "", hasPage: false, onHome: false, bookLabel: "Call to book", ctaHeading: "" },
+	{ slug: "tinnitus", name: "Tinnitus", navLabel: "Tinnitus", summary: "", hasPage: false, onHome: true, bookLabel: "Call to book", ctaHeading: "" },
+	{ slug: "ear-spa", name: "Ear Spa (Earwax Removal)", navLabel: "Ear Spa (Earwax Removal)", summary: "", hasPage: false, onHome: true, bookLabel: "Call to book", ctaHeading: "" },
+	{ slug: "custom-molds", name: "Custom Molds & Hearing Protection", navLabel: "Custom Molds & Hearing Protection", summary: "", hasPage: false, onHome: true, bookLabel: "Call to book", ctaHeading: "" },
 ];
 
 export const brands: Brand[] = [

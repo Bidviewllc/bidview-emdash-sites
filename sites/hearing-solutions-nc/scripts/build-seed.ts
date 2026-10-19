@@ -13,7 +13,7 @@ import { FOOTERS, HEADERS, TEAM_LAYOUTS } from "../src/lib/settings";
 import { CTA_FIELDS, CTA_MODE_OPTIONS, HERO_OPTIONS, MAIN, PAGE_TEXT, PAGES, SHARED_COLLECTION, SHARED_DEFAULTS, TEMPLATES_COLLECTION, type PageSetting } from "../src/data/page-settings";
 
 /** Brand logos are downloaded into the media library during setup. */
-const ASSET_HOST = "https://entheos-audiology-template.local-981.workers.dev";
+const ASSET_HOST = process.env.ASSET_HOST ?? "https://hearing-solutions-nc.cameron-239.workers.dev";
 
 /** Sample body text (Markdown in src/data/content) as EmDash rich text. */
 const md = (file: string, vars: Record<string, string> = {}) =>
@@ -195,6 +195,7 @@ const collections = [
 			str("street", "Street address"),
 			str("city_line", "City, state, ZIP"),
 			str("phone", "Phone"),
+			str("fax", "Fax"),
 			repeater("hours", "Hours table", [sub("days", "Days"), sub("times", "Times")]),
 			str("hours_line", "Hours on one line (cards)"),
 			txt("hours_long", "Hours, long form (office page; one line per row)"),
@@ -337,7 +338,7 @@ const content = {
 			color_accent: s.practice.colors.accent,
 			color_light: s.practice.colors.light,
 			memberships: s.associations.map((a) => ({ logo: a.key, name: a.name })),
-			review_controls: true,
+			review_controls: s.practice.reviewControls,
 			reviews_min_rating: "4 stars and up",
 			header_style: clean(HEADERS.h3),
 			footer_style: clean(FOOTERS.f7),
@@ -378,6 +379,7 @@ const content = {
 			street: o.street,
 			city_line: o.city,
 			phone: o.phone,
+			fax: o.fax ?? "",
 			hours: o.hours.map(([days, times]) => ({ days, times })),
 			hours_line: o.hoursLine,
 			hours_long: o.hoursLong.split("<br>").join("\n"),
@@ -435,7 +437,7 @@ const content = {
 			tone: p.tone,
 			has_page: p.hasPage,
 			short_bio: p.bio,
-			...(p.hasPage ? { bio: md("profile-bio.md") } : {}),
+			...(p.headshot ? { headshot: { $media: { url: ASSET_HOST + p.headshot, alt: p.name, filename: p.headshot.split("/").pop() } } } : {}),
 			offices: lines(p.offices),
 			sort_order: i + 1,
 		}),
@@ -481,68 +483,74 @@ const resourceTags = [...new Set([...blog.resourceGroups, ...blog.resources.flat
 const custom = (label: string, url: string, children?: object[]) => ({ type: "custom", label, url, ...(children ? { children } : {}) });
 const entry = (label: string, collection: string, ref: string) => ({ type: "page", collection, ref, label });
 const svc = (slug: string) => entry(s.services.find((x) => x.slug === slug)!.navLabel, "services", `service-${slug}`);
+// HSNC menus (design/hsnc boards). The template's other footer menus stay, unused
+// by the HSNC footer, so the admin keeps one shape across sites. Resources-row
+// pages come over from the current site as patient resources; each link shows
+// once its page is live.
+const res = (label: string, slug: string) => custom(label, `/patient-resources/${slug}`);
 export const menus = [
 	{
 		name: "header",
 		label: "Header navigation",
-		items: [
-			custom("Services", "/services", s.services.map((x) => svc(x.slug))),
-			custom("Hearing aids", "/hearing-aids", s.brands.map((b) => entry(`${b.name} hearing aids`, "brands", `brand-${b.slug}`))),
-			custom("About", "/about"),
-			custom("Resources", "/patient-resources"),
-			custom("Blog", "/blog"),
-			custom("Contact", "/contact"),
-		],
+		items: [custom("Home", "/"), custom("About", "/about"), custom("Services", "/services"), custom("New Patients", "/new-patients"), custom("Location", "/contact")],
 	},
 	{
 		name: "footer_practice",
-		label: "Footer: Our practice",
-		items: [custom("About us", "/about"), custom("Our team", "/about#team"), entry("Locations", "offices", `office-${s.offices[0].slug}`), custom("Contact", "/contact")],
+		label: "Footer: Our practice (not used by the HSNC footer)",
+		items: [custom("About us", "/about"), custom("Our team", "/about#team"), custom("Contact", "/contact")],
 	},
 	{
 		name: "footer_services",
-		label: "Footer: Our services",
-		items: [svc("hearing-evaluations"), svc("hearing-aid-fittings"), svc("ear-wax-removal"), custom("All services", "/services")],
+		label: "Footer: Our services (not used by the HSNC footer)",
+		items: [custom("All services", "/services")],
 	},
 	{
 		name: "footer_patients",
-		label: "Footer: Patient information / New patients",
-		items: [custom("Your first visit", "/patient-resources"), custom("Patient forms", "/patient-resources"), custom("Insurance & financing", "/patient-resources")],
+		label: "Footer: Resources row",
+		items: [
+			res("Hearing Loss", "hearing-loss"),
+			res("Benefits of Treating Hearing Loss", "benefits-of-treating-hearing-loss"),
+			res("Hearing Aid Overview", "hearing-aid-overview"),
+			res("Custom Hearing Aids", "custom-hearing-aids"),
+			custom("Hearing Aid Products", "/hearing-aids"),
+			res("Consumer's Guide to Hearing Aids", "consumers-guide-to-hearing-aids"),
+			res("Informational Videos", "informational-videos"),
+			custom("Reviews", "/reviews"),
+		],
 	},
 	{
 		name: "footer_current",
-		label: "Footer: Current patients (F4)",
-		items: [custom("Patient portal", "#"), custom("Pay a bill", "#"), custom("Hearing aid repairs", "/services")],
+		label: "Footer: Current patients (not used by the HSNC footer)",
+		items: [custom("Patient portal", "/patient-resources/patient-portal")],
 	},
 	{
 		name: "footer_quick",
-		label: "Footer: Quick links (F2, F3)",
-		items: [custom("About us", "/about"), custom("Services", "/services"), custom("Patient information", "/patient-resources"), entry("Locations", "offices", `office-${s.offices[0].slug}`)],
+		label: "Footer: Quick links (not used by the HSNC footer)",
+		items: [custom("About us", "/about"), custom("Services", "/services"), custom("New patients", "/new-patients")],
 	},
 	{
 		name: "footer_explore",
-		label: "Footer: Explore (F7)",
+		label: "Footer: Main links row",
 		items: [
+			custom("About", "/about"),
 			custom("Services", "/services"),
-			custom("Hearing aids", "/hearing-aids"),
-			custom("About us", "/about"),
-			custom("Patient resources", "/patient-resources"),
-			custom("Reviews", "/reviews"),
+			custom("New Patients", "/new-patients"),
+			res("Patient Portal", "patient-portal"),
 			custom("Blog", "/blog"),
-			custom("Contact", "/contact"),
+			custom("Contact Us", "/contact"),
 		],
 	},
 	{
 		name: "footer_legal",
 		label: "Footer: Legal",
-		items: [custom("Privacy Policy", "/privacy-policy"), custom("Terms of Use", "/terms-of-use"), custom("Accessibility", "/accessibility"), custom("Sitemap", "/sitemap")],
+		items: [custom("Privacy Policy", "/privacy-policy"), custom("Terms of Service", "/terms-of-use"), custom("Accessibility", "/accessibility"), custom("Sitemap", "/sitemap")],
 	},
 ];
 
 const seed = {
 	$schema: "https://emdashcms.com/seed.schema.json",
 	version: "1",
-	meta: { name: "Entheos audiology template", description: "Design 1 template with the Lakeview Hearing Center sample practice", author: "Bidview Marketing" },
+	meta: { name: "Hearing Solutions of North Carolina", description: "HSNC site, built from the Entheos audiology template", author: "Bidview Marketing" },
 	settings: { title: s.practice.name, tagline: s.practice.tagline, social: s.practice.social },
 	collections,
 	taxonomies: [

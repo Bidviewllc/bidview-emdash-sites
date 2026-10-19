@@ -138,6 +138,7 @@ export async function loadSite() {
 		street: e.data.street ?? "",
 		city: e.data.city_line ?? "",
 		phone: e.data.phone ?? "",
+		fax: e.data.fax ?? "",
 		hours: (e.data.hours ?? []).map((h: Data) => [h.days, h.times] as [string, string]),
 		hoursLine: e.data.hours_line ?? "",
 		hoursLong: lines(e.data.hours_long).join("<br>"),
@@ -206,7 +207,8 @@ export async function loadSite() {
 		offices: lines(e.data.offices),
 		short: e.data.short_name || e.data.title,
 		bio: e.data.short_bio ?? "",
-		headshot: imgSrc(e.data.headshot),
+		// HSNC: the design photo until one is uploaded (also covers local dev, where the seed can't download).
+		headshot: imgSrc(e.data.headshot) ?? sample.providers.find((x) => x.slug === slugOf(e))?.headshot,
 		bioRich: Array.isArray(e.data.bio) ? e.data.bio : undefined,
 		videoUrl: e.data.video_url || undefined,
 	}));
@@ -308,7 +310,6 @@ export async function loadSite() {
 		...services.filter((x) => x.hasPage).map((x) => `/services/${x.slug}`),
 		...brands.filter((x) => x.hasPage).map((x) => `/hearing-aids/${x.slug}`),
 		...providers.filter((x) => x.hasPage).map((x) => `/about/${x.slug}`),
-		...offices.map((x) => `/locations/${x.slug}`),
 		...allPosts.map((x) => `/blog/${x.slug}`),
 		...catTerms.map((x) => `/blog/category/${x.slug}`),
 		...resources.filter((x) => x.page).map((x) => `/patient-resources/${x.slug}`),

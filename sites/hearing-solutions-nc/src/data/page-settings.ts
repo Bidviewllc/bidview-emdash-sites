@@ -109,8 +109,8 @@ export const PAGES: PageDef[] = [
 	{ slug: "blog", collection: "page_blog", title: "Blog", path: "/blog", settings: [choice("blog_layout", "Layout", "layout", [["grid", "Grid · 16:9"], ["square", "Grid · square"], ["list", "List"]])] },
 	{
 		slug: "patient-resources", collection: "page_patient_resources",
-		title: "Patient resources",
-		path: "/patient-resources",
+		title: "New patients",
+		path: "/new-patients",
 		hero: true,
 		settings: [
 			choice("resources_layout", "Layout", "layout", [["cards", "Cards"], ["accordion", "Accordion"]]),

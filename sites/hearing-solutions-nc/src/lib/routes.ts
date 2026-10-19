@@ -26,7 +26,7 @@ export const routes = {
 	post: (slug: string) => `/blog/${slug}`,
 	category: (slug: string) => `/blog/category/${slug}`,
 	resource: (slug: string) => `/patient-resources/${slug}`,
-	resources: "/patient-resources",
+	resources: "/new-patients",
 	privacy: "/privacy-policy",
 	terms: "/terms-of-use",
 	accessibility: "/accessibility",

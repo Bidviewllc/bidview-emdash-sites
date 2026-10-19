@@ -3,9 +3,10 @@
 // builds) the Review controls panel.
 import "../styles/d1.css";
 import "../styles/site.css";
+import "../styles/hsnc.css";
 import ReviewControls, { type Tweak } from "../components/ReviewControls.astro";
-import SiteFooter from "../components/SiteFooter.astro";
-import SiteHeader from "../components/SiteHeader.astro";
+import HsFooter from "../components/hs/HsFooter.astro";
+import HsHeader from "../components/hs/HsHeader.astro";
 import Tracking from "../components/Tracking.astro";
 import { EmDashHead } from "emdash/ui";
 import { createPublicPageContext } from "emdash/page";
@@ -75,7 +76,7 @@ const adsForm = onLiveDomain(mk, Astro.url.host) && /^AW-\d+$/i.test(active(mk, 
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
-			href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap"
+			href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&family=Rubik:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
 			rel="stylesheet"
 		/>
 		<Tracking mk={mk} place="head" />
@@ -83,11 +84,11 @@ const adsForm = onLiveDomain(mk, Astro.url.host) && /^AW-\d+$/i.test(active(mk, 
 	<body class="d1 page" style={style} data-lshape={s.logoShape} data-ads-form={adsForm}>
 		<Tracking mk={mk} place="body-start" />
 		<a class="skip" href="#main">Skip to main content</a>
-		<SiteHeader current={current} />
+		<HsHeader />
 		<main id="main">
 			<slot />
 		</main>
-		<SiteFooter />
+		<HsFooter />
 		{s.showPanel && <ReviewControls pageName={pageName} tweaks={tweaks} heroDefault={heroDefault} />}
 		<script>
 			import { referral } from "../scripts/referral";

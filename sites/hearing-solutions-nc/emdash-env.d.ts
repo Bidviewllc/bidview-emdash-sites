@@ -202,6 +202,7 @@ export interface PageBookAppointment {
   description?: string;
   book_version?: "A · Scheduler embed" | "B · Request form";
   book_layout?: "Full width" | "Right sidebar";
+  scheduler_embed?: string;
   createdAt: Date;
   updatedAt: Date;
   publishedAt: Date | null;
@@ -399,6 +400,7 @@ export interface Office {
   street?: string;
   city_line?: string;
   phone?: string;
+  fax?: string;
   hours?: { "days"?: string | null; "times"?: string | null }[];
   hours_line?: string;
   hours_long?: string;

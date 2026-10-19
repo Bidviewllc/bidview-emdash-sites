@@ -48,7 +48,7 @@ export const GET: APIRoute = async ({ locals, url }) => {
 	for (const x of site.services) if (x.hasPage) add(`/services/${x.slug}`, "services", x.slug);
 	for (const x of site.brands) if (x.hasPage) add(`/hearing-aids/${x.slug}`, "brands", x.slug);
 	for (const x of site.providers) if (x.hasPage) add(`/about/${x.slug}`, "providers", x.slug);
-	for (const x of site.offices) add(`/locations/${x.slug}`, "offices", x.slug);
+	// HSNC: no location pages (one office; its details are on Contact).
 	if (site.pages.blog?.on) {
 		for (const x of [site.featured, ...site.posts].filter(Boolean)) add(`/blog/${x!.slug}`, "posts", x!.slug);
 		for (const c of site.categories) add(`/blog/category/${c.slug}`);
