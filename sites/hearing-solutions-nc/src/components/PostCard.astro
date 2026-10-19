@@ -1,10 +1,9 @@
 ---
 // Blog card (HSNC reskin): image (16:9 or square), category and date, serif
-// title, summary. The whole card is the link. With no image, a plain light
-// green box holds the space (no placeholder label).
+// title, summary. The whole card is the link; no arrow badge (Liz, 2026-10-19).
+// With no image, a plain light green box holds the space (no placeholder label).
 import "../styles/hsnc-reskin.css";
 import { getSettings } from "../lib/settings";
-import HsIcon from "./hs/HsIcon.astro";
 import { routes } from "../lib/routes";
 import type { Post } from "../data/types";
 
@@ -20,7 +19,6 @@ const ratio = square ? "1/1" : "16/9";
 <a class="post rs-post" href={s.href(routes.post(p.slug))}>
 	<div class="img">
 		{p.image ? <img class="hs-img" src={p.image} alt="" loading="lazy" style={`aspect-ratio: ${ratio}`} /> : <div class="hs-ph" style={`aspect-ratio: ${ratio}`} />}
-		<span class="badge" aria-hidden="true"><HsIcon name="arrowUp" size={20} /></span>
 	</div>
 	<span class="date">{showCat && <><span class="pcat">{p.cat}</span><span aria-hidden="true"> · </span></>}{p.date}</span>
 	<h3 class="ptitle">{p.title}</h3>
