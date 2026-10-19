@@ -1,5 +1,5 @@
 ---
-// Page 15 · Legal (boards LegalPage, LegalMobile, LegalPageAlt). One template
+// Page 15 · Legal (HSNC reskin: light green short hero, no breadcrumbs) (boards LegalPage, LegalMobile, LegalPageAlt). One template
 // for Privacy Policy, Terms of Use and Accessibility. Short hero + "Last updated"
 // → full-width rich text with a "Table of contents" accordion (closed by
 // default) → footer. No CTA band.
@@ -9,6 +9,7 @@ import { ptHas, ptToHtml, type PTBlock } from "../lib/portable-text";
 import { getSettings } from "../lib/settings";
 import Icon from "./Icon.astro";
 import PageHero from "./PageHero.astro";
+import "../styles/hsnc-reskin.css";
 import { telHref } from "../lib/routes";
 
 const { practice } = Astro.locals.site;
@@ -35,13 +36,14 @@ const para = [
 ];
 ---
 <Base title={`${title} | ${s.name}`} description={`${title} for ${s.name}.`} pageName="Legal page" tweaks={tweaks}>
-	<PageHero crumbs={[{ label: "Home" }, { label: title }]} title={title} short book={false}>
-		<p class="body" style="margin: 0; color: inherit"><b>Last updated:</b> <time>{updated}</time></p>
+	<PageHero label="Legal" title={title} short book={false}>
+		<p style="margin: 0"><b>Last updated:</b> <time>{updated}</time></p>
 	</PageHero>
 
-	<section class="band legal-band">
-		<div class="wrap">
-			<div class="stack g48">
+	<div class="hs">
+	<section class="hs-wrap rs-sec legal-band">
+		<div>
+			<div class="stack g48" style="max-width: 820px">
 				{
 					showToc && (
 						<nav class="jump acc" aria-label="Table of contents" data-acc>
@@ -84,4 +86,5 @@ const para = [
 			</div>
 		</div>
 	</section>
+	</div>
 </Base>

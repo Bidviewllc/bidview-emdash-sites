@@ -1,14 +1,12 @@
 ---
 // Anything without a page of its own. Paths for content that comes later
-// (the sitemap) get a short
-// "coming later" note; everything else gets the designed 404 page.
-import Icon from "../components/Icon.astro";
+// (the sitemap) get a short "coming later" note in the HSNC light green band;
+// everything else gets the 404 page.
+import "../styles/hsnc-reskin.css";
 import NotFound from "../components/NotFound.astro";
 import Base from "../layouts/Base.astro";
 import { getSettings } from "../lib/settings";
-import { routes } from "../lib/routes";
-
-const { services } = Astro.locals.site;
+import { routes, telHref } from "../lib/routes";
 
 const s = getSettings(Astro);
 const slug = Astro.params.slug ?? "";
@@ -19,22 +17,21 @@ const name = last.replace(/-/g, " ").replace(/^\w/, (c) => c.toUpperCase()) || "
 {
 	later ? (
 		<Base title={`${name} | ${s.name}`} description="This page comes in a later build step." pageName={name}>
-			<div class="pg-hero-np">
-				<section class="inophoto short" style="background: var(--l); color: var(--on-l)">
-					<div class="wrap">
-						<div class="stack g24" style="max-width: 760px">
-							<span class="eyebrow">Coming later</span>
-							<h1 class="h1">{name}</h1>
-							<p class="lead" style="color: inherit">This page is not part of the 17 designed templates yet. In the live template it comes from the practice’s own content.</p>
-							<div class="rowf" style="gap: 12px">
-								<a class="btn btn-primary" href={s.href(routes.home)}>Go to the home page</a>
-								<a class="btn btn-secondary" href={s.href(routes.service(services[0].slug))}>See a service page <Icon name="arrowR" /></a>
+			<div class="hs">
+				<div class="hs-mint rs-hero">
+					<section class="hs-wrap hs-hsplit rs-short">
+						<div class="hs-htxt rs-htxt" style="max-width:760px">
+							<p class="hs-eyebrow">Coming later</p>
+							<h1 class="hs-serif rs-h1">{name}</h1>
+							<p class="rs-lead">This page comes in a later build step.</p>
+							<div class="hs-btns" style="gap:12px;margin-top:8px">
+								<a class="hs-btn" href={s.href(routes.home)}>Go to the home page</a>
+								<a class="hs-btn hs-btn-o" href={telHref(s.phone)}>Call us: {s.phone}</a>
 							</div>
 						</div>
-					</div>
-				</section>
+					</section>
+				</div>
 			</div>
-			<div style="height: 96px" />
 		</Base>
 	) : (
 		<NotFound />

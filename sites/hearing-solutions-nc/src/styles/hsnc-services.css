@@ -1,0 +1,38 @@
+/* Services hub (design/hsnc/Services.dc.html): the sidebar layout, jump links,
+   call box and the service blocks with their fold-out rows. The board's own
+   .sbwrap/.sb/.jl/.sb-cta/.svc/.acc rules, under hs-svc- names. */
+.hs-svc-wrap { display: flex; flex-wrap: wrap; gap: 40px 48px; align-items: flex-start; padding-top: 80px; padding-bottom: 96px; }
+.hs-svc-sb { flex: 0 0 280px; position: sticky; top: 24px; display: flex; flex-direction: column; gap: 24px; }
+.hs-svc-main { flex: 1 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 32px; }
+
+/* "On this page" */
+.hs-svc-nav { border-left: 2px solid var(--hs-sage-2); padding: 4px 0 4px 20px; }
+.d1 .hs-svc-jl { display: flex; align-items: center; min-height: 44px; color: var(--hs-navy); text-decoration: none; font-size: 17px; line-height: 1.35; }
+.d1 .hs-svc-jl:hover { color: var(--hs-green); text-decoration: underline; text-underline-offset: 4px; }
+
+/* call box */
+.hs-svc-cta { background: var(--hs-navy); color: #fff; border-radius: 14px; padding: 28px 24px; display: flex; flex-direction: column; gap: 14px; align-items: flex-start; }
+.hs .hs-svc-cta h2 { margin: 0; font-size: 28px; line-height: 1.15; color: #fff; }
+.hs-svc-cta p { margin: 0; font-size: 16px; }
+.d1 .hs-svc-np { display: inline-flex; align-items: center; min-height: 44px; color: #fff; font-size: 16px; font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
+.d1 .hs-svc-np:hover { color: #fff; }
+
+/* service blocks */
+.hs-svc { background: var(--hs-sage); border-radius: 14px; padding: 36px 28px; display: flex; flex-direction: column; gap: 16px; scroll-margin-top: 24px; }
+.hs .hs-svc h2 { margin: 0; font-family: var(--hs-serif); font-weight: 400; line-height: 1.15; }
+.hs-svc > p { margin: 0; font-size: 1em; }
+.d1 .hs-svc a:not([class]) { color: var(--hs-navy); }
+.d1 .hs-svc a:not([class]):hover { color: var(--hs-green); }
+.hs-svc-note { font-style: italic; }
+
+/* fold-out rows */
+.hs-svc-acc { border-bottom: 1px solid var(--hs-rule); }
+.hs-svc-acc summary { list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 16px; min-height: 52px; cursor: pointer; font-size: 15px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
+.hs-svc-acc summary::-webkit-details-marker { display: none; }
+.hs-svc-acc summary svg { transition: transform .15s; }
+.hs-svc-acc[open] summary svg { transform: rotate(180deg); }
+.hs-svc-acc p { margin: 0 0 16px; font-size: 1em; color: var(--hs-navy); }
+
+@media (max-width: 820px) {
+	.hs-svc-sb { position: static; flex: 1 1 100%; }
+}

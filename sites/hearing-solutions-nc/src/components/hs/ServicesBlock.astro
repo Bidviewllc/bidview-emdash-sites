@@ -1,0 +1,68 @@
+---
+// One service's block on the Services hub (design/hsnc/Services.dc.html): sage
+// card with the serif heading, text, fold-out rows, an optional italic note and
+// two buttons (Call to book + Pricing information or Ask a question). Content:
+// the service's record (Services → <service>, "Services page – ..." fields).
+import type { Service } from "../../data/practice";
+import { inline } from "../../lib/hs";
+import { routes, telHref } from "../../lib/routes";
+import { getSettings } from "../../lib/settings";
+
+interface Props {
+	service: Service;
+}
+const { service } = Astro.props;
+const s = getSettings(Astro);
+const h = s.href;
+const tel = telHref(s.phone);
+
+/** Safe link targets for [text](href): site paths, anchors, web, tel and mail links. */
+const SAFE = /^(\/|#|https?:\/\/|tel:|mailto:)/i;
+/** Light formatting plus [link text](href) links, as HTML. */
+const rich = (t: string) =>
+	inline(s.fill(t)).replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (all, label: string, href: string) => {
+		const raw = href.replace(/&amp;/g, "&");
+		if (!SAFE.test(raw)) return all;
+		const url = raw.startsWith("/") ? h(raw) : raw;
+		return `<a href="${url.replace(/&/g, "&amp;").replace(/"/g, "&quot;")}">${label}</a>`;
+	});
+const paras = (t?: string) =>
+	(t ?? "")
+		.split(/\n\s*\n/)
+		.map((p) => p.trim())
+		.filter(Boolean)
+		.map(rich);
+
+const heading = inline(s.fill(service.hubHeading || service.name));
+const text = paras(service.hubText);
+const note = paras(service.hubNote);
+const items = service.hubItems ?? [];
+const second =
+	service.hubButton === "question"
+		? { label: "Ask a question", href: `${routes.contact}#message` }
+		: { label: "Pricing information", href: `${routes.resources}#investment` };
+---
+<article class="hs-svc" id={service.slug}>
+	<h2 set:html={heading} />
+	{text.map((p) => <p set:html={p} />)}
+	{
+		items.length > 0 && (
+			<div>
+				{items.map((it) => (
+					<details class="hs-svc-acc">
+						<summary>
+							<span>{s.fill(it.t)}</span>
+							<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" style="flex:none"><path d="M4 6l4 4 4-4" /></svg>
+						</summary>
+						{paras(it.d).map((p) => <p set:html={p} />)}
+					</details>
+				))}
+			</div>
+		)
+	}
+	{note.map((p) => <p class="hs-svc-note" set:html={p} />)}
+	<div class="hs-btns" style="gap:12px;margin-top:8px">
+		<a class="hs-btn" href={tel}>{service.bookLabel}: {s.phone}</a>
+		<a class="hs-btn hs-btn-o" href={h(second.href)}>{second.label}</a>
+	</div>
+</article>

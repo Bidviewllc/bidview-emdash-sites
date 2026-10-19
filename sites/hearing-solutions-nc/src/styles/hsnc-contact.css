@@ -1,0 +1,49 @@
+/* HSNC Contact (design/hsnc/Contact.dc.html) and Book appointment (built in the
+   same look). Loaded after hsnc.css. */
+
+.hs-c-main { padding-top: 88px; padding-bottom: 96px; display: flex; flex-direction: column; gap: 64px; }
+
+/* three action cards */
+.hs-c-cards { display: flex; flex-wrap: wrap; gap: 28px; }
+.hs-c-card { flex: 1 1 280px; background: var(--hs-mint); border-radius: 14px; padding: 36px 32px; display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
+.hs-c-card.on-dark { background: var(--hs-navy); color: #fff; }
+.hs-c-ic { width: 96px; height: 96px; border-radius: 50%; flex: none; display: flex; align-items: center; justify-content: center; background: var(--hs-lime-lt); color: var(--hs-green); }
+
+/* office card + form row */
+.hs-c-row { display: flex; flex-wrap: wrap; gap: 48px; align-items: stretch; }
+.hs-c-row-office { flex: 1 1 360px; min-width: 0; }
+.hs-c-office { display: flex; flex-direction: column; gap: 20px; background: #fff; }
+.hs-c-office-info { padding: 8px 0 0; display: flex; flex-direction: column; gap: 16px; }
+.hs-c-map { border-radius: 10px; min-height: 280px; background: var(--hs-sage-2); overflow: hidden; flex: 1 0 280px; display: flex; }
+.hs-c-map iframe { display: block; width: 100%; min-height: 280px; flex: 1; border: 0; }
+
+/* message / request form (fields drawn by SiteForm.astro). The board hides the
+   labels behind placeholders; the site keeps visible labels for accessibility. */
+.hs-c-form { flex: 1 1 440px; min-width: 0; background: var(--hs-mint); border-radius: 14px; padding: 44px 28px; display: flex; flex-direction: column; gap: 20px; }
+.hs-c-form .site-form { gap: 20px !important; }
+.hs-c-form .field { gap: 6px; }
+.d1 .hs-c-form .field label:not(.check), .d1 .hs-c-form .field legend { font: 500 16px/1.3 var(--hs-sans); color: var(--hs-navy); }
+.d1 .hs-c-form .input { min-height: 48px; border: 1.5px solid transparent; border-radius: 4px; background: #fff; padding: 12px 18px; font: 400 1em/1.4 var(--hs-sans); color: var(--hs-navy); }
+.d1 .hs-c-form .input:hover { border-color: var(--hs-rule); }
+.d1 .hs-c-form .input:focus { outline: 3px solid var(--hs-lime); outline-offset: 0; border-color: var(--hs-navy); }
+.d1 .hs-c-form textarea.input { min-height: 160px; }
+.d1 .hs-c-form .input.err { border-color: #b42318; }
+.d1 .hs-c-form .checks { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.d1 .hs-c-form .check { min-height: 48px; border-radius: 4px; background: #fff; font-size: 1em; }
+.d1 .hs-c-form .check input { accent-color: var(--hs-navy); }
+.hs-c-form .small.muted { font-size: 15px; color: var(--hs-mute); }
+.hs-c-form .site-form > .stack:last-child { padding-top: 28px !important; }
+.d1 .hs-c-form .btn { width: 100%; }
+
+/* book: navy call bar */
+.hs-c-main .hs-qbar .hs-btn { white-space: nowrap; }
+
+@media (max-width: 820px) {
+	.hs-c-form { padding: 32px 20px; }
+}
+@media (max-width: 600px) {
+	.hs-c-main { padding-top: 56px; padding-bottom: 64px; gap: 48px; }
+	.hs-c-card { padding: 28px 24px; }
+	.hs-c-row { gap: 40px; }
+	.hs-c-main .hs-qbar .hs-btn { white-space: normal; }
+}

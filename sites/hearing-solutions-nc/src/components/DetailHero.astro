@@ -1,85 +1,41 @@
 ---
-// The two-column hero of the record pages (Service detail board): breadcrumb,
-// H1, intro and buttons on the left, a 3:2 photo on the right. No-photo
-// versions sit in a rounded colour panel (Primary or Light). Used by service
-// pages and patient resource pages so the two stay the same.
+// The hero of the record pages (service pages, patient resource pages), HSNC
+// reskin: light green band, small capitals label (the section), serif H1,
+// intro, optional slot, the Call button, and the record's photo on the right
+// when it has one. No breadcrumbs (`crumbs` and `current` are kept for older
+// callers; the last crumb is the default label).
+import "../styles/hsnc-reskin.css";
 import type { Photo } from "../data/site";
-import { routes, telHref } from "../lib/routes";
+import { telHref } from "../lib/routes";
 import { getSettings, type HeroKey } from "../lib/settings";
 
 interface Props {
-	/** Breadcrumb links before the current page. */
-	crumbs: [string, string][];
-	current: string;
+	crumbs?: [string, string][];
+	current?: string;
 	title: string;
+	/** Small capitals line above the H1; defaults to the last crumb. */
+	label?: string;
 	intro?: string;
 	bookLabel?: string;
-	/** The hero version (s.heroFor on the page, so the page can match its own spacing). */
 	hero: HeroKey;
 	image?: Photo;
 	photoLabel?: string;
 }
-const { crumbs, current, title, intro, bookLabel = "Book appointment", hero, image, photoLabel = "Page hero photo · 3:2, landscape" } = Astro.props;
+const { crumbs = [], title, intro, hero, image } = Astro.props;
 const s = getSettings(Astro);
-const h = s.href;
-const tel = telHref(s.phone);
-const withPhoto = hero === "photo" || hero === "example";
-const prim = hero === "primary";
-const shapeA = prim ? "color-mix(in srgb, var(--on-p) 8%, transparent)" : "color-mix(in srgb, var(--p) 7%, transparent)";
-const shapeB = prim ? "color-mix(in srgb, var(--on-p) 6%, transparent)" : "color-mix(in srgb, var(--a) 14%, transparent)";
+const label = Astro.props.label ?? crumbs[crumbs.length - 1]?.[0];
+const photo = image && (hero === "photo" || hero === "example") ? image : undefined;
 const hasSlot = Astro.slots.has("default");
 ---
-{
-	withPhoto ? (
-		<section class="sd-hero">
-			<div class="wrap ihero">
-				<div class="stack g24">
-					<nav aria-label="Breadcrumb">
-						<ol class="crumbs">
-							{crumbs.map(([l, u]) => (<><li><a href={h(u)}>{l}</a></li><li class="sep" aria-hidden="true">/</li></>))}
-							<li aria-current="page">{current}</li>
-						</ol>
-					</nav>
-					<h1 class="h1">{title}</h1>
-					{intro && <p class="lead">{intro}</p>}
-					{hasSlot && <slot />}
-					<div class="rowf hero-btns" style="gap: 12px; margin-top: 4px">
-						<a class="btn btn-primary" href={h(routes.book)}>{bookLabel}</a>
-						<a class="btn btn-secondary" href={tel}>Call {s.phone}</a>
-					</div>
-				</div>
-				{hero === "example" ? (
-					<div class="phimg"><img src="/assets/photos/consult.jpg" alt="An audiologist smiling as she talks with a patient across her desk" style="object-position: 55% 30%" /></div>
-				) : image ? (
-					<div class="phimg"><img src={image.src} alt={image.alt} /></div>
-				) : (
-					<div class="ph warm" style="aspect-ratio: 3/2; border-radius: var(--r-hero)"><span class="ph-label">{photoLabel}</span></div>
-				)}
-			</div>
-		</section>
-	) : (
-		<div class="sd-hero-np">
-			<section class:list={["inophoto", { "on-p-text": prim }]} style={prim ? "background: var(--p); color: var(--on-p)" : "background: var(--l); color: var(--on-l)"}>
-				<div class="shape np1" style={`border-color: ${shapeA}`} />
-				<div class="shape np2" style={`border-color: ${shapeB}`} />
-				<div class="wrap">
-					<div class="stack g24" style="max-width: 860px">
-						<nav aria-label="Breadcrumb">
-							<ol class="crumbs">
-								{crumbs.map(([l, u]) => (<><li><a href={h(u)}>{l}</a></li><li class="sep" aria-hidden="true">/</li></>))}
-								<li aria-current="page">{current}</li>
-							</ol>
-						</nav>
-						<h1 class="h1 xl" style="color: inherit">{title}</h1>
-						{intro && <p class="lead" style="color: inherit; opacity: .88; max-width: 720px">{intro}</p>}
-						{hasSlot && <slot />}
-						<div class="rowf hero-btns" style="gap: 12px; margin-top: 4px">
-							<a class:list={["btn", prim ? "btn-inverse" : "btn-primary"]} href={h(routes.book)}>{bookLabel}</a>
-							<a class:list={["btn", prim ? "btn-ghost-on-p" : "btn-secondary"]} href={tel}>Call {s.phone}</a>
-						</div>
-					</div>
-				</div>
-			</section>
+<div class="hs hs-mint rs-hero">
+	<section class="hs-wrap hs-hsplit">
+		<div class="hs-htxt rs-htxt">
+			{label && <p class="hs-eyebrow">{label}</p>}
+			<h1 class="hs-serif rs-h1">{title}</h1>
+			{intro && <p class="rs-lead">{intro}</p>}
+			{hasSlot && <slot />}
+			<div class="hs-btns" style="margin-top:8px"><a class="hs-btn" href={telHref(s.phone)}>Call us: {s.phone}</a></div>
 		</div>
-	)
-}
+		{photo && <div class="hs-hpic"><img src={photo.src} alt={photo.alt} class="rs-hero-img" /></div>}
+	</section>
+</div>

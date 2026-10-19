@@ -1,6 +1,6 @@
 ---
 // Patient resource card: topic tags, title, summary, and either "Learn more"
-// (own page) or "Download PDF / Fill out online" (forms).
+// (own page) or "Download PDF / Fill out online" (forms). HSNC: outline button.
 import { getSettings } from "../lib/settings";
 import FormButtons from "./FormButtons.astro";
 import { routes } from "../lib/routes";
@@ -16,6 +16,6 @@ const s = getSettings(Astro);
 	<ul class="res-tags" aria-label="Topics">{r.tags.map((t) => <li class="tag">{t}</li>)}</ul>
 	<h3 class="h3">{r.t}</h3>
 	<p class="muted">{r.d}</p>
-	{r.page && <div class="actions"><a class="btn btn-gray sm" href={s.href(routes.resource(r.slug))}>Learn more<span class="sr"> about {r.t}</span></a></div>}
+	{r.page && <div class="actions"><a class="hs-btn hs-btn-o" href={s.href(routes.resource(r.slug))}>Learn more<span class="sr"> about {r.t}</span></a></div>}
 	{r.forms && <FormButtons r={r} />}
 </article>

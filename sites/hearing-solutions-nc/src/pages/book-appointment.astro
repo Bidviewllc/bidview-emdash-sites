@@ -1,107 +1,42 @@
 ---
-// Page 10 · Book appointment (boards BookPage, BookPageB, BookPageSideA,
-// BookPageSideB, BookMobile). Short no-photo hero → Version A (scheduler embed)
-// or Version B (request form) → "Where to find us". Layout: Full width, or Right
-// sidebar with "Prefer to call?" (Version A only) and compact office cards.
-// No CTA band: this page is the CTA.
-import Icon from "../components/Icon.astro";
-import OfficeCard from "../components/OfficeCard.astro";
-import PageHero from "../components/PageHero.astro";
-import RequestForm from "../components/RequestForm.astro";
-import type { Tweak } from "../components/ReviewControls.astro";
+// Book appointment. No HSNC board; built from the HSNC parts in the Contact
+// board's look. Split hero → navy "call us" bar (HSNC books by phone) →
+// appointment request form beside the office card. Text: Pages → Book
+// appointment (src/data/hsnc/book.ts). Form fields: Plugins → Forms →
+// Appointment request.
+// Liz, 2026-10-19: request form only (template Version B), full width. Not on
+// this page (template Book appointment): breadcrumbs, the scheduler embed
+// (Version A), the right-sidebar layout and the "Where to find us" band.
+import "../styles/hsnc-contact.css";
+import ContactOffice from "../components/hs/ContactOffice.astro";
+import HsPageHero from "../components/hs/HsPageHero.astro";
+import SiteForm from "../components/SiteForm.astro";
 import Base from "../layouts/Base.astro";
-import { getSettings } from "../lib/settings";
+import { hs } from "../lib/hs";
 import { telHref } from "../lib/routes";
 
-const tweaks: Tweak[] = [
-	{ key: "version", label: "Booking version", type: "choice", default: "a", options: [["a", "A · Scheduler embed"], ["b", "B · Request form"]] },
-	{ key: "layout", label: "Layout", type: "choice", default: "full", options: [["full", "Full width"], ["side", "Right sidebar"]] },
-];
-const s = getSettings(Astro);
-const tx = s.text;
-/** Scheduler embed code from the Book appointment page record. */
-const embed = Astro.locals.site.pages["book-appointment"]?.embed;
-const review = Astro.locals.site.practice.reviewControls;
-// Version A without embed code: the labelled slot while reviewing, the request form on a live site.
-const isA = s.choice("version", ["a", "b"], "a") === "a" && (!!embed || review);
-const side = s.choice("layout", ["full", "side"], "full") === "side";
-const first = s.offices[0];
+const { text, html, htmlParas, photo, s } = hs(Astro, "book-appointment");
+const o = s.offices[0];
+const description = `Request an appointment at ${s.name}, or call ${s.phone}. ${o.street}, ${o.city}.`;
 ---
-<Base title={`Book an appointment | ${s.name}`} description={tx("description")} pageName="Book appointment" tweaks={tweaks}>
-	<PageHero
-		crumbs={[{ label: "Home" }, { label: "Book Appointment" }]}
-		title={tx("heading")}
-		lead={tx("intro")}
-		short
-		book={false}
-	/>
+<Base title={`Book an appointment | ${s.name}`} description={description} pageName="Book appointment">
+	<div class="hs">
+		<HsPageHero label={text("book_label")} display={html("book_display")} photo={photo("book_hero_photo")} ratio="4/3" pos="50% 40%" />
 
-	{
-		!side && (
-			<>
-				<section class="band bk-top">
-					<div class="wrap">
-						{isA ? (
-							embed ? (
-								<div class="bk-embed-code" role="region" aria-label="Online scheduler" set:html={embed} />
-							) : (
-								<div class="bk-embed" role="region" aria-label="Online scheduler">
-									<span class="bk-embed-ic"><Icon name="calendar" size={32} /></span>
-									<b>Scheduler embed</b>
-									<span>Third-party booking widget · full content width · about 700 tall · paste the code on the Book appointment page in the admin</span>
-								</div>
-							)
-						) : (
-							<RequestForm id="b" />
-						)}
-					</div>
-				</section>
-				<section class="band bg-light bk-where-band">
-					<div class="wrap stack g40">
-						<div class="stack g12"><span class="eyebrow">Locations</span><h2 class="h2">{tx("book_offices_heading")}</h2></div>
-						<div class:list={["panel grid", s.offices.length > 1 ? "g-2" : ""]}>{s.offices.map((o) => <OfficeCard o={o} />)}</div>
-					</div>
-				</section>
-			</>
-		)
-	}
-	{
-		side && (
-			<section class="band bk-top">
-				<div class="wrap side-layout bk-side">
-					<div class="stack g24">
-						{isA ? (
-							embed ? (
-								<div class="bk-embed-code" role="region" aria-label="Online scheduler" set:html={embed} />
-							) : (
-								<div class="bk-embed" role="region" aria-label="Online scheduler">
-									<span class="bk-embed-ic"><Icon name="calendar" size={32} /></span>
-									<b>Scheduler embed</b>
-									<span>Third-party booking widget · fills the content column · about 700 tall · paste the code on the Book appointment page in the admin</span>
-								</div>
-							)
-						) : (
-							<RequestForm id="s" side />
-						)}
-					</div>
-					<aside class="sidebar sticky" aria-label="Where to find us">
-						{isA && (
-							<div class="panel">
-								<div class="card" style="gap: 16px">
-									<h2 class="h3">{tx("book_call_heading")}</h2>
-									<p class="muted" style="margin: 0">Our front desk can find a time with you and answer questions first.</p>
-									<a class="c-big" href={telHref(s.phone)}><span class="di"><Icon name="phone" /></span><span><span class="c-lbl">Call</span><b>{s.phone}</b></span></a>
-									<p class="small muted" style="margin: 0" set:html={first.hoursLong} />
-								</div>
-							</div>
-						)}
-						<div class="panel stack bk-where">
-							<h2 class="h3" style="padding: 12px 16px 4px">{tx("book_offices_heading")}</h2>
-							{s.offices.map((o) => <OfficeCard o={o} compact />)}
-						</div>
-					</aside>
-				</div>
-			</section>
-		)
-	}
+		<section class="hs-wrap hs-c-main">
+			<div class="hs-qbar">
+				<h2 class="hs-h2-sm" style="color:#fff;font-weight:500">{text("book_phone_heading")}</h2>
+				<a class="hs-btn hs-btn-w" href={telHref(s.phone)}>Call {s.phone}</a>
+			</div>
+
+			<div class="hs-c-row">
+				<form class="hs-c-form" aria-labelledby="b-h" novalidate data-form method="post" action="/api/form">
+					<h2 id="b-h" class="hs-h2-sm">{text("book_form_title")}</h2>
+					{htmlParas("book_form_lead").map((p) => <p style="margin:0 0 8px" set:html={p} />)}
+					<SiteForm slug="appointment-request" id="b" blockButton />
+				</form>
+				<ContactOffice class="hs-c-row-office" />
+			</div>
+		</section>
+	</div>
 </Base>

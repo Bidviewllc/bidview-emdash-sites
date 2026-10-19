@@ -1,64 +1,38 @@
 ---
-// Page 2 · Services hub (boards ServicesHub, ServicesMobile, ServicesHubAlt).
-// Hero → every service as a card → "first visit" steps → reviews → CTA.
-import CtaBand from "../../components/CtaBand.astro";
-import PageHero from "../../components/PageHero.astro";
-import ReviewsBand from "../../components/ReviewsBand.astro";
-import type { Tweak } from "../../components/ReviewControls.astro";
-import ServiceCards from "../../components/ServiceCards.astro";
+// Services hub (design/hsnc/Services.dc.html). Split hero → sidebar ("On this
+// page" jump links + call box) beside one block per service → reviews (light)
+// → closing call band. Page text: Pages → Services page (src/data/hsnc/services.ts
+// has the design's wording). Each service's block: its Services record
+// (heading, text, fold-out rows, note, second button); the slug is its anchor.
+// A service set to "Hide from hub" has no block and no jump link.
+// Not on this design (template hub): breadcrumbs, service card grid, "Your first
+// visit" steps, "Read more reviews" link.
+import HsCtaBand from "../../components/hs/HsCtaBand.astro";
+import HsPageHero from "../../components/hs/HsPageHero.astro";
+import HsReviews from "../../components/hs/HsReviews.astro";
+import ServicesBlock from "../../components/hs/ServicesBlock.astro";
+import ServicesSidebar from "../../components/hs/ServicesSidebar.astro";
 import Base from "../../layouts/Base.astro";
-import { getSettings } from "../../lib/settings";
+import { hs } from "../../lib/hs";
+import "../../styles/hsnc-services.css";
 
-const { firstVisitSteps, practice, reviews } = Astro.locals.site;
-
-const tweaks: Tweak[] = [
-	{ key: "steps", label: "“First visit” steps", type: "bool", default: true },
-	{ key: "revlink", label: "“Read more reviews” link", type: "bool", default: true },
-	{ key: "svclinks", label: "Service “Learn more”", type: "choice", default: "mixed", options: [["mixed", "Mixed (pages that exist)"], ["all", "All cards"], ["none", "None"]] },
-];
-const s = getSettings(Astro);
-const tx = s.text;
-const hero = s.heroFor("photo");
-const withPhoto = hero === "photo" || hero === "example";
-const showSteps = s.bool("steps", true);
-const revLink = s.bool("revlink", true);
-const svcLinks = s.choice("svclinks", ["mixed", "all", "none"], "mixed");
+const { text, html, htmlParas, paras, hero, s } = hs(Astro, "services");
+const services = Astro.locals.site.services.filter((x) => !x.hideFromHub);
+const links = services.map((x) => ({ href: `#${x.slug}`, label: x.name }));
+const description = paras("services_intro").join(" ").replace(/\*/g, "");
 ---
-<Base title={`${tx("heading")} | ${s.name}`} description={tx("description")} pageName="Services hub" current="services" tweaks={tweaks} heroDefault="photo">
-	<PageHero
-		crumbs={[{ label: "Home" }, { label: "Services" }]}
-		title={tx("heading")}
-		lead={tx("intro")}
-	/>
+<Base title={`Services | ${s.name}`} description={description} pageName="Services hub" current="services">
+	<div class="hs">
+		<HsPageHero label={text("services_label")} display={html("services_display")} paras={htmlParas("services_intro")} photo={hero()} ratio="4/3" pos="50% 15%" />
 
-	<section class:list={["band first", { "after-photo": withPhoto }]}>
-		<div class="wrap stack g64">
-			<h2 class="sr">All services</h2>
-			<ServiceCards links={svcLinks} />
-		</div>
-	</section>
+		<section class="hs-wrap hs-svc-wrap">
+			<ServicesSidebar links={links} heading={html("services_call_heading")} text={html("services_call_text")} />
+			<div class="hs-svc-main">
+				{services.map((x) => <ServicesBlock service={x} />)}
+			</div>
+		</section>
 
-	{
-		showSteps && (
-			<section class="band bg-light">
-				<div class="wrap stack g48">
-					<div class="stack g16 text-col">
-						<span class="eyebrow">Your first visit</span>
-						<h2 class="h2">{tx("services_steps_heading")}</h2>
-					</div>
-					<ol class="panel grid g-4 steps-grid" style="list-style: none; margin: 0">
-						{firstVisitSteps.map((st, i) => (
-							<li class="step"><span class="num" aria-hidden="true">{i + 1}</span><h3 class="h4">{st.t}</h3><p>{st.d}</p></li>
-						))}
-					</ol>
-				</div>
-			</section>
-		)
-	}
-
-	<ReviewsBand reviews={[reviews[0], reviews[1]]} link={revLink} class={showSteps ? undefined : "pt0"} />
-
-	<div class="cta-wrap">
-		<CtaBand id="scta" heading={tx("cta_heading")} text={tx("cta_text")} photoLabel="Lifestyle photo · conversation, meal, outdoors" />
+		<HsReviews tone="light" heading={text("services_reviews_heading")} />
+		<HsCtaBand />
 	</div>
 </Base>

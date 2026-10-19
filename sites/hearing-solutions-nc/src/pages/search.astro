@@ -1,11 +1,11 @@
 ---
 // Site search (not in the design boards; built from the 404 page's search box
-// and the short Light hero). EmDash's own search covers services, hearing aid
+// and the short hero; HSNC reskin: light green band, no breadcrumbs). EmDash's own search covers services, hearing aid
 // brands, articles and patient resources; team members, offices and the fixed
 // pages are matched by name. Only pages that are live are listed: a service
 // without its own page links to the Services hub. Kept out of search engines.
 import { search } from "emdash";
-import Icon from "../components/Icon.astro";
+import "../styles/hsnc-reskin.css";
 import Base from "../layouts/Base.astro";
 import { PAGES } from "../data/page-settings";
 import { routes, telHref } from "../lib/routes";
@@ -60,38 +60,36 @@ if (q) {
 const title = q ? `Search results for “${q}”` : "Search the site";
 ---
 <Base title={`${title} | ${s.name}`} description="Search the site for services, hearing aids, articles and patient resources." pageName="Search" noindex>
-	<div class="pg-hero-np">
-		<section class="inophoto short" style="background: var(--l); color: var(--on-l)">
-			<div class="wrap">
-				<div class="stack g24" style="max-width: 760px">
-					<nav aria-label="Breadcrumb"><ol class="crumbs"><li><a href={h(routes.home)}>Home</a></li><li class="sep" aria-hidden="true">/</li><li aria-current="page">Search</li></ol></nav>
-					<h1 class="h1" style="color: inherit">{title}</h1>
-					<form class="nf-search" role="search" aria-label="Search the site" action="/search">
+	<div class="hs">
+		<div class="hs-mint rs-hero">
+			<section class="hs-wrap hs-hsplit rs-short">
+				<div class="hs-htxt rs-htxt" style="max-width:760px">
+					<p class="hs-eyebrow">Search</p>
+					<h1 class="hs-serif rs-h1 sm">{title}</h1>
+					<form class="rs-search" role="search" aria-label="Search the site" action="/search">
 						<label class="sr" for="s-q">Search the site</label>
-						<input class="input" id="s-q" type="search" name="q" value={q} placeholder="Search for a service, topic or page" />
-						<button class="btn btn-primary" type="submit"><Icon name="search" /> Search</button>
+						<input id="s-q" type="search" name="q" value={q} placeholder="Search for a service, topic or page" />
+						<button class="hs-btn" type="submit">Search</button>
 					</form>
 				</div>
-			</div>
-		</section>
-	</div>
+			</section>
+		</div>
 
-	<section class="band search-band">
-		<div class="wrap stack g24" style="max-width: 900px">
+		<section class="hs-wrap rs-sec"><div style="max-width:900px;display:flex;flex-direction:column;gap:24px">
 			{
 				q && (
-					<p class="muted" role="status" style="margin: 0">
+					<p class="muted" role="status">
 						{hits.length === 0 ? "No pages matched." : hits.length === 1 ? "1 page matched." : `${hits.length} pages matched.`}
 					</p>
 				)
 			}
 			{
 				hits.length > 0 && (
-					<ul class="search-list">
+					<ul class="rs-hits">
 						{hits.map((x) => (
-							<li class="card search-hit">
+							<li class="rs-hit">
 								<span class="tag">{x.kind}</span>
-								<h2 class="h3"><a href={h(x.href)}>{x.title}</a></h2>
+								<h2><a href={h(x.href)}>{x.title}</a></h2>
 								{x.snippet && <p class="muted" set:html={x.snippet} />}
 							</li>
 						))}
@@ -100,16 +98,16 @@ const title = q ? `Search results for “${q}”` : "Search the site";
 			}
 			{
 				q && hits.length === 0 && (
-					<div class="card" style="gap: 16px">
-						<h2 class="h3">Can we help you find it?</h2>
-						<p class="muted" style="margin: 0">Try a shorter word, or call us at <a href={telHref(s.phone)}>{s.phone}</a> and we’ll point you in the right direction.</p>
-						<div class="rowf" style="gap: 12px; flex-wrap: wrap">
-							<a class="btn btn-secondary" href={h(routes.services)}>See our services</a>
-							<a class="btn btn-secondary" href={h(routes.resources)}>Patient resources</a>
+					<div class="rs-hit" style="gap:16px">
+						<h2>Can we help you find it?</h2>
+						<p class="muted">Try a shorter word, or call us at <a href={telHref(s.phone)}>{s.phone}</a> and we’ll point you in the right direction.</p>
+						<div class="hs-btns" style="gap:12px">
+							<a class="hs-btn hs-btn-o" href={h(routes.services)}>See our services</a>
+							<a class="hs-btn hs-btn-o" href={h(routes.resources)}>Patient resources</a>
 						</div>
 					</div>
 				)
 			}
-		</div>
-	</section>
+		</div></section>
+	</div>
 </Base>

@@ -150,22 +150,34 @@ export async function loadSite() {
 		accessNotes: e.data.access_notes || recordText.office_access,
 	}));
 
-	const services: (Service & { faq: { q: string; a: string }[] })[] = serviceE.map((e) => ({
-		slug: slugOf(e),
-		name: e.data.title,
-		navLabel: e.data.nav_label || e.data.title,
-		summary: e.data.summary ?? "",
-		hasPage: !!e.data.has_page,
-		hideFromHub: !!e.data.hide_from_hub,
-		onHome: e.data.on_home !== false,
-		bookLabel: e.data.book_label || "Book an appointment",
-		ctaHeading: e.data.cta_heading || "Book your appointment",
-		faq: e.data.faq ?? [],
-		heroImage: photo(e.data.hero_image),
-		intro: e.data.intro || recordText.service_intro,
-		content: Array.isArray(e.data.content) ? e.data.content : undefined,
-		sidebarText: e.data.sidebar_text || recordText.service_sidebar,
-	}));
+	// Services hub blocks fall back to the design's wording (src/data/practice.ts, by slug)
+	// when the record's field is empty, e.g. a database seeded before those fields existed.
+	const services: (Service & { faq: { q: string; a: string }[] })[] = serviceE.map((e) => {
+		const d = sample.services.find((x) => x.slug === slugOf(e));
+		const items = (e.data.hub_items ?? []).filter((r: Data) => r?.t);
+		const btn = e.data.hub_button ? (e.data.hub_button === "Ask a question" ? "question" : "pricing") : (d?.hubButton ?? "pricing");
+		return {
+			slug: slugOf(e),
+			name: e.data.title,
+			navLabel: e.data.nav_label || e.data.title,
+			summary: e.data.summary ?? "",
+			hasPage: !!e.data.has_page,
+			hideFromHub: !!e.data.hide_from_hub,
+			onHome: e.data.on_home !== false,
+			bookLabel: e.data.book_label || d?.bookLabel || "Book an appointment",
+			ctaHeading: e.data.cta_heading || "Book your appointment",
+			faq: e.data.faq ?? [],
+			heroImage: photo(e.data.hero_image),
+			intro: e.data.intro || recordText.service_intro,
+			content: Array.isArray(e.data.content) ? e.data.content : undefined,
+			sidebarText: e.data.sidebar_text || recordText.service_sidebar,
+			hubHeading: e.data.hub_heading || d?.hubHeading || undefined,
+			hubText: e.data.hub_text || d?.hubText || "",
+			hubItems: items.length ? items.map((r: Data) => ({ t: r.t, d: r.d ?? "" })) : (d?.hubItems ?? []),
+			hubNote: e.data.hub_note || d?.hubNote || "",
+			hubButton: btn,
+		};
+	});
 
 	const brands: Brand[] = brandE.map((e) => ({
 		slug: slugOf(e),

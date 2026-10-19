@@ -115,42 +115,40 @@ const base = (name: string, slug: string, fields: FormField[], submitLabel: stri
 	};
 };
 
-/** The template's starting forms (the design's fields). */
+/**
+ * HSNC's starting forms. Contact: the Contact board's fields. Appointment
+ * request: the fields of the current site's request form
+ * (hearingsolutionsofnc.com/schedule-online, Gravity Forms, 2026-10-19). One
+ * office, so no location choice; add a "location" select in the admin if a
+ * second office opens.
+ */
 export const DEFAULT_FORMS: Record<string, () => FormDefinition> = {
 	contact: () =>
 		base(
 			"Contact",
 			"contact",
 			[
-				field("text", "first", "First name", { required: true, width: "half" }),
-				field("text", "last", "Last name", { width: "half" }),
-				field("tel", "phone", "Phone", { required: true, width: "half" }),
-				field("email", "email", "Email", { width: "half" }),
-				field("select", LOCATION_FIELD, "Preferred location", { helpText: "Filled with your offices automatically." }),
-				field("textarea", "message", "Message"),
+				field("text", "name", "Full name", { required: true }),
+				field("email", "email", "Email", { required: true }),
+				field("tel", "phone", "Phone"),
+				field("textarea", "message", "How can we help?"),
 				...tracking(),
 			],
-			"Send message",
+			"Submit",
 		),
 	"appointment-request": () =>
 		base(
 			"Appointment request",
 			"appointment-request",
 			[
-				field("text", "first", "First name", { required: true }),
-				field("text", "last", "Last name"),
-				field("tel", "phone", "Phone", { required: true }),
-				field("email", "email", "Email"),
-				field("select", "need", "What do you need?", {
-					options: opt("Hearing evaluation", "Hearing aid consultation", "Hearing aid repair or adjustment", "Ear wax removal", "Tinnitus", "Something else"),
-				}),
-				field("textarea", "more", "Anything else we should know? (optional)"),
-				field("checkbox-group", "days", "What days of the week work for you?", { options: opt("Monday", "Tuesday", "Wednesday", "Thursday", "Friday") }),
-				field("checkbox-group", "times", "What times of day work for you?", { options: opt("Morning", "Afternoon") }),
-				field("select", LOCATION_FIELD, "Preferred location", { helpText: "Filled with your offices automatically." }),
+				field("text", "name", "Name", { required: true }),
+				field("email", "email", "Email", { required: true }),
+				field("text", "day", "Preferred day of the week", { required: true }),
+				field("checkbox-group", "times", "Preferred time of the day", { required: true, options: opt("Morning", "Afternoon") }),
+				field("textarea", "reason", "Briefly describe the reason for your appointment"),
 				...tracking(),
 			],
-			"Request appointment",
+			"Request now",
 		),
 };
 

@@ -1,7 +1,10 @@
 ---
-// Page 4 · Hearing aids hub (boards HearingAidsHub, HearingAidsMobile, HearingAidsAlt).
-// Hero → brand cards → styles (optional) → OTC vs prescription (optional) → CTA.
-import CtaBand from "../../components/CtaBand.astro";
+// Hearing aids hub (template Page 4, HSNC reskin; no HSNC board). Light green
+// hero → brand cards → styles (optional) → OTC vs prescription (optional) →
+// the shared closing band. Dropped from the template: breadcrumbs, the Book
+// button (the phone instead), the photo placeholder.
+import "../../styles/hsnc-reskin.css";
+import HsCtaBand from "../../components/hs/HsCtaBand.astro";
 import PageHero from "../../components/PageHero.astro";
 import type { Tweak } from "../../components/ReviewControls.astro";
 import StyleIllustration from "../../components/StyleIllustration.astro";
@@ -9,7 +12,7 @@ import Base from "../../layouts/Base.astro";
 import { getSettings } from "../../lib/settings";
 import { routes } from "../../lib/routes";
 
-const { brands, hearingAidStyles, practice } = Astro.locals.site;
+const { brands, hearingAidStyles } = Astro.locals.site;
 
 const tweaks: Tweak[] = [
 	{ key: "brandlinks", label: "Brand “Learn more”", type: "choice", default: "mixed", options: [["mixed", "Mixed (pages that exist)"], ["all", "All cards"], ["none", "None"]] },
@@ -18,22 +21,16 @@ const tweaks: Tweak[] = [
 ];
 const s = getSettings(Astro);
 const tx = s.text;
-const hero = s.heroFor("photo");
-const withPhoto = hero === "photo" || hero === "example";
 const brandLinks = s.choice("brandlinks", ["mixed", "all", "none"], "mixed");
 const showStyles = s.bool("styles", true);
 const showOtc = s.bool("otc", true);
 ---
 <Base title={`${tx("heading")} | ${s.name}`} description={tx("description")} pageName="Hearing aids hub" current="hearing-aids" tweaks={tweaks} heroDefault="photo">
-	<PageHero
-		crumbs={[{ label: "Home" }, { label: "Hearing Aids" }]}
-		title={tx("heading")}
-		lead={tx("intro")}
-	/>
+	<PageHero label="Hearing aids" title={tx("heading")} lead={tx("intro")} />
 
-	<section class:list={["band first", { "after-photo": withPhoto }]}>
-		<div class="wrap stack g48">
-			<div class="stack g16 text-col"><span class="eyebrow">Brands</span><h2 class="h2">{tx("ha_brands_heading")}</h2></div>
+	<div class="hs">
+		<section class="hs-wrap rs-sec rs-stack">
+			<div class="rs-head"><p class="hs-eyebrow">Brands</p><h2 class="hs-serif">{tx("ha_brands_heading")}</h2></div>
 			<div class="panel grid g-4 brand-grid">
 				{
 					brands.filter((b) => !b.hideFromHub).map((b) => {
@@ -45,7 +42,7 @@ const showOtc = s.bool("otc", true);
 								<p class="muted" style="font-size: 18px">{b.summary}</p>
 								{linked && (
 									<div class="actions">
-										<a class="btn btn-gray sm" href={s.href(routes.brand(b.slug))}>Learn more<span class="sr"> about {b.name} hearing aids</span></a>
+										<a class="hs-btn hs-btn-o" href={s.href(routes.brand(b.slug))}>Learn more<span class="sr"> about {b.name} hearing aids</span></a>
 									</div>
 								)}
 							</article>
@@ -53,53 +50,48 @@ const showOtc = s.bool("otc", true);
 					})
 				}
 			</div>
-		</div>
-	</section>
+		</section>
 
-	{
-		showStyles && (
-			<section class="band bg-light">
-				<div class="wrap stack g48">
-					<div class="stack g16 text-col"><span class="eyebrow">Styles</span><h2 class="h2">{tx("ha_styles_heading")}</h2></div>
-					<div class="panel grid g-4">
-						{hearingAidStyles.map((st) => (
-							<article class="card" style="padding: 16px 16px 28px">
-								<StyleIllustration k={st.k} alt={st.alt} />
-								<div class="stack g8" style="padding: 0 12px">
-									<h3 class="h4">{st.t}</h3>
-									<p class="muted" style="font-size: 18px">{st.d}</p>
-								</div>
-							</article>
-						))}
+		{
+			showStyles && (
+				<section class="hs-mint">
+					<div class="hs-wrap rs-sec rs-stack">
+						<div class="rs-head"><p class="hs-eyebrow">Styles</p><h2 class="hs-serif">{tx("ha_styles_heading")}</h2></div>
+						<div class="grid g-4" style="gap:24px">
+							{hearingAidStyles.map((st) => (
+								<article class="card" style="padding: 16px 16px 28px">
+									<StyleIllustration k={st.k} alt={st.alt} />
+									<div class="stack g8" style="padding: 0 12px">
+										<h3 class="h4">{st.t}</h3>
+										<p class="muted" style="font-size: 18px">{st.d}</p>
+									</div>
+								</article>
+							))}
+						</div>
 					</div>
-				</div>
-			</section>
-		)
-	}
+				</section>
+			)
+		}
 
-	{
-		showOtc && (
-			<section class:list={["band", { pt0: !showStyles }]}>
-				<div class="wrap stack g48">
-					<div class="stack g16 text-col"><span class="eyebrow">Compare</span><h2 class="h2">{tx("ha_compare_heading")}</h2></div>
+		{
+			showOtc && (
+				<section class="hs-wrap rs-sec rs-stack">
+					<div class="rs-head"><p class="hs-eyebrow">Compare</p><h2 class="hs-serif">{tx("ha_compare_heading")}</h2></div>
 					<div class="panel grid g-2">
 						<article class="card cmp-card">
-							<span class="cmp-tag" style="background: var(--panel); color: var(--ink)">Over-the-counter</span>
+							<span class="cmp-tag" style="background: var(--hs-mint); color: var(--hs-green)">Over-the-counter</span>
 							<h3 class="h3">{tx("ha_otc_heading")}</h3>
 							<p>{tx("ha_otc_text")}</p>
 						</article>
 						<article class="card cmp-card">
-							<span class="cmp-tag" style="background: var(--a-tint); color: var(--ink)">Prescription</span>
+							<span class="cmp-tag" style="background: var(--hs-lime-lt); color: var(--hs-green)">Prescription</span>
 							<h3 class="h3">{tx("ha_rx_heading")}</h3>
 							<p>{tx("ha_rx_text")}</p>
 						</article>
 					</div>
-				</div>
-			</section>
-		)
-	}
-
-	<div class:list={["cta-wrap", { "after-inset": !showOtc }]}>
-		<CtaBand id="hacta" heading={tx("cta_heading")} text={tx("cta_text")} photoLabel="Lifestyle photo · conversation, meal, outdoors" />
+				</section>
+			)
+		}
+		<HsCtaBand />
 	</div>
 </Base>

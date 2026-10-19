@@ -1,13 +1,13 @@
 ---
-// Page 7 · Provider profile (boards PersonPage, PersonMobile, PersonPageAlt).
-// Profile header (4:5 headshot + text, vertically centred) → full-width bio →
-// intro video (optional) → locations (as Home) → services (as Home) → CTA.
-import CtaBand from "../../components/CtaBand.astro";
-import Headshot from "../../components/Headshot.astro";
-import Icon from "../../components/Icon.astro";
-import OfficesSection from "../../components/OfficesSection.astro";
+// Team profile (template Page 7, HSNC reskin; no HSNC board). Light green hero
+// with the 4:5 headshot → bio (only when there is one) → intro video (only with
+// a video link) → services → location (as Home) → the shared closing band.
+// Dropped from the template: breadcrumbs, the sample bio and sample video
+// player, the Book button (the phone instead).
+import "../../styles/hsnc-reskin.css";
+import HsCtaBand from "../../components/hs/HsCtaBand.astro";
+import HsLocation from "../../components/hs/HsLocation.astro";
 import type { Tweak } from "../../components/ReviewControls.astro";
-import ServiceCards from "../../components/ServiceCards.astro";
 import Base from "../../layouts/Base.astro";
 import { ptHas, ptToHtml } from "../../lib/portable-text";
 import { getSettings } from "../../lib/settings";
@@ -21,8 +21,8 @@ if (!person || !person.hasPage) return Astro.rewrite("/404");
 const tweaks: Tweak[] = [{ key: "video", label: "Intro video", type: "bool", default: true }];
 const s = getSettings(Astro);
 const h = s.href;
-/** Bio from EmDash; the sample below shows until there is one. */
-const bio = ptHas(person.bioRich) ? s.fill(ptToHtml(person.bioRich).html) : undefined;
+/** Bio from EmDash; nothing shows until there is one. */
+const bio = ptHas(person.bioRich) ? s.fill(ptToHtml(person.bioRich).html) : person.bio?.trim() ? `<p>${person.bio.replace(/</g, "&lt;")}</p>` : undefined;
 /** YouTube or Vimeo link as an embed address. */
 const embed = (() => {
 	const u = person.videoUrl ?? "";
@@ -31,133 +31,65 @@ const embed = (() => {
 	const vm = u.match(/vimeo\.com\/(?:video\/)?(\d+)/);
 	return vm ? `https://player.vimeo.com/video/${vm[1]}` : undefined;
 })();
-// No video link: the sample player shows only while Review controls are on.
-const showVideo = s.bool("video", true) && (!!embed || Astro.locals.site.practice.reviewControls);
-const crumbName = person.name.replace(/, Au\.D\.$/, "");
+const showVideo = s.bool("video", true) && !!embed;
+const svc = services.filter((x) => x.onHome !== false && !x.hideFromHub);
 ---
 <Base title={`${person.name}, ${person.title} | ${s.name}`} description={`${person.name} is ${person.title.toLowerCase()} at ${s.name}.`} pageName="Provider profile" current="about" tweaks={tweaks}>
-	<section class="prof-hero">
-		<div class="wrap prof">
-			<div class="panel prof-img"><Headshot src={person.headshot} tone={person.tone} /></div>
-			<div class="stack g24 prof-txt">
-				<nav aria-label="Breadcrumb">
-					<ol class="crumbs">
-						<li><a href={h(routes.home)}>Home</a></li><li class="sep" aria-hidden="true">/</li>
-						<li><a href={h(routes.about)}>About</a></li><li class="sep" aria-hidden="true">/</li>
-						<li aria-current="page">{crumbName}</li>
-					</ol>
-				</nav>
-				<div class="stack g12">
-					<h1 class="h1">{person.name}</h1>
-					<p class="prof-title">{person.title}</p>
+	<div class="hs">
+		<div class="hs-mint rs-hero rs-prof">
+			<section class="hs-wrap hs-hsplit">
+				<div class="hs-htxt rs-htxt">
+					<p class="hs-eyebrow">Our team</p>
+					<h1 class="hs-serif rs-h1">{person.name}</h1>
+					<p class="rs-prof-title">{person.title}</p>
+					<div class="hs-btns" style="margin-top:8px">
+						<a class="hs-btn" href={telHref(s.phone)}>Call us: {s.phone}</a>
+						<a class="hs-btn hs-btn-o" href={h(routes.about)}>Meet the whole team</a>
+					</div>
 				</div>
-				<div class="rowf hero-btns" style="gap: 12px; margin-top: 8px">
-					<a class="btn btn-primary" href={h(routes.book)}>Book appointment</a>
-					<a class="btn btn-secondary" href={telHref(s.phone)}>Call {s.phone}</a>
-				</div>
-			</div>
-		</div>
-	</section>
-
-	<section class="band bio-band">
-		<div class="wrap">
-			{bio ? <div class="rt" style="max-width: none" set:html={bio} /> : (
-				<div class="rt" style="max-width: none">
-					<p>Pellentesque sed dapibus est sed lacinia sapien vel tellus lorem ipsum. Dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore. Magna aliqua ut enim ad minim veniam quis nostrud. <strong>Exercitation ullamco laboris nisi ut aliquip</strong> ex ea commodo consequat duis aute irure. Dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident.</p>
-					<p>Tincidunt lacus nulla gravida orci a odio nullam varius turpis et commodo. Pharetra est eros bibendum elit nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod gravida praesent blandit odio eu enim pellentesque sed dapibus. Est sed lacinia sapien vel tellus lorem ipsum dolor. Sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-					<h3>Clinical interests</h3>
-					<p>Ad minim veniam quis nostrud exercitation ullamco laboris nisi ut. Aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit. Esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non. Proident sunt in culpa qui officia deserunt mollit anim id est.</p>
-					<h3>Education and credentials</h3>
-					<ul>
-						<li><strong>Doctor of Audiology,</strong> Felis sollicitudin mauris integer in mauris.</li>
-						<li><strong>Bachelor of Science,</strong> Eu nibh euismod gravida praesent.</li>
-						<li><strong>Board certified,</strong> Blandit odio eu enim pellentesque sed.</li>
-					</ul>
-					<h3>Outside the clinic</h3>
-					<p>Dapibus est sed lacinia sapien vel tellus lorem ipsum dolor sit amet consectetur adipiscing. Elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi. Ut aliquip ex ea commodo consequat duis aute irure dolor in <a href={h(routes.about)}>reprehenderit in voluptate</a> velit.</p>
-				</div>
-			)}
-		</div>
-	</section>
-
-	{
-		showVideo && (
-			<section class="band pt0">
-				<div class="wrap stack g32" style="max-width: 1040px">
-					<h2 class="h2">Meet {person.short}</h2>
-					{embed ? (
-						<div class="vplayer"><iframe src={embed} title={`Meet ${person.short}`} loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="position: absolute; inset: 0; width: 100%; height: 100%; border: 0" /></div>
-					) : (
-						<>
-							<div class="vplayer" data-video>
-								<img class="vposter" src="/assets/photos/consult.jpg" alt="" />
-								<div class="vshade" />
-								<button class="vbig" type="button" data-play aria-label={`Play video: Meet ${person.short} (2:14)`}><Icon name="play" size={40} /></button>
-								<p class="vcap" hidden><span>Captions appear here, in large, high-contrast text.</span></p>
-								<div class="vbar">
-									<button class="vbtn" type="button" data-play aria-label="Play"><span class="i-play"><Icon name="play" size={22} /></span><span class="i-pause" hidden><Icon name="pause" size={22} /></span></button>
-									<div class="vtrack" role="presentation"><span style="width: 0%" /></div>
-									<span class="vtime">0:00 / 2:14</span>
-									<button class="vbtn" type="button" aria-label="Mute"><Icon name="volume" size={22} /></button>
-									<button class="vbtn" type="button" data-cc aria-pressed="false" aria-label="Captions"><Icon name="captions" size={22} /></button>
-									<button class="vbtn" type="button" aria-label="Full screen"><Icon name="fullscreen" size={22} /></button>
-								</div>
-							</div>
-														<p class="small muted">Sample player: the practice's own video goes here, with captions.</p>
-						</>
-					)}
-				</div>
+				{person.headshot && <div class="hs-hpic"><img class="rs-prof-img" src={person.headshot} alt={`${person.name}, ${person.title}`} /></div>}
 			</section>
-		)
-	}
-
-	<OfficesSection />
-
-	<section class="band">
-		<div class="wrap stack g48">
-			<div class="stack g16" style="max-width: 760px">
-				<span class="eyebrow">Services</span>
-				<h2 class="h2">Hearing care services in {practice.city}</h2>
-				<p class="lead">Ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum. Dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non. Proident sunt in.</p>
-			</div>
-			<div class="stack g24">
-				<ServiceCards items={services.filter((x) => x.onHome !== false && !x.hideFromHub)} />
-				<a class="link-arrow" href={h(routes.services)} style="align-self: flex-start">View all services <Icon name="arrowR" size={18} /></a>
-			</div>
 		</div>
-	</section>
 
-	<div class="cta-wrap">
-		<CtaBand id="pcta" heading="Book your appointment" text={`Pellentesque sed dapibus est sed lacinia sapien vel tellus lorem ipsum. Dolor sit amet consectetur adipiscing elit.`} photoLabel="Lifestyle photo · conversation, meal, outdoors" />
+		{
+			bio && (
+				<section class="hs-wrap rs-sec" aria-label={`About ${person.short}`}>
+					<div class="rt" style="max-width: 820px" set:html={bio} />
+				</section>
+			)
+		}
+
+		{
+			showVideo && (
+				<section class:list={["hs-wrap rs-sec", { pt0: !!bio }]}>
+					<div class="rs-stack" style="max-width: 1040px">
+						<h2 class="hs-serif">Meet {person.short}</h2>
+						<div class="vplayer"><iframe src={embed} title={`Meet ${person.short}`} loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="position: absolute; inset: 0; width: 100%; height: 100%; border: 0" /></div>
+					</div>
+				</section>
+			)
+		}
+
+		{
+			svc.length > 0 && (
+				<section class="hs-wrap rs-sec rs-stack">
+					<div class="rs-head">
+						<p class="hs-eyebrow">Services</p>
+						<h2 class="hs-serif">Hearing care services in {practice.city}</h2>
+					</div>
+					<div style="display:flex;flex-wrap:wrap;gap:24px">
+						{svc.map((x) => (
+							<a href={h(x.hasPage ? routes.service(x.slug) : routes.services)} class="hs-card hs-svc-card">
+								<span style="font-size:19px;font-weight:500;text-align:center;padding:0 16px">{x.name}</span>
+								<span class="hs-eyebrow" style="font-size:15px;letter-spacing:.1em">Read more</span>
+							</a>
+						))}
+					</div>
+				</section>
+			)
+		}
+
+		<HsLocation />
+		<HsCtaBand />
 	</div>
 </Base>
-
-<script>
-	// Sample video player: shows the playing state and captions toggle (no real video yet).
-	document.querySelectorAll<HTMLElement>("[data-video]").forEach((v) => {
-		const big = v.querySelector<HTMLElement>(".vbig")!;
-		const bar = v.querySelector<HTMLElement>(".vtrack span")!;
-		const time = v.querySelector<HTMLElement>(".vtime")!;
-		const playBtn = v.querySelector<HTMLButtonElement>(".vbar [data-play]")!;
-		let playing = false;
-		v.querySelectorAll("[data-play]").forEach((b) =>
-			b.addEventListener("click", () => {
-				playing = !playing;
-				big.hidden = true;
-				bar.style.width = "28%";
-				time.textContent = "0:37 / 2:14";
-				playBtn.setAttribute("aria-label", playing ? "Pause" : "Play");
-				playBtn.querySelector<HTMLElement>(".i-play")!.hidden = playing;
-				playBtn.querySelector<HTMLElement>(".i-pause")!.hidden = !playing;
-				if (playing) playBtn.focus();
-			}),
-		);
-		const cc = v.querySelector<HTMLButtonElement>("[data-cc]")!;
-		cc.addEventListener("click", () => {
-			const on = cc.getAttribute("aria-pressed") !== "true";
-			cc.setAttribute("aria-pressed", String(on));
-			cc.classList.toggle("on", on);
-			v.querySelector<HTMLElement>(".vcap")!.hidden = !on;
-		});
-	});
-</script>

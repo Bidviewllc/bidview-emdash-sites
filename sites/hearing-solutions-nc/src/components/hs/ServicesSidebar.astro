@@ -1,0 +1,30 @@
+---
+// Services hub sidebar (design/hsnc/Services.dc.html): "On this page" jump links
+// to each service block, then the navy "Let's talk today." call box. Sticky
+// beside the blocks on wide screens; above them on phones.
+import { routes, telHref } from "../../lib/routes";
+import { getSettings } from "../../lib/settings";
+
+interface Props {
+	links: { href: string; label: string }[];
+	/** Call box headline and text, as HTML. */
+	heading: string;
+	text: string;
+}
+const { links, heading, text } = Astro.props;
+const s = getSettings(Astro);
+---
+<aside class="hs-svc-sb" aria-label="On this page">
+	<nav class="hs-svc-nav" aria-label="Services on this page">
+		<p class="hs-eyebrow" style="color:var(--hs-green);margin:0 0 8px">On this page</p>
+		<ul style="list-style:none;margin:0;padding:0">
+			{links.map((l) => <li><a class="hs-svc-jl" href={l.href}>{l.label}</a></li>)}
+		</ul>
+	</nav>
+	<div class="on-dark hs-svc-cta">
+		<h2 class="hs-serif" set:html={heading} />
+		<p set:html={text} />
+		<a class="hs-btn hs-btn-w" href={telHref(s.phone)} style="width:100%">Call {s.phone}</a>
+		<a class="hs-svc-np" href={s.href(routes.resources)}>New patient information</a>
+	</div>
+</aside>

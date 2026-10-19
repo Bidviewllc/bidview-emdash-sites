@@ -1,5 +1,153 @@
-// Placeholder until this page is built from its HSNC board.
-import type { HsPage } from "./types";
+// New Patients page (design/hsnc/NewPatients.dc.html; the template's Patient
+// Resources record, PAGES slug "patient-resources", served at /new-patients):
+// text, lists and photos, with the design's wording. *Words* in asterisks are
+// italic; a blank line starts a new paragraph.
+import { line, para, photo, type HsPage } from "./types";
 
-const page: HsPage = { text: [] };
+const page: HsPage = {
+	hero: { src: "/assets/hsnc/dr-oden-door-hero.jpg", alt: "Dr. Lorin Oden smiling as she holds open the front door of the Hearing Solutions office" },
+	text: [
+		line("np_label", "Hero – Label (the page’s H1)", "New Patient Information · {city}, NC"),
+		line("np_display", "Hero – Headline", "*Welcome,* let's get you started."),
+		para("np_intro", "Hero – Description", "Whatever the reason, we're glad you found us. We've laid out what to expect, what you'll invest, and the questions we get asked most."),
+		line("np_toc_label", "Sidebar – “On this page” label", "On this page"),
+		line("np_side_heading", "Sidebar – Call box headline", "Let's talk today."),
+		para("np_side_text", "Sidebar – Call box text", "Most patients tell us they wish they'd come in sooner."),
+		line("np_choice_heading", "What brings you here – Headline", "First, what brings you here today?"),
+		line("np_invest_tag", "Your Investment – Label", "Hearing loss & hearing aids"),
+		line("np_invest_heading", "Your Investment – Headline", "Your Investment"),
+		para("np_invest_text", "Your Investment – Text", "We believe in transparency, so here's exactly what you can expect."),
+		line("np_reviews_heading", "Reviews – Headline", "What our patients say."),
+		line("np_other_heading", "Other Services – Headline", "Other Services"),
+		para("np_other_text", "Other Services – Text", "These are our other services, with details about what to expect. Call us at {phone} if you have questions or don't see what you need."),
+		line("np_faq_heading", "FAQ – Headline", "Things you may be wondering about..."),
+	],
+	lists: [
+		{
+			after: "np_toc_label",
+			field: "np_toc",
+			label: "Sidebar – “On this page” links (link: a section anchor on this page, e.g. #investment)",
+			sub: [{ slug: "t", label: "Text" }, { slug: "href", label: "Link" }],
+			default: [
+				{ t: "Schedule Appointment", href: "#schedule" },
+				{ t: "Your First Visit", href: "#first-visit" },
+				{ t: "Hearing Aid Fitting", href: "#fitting" },
+				{ t: "Check-Ins & Adjustments", href: "#check-ins" },
+				{ t: "Ongoing Care & Support", href: "#ongoing-care" },
+				{ t: "Your Investment", href: "#investment" },
+				{ t: "Other Services", href: "#other-services" },
+				{ t: "Things you may be wondering about", href: "#faq" },
+			],
+		},
+		{
+			after: "np_choice_heading",
+			field: "np_choices",
+			label: "What brings you here – Buttons (link: a section anchor, #steps or #other-services)",
+			sub: [{ slug: "t", label: "Text" }, { slug: "href", label: "Link" }],
+			default: [
+				{ t: "Hearing loss & hearing aids", href: "#steps" },
+				{ t: "Something else", href: "#other-services" },
+			],
+		},
+		{
+			after: "np_choice_heading",
+			field: "np_steps",
+			label: "Steps (anchor: the id the sidebar links to, e.g. first-visit; question/answer: an optional fold-out inside the card)",
+			sub: [
+				{ slug: "id", label: "Anchor" },
+				{ slug: "tag", label: "Label above the headline (optional)" },
+				{ slug: "t", label: "Headline" },
+				{ slug: "d", label: "Text", type: "text" },
+				{ slug: "q", label: "Fold-out question (optional)" },
+				{ slug: "qa", label: "Fold-out answer", type: "text" },
+				{ slug: "more_label", label: "“More” button name (read by screen readers)" },
+				{ slug: "more", label: "“More” text", type: "text" },
+			],
+			default: [
+				{
+					id: "schedule",
+					tag: "Hearing loss & hearing aids",
+					t: "Schedule Appointment",
+					d: "Call us at {phone}—we're in the office Monday through Friday, 8:00 to 5:00. When we talk, we'll ask a few questions about what you're noticing, answer your questions, and book the right appointment for you. You'll receive paperwork to complete beforehand.",
+					q: "",
+					qa: "",
+					more_label: "More about scheduling",
+					more: "[Additional details to come]",
+				},
+				{
+					id: "first-visit",
+					tag: "",
+					t: "Your First Visit",
+					d: "Plan on two hours with one of our doctors of audiology for your *Functional Hearing Assessment*. We'll start by looking in your ears to rule out anything simple, like wax or an issue we can fix on the spot. From there, we measure how you hear speech in background noise, how you tolerate sound, and how hard you're working to keep up, plus we'll provide a cognitive screening and establish a fall risk baseline.\n\nIf hearing aids make sense, you'll try them right here, and we'll retest with them in so you can hear the difference for yourself.",
+					q: "Prefer a shorter visit that can be billed to insurance?",
+					qa: "[Standard Hearing Evaluation details to come]",
+					more_label: "More about your first visit",
+					more: "[Additional details to come]",
+				},
+				{
+					id: "fitting",
+					tag: "",
+					t: "Hearing Aid Fitting",
+					d: "If we recommend hearing aids and you decide to move forward, we'll see you back in two to three weeks. We use that time to order your hearing aids and test them before you arrive. The fitting appointment is where they become yours. Live speech mapping and real-ear measurement let us check them against your prescription, in your ears, so soft sounds come through and loud sounds aren't too loud. We'll end the appointment by covering daily use and care.",
+					q: "",
+					qa: "",
+					more_label: "More about hearing aid fitting",
+					more: "[Additional details to come]",
+				},
+				{
+					id: "check-ins",
+					tag: "",
+					t: "Check-Ins & Adjustments",
+					d: "The day after your fitting, we'll call to check in. You'll come in a week later, then usually two more times over the next two months as you get acquainted with your new way of hearing. Every visit is a chance to fine-tune how they sound at church, at dinner, in the car, or wherever you use them. We'll also give you some listening practice to do at home. Once you're as comfortable as you are confident, you've graduated!",
+					q: "",
+					qa: "",
+					more_label: "More about check-ins",
+					more: "[Additional details to come]",
+				},
+				{
+					id: "ongoing-care",
+					tag: "",
+					t: "Ongoing Care & Support",
+					d: "After graduation, we'll see you every six months to check your programming, clean your hearing aids, and look at your wear time. Once a year, we repeat your hearing test, run diagnostics on your hearing aids, and reassess your fall risk. If something doesn't sound right in between, call us, and we'll get you in right away.",
+					q: "",
+					qa: "",
+					more_label: "More about ongoing care",
+					more: "[Additional details to come]",
+				},
+			],
+		},
+		{
+			after: "np_invest_text",
+			field: "np_invest",
+			label: "Your Investment – Rows",
+			sub: [{ slug: "t", label: "Heading" }, { slug: "d", label: "Text", type: "text" }],
+			default: ["Your first visit", "Hearing aids & fittings", "Ongoing care", "Insurance & financing"].map((t) => ({ t, d: "[YOUR PRICE] — [Details to come]" })),
+		},
+		{
+			after: "np_other_text",
+			field: "np_other",
+			label: "Other Services – Rows",
+			sub: [{ slug: "t", label: "Service" }, { slug: "d", label: "Text", type: "text" }],
+			default: ["Earwax removal", "Tinnitus", "Custom molds & hearing protection", "Hearing aid repair", "Hearing aids not purchased from us"].map((t) => ({ t, d: "[Details to come]" })),
+		},
+		{
+			after: "np_faq_heading",
+			field: "np_faq",
+			label: "FAQ – Questions",
+			sub: [{ slug: "q", label: "Question" }, { slug: "a", label: "Answer", type: "text" }],
+			default: [
+				"Where are you located, and is parking easy?",
+				"What should I bring to my first appointment?",
+				"Should I bring someone with me?",
+				"What if I need to reschedule or cancel?",
+				"Will I leave with hearing aids the same day?",
+				"What if I am scheduling for a loved one?",
+			].map((q) => ({ q, a: "" })),
+		},
+	],
+	photos: [
+		photo("np_invest_photo", "Your Investment – Photo", "/assets/hsnc/pricing-clipboard.jpg", "A Hearing Solutions team member smiling as she goes over pricing on a clipboard with a patient"),
+		photo("np_other_photo", "Other Services – Photo", "/assets/hsnc/custom-mold.jpg", "Close-up of a bright orange custom-molded hearing protection earpiece in a patient's ear"),
+	],
+};
 export default page;

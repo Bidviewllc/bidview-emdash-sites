@@ -1,13 +1,16 @@
 ---
-// Page 3 · Service detail (boards ServiceDetail, ServiceDetailMobile,
-// ServiceDetailPosts, ServiceDetailAlt). One template for every service.
-// Hero → rich text with a right sidebar (Book card, reviews, recent posts) →
-// FAQ → related services → CTA.
-import CtaBand from "../../components/CtaBand.astro";
+// Service detail (template Page 3, HSNC reskin; no HSNC board). Own service
+// pages are off for launch; this is how one looks when switched on. Light
+// green hero → rich text with a right sidebar (call card, reviews, recent
+// posts) → FAQ → related services → the shared closing band. Dropped from the
+// template: breadcrumbs, Book buttons (the phone instead).
+import "../../styles/hsnc-reskin.css";
 import DetailHero from "../../components/DetailHero.astro";
+import HsCtaBand from "../../components/hs/HsCtaBand.astro";
+import HsFaq from "../../components/hs/HsFaq.astro";
+import HsIcon from "../../components/hs/HsIcon.astro";
 import Icon from "../../components/Icon.astro";
 import type { Tweak } from "../../components/ReviewControls.astro";
-import Stars from "../../components/Stars.astro";
 import Base from "../../layouts/Base.astro";
 import { ptHas, ptToHtml } from "../../lib/portable-text";
 import { getSettings } from "../../lib/settings";
@@ -30,8 +33,6 @@ const tweaks: Tweak[] = [
 const s = getSettings(Astro);
 const h = s.href;
 const hero = s.heroFor("photo", service.heroImage);
-const withPhoto = hero === "photo" || hero === "example";
-const prim = hero === "primary";
 const carousel = s.choice("reviews", ["single", "carousel"], "single") === "carousel";
 const revLink = s.bool("revlink", true);
 const showPosts = s.bool("posts", true);
@@ -60,11 +61,12 @@ const toc = rich ? rich.headings : sampleToc;
 	tweaks={tweaks}
 	heroDefault="photo"
 >
-	<DetailHero crumbs={[["Home", routes.home], ["Services", routes.services]]} current={service.name} title={title} intro={s.fill(service.intro ?? "")} bookLabel={service.bookLabel} hero={hero} image={service.heroImage} />
+	<DetailHero label="Services" title={title} intro={s.fill(service.intro ?? "")} hero={hero} image={service.heroImage} />
 
-	<section class:list={["sd-main", { "after-photo": withPhoto }]}>
-		<div class="wrap side-layout">
-			<div class="stack g32">
+	<div class="hs">
+	<section class="hs-wrap rs-sec">
+		<div class:list={["rs-side", { "no-sticky": !sticky }]}>
+			<div class="rs-stack" style="gap:32px">
 				<nav class="jump acc" aria-label="Table of contents" data-acc>
 					<h2 style="margin: 0">
 						<button class="jump-btn" type="button" aria-expanded="false" aria-controls="sd-toc">
@@ -112,60 +114,57 @@ const toc = rich ? rich.headings : sampleToc;
 				)}
 			</div>
 
-			<aside class:list={["sidebar", { sticky }]} aria-label="Book and reviews">
-				<div class="panel">
-					<div class="card side-card">
-						<h2 class="h3">{service.bookLabel}</h2>
-						<p class="muted">{s.fill(service.sidebarText ?? "")}</p>
-						<a class="btn btn-primary block" href={h(routes.book)}>Book appointment</a>
-						<a class="tel" href={tel} style="justify-content: center"><span class="ico"><Icon name="phone" /></span>{s.phone}</a>
-					</div>
-				</div>
-
-				<div class="stack g8">
-					<div class="panel">
-						<section class="card side-card review" aria-roledescription={carousel ? "carousel" : undefined} aria-label="Patient reviews" data-carousel={carousel ? "" : undefined}>
-							<div style="display: flex; justify-content: space-between; align-items: center">
-								<Stars label="5 out of 5 stars" />
-								<span class="qmark only-d" aria-hidden="true" style="width: 44px; height: 44px; border-radius: 12px"><Icon name="quote" size={22} /></span>
-							</div>
-							<div aria-live="polite">
-								{rvList.map((r, i) => (
-									<div class="rv-slide" data-slide={i} hidden={i > 0}>
-										{carousel && <span class="sr">Review {i + 1} of {rvList.length}</span>}
-										<blockquote class="rtext" style="margin: 0; font-size: 18px; -webkit-line-clamp: 6">{r.text}</blockquote>
-										<div class="rmeta" style="margin-top: 18px"><b>{r.name}</b><span>Google review</span></div>
-									</div>
-								))}
-							</div>
-							{carousel && (
-								<div class="rv-nav">
-									<button class="rv-arrow" type="button" data-prev aria-label="Previous review"><Icon name="arrowL" size={22} /></button>
-									<div class="rv-dots">
-										{rvList.map((_, i) => (
-											<button class:list={["rv-dot", { on: i === 0 }]} type="button" data-dot={i} aria-label={`Show review ${i + 1} of ${rvList.length}`} aria-current={i === 0 ? "true" : "false"}><span /></button>
-										))}
-									</div>
-									<button class="rv-arrow next" type="button" data-next aria-label="Next review"><Icon name="arrowR" size={22} /></button>
-								</div>
-							)}
-						</section>
-					</div>
-					{revLink && <a class="link-arrow" href={h(routes.reviews)} style="padding-left: 8px">Read more reviews <Icon name="arrowR" size={18} /></a>}
+			<aside class="hs-aside" aria-label="Call us and reviews">
+				<div class="hs-callbox">
+					<h2 class="hs-serif">{service.bookLabel}</h2>
+					{service.sidebarText && <p>{s.fill(service.sidebarText)}</p>}
+					<a class="hs-btn hs-btn-w" href={tel}>Call us: {s.phone}</a>
 				</div>
 
 				{
-					showPosts && (
-						<div class="panel">
-							<div class="card side-card" style="gap: 8px">
-								<h2 class="h3" style="margin-bottom: 6px">From our audiologists</h2>
-								{posts.map((p) => (
-									<a class="mini-post" href={h(routes.post(p.slug))}>
-										<div class:list={["ph", p.tone]} />
-										<div class="stack" style="gap: 2px"><span class="date">{p.date}</span><b>{p.title}</b></div>
-									</a>
-								))}
-							</div>
+					rvList.length > 0 && (
+						<div style="display:flex;flex-direction:column;gap:8px">
+							<section class="hs-rcard" style="background:var(--hs-mint);padding:28px;flex:none" aria-roledescription={carousel ? "carousel" : undefined} aria-label="Patient reviews" data-carousel={carousel ? "" : undefined}>
+								<div style="display:flex;justify-content:space-between;align-items:flex-start">
+									<div class="hs-stars" role="img" aria-label="5 out of 5 stars">{[1, 2, 3, 4, 5].map(() => <HsIcon name="star" size={20} />)}</div>
+									<span class="hs-qmark" aria-hidden="true" style="width:44px;height:44px;background:#fff"><HsIcon name="quote" size={20} /></span>
+								</div>
+								<div aria-live="polite">
+									{rvList.map((r, i) => (
+										<div data-slide={i} hidden={i > 0}>
+											{carousel && <span class="sr">Review {i + 1} of {rvList.length}</span>}
+											<blockquote class="hs-rtext" style="font-size:18px;-webkit-line-clamp:6">{r.text}</blockquote>
+											<div class="hs-rmeta" style="margin-top:16px"><b>{r.name}</b><span>Google review</span></div>
+										</div>
+									))}
+								</div>
+								{carousel && (
+									<div style="display:flex;justify-content:space-between;align-items:center">
+										<button class="hs-arrow" type="button" data-prev aria-label="Previous review"><HsIcon name="prev" size={22} /></button>
+										<div class="rv-dots">
+											{rvList.map((_, i) => (
+												<button class:list={["rv-dot", { on: i === 0 }]} type="button" data-dot={i} aria-label={`Show review ${i + 1} of ${rvList.length}`} aria-current={i === 0 ? "true" : "false"}><span /></button>
+											))}
+										</div>
+										<button class="hs-arrow" type="button" data-next aria-label="Next review"><HsIcon name="next" size={22} /></button>
+									</div>
+								)}
+							</section>
+							{revLink && <a class="rs-more" href={h(routes.reviews)} style="padding-left: 8px">Read more reviews <HsIcon name="arrow" size={18} /></a>}
+						</div>
+					)
+				}
+
+				{
+					showPosts && posts.length > 0 && (
+						<div class="rs-scard" style="gap:8px">
+							<h2 style="margin-bottom:6px">From our audiologists</h2>
+							{posts.map((p) => (
+								<a class="mini-post" href={h(routes.post(p.slug))}>
+									{p.image ? <img src={p.image} alt="" style="width:72px;height:72px;object-fit:cover" loading="lazy" /> : <div class="hs-ph" style="width:72px;height:72px;border-radius:8px;background:#fff" />}
+									<div style="display:flex;flex-direction:column;gap:2px"><span class="date">{p.date}</span><b>{p.title}</b></div>
+								</a>
+							))}
 						</div>
 					)
 				}
@@ -173,58 +172,45 @@ const toc = rich ? rich.headings : sampleToc;
 		</div>
 	</section>
 
-	<section class="band sd-faq" style="padding-top: 0">
-		<div class="wrap faq-grid">
-			<div class="stack g24">
-				<span class="eyebrow">FAQ</span>
-				<h2 class="h2">Frequently asked questions about {service.name.toLowerCase()}</h2>
-				<div class="only-d" style="padding-top: 8px"><a class="btn btn-primary" href={h(routes.contact)}>Contact us</a></div>
-			</div>
-			<div class="acc-list">
-				{
-					faq.map((it, i) => (
-						<div class:list={["acc", { open: i === 0 }]} data-acc>
-							<h3 style="margin: 0">
-								<button class="acc-btn" type="button" aria-expanded={i === 0 ? "true" : "false"} aria-controls={`faq-${i}`}>
-									<span>{it.q}</span>
-									<span class="acc-ic" aria-hidden="true"><span class="i-open"><Icon name="plus" /></span><span class="i-close"><Icon name="minus" /></span></span>
-								</button>
-							</h3>
-							<div class="acc-body" id={`faq-${i}`} hidden={i !== 0}><p>{it.a}</p></div>
-						</div>
-					))
-				}
-			</div>
-			<a class="btn btn-primary block only-m" href={h(routes.contact)}>Contact us</a>
-		</div>
-	</section>
+	{
+		faq.length > 0 && (
+			<section class="hs-wrap rs-sec pt0" style="max-width:900px;display:flex;flex-direction:column;gap:32px">
+				<div class="rs-head center">
+					<p class="hs-eyebrow">FAQ</p>
+					<h2 class="hs-serif">Frequently asked questions about {service.name.toLowerCase()}</h2>
+				</div>
+				<div><HsFaq items={faq} /></div>
+				<div style="display:flex;justify-content:center"><a class="hs-btn hs-btn-o" href={h(routes.contact)}>Contact us</a></div>
+			</section>
+		)
+	}
 
-	<section class="band bg-light">
-		<div class="wrap stack g48">
-			<div class="shead">
-				<div class="stack g16"><span class="eyebrow">Services</span><h2 class="h2">Related services</h2></div>
-				<a class="link-arrow" href={h(routes.services)}>All services <Icon name="arrowR" size={18} /></a>
-			</div>
-			<div class="panel grid g-3">
-				{
-					related.map((x) => (
-						<article class="card">
-							<h3 class="h3">{x.name}</h3>
-							<p class="muted">{x.summary}</p>
-							{x.hasPage && (
-								<div class="actions">
-									<a class="btn btn-gray sm" href={h(routes.service(x.slug))}>Learn more<span class="sr"> about {x.name}</span></a>
-								</div>
-							)}
-						</article>
-					))
-				}
-			</div>
-		</div>
-	</section>
-
-	<div class="cta-wrap after-inset">
-		<CtaBand id="dcta" heading={service.ctaHeading} text="Consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore. Magna aliqua ut enim ad minim." bookLabel={service.bookLabel} photoLabel="Lifestyle photo · conversation, meal, outdoors" />
+	{
+		related.length > 0 && (
+			<section class="hs-mint">
+				<div class="hs-wrap rs-sec rs-stack">
+					<div class="rs-shead">
+						<div class="rs-head"><p class="hs-eyebrow">Services</p><h2 class="hs-serif">Related services</h2></div>
+						<a class="rs-more" href={h(routes.services)}>All services <HsIcon name="arrow" size={18} /></a>
+					</div>
+					<div class="grid g-3" style="gap:24px">
+						{related.map((x) => (
+							<article class="card" style="border-radius:14px">
+								<h3 class="h3">{x.name}</h3>
+								<p class="muted">{x.summary}</p>
+								{x.hasPage && (
+									<div class="actions">
+										<a class="hs-btn hs-btn-o" href={h(routes.service(x.slug))}>Learn more<span class="sr"> about {x.name}</span></a>
+									</div>
+								)}
+							</article>
+						))}
+					</div>
+				</div>
+			</section>
+		)
+	}
+		<HsCtaBand />
 	</div>
 </Base>
 

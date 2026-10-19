@@ -1,8 +1,8 @@
 ---
-// Page 17 · Thank you (boards ThankYouPage, ThankYouMobile). Shown after a form
-// is sent. Centred Light panel: check mark, H1, callback line with a tappable
-// phone number, "Back to home" and "Read our patient resources".
-import Icon from "../components/Icon.astro";
+// Thank you (template Page 17, HSNC reskin; no HSNC board). Shown after a form
+// is sent. Light green band: check mark, serif H1, callback line with a
+// tappable phone number, "Back to home" and "New patient information".
+import "../styles/hsnc-reskin.css";
 import Base from "../layouts/Base.astro";
 import { getSettings } from "../lib/settings";
 import { routes, telHref } from "../lib/routes";
@@ -10,14 +10,15 @@ import { routes, telHref } from "../lib/routes";
 const s = getSettings(Astro);
 ---
 <Base title={`Thank you | ${s.name}`} description="We got your message." pageName="Thank you">
-	<div class="pg-hero-np ty-wrap">
-		<section class="ty-hero" aria-labelledby="ty-h" style="background: var(--l); color: var(--on-l)">
-			<div class="wrap">
-				<div class="stack g24 ty-col">
-					<span class="ty-mark" aria-hidden="true"><Icon name="check" size={40} /></span>
-					<h1 class="h1 xl" id="ty-h" style="color: inherit">Thank you, we got your message</h1>
-					<p class="lead" style="color: inherit; margin: 0">We’ll call you within one business day. If you need us sooner, call <a class="ty-tel" href={telHref(s.phone)}>{s.phone}</a>.</p>
-					<div class="ty-links"><a class="btn btn-primary" href={s.href(routes.home)}>Back to home</a><a class="btn btn-secondary" href={s.href(routes.resources)}>Read our patient resources</a></div>
+	<div class="hs">
+		<section class="hs-mint rs-hero" aria-labelledby="ty-h">
+			<div class="hs-wrap" style="padding-top:96px;padding-bottom:112px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:20px">
+				<span class="rs-mark" aria-hidden="true"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg></span>
+				<h1 class="hs-serif rs-h1" id="ty-h">Thank you, we got your message</h1>
+				<p class="rs-lead">We’ll call you within one business day. If you need us sooner, call <a href={telHref(s.phone)} style="font-weight:600;white-space:nowrap">{s.phone}</a>.</p>
+				<div class="hs-btns" style="justify-content:center;gap:12px;margin-top:8px">
+					<a class="hs-btn" href={s.href(routes.home)}>Back to home</a>
+					<a class="hs-btn hs-btn-o" href={s.href(routes.resources)}>New patient information</a>
 				</div>
 			</div>
 		</section>

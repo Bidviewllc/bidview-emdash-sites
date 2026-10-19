@@ -34,8 +34,9 @@ export const CTA_MODE_OPTIONS = ["Use the shared booking band", "Customize for t
 /** The Shared sections record (one record, slug "main"). */
 export const SHARED_COLLECTION = "shared_sections";
 export const SHARED_DEFAULTS = {
-	cta_heading: "Take the first step toward better hearing",
-	cta_text: "Pretium tincidunt lacus nulla gravida orci a odio nullam varius turpis. Et commodo pharetra est eros bibendum elit.",
+	// HSNC: the Services board's closing band.
+	cta_heading: "Let's talk today.",
+	cta_text: ["Most patients tell us they wish they'd come in sooner.", "So if you've been meaning to get this checked:"].join(String.fromCharCode(10)),
 };
 
 /** The Page templates record: settings for each kind of record page. */
@@ -74,14 +75,10 @@ export const PAGES: PageDef[] = [
 		path: "/",
 		alwaysOn: true,
 		hero: true,
-		settings: [
-			choice("home_trust_logos", "Trust bar logos", "trustmove", [["scroll", "Scrolling (with pause)"], ["still", "Still"]]),
-			choice("home_trust_rating", "Trust bar rating", "trustrating", [["boxed", "In its own box"], ["plain", "Plain (no box)"]]),
-			bool("home_latest_posts", "Latest posts section", "posts"),
-			bool("home_sample_card", "Sample service card with photo", "sample", false),
-		],
+		// HSNC: the template Home switches (trust bar, latest posts, sample card) are gone with those sections.
+		settings: [],
 	},
-	{ slug: "services", collection: "page_services", title: "Services", path: "/services", hero: true, settings: [bool("services_first_visit", "“What to expect at your first visit” steps", "steps")] },
+	{ slug: "services", collection: "page_services", title: "Services", path: "/services", hero: true, settings: [] },
 	{
 		slug: "hearing-aids", collection: "page_hearing_aids",
 		title: "Hearing aids",
@@ -94,21 +91,16 @@ export const PAGES: PageDef[] = [
 		title: "About",
 		path: "/about",
 		hero: true,
-		settings: [
-			choice("about_journey", "Our journey", "journey", [["grid", "Grid 2 × 2"], ["row", "Horizontal"], ["hidden", "Hidden"]]),
-			bool("about_community", "Community section", "community"),
-			bool("about_credentials", "Credentials section", "creds"),
-		],
+		// HSNC: the template About switches (journey, community, credentials) are gone with those sections.
+		settings: [],
 	},
 	{ slug: "contact", collection: "page_contact", title: "Contact", path: "/contact", hero: true, settings: [] },
 	{
 		slug: "book-appointment", collection: "page_book_appointment",
 		title: "Book appointment",
 		path: "/book-appointment",
-		settings: [
-			choice("book_version", "Booking", "version", [["a", "A · Scheduler embed"], ["b", "B · Request form"]]),
-			choice("book_layout", "Layout", "layout", [["full", "Full width"], ["side", "Right sidebar"]]),
-		],
+		// HSNC: always the request form, full width (HSNC books by phone; no scheduler).
+		settings: [],
 	},
 	{ slug: "reviews", collection: "page_reviews", title: "Reviews", path: "/reviews", settings: [choice("reviews_button", "“Leave us a review” button", "reviewbtn", [["primary", "Primary colour"], ["outline", "White with outline"]])] },
 	{ slug: "blog", collection: "page_blog", title: "Blog", path: "/blog", settings: [choice("blog_layout", "Layout", "layout", [["grid", "Grid · 16:9"], ["square", "Grid · square"], ["list", "List"]])] },

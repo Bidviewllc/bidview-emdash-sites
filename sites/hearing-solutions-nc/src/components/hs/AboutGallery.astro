@@ -1,0 +1,54 @@
+---
+// "Where it all happens." office gallery (About board): one big photo with
+// round prev/next arrows over it, and a row of thumbnail buttons under it.
+// The current photo is ringed in lime; the rest are dimmed. Plain script, no framework.
+import type { Photo } from "../../data/site";
+
+interface Props {
+	photos: Photo[];
+}
+const { photos } = Astro.props;
+const first = photos[0];
+---
+{
+	first && (
+		<div class="hs-card ab-gal" data-ab-gal>
+			<div class="ab-gal-stage">
+				<button class="hs-arrow ab-gal-arrow" type="button" aria-label="Previous photo" data-gal-prev style="left:8px">
+					<span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg></span>
+				</button>
+				<img src={first.src} alt={first.alt} class="ab-gal-img" data-gal-img />
+				<button class="hs-arrow ab-gal-arrow" type="button" aria-label="Next photo" data-gal-next style="right:8px">
+					<span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span>
+				</button>
+			</div>
+			<div class="ab-gal-thumbs">
+				{
+					photos.map((p, i) => (
+						<button type="button" class="ab-gal-thumb" aria-label={`Show photo ${i + 1}: ${p.alt}`} aria-pressed={i === 0 ? "true" : "false"} data-gal-thumb data-src={p.src} data-alt={p.alt}>
+							<img src={p.src} alt="" loading="lazy" />
+						</button>
+					))
+				}
+			</div>
+		</div>
+	)
+}
+<script>
+	document.querySelectorAll<HTMLElement>("[data-ab-gal]").forEach((gal) => {
+		const img = gal.querySelector<HTMLImageElement>("[data-gal-img]");
+		const thumbs = [...gal.querySelectorAll<HTMLButtonElement>("[data-gal-thumb]")];
+		if (!img || !thumbs.length) return;
+		let at = 0;
+		const show = (i: number) => {
+			at = (i + thumbs.length) % thumbs.length;
+			const t = thumbs[at];
+			img.src = t.dataset.src ?? "";
+			img.alt = t.dataset.alt ?? "";
+			thumbs.forEach((b, j) => b.setAttribute("aria-pressed", j === at ? "true" : "false"));
+		};
+		thumbs.forEach((b, i) => b.addEventListener("click", () => show(i)));
+		gal.querySelector("[data-gal-prev]")?.addEventListener("click", () => show(at - 1));
+		gal.querySelector("[data-gal-next]")?.addEventListener("click", () => show(at + 1));
+	});
+</script>

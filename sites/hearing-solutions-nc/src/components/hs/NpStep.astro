@@ -1,0 +1,29 @@
+---
+// New Patients board step card (".step"): optional small label, serif H2,
+// paragraphs, an optional fold-out question (".acc") and the chevron-only
+// "more" fold-out. Text: blank lines start paragraphs; *italic* works.
+import { inline } from "../../lib/hs";
+import NpAcc from "./NpAcc.astro";
+
+interface Props {
+	step: Record<string, string>;
+}
+const { step } = Astro.props;
+const paras = (t = "") => t.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
+---
+<article class="hs-np-step" id={step.id || undefined}>
+	{step.tag && <p class="hs-eyebrow hs-np-tag">{step.tag}</p>}
+	<h2>{step.t}</h2>
+	{paras(step.d).map((p) => <p set:html={inline(p)} />)}
+	{step.q && <NpAcc title={step.q} text={step.qa} />}
+	{
+		step.more && (
+			<details class="hs-np-more">
+				<summary aria-label={step.more_label || `More about ${step.t}`}>
+					<svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 6l4 4 4-4" /></svg>
+				</summary>
+				{paras(step.more).map((p) => <p set:html={inline(p)} />)}
+			</details>
+		)
+	}
+</article>

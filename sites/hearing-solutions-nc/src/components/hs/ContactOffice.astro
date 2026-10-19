@@ -1,0 +1,27 @@
+---
+// One-column office card (Contact board; also used on Book appointment): name,
+// address, phone, fax, hours, "Get directions", then the map below. No card
+// background: it sits on white beside the mint form.
+import { telHref } from "../../lib/routes";
+import { getSettings } from "../../lib/settings";
+import HsIcon from "./HsIcon.astro";
+
+interface Props {
+	class?: string;
+}
+const s = getSettings(Astro);
+const o = s.offices[0];
+const name = Astro.locals.site.practice.name;
+const q = [name, o.street, o.city].filter(Boolean).join(", ");
+---
+<article class:list={["hs-c-office", Astro.props.class]} aria-label={`${name} office`}>
+	<div class="hs-c-office-info">
+		<h3 style="margin:0;font-weight:600">{name}</h3>
+		<div class="hs-drow"><span class="hs-di"><HsIcon name="pin" /></span><address style="font-style:normal;padding-top:6px">{o.street}<br />{o.city}</address></div>
+		<div class="hs-drow" style="align-items:center"><span class="hs-di"><HsIcon name="phone2" /></span><a href={telHref(s.phone)} style="font-weight:700;font-size:20px;text-decoration:none">{s.phone}</a></div>
+		{o.fax && <div class="hs-drow" style="align-items:center"><span class="hs-di"><HsIcon name="fax" /></span><span>Fax: {o.fax}</span></div>}
+		{o.hoursLine && <div class="hs-drow" style="align-items:center"><span class="hs-di"><HsIcon name="clock" /></span><span>{o.hoursLine}</span></div>}
+		<a class="hs-loc-dir" href={o.mapsUrl}>Get directions <HsIcon name="arrowUp" size={18} /></a>
+	</div>
+	<div class="hs-c-map"><iframe src={`https://maps.google.com/maps?q=${encodeURIComponent(q)}&output=embed`} title={`Map: ${name}, ${o.street}, ${o.city}`} loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>
+</article>

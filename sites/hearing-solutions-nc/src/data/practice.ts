@@ -77,6 +77,16 @@ export type Service = {
 	/** Page content (rich text). */
 	content?: import("../lib/portable-text").PTBlock[];
 	sidebarText?: string;
+	/** Services hub block: heading, when it differs from the name (a line break stays one). */
+	hubHeading?: string;
+	/** Services hub block: paragraphs (blank line = new paragraph; *italic*, **bold**, [link text](/path)). */
+	hubText?: string;
+	/** Services hub block: the accordion rows (t = title, d = description). */
+	hubItems?: { t: string; d: string }[];
+	/** Services hub block: the italic note under the rows (same formatting as hubText). */
+	hubNote?: string;
+	/** Services hub block: the second button. */
+	hubButton?: "pricing" | "question";
 };
 
 export type Brand = {
@@ -172,11 +182,73 @@ export const providers: Provider[] = [
  * Services hub (the slug is its anchor there); "own page" is off for launch.
  */
 export const services: Service[] = [
-	{ slug: "hearing-loss", name: "Hearing Loss", navLabel: "Hearing Loss", summary: "", hasPage: false, onHome: false, bookLabel: "Call to book", ctaHeading: "" },
-	{ slug: "hearing-aids", name: "Hearing Aids", navLabel: "Hearing Aids", summary: "", hasPage: false, onHome: false, bookLabel: "Call to book", ctaHeading: "" },
-	{ slug: "tinnitus", name: "Tinnitus", navLabel: "Tinnitus", summary: "", hasPage: false, onHome: true, bookLabel: "Call to book", ctaHeading: "" },
-	{ slug: "ear-spa", name: "Ear Spa (Earwax Removal)", navLabel: "Ear Spa (Earwax Removal)", summary: "", hasPage: false, onHome: true, bookLabel: "Call to book", ctaHeading: "" },
-	{ slug: "custom-molds", name: "Custom Molds & Hearing Protection", navLabel: "Custom Molds & Hearing Protection", summary: "", hasPage: false, onHome: true, bookLabel: "Call to book", ctaHeading: "" },
+	{
+		slug: "hearing-loss",
+		name: "Hearing Loss",
+		navLabel: "Hearing Loss",
+		summary: "",
+		hasPage: false,
+		onHome: false,
+		bookLabel: "Call to book",
+		ctaHeading: "",
+		hubText: "If you are experiencing [hearing loss](#), we like to begin with our *Functional Hearing Assessment*. A beep test only tells us so much. [This assessment](#) goes much further, measuring how your brain processes sound, how it copes with noise, and how hard you're working to keep up. In just two hours, we can see the whole picture.",
+		hubItems: [{ t: "Before your visit", d: "[Description to come]" }, { t: "Otoscopic exam", d: "[Description to come]" }, { t: "Tympanometry", d: "[Description to come]" }, { t: "Pure tone audiometry", d: "[Description to come]" }, { t: "Bone conduction testing", d: "[Description to come]" }, { t: "Speech audiometry", d: "[Description to come]" }, { t: "Sound tolerance testing", d: "[Description to come]" }, { t: "Speech-in-noise testing", d: "[Description to come]" }, { t: "Cognitive screening", d: "[Description to come]" }, { t: "Fall risk assessment", d: "[Description to come]" }, { t: "Live device demonstration", d: "[Description to come]" }],
+		hubNote: "**Prefer to start smaller?** A [Standard Hearing Evaluation](#) covers the otoscopic exam, tympanometry, and pure tone audiometry. We bill Medicare and Medicaid directly for this shorter visit, and give commercial patients an invoice to submit for reimbursement.",
+		hubButton: "pricing",
+	},
+	{
+		slug: "hearing-aids",
+		name: "Hearing Aids",
+		navLabel: "Hearing Aids",
+		summary: "",
+		hasPage: false,
+		onHome: false,
+		bookLabel: "Call to book",
+		ctaHeading: "",
+		hubText: "If your *Functional Hearing Assessment* points to hearing aids as your answer, we find the perfect match for your ears, your brain, and your life. If you already have hearing aids, we help them do everything they're supposed to within your unique circumstances.",
+		hubItems: [{ t: "Hearing aid fittings", d: "[Description to come]" }, { t: "Ongoing care & adjustments", d: "[Description to come]" }, { t: "Hearing aid repairs", d: "[Description to come]" }, { t: "Care for hearing aids bought elsewhere", d: "[Description to come]" }, { t: "Assistive listening devices", d: "[Description to come]" }],
+		hubButton: "question",
+	},
+	{
+		slug: "tinnitus",
+		name: "Tinnitus",
+		navLabel: "Tinnitus",
+		summary: "",
+		hasPage: false,
+		onHome: true,
+		bookLabel: "Call to book",
+		ctaHeading: "",
+		hubText: "If you hear ringing, buzzing, or hissing that no one else can, that's tinnitus. Most people are told there's nothing to be done—that you just have to live with it. That isn't true. Something can be done, and we're here to help.",
+		hubItems: [{ t: "Tinnitus evaluation", d: "[Description to come]" }, { t: "Tinnitus treatment", d: "[Description to come]" }],
+		hubButton: "pricing",
+	},
+	{
+		slug: "ear-spa",
+		name: "Ear Spa (Earwax Removal)",
+		navLabel: "Ear Spa (Earwax Removal)",
+		summary: "",
+		hasPage: false,
+		onHome: true,
+		bookLabel: "Call to book",
+		ctaHeading: "",
+		hubText: "Ears feeling clogged, muffled, or full? Sometimes, what looks like hearing loss is just wax—and it's never something to dig at with a Q-tip, which usually pushes it deeper. Our Ear Spa is a 30-minute appointment, and it's exactly as pleasant as it sounds.",
+		hubItems: [{ t: "The Earigator™", d: "[Description to come]" }],
+		hubButton: "pricing",
+	},
+	{
+		slug: "custom-molds",
+		name: "Custom Molds & Hearing Protection",
+		navLabel: "Custom Molds & Hearing Protection",
+		summary: "",
+		hasPage: false,
+		onHome: true,
+		bookLabel: "Call to book",
+		ctaHeading: "",
+		hubHeading: "Custom Molds &\nHearing Protection",
+		hubText: "We make all kinds of custom earpieces, each molded to fit your ear exactly. Some protect your hearing—on the job, at the range, at concerts. Others solve everyday problems: keeping water out when you swim, blocking noise when you sleep, or, if you're a musician, giving you a precise in-ear monitor fit. Whatever you need, a custom mold seals better and stays more comfortable than anything off the shelf.",
+		hubItems: [{ t: "Digital ear scan", d: "[Description to come]" }],
+		hubButton: "question",
+	},
 ];
 
 export const brands: Brand[] = [

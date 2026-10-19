@@ -70,7 +70,7 @@
 .hs-wrap { max-width: 1120px; margin: 0 auto; padding-left: 24px; padding-right: 24px; }
 .hs-serif { font-family: var(--hs-serif); font-weight: 400; }
 .hs-eyebrow { margin: 0; font: 600 15px/1.6 var(--hs-sans); letter-spacing: .06em; text-transform: uppercase; }
-.hs h1, .hs h2, .hs h3, .hs .hs-display { color: var(--hs-green); margin: 0; }
+.hs h1, .hs h2, .hs h3, .hs .hs-display, .hs .hs-display-sm { color: var(--hs-green); margin: 0; }
 .hs h2 { font-size: 40px; line-height: 1.15; }
 .hs h3 { font-size: 24px; line-height: 1.3; }
 .hs .hs-h2-sm { font-size: 32px; line-height: 1.2; }
@@ -78,7 +78,8 @@
 .hs .hs-display { font-size: 56px; line-height: 1.1; }
 .hs .hs-display-sm { font-size: 52px; line-height: 1.15; }
 .hs p { margin: 0; }
-.hs .on-dark h1, .hs .on-dark h2, .hs .on-dark h3, .hs .on-dark .hs-display { color: #fff; }
+.hs .on-dark h1, .hs .on-dark h2, .hs .on-dark h3, .hs .on-dark .hs-display, .hs .on-dark .hs-display-sm,
+.hs.on-dark h1, .hs.on-dark h2, .hs.on-dark h3, .hs.on-dark .hs-display { color: #fff; }
 .on-dark { color: #fff; }
 .hs .on-dark a:not([class]) { color: #fff; }
 

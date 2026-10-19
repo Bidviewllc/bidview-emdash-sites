@@ -62,7 +62,6 @@ const LEGAL = ["privacy-policy", "terms-of-use", "accessibility"];
  */
 const AFTER_TEXT: Record<string, object[]> = {
 	home_about_text: [str("years", "About us – Years in practice (e.g. 35+ years)")],
-	services_steps_heading: [repeater("first_visit", "Your first visit – Steps", [sub("t", "Step"), sub("d", "Text", "text")])],
 	about_journey_intro: [repeater("milestones", "Our journey – Milestones", [sub("y", "Year"), sub("t", "Text", "text")])],
 	about_values_heading: [repeater("values", "Our values – Values", [sub("icon", "Icon"), sub("t", "Heading"), sub("d", "Text", "text")])],
 };
@@ -85,8 +84,7 @@ const hsSamples = (slug: string) => {
 /** Sample values for those fields. */
 const AFTER_TEXT_SAMPLES: Record<string, Record<string, unknown>> = {
 	...(HS_PAGES.home ? {} : { home: { years: s.practice.years } }),
-	services: { first_visit: s.firstVisitSteps.map(({ t, d }) => ({ t, d })) },
-	about: { milestones: s.milestones.map(({ y, t }) => ({ y, t })), values: s.values.map(({ icon, t, d }) => ({ icon, t, d })) },
+	// HSNC: About has its own lists (src/data/hsnc/about.ts); the template's milestones and values fields are gone.
 };
 const pageCollections = PAGES.filter((p) => p.collection).map((p, i) => {
 	const text = PAGE_TEXT[p.slug] ?? [];
@@ -241,6 +239,12 @@ const collections = [
 			bool("on_home", "Show on the Home page grid", true),
 			str("book_label", "Booking button label"),
 			str("cta_heading", "Booking band heading"),
+			// Services hub block (the service's section on /services; its slug is the anchor).
+			txt("hub_heading", "Services page – Heading, if different from the name (a line break stays one)"),
+			txt("hub_text", "Services page – Text (blank line = new paragraph; *italic*, **bold**, [link text](/page))"),
+			repeater("hub_items", "Services page – Fold-out rows", [sub("t", "Title"), sub("d", "Description", "text")]),
+			txt("hub_note", "Services page – Note under the rows (shows in italics; same formatting as Text)"),
+			select("hub_button", "Services page – Second button", ["Pricing information", "Ask a question"], "Pricing information"),
 			image("hero_image", "Hero photo (3:2, landscape)"),
 			txt("intro", "Hero – Description"),
 			richText("content", "Page content (H2 headings make the “Jump to” list)"),
@@ -419,6 +423,11 @@ const content = {
 			on_home: x.onHome !== false,
 			book_label: x.bookLabel,
 			cta_heading: x.ctaHeading,
+			...(x.hubHeading ? { hub_heading: x.hubHeading } : {}),
+			hub_text: x.hubText ?? "",
+			hub_items: x.hubItems ?? [],
+			hub_note: x.hubNote ?? "",
+			hub_button: x.hubButton === "question" ? "Ask a question" : "Pricing information",
 			intro: RT.service_intro,
 			content: md("service-body.md", { service: x.name.toLowerCase(), name: s.practice.name }),
 			sidebar_text: RT.service_sidebar,

@@ -1,0 +1,63 @@
+/* New Patients page (design/hsnc/NewPatients.dc.html). Loaded by
+   src/pages/new-patients.astro after hsnc.css. */
+
+.hs-np-sbwrap { display: flex; flex-wrap: wrap; gap: 40px 48px; align-items: flex-start; padding-top: 80px; padding-bottom: 40px; }
+.hs-np-sb { flex: 0 0 280px; position: sticky; top: 24px; display: flex; flex-direction: column; gap: 24px; }
+.hs-np-main { flex: 1 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 32px; }
+.hs-np-nav { border-left: 2px solid var(--hs-sage-2); padding: 4px 0 4px 20px; }
+.hs-np-nav ul { list-style: none; margin: 0; padding: 0; }
+.d1 .hs-np-jl { display: flex; align-items: center; min-height: 44px; color: var(--hs-navy); text-decoration: none; font-size: 17px; }
+.d1 .hs-np-jl:hover { color: var(--hs-green); text-decoration: underline; text-underline-offset: 4px; }
+.hs-np-cta { background: var(--hs-navy); color: #fff; border-radius: 14px; padding: 28px 24px; display: flex; flex-direction: column; gap: 14px; align-items: flex-start; }
+.hs .hs-np-cta h2 { font-size: 28px; line-height: 1.15; color: #fff; }
+
+.hs-np-steps { width: 100%; display: flex; flex-direction: column; gap: 28px; }
+.hs-np-video { height: 380px; background: var(--hs-rule); position: relative; }
+.hs-np-video span { width: 64px; height: 64px; border-radius: 50%; background: rgba(255, 255, 255, .9); display: flex; align-items: center; justify-content: center; color: var(--hs-navy); }
+
+.hs-np-step { background: var(--hs-sage); border-radius: 14px; padding: 32px 28px 20px; display: flex; flex-direction: column; gap: 14px; scroll-margin-top: 24px; }
+.hs .hs-np-step h2 { font-family: var(--hs-serif); font-weight: 400; font-size: 32px; line-height: 1.15; }
+.hs-np-tag { font-size: 15px; letter-spacing: .08em; }
+.hs-np-more summary { list-style: none; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; cursor: pointer; margin-left: -12px; color: var(--hs-navy); }
+.hs-np-more summary::-webkit-details-marker { display: none; }
+.hs-np-more p { margin: 0 0 12px; }
+
+/* accordion rows */
+.hs-np-acc { border-bottom: 1px solid var(--hs-rule); }
+.hs-np-acc summary { list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 16px; min-height: 52px; cursor: pointer; font-size: 15px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
+.hs-np-acc summary::-webkit-details-marker { display: none; }
+.hs-np-acc summary svg, .hs-np-more summary svg { flex: none; transition: transform .15s; }
+.hs-np-acc[open] summary svg, .hs-np-more[open] summary svg { transform: rotate(180deg); }
+.hs-np-acc p { margin: 0 0 16px; }
+.hs-np-acc-d { border-bottom-color: var(--hs-mute); }
+
+[id="steps"], [id="investment"], [id="other-services"], [id="faq"] { scroll-margin-top: 24px; }
+
+/* Your Investment */
+.hs-np-invest { padding-top: 48px; padding-bottom: 96px; display: flex; flex-wrap: wrap; gap: 24px; }
+.hs-np-photo { position: relative; min-width: 0; min-height: 420px; border-radius: 14px; overflow: hidden; }
+.hs-np-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; display: block; }
+.hs-np-photo-o img { object-position: 50% 45%; }
+.hs-np-invbox { flex: 1.4 1 420px; background: var(--hs-navy); color: #fff; border-radius: 14px; padding: 36px 28px; display: flex; flex-direction: column; gap: 12px; }
+
+/* Other Services */
+.hs-np-other { padding-top: 88px; padding-bottom: 88px; }
+.hs-np-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 40px; align-items: stretch; }
+
+/* FAQ */
+.hs-np-faqsec { padding-top: 88px; padding-bottom: 88px; }
+.hs-np-faqcard { background: #fff; color: var(--hs-navy); border-radius: 14px; padding: 40px 32px; display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 960px; margin: 0 auto; }
+.hs .hs-np-faqcard h2 { margin: 0 0 8px; text-align: center; line-height: 1.2; color: var(--hs-green); }
+.hs-np-faqcard .hs-faq { border-bottom-color: var(--hs-flink); }
+.hs-np-faqcard .hs-faq summary { min-height: 52px; }
+.hs-np-faqcard .hs-faq p { color: var(--hs-navy); }
+
+@media (max-width: 820px) {
+	.hs-np-sb { position: static; flex: 1 1 100%; }
+	.hs-np-pair { grid-template-columns: 1fr; }
+	.hs-np-photo-o { min-height: 300px; }
+}
+@media (max-width: 600px) {
+	.hs .hs-np-step h2 { font-size: 26px; }
+}
+

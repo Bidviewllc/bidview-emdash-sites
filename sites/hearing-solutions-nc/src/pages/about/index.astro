@@ -1,149 +1,117 @@
 ---
-// Page 6 · About (boards AboutPage, AboutMobile, AboutPageAlt, AboutPageAltB).
-// Hero → story → journey timeline (grid, horizontal or hidden) → values → team
-// (provider cards, no bios) → community (optional) → credentials (optional) → CTA.
-// Hidden sections never leave a double gap: the next white band drops its top padding.
-import CtaBand from "../../components/CtaBand.astro";
-import Icon from "../../components/Icon.astro";
-import PageHero from "../../components/PageHero.astro";
-import TeamGrid from "../../components/TeamGrid.astro";
-import type { Tweak } from "../../components/ReviewControls.astro";
+// About (design/hsnc/About.dc.html). Split hero → story (photo + text) → three
+// value cards → "Hearing, shared." → navy office gallery → "Meet your team." →
+// reviews → location → "Come sit with us." Text, lists and photos: Pages → About
+// (src/data/hsnc/about.ts has the design's wording); the team: Providers.
+// Not on this design (template About): journey timeline, credentials, values
+// heading, community section, eyebrows, breadcrumbs, the CTA band.
+import AboutGallery from "../../components/hs/AboutGallery.astro";
+import HsLocation from "../../components/hs/HsLocation.astro";
+import HsPageHero from "../../components/hs/HsPageHero.astro";
+import HsReviews from "../../components/hs/HsReviews.astro";
 import Base from "../../layouts/Base.astro";
-import { getSettings } from "../../lib/settings";
-import Photo from "../../components/Photo.astro";
+import { hs } from "../../lib/hs";
+import { routes, telHref } from "../../lib/routes";
+import type { Photo } from "../../data/site";
+import "../../styles/hsnc-about.css";
 
-const { associations, milestones, practice, providers, values } = Astro.locals.site;
-
-const tweaks: Tweak[] = [
-	{ key: "journey", label: "Our journey", type: "choice", default: "grid", options: [["grid", "Grid 2 × 2"], ["row", "Horizontal"], ["hidden", "Hidden"]] },
-	{ key: "profiles", label: "Provider profiles linked", type: "bool", default: true },
-	{ key: "community", label: "Community section", type: "bool", default: true },
-	{ key: "creds", label: "Credentials section", type: "bool", default: true },
+const { text, html, htmlParas, list, photo, hero, inline, s } = hs(Astro, "about");
+const h = s.href;
+const tel = telHref(s.phone);
+const callLabel = `Call us: ${s.phone}`;
+const storyPhoto = photo("about_story_photo");
+const sharedPhoto = photo("about_shared_photo");
+const closingPhoto = photo("about_closing_photo");
+const gallery = Array.from({ length: 12 }, (_, i) => photo(`about_gallery_${i + 1}`)).filter((p): p is Photo => !!p);
+const values = list("about_values");
+const storyParas = htmlParas("about_story_body");
+const team = Astro.locals.site.providers;
+/** Headshot crop per person, as drawn (default: centred). */
+const POS: Record<string, string> = { "jane-walters": "50% 0%", "cheryl-keene": "50% 20%", "katlin-futch": "50% 0%", "diane-pullium": "50% 0%", "jamie-webb": "50% 0%" };
+/** Value card icons, in order (design): clock, people with a heart, handshake. */
+const VALUE_ICONS = [
+	"m612-292 56-56-148-148v-184h-80v216l172 172ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-400Zm0 320q133 0 226.5-93.5T800-480q0-133-93.5-226.5T480-800q-133 0-226.5 93.5T160-480q0 133 93.5 226.5T480-160Z",
+	"M40-120v-160q0-34 23.5-57t56.5-23h131q20 0 38 10t29 27q29 39 71.5 61t90.5 22q49 0 91.5-22t70.5-61q13-17 30.5-27t36.5-10h131q34 0 57 23t23 57v160H640v-91q-35 25-75.5 38T480-160q-43 0-84-13.5T320-212v92H40Zm120-280q-50 0-85-35t-35-85q0-51 35-85.5t85-34.5q51 0 85.5 34.5T280-520q0 50-34.5 85T160-400Zm640 0q-50 0-85-35t-35-85q0-51 35-85.5t85-34.5q51 0 85.5 34.5T920-520q0 50-34.5 85T800-400Zm-320-80q-68-62-111-104.5T302-658q-24-31-33-54.5t-9-47.5q0-50 35-85t86-35q28 0 54 12.5t45 33.5q19-21 45-33.5t54-12.5q51 0 86 35t35 85q0 24-9 47.5T658-658q-24 31-67 73.5T480-480Zm0-108q72-66 106-107.5t34-64.5q0-17-12-28.5T579-800q-12 0-23.5 7T532-772l-51 59-51-57q-14-16-25.5-23t-23.5-7q-17 0-29 11.5T340-760q0 23 34 64.5T480-588Zm0 0Z",
+	"M475-160q4 0 8-2t6-4l328-328q12-12 17.5-27t5.5-30q0-16-5.5-30.5T817-607L647-777q-11-12-25.5-17.5T591-800q-15 0-30 5.5T534-777l-11 11 74 75q15 14 22 32t7 38q0 42-28.5 70.5T527-522q-20 0-38.5-7T456-550l-75-74-175 175q-3 3-4.5 6.5T200-435q0 8 6 14.5t14 6.5q4 0 8-2t6-4l136-136 56 56-135 136q-3 3-4.5 6.5T285-350q0 8 6 14t14 6q4 0 8-2t6-4l136-135 56 56-135 136q-3 2-4.5 6t-1.5 8q0 8 6 14t14 6q4 0 7.5-1.5t6.5-4.5l136-135 56 56-136 136q-3 3-4.5 6.5T454-180q0 8 6.5 14t14.5 6Zm-1 80q-37 0-65.5-24.5T375-166q-34-5-57-28t-28-57q-34-5-56.5-28.5T206-336q-38-5-62-33t-24-66q0-20 7.5-38.5T149-506l232-231 131 131q2 3 6 4.5t8 1.5q9 0 15-5.5t6-14.5q0-4-1.5-8t-4.5-6L398-777q-11-12-25.5-17.5T342-800q-15 0-30 5.5T285-777L144-635q-9 9-15 21t-8 24q-2 12 0 24.5t8 23.5l-58 58q-17-23-25-50.5T40-590q2-28 14-54.5T87-692l141-141q24-23 53.5-35t60.5-12q31 0 60.5 12t52.5 35l11 11 11-11q24-23 53.5-35t60.5-12q31 0 60.5 12t52.5 35l169 169q23 23 35 53t12 61q0 31-12 60.5T873-437L545-110q-14 14-32.5 22T474-80Zm-99-560Z",
 ];
-const s = getSettings(Astro);
-const tx = s.text;
-const hero = s.heroFor("photo");
-const withPhoto = hero === "photo" || hero === "example";
-const journey = s.choice("journey", ["grid", "row", "hidden"], "grid");
-const profiles = s.bool("profiles", true);
-const community = s.bool("community", true);
-const creds = s.bool("creds", true);
-const credHeights: Record<string, string> = { ada: "40px", aaa: "50px", aba: "54px", asha: "46px", hearingup: "40px" };
 ---
-<Base title={`About us | ${s.name}`} description={practice.tagline} pageName="About" current="about" tweaks={tweaks} heroDefault="photo">
-	<PageHero
-		crumbs={[{ label: "Home" }, { label: "About" }]}
-		title={tx("heading")}
-		lead={tx("intro")}
-		photoLabel="Team photo · 3:2"
-	/>
+<Base title={`About us | ${s.name}`} description={text("about_display")} pageName="About" current="about">
+	<div class="hs">
+		<HsPageHero label={text("about_label")} display={html("about_display")} photo={hero()} ratio="1800/1553" />
 
-	<section class:list={["band first", { "after-photo": withPhoto }]}>
-		<div class="wrap about" style="align-items: start">
-			<div class="stack g24">
-				<span class="eyebrow">Our story</span>
-				<h2 class="h2">{tx("about_story_heading")}</h2>
-				{s.paras("about_story_text").map((p) => <p class="body">{p}</p>)}
-			</div>
-			<Photo photo={practice.photos.team} label="Team photo · 3:2" tone="stone" class="story-photo" />
-		</div>
-	</section>
-
-	{
-		journey === "grid" && (
-			<section class="band bg-light">
-				<div class="wrap journey-grid">
-					<div class="stack g24">
-						<span class="eyebrow">Our journey</span>
-						<h2 class="h2">{tx("about_journey_heading")}</h2>
-						<p class="lead">{tx("about_journey_intro")}</p>
-					</div>
-					<ol class="panel grid g-2 ms-list" style="list-style: none; margin: 0">
-						{milestones.map((m) => <li class="ms"><div class="yr">{m.y}</div><p>{m.t}</p></li>)}
-					</ol>
+		<section class="hs-wrap" style="padding-top:88px;padding-bottom:88px;display:flex;flex-direction:column;gap:64px">
+			<div style="display:flex;flex-wrap:wrap;gap:40px;align-items:stretch">
+				{storyPhoto && <img src={storyPhoto.src} alt={storyPhoto.alt} style="flex:1 1 400px;min-width:0;width:100%;min-height:480px;object-fit:cover;object-position:55% 35%;border-radius:14px;display:block" />}
+				<div style="flex:1 1 400px;display:flex;flex-direction:column;gap:16px">
+					{storyParas.map((p) => <p set:html={p} />)}
+					<div class="hs-btns" style="gap:12px;margin-top:8px"><a class="hs-btn" href={tel}>{callLabel}</a><a class="hs-btn hs-btn-o" href={h(`${routes.contact}#message`)}>Ask a question</a></div>
 				</div>
-			</section>
-		)
-	}
-	{
-		journey === "row" && (
-			<section class="band bg-light">
-				<div class="wrap stack g48">
-					<div class="two-col" style="align-items: end; gap: 80px">
-						<div class="stack g16"><span class="eyebrow">Our journey</span><h2 class="h2">{tx("about_journey_heading")}</h2></div>
-						<p class="lead">{tx("about_journey_intro")}</p>
-					</div>
-					<ol class="panel grid g-4 ms-list" style="list-style: none; margin: 0">
-						{milestones.map((m) => <li class="ms"><div class="yr">{m.y}</div><p>{m.t}</p></li>)}
-					</ol>
-				</div>
-			</section>
-		)
-	}
-
-	<section class:list={["band", { pt0: journey === "hidden" }]}>
-		<div class="wrap stack g48">
-			<div class="stack g16 text-col">
-				<span class="eyebrow">Our values</span>
-				<h2 class="h2">{tx("about_values_heading")}</h2>
 			</div>
-			<div class="panel grid g-4">
+
+			<div style="display:flex;flex-wrap:wrap;gap:24px">
 				{
-					values.map((v) => (
-						<article class="card val">
-							<span class="qmark"><Icon name={v.icon} size={28} /></span>
-							<h3 class="h4">{v.t}</h3>
-							<p class="muted">{v.d}</p>
+					values.slice(0, 3).map((v, i) => (
+						<div class="hs-card ab-val">
+							<span class="ab-val-ic" aria-hidden="true">
+								<svg width="44" height="44" viewBox="0 -960 960 960" fill="#134C1F" aria-hidden="true"><path d={VALUE_ICONS[i]} /></svg>
+							</span>
+							<h2 class="ab-card-title" set:html={inline(v.t)} />
+							<p set:html={inline(v.d)} />
+						</div>
+					))
+				}
+			</div>
+
+			<div style="display:flex;flex-wrap:wrap;gap:40px;align-items:center">
+				<div style="flex:1 1 380px;display:flex;flex-direction:column;gap:14px">
+					<h2 class="hs-serif" style="line-height:1.15" set:html={html("about_shared_heading")} />
+					{htmlParas("about_shared_text").map((p) => <p set:html={p} />)}
+				</div>
+				{sharedPhoto && <img src={sharedPhoto.src} alt={sharedPhoto.alt} style="flex:1 1 400px;min-width:0;width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;object-position:50% 20%;border-radius:14px;display:block" loading="lazy" />}
+			</div>
+		</section>
+
+		<section class="on-dark hs-navy" style="padding-top:88px;padding-bottom:88px">
+			<div class="hs-wrap" style="display:flex;flex-direction:column;gap:40px">
+				<div style="text-align:center"><h2 class="hs-serif" style="margin:0 0 12px;line-height:1.15" set:html={html("about_gallery_heading")} /><p set:html={html("about_gallery_intro")} /></div>
+				<AboutGallery photos={gallery} />
+			</div>
+		</section>
+
+		<section class="hs-wrap" id="team" style="padding-top:88px;padding-bottom:96px;display:flex;flex-direction:column;gap:40px">
+			<div style="text-align:center;max-width:640px;margin:0 auto">
+				<h2 class="hs-serif" style="margin:0 0 12px;line-height:1.15" set:html={html("about_team_title")} />
+				{htmlParas("about_team_intro").map((p) => <p style="text-align:left" set:html={p} />)}
+			</div>
+			<div class="ab-team">
+				{
+					team.map((p) => (
+						<article class="hs-card ab-person">
+							{p.headshot ? <img src={p.headshot} alt={`Headshot of ${p.name}`} style={`object-position:${POS[p.slug] ?? "50% 50%"}`} loading="lazy" /> : <div class="ab-person-noimg" aria-hidden="true" />}
+							<div class="ab-person-body">
+								<h3 class="hs-h3-sm" style="font-weight:600">{p.name}</h3>
+								<p>{p.title}</p>
+								{p.hasPage && <a class="ab-bio" href={h(routes.provider(p.slug))} aria-label={`Read bio: ${p.name}`}>Read bio</a>}
+							</div>
 						</article>
 					))
 				}
 			</div>
-		</div>
-	</section>
+		</section>
 
-	<section class="band bg-light" id="team">
-		<div class="wrap stack g48">
-			<div class="stack g16 text-col">
-				<span class="eyebrow">Our team</span>
-				<h2 class="h2">{tx("about_team_heading")}</h2>
-			</div>
-			<TeamGrid people={providers.map((p) => ({ ...p, linked: profiles && p.hasPage }))} alignStart />
-		</div>
-	</section>
+		<HsReviews heading={text("about_reviews_heading")} />
 
-	{
-		community && (
-			<section class="band">
-				<div class="wrap about community">
-					<Photo photo={Astro.locals.site.pages.about.communityPhoto} label="Community photo · 3:2 (event, school screening, sponsorship)" tone="sky" />
-					<div class="stack g24">
-						<span class="eyebrow">Community</span>
-						<h2 class="h2">{tx("about_community_heading")}</h2>
-						<p class="body">{tx("about_community_text")}</p>
-					</div>
+		<HsLocation heading={text("about_location_heading")} />
+
+		<div class="on-dark hs-navy">
+			<section class="hs-wrap" style="padding-top:88px;padding-bottom:88px;display:flex;flex-wrap:wrap;gap:40px;align-items:center">
+				<div style="flex:1 1 320px;display:flex;flex-direction:column;gap:16px;align-items:flex-start">
+					<h2 class="hs-serif" style="line-height:1.1" set:html={html("about_closing_heading")} />
+					{htmlParas("about_closing_text").map((p) => <p style="max-width:340px" set:html={p} />)}
+					<a class="hs-btn hs-btn-w" href={tel} style="margin-top:8px">{callLabel}</a>
 				</div>
+				{closingPhoto && <img src={closingPhoto.src} alt={closingPhoto.alt} style="flex:1 1 440px;min-width:0;width:100%;min-height:320px;object-fit:cover;object-position:50% 35%;border-radius:14px;display:block" loading="lazy" />}
 			</section>
-		)
-	}
-
-	{
-		creds && (
-			<section class="band bg-gray">
-				<div class="wrap stack g32">
-					<div class="two-col" style="align-items: end; gap: 80px">
-						<div class="stack g16"><span class="eyebrow">Credentials</span><h2 class="h2">{tx("about_creds_heading")}</h2></div>
-						<p class="body">{tx("about_creds_text")}</p>
-					</div>
-					<ul class="creds">
-						{associations.map((a) => <li class="cred"><img src={`/assets/associations/color/${a.key}.png`} alt={a.name} style={`max-height: ${credHeights[a.key] ?? "44px"}`} /></li>)}
-						<li class="cred add"><Icon name="plus" />Additional badge (optional)</li>
-					</ul>
-				</div>
-			</section>
-		)
-	}
-
-	<div class:list={["cta-wrap", { "after-inset": creds || !community }]}>
-		<CtaBand id="acta" heading={tx("cta_heading")} text={tx("cta_text")} photoLabel="Lifestyle photo · conversation, meal, outdoors" />
+		</div>
 	</div>
 </Base>

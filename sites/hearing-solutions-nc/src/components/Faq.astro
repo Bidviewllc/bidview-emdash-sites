@@ -1,30 +1,13 @@
 ---
-// FAQ accordion: grey rows, plus/minus in a white tile. Real text, so search
-// engines can read it. The first question starts open.
-import Icon from "./Icon.astro";
+// FAQ rows, HSNC reskin: draws the HSNC details/summary rows
+// (src/components/hs/HsFaq.astro). Old props kept so older callers build.
+import HsFaq from "./hs/HsFaq.astro";
 
 interface Props {
 	items: { q: string; a: string }[];
-	id: string;
+	id?: string;
 	firstOpen?: boolean;
 }
-const { items, id, firstOpen = true } = Astro.props;
+const { items } = Astro.props;
 ---
-<div class="acc-list">
-	{
-		items.map((it, i) => {
-			const open = firstOpen && i === 0;
-			return (
-				<div class:list={["acc", { open }]} data-acc>
-					<h3 style="margin: 0">
-						<button class="acc-btn" type="button" aria-expanded={open ? "true" : "false"} aria-controls={`${id}-${i}`}>
-							<span>{it.q}</span>
-							<span class="acc-ic" aria-hidden="true"><span class="i-open"><Icon name="plus" /></span><span class="i-close"><Icon name="minus" /></span></span>
-						</button>
-					</h3>
-					<div class="acc-body" id={`${id}-${i}`} hidden={!open}><p>{it.a}</p></div>
-				</div>
-			);
-		})
-	}
-</div>
+<div class="hs"><HsFaq items={items} /></div>

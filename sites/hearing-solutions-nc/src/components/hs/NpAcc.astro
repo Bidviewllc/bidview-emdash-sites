@@ -1,0 +1,18 @@
+---
+// New Patients board accordion row (".acc"): small-capitals summary with a
+// chevron, text under it. Light (sage rule) or dark (inside a navy panel).
+// Text: blank lines start paragraphs; *italic* and **bold** work.
+import { inline } from "../../lib/hs";
+
+interface Props {
+	title: string;
+	text?: string;
+	dark?: boolean;
+}
+const { title, text = "", dark = false } = Astro.props;
+const paras = text.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
+---
+<details class:list={["hs-np-acc", dark && "hs-np-acc-d"]}>
+	<summary>{title}<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 6l4 4 4-4" /></svg></summary>
+	{paras.map((p) => <p set:html={inline(p)} />)}
+</details>

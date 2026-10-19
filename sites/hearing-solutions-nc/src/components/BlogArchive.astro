@@ -1,11 +1,13 @@
 ---
-// Page 12 · Blog archive body (boards BlogPage, BlogPageSquare, BlogPageList,
-// BlogPageCategory, BlogMobile). Shared by /blog and /blog/category/<cat>.
-// Short no-photo hero → category chips (real links) → featured post (All only)
-// → grid or list → pager → CTA.
+// Blog archive body (template Page 12, HSNC reskin; no HSNC board). Shared by
+// /blog and /blog/category/<cat>. Light green hero → category chips (real
+// links) → featured post (All only) → grid or list → pager → the shared
+// closing band. Dropped from the template: breadcrumbs, placeholder image boxes
+// where a post has no image.
+import "../styles/hsnc-reskin.css";
 import Base from "../layouts/Base.astro";
 import { getSettings } from "../lib/settings";
-import CtaBand from "./CtaBand.astro";
+import HsCtaBand from "./hs/HsCtaBand.astro";
 import Icon from "./Icon.astro";
 import PageHero from "./PageHero.astro";
 import PostCard from "./PostCard.astro";
@@ -30,46 +32,40 @@ const shown: Post[] = cat ? posts.filter((p) => p.catSlug === cat.slug) : posts;
 const title = cat ? `${cat.name} articles` : tx("heading");
 ---
 <Base title={`${title} | ${s.name}`} description={tx("description")} pageName={cat ? "Blog category" : "Blog archive"} current="blog" tweaks={tweaks}>
-	<PageHero
-		crumbs={cat ? [{ label: "Home" }, { label: "Blog", href: routes.blog }, { label: cat.name }] : [{ label: "Home" }, { label: "Blog" }]}
-		title={title}
-		lead={tx("intro")}
-		short
-		book={false}
-	/>
+	<PageHero label="Blog" title={title} lead={tx("intro")} short book={false} />
 
-	<section class="band bl-chips">
-		<div class="wrap">
+	<div class="hs">
+		<section class="hs-wrap" style="padding-top:48px">
 			<nav class="chip-row" aria-label="Blog categories">
 				<a class:list={["cat-chip", { on: !cat }]} href={h(routes.blog)} aria-current={!cat ? "page" : undefined}>All</a>
 				{categories.map((c) => (
 					<a class:list={["cat-chip", { on: cat?.slug === c.slug }]} href={h(routes.category(c.slug))} aria-current={cat?.slug === c.slug ? "page" : undefined}>{c.name}</a>
 				))}
 			</nav>
-		</div>
-	</section>
+		</section>
 
-	{
-		!cat && (
-			<section class="band bl-feat-band">
-				<div class="wrap">
+		{
+			!cat && featured && (
+				<section class="hs-wrap" style="padding-top:48px">
 					<article class="feat bl-feat">
-						<a href={h(routes.post(featured.slug))} class="post" tabindex="-1" aria-hidden="true"><div class="img"><div class="ph warm" style="aspect-ratio: 16/9; border-radius: var(--r-hero)"><span class="ph-label">Featured image · 16:9</span></div></div></a>
-						<div class="stack g16">
-							<div class="rowf" style="gap: 12px; align-items: center"><span class="tag">{featured.cat}</span><span class="small muted">{featured.date}</span></div>
-							<h2 class="h2 feat-title">{featured.title}</h2>
-							<p class="lead" style="margin: 0">{featured.summary}</p>
-							<span class="body"><b>{featured.author}</b></span>
-							<div style="padding-top: 8px"><a class="btn btn-primary" href={h(routes.post(featured.slug))}>Read article<span class="sr"> {featured.title}</span> <Icon name="arrowUR" /></a></div>
+						{featured.image ? (
+							<a href={h(routes.post(featured.slug))} class="post" tabindex="-1" aria-hidden="true"><div class="img"><img class="hs-img" src={featured.image} alt="" style="aspect-ratio: 16/9" /></div></a>
+						) : (
+							<div class="hs-ph" style="aspect-ratio: 16/9" aria-hidden="true" />
+						)}
+						<div class="rs-htxt">
+							<div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center"><span class="tag">{featured.cat}</span><span class="muted" style="font-size:16px">{featured.date}</span></div>
+							<h2 class="hs-serif">{featured.title}</h2>
+							<p>{featured.summary}</p>
+							<span><b>{featured.author}</b></span>
+							<a class="hs-btn" href={h(routes.post(featured.slug))} style="margin-top:8px">Read article<span class="sr"> {featured.title}</span></a>
 						</div>
 					</article>
-				</div>
-			</section>
-		)
-	}
+				</section>
+			)
+		}
 
-	<section class="band bl-main">
-		<div class="wrap stack g48">
+		<section class="hs-wrap rs-sec rs-stack" style="padding-top:64px">
 			{
 				layout !== "list" ? (
 					<div class="grid g-3 posts-grid" style="gap: 48px 32px">
@@ -79,13 +75,16 @@ const title = cat ? `${cat.name} articles` : tx("heading");
 					<div class="bl-list">
 						{shown.map((p) => (
 							<article class="feat bl-row">
-								<a href={h(routes.post(p.slug))} class="post" tabindex="-1" aria-hidden="true"><div class="img"><div class:list={["ph", p.tone]} style="aspect-ratio: 16/9; border-radius: 24px"><span class="ph-label tl">16:9</span></div></div></a>
-								<div class="stack g12">
-									<div class="rowf" style="gap: 12px; align-items: center"><span class="tag">{p.cat}</span><span class="small muted">{p.date}</span></div>
-									<h2 class="h3 row-title">{p.title}</h2>
-									<p class="body muted" style="margin: 0">{p.summary}</p>
-									<span class="small"><b>{p.author}</b></span>
-									<div style="padding-top: 6px"><a class="btn btn-primary sm" href={h(routes.post(p.slug))}>Read article<span class="sr"> {p.title}</span> <Icon name="arrowUR" size={18} /></a></div>
+								{p.image ? (
+									<a href={h(routes.post(p.slug))} class="post" tabindex="-1" aria-hidden="true"><div class="img"><img class="hs-img" src={p.image} alt="" style="aspect-ratio: 16/9" loading="lazy" /></div></a>
+								) : (
+									<div class="hs-ph" style="aspect-ratio: 16/9" aria-hidden="true" />
+								)}
+								<div class="rs-htxt" style="gap:12px">
+									<div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center"><span class="tag">{p.cat}</span><span class="muted" style="font-size:16px">{p.date}</span></div>
+									<h2 class="hs-h3-sm" style="font-weight:600">{p.title}</h2>
+									<p class="muted">{p.summary}</p>
+									<a class="hs-btn" href={h(routes.post(p.slug))} style="margin-top:6px">Read article<span class="sr"> {p.title}</span></a>
 								</div>
 							</article>
 						))}
@@ -102,10 +101,7 @@ const title = cat ? `${cat.name} articles` : tx("heading");
 					</nav>
 				)
 			}
-		</div>
-	</section>
-
-	<div class="cta-wrap">
-		<CtaBand id="blcta" heading={tx("cta_heading")} text={tx("cta_text")} photoLabel="Lifestyle photo · conversation, meal, outdoors" />
+		</section>
+		<HsCtaBand />
 	</div>
 </Base>
