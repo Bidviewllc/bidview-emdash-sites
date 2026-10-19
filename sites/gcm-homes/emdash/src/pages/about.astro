@@ -151,10 +151,19 @@ const STORY_FALLBACKS = [
 		</div>
 	</section>
 
-	{/* 03 THE GUIDE — the home page's 1/3 - 2/3 .grant-intro layout, the full-length copy. */}
+	{/* 03 THE GUIDE — the home page's .grant-intro layout, the full-length copy,
+	    with Grant's "always brings you back" quote under the photo. */}
 	<section id="about-guide" class="section section--beige" data-screen-label="03 The Guide">
 		<div class="container grant-intro">
-			<div class="grant-intro__photo" style="background-image:url('/assets/grant.jpg')"></div>
+			<div class="grant-intro__side">
+				<div class="grant-intro__photo" style="background-image:url('/assets/grant.jpg')"></div>
+				<div class="pullquote">
+					<div class="pullquote__q" {...(e.guide_quote ?? {})}>
+						"{d.guide_quote ?? "No matter where life takes you, it's hard to beat Incline Village. Something about this place always brings you back."}"
+					</div>
+					<div class="eyebrow pullquote__a">— GRANT C. MEYER</div>
+				</div>
+			</div>
 			<div class="grant-intro__copy">
 				<div class="eyebrow" {...(e.guide_eyebrow ?? {})}>{d.guide_eyebrow ?? "MEETING THE MENTOR"}</div>
 				<h2 class="guide__h" {...(e.guide_heading ?? {})}>
