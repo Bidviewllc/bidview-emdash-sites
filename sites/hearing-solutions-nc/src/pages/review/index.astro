@@ -1,0 +1,337 @@
+---
+// Review hub (handoff section 7). One card per template page: its default view
+// and every alternate state, set through the address bar, plus the site-wide
+// looks (colours, header and footer styles) and the header and footer
+// galleries. Only while Review controls are on; a live site gets the 404.
+// Links keep the reviewer's current site-wide settings (s.href).
+import Icon from "../../components/Icon.astro";
+import Base from "../../layouts/Base.astro";
+import { FOOTERS, HEADERS, PALETTES, TEAM_LAYOUTS, getSettings } from "../../lib/settings";
+import { routes } from "../../lib/routes";
+
+const site = Astro.locals.site;
+if (!site.practice.reviewControls) return Astro.rewrite("/404");
+const { pages, services, brands, providers, offices, featured, posts, categories, resources } = site;
+
+const s = getSettings(Astro);
+/** An address with these settings added to the reviewer's site-wide ones. */
+const link = (path: string, qs = "") => {
+	const u = new URL(s.href(path), "http://x");
+	for (const [k, v] of new URLSearchParams(qs)) u.searchParams.set(k, v);
+	return u.pathname + u.search;
+};
+
+type Alt = [label: string, qs: string];
+type Entry = {
+	name: string;
+	/** Address, or undefined when no record has its own page yet. */
+	path?: string;
+	note: string;
+	/** Pages record that switches this page on (template pages only). */
+	slug?: string;
+	/** Offer the four hero versions. */
+	hero?: boolean;
+	alts?: Alt[];
+	/** Extra addresses (other records using the same template). */
+	more?: [string, string][];
+	/** Why there is no address. */
+	missing?: string;
+};
+
+const svc = services.filter((x) => x.hasPage);
+const brd = brands.filter((x) => x.hasPage);
+const prov = providers.filter((x) => x.hasPage);
+const post = featured ?? posts[0];
+const res = resources.filter((x) => x.page);
+const board = "Design board’s alternate states";
+
+const entries: Entry[] = [
+	{
+		name: "Home", path: routes.home, slug: "home", hero: true,
+		note: "Hero with trust bar, intro, team, services, brands, reviews, locations, latest posts, booking band.",
+		alts: [
+			["“Read our story” link hidden", "about=0"],
+			["Team not linked to profiles", "provlinks=0"],
+			["Every service card links", "svclinks=all"],
+			["No service links", "svclinks=none"],
+			["Sample card with photo", "sample=1"],
+			["Every brand tile links", "brandlinks=all"],
+			["No brand links", "brandlinks=none"],
+			["“Read more reviews” hidden", "revlink=0"],
+			["Latest posts hidden", "posts=0"],
+			["Trust bar logos standing still", "trustmove=still"],
+			["Trust bar rating without its box", "trustrating=plain"],
+		],
+	},
+	{
+		name: "Services hub", path: routes.services, slug: "services", hero: true,
+		note: "Every service as a card, “first visit” steps, reviews, booking band.",
+		alts: [
+			["“First visit” steps hidden", "steps=0"],
+			["“Read more reviews” hidden", "revlink=0"],
+			["Every service card links", "svclinks=all"],
+			["No service links", "svclinks=none"],
+			[board, "hero=primary&steps=0&revlink=0&ctaphoto=0"],
+		],
+	},
+	{
+		name: "Service detail", path: svc[0] && routes.service(svc[0].slug), slug: "service-pages", hero: true,
+		note: "Two-column hero, body text with “Jump to”, sticky sidebar (booking card, reviews, recent posts), FAQ, booking band.",
+		missing: "No service has “Give this its own page” on.",
+		alts: [
+			["Sidebar reviews as a carousel", "reviews=carousel"],
+			["“Read more reviews” hidden", "revlink=0"],
+			["Recent posts card hidden", "posts=0"],
+			["Sidebar not sticky", "sticky=0"],
+			["Design board: recent posts and carousel", "hero=example&reviews=carousel&posts=1"],
+			[board, "hero=light&revlink=0&ctaphoto=0"],
+		],
+		more: svc.slice(1).map((x) => [x.name, routes.service(x.slug)]),
+	},
+	{
+		name: "Hearing aids hub", path: routes.hearingAids, slug: "hearing-aids", hero: true,
+		note: "Brand grid, hearing aid styles, OTC vs. prescription, booking band.",
+		alts: [
+			["Every brand tile links", "brandlinks=all"],
+			["No brand links", "brandlinks=none"],
+			["Styles section hidden", "styles=0"],
+			["OTC section hidden", "otc=0"],
+			[board, "hero=primary&styles=0&ctaphoto=0"],
+		],
+	},
+	{
+		name: "Brand page", path: brd[0] && routes.brand(brd[0].slug), slug: "brand-pages", hero: true,
+		note: "Brand logo hero, current models, care and accessories, older models, FAQ, booking band.",
+		missing: "No brand has “Give this its own page” on.",
+		alts: [[board, "hero=primary&ctaphoto=0"]],
+		more: brd.slice(1).map((x) => [x.name, routes.brand(x.slug)]),
+	},
+	{
+		name: "About", path: routes.about, slug: "about", hero: true,
+		note: "Story, journey, values, team, community, credentials, booking band.",
+		alts: [
+			["Journey in a row", "journey=row"],
+			["Journey hidden", "journey=hidden"],
+			["Team not linked to profiles", "profiles=0"],
+			["Community section hidden", "community=0"],
+			["Credentials hidden", "creds=0"],
+			["Team cards: arrow beside name", "team=side"],
+			["Team cards: list with short bio", "team=list"],
+			[`${board} A`, "hero=primary&journey=row&ctaphoto=0"],
+			[`${board} B (no gaps left behind)`, "journey=hidden&creds=0"],
+		],
+	},
+	{
+		name: "Provider profile", path: prov[0] && routes.provider(prov[0].slug), slug: "team-profiles",
+		note: "Headshot and title, bio, intro video, locations, services, booking band.",
+		missing: "No team member has “Give this its own page” on.",
+		alts: [
+			["Intro video hidden", "video=0"],
+			[board, "video=0&offices=1&ctaphoto=0"],
+		],
+		more: prov.slice(1).map((x) => [x.name, routes.provider(x.slug)]),
+	},
+	{
+		name: "Location", path: offices[0] && routes.location(offices[0].slug), slug: "location-pages", hero: true,
+		note: "Office exterior hero, details and map, provider card, services, reviews, booking band.",
+		alts: [
+			["Every service card links", "svclinks=all"],
+			["No service links", "svclinks=none"],
+			["Provider not linked to a profile", "provlinks=0"],
+			[board, "hero=primary&provlinks=0&ctaphoto=0"],
+		],
+		more: offices.slice(1).map((x) => [x.name, routes.location(x.slug)]),
+	},
+	{
+		name: "Contact", path: routes.contact, slug: "contact", hero: true,
+		note: "Form with a sticky “Talk to us” card, locations, booking band.",
+		alts: [[board, "hero=photo&offices=1&ctaphoto=0"]],
+	},
+	{
+		name: "Book appointment", path: routes.book, slug: "book-appointment",
+		note: "Version A is the scheduler embed, version B the request form; full width or with a right sidebar.",
+		alts: [
+			["B · Request form", "version=b"],
+			["A · Right sidebar", "layout=side"],
+			["B · Right sidebar", "version=b&layout=side"],
+		],
+	},
+	{
+		name: "Reviews", path: routes.reviews, slug: "reviews",
+		note: "Rating hero with “Leave us a review”, location filter (two offices only), reviews, booking band.",
+		alts: [
+			["Review button white with outline", "reviewbtn=outline"],
+			["One office (no location filter)", "offices=1"],
+		],
+	},
+	{
+		name: "Blog archive", path: routes.blog, slug: "blog",
+		note: "Category chips, featured post, posts as a grid or list, pager, booking band.",
+		alts: [
+			["Grid with square images", "layout=square"],
+			["List", "layout=list"],
+		],
+		more: categories[0] ? [[`Category: ${categories[0].name}`, routes.category(categories[0].slug)]] : [],
+	},
+	{
+		name: "Blog post", path: post && routes.post(post.slug), slug: "blog-posts",
+		note: "Header with 3:2 image, article with author box, sticky sidebar, related articles, booking band.",
+		missing: "No published posts.",
+		alts: [
+			["No featured image", "image=0"],
+			["Author not linked", "authorlink=0"],
+			[board, "image=0&authorlink=0&ctaphoto=0"],
+		],
+	},
+	{
+		name: "Patient resources", path: routes.resources, slug: "patient-resources", hero: true,
+		note: "Resources as cards or an accordion, optionally grouped by topic, latest articles, organisations, booking band.",
+		alts: [
+			["Accordion", "layout=accordion"],
+			["Grouped by topic", "group=tag"],
+			["Design board: view B", "hero=light&layout=accordion&ctaphoto=0"],
+			["Design board: view C", "hero=light&group=tag"],
+		],
+	},
+	{
+		name: "Patient resource page", path: res[0] && routes.resource(res[0].slug), slug: "resource-pages", hero: true,
+		note: "Not in the design boards; built from the service page. Topic tags, body text with “Jump to”, forms and booking cards, more resources.",
+		missing: "No resource has “Give this its own page” on.",
+		more: res.slice(1, 4).map((x) => [x.t, routes.resource(x.slug)]),
+	},
+	{
+		name: "Privacy policy", path: routes.privacy, slug: "privacy-policy",
+		note: "Short hero, “Last updated”, rich text with a closed “Table of contents”. Same template as Terms and Accessibility.",
+		alts: [["Table of contents hidden", "toc=0"]],
+		more: [["Terms of use", routes.terms], ["Accessibility", routes.accessibility]],
+	},
+	{
+		name: "404", path: "/this-page-does-not-exist",
+		note: "Shown for any address without a page, and for pages switched off.",
+		alts: [["Search box hidden", "search=0"]],
+	},
+	{ name: "Thank you", path: routes.thankYou, note: "Shown after a form is sent." },
+	{ name: "Search results", path: "/search?q=hearing", note: "Not in the design boards. From the 404 search box: services, hearing aids, articles, patient resources, team, offices and pages that are live.", alts: [["No results", "q=zzzz"]] },
+];
+
+const isOff = (e: Entry) => !!e.slug && pages[e.slug] && !pages[e.slug].on;
+const heroes: Alt[] = [["Photo", "hero=photo"], ["Example photo", "hero=example"], ["No photo · Light", "hero=light"], ["No photo · Primary", "hero=primary"]];
+
+const looks: { title: string; note?: string; items: [string, string][] }[] = [
+	{
+		title: "Colours",
+		note: "On the home page. The practice’s own colours are the default.",
+		items: [["Practice colours", link(routes.home, "palette=practice")], ...Object.entries(PALETTES).map(([k, p]) => [p.label, link(routes.home, `palette=${k}`)] as [string, string])],
+	},
+	{
+		title: "Header styles",
+		note: "Compare them side by side in the header gallery.",
+		items: Object.entries(HEADERS).map(([k, l]) => [l.replace(" (default)", ""), link(routes.home, `header=${k}`)]),
+	},
+	{
+		title: "Footer styles",
+		note: "Compare them side by side in the footer gallery.",
+		items: [
+			...Object.entries(FOOTERS).map(([k, l]) => [l.replace(" (default)", ""), link(routes.home, `footer=${k}`)] as [string, string]),
+			["Vertical footer logo", link(routes.home, "flogo=vertical")],
+			["Footer badges hidden", link(routes.home, "badges=0")],
+		],
+	},
+	{
+		title: "Site-wide",
+		items: [
+			["Stacked logo", link(routes.home, "lshape=stacked")],
+			["One office", link(routes.home, "offices=1")],
+			["Booking band without photo", link(routes.home, "ctaphoto=0")],
+			...Object.entries(TEAM_LAYOUTS).slice(1).map(([k, l]) => [`Team ${l.toLowerCase()}`, link(routes.home, `team=${k}`)] as [string, string]),
+			["Presentation view (no Review controls)", link(routes.home, "panel=off")],
+		],
+	},
+];
+---
+<Base title={`Review hub | ${s.name}`} description="Every page of the template and its alternate states." pageName="Review hub">
+	<div class="pg-hero-np">
+		<section class="inophoto short" style="background: var(--l); color: var(--on-l)">
+			<div class="wrap">
+				<div class="stack g24" style="max-width: 820px">
+					<span class="eyebrow">Template review</span>
+					<h1 class="h1">Review hub</h1>
+					<p class="lead" style="color: inherit">Every page of the template, in its default view and each alternate state. Links keep the colours, header and footer you picked in Review controls. Add <code>panel=off</code> to an address to hide the controls when presenting.</p>
+					<div class="rowf" style="gap: 12px">
+						<a class="btn btn-primary" href={link("/review/headers")}>Header gallery</a>
+						<a class="btn btn-secondary" href={link("/review/footers")}>Footer gallery</a>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+
+	<section class="band rh-band">
+		<div class="wrap stack g48">
+			<div class="stack g16 text-col">
+				<span class="eyebrow">Pages</span>
+				<h2 class="h2">The {entries.length} page templates</h2>
+				<p class="muted">Pages switched off in the admin say so; their address shows the 404 page until they’re published again.</p>
+			</div>
+			<div class="rh-grid">
+				{
+					entries.map((e) => (
+						<article class="card rh-card" aria-labelledby={`rh-${e.name.replace(/\W+/g, "-")}`}>
+							<div class="rh-top">
+								<h3 class="h3" id={`rh-${e.name.replace(/\W+/g, "-")}`}>{e.name}</h3>
+								{isOff(e) && <span class="tag rh-off">Switched off</span>}
+							</div>
+							<p class="muted small rh-path">{e.path ?? "No address yet"}</p>
+							<p>{e.path ? e.note : e.missing}</p>
+							{e.path && (
+								<>
+									<a class="link-arrow" href={link(e.path)}>Default view <Icon name="arrowR" size={18} /></a>
+									{e.hero && (
+										<div class="stack g8">
+											<h4 class="rh-sub">Hero</h4>
+											<ul class="rh-chips">{heroes.map(([l, q]) => <li><a class="rh-chip" href={link(e.path!, q)}>{l}</a></li>)}</ul>
+										</div>
+									)}
+									{e.alts && e.alts.length > 0 && (
+										<div class="stack g8">
+											<h4 class="rh-sub">Alternate states</h4>
+											<ul class="rh-chips">{e.alts.map(([l, q]) => <li><a class="rh-chip" href={link(e.path!, q)}>{l}</a></li>)}</ul>
+										</div>
+									)}
+									{e.more && e.more.length > 0 && (
+										<div class="stack g8">
+											<h4 class="rh-sub">Same template</h4>
+											<ul class="rh-chips">{e.more.map(([l, u]) => <li><a class="rh-chip" href={link(u)}>{l}</a></li>)}</ul>
+										</div>
+									)}
+								</>
+							)}
+						</article>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<section class="band bg-light rh-looks">
+		<div class="wrap stack g48">
+			<div class="stack g16 text-col">
+				<span class="eyebrow">Site-wide</span>
+				<h2 class="h2">Colours, header, footer and other site-wide looks</h2>
+				<p>These change every page. Each link opens the home page; from there, every link you follow keeps the look.</p>
+			</div>
+			<div class="rh-grid">
+				{
+					looks.map((g) => (
+						<div class="card rh-card">
+							<h3 class="h3">{g.title}</h3>
+							{g.note && <p class="muted">{g.note}</p>}
+							<ul class="rh-chips">{g.items.map(([l, u]) => <li><a class="rh-chip" href={u}>{l}</a></li>)}</ul>
+						</div>
+					))
+				}
+			</div>
+		</div>
+	</section>
+	<div style="height: 96px" />
+</Base>

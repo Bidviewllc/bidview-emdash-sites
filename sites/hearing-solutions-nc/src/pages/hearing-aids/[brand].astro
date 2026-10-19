@@ -1,0 +1,186 @@
+---
+// Page 5 · Brand page (boards BrandPage, BrandMobile, BrandPageAlt). Same layout
+// for every brand. Hero with the brand logo → current models (one horizontal
+// card per model, grouped by product line) → accessories (Light inset) →
+// older models (grey inset) → FAQ → care at the practice → CTA.
+import CtaBand from "../../components/CtaBand.astro";
+import Faq from "../../components/Faq.astro";
+import Icon from "../../components/Icon.astro";
+import type { Tweak } from "../../components/ReviewControls.astro";
+import Base from "../../layouts/Base.astro";
+import { getSettings } from "../../lib/settings";
+import { routes, telHref } from "../../lib/routes";
+import Photo from "../../components/Photo.astro";
+
+const { brandDetails, brandFaqs, brands, practice } = Astro.locals.site;
+
+const brand = brands.find((b) => b.slug === Astro.params.brand);
+if (!brand || !brand.hasPage) return Astro.rewrite("/404");
+const detail = brandDetails[brand.slug];
+
+const tweaks: Tweak[] = [];
+const s = getSettings(Astro);
+const h = s.href;
+const hero = s.heroFor("photo", brand.heroImage);
+const withPhoto = hero === "photo" || hero === "example";
+const prim = hero === "primary";
+const tel = telHref(s.phone);
+const title = `${brand.name} Hearing Aids in ${practice.city}`;
+const intro = s.fill(brand.intro ?? "").split(/\n\s*\n/).filter((p) => p.trim());
+const shapeA = prim ? "color-mix(in srgb, var(--on-p) 8%, transparent)" : "color-mix(in srgb, var(--p) 7%, transparent)";
+const productSvg = `<path d="M60 14c11 0 18 9 18 20v24c0 9-7 16-16 16s-16-7-16-16V32c0-10 5-18 14-18z" fill="currentColor" fill-opacity=".14" stroke="currentColor" stroke-width="2.5"></path><path d="M50 66C36 72 28 80 28 88" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"></path><circle cx="28" cy="88" r="5" fill="currentColor" fill-opacity=".4"></circle>`;
+---
+<Base title={`${title} | ${s.name}`} description={brand.summary} pageName="Brand page" current="hearing-aids" tweaks={tweaks} heroDefault="photo">
+	{
+		withPhoto ? (
+			<section class="pg-hero" style="--pb: 88px">
+				<div class="wrap ihero" style="align-items: start">
+					<div class="stack g24">
+						<nav aria-label="Breadcrumb">
+							<ol class="crumbs">
+								<li><a href={h(routes.home)}>Home</a></li><li class="sep" aria-hidden="true">/</li>
+								<li><a href={h(routes.hearingAids)}>Hearing Aids</a></li><li class="sep" aria-hidden="true">/</li>
+								<li aria-current="page">{brand.name}</li>
+							</ol>
+						</nav>
+						<img src={brand.logo} alt={brand.name} style="height: 52px; width: auto; align-self: flex-start" />
+						<h1 class="h1">{title}</h1>
+						{intro.map((p) => <p class="body">{p}</p>)}
+						<div class="rowf hero-btns" style="gap: 12px; margin-top: 4px">
+							<a class="btn btn-primary" href={h(routes.book)}>Book appointment</a>
+							<a class="btn btn-secondary" href={tel}>Call {s.phone}</a>
+						</div>
+					</div>
+					{hero === "example" ? (
+						<div class="phimg brand-photo"><img src="/assets/photos/consult.jpg" alt="An audiologist smiling as she talks with a patient across her desk" style="object-position: 55% 30%" /></div>
+					) : brand.heroImage ? (
+						<div class="phimg brand-photo"><img src={brand.heroImage.src} alt={brand.heroImage.alt} /></div>
+					) : (
+						<div class="ph sky brand-photo" style="aspect-ratio: 3/2; border-radius: var(--r-hero)"><span class="ph-label">Product lifestyle photo · 3:2 (from the manufacturer)</span></div>
+					)}
+				</div>
+			</section>
+		) : (
+			<div class="pg-hero-np">
+				<section class:list={["inophoto", { "on-p-text": prim }]} style={prim ? "background: var(--p); color: var(--on-p)" : "background: var(--l); color: var(--on-l)"}>
+					<div class="shape np1" style={`border-color: ${shapeA}`} />
+					<div class="wrap">
+						<div class="brand-np">
+							<div class="stack g24">
+								<nav aria-label="Breadcrumb">
+									<ol class="crumbs">
+										<li><a href={h(routes.home)}>Home</a></li><li class="sep" aria-hidden="true">/</li>
+										<li><a href={h(routes.hearingAids)}>Hearing Aids</a></li><li class="sep" aria-hidden="true">/</li>
+										<li aria-current="page">{brand.name}</li>
+									</ol>
+								</nav>
+								<h1 class="h1 xl" style="color: inherit">{title}</h1>
+								{intro.map((p) => <p class="body" style="color: inherit; opacity: .9">{p}</p>)}
+								<div class="rowf hero-btns" style="gap: 12px; margin-top: 4px">
+									<a class:list={["btn", prim ? "btn-inverse" : "btn-primary"]} href={h(routes.book)}>Book appointment</a>
+									<a class:list={["btn", prim ? "btn-ghost-on-p" : "btn-secondary"]} href={tel}>Call {s.phone}</a>
+								</div>
+							</div>
+							<div class="panel brand-logo-card" style="background: color-mix(in srgb, #fff 55%, transparent)">
+								<div class="card" style="min-height: 200px; align-items: center; justify-content: center"><img src={brand.logo} alt="" style="height: 64px; width: auto" /></div>
+							</div>
+						</div>
+					</div>
+				</section>
+			</div>
+		)
+	}
+
+	<section class:list={["band first", { "after-photo": withPhoto }]}>
+		<div class="wrap stack g48">
+			<div class="stack g16 text-col">
+				<span class="eyebrow">Current models</span>
+				<h2 class="h2">Current {brand.name} hearing aid models</h2>
+				<p class="lead">{s.fill(brand.modelsIntro ?? "")}</p>
+			</div>
+			{
+				detail.lines.map((ln) => (
+					<div class="stack g24">
+						<h3 class="h3 line-h">{ln.t}</h3>
+						<div class="panel grid">
+							{ln.models.map((m) => (
+								<article class="card model hz">
+									<div class="pimg">
+										<svg viewBox="0 0 100 100" width="40%" aria-hidden="true" set:html={productSvg} />
+										<span class="ph-label">Product image · 1:1 on white</span>
+									</div>
+									<div class="stack g12 mtext">
+										<h4 class="h3">{m.n}</h4>
+										<p class="muted" style="font-size: 18px">{m.d}</p>
+										{m.f && m.f.length > 0 && (
+											<div class="stack g8">
+												<span class="feat-h">Key features</span>
+												<ul class="checks-list">{m.f.map((f) => <li>{f}</li>)}</ul>
+											</div>
+										)}
+									</div>
+								</article>
+							))}
+						</div>
+					</div>
+				))
+			}
+		</div>
+	</section>
+
+	<section class="band bg-light">
+		<div class="wrap two-col">
+			<div class="stack g24">
+				<span class="eyebrow">Accessories</span>
+				<h2 class="h2">{brand.name} accessories and assistive technology</h2>
+				<p class="body">{s.fill(brand.accessoriesIntro ?? "")}</p>
+			</div>
+			<div class="panel">
+				<div class="card" style="padding: 32px">
+					<ul class="checks-list acc-items">{detail.accessories.map((a) => <li>{a}</li>)}</ul>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="band bg-gray">
+		<div class="wrap stack g24">
+			<span class="eyebrow">Older models</span>
+			<h2 class="h2">Older {brand.name} models we support</h2>
+			<p class="body text-col">{s.fill(brand.olderIntro ?? "")}</p>
+			<div style="align-self: flex-start"><ul class="chips">{detail.older.map((o) => <li>{o}</li>)}</ul></div>
+		</div>
+	</section>
+
+	<section class="band">
+		<div class="wrap stack g48" style="max-width: 900px">
+			<div class="stack g16" style="align-items: center; text-align: center">
+				<span class="eyebrow">FAQ</span>
+				<h2 class="h2" style="max-width: 720px">Frequently asked questions about {brand.name} hearing aids</h2>
+			</div>
+			<Faq items={brandFaqs[brand.slug] ?? []} id="bfaq" />
+			<div style="display: flex; justify-content: center"><a class="btn btn-secondary" href={h(routes.contact)}>Contact us</a></div>
+		</div>
+	</section>
+
+	<section class="band bg-light">
+		<div class="wrap about">
+			<div class="stack g24">
+				<span class="eyebrow">Care at {practice.shortName}</span>
+				<h2 class="h2">{brand.name} hearing aid care at {s.name}</h2>
+				<p class="body">{s.fill(brand.careText ?? "")}</p>
+			</div>
+			{
+				practice.photos.office ? (
+					<div class="photo-32"><img src={practice.photos.office.src} alt={practice.photos.office.alt} loading="lazy" /></div>
+				) : (
+					<Photo label="Office interior photo · 3:2 (Practice details)" tone="stone" style="aspect-ratio: 3/2; border-radius: var(--r-hero)" />
+				)
+			}
+		</div>
+	</section>
+
+	<div class="cta-wrap after-inset">
+		<CtaBand id="bcta" heading={`Let’s find the right ${brand.name} for your ears`} text="Et dolore magna aliqua ut enim ad minim veniam quis nostrud. Exercitation ullamco laboris nisi ut aliquip ex." photoLabel="Lifestyle photo · conversation, meal, outdoors" />
+	</div>
+</Base>

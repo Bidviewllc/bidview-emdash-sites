@@ -1,0 +1,110 @@
+---
+// Page 11 · Reviews (boards ReviewsPage, ReviewsMobile, ReviewsPageAlt).
+// Short Light hero with the rating inline and "Leave us a review on Google" →
+// location filter (two offices only) → masonry of 12 reviews → "Show more" → CTA.
+// Reviews come from the weekly Google sync in phase 2; these are placeholders.
+import CtaBand from "../components/CtaBand.astro";
+import Icon from "../components/Icon.astro";
+import Stars from "../components/Stars.astro";
+import Base from "../layouts/Base.astro";
+import type { Tweak } from "../components/ReviewControls.astro";
+import { getSettings } from "../lib/settings";
+import { routes } from "../lib/routes";
+
+const { practice, reviewsPage: all, reviewLink } = Astro.locals.site;
+
+// The design's gray button blended into the Light hero (Liz, 2026-10-15).
+const tweaks: Tweak[] = [
+	{ key: "reviewbtn", label: "“Leave us a review” button", type: "choice", default: "primary", options: [["primary", "Primary colour"], ["outline", "White with outline"]] },
+];
+const s = getSettings(Astro);
+const tx = s.text;
+const reviewBtn = s.choice("reviewbtn", ["primary", "outline"], "primary");
+const two = s.officeCount === 2;
+const filters = ["All", ...s.offices.map((o) => o.shortName)];
+---
+<Base title={`Patient reviews | ${s.name}`} description={`Rated ${practice.rating.score} out of 5 from ${practice.rating.count} Google reviews.`} pageName="Reviews" tweaks={tweaks}>
+	<div class="pg-hero-np">
+		<section class="inophoto short" style="background: var(--l); color: var(--on-l)">
+			<div class="shape np1" style="border-color: color-mix(in srgb, var(--p) 7%, transparent)" />
+			<div class="wrap rv-hero">
+				<div class="stack g20" style="position: relative">
+					<nav aria-label="Breadcrumb"><ol class="crumbs"><li><a href={s.href(routes.home)}>Home</a></li><li class="sep" aria-hidden="true">/</li><li aria-current="page">Reviews</li></ol></nav>
+					<h1 class="h1 xl" style="color: inherit">{tx("heading")}</h1>
+				</div>
+				<div class="rv-inline" style="position: relative">
+					<div class="rowf" style="gap: 12px; align-items: center">
+						<Stars label={`${practice.rating.score} out of 5 stars`} />
+						<span class="body"><b>{practice.rating.score} out of 5</b> from {practice.rating.count} Google reviews</span>
+					</div>
+					<a class:list={["btn", reviewBtn === "outline" ? "btn-secondary" : "btn-primary"]} href={reviewLink ?? "#"} target={reviewLink ? "_blank" : undefined} rel={reviewLink ? "noopener" : undefined}>Leave us a review on Google <Icon name="arrowUR" size={18} /></a>
+				</div>
+			</div>
+		</section>
+	</div>
+
+	<section class="band rv-band" data-reviews>
+		<div class="wrap stack g32">
+			{
+				two && (
+					<div class="rowf rv-filter" style="gap: 16px; align-items: center; justify-content: space-between">
+						<div class="seg" role="group" aria-label="Filter reviews by location">
+							{filters.map((f, i) => (
+								<button class:list={["seg-btn", { on: i === 0 }]} type="button" aria-pressed={i === 0 ? "true" : "false"} data-filter={f}>{f}</button>
+							))}
+						</div>
+						<span class="muted" aria-live="polite" data-count>Showing {all.length} of {practice.rating.count}</span>
+					</div>
+				)
+			}
+			<div class="rv-masonry">
+				{
+					all.map((r) => (
+						<figure class="card review rv-card" data-loc={r.loc}>
+							<div class="stars" role="img" aria-label={`${r.rating ?? 5} out of 5 stars`}>
+								{[1, 2, 3, 4, 5].map((n) => <span class:list={{ dim: n > (r.rating ?? 5) }}><Icon name="star" size={22} /></span>)}
+							</div>
+							<blockquote class="rtext rv-text">{r.text}</blockquote>
+							<figcaption class="rmeta"><b>{r.name}</b><span>{r.date}</span>{two && <><span aria-hidden="true">·</span><span>{r.loc}</span></>}</figcaption>
+						</figure>
+					))
+				}
+			</div>
+			<div style="display: flex; flex-direction: column; align-items: center; gap: 12px; padding-top: 8px">
+				<button class="btn btn-secondary" type="button" data-more>Show more reviews</button>
+				<p class="small muted" aria-live="polite" data-more-note hidden>On the live site this loads the next 12 reviews.</p>
+			</div>
+		</div>
+	</section>
+
+	<div class="cta-wrap after-inset">
+		<CtaBand id="rvcta" heading={tx("cta_heading")} text={tx("cta_text")} photoLabel="Lifestyle photo · conversation, meal, outdoors" />
+	</div>
+</Base>
+
+<script>
+	// Location filter: shows only that office's reviews.
+	document.querySelectorAll<HTMLElement>("[data-reviews]").forEach((box) => {
+		const cards = [...box.querySelectorAll<HTMLElement>("[data-loc]")];
+		const count = box.querySelector<HTMLElement>("[data-count]");
+		const total = count?.textContent?.split(" of ")[1] ?? "";
+		box.querySelectorAll<HTMLButtonElement>("[data-filter]").forEach((btn) => {
+			btn.addEventListener("click", () => {
+				const f = btn.dataset.filter!;
+				box.querySelectorAll<HTMLButtonElement>("[data-filter]").forEach((b) => {
+					b.classList.toggle("on", b === btn);
+					b.setAttribute("aria-pressed", String(b === btn));
+				});
+				let n = 0;
+				cards.forEach((c) => {
+					c.hidden = f !== "All" && c.dataset.loc !== f;
+					if (!c.hidden) n++;
+				});
+				if (count) count.textContent = `Showing ${n} of ${total}`;
+			});
+		});
+		box.querySelector("[data-more]")?.addEventListener("click", () => {
+			box.querySelector<HTMLElement>("[data-more-note]")!.hidden = false;
+		});
+	});
+</script>

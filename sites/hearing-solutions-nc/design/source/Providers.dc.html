@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Provider cards</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./d1.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>body{margin:0}</style>
+</helmet>
+<div class="d1 sheet" style="min-height: 2700px; --p: {{P}}; --a: {{A}}; --l: {{L}}; --on-p: {{onP}}; --on-a: {{onA}}; --on-l: {{onL}}; --p-ink: {{pInk}}">
+  <div class="sheet-head">
+    <span class="eyebrow">Component 9</span>
+    <h1 class="sheet-title">Provider cards</h1>
+    <p class="sheet-sub">A light-gray card: name large at the top, title beneath, 4:5 headshot inset with its own rounded corners. When a full profile page exists, the whole card becomes the link and an Accent arrow appears.</p>
+  </div>
+
+  <div class="spec">Linked · profile pages exist</div>
+  <div class="vp">
+    <section class="section" style="padding: 24px 0 0">
+      <div class="wrap stack g48">
+        <div class="stack g16 text-col">
+          <span class="eyebrow">Meet the team</span>
+          <h2 class="h2">The people you’ll see at every visit</h2>
+        </div>
+        <div class="grid g-3" style="gap: 16px">
+          <sc-for list="{{team}}" as="p" hint-placeholder-count="3">
+            <a class="prov" href="#" aria-label="{{p.meet}}">
+              <span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"></path></svg></span>
+              <div class="who"><h3 class="pname">{{p.name}}</h3><span class="ptitle">{{p.title}}</span></div>
+              <div class="ph {{p.tone}}"><svg class="sil" viewBox="0 0 200 220" aria-hidden="true"><circle cx="100" cy="80" r="44" fill="currentColor"></circle><path d="M18 220c0-54 37-88 82-88s82 34 82 88z" fill="currentColor"></path></svg><span class="ph-label tl">Headshot · 4:5</span></div>
+            </a>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="row-specs" style="margin-top: 16px"><p class="note" style="max-width: 920px">Screen readers hear “Meet Dr. Ellis, link”. Hover darkens the card gray one step and the Accent arrow deepens; keyboard focus draws a 3px ink ring around the card. Long names wrap to two lines; the arrow keeps its corner.</p></div>
+
+  <div class="spec">Plain · no profile pages yet</div>
+  <div class="vp">
+    <div class="wrap">
+      <div class="grid g-3" style="gap: 16px">
+        <sc-for list="{{team}}" as="p" hint-placeholder-count="3">
+          <div class="prov">
+            <div class="who" style="padding-right: 10px"><h3 class="pname">{{p.name}}</h3><span class="ptitle">{{p.title}}</span></div>
+            <div class="ph {{p.tone}}"><svg class="sil" viewBox="0 0 200 220" aria-hidden="true"><circle cx="100" cy="80" r="44" fill="currentColor"></circle><path d="M18 220c0-54 37-88 82-88s82 34 82 88z" fill="currentColor"></path></svg><span class="ph-label tl">Headshot · 4:5</span></div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <div class="spec">Mobile · one per row</div>
+  <div class="phones">
+    <div class="phone-col">
+      <div class="phone m">
+        <section class="section" style="padding: 40px 0">
+          <div class="wrap stack g24">
+            <div class="stack g12"><span class="eyebrow">Meet the team</span><h2 class="h2">The people you’ll see at every visit</h2></div>
+            <a class="prov" href="#" aria-label="Meet Dr. Ellis">
+              <span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"></path></svg></span>
+              <div class="who"><h3 class="pname">Dr. Jordan Ellis, Au.D.</h3><span class="ptitle">Owner and audiologist</span></div>
+              <div class="ph warm"><svg class="sil" viewBox="0 0 200 220" aria-hidden="true"><circle cx="100" cy="80" r="44" fill="currentColor"></circle><path d="M18 220c0-54 37-88 82-88s82 34 82 88z" fill="currentColor"></path></svg><span class="ph-label tl">Headshot · 4:5</span></div>
+            </a>
+            <div class="prov">
+              <div class="who" style="padding-right: 10px"><h3 class="pname">Morgan Lee</h3><span class="ptitle">Patient care coordinator</span></div>
+              <div class="ph sky" style="aspect-ratio: 4/5"><svg class="sil" viewBox="0 0 200 220" aria-hidden="true"><circle cx="100" cy="80" r="44" fill="currentColor"></circle><path d="M18 220c0-54 37-88 82-88s82 34 82 88z" fill="currentColor"></path></svg><span class="ph-label tl">Headshot · 4:5</span></div>
+            </div>
+          </div>
+        </section>
+      </div>
+      <span class="note">Linked and plain cards can sit in the same list.</span>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"primary":{"editor":"color","default":"#0F5E6B","options":["#0F5E6B","#1E3A5F","#2F5D3A"],"section":"Practice colors"},"accent":{"editor":"color","default":"#E0A33B","options":["#E0A33B","#E8735A","#C9A227"],"section":"Practice colors"},"light":{"editor":"color","default":"#F6F1EA","options":["#F6F1EA","#EEF3F8","#F7F4EC"],"section":"Practice colors"},"$preview":{"width":1440,"height":2700}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const P = this.props.primary ?? '#0F5E6B', A = this.props.accent ?? '#E0A33B', L = this.props.light ?? '#F6F1EA';
+    const hex = (h) => { h = String(h).replace('#', ''); if (h.length === 3) h = h.split('').map((c) => c + c).join(''); return h; };
+    const lum = (h) => { h = hex(h); const v = [0, 2, 4].map((i) => { const c = parseInt(h.substr(i, 2), 16) / 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); }); return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2]; };
+    const cr = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
+    const on = (c) => (cr(c, '#FFFFFF') >= cr(c, '#1B1F23') ? '#FFFFFF' : '#1B1F23');
+    const darken = (h, t) => '#' + [0, 2, 4].map((i) => Math.round(parseInt(hex(h).substr(i, 2), 16) * (1 - t)).toString(16).padStart(2, '0')).join('');
+    let ink = P; for (let t = 0.08; cr(ink, '#FFFFFF') < 4.5 && t < 0.9; t += 0.08) ink = darken(P, t);
+    const team = [
+      { name: 'Dr. Jordan Ellis, Au.D.', title: 'Owner and audiologist', meet: 'Meet Dr. Ellis', tone: 'warm' },
+      { name: 'Dr. Priya Raman, Au.D.', title: 'Audiologist', meet: 'Meet Dr. Raman', tone: 'sage' },
+      { name: 'Morgan Lee', title: 'Patient care coordinator', meet: 'Meet Morgan Lee', tone: 'sky' }
+    ];
+    return { P, A, L, onP: on(P), onA: on(A), onL: on(L), pInk: ink, team };
+  }
+}
+</script>
+</body>
+</html>

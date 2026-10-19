@@ -1,0 +1,64 @@
+---
+// Top-level menu items for the desktop headers, from the EmDash "Header
+// navigation" menu. An item with children opens a dropdown (a grey panel
+// holding a white list); the parent's own link becomes "All ..." under the list.
+// Links to pages that aren't live are already left out (src/data/site.ts).
+import type { NavLink } from "../data/site";
+import { getSettings } from "../lib/settings";
+import Icon from "./Icon.astro";
+
+interface Props {
+	/** Split headers (V2) show the first or second half of the menu. */
+	part?: 1 | 2;
+	/** Kept for older callers; the current item now comes from the address. */
+	current?: string;
+}
+const { part } = Astro.props;
+const s = getSettings(Astro);
+const all = Astro.locals.site.menus.header;
+const half = Math.ceil(all.length / 2);
+const items = part === 1 ? all.slice(0, half) : part === 2 ? all.slice(half) : all;
+
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const isCurrent = (l: NavLink) => {
+	const p = l.href.split(/[?#]/)[0].replace(/\/$/, "");
+	return !!p && p !== "/" && (path === p || path.startsWith(p + "/") || l.children.some((c) => path === c.href.replace(/\/$/, "")));
+};
+const id = (l: NavLink) => "dd-" + l.label.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+const href = (l: NavLink) => (l.href.startsWith("/") ? s.href(l.href) : l.href);
+---
+{
+	items.map((l) =>
+		l.children.length ? (
+			<li data-dd>
+				<button class:list={["nav-link", { "is-current": isCurrent(l) }]} aria-expanded="false" aria-controls={id(l)} aria-current={isCurrent(l) ? "true" : undefined}>
+					{l.label} <Icon name="chevD" size={18} />
+				</button>
+				<div class="dd" id={id(l)} hidden>
+					<ul class="dd-inner">
+						{l.children.map((c) => (
+							<li>
+								<a href={href(c)} target={c.target}>
+									{c.label} <Icon name="arrowR" size={18} />
+								</a>
+							</li>
+						))}
+					</ul>
+					{l.href && l.href !== "#" && (
+						<div class="dd-foot">
+							<a class="link-arrow" href={href(l)} style="font-size: 17px">
+								All {l.label.toLowerCase()} <Icon name="arrowR" size={18} />
+							</a>
+						</div>
+					)}
+				</div>
+			</li>
+		) : (
+			<li>
+				<a class="nav-link" href={href(l)} target={l.target} aria-current={isCurrent(l) ? "page" : undefined}>
+					{l.label}
+				</a>
+			</li>
+		),
+	)
+}

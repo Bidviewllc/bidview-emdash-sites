@@ -1,0 +1,25 @@
+---
+// Version B of Book appointment: an appointment request form (need, days,
+// times, location). The practice calls back to confirm. Fields come from the
+// admin (Plugins → Forms → Appointment request).
+import { getSettings } from "../lib/settings";
+import SiteForm from "./SiteForm.astro";
+
+interface Props {
+	id: string;
+	side?: boolean;
+}
+const { id, side = false } = Astro.props;
+const s = getSettings(Astro);
+const tx = s.text;
+const f = (n: string) => `${id}-${n}`;
+---
+<form class:list={["panel bk-form", { side }]} aria-labelledby={f("h")} novalidate data-form method="post" action="/api/form">
+	<div class="card" style={`gap: 28px; padding: ${side ? 40 : 48}px`}>
+		<div class="stack g12">
+			<h2 class="h2" id={f("h")}>{tx("book_form_heading")}</h2>
+			<p class="body" style="margin: 0">{tx("book_form_intro")}</p>
+		</div>
+		<SiteForm slug="appointment-request" id={id} blockButton after={tx("book_form_after")} />
+	</div>
+</form>

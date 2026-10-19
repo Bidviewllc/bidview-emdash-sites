@@ -1,0 +1,62 @@
+---
+// Trust bar: the Google rating plus a slowly scrolling row of association logos.
+// The one exception to "nothing moves on its own": it has a pause button, stops
+// on hover or keyboard focus, and stands still for "reduce motion".
+// Review controls (Home): "trustmove=still" shows the logos once, standing
+// still, with no pause button; "trustrating=plain" drops the rating's own box.
+import Icon from "./Icon.astro";
+import { getSettings } from "../lib/settings";
+import Stars from "./Stars.astro";
+
+const { associations, practice } = Astro.locals.site;
+
+interface Props {
+	/** "on-photo" | "on-p" | "on-light" */
+	variant: string;
+	/** Logo files: white on dark backgrounds, black on light ones. */
+	tone: "white" | "black";
+	starsColor: string;
+}
+const { variant, tone, starsColor } = Astro.props;
+const s = getSettings(Astro);
+const still = s.choice("trustmove", ["scroll", "still"], "scroll") === "still";
+const plain = s.choice("trustrating", ["boxed", "plain"], "boxed") === "plain";
+
+// The row moves by half its width, so it holds two identical halves.
+// Only the first copy of each logo is announced. A still row needs one copy.
+const logos = (still ? [0] : [0, 1, 2, 3]).flatMap((copy) =>
+	associations.map((a) => ({ ...a, hidden: copy > 0, src: `/assets/associations/${tone}/${a.key}.png` })),
+);
+---
+<div class:list={["trust", variant, { still, plain }]}>
+	<div class="track">
+		<ul class="marq" style="list-style: none; margin: 0" aria-label="Professional memberships and affiliations">
+			{
+				logos.map((l) => (
+					<li aria-hidden={l.hidden ? "true" : undefined} style="display: flex; align-items: center">
+						<img class:list={["tlogo", tone]} src={l.src} alt={l.hidden ? "" : l.name} style={`height: ${l.height}`} />
+					</li>
+				))
+			}
+		</ul>
+	</div>
+	<div class="rating">
+		<b>Rated {practice.rating.score}/5 from {practice.rating.count} Google reviews</b>
+		<Stars size={20} style={`color: ${starsColor}`} />
+	</div>
+	{!still && <button class="pause" type="button" aria-label="Pause logo scrolling">
+		<span class="i-open"><Icon name="pause" /></span><span class="i-close" hidden><Icon name="play" /></span>
+	</button>}
+</div>
+
+<script>
+	document.querySelectorAll<HTMLButtonElement>(".trust .pause").forEach((btn) => {
+		btn.addEventListener("click", () => {
+			const bar = btn.closest(".trust")!;
+			const paused = bar.classList.toggle("paused");
+			btn.setAttribute("aria-label", paused ? "Play logo scrolling" : "Pause logo scrolling");
+			btn.querySelector<HTMLElement>(".i-open")!.hidden = paused;
+			btn.querySelector<HTMLElement>(".i-close")!.hidden = !paused;
+		});
+	});
+</script>

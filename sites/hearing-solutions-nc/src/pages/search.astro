@@ -1,0 +1,115 @@
+---
+// Site search (not in the design boards; built from the 404 page's search box
+// and the short Light hero). EmDash's own search covers services, hearing aid
+// brands, articles and patient resources; team members, offices and the fixed
+// pages are matched by name. Only pages that are live are listed: a service
+// without its own page links to the Services hub. Kept out of search engines.
+import { search } from "emdash";
+import Icon from "../components/Icon.astro";
+import Base from "../layouts/Base.astro";
+import { PAGES } from "../data/page-settings";
+import { routes, telHref } from "../lib/routes";
+import { getSettings } from "../lib/settings";
+
+const s = getSettings(Astro);
+const h = s.href;
+const site = Astro.locals.site;
+const q = (Astro.url.searchParams.get("q") ?? "").trim().slice(0, 100);
+
+type Hit = { title: string; href: string; kind: string; snippet?: string };
+const hits: Hit[] = [];
+const seen = new Set<string>();
+const add = (x: Hit) => {
+	if (seen.has(x.href + x.title)) return;
+	seen.add(x.href + x.title);
+	hits.push(x);
+};
+
+if (q) {
+	const blogOn = !!site.pages.blog?.on;
+	// Full-text search (EmDash). Words are quoted so punctuation can't break the query.
+	const terms = q.split(/\s+/).filter(Boolean).map((w) => `"${w.replace(/"/g, "")}"*`).join(" ");
+	try {
+		const res = await search(terms, { collections: ["services", "brands", "posts", "resources"], limit: 30 });
+		for (const r of res.items) {
+			const slug = r.slug ?? "";
+			if (r.collection === "services") {
+				const sv = site.services.find((x) => x.slug === slug);
+				if (sv && (sv.hasPage || !sv.hideFromHub)) add({ title: sv.name, href: sv.hasPage ? routes.service(slug) : routes.services, kind: "Service", snippet: r.snippet });
+			} else if (r.collection === "brands") {
+				const b = site.brands.find((x) => x.slug === slug);
+				if (b && (b.hasPage || !b.hideFromHub)) add({ title: b.name, href: b.hasPage ? routes.brand(slug) : routes.hearingAids, kind: "Hearing aids", snippet: r.snippet });
+			} else if (r.collection === "posts" && blogOn) {
+				const p = [site.featured, ...site.posts].find((x) => x?.slug === slug);
+				if (p) add({ title: p.title, href: routes.post(slug), kind: "Article", snippet: r.snippet });
+			} else if (r.collection === "resources") {
+				const x = site.resources.find((y) => y.slug === slug);
+				if (x && (x.page || !x.hideFromHub)) add({ title: x.t, href: x.page ? routes.resource(slug) : routes.resources, kind: "Patient resource", snippet: r.snippet });
+			}
+		}
+	} catch (err) {
+		console.error("Search failed:", err);
+	}
+	// Names: team, offices and the fixed pages.
+	const words = q.toLowerCase().split(/\s+/).filter((w) => w.length > 1);
+	const match = (t: string) => words.some((w) => t.toLowerCase().includes(w));
+	for (const p of site.providers) if (match(`${p.name} ${p.title}`)) add({ title: p.name, href: p.hasPage ? routes.provider(p.slug) : routes.about, kind: "Our team", snippet: p.title });
+	for (const o of site.offices) if (match(`${o.name} ${o.street} ${o.city}`)) add({ title: o.name, href: routes.location(o.slug), kind: "Location", snippet: `${o.street}, ${o.city}` });
+	for (const d of PAGES) if (d.path && d.collection && site.pages[d.slug]?.on && match(d.title) && d.path !== "/") add({ title: d.title, href: d.path, kind: "Page" });
+}
+const title = q ? `Search results for “${q}”` : "Search the site";
+---
+<Base title={`${title} | ${s.name}`} description="Search the site for services, hearing aids, articles and patient resources." pageName="Search" noindex>
+	<div class="pg-hero-np">
+		<section class="inophoto short" style="background: var(--l); color: var(--on-l)">
+			<div class="wrap">
+				<div class="stack g24" style="max-width: 760px">
+					<nav aria-label="Breadcrumb"><ol class="crumbs"><li><a href={h(routes.home)}>Home</a></li><li class="sep" aria-hidden="true">/</li><li aria-current="page">Search</li></ol></nav>
+					<h1 class="h1" style="color: inherit">{title}</h1>
+					<form class="nf-search" role="search" aria-label="Search the site" action="/search">
+						<label class="sr" for="s-q">Search the site</label>
+						<input class="input" id="s-q" type="search" name="q" value={q} placeholder="Search for a service, topic or page" />
+						<button class="btn btn-primary" type="submit"><Icon name="search" /> Search</button>
+					</form>
+				</div>
+			</div>
+		</section>
+	</div>
+
+	<section class="band search-band">
+		<div class="wrap stack g24" style="max-width: 900px">
+			{
+				q && (
+					<p class="muted" role="status" style="margin: 0">
+						{hits.length === 0 ? "No pages matched." : hits.length === 1 ? "1 page matched." : `${hits.length} pages matched.`}
+					</p>
+				)
+			}
+			{
+				hits.length > 0 && (
+					<ul class="search-list">
+						{hits.map((x) => (
+							<li class="card search-hit">
+								<span class="tag">{x.kind}</span>
+								<h2 class="h3"><a href={h(x.href)}>{x.title}</a></h2>
+								{x.snippet && <p class="muted" set:html={x.snippet} />}
+							</li>
+						))}
+					</ul>
+				)
+			}
+			{
+				q && hits.length === 0 && (
+					<div class="card" style="gap: 16px">
+						<h2 class="h3">Can we help you find it?</h2>
+						<p class="muted" style="margin: 0">Try a shorter word, or call us at <a href={telHref(s.phone)}>{s.phone}</a> and we’ll point you in the right direction.</p>
+						<div class="rowf" style="gap: 12px; flex-wrap: wrap">
+							<a class="btn btn-secondary" href={h(routes.services)}>See our services</a>
+							<a class="btn btn-secondary" href={h(routes.resources)}>Patient resources</a>
+						</div>
+					</div>
+				)
+			}
+		</div>
+	</section>
+</Base>

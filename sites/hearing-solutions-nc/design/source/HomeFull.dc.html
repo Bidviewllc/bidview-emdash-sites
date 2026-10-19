@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Home, full page</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./d1.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.rc{position:fixed;right:20px;bottom:20px;z-index:1000;width:330px;max-height:calc(100vh - 40px);display:flex;flex-direction:column;background:#E6E6E3;border-radius:22px;padding:10px;box-shadow:0 18px 50px rgba(20,22,24,.22);font-family:'Atkinson Hyperlegible Next',ui-sans-serif,system-ui,sans-serif;color:#1B1F23}
+.rc.closed{width:auto}
+.rc-head{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:44px;padding:0 8px 0 12px;border:0;border-radius:14px;background:#fff;font:700 16px/1 'Atkinson Hyperlegible Next',ui-sans-serif,system-ui,sans-serif;color:#1B1F23;cursor:pointer}
+.rc-body{margin-top:10px;background:#fff;border-radius:14px;padding:14px;overflow:auto;display:flex;flex-direction:column;gap:12px}
+.rc-group{font:700 13px/1.2 'Atkinson Hyperlegible Next',ui-sans-serif,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#5E646B;margin-top:4px}
+.rc-field{display:flex;flex-direction:column;gap:5px;font-size:15px;font-weight:700}
+.rc-field select{min-height:40px;border-radius:10px;border:2px solid #C8C8C3;background:#fff;padding:0 10px;font:400 15px 'Atkinson Hyperlegible Next',ui-sans-serif,sans-serif;color:#1B1F23}
+.rc-check{display:flex;align-items:center;gap:10px;min-height:36px;font-size:15px;cursor:pointer}
+.rc-check input{width:20px;height:20px;margin:0;accent-color:#1B1F23}
+.rc-colors{display:flex;gap:10px}
+.rc-colors label{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:13px;flex:1}
+.rc-colors input{width:100%;height:36px;border:2px solid #C8C8C3;border-radius:10px;padding:2px;background:#fff}
+.rc-reset{min-height:40px;border-radius:999px;border:2px solid #1B1F23;background:#fff;font:700 15px 'Atkinson Hyperlegible Next',ui-sans-serif,sans-serif;cursor:pointer}
+</style>
+</helmet>
+<div style="width: 100%; background: #fff">
+  <dc-import name="Home1" palette="{{v.palette}}" primary="{{v.primary}}" accent="{{v.accent}}" light="{{v.light}}" hero="{{v.hero}}" about-link="{{v.aboutLink}}" providers-linked="{{v.providersLinked}}" service-links="{{v.serviceLinks}}" show-sample-card="{{v.showSampleCard}}" header-style="{{v.headerStyle}}" hint-size="100%,4300px"></dc-import>
+  <dc-import name="Home2" palette="{{v.palette}}" primary="{{v.primary}}" accent="{{v.accent}}" light="{{v.light}}" brand-links="{{v.brandLinks}}" reviews-link="{{v.reviewsLink}}" offices="{{v.offices}}" show-posts="{{v.showPosts}}" cta-photo="{{v.ctaPhoto}}" footer-badges="{{v.footerBadges}}" footer-style="{{v.footerStyle}}" footer-logo="{{v.footerLogo}}" hint-size="100%,5300px"></dc-import>
+
+  <aside class="rc {{rcCls}}" aria-label="Review controls">
+    <button class="rc-head" onClick="{{toggleOpen}}" aria-expanded="{{openStr}}">
+      <span>Review controls</span>
+      <sc-if value="{{open}}" hint-placeholder-val="{{true}}"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></sc-if>
+      <sc-if value="{{closed}}" hint-placeholder-val="{{false}}"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 15 6-6 6 6"></path></svg></sc-if>
+    </button>
+    <sc-if value="{{open}}" hint-placeholder-val="{{true}}">
+      <div class="rc-body">
+        <span class="rc-group">Colors</span>
+        <label class="rc-field">Palette
+          <select value="{{v.palette}}" onChange="{{setPalette}}">
+            <option value="Teal / Amber">Teal / Amber</option>
+            <option value="Navy / Coral">Navy / Coral</option>
+            <option value="Forest / Gold">Forest / Gold</option>
+            <option value="Custom">Custom (pick below)</option>
+          </select>
+        </label>
+        <sc-if value="{{isCustom}}" hint-placeholder-val="{{false}}">
+          <div class="rc-colors">
+            <label>Primary<input type="color" value="{{v.primary}}" onChange="{{setPrimary}}"></label>
+            <label>Accent<input type="color" value="{{v.accent}}" onChange="{{setAccent}}"></label>
+            <label>Light<input type="color" value="{{v.light}}" onChange="{{setLight}}"></label>
+          </div>
+        </sc-if>
+
+        <span class="rc-group">Header and footer</span>
+        <label class="rc-field">Header style
+          <select value="{{v.headerStyle}}" onChange="{{setHeaderStyle}}">
+            <option value="H1 · Classic two-bar">H1 · Classic two-bar</option>
+            <option value="H2 · Floating pill">H2 · Floating pill</option>
+            <option value="H3 · Single row (current)">H3 · Single row (current)</option>
+            <option value="V1 · Overhanging logo badge">V1 · Overhanging logo badge</option>
+            <option value="V2 · Centered logo, split nav">V2 · Centered logo, split nav</option>
+            <option value="V3 · Logo spans two tiers">V3 · Logo spans two tiers</option>
+            <option value="V4 · Centered stack">V4 · Centered stack</option>
+            <option value="V5 · Logo over menu, stacked actions">V5 · Logo over menu, stacked actions</option>
+            <option value="V6 · Logo over menu, side-by-side actions">V6 · Logo over menu, side-by-side actions</option>
+            <option value="V7 · Logo over menu, Book only">V7 · Logo over menu, Book only</option>
+          </select>
+        </label>
+        <label class="rc-field">Footer style
+          <select value="{{v.footerStyle}}" onChange="{{setFooterStyle}}">
+            <option value="F1 · Classic grouped">F1 · Classic grouped</option>
+            <option value="F2 · Contact-led split">F2 · Contact-led split</option>
+            <option value="F3 · Brand-led minimal">F3 · Brand-led minimal</option>
+            <option value="F4 · Patient-first">F4 · Patient-first</option>
+            <option value="F6 · Multi-location">F6 · Multi-location</option>
+            <option value="F7 · Office cards (current)">F7 · Office cards (current)</option>
+          </select>
+        </label>
+        <label class="rc-field">Footer logo
+          <select value="{{v.footerLogo}}" onChange="{{setFooterLogo}}">
+            <option value="Landscape">Landscape</option>
+            <option value="Vertical">Vertical</option>
+          </select>
+        </label>
+        <span class="rc-group">Hero and top</span>
+        <label class="rc-field">Hero
+          <select value="{{v.hero}}" onChange="{{setHero}}">
+            <option value="Photo">Photo (placeholder)</option>
+            <option value="Example photo">Example photo</option>
+            <option value="No photo · Primary">No photo · Primary</option>
+            <option value="No photo · Light">No photo · Light</option>
+          </select>
+        </label>
+        <label class="rc-check"><input type="checkbox" checked="{{v.aboutLink}}" onChange="{{setAboutLink}}"> “Read our story” link</label>
+        <label class="rc-check"><input type="checkbox" checked="{{v.providersLinked}}" onChange="{{setProvidersLinked}}"> Provider profiles linked</label>
+        <label class="rc-field">Service “Learn more”
+          <select value="{{v.serviceLinks}}" onChange="{{setServiceLinks}}">
+            <option value="Mixed">Mixed</option>
+            <option value="All">All cards</option>
+            <option value="None">None</option>
+          </select>
+        </label>
+        <label class="rc-check"><input type="checkbox" checked="{{v.showSampleCard}}" onChange="{{setShowSampleCard}}"> Sample photo card</label>
+
+        <span class="rc-group">Lower page</span>
+        <label class="rc-field">Brand tiles
+          <select value="{{v.brandLinks}}" onChange="{{setBrandLinks}}">
+            <option value="Mixed">Mixed</option>
+            <option value="All linked">All linked</option>
+            <option value="All plain">All plain</option>
+          </select>
+        </label>
+        <label class="rc-check"><input type="checkbox" checked="{{v.reviewsLink}}" onChange="{{setReviewsLink}}"> “Read more reviews” link</label>
+        <label class="rc-field">Offices
+          <select value="{{v.offices}}" onChange="{{setOffices}}">
+            <option value="Two">Two</option>
+            <option value="One">One</option>
+          </select>
+        </label>
+        <label class="rc-check"><input type="checkbox" checked="{{v.showPosts}}" onChange="{{setShowPosts}}"> Latest posts</label>
+        <label class="rc-check"><input type="checkbox" checked="{{v.ctaPhoto}}" onChange="{{setCtaPhoto}}"> CTA photo panel</label>
+        <label class="rc-check"><input type="checkbox" checked="{{v.footerBadges}}" onChange="{{setFooterBadges}}"> Footer badge row</label>
+
+        <button class="rc-reset" onClick="{{reset}}">Reset to Tweaks defaults</button>
+      </div>
+    </sc-if>
+  </aside>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"palette": {"editor": "enum", "options": ["Teal / Amber", "Navy / Coral", "Forest / Gold", "Custom"], "default": "Navy / Coral", "section": "Practice colors"}, "primary": {"editor": "color", "default": "#0F5E6B", "section": "Practice colors"}, "accent": {"editor": "color", "default": "#E0A33B", "section": "Practice colors"}, "light": {"editor": "color", "default": "#F6F1EA", "section": "Practice colors"}, "hero": {"editor": "enum", "options": ["Photo", "Example photo", "No photo · Primary", "No photo · Light"], "default": "No photo · Primary", "section": "Hero + top"}, "aboutLink": {"editor": "boolean", "default": true, "section": "Hero + top"}, "providersLinked": {"editor": "boolean", "default": true, "section": "Hero + top"}, "serviceLinks": {"editor": "enum", "options": ["Mixed", "All", "None"], "default": "Mixed", "section": "Hero + top"}, "showSampleCard": {"editor": "boolean", "default": true, "section": "Hero + top"}, "brandLinks": {"editor": "enum", "options": ["Mixed", "All linked", "All plain"], "default": "Mixed", "section": "Lower page"}, "reviewsLink": {"editor": "boolean", "default": true, "section": "Lower page"}, "offices": {"editor": "enum", "options": ["Two", "One"], "default": "One", "section": "Lower page"}, "showPosts": {"editor": "boolean", "default": true, "section": "Lower page"}, "ctaPhoto": {"editor": "boolean", "default": true, "section": "Lower page"}, "footerBadges": {"editor": "boolean", "default": true, "section": "Lower page"}, "showControls": {"editor": "boolean", "default": true, "section": "Review controls"}, "headerStyle": {"editor": "enum", "options": ["H1 · Classic two-bar", "H2 · Floating pill", "H3 · Single row (current)", "V1 · Overhanging logo badge", "V2 · Centered logo, split nav", "V3 · Logo spans two tiers", "V4 · Centered stack", "V5 · Logo over menu, stacked actions", "V6 · Logo over menu, side-by-side actions", "V7 · Logo over menu, Book only"], "default": "H3 · Single row (current)", "section": "Header and footer"}, "footerStyle": {"editor": "enum", "options": ["F1 · Classic grouped", "F2 · Contact-led split", "F3 · Brand-led minimal", "F4 · Patient-first", "F6 · Multi-location", "F7 · Office cards (current)"], "default": "F7 · Office cards (current)", "section": "Header and footer"}, "footerLogo": {"editor": "enum", "options": ["Landscape", "Vertical"], "default": "Landscape", "section": "Header and footer"}, "$preview": {"width": 1440, "height": 8000}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { o: {}, open: true }; }
+  renderVals() {
+    const p = this.props;
+    const d = (v, f) => (v === undefined || v === null ? f : v);
+    const base = {
+      palette: d(p.palette, 'Navy / Coral'), primary: d(p.primary, '#0F5E6B'), accent: d(p.accent, '#E0A33B'), light: d(p.light, '#F6F1EA'),
+      hero: d(p.hero, 'No photo · Primary'), aboutLink: d(p.aboutLink, true), providersLinked: d(p.providersLinked, true), serviceLinks: d(p.serviceLinks, 'Mixed'), showSampleCard: d(p.showSampleCard, true),
+      brandLinks: d(p.brandLinks, 'Mixed'), reviewsLink: d(p.reviewsLink, true), offices: d(p.offices, 'One'), showPosts: d(p.showPosts, true), ctaPhoto: d(p.ctaPhoto, true), footerBadges: d(p.footerBadges, true),
+      headerStyle: d(p.headerStyle, 'H3 · Single row (current)'), footerStyle: d(p.footerStyle, 'F7 · Office cards (current)'), footerLogo: d(p.footerLogo, 'Landscape')
+    };
+    const v = { ...base, ...this.state.o };
+    const set = (k) => (e) => this.setState({ o: { ...this.state.o, [k]: e.target.value } });
+    const flag = (k) => (e) => this.setState({ o: { ...this.state.o, [k]: !!e.target.checked } });
+    const showControls = d(p.showControls, true);
+    const open = !!this.state.open;
+    return {
+      v,
+      isCustom: v.palette === 'Custom',
+      open, closed: !open, openStr: open ? 'true' : 'false',
+      rcCls: (open ? '' : 'closed') + (showControls ? '' : ' sr'),
+      toggleOpen: () => this.setState({ open: !this.state.open }),
+      reset: () => this.setState({ o: {} }),
+      setPalette: set('palette'), setPrimary: set('primary'), setAccent: set('accent'), setLight: set('light'),
+      setHero: set('hero'), setHeaderStyle: set('headerStyle'), setFooterStyle: set('footerStyle'), setFooterLogo: set('footerLogo'), setServiceLinks: set('serviceLinks'), setBrandLinks: set('brandLinks'), setOffices: set('offices'),
+      setAboutLink: flag('aboutLink'), setProvidersLinked: flag('providersLinked'), setShowSampleCard: flag('showSampleCard'),
+      setReviewsLink: flag('reviewsLink'), setShowPosts: flag('showPosts'), setCtaPhoto: flag('ctaPhoto'), setFooterBadges: flag('footerBadges')
+    };
+  }
+}
+</script>
+</body>
+</html>

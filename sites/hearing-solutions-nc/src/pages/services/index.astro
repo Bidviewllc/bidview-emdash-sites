@@ -1,0 +1,64 @@
+---
+// Page 2 · Services hub (boards ServicesHub, ServicesMobile, ServicesHubAlt).
+// Hero → every service as a card → "first visit" steps → reviews → CTA.
+import CtaBand from "../../components/CtaBand.astro";
+import PageHero from "../../components/PageHero.astro";
+import ReviewsBand from "../../components/ReviewsBand.astro";
+import type { Tweak } from "../../components/ReviewControls.astro";
+import ServiceCards from "../../components/ServiceCards.astro";
+import Base from "../../layouts/Base.astro";
+import { getSettings } from "../../lib/settings";
+
+const { firstVisitSteps, practice, reviews } = Astro.locals.site;
+
+const tweaks: Tweak[] = [
+	{ key: "steps", label: "“First visit” steps", type: "bool", default: true },
+	{ key: "revlink", label: "“Read more reviews” link", type: "bool", default: true },
+	{ key: "svclinks", label: "Service “Learn more”", type: "choice", default: "mixed", options: [["mixed", "Mixed (pages that exist)"], ["all", "All cards"], ["none", "None"]] },
+];
+const s = getSettings(Astro);
+const tx = s.text;
+const hero = s.heroFor("photo");
+const withPhoto = hero === "photo" || hero === "example";
+const showSteps = s.bool("steps", true);
+const revLink = s.bool("revlink", true);
+const svcLinks = s.choice("svclinks", ["mixed", "all", "none"], "mixed");
+---
+<Base title={`${tx("heading")} | ${s.name}`} description={tx("description")} pageName="Services hub" current="services" tweaks={tweaks} heroDefault="photo">
+	<PageHero
+		crumbs={[{ label: "Home" }, { label: "Services" }]}
+		title={tx("heading")}
+		lead={tx("intro")}
+	/>
+
+	<section class:list={["band first", { "after-photo": withPhoto }]}>
+		<div class="wrap stack g64">
+			<h2 class="sr">All services</h2>
+			<ServiceCards links={svcLinks} />
+		</div>
+	</section>
+
+	{
+		showSteps && (
+			<section class="band bg-light">
+				<div class="wrap stack g48">
+					<div class="stack g16 text-col">
+						<span class="eyebrow">Your first visit</span>
+						<h2 class="h2">{tx("services_steps_heading")}</h2>
+					</div>
+					<ol class="panel grid g-4 steps-grid" style="list-style: none; margin: 0">
+						{firstVisitSteps.map((st, i) => (
+							<li class="step"><span class="num" aria-hidden="true">{i + 1}</span><h3 class="h4">{st.t}</h3><p>{st.d}</p></li>
+						))}
+					</ol>
+				</div>
+			</section>
+		)
+	}
+
+	<ReviewsBand reviews={[reviews[0], reviews[1]]} link={revLink} class={showSteps ? undefined : "pt0"} />
+
+	<div class="cta-wrap">
+		<CtaBand id="scta" heading={tx("cta_heading")} text={tx("cta_text")} photoLabel="Lifestyle photo · conversation, meal, outdoors" />
+	</div>
+</Base>

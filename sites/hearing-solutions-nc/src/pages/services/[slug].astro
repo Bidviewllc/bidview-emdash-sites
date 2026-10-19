@@ -1,0 +1,249 @@
+---
+// Page 3 · Service detail (boards ServiceDetail, ServiceDetailMobile,
+// ServiceDetailPosts, ServiceDetailAlt). One template for every service.
+// Hero → rich text with a right sidebar (Book card, reviews, recent posts) →
+// FAQ → related services → CTA.
+import CtaBand from "../../components/CtaBand.astro";
+import DetailHero from "../../components/DetailHero.astro";
+import Icon from "../../components/Icon.astro";
+import type { Tweak } from "../../components/ReviewControls.astro";
+import Stars from "../../components/Stars.astro";
+import Base from "../../layouts/Base.astro";
+import { ptHas, ptToHtml } from "../../lib/portable-text";
+import { getSettings } from "../../lib/settings";
+import { routes, telHref } from "../../lib/routes";
+
+const { latest: posts, practice, services, sidebarReviews } = Astro.locals.site;
+
+const service = services.find((x) => x.slug === Astro.params.slug);
+const faq = service?.faq ?? [];
+// "Give this service its own page" off = no page (switch-on rule).
+if (!service || !service.hasPage) return Astro.rewrite("/404");
+
+const tweaks: Tweak[] = [
+	{ key: "reviews", label: "Sidebar reviews", type: "choice", default: "single", options: [["single", "Single review"], ["carousel", "Carousel (3)"]] },
+	{ key: "revlink", label: "“Read more reviews” link", type: "bool", default: true },
+	{ key: "posts", label: "Recent posts card", type: "bool", default: true },
+	{ key: "sticky", label: "Sticky sidebar", type: "bool", default: true },
+];
+
+const s = getSettings(Astro);
+const h = s.href;
+const hero = s.heroFor("photo", service.heroImage);
+const withPhoto = hero === "photo" || hero === "example";
+const prim = hero === "primary";
+const carousel = s.choice("reviews", ["single", "carousel"], "single") === "carousel";
+const revLink = s.bool("revlink", true);
+const showPosts = s.bool("posts", true);
+const sticky = s.bool("sticky", true);
+const tel = telHref(s.phone);
+const city = practice.city;
+const title = `${service.name} in ${city}`;
+const related = services.filter((x) => x.slug !== service.slug && !x.hideFromHub).slice(0, 3);
+const rvList = carousel ? sidebarReviews : sidebarReviews.slice(0, 1);
+/** The service write-up from EmDash; the sample below shows until there is one. */
+const rich = ptHas(service.content) ? ptToHtml(service.content) : undefined;
+if (rich) rich.html = s.fill(rich.html);
+const sampleToc = [
+	{ id: "sd-tells", label: `What ${service.name.toLowerCase()} can tell you` },
+	{ id: "sd-visit", label: "What happens during your visit" },
+	{ id: "sd-who", label: "Who should schedule a visit" },
+	{ id: "sd-why", label: `Why patients choose ${s.name}` },
+];
+const toc = rich ? rich.headings : sampleToc;
+---
+<Base
+	title={`${title} | ${s.name}`}
+	description={service.summary}
+	pageName="Service detail"
+	current="services"
+	tweaks={tweaks}
+	heroDefault="photo"
+>
+	<DetailHero crumbs={[["Home", routes.home], ["Services", routes.services]]} current={service.name} title={title} intro={s.fill(service.intro ?? "")} bookLabel={service.bookLabel} hero={hero} image={service.heroImage} />
+
+	<section class:list={["sd-main", { "after-photo": withPhoto }]}>
+		<div class="wrap side-layout">
+			<div class="stack g32">
+				<nav class="jump acc" aria-label="Table of contents" data-acc>
+					<h2 style="margin: 0">
+						<button class="jump-btn" type="button" aria-expanded="false" aria-controls="sd-toc">
+							<span>Table of contents</span>
+							<span class="acc-ic" aria-hidden="true"><span class="i-open"><Icon name="chevD" size={22} /></span><span class="i-close"><Icon name="chevU" size={22} /></span></span>
+						</button>
+					</h2>
+					<div class="jump-body" id="sd-toc" hidden>
+						<ol>{toc.map((t) => <li><a href={`#${t.id}`}>{t.label}</a></li>)}</ol>
+					</div>
+				</nav>
+				{rich ? <article class="rt" set:html={rich.html} /> : (
+					<article class="rt">
+						<p>Esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui. Officia deserunt mollit anim id est laborum curabitur pretium tincidunt. Lacus nulla gravida orci a odio nullam varius turpis et commodo pharetra est eros. Bibendum elit nec luctus magna felis sollicitudin mauris integer in mauris eu. Nibh euismod gravida praesent blandit odio eu enim pellentesque sed dapibus. Est sed lacinia sapien vel tellus.</p>
+						<h2 id="sd-tells">{toc[0].label}</h2>
+						<p>Lorem ipsum dolor sit amet consectetur adipiscing elit sed. Do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad. Minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure. Dolor in reprehenderit in voluptate velit esse cillum dolore eu. Fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui officia. Deserunt mollit anim id est laborum curabitur pretium tincidunt lacus nulla gravida. Orci a odio nullam varius.</p>
+						<p>Turpis et commodo pharetra est eros bibendum elit nec luctus magna felis sollicitudin mauris integer. In mauris eu nibh euismod gravida praesent blandit odio. Eu enim pellentesque sed dapibus est sed lacinia sapien vel tellus lorem ipsum. Dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut.</p>
+						<h2 id="sd-visit">{toc[1].label}</h2>
+						<ol>
+							<li><strong>Your hearing history:</strong> Enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea. Commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse. Cillum dolore eu fugiat.</li>
+							<li><strong>Pure tone and speech testing:</strong> Nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit. Anim id est laborum curabitur pretium tincidunt lacus nulla. Gravida orci a odio nullam varius turpis et commodo pharetra est.</li>
+							<li><strong>Middle ear testing:</strong> Eros bibendum elit nec luctus magna felis sollicitudin mauris integer in mauris eu nibh euismod gravida praesent. Blandit odio eu enim pellentesque sed dapibus est sed lacinia. Sapien.</li>
+							<li><strong>Reviewing your results together:</strong> Vel tellus lorem ipsum dolor sit amet consectetur adipiscing elit sed do. Eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim. Ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex.</li>
+						</ol>
+						<h2 id="sd-who">{toc[2].label}</h2>
+						<p>Ea commodo consequat duis aute irure dolor in reprehenderit. In voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat. <a href={h(routes.about)}>Cupidatat non proident</a> sunt in culpa qui officia deserunt mollit anim id est laborum curabitur pretium tincidunt. Lacus nulla gravida orci a odio nullam varius turpis et. Commodo.</p>
+						<ul>
+							<li>Pharetra est eros bibendum elit nec luctus magna felis.</li>
+							<li>Sollicitudin mauris integer in mauris eu nibh euismod gravida praesent blandit.</li>
+							<li>Odio eu enim pellentesque sed dapibus est sed.</li>
+							<li>Lacinia sapien vel tellus lorem ipsum dolor sit amet. Consectetur.</li>
+						</ul>
+						<figure>
+							<div class="fimg"><img src="/assets/photos/waiting-room.jpg" alt="The practice's warm, softly lit waiting room" loading="lazy" /></div>
+							<figcaption>Adipiscing elit sed do eiusmod tempor incididunt ut labore et.</figcaption>
+						</figure>
+						<h2 id="sd-why">{toc[3].label}</h2>
+						<p>Dolore magna aliqua ut enim ad minim veniam quis nostrud. Exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor. In reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident sunt in culpa qui officia. Deserunt mollit anim id est laborum curabitur pretium tincidunt lacus nulla gravida orci.</p>
+						<blockquote>“Curabitur pretium tincidunt lacus nulla gravida orci a odio nullam varius turpis et commodo.”<cite>Sample block quote, styled for the editor</cite></blockquote>
+						<h3>Doctors of Audiology</h3>
+						<p>A odio nullam varius turpis et commodo pharetra est. Eros bibendum elit nec luctus magna felis sollicitudin mauris integer in mauris eu. Nibh euismod gravida praesent blandit odio eu enim pellentesque sed dapibus est sed.</p>
+						<h3>Care after your visit</h3>
+						<p>Lacinia sapien vel tellus lorem ipsum dolor sit amet consectetur. Adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut. Enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut.</p>
+					</article>
+				)}
+			</div>
+
+			<aside class:list={["sidebar", { sticky }]} aria-label="Book and reviews">
+				<div class="panel">
+					<div class="card side-card">
+						<h2 class="h3">{service.bookLabel}</h2>
+						<p class="muted">{s.fill(service.sidebarText ?? "")}</p>
+						<a class="btn btn-primary block" href={h(routes.book)}>Book appointment</a>
+						<a class="tel" href={tel} style="justify-content: center"><span class="ico"><Icon name="phone" /></span>{s.phone}</a>
+					</div>
+				</div>
+
+				<div class="stack g8">
+					<div class="panel">
+						<section class="card side-card review" aria-roledescription={carousel ? "carousel" : undefined} aria-label="Patient reviews" data-carousel={carousel ? "" : undefined}>
+							<div style="display: flex; justify-content: space-between; align-items: center">
+								<Stars label="5 out of 5 stars" />
+								<span class="qmark only-d" aria-hidden="true" style="width: 44px; height: 44px; border-radius: 12px"><Icon name="quote" size={22} /></span>
+							</div>
+							<div aria-live="polite">
+								{rvList.map((r, i) => (
+									<div class="rv-slide" data-slide={i} hidden={i > 0}>
+										{carousel && <span class="sr">Review {i + 1} of {rvList.length}</span>}
+										<blockquote class="rtext" style="margin: 0; font-size: 18px; -webkit-line-clamp: 6">{r.text}</blockquote>
+										<div class="rmeta" style="margin-top: 18px"><b>{r.name}</b><span>Google review</span></div>
+									</div>
+								))}
+							</div>
+							{carousel && (
+								<div class="rv-nav">
+									<button class="rv-arrow" type="button" data-prev aria-label="Previous review"><Icon name="arrowL" size={22} /></button>
+									<div class="rv-dots">
+										{rvList.map((_, i) => (
+											<button class:list={["rv-dot", { on: i === 0 }]} type="button" data-dot={i} aria-label={`Show review ${i + 1} of ${rvList.length}`} aria-current={i === 0 ? "true" : "false"}><span /></button>
+										))}
+									</div>
+									<button class="rv-arrow next" type="button" data-next aria-label="Next review"><Icon name="arrowR" size={22} /></button>
+								</div>
+							)}
+						</section>
+					</div>
+					{revLink && <a class="link-arrow" href={h(routes.reviews)} style="padding-left: 8px">Read more reviews <Icon name="arrowR" size={18} /></a>}
+				</div>
+
+				{
+					showPosts && (
+						<div class="panel">
+							<div class="card side-card" style="gap: 8px">
+								<h2 class="h3" style="margin-bottom: 6px">From our audiologists</h2>
+								{posts.map((p) => (
+									<a class="mini-post" href={h(routes.post(p.slug))}>
+										<div class:list={["ph", p.tone]} />
+										<div class="stack" style="gap: 2px"><span class="date">{p.date}</span><b>{p.title}</b></div>
+									</a>
+								))}
+							</div>
+						</div>
+					)
+				}
+			</aside>
+		</div>
+	</section>
+
+	<section class="band sd-faq" style="padding-top: 0">
+		<div class="wrap faq-grid">
+			<div class="stack g24">
+				<span class="eyebrow">FAQ</span>
+				<h2 class="h2">Frequently asked questions about {service.name.toLowerCase()}</h2>
+				<div class="only-d" style="padding-top: 8px"><a class="btn btn-primary" href={h(routes.contact)}>Contact us</a></div>
+			</div>
+			<div class="acc-list">
+				{
+					faq.map((it, i) => (
+						<div class:list={["acc", { open: i === 0 }]} data-acc>
+							<h3 style="margin: 0">
+								<button class="acc-btn" type="button" aria-expanded={i === 0 ? "true" : "false"} aria-controls={`faq-${i}`}>
+									<span>{it.q}</span>
+									<span class="acc-ic" aria-hidden="true"><span class="i-open"><Icon name="plus" /></span><span class="i-close"><Icon name="minus" /></span></span>
+								</button>
+							</h3>
+							<div class="acc-body" id={`faq-${i}`} hidden={i !== 0}><p>{it.a}</p></div>
+						</div>
+					))
+				}
+			</div>
+			<a class="btn btn-primary block only-m" href={h(routes.contact)}>Contact us</a>
+		</div>
+	</section>
+
+	<section class="band bg-light">
+		<div class="wrap stack g48">
+			<div class="shead">
+				<div class="stack g16"><span class="eyebrow">Services</span><h2 class="h2">Related services</h2></div>
+				<a class="link-arrow" href={h(routes.services)}>All services <Icon name="arrowR" size={18} /></a>
+			</div>
+			<div class="panel grid g-3">
+				{
+					related.map((x) => (
+						<article class="card">
+							<h3 class="h3">{x.name}</h3>
+							<p class="muted">{x.summary}</p>
+							{x.hasPage && (
+								<div class="actions">
+									<a class="btn btn-gray sm" href={h(routes.service(x.slug))}>Learn more<span class="sr"> about {x.name}</span></a>
+								</div>
+							)}
+						</article>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<div class="cta-wrap after-inset">
+		<CtaBand id="dcta" heading={service.ctaHeading} text="Consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore. Magna aliqua ut enim ad minim." bookLabel={service.bookLabel} photoLabel="Lifestyle photo · conversation, meal, outdoors" />
+	</div>
+</Base>
+
+<script>
+	// Sidebar review carousel: moves only when the reader asks it to.
+	document.querySelectorAll<HTMLElement>("[data-carousel]").forEach((box) => {
+		const slides = [...box.querySelectorAll<HTMLElement>("[data-slide]")];
+		const dots = [...box.querySelectorAll<HTMLButtonElement>("[data-dot]")];
+		let i = 0;
+		const show = (n: number) => {
+			i = (n + slides.length) % slides.length;
+			slides.forEach((s, k) => (s.hidden = k !== i));
+			dots.forEach((d, k) => {
+				d.classList.toggle("on", k === i);
+				d.setAttribute("aria-current", k === i ? "true" : "false");
+			});
+		};
+		box.querySelector("[data-prev]")?.addEventListener("click", () => show(i - 1));
+		box.querySelector("[data-next]")?.addEventListener("click", () => show(i + 1));
+		dots.forEach((d, k) => d.addEventListener("click", () => show(k)));
+	});
+</script>

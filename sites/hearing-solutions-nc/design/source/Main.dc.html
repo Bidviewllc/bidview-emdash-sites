@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Design 1 foundations</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./d1.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>body{margin:0}</style>
+</helmet>
+<div class="d1 sheet" style="min-height: 2500px; --p: {{P}}; --a: {{A}}; --l: {{L}}; --on-p: {{onP}}; --on-a: {{onA}}; --on-l: {{onL}}; --p-ink: {{pInk}}">
+  <div class="sheet-head">
+    <span class="eyebrow">Design 1 · Nested panels</span>
+    <h1 class="sheet-title">Foundations</h1>
+    <p class="sheet-sub">Grayscale structure, practice color only where it means something. Swap the three practice colors in Tweaks to test any palette; every board on this canvas has the same three controls.</p>
+  </div>
+
+  <div class="spec">Practice colors <small>· chosen by each practice</small></div>
+  <div class="wrap">
+    <div class="panel grid g-3">
+      <div class="swatch">
+        <div class="chip" style="background: {{P}}; color: {{onP}}">Primary · Aa</div>
+        <div class="meta"><span class="h4">Primary</span><span class="code">{{P}}</span><p class="small muted">Primary buttons, links, icons, eyebrow square, timeline years, CTA action panel.</p></div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background: {{A}}; color: {{onA}}">Accent · Aa</div>
+        <div class="meta"><span class="h4">Accent</span><span class="code">{{A}}</span><p class="small muted">Stars, arrow badges, tag labels (as a tint), hover states, accent buttons.</p></div>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background: {{L}}; color: {{onL}}; border-bottom: 1px solid #E4E2DD">Light background · Aa</div>
+        <div class="meta"><span class="h4">Light background</span><span class="code">{{L}}</span><p class="small muted">Full-width alternating bands and no-photo heroes. Never used for cards.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="wrap" style="margin-top: 24px">
+    <div class="grid g-6" style="gap: 12px">
+      <div class="stack g8"><div style="height: 64px; border-radius: 12px; background: #FFFFFF; border: 1px solid #DCDCD8"></div><span class="small"><b>White</b> · cards</span></div>
+      <div class="stack g8"><div style="height: 64px; border-radius: 12px; background: #EFEFED"></div><span class="small"><b>Panel</b> · #EFEFED</span></div>
+      <div class="stack g8"><div style="height: 64px; border-radius: 12px; background: #E6E6E3"></div><span class="small"><b>Panel hover</b> · #E6E6E3</span></div>
+      <div class="stack g8"><div style="height: 64px; border-radius: 12px; background: #DCDCD8"></div><span class="small"><b>Divider</b> · #DCDCD8</span></div>
+      <div class="stack g8"><div style="height: 64px; border-radius: 12px; background: #555B62"></div><span class="small"><b>Secondary text</b> · #555B62</span></div>
+      <div class="stack g8"><div style="height: 64px; border-radius: 12px; background: #1B1F23"></div><span class="small"><b>Ink</b> · #1B1F23</span></div>
+    </div>
+    <p class="note" style="margin-top: 16px">Design-owned neutrals (not practice colors). Secondary text passes AA on white (about 7:1) and on panel gray (about 6:1).</p>
+  </div>
+
+  <div class="spec">Text on color <small>· picked automatically</small></div>
+  <div class="wrap">
+    <div class="rowf" style="gap: 12px">
+      <sc-for list="{{samples}}" as="s" hint-placeholder-count="8">
+        <div style="width: 138px; height: 96px; border-radius: 16px; background: {{s.c}}; color: {{s.t}}; display: flex; flex-direction: column; justify-content: space-between; padding: 14px">
+          <span style="font: 600 22px/1 var(--hf)">Aa</span>
+          <span style="font: 700 14px/1.2 var(--bf)">{{s.c}}</span>
+        </div>
+      </sc-for>
+    </div>
+    <p class="note" style="margin-top: 16px; max-width: 760px">The site compares white and ink (#1B1F23) against each practice color and uses whichever contrasts more. Links on white use Primary, darkened automatically when a practice picks a Primary too light for 4.5:1.</p>
+  </div>
+
+  <div class="spec">Type <small>· fixed for Design 1</small></div>
+  <div class="wrap" style="display: grid; grid-template-columns: 300px 1fr; gap: 64px">
+    <div class="stack g24">
+      <div class="stack g8"><span class="state-label">Headings</span><span style="font: 500 34px/1.1 var(--hf)">Plus Jakarta Sans</span><p class="small muted">Regular 400 · Medium 500 · SemiBold 600. Open shapes, friendly but grown-up. Normal letter-spacing.</p></div>
+      <div class="stack g8"><span class="state-label">Body</span><span style="font: 700 30px/1.1 var(--bf)">Atkinson Hyperlegible Next</span><p class="small muted">Regular 400 · SemiBold 600 · Bold 700. Drawn by the Braille Institute for low-vision readers; distinct letterforms (I l 1, 0 O).</p></div>
+    </div>
+    <div class="stack g24">
+      <div class="stack g8"><span class="state-label">H1 · 52 / 1.1 desktop · 34 mobile · Medium</span><p class="h1">Hearing care that takes its time</p></div>
+      <div class="stack g8"><span class="state-label">H2 · 40 / 1.15 · 30 mobile</span><p class="h2">Meet the audiologists at Lakeview</p></div>
+      <div class="stack g8"><span class="state-label">H3 · 26 / 1.25 · 23 mobile</span><p class="h3">Hearing evaluations</p></div>
+      <div class="stack g8"><span class="state-label">H4 · 21 / 1.3 · SemiBold</span><p class="h4">Main office hours</p></div>
+      <div class="stack g8"><span class="state-label">Lead · 20 / 1.55</span><p class="lead text-col">We explain every result in plain language, and you leave with a written plan you can share with your family.</p></div>
+      <div class="stack g8"><span class="state-label">Body · 18 / 1.6 desktop and mobile</span><p class="body text-col">Most first visits take about an hour. Bring a list of your medications, any old hearing test results, and a family member if you like; a familiar voice helps us test real conversation.</p></div>
+      <div class="stack g8"><span class="state-label">Small · 16 / 1.5 (dates, captions; never below 15)</span><p class="small muted">September 16, 2026 · 5 minute read</p></div>
+      <div class="stack g8"><span class="state-label">Eyebrow · 15 Bold, uppercase, +0.14em</span><span class="eyebrow">Our journey</span></div>
+    </div>
+  </div>
+
+  <div class="spec">Spacing + nesting <small>· one scale, everywhere</small></div>
+  <div class="wrap" style="display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start">
+    <div class="stack g12">
+      <sc-for list="{{scale}}" as="s" hint-placeholder-count="10">
+        <div style="display: grid; grid-template-columns: 64px 1fr 200px; align-items: center; gap: 16px">
+          <span class="code">{{s.n}}px</span>
+          <div class="scale-bar" style="width: {{s.w}}px"></div>
+          <span class="small muted">{{s.use}}</span>
+        </div>
+      </sc-for>
+    </div>
+    <div class="stack g16">
+      <div class="panel grid g-2">
+        <div class="card"><span class="h4">Card</span><p class="small muted">White · radius 16 · padding 32 (24 mobile)</p></div>
+        <div class="card"><span class="h4">Card</span><p class="small muted">Gap between cards = panel padding</p></div>
+      </div>
+      <p class="note">Panel: #EFEFED · radius 28 (24 mobile) · padding 16 (12 mobile). The gray gap reads as a soft outline, so cards never get a drawn border. Full-width panels and photos sit 12px in from the screen edge so their corners always show.</p>
+      <div class="rowf" style="gap: 12px">
+        <div style="width: 96px; height: 96px; background: #EFEFED; border-radius: 28px; display: grid; place-items: center" class="code">28</div>
+        <div style="width: 96px; height: 96px; background: #EFEFED; border-radius: 22px; display: grid; place-items: center" class="code">22</div>
+        <div style="width: 96px; height: 96px; background: #EFEFED; border-radius: 16px; display: grid; place-items: center" class="code">16</div>
+        <div style="width: 96px; height: 96px; background: #EFEFED; border-radius: 12px; display: grid; place-items: center" class="code">12</div>
+        <div style="width: 96px; height: 96px; background: #EFEFED; border-radius: 999px; display: grid; place-items: center" class="code">pill</div>
+      </div>
+      <p class="note">Radii: panel 28 · accordion row 22 · card, photo 16 · photo inside card, input 12–14 · buttons pill.</p>
+    </div>
+  </div>
+
+  <div class="spec">Buttons <small>· 13 · all min 48px tall, body font, sentence case</small></div>
+  <div class="wrap">
+    <div style="display: grid; grid-template-columns: 200px repeat(3, minmax(0, 1fr)); gap: 20px 24px; align-items: center">
+      <span></span><span class="state-label">Default</span><span class="state-label">Hover</span><span class="state-label">Keyboard focus</span>
+      <span class="h4">Primary</span>
+      <div><a class="btn btn-primary" href="#">Book appointment</a></div>
+      <div><a class="btn btn-primary is-hover" href="#">Book appointment</a></div>
+      <div><a class="btn btn-primary is-focus" href="#">Book appointment</a></div>
+      <span class="h4">Primary + arrow</span>
+      <div><a class="btn btn-primary" href="#">Read article <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></a></div>
+      <div><a class="btn btn-primary is-hover" href="#">Read article <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></a></div>
+      <div><a class="btn btn-primary is-focus" href="#">Read article <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></a></div>
+      <span class="h4">Secondary (outlined)</span>
+      <div><a class="btn btn-secondary" href="#">Contact us</a></div>
+      <div><a class="btn btn-secondary is-hover" href="#">Contact us</a></div>
+      <div><a class="btn btn-secondary is-focus" href="#">Contact us</a></div>
+      <span class="h4">Accent</span>
+      <div><a class="btn btn-accent" href="#">See hearing aid styles</a></div>
+      <div><a class="btn btn-accent is-hover" href="#">See hearing aid styles</a></div>
+      <div><a class="btn btn-accent is-focus" href="#">See hearing aid styles</a></div>
+      <span class="h4">Gray pill (on cards)</span>
+      <div><a class="btn btn-gray sm" href="#">Learn more</a></div>
+      <div><a class="btn btn-gray sm is-hover" href="#">Learn more</a></div>
+      <div><a class="btn btn-gray sm is-focus" href="#">Learn more</a></div>
+      <span class="h4">Text link + arrow</span>
+      <div><a class="link-arrow" href="#">Read all reviews <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a></div>
+      <div><a class="link-arrow is-hover" href="#">Read all reviews <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a></div>
+      <div><a class="link-arrow is-focus" href="#">Read all reviews <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a></div>
+    </div>
+    <div class="rowf" style="gap: 16px; margin-top: 32px; padding: 32px; border-radius: 28px; background: var(--p)">
+      <a class="btn btn-inverse" href="#">Book appointment</a>
+      <a class="btn btn-ghost-on-p" href="#">Our services</a>
+      <span style="color: var(--on-p); font-size: 16px">On a Primary panel, buttons invert. Text color follows the automatic on-color rule.</span>
+    </div>
+  </div>
+
+  <div class="spec">Eyebrow, tags, breadcrumbs <small>· 15</small></div>
+  <div class="wrap" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px">
+    <div class="stack g16"><span class="state-label">Eyebrow (optional above any H2)</span><span class="eyebrow">FAQ</span><span class="eyebrow">Our journey</span><span class="eyebrow">Meet the team</span></div>
+    <div class="stack g16"><span class="state-label">Tag label · Accent tint, ink text</span><div class="rowf" style="gap: 10px"><span class="tag">New patients</span><span class="tag">Tinnitus</span><span class="tag">Hearing aids</span></div></div>
+    <div class="stack g16"><span class="state-label">Breadcrumb</span>
+      <nav aria-label="Breadcrumb"><ol class="crumbs"><li><a href="#">Home</a></li><li class="sep" aria-hidden="true">/</li><li><a href="#">Services</a></li><li class="sep" aria-hidden="true">/</li><li aria-current="page">Tinnitus care</li></ol></nav>
+    </div>
+  </div>
+
+  <div class="spec">Image slots <small>· fixed shapes so any photo drops in</small></div>
+  <div class="wrap" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; align-items: end">
+    <div class="stack g8"><div class="ph warm" style="aspect-ratio: 16/9"><span class="ph-label">Page hero · 16:9</span></div><span class="small muted">Crops to 4:5 on mobile (home hero)</span></div>
+    <div class="stack g8"><div class="ph stone" style="aspect-ratio: 3/2"><span class="ph-label">Team / office · 3:2</span></div><span class="small muted">Interior hero photo, team, office</span></div>
+    <div class="stack g8"><div class="ph sage" style="aspect-ratio: 4/3"><span class="ph-label">Service card · 4:3</span></div><span class="small muted">Or no image; cards work text-only</span></div>
+    <div class="stack g8"><div class="ph sky" style="aspect-ratio: 16/9"><span class="ph-label">Blog · 16:9 or 1:1</span></div><span class="small muted">Shape set once per site</span></div>
+    <div class="stack g8"><div class="ph warm" style="aspect-ratio: 4/5; width: 70%"><span class="ph-label">Headshot · 4:5</span></div><span class="small muted">Shoulders up</span></div>
+    <div class="stack g8"><div style="aspect-ratio: 1/1; width: 70%; background: #fff; border: 1px solid #DCDCD8; border-radius: 16px; display: flex; align-items: flex-end"><span class="ph-label" style="background: #EFEFED">Hearing aid · 1:1 on white</span></div><span class="small muted">Product shot</span></div>
+    <div class="stack g8"><div style="width: 160px; height: 60px; border: 1px dashed #BDBDB7; border-radius: 8px; display: grid; place-items: center" class="small muted">160 × 60</div><span class="small muted">Brand logo box: one color or full color</span></div>
+    <span></span>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"primary":{"editor":"color","default":"#0F5E6B","options":["#0F5E6B","#1E3A5F","#2F5D3A"],"section":"Practice colors"},"accent":{"editor":"color","default":"#E0A33B","options":["#E0A33B","#E8735A","#C9A227"],"section":"Practice colors"},"light":{"editor":"color","default":"#F6F1EA","options":["#F6F1EA","#EEF3F8","#F7F4EC"],"section":"Practice colors"},"$preview":{"width":1440,"height":2500}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const P = this.props.primary ?? '#0F5E6B', A = this.props.accent ?? '#E0A33B', L = this.props.light ?? '#F6F1EA';
+    const hex = (h) => { h = String(h).replace('#', ''); if (h.length === 3) h = h.split('').map((c) => c + c).join(''); return h; };
+    const lum = (h) => { h = hex(h); const v = [0, 2, 4].map((i) => { const c = parseInt(h.substr(i, 2), 16) / 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); }); return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2]; };
+    const cr = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
+    const on = (c) => (cr(c, '#FFFFFF') >= cr(c, '#1B1F23') ? '#FFFFFF' : '#1B1F23');
+    const darken = (h, t) => '#' + [0, 2, 4].map((i) => Math.round(parseInt(hex(h).substr(i, 2), 16) * (1 - t)).toString(16).padStart(2, '0')).join('');
+    let ink = P; for (let t = 0.08; cr(ink, '#FFFFFF') < 4.5 && t < 0.9; t += 0.08) ink = darken(P, t);
+    const samples = ['#0F5E6B', '#1E3A5F', '#2F5D3A', '#E0A33B', '#E8735A', '#C9A227', '#7FC8D2', '#6B2D5C'].map((c) => ({ c, t: on(c) }));
+    const scale = [
+      { n: 4, use: 'Icon nudges' }, { n: 8, use: 'Label to field' }, { n: 12, use: 'Viewport inset, mobile panel' },
+      { n: 16, use: 'Panel padding, card gap' }, { n: 24, use: 'Inside cards (mobile)' }, { n: 32, use: 'Inside cards' },
+      { n: 48, use: 'Heading to content' }, { n: 64, use: 'Column gap' }, { n: 96, use: 'Section padding' }, { n: 128, use: 'Hero breathing room' }
+    ].map((s) => ({ ...s, w: s.n * 2.4 }));
+    return { P, A, L, onP: on(P), onA: on(A), onL: on(L), pInk: ink, samples, scale };
+  }
+}
+</script>
+</body>
+</html>

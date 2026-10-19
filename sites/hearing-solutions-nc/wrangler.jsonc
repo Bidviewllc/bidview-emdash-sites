@@ -1,0 +1,50 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	// Hearing Solutions of North Carolina: a copy of the Entheos audiology
+	// template, reskinned to the HSNC design. Bidview account.
+	//
+	// EmDash passkeys belong to one hostname: run the admin setup wizard on
+	// https://hearing-solutions-nc.cameron-239.workers.dev and log in there.
+	// Version preview URLs show the site but can't log in to the admin.
+	//
+	// The D1 database, R2 bucket and KV namespace are created on first deploy;
+	// their ids go here.
+	"name": "hearing-solutions-nc",
+	"account_id": "239e9d015c7a3a39cdc2e9400312f553",
+	"main": "./src/worker.ts",
+	"compatibility_date": "2026-02-24",
+	"compatibility_flags": ["nodejs_compat"],
+	"workers_dev": true,
+	"preview_urls": true,
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "hearing-solutions-nc-db",
+			"database_id": "TBD"
+		}
+	],
+	"r2_buckets": [
+		{
+			"binding": "MEDIA",
+			"bucket_name": "hearing-solutions-nc-media"
+		}
+	],
+	// Astro sessions (EmDash keeps the signed-in admin here).
+	"kv_namespaces": [
+		{
+			"binding": "SESSION",
+			"id": "TBD"
+		}
+	],
+	// Hourly EmDash housekeeping (scheduled publishing, cleanup).
+	"triggers": {
+		"crons": ["0 * * * *"]
+	},
+	// Workers AI: the spam check on form submissions (src/pages/api/form.ts).
+	"ai": { "binding": "AI" },
+	// The hostname admin passkeys belong to.
+	"vars": {
+		"EMDASH_SITE_URL": "https://hearing-solutions-nc.cameron-239.workers.dev"
+	},
+	"observability": { "enabled": true }
+}

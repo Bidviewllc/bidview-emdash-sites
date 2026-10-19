@@ -1,0 +1,188 @@
+---
+// Page shell: fonts, styles, practice colours, header, footer and (on review
+// builds) the Review controls panel.
+import "../styles/d1.css";
+import "../styles/site.css";
+import ReviewControls, { type Tweak } from "../components/ReviewControls.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import Tracking from "../components/Tracking.astro";
+import { EmDashHead } from "emdash/ui";
+import { createPublicPageContext } from "emdash/page";
+import { schemaGraph } from "../lib/schema";
+import { fullTitle, robotsFor, seoEntry, siteOrigin, titleCore } from "../lib/seo";
+import { active, getMarketing, onLiveDomain } from "../lib/marketing";
+import { roleVars, styleString } from "../lib/color";
+import { getSettings, type HeroKey } from "../lib/settings";
+
+interface Props {
+	title: string;
+	description: string;
+	pageName: string;
+	current?: "services" | "hearing-aids" | "about" | "resources" | "blog" | "contact";
+	tweaks?: Tweak[];
+	heroDefault?: HeroKey;
+	/** Keep this page out of search results. */
+	noindex?: boolean;
+}
+const { title, description, pageName, current, tweaks = [], heroDefault, noindex = false } = Astro.props;
+const s = getSettings(Astro);
+const style = styleString(roleVars(s.colors));
+/** Marketing & tracking (Admin-only page): tracking runs on the live domain only. */
+const mk = await getMarketing();
+// SEO (src/lib/seo.ts): the page's SEO panel in the admin wins over the template's
+// title and description; one set of meta tags, written by EmDash's head component.
+const site = Astro.locals.site;
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const entry = await seoEntry(path);
+const names = [...new Set([s.name, site.practice.name])];
+const pageTitle = titleCore(entry?.seo?.title || title, names);
+const docTitle = fullTitle(pageTitle, names[0]);
+const desc = entry?.seo?.description || description;
+const origin = siteOrigin(mk, Astro.url);
+const canonical = origin + (path === "/" ? "/" : path);
+const robots = robotsFor(mk, Astro.url, { noindex, panel: entry?.seo, status: Astro.response.status });
+const pageCtx = createPublicPageContext({
+	Astro,
+	kind: entry ? "content" : "custom",
+	// "website" everywhere: blog posts get our own BlogPosting (src/lib/schema.ts), not EmDash's.
+	pageType: "website",
+	title: docTitle,
+	pageTitle,
+	description: desc,
+	canonical,
+	content: entry ? { collection: entry.collection, id: entry.id, slug: entry.slug } : undefined,
+	seo: robots ? { robots } : undefined,
+	siteUrl: origin,
+});
+// Breadcrumbs for structured data: Home → section hub → this page.
+const HUBS: Record<string, string> = { services: "Services", "hearing-aids": "Hearing Aids", about: "About", blog: "Blog", "patient-resources": "Patient Resources" };
+const seg = path.split("/").filter(Boolean);
+const crumbs: [string, string][] = path === "/" ? [["Home", "/"]] : [["Home", "/"], ...(seg.length > 1 && HUBS[seg[0]] ? [[HUBS[seg[0]], `/${seg[0]}`] as [string, string]] : []), [pageTitle, path]];
+const jsonLd = Astro.response.status < 400 ? JSON.stringify(schemaGraph({ site, origin, path, title: pageTitle, description: desc, crumbs })).replace(/</g, "\\u003c") : "";
+const adsForm = onLiveDomain(mk, Astro.url.host) && /^AW-\d+$/i.test(active(mk, "gads")) && active(mk, "gads_form_label") ? `${active(mk, "gads")}/${active(mk, "gads_form_label")}` : undefined;
+---
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>{docTitle}</title>
+		<EmDashHead page={pageCtx} />
+		<meta property="og:site_name" content={site.practice.name} />
+		{jsonLd && <script type="application/ld+json" set:html={jsonLd} />}
+		{!site.practice.favicon && <link rel="icon" href="/favicon.svg" type="image/svg+xml" />}
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap"
+			rel="stylesheet"
+		/>
+		<Tracking mk={mk} place="head" />
+	</head>
+	<body class="d1 page" style={style} data-lshape={s.logoShape} data-ads-form={adsForm}>
+		<Tracking mk={mk} place="body-start" />
+		<a class="skip" href="#main">Skip to main content</a>
+		<SiteHeader current={current} />
+		<main id="main">
+			<slot />
+		</main>
+		<SiteFooter />
+		{s.showPanel && <ReviewControls pageName={pageName} tweaks={tweaks} heroDefault={heroDefault} />}
+		<script>
+			import { referral } from "../scripts/referral";
+			// Accordions (FAQ, tables of contents, resource lists): the button opens and closes its panel.
+			document.querySelectorAll<HTMLElement>("[data-acc]").forEach((acc) => {
+				const btn = acc.querySelector<HTMLButtonElement>("button[aria-controls]");
+				const panel = btn && document.getElementById(btn.getAttribute("aria-controls")!);
+				if (!btn || !panel) return;
+				btn.addEventListener("click", () => {
+					const open = panel.hidden;
+					panel.hidden = !open;
+					btn.setAttribute("aria-expanded", String(open));
+					acc.classList.toggle("open", open);
+				});
+			});
+			// Events for whichever tracking is on (Marketing & tracking): gtag when GA4 or Ads
+			// is loaded, else the Tag Manager dataLayer.
+			const track = (event: string, params: Record<string, string> = {}) => {
+				const w = window as unknown as { gtag?: (...a: unknown[]) => void; dataLayer?: unknown[] };
+				if (w.gtag) w.gtag("event", event, params);
+				else (w.dataLayer = w.dataLayer || []).push({ event, ...params });
+			};
+			document.addEventListener("click", (e) => {
+				const a = (e.target as Element).closest?.('a[href^="tel:"]');
+				if (a) track("click_phone_number", { phone_number: a.getAttribute("href")!.slice(4), link_text: (a.textContent || "").trim().slice(0, 60) });
+			});
+			// Lead source: recorded on every page view, written into each form at send time.
+			const lead = referral();
+			const shownAt = Date.now();
+			// Forms (SiteForm.astro): check the required fields and show the error next to
+			// each one, in words; then send to /api/form with the lead source, the page and
+			// the time spent on the page (bot check), and go to the thank-you page.
+			document.querySelectorAll<HTMLFormElement>("[data-form]").forEach((form) => {
+				const set = (name: string, v: string) => {
+					const input = form.querySelector<HTMLInputElement>(`input[type=hidden][name="${name}"]`);
+					if (input) input.value = v;
+				};
+				form.addEventListener("submit", async (e) => {
+					e.preventDefault();
+					let first: HTMLElement | null = null;
+					const errFor = (el: Element) =>
+						(el.getAttribute("aria-describedby") ?? "").split(" ").map((id) => document.getElementById(id)).find((x) => x?.classList.contains("errmsg"));
+					form.querySelectorAll<HTMLInputElement>(".input[required], input[type=checkbox][required]").forEach((input) => {
+						const v = input.type === "checkbox" ? (input.checked ? "1" : "") : input.value.trim();
+						const bad = !v || (input.type === "tel" && v.replace(/\D/g, "").length < 7) || (input.type === "email" && !/^[^@\s]+@[^@\s.]+\.[^@\s]+$/.test(v));
+						input.classList.toggle("err", bad);
+						input.setAttribute("aria-invalid", String(bad));
+						const err = errFor(input);
+						if (err) err.hidden = !bad;
+						if (bad && !first) first = input;
+					});
+					form.querySelectorAll<HTMLFieldSetElement>("fieldset[data-group]").forEach((fs) => {
+						const bad = !fs.querySelector("input:checked");
+						const err = errFor(fs);
+						if (err) err.hidden = !bad;
+						if (bad && !first) first = fs.querySelector("input");
+					});
+					if (first) return (first as HTMLElement).focus();
+					set("referral_source", lead.source);
+					set("referral_detail", lead.detail);
+					set("page_url", location.pathname);
+					set("_fs", String(Date.now() - shownAt));
+					const btn = form.querySelector<HTMLButtonElement>("button[type=submit]");
+					const failMsg = form.querySelector<HTMLElement>("[data-form-error]");
+					if (btn) btn.disabled = true;
+					if (failMsg) failMsg.hidden = true;
+					try {
+						const res = await fetch(form.action, { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } });
+						const out = await res.json().catch(() => ({}));
+						if (!res.ok || !out.ok) throw new Error(out.error || res.statusText);
+						const formName = (form.querySelector<HTMLInputElement>("input[name=_form]")?.value) || "form";
+						track("form_submit", { form_name: formName, lead_source: lead.source });
+						const ads = document.body.dataset.adsForm;
+						if (ads) track("conversion", { send_to: ads });
+						await new Promise((r) => setTimeout(r, 300));
+						location.assign(out.redirect || "/thank-you");
+					} catch {
+						if (btn) btn.disabled = false;
+						if (failMsg) {
+							failMsg.hidden = false;
+							failMsg.focus?.();
+						}
+					}
+				});
+			});
+			// "Read more" on a clamped review opens the full text.
+			document.querySelectorAll<HTMLButtonElement>(".readmore").forEach((btn) => {
+				btn.addEventListener("click", () => {
+					const text = btn.parentElement!.querySelector(".rtext")!;
+					const open = text.classList.toggle("is-open");
+					btn.setAttribute("aria-expanded", String(open));
+					btn.textContent = open ? "Show less" : "Read more";
+				});
+			});
+		</script>
+		<Tracking mk={mk} place="body-end" />
+	</body>
+</html>

@@ -1,0 +1,37 @@
+---
+// "What our patients say": rating line, "Read more reviews" on the right and two
+// review cards (Services hub, Location).
+import { getSettings } from "../lib/settings";
+import Icon from "./Icon.astro";
+import ReviewCard from "./ReviewCard.astro";
+import Stars from "./Stars.astro";
+import { routes } from "../lib/routes";
+import type { Review } from "../data/types";
+
+const { practice, reviews: allReviews } = Astro.locals.site;
+
+interface Props {
+	reviews?: Review[];
+	link?: boolean;
+	heading?: string;
+	class?: string;
+}
+const { reviews = allReviews.slice(0, 2), link = true, heading = "What our patients say", class: cls } = Astro.props;
+const s = getSettings(Astro);
+---
+<section class:list={["band", cls]}>
+	<div class="wrap stack g48">
+		<div class="shead">
+			<div class="stack g16">
+				<span class="eyebrow">Reviews</span>
+				<h2 class="h2">{heading}</h2>
+				<div class="rowf" style="gap: 12px">
+					<Stars size={24} />
+					<span class="lead" style="color: var(--ink)"><b>{practice.rating.score} out of 5</b> from {practice.rating.count} Google reviews</span>
+				</div>
+			</div>
+			{link && <a class="link-arrow" href={s.href(routes.reviews)}>Read more reviews <Icon name="arrowR" size={18} /></a>}
+		</div>
+		<div class="panel grid g-2">{reviews.map((r) => <ReviewCard review={r} />)}</div>
+	</div>
+</section>

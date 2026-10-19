@@ -1,0 +1,1064 @@
+{
+  "v": 3,
+  "attachments": {},
+  "boards": {
+    "Blog.dc.html": {
+      "h": 3300,
+      "title": "16–17 Blog cards + featured post",
+      "w": 1440,
+      "x": 3040,
+      "y": 7140,
+      "page": "components"
+    },
+    "BrandMobile.dc.html": {
+      "h": 8200,
+      "is_interactive": true,
+      "title": "Brand page · mobile (reads left to right)",
+      "w": 1440,
+      "x": 1520,
+      "y": 7240,
+      "page": "hearing-aids"
+    },
+    "BrandPage.dc.html": {
+      "expand": "fill",
+      "h": 8000,
+      "is_interactive": true,
+      "title": "Brand page · desktop (full page; same layout for every brand)",
+      "w": 1440,
+      "x": 0,
+      "y": 7240,
+      "page": "hearing-aids"
+    },
+    "CTA.dc.html": {
+      "h": 2500,
+      "title": "04 CTA band",
+      "w": 1440,
+      "x": 1520,
+      "y": 10560,
+      "page": "components"
+    },
+    "Cards.dc.html": {
+      "h": 3600,
+      "title": "06 + 11 Cards and logo row",
+      "w": 1440,
+      "x": 1520,
+      "y": 3220,
+      "page": "components"
+    },
+    "FAQ.dc.html": {
+      "h": 3100,
+      "is_interactive": true,
+      "title": "07 Accordion / FAQ",
+      "w": 1440,
+      "x": 3040,
+      "y": 3220,
+      "page": "components"
+    },
+    "Footer.dc.html": {
+      "h": 2800,
+      "title": "03 Footer",
+      "w": 1440,
+      "x": 0,
+      "y": 14580,
+      "page": "components"
+    },
+    "Forms.dc.html": {
+      "h": 3900,
+      "title": "10 + 14 Location block and forms",
+      "w": 1440,
+      "x": 3040,
+      "y": 10560,
+      "page": "components"
+    },
+    "Header.dc.html": {
+      "h": 2100,
+      "title": "01–02 Header (desktop + mobile)",
+      "w": 1440,
+      "x": 1520,
+      "y": 0,
+      "page": "components"
+    },
+    "HearingAidsHub.dc.html": {
+      "expand": "fill",
+      "h": 6400,
+      "is_interactive": true,
+      "title": "Hearing aids hub · desktop (full page; hub layout)",
+      "w": 1440,
+      "x": 0,
+      "y": 0,
+      "page": "hearing-aids"
+    },
+    "HearingAidsMobile.dc.html": {
+      "h": 7000,
+      "title": "Hearing aids hub · mobile (reads left to right)",
+      "w": 1440,
+      "x": 1520,
+      "y": 0,
+      "page": "hearing-aids"
+    },
+    "Hero.dc.html": {
+      "h": 3100,
+      "title": "05 Page hero (interior)",
+      "w": 1440,
+      "x": 3040,
+      "y": 0,
+      "page": "components"
+    },
+    "Home1.dc.html": {
+      "h": 4600,
+      "is_interactive": true,
+      "title": "Home · desktop 1/2 (hero → services)",
+      "w": 1440,
+      "x": 0,
+      "y": 0,
+      "page": "home"
+    },
+    "Home2.dc.html": {
+      "h": 5500,
+      "is_interactive": true,
+      "title": "Home · desktop 2/2 (brands → footer)",
+      "w": 1440,
+      "x": 0,
+      "y": 4720,
+      "page": "home"
+    },
+    "HomeFull.dc.html": {
+      "expand": "fill",
+      "h": 8000,
+      "is_interactive": true,
+      "title": "Home · full page (open full-window to scroll it all; header and footer styles in Review controls)",
+      "w": 1440,
+      "x": 4560,
+      "y": 0,
+      "page": "home"
+    },
+    "HomeMobile.dc.html": {
+      "h": 7400,
+      "is_interactive": true,
+      "title": "Home · mobile (reads left to right)",
+      "w": 1440,
+      "x": 1520,
+      "y": 0,
+      "page": "home"
+    },
+    "HomeStates.dc.html": {
+      "h": 7600,
+      "title": "Home · alternate states",
+      "w": 1440,
+      "x": 3040,
+      "y": 0,
+      "page": "home"
+    },
+    "Main.dc.html": {
+      "h": 2800,
+      "title": "00 Foundations: color, type, spacing, buttons",
+      "w": 1440,
+      "x": 0,
+      "y": 0,
+      "page": "components"
+    },
+    "Palettes.dc.html": {
+      "h": 4400,
+      "title": "Palette swap test",
+      "w": 1440,
+      "x": 4560,
+      "y": 0,
+      "page": "components"
+    },
+    "Providers.dc.html": {
+      "h": 3000,
+      "title": "09 Provider cards",
+      "w": 1440,
+      "x": 1520,
+      "y": 7140,
+      "page": "components"
+    },
+    "Reviews.dc.html": {
+      "h": 2600,
+      "title": "08 Reviews",
+      "w": 1440,
+      "x": 0,
+      "y": 7140,
+      "page": "components"
+    },
+    "ServiceDetail.dc.html": {
+      "expand": "fill",
+      "h": 7800,
+      "is_interactive": true,
+      "title": "Service detail · desktop (full page; used for every service)",
+      "w": 1440,
+      "x": 0,
+      "y": 6600,
+      "page": "services"
+    },
+    "ServiceDetailMobile.dc.html": {
+      "h": 7800,
+      "is_interactive": true,
+      "title": "Service detail · mobile (reads left to right)",
+      "w": 1440,
+      "x": 1520,
+      "y": 6600,
+      "page": "services"
+    },
+    "ServiceDetailPosts.dc.html": {
+      "expand": "fill",
+      "h": 7800,
+      "is_interactive": true,
+      "title": "Service detail · extra mock-up: recent posts ON + review carousel",
+      "w": 1440,
+      "x": 3040,
+      "y": 6600,
+      "page": "services"
+    },
+    "ServicesHub.dc.html": {
+      "expand": "fill",
+      "h": 5800,
+      "is_interactive": true,
+      "title": "Services hub · desktop (full page; hub layout)",
+      "w": 1440,
+      "x": 0,
+      "y": 0,
+      "page": "services"
+    },
+    "ServicesMobile.dc.html": {
+      "h": 6600,
+      "title": "Services hub · mobile (reads left to right)",
+      "w": 1440,
+      "x": 1520,
+      "y": 0,
+      "page": "services"
+    },
+    "Timeline.dc.html": {
+      "h": 2600,
+      "title": "18 Timeline",
+      "w": 1440,
+      "x": 0,
+      "y": 10560,
+      "page": "components"
+    },
+    "TrustBar.dc.html": {
+      "h": 3800,
+      "is_interactive": true,
+      "title": "12 Home hero + trust bar",
+      "w": 1440,
+      "x": 0,
+      "y": 3220,
+      "page": "components"
+    },
+    "AboutPage.dc.html": {
+      "expand": "fill",
+      "h": 7600,
+      "is_interactive": true,
+      "title": "About us · desktop (full page)",
+      "w": 1440,
+      "x": 0,
+      "y": 0,
+      "page": "about"
+    },
+    "AboutMobile.dc.html": {
+      "h": 7800,
+      "is_interactive": true,
+      "title": "About us · mobile (reads left to right)",
+      "w": 1440,
+      "x": 1520,
+      "y": 0,
+      "page": "about"
+    },
+    "PersonPage.dc.html": {
+      "expand": "fill",
+      "h": 6800,
+      "is_interactive": true,
+      "title": "Provider profile · desktop (full page; same layout for every provider)",
+      "w": 1440,
+      "x": 3040,
+      "y": 0,
+      "page": "about"
+    },
+    "PersonMobile.dc.html": {
+      "h": 6800,
+      "is_interactive": true,
+      "title": "Provider profile · mobile (reads left to right)",
+      "w": 1440,
+      "x": 4560,
+      "y": 0,
+      "page": "about"
+    },
+    "LocationPage.dc.html": {
+      "expand": "fill",
+      "h": 5600,
+      "is_interactive": true,
+      "title": "Location · desktop (full page; one per office)",
+      "w": 1440,
+      "x": 6080,
+      "y": 0,
+      "page": "about"
+    },
+    "LocationMobile.dc.html": {
+      "h": 5700,
+      "title": "Location · mobile (reads left to right)",
+      "w": 1440,
+      "x": 7600,
+      "y": 0,
+      "page": "about"
+    },
+    "ContactPage.dc.html": {
+      "expand": "fill",
+      "h": 4800,
+      "is_interactive": true,
+      "title": "Contact · desktop (full page)",
+      "w": 1440,
+      "x": 6080,
+      "y": 0,
+      "page": "home"
+    },
+    "ContactMobile.dc.html": {
+      "h": 5500,
+      "title": "Contact · mobile (reads left to right)",
+      "w": 1440,
+      "x": 7600,
+      "y": 0,
+      "page": "home"
+    },
+    "BookPage.dc.html": {
+      "expand": "fill",
+      "h": 3200,
+      "is_interactive": true,
+      "title": "Book appointment · desktop · Version A: scheduler embed (full page)",
+      "w": 1440,
+      "x": 0,
+      "y": 0,
+      "page": "utility"
+    },
+    "BookPageB.dc.html": {
+      "expand": "fill",
+      "h": 3800,
+      "title": "Book appointment · desktop · Version B: request form (full page)",
+      "w": 1440,
+      "x": 1520,
+      "y": 0,
+      "page": "utility"
+    },
+    "BookMobile.dc.html": {
+      "h": 4900,
+      "title": "Book appointment · mobile (A, B, then page end)",
+      "w": 1440,
+      "x": 3040,
+      "y": 0,
+      "page": "utility"
+    },
+    "BookPageSideA.dc.html": {
+      "expand": "fill",
+      "h": 2400,
+      "title": "Book appointment · desktop · Right sidebar · Version A: scheduler embed",
+      "w": 1440,
+      "x": 0,
+      "y": 4240,
+      "page": "utility"
+    },
+    "BookPageSideB.dc.html": {
+      "expand": "fill",
+      "h": 3400,
+      "title": "Book appointment · desktop · Right sidebar · Version B: request form",
+      "w": 1440,
+      "x": 1520,
+      "y": 4240,
+      "page": "utility"
+    },
+    "ReviewsPage.dc.html": {
+      "expand": "fill",
+      "h": 4200,
+      "is_interactive": true,
+      "title": "Reviews · desktop (full page; location filter works)",
+      "w": 1440,
+      "x": 4560,
+      "y": 0,
+      "page": "utility"
+    },
+    "ReviewsMobile.dc.html": {
+      "h": 5900,
+      "title": "Reviews · mobile (reads left to right)",
+      "w": 1440,
+      "x": 6080,
+      "y": 0,
+      "page": "utility"
+    },
+    "BlogPage.dc.html": {
+      "expand": "fill",
+      "h": 4600,
+      "is_interactive": true,
+      "title": "Blog archive · desktop · grid with 16:9 images (chips filter)",
+      "w": 1440,
+      "x": 0,
+      "y": 0,
+      "page": "blog"
+    },
+    "BlogPageSquare.dc.html": {
+      "expand": "fill",
+      "h": 4800,
+      "title": "Blog archive · desktop · grid with square images",
+      "w": 1440,
+      "x": 1520,
+      "y": 0,
+      "page": "blog"
+    },
+    "BlogPageList.dc.html": {
+      "expand": "fill",
+      "h": 6200,
+      "title": "Blog archive · desktop · list view (featured-row style)",
+      "w": 1440,
+      "x": 3040,
+      "y": 0,
+      "page": "blog"
+    },
+    "BlogPageCategory.dc.html": {
+      "expand": "fill",
+      "h": 3200,
+      "title": "Blog category archive · /blog/category/hearing-aids/ (one chip active; CTA without photo)",
+      "w": 1440,
+      "x": 4560,
+      "y": 0,
+      "page": "blog"
+    },
+    "BlogMobile.dc.html": {
+      "h": 5700,
+      "title": "Blog archive · mobile (reads left to right)",
+      "w": 1440,
+      "x": 6080,
+      "y": 0,
+      "page": "blog"
+    },
+    "PostPage.dc.html": {
+      "expand": "fill",
+      "h": 7800,
+      "is_interactive": true,
+      "title": "Blog post · desktop (full page; long-form reading)",
+      "w": 1440,
+      "x": 7600,
+      "y": 0,
+      "page": "blog"
+    },
+    "PostMobile.dc.html": {
+      "h": 7000,
+      "title": "Blog post · mobile (reads left to right)",
+      "w": 1440,
+      "x": 9120,
+      "y": 0,
+      "page": "blog"
+    },
+    "ResourcesPage.dc.html": {
+      "expand": "fill",
+      "h": 5600,
+      "is_interactive": true,
+      "title": "Patient resources · View A: Cards, Group by None (default)",
+      "w": 1440,
+      "x": 0,
+      "y": 0,
+      "page": "resources"
+    },
+    "ResourcesAccordion.dc.html": {
+      "expand": "fill",
+      "h": 5000,
+      "is_interactive": true,
+      "title": "Patient resources · View B: Accordion, Group by None (CTA without photo)",
+      "w": 1440,
+      "x": 1520,
+      "y": 0,
+      "page": "resources"
+    },
+    "ResourcesGrouped.dc.html": {
+      "expand": "fill",
+      "h": 7600,
+      "title": "Patient resources · View C: Cards, Group by Tag",
+      "w": 1440,
+      "x": 3040,
+      "y": 0,
+      "page": "resources"
+    },
+    "ResourcesMobile.dc.html": {
+      "h": 7200,
+      "title": "Patient resources · mobile (View A, then B and C)",
+      "w": 1440,
+      "x": 4560,
+      "y": 0,
+      "page": "resources"
+    },
+    "LegalPage.dc.html": {
+      "expand": "fill",
+      "h": 3000,
+      "is_interactive": true,
+      "title": "Legal pages · desktop (Privacy Policy shown; same template for Terms and Accessibility)",
+      "w": 1440,
+      "x": 7600,
+      "y": 0,
+      "page": "utility"
+    },
+    "LegalMobile.dc.html": {
+      "h": 3800,
+      "title": "Legal pages · mobile (reads left to right)",
+      "w": 1440,
+      "x": 9120,
+      "y": 0,
+      "page": "utility"
+    },
+    "NotFoundPage.dc.html": {
+      "expand": "fill",
+      "h": 2400,
+      "is_interactive": true,
+      "title": "404 · desktop",
+      "w": 1440,
+      "x": 10640,
+      "y": 0,
+      "page": "utility"
+    },
+    "NotFoundMobile.dc.html": {
+      "h": 3000,
+      "title": "404 · mobile (reads left to right)",
+      "w": 1440,
+      "x": 12160,
+      "y": 0,
+      "page": "utility"
+    },
+    "ThankYouPage.dc.html": {
+      "expand": "fill",
+      "h": 1800,
+      "is_interactive": true,
+      "title": "Thank-you · desktop (after a form is sent)",
+      "w": 1440,
+      "x": 13680,
+      "y": 0,
+      "page": "utility"
+    },
+    "ThankYouMobile.dc.html": {
+      "h": 1900,
+      "title": "Thank-you · mobile (reads left to right)",
+      "w": 1440,
+      "x": 15200,
+      "y": 0,
+      "page": "utility"
+    },
+    "ServicesHubAlt.dc.html": {
+      "expand": "fill",
+      "h": 4800,
+      "title": "Services hub · alternate states: no-photo hero (Primary), steps hidden, “Read more reviews” hidden, CTA without photo",
+      "w": 1440,
+      "x": 3040,
+      "y": 0,
+      "page": "services"
+    },
+    "ServiceDetailAlt.dc.html": {
+      "expand": "fill",
+      "h": 7400,
+      "title": "Service detail · alternate states: no-photo hero (Light), reviews link hidden, CTA without photo",
+      "w": 1440,
+      "x": 4560,
+      "y": 6600,
+      "page": "services"
+    },
+    "HearingAidsAlt.dc.html": {
+      "expand": "fill",
+      "h": 5400,
+      "title": "Hearing aids hub · alternate states: no-photo hero (Primary), styles section hidden, CTA without photo",
+      "w": 1440,
+      "x": 3040,
+      "y": 0,
+      "page": "hearing-aids"
+    },
+    "BrandPageAlt.dc.html": {
+      "expand": "fill",
+      "h": 7600,
+      "title": "Brand page · alternate states: no-photo hero (Primary), CTA without photo",
+      "w": 1440,
+      "x": 3040,
+      "y": 7240,
+      "page": "hearing-aids"
+    },
+    "AboutPageAlt.dc.html": {
+      "expand": "fill",
+      "h": 7400,
+      "title": "About us · alternate states A: no-photo hero (Primary), horizontal journey, CTA without photo",
+      "w": 1440,
+      "x": 0,
+      "y": 8240,
+      "page": "about"
+    },
+    "AboutPageAltB.dc.html": {
+      "expand": "fill",
+      "h": 5800,
+      "title": "About us · alternate states B: journey hidden, credentials hidden (no gaps left behind)",
+      "w": 1440,
+      "x": 1520,
+      "y": 8240,
+      "page": "about"
+    },
+    "PersonPageAlt.dc.html": {
+      "expand": "fill",
+      "h": 5600,
+      "title": "Provider profile · alternate states: video hidden, one office, CTA without photo",
+      "w": 1440,
+      "x": 3040,
+      "y": 8240,
+      "page": "about"
+    },
+    "LocationPageAlt.dc.html": {
+      "expand": "fill",
+      "h": 5200,
+      "title": "Location · alternate states: no-photo hero (Primary), provider without profile link, CTA without photo",
+      "w": 1440,
+      "x": 6080,
+      "y": 8240,
+      "page": "about"
+    },
+    "ContactPageAlt.dc.html": {
+      "expand": "fill",
+      "h": 4800,
+      "title": "Contact · alternate states: photo hero, one office, CTA without photo",
+      "w": 1440,
+      "x": 9120,
+      "y": 0,
+      "page": "home"
+    },
+    "ReviewsPageAlt.dc.html": {
+      "expand": "fill",
+      "h": 4000,
+      "title": "Reviews · alternate states: one office (no location filter), CTA without photo",
+      "w": 1440,
+      "x": 4560,
+      "y": 6000,
+      "page": "utility"
+    },
+    "LegalPageAlt.dc.html": {
+      "expand": "fill",
+      "h": 2800,
+      "title": "Legal pages · alternate state: table of contents hidden",
+      "w": 1440,
+      "x": 7600,
+      "y": 6000,
+      "page": "utility"
+    },
+    "NotFoundPageAlt.dc.html": {
+      "expand": "fill",
+      "h": 2200,
+      "title": "404 · alternate state: search box hidden (quick links only)",
+      "w": 1440,
+      "x": 10640,
+      "y": 6000,
+      "page": "utility"
+    },
+    "PostPageAlt.dc.html": {
+      "expand": "fill",
+      "h": 7400,
+      "title": "Blog post · alternate states: no featured image, author without profile link, CTA without photo",
+      "w": 1440,
+      "x": 10640,
+      "y": 0,
+      "page": "blog"
+    },
+    "HeaderOptions.dc.html": {
+      "h": 1700,
+      "title": "Header options · wide logos (H1–H3)",
+      "w": 1440,
+      "x": 0,
+      "y": 0,
+      "page": "headers-footers"
+    },
+    "HeaderOptionsStacked.dc.html": {
+      "h": 3900,
+      "title": "Header options · square and vertical logos (V1–V7)",
+      "w": 1440,
+      "x": 1520,
+      "y": 0,
+      "page": "headers-footers"
+    },
+    "HeaderOptionsMobile.dc.html": {
+      "h": 2200,
+      "title": "Header options · mobile, menu closed",
+      "w": 1440,
+      "x": 3040,
+      "y": 0,
+      "page": "headers-footers"
+    },
+    "HeaderOptionsMenu.dc.html": {
+      "h": 4300,
+      "title": "Header options · mobile, menu open",
+      "w": 1440,
+      "x": 4560,
+      "y": 0,
+      "page": "headers-footers"
+    },
+    "SiteHeader.dc.html": {
+      "h": 360,
+      "title": "Header component · pick a style in Tweaks (used by Home)",
+      "w": 1440,
+      "x": 6080,
+      "y": 0,
+      "page": "headers-footers",
+      "is_interactive": true
+    },
+    "FooterOptions.dc.html": {
+      "h": 4300,
+      "title": "Footer options · landscape logo (F1–F7)",
+      "w": 1440,
+      "x": 0,
+      "y": 4720,
+      "page": "headers-footers"
+    },
+    "FooterOptionsVertical.dc.html": {
+      "h": 4500,
+      "title": "Footer options · vertical logo (F1–F7)",
+      "w": 1440,
+      "x": 1520,
+      "y": 4720,
+      "page": "headers-footers"
+    },
+    "FooterOptionsMobile.dc.html": {
+      "h": 4200,
+      "title": "Footer options · mobile, landscape logo",
+      "w": 1440,
+      "x": 3040,
+      "y": 4720,
+      "page": "headers-footers"
+    },
+    "FooterOptionsMobileVertical.dc.html": {
+      "h": 4400,
+      "title": "Footer options · mobile, vertical logo",
+      "w": 1440,
+      "x": 4560,
+      "y": 4720,
+      "page": "headers-footers"
+    },
+    "SiteFooter.dc.html": {
+      "h": 760,
+      "title": "Footer component · pick a style in Tweaks (used by Home)",
+      "w": 1440,
+      "x": 6080,
+      "y": 4720,
+      "page": "headers-footers",
+      "is_interactive": true
+    }
+  },
+  "createdOnFiles": {
+    "at": "2026-10-12T20:40:00Z",
+    "v": 1
+  },
+  "designSystems": [],
+  "launch": {
+    "view": "canvas",
+    "page": "home"
+  },
+  "notes": {
+    "aids": {
+      "kind": "title1",
+      "maxW": 2960,
+      "text": "Page 4 · Hearing aids hub",
+      "w": 240,
+      "x": 0,
+      "y": -320,
+      "page": "hearing-aids"
+    },
+    "brand": {
+      "kind": "title1",
+      "maxW": 2960,
+      "text": "Page 5 · Brand page",
+      "w": 240,
+      "x": 0,
+      "y": 6920,
+      "page": "hearing-aids"
+    },
+    "detail": {
+      "kind": "title1",
+      "maxW": 4480,
+      "text": "Page 3 · Service detail",
+      "w": 240,
+      "x": 0,
+      "y": 6280,
+      "page": "services"
+    },
+    "home": {
+      "kind": "title1",
+      "maxW": 6000,
+      "text": "Page 1 · Home",
+      "w": 240,
+      "x": 0,
+      "y": -320,
+      "page": "home"
+    },
+    "services": {
+      "kind": "title1",
+      "maxW": 2960,
+      "text": "Page 2 · Services hub",
+      "w": 240,
+      "x": 0,
+      "y": -320,
+      "page": "services"
+    },
+    "title": {
+      "kind": "title1",
+      "maxW": 6000,
+      "text": "Design 1 · Nested panels — component library",
+      "w": 240,
+      "x": 0,
+      "y": -320,
+      "page": "components"
+    },
+    "about": {
+      "kind": "title1",
+      "maxW": 2960,
+      "text": "Page 6 · About us",
+      "x": 0,
+      "y": -320,
+      "page": "about"
+    },
+    "person": {
+      "kind": "title1",
+      "maxW": 2960,
+      "text": "Page 7 · Provider profile",
+      "x": 3040,
+      "y": -320,
+      "page": "about"
+    },
+    "location": {
+      "kind": "title1",
+      "maxW": 2960,
+      "text": "Page 8 · Location",
+      "x": 6080,
+      "y": -320,
+      "page": "about"
+    },
+    "contact": {
+      "kind": "title1",
+      "maxW": 2960,
+      "text": "Page 9 · Contact",
+      "x": 6080,
+      "y": -320,
+      "page": "home"
+    },
+    "book": {
+      "kind": "title1",
+      "maxW": 4480,
+      "text": "Page 10 · Book appointment",
+      "x": 0,
+      "y": -320,
+      "page": "utility"
+    },
+    "book-side": {
+      "kind": "title1",
+      "maxW": 2960,
+      "text": "Book appointment · right-sidebar layout",
+      "x": 0,
+      "y": 3920,
+      "page": "utility"
+    },
+    "reviews": {
+      "kind": "title1",
+      "maxW": 2960,
+      "text": "Page 11 · Reviews",
+      "x": 4560,
+      "y": -320,
+      "page": "utility"
+    },
+    "blog": {
+      "kind": "title1",
+      "maxW": 7520,
+      "text": "Page 12 · Blog archive",
+      "x": 0,
+      "y": -320,
+      "page": "blog"
+    },
+    "post": {
+      "kind": "title1",
+      "maxW": 2960,
+      "text": "Page 13 · Blog post",
+      "x": 7600,
+      "y": -320,
+      "page": "blog"
+    },
+    "resources": {
+      "kind": "title1",
+      "maxW": 6000,
+      "text": "Page 14 · Patient resources",
+      "x": 0,
+      "y": -320,
+      "page": "resources"
+    },
+    "legal": {
+      "kind": "title1",
+      "maxW": 2960,
+      "text": "Page 15 · Legal pages",
+      "x": 7600,
+      "y": -320,
+      "page": "utility"
+    },
+    "notfound": {
+      "kind": "title1",
+      "maxW": 2960,
+      "text": "Page 16 · 404",
+      "x": 10640,
+      "y": -320,
+      "page": "utility"
+    },
+    "thanks": {
+      "kind": "title1",
+      "maxW": 2960,
+      "text": "Page 17 · Thank-you",
+      "x": 13680,
+      "y": -320,
+      "page": "utility"
+    },
+    "about-alt": {
+      "kind": "title1",
+      "maxW": 7520,
+      "text": "About, provider and location · alternate states",
+      "x": 0,
+      "y": 7920,
+      "page": "about"
+    },
+    "utility-alt": {
+      "kind": "title1",
+      "maxW": 7520,
+      "text": "Reviews, legal and 404 · alternate states",
+      "x": 4560,
+      "y": 5680,
+      "page": "utility"
+    },
+    "hf-head": {
+      "kind": "title1",
+      "maxW": 7520,
+      "text": "Header options",
+      "x": 0,
+      "y": -320,
+      "page": "headers-footers"
+    },
+    "hf-foot": {
+      "kind": "title1",
+      "maxW": 7520,
+      "text": "Footer options",
+      "x": 0,
+      "y": 4400,
+      "page": "headers-footers"
+    }
+  },
+  "order": [
+    "Main.dc.html",
+    "Header.dc.html",
+    "Hero.dc.html",
+    "TrustBar.dc.html",
+    "Cards.dc.html",
+    "FAQ.dc.html",
+    "Reviews.dc.html",
+    "Providers.dc.html",
+    "Blog.dc.html",
+    "Timeline.dc.html",
+    "CTA.dc.html",
+    "Forms.dc.html",
+    "Footer.dc.html",
+    "Home1.dc.html",
+    "Home2.dc.html",
+    "HomeMobile.dc.html",
+    "HomeStates.dc.html",
+    "Palettes.dc.html",
+    "HomeFull.dc.html",
+    "ServicesHub.dc.html",
+    "ServicesMobile.dc.html",
+    "ServiceDetail.dc.html",
+    "ServiceDetailMobile.dc.html",
+    "ServiceDetailPosts.dc.html",
+    "HearingAidsHub.dc.html",
+    "HearingAidsMobile.dc.html",
+    "BrandPage.dc.html",
+    "BrandMobile.dc.html",
+    "AboutPage.dc.html",
+    "AboutMobile.dc.html",
+    "PersonPage.dc.html",
+    "PersonMobile.dc.html",
+    "LocationPage.dc.html",
+    "LocationMobile.dc.html",
+    "ContactPage.dc.html",
+    "ContactMobile.dc.html",
+    "BookPage.dc.html",
+    "BookPageB.dc.html",
+    "BookMobile.dc.html",
+    "BookPageSideA.dc.html",
+    "BookPageSideB.dc.html",
+    "ReviewsPage.dc.html",
+    "ReviewsMobile.dc.html",
+    "BlogPage.dc.html",
+    "BlogPageSquare.dc.html",
+    "BlogPageList.dc.html",
+    "BlogPageCategory.dc.html",
+    "BlogMobile.dc.html",
+    "PostPage.dc.html",
+    "PostMobile.dc.html",
+    "ResourcesPage.dc.html",
+    "ResourcesAccordion.dc.html",
+    "ResourcesGrouped.dc.html",
+    "ResourcesMobile.dc.html",
+    "LegalPage.dc.html",
+    "LegalMobile.dc.html",
+    "NotFoundPage.dc.html",
+    "NotFoundMobile.dc.html",
+    "ThankYouPage.dc.html",
+    "ThankYouMobile.dc.html",
+    "ServicesHubAlt.dc.html",
+    "ServiceDetailAlt.dc.html",
+    "HearingAidsAlt.dc.html",
+    "BrandPageAlt.dc.html",
+    "AboutPageAlt.dc.html",
+    "AboutPageAltB.dc.html",
+    "PersonPageAlt.dc.html",
+    "LocationPageAlt.dc.html",
+    "ContactPageAlt.dc.html",
+    "ReviewsPageAlt.dc.html",
+    "LegalPageAlt.dc.html",
+    "NotFoundPageAlt.dc.html",
+    "PostPageAlt.dc.html",
+    "HeaderOptions.dc.html",
+    "HeaderOptionsStacked.dc.html",
+    "HeaderOptionsMobile.dc.html",
+    "HeaderOptionsMenu.dc.html",
+    "SiteHeader.dc.html",
+    "FooterOptions.dc.html",
+    "FooterOptionsVertical.dc.html",
+    "FooterOptionsMobile.dc.html",
+    "FooterOptionsMobileVertical.dc.html",
+    "SiteFooter.dc.html"
+  ],
+  "pages": [
+    {
+      "id": "components",
+      "name": "Components"
+    },
+    {
+      "id": "headers-footers",
+      "name": "Headers & footers"
+    },
+    {
+      "id": "home",
+      "name": "Home"
+    },
+    {
+      "id": "services",
+      "name": "Services"
+    },
+    {
+      "id": "hearing-aids",
+      "name": "Hearing aids"
+    },
+    {
+      "id": "about",
+      "name": "About"
+    },
+    {
+      "id": "blog",
+      "name": "Blog"
+    },
+    {
+      "id": "resources",
+      "name": "Resources"
+    },
+    {
+      "id": "utility",
+      "name": "Utility"
+    }
+  ],
+  "title": "Audiology Template · Design 1 (Nested panels)"
+}

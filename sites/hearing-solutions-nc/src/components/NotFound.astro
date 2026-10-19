@@ -1,0 +1,67 @@
+---
+// Page 16 · 404 (boards NotFoundPage, NotFoundMobile, NotFoundPageAlt).
+// No-photo Light hero: large "404", H1, text, search box (optional), Book and
+// "Go to the home page" → "Popular pages" (4 cards).
+import Base from "../layouts/Base.astro";
+import { getSettings } from "../lib/settings";
+import Icon from "./Icon.astro";
+import type { Tweak } from "./ReviewControls.astro";
+import { routes } from "../lib/routes";
+
+const tweaks: Tweak[] = [{ key: "search", label: "Search box", type: "bool", default: true }];
+const s = getSettings(Astro);
+const h = s.href;
+const showSearch = s.bool("search", true);
+const popular = [
+	{ icon: "headset", t: "Services", d: "Hearing tests, fittings, tinnitus care and more", href: routes.services },
+	{ icon: "ear", t: "Hearing Aids", d: "Styles, brands and what fits your life", href: routes.hearingAids },
+	{ icon: "phone", t: "Contact", d: s.officeCount === 2 ? "Phone, email and both office locations" : "Phone, email and our office location", href: routes.contact },
+	{ icon: "calendar", t: "Book Appointment", d: "Pick a time online or request a call", href: routes.book },
+] as const;
+Astro.response.status = 404;
+---
+<Base title={`Page not found | ${s.name}`} description="We can't find that page." pageName="404" tweaks={tweaks}>
+	<div class="pg-hero-np">
+		<section class="inophoto nf-hero" style="background: var(--l); color: var(--on-l)">
+			<div class="shape np1" style="border-color: color-mix(in srgb, var(--p) 7%, transparent)" />
+			<div class="wrap">
+				<div class="stack g24 nf-col" style="position: relative">
+					<span class="nf-code" aria-hidden="true">404</span>
+					<h1 class="h1 xl" style="color: inherit">We can’t find that page</h1>
+					<p class="lead" style="color: inherit; margin: 0">Qui officia deserunt mollit anim id est laborum curabitur pretium. Tincidunt lacus nulla gravida orci a odio nullam varius turpis.</p>
+					{
+						showSearch && (
+							<form class="nf-search" role="search" aria-label="Search the site" action="/search">
+								<label class="sr" for="nf-q">Search the site</label>
+								<input class="input" id="nf-q" type="search" name="q" placeholder="Search for a service, topic or page" />
+								<button class="btn btn-primary" type="submit"><Icon name="search" /> Search</button>
+							</form>
+						)
+					}
+					<div class="rowf nf-btns" style="gap: 12px; flex-wrap: wrap">
+						<a class="btn btn-primary" href={h(routes.book)}>Book appointment</a>
+						<a class="btn btn-secondary" href={h(routes.home)}>Go to the home page</a>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+	<section class="band">
+		<div class="wrap stack g32">
+			<h2 class="h2">Popular pages</h2>
+			<ul class="panel ql-grid">
+				{
+					popular.map((x) => (
+						<li>
+							<a class="ql-card" href={h(x.href)}>
+								<span class="qmark"><Icon name={x.icon} size={26} /></span>
+								<span class="stack g4" style="flex: 1"><b>{x.t}</b><span class="muted">{x.d}</span></span>
+								<span class="go" aria-hidden="true"><Icon name="arrowR" /></span>
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+	</section>
+</Base>

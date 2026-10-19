@@ -1,0 +1,23 @@
+---
+// One Google review on a white card: quote mark, stars, text (five lines, then
+// "Read more" for long ones), name and date.
+import Icon from "./Icon.astro";
+import Stars from "./Stars.astro";
+import type { Review } from "../data/types";
+
+interface Props {
+	review: Review;
+	hidden?: boolean;
+	index?: number;
+}
+const { review: r, hidden = false, index } = Astro.props;
+---
+<figure class="card review" style="margin: 0" data-review={index} hidden={hidden}>
+	<div style="display: flex; justify-content: space-between; align-items: flex-start">
+		<span class="qmark only-d" aria-hidden="true"><Icon name="quote" size={28} /></span>
+		<Stars rating={r.rating ?? 5} label={`${r.rating ?? 5} out of 5 stars`} />
+	</div>
+	<blockquote class="rtext" style="margin: 0">{r.text}</blockquote>
+	{r.long && <button class="readmore" type="button" aria-expanded="false">Read more</button>}
+	<figcaption class="rmeta" style="margin-top: auto; padding-top: 8px"><b>{r.name}</b><span>Google review</span><span aria-hidden="true">·</span><span>{r.date}</span></figcaption>
+</figure>

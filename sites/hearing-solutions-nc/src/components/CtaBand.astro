@@ -1,0 +1,68 @@
+---
+// CTA band: a Primary action panel next to an emotional photo panel, or the
+// Primary panel alone (Review controls → CTA photo panel off).
+import { getSettings } from "../lib/settings";
+import { routes, telHref } from "../lib/routes";
+import Photo from "./Photo.astro";
+
+interface Props {
+	id: string;
+	heading: string;
+	text: string;
+	bookLabel?: string;
+	photoLabel?: string;
+	/** Contact page: the call button comes first and is the main one. */
+	callFirst?: boolean;
+}
+const {
+	id,
+	heading,
+	text,
+	bookLabel = "Book appointment",
+	photoLabel = "Older adult laughing with family at a table, or on a walk with a friend",
+	callFirst = false,
+} = Astro.props;
+const s = getSettings(Astro);
+const tel = telHref(s.phone);
+---
+{
+	s.ctaPhoto ? (
+		<section class="cta" aria-labelledby={id}>
+			<div class="cta-act">
+				<h2 class="h2" id={id}>{heading}</h2>
+				<p class="lead" style="color: var(--on-p); max-width: 500px">{text}</p>
+				<div class="rowf cta-btns" style="gap: 20px; margin-top: 12px">
+					{callFirst ? (
+						<><a class="btn btn-inverse" href={tel}>Call {s.phone}</a><a class="btn btn-ghost-on-p" href={s.href(routes.book)}>{bookLabel}</a></>
+					) : (
+						<><a class="btn btn-inverse" href={s.href(routes.book)}>{bookLabel}</a><a class="btn btn-ghost-on-p" href={tel}>Call {s.phone}</a></>
+					)}
+				</div>
+			</div>
+			<div class="cta-emo on-dark">
+				<Photo photo={Astro.locals.site.practice.photos.cta} label={photoLabel} tone="dark" labelPos="tr" />
+				<div class="scrim" />
+				<div class="inner">
+					<span class="eyebrow on-dark">Start your hearing journey</span>
+					<p class="big">Get back to the conversations you’ve been missing</p>
+				</div>
+			</div>
+		</section>
+	) : (
+		<section class="cta solo" aria-labelledby={id}>
+			<div class="cta-act">
+				<div class="stack g16" style="max-width: 640px">
+					<h2 class="h2" id={id}>{heading}</h2>
+					<p class="lead" style="color: var(--on-p)">{text}</p>
+				</div>
+				<div class="stack g12 cta-btns" style="align-items: flex-start; flex: none">
+					{callFirst ? (
+						<><a class="btn btn-inverse" href={tel}>Call {s.phone}</a><a class="btn btn-ghost-on-p" href={s.href(routes.book)}>{bookLabel}</a></>
+					) : (
+						<><a class="btn btn-inverse" href={s.href(routes.book)}>{bookLabel}</a><a class="btn btn-ghost-on-p" href={tel}>Call {s.phone}</a></>
+					)}
+				</div>
+			</div>
+		</section>
+	)
+}

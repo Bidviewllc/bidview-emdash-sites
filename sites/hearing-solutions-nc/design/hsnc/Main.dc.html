@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Home — Hearing Solutions of NC</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&amp;family=Rubik:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+*{box-sizing:border-box}
+a{color:#252F5B}a:hover{color:#134C1F}
+.wrap{max-width:1120px;margin:0 auto;padding-left:24px;padding-right:24px}
+.serif{font-family:'Playfair Display',Georgia,serif;font-weight:400}
+.eyebrow{margin:0;font-size:15px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 24px;background:#252F5B;color:#fff;border:1.5px solid #252F5B;border-radius:3px;font-family:'Rubik',sans-serif;font-size:15px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;cursor:pointer}
+.btn:hover{background:#1A2246;color:#fff}
+.btn-o{background:transparent;color:#252F5B;border-color:#252F5B}.btn-o:hover{background:#252F5B;color:#fff}
+.btn-w{background:#86BA32;color:#252F5B;border-color:#86BA32}.btn-w:hover{background:#9CCB4F;border-color:#9CCB4F;color:#1A2246}
+.hero{background:linear-gradient(rgba(37,47,91,.62),rgba(37,47,91,.62)),url(/_blob/d39a95d49e644555fbeae1c9d5903c8f) center 45%/cover no-repeat,#252F5B}
+.btn-ow{background:transparent;color:#fff;border-color:#fff}.btn-ow:hover{background:#fff;color:#252F5B}
+.nl{color:#252F5B;text-decoration:none;font-size:15px}.nl:hover{text-decoration:underline}
+.fl{color:#fff;text-decoration:none}.fl:hover{color:#fff;text-decoration:underline}
+.soc{width:32px;height:32px;background:#fff;color:#252F5B;border-radius:4px;display:inline-flex;align-items:center;justify-content:center}
+.ph{background:#D5E2BF;border-radius:14px;display:flex;align-items:center;justify-content:center}
+.card{background:#E2EBD2;border-radius:14px}
+.arrow{background:none;border:0;width:44px;height:44px;color:#134C1F;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;flex:none}
+.faq{border-bottom:1px solid #C5CDE0}
+.faq summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:48px;cursor:pointer;font-size:1em}
+.faq summary::-webkit-details-marker{display:none}
+.faq p{margin:0 0 14px;font-size:1em;color:#134C1F}
+.show-m{display:none!important}
+@media (max-width:820px){.hide-m{display:none!important}.show-m{display:inline-flex!important}.v3logo{width:150px!important}.v3div{margin:0 12px!important;height:76px!important}.v3bot{justify-content:flex-end!important;min-height:62px!important}.v3top{min-height:44px!important}}
+.site{font-size:18px}
+h2{font-size:40px;line-height:1.15}h3{font-size:24px;line-height:1.3}
+.h2-sm{font-size:32px!important;line-height:1.2}.h3-sm{font-size:22px!important}
+.display{font-size:56px;line-height:1.1}.display-sm{font-size:52px;line-height:1.15}
+@media (max-width:600px){.site{font-size:17px!important}h2{font-size:30px}h3{font-size:21px}.h2-sm{font-size:26px!important}.h3-sm{font-size:20px!important}.display{font-size:40px}.display-sm{font-size:36px}}
+.btn{padding:10px 24px;line-height:1.25;text-align:center}.v3bot .btn{white-space:nowrap}
+@media (max-width:600px){.v3bot .btn{padding:10px 14px}}
+@media (max-width:820px){.stat-div{display:none}.stat-item{width:240px;padding:8px 0!important}}
+h1,h2,h3,.display,.display-sm{color:#134C1F}.on-dark h1,.on-dark h2,.on-dark h3,.on-dark .display,.on-dark .display-sm,.hero h1,.hero .display{color:#fff}
+.btn-g{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:10px 24px;background:#86BA32;color:#252F5B;border:1.5px solid #86BA32;border-radius:3px;font-size:15px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+.btn-g:hover{background:#9CCB4F;border-color:#9CCB4F;color:#1A2246}
+.lbl{color:#C5E08F;font-weight:600}
+.pn{color:#fff;text-decoration:none;font-size:18px;font-weight:500;display:inline-flex;align-items:center;min-height:48px}
+.pn:hover{text-decoration:underline;text-underline-offset:4px}
+.rl{color:#D6DAE8;text-decoration:none;font-size:15px;display:inline-flex;align-items:center;min-height:36px}
+.rl:hover{color:#fff;text-decoration:underline}
+.legal{color:#D6DAE8;text-decoration:none;font-size:15px}.legal:hover{color:#fff;text-decoration:underline}
+.fsoc{width:44px;height:44px;border:1px solid rgba(255,255,255,.35);border-radius:50%;color:#fff;display:inline-flex;align-items:center;justify-content:center}
+.fsoc:hover{background:#fff;color:#252F5B}
+.bar{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px 32px}
+@media (max-width:820px){.bar{grid-template-columns:1fr;justify-items:center;text-align:center}.bar-legal{justify-content:center!important}.r1{text-align:center;justify-content:center!important}.r1-col{align-items:center!important}.r1-pair{justify-content:center}}
+.site-footer a:not([class]){color:#fff}.site-footer a:not([class]):hover{color:#fff}
+.on-dark>.site-footer>div:first-child>.wrap{border-top:1px solid rgba(255,255,255,.2)}
+.rcard{flex:1 1 320px;min-width:0;margin:0;background:#fff;border-radius:14px;padding:32px;display:flex;flex-direction:column;gap:18px;color:#252F5B}
+.qmark{display:grid;place-items:center;width:56px;height:56px;border-radius:14px;background:#E2EBD2;color:#252F5B}
+.stars{display:flex;gap:3px;color:#86BA32}
+.rtext{margin:0;font-size:20px;line-height:1.6;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
+.rmeta{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;font-size:16px;color:#5A6283}.rmeta b{color:#252F5B;font-size:18px}
+.rv-arrow{color:#fff;width:48px;height:48px;border:1px solid rgba(255,255,255,.35);border-radius:50%}.rv-arrow:hover{background:#fff;color:#252F5B}
+@media (max-width:600px){.rcard{padding:24px}.rtext{font-size:18px}.rv-arrow{display:none!important}}
+.loc-band{background:#EFF4E6;padding-top:96px;padding-bottom:96px}
+.loc-card{background:#fff;border-radius:14px;padding:12px;display:grid;grid-template-columns:1fr 1.15fr;gap:12px}
+.loc-info{padding:28px 28px 32px;display:flex;flex-direction:column;gap:16px}
+.drow{display:flex;gap:14px;align-items:flex-start}
+.di{flex:none;width:44px;height:44px;border-radius:50%;background:#E2EBD2;color:#134C1F;display:grid;place-items:center}
+.loc-dir{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;min-height:48px;font-weight:600;color:#134C1F;text-underline-offset:4px}
+.loc-map{border-radius:10px;min-height:360px;background:#D5E2BF}
+@media (max-width:820px){.loc-card{grid-template-columns:1fr}.loc-map{min-height:260px}.loc-info{padding:20px 12px 16px}}
+.site-footer a:not(.btn-g):not(.fsoc):hover{color:#fff!important;text-decoration:underline!important;text-underline-offset:4px}
+.qbar{background:#252F5B;color:#fff;border-radius:14px;padding:32px 40px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px 32px}
+@media (max-width:600px){.qbar{padding:28px 24px}.qbar h2{font-size:26px!important}}
+</style>
+</helmet>
+<div class="site" style="font-family:'Rubik',system-ui,sans-serif;color:#252F5B;background:#fff;line-height:1.6">
+
+<header style="background:#fff;border-bottom:1px solid #E2EBD2;position:relative;z-index:5">
+<div class="wrap v3row" style="display:flex;align-items:center">
+<a href="Main.dc.html" style="flex:none;display:block;padding:18px 0"><img src="/_blob/3aa284799f46bad20e1e4c500f1589c7" alt="Hearing Solutions of North Carolina, home" class="v3logo" style="width:240px;height:auto;display:block"></a>
+<span class="v3div" aria-hidden="true" style="width:1px;height:100px;background:#D5E2BF;margin:0 40px;flex:none"></span>
+<div style="flex:1 1 560px;min-width:0;display:flex;flex-direction:column">
+<div class="v3top" style="min-height:54px;border-bottom:1px solid #E2EBD2;display:flex;align-items:center;justify-content:flex-end;gap:8px 28px;flex-wrap:wrap;font-size:14px">
+<a class="hide-m" href="#" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;color:#252F5B"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-12a7 7 0 0 1 14 0c0 5.8-7 12-7 12z"></path><circle cx="12" cy="9" r="2.5"></circle></svg>464 Jake Alexander Blvd W, Salisbury · <span style="color:#134C1F;font-weight:600;text-decoration:underline;text-underline-offset:3px">Get directions</span></a>
+<a href="tel:+17046330023" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;color:#252F5B;font-size:15px;font-weight:700"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path></svg>(704) 633-0023</a>
+<div class="hide-m" style="display:flex;gap:8px"><a href="#" aria-label="Facebook" class="soc" style="background:#252F5B;color:#fff"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 8h3V4h-3c-2.8 0-4.5 1.8-4.5 4.6V11H7v4h2.5v9h4v-9h3l.5-4h-3.5V9c0-.6.4-1 1-1z"></path></svg></a><a href="#" aria-label="YouTube" class="soc" style="background:#252F5B;color:#fff"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.6 7.2c-.2-.9-.9-1.6-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4c-.9.2-1.6.9-1.8 1.8C2 8.8 2 12 2 12s0 3.2.4 4.8c.2.9.9 1.6 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4c.9-.2 1.6-.9 1.8-1.8.4-1.6.4-4.8.4-4.8s0-3.2-.4-4.8zM10 15V9l5.2 3L10 15z"></path></svg></a></div>
+</div>
+<div class="v3bot" style="min-height:86px;display:flex;align-items:center;justify-content:space-between;gap:12px 24px;flex-wrap:wrap">
+<nav class="hide-m" aria-label="Main" style="display:flex;align-items:center;gap:8px 32px;flex-wrap:wrap;font-size:16px;font-weight:500"><a class="nl" href="Main.dc.html" aria-current="page" style="font-size:16px;padding:4px 0;border-bottom:2px solid #86BA32">Home</a><a class="nl" href="About.dc.html" style="font-size:16px">About</a><a class="nl" href="Services.dc.html" style="font-size:16px">Services</a><a class="nl" href="NewPatients.dc.html" style="font-size:16px">New Patients</a><a class="nl" href="Contact.dc.html" style="font-size:16px">Location</a></nav>
+<div style="display:flex;align-items:center;gap:8px"><a class="btn" href="tel:+17046330023">Call us<span class="hide-m">: (704) 633-0023</span></a><button class="show-m" aria-label="Open menu" style="width:44px;height:44px;padding:0;border-radius:8px;border:1px solid #C5CDE0;background:#fff;color:#252F5B;align-items:center;justify-content:center;cursor:pointer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg></button></div>
+</div>
+</div>
+</div>
+</header>
+<div style="background:#fff">
+
+</div>
+<section class="hero">
+<div class="wrap" style="padding-top:150px;padding-bottom:170px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:16px;color:#fff">
+<h1 class="eyebrow" style="color:#fff">Audiology Care in Salisbury, NC</h1>
+<p class="serif display" style="margin:0;line-height:1.1;color:#fff">Effortless hearing.</p>
+<p style="margin:0;font-size:20px">You shouldn't have to work this hard to hear. We make it easier.</p>
+<a class="btn btn-w" href="tel:+17046330023" style="margin-top:16px">Call us: (704) 633-0023</a>
+</div>
+</section>
+
+<section class="on-dark" style="background:#252F5B;color:#fff">
+<div class="wrap" style="display:flex;flex-wrap:wrap;justify-content:center;align-items:center;padding-top:32px;padding-bottom:32px">
+<div class="stat-item" style="display:flex;align-items:center;gap:16px;padding:8px 48px"><span aria-hidden="true" style="width:72px;height:72px;border-radius:50%;background:#C5E08F;flex:none;display:flex;align-items:center;justify-content:center"><svg width="38" height="38" viewBox="0 0 1000 1000" fill="#134C1F" aria-hidden="true"><path fill-rule="evenodd" d="M 250 124.489 L 250 166 229.461 166 C 204.325 166, 192.024 167.260, 181.271 170.935 C 153.027 180.588, 130.526 207.103, 126.055 236 C 125.188 241.601, 124.971 320.236, 125.197 546.500 L 125.500 849.500 128.726 859 C 133.377 872.698, 138.055 880.039, 149.500 891.604 C 159.849 902.061, 166.580 906.694, 178.136 911.318 C 191.739 916.759, 195.824 917, 274.631 917 L 347 917 347 875 L 347 833 278 833 L 209 833 209 625 L 209 417 499.994 417 L 790.989 417 791.244 500.250 L 791.500 583.500 833.250 583.761 L 875 584.022 875 412.599 C 875 226.854, 875.216 234.544, 869.574 219.586 C 863.829 204.356, 848.670 186.646, 833.832 177.831 C 818.280 168.591, 804.416 166, 770.539 166 L 750 166 750 124.489 L 750 82.978 708.250 83.239 L 666.500 83.500 666.239 124.750 L 665.978 166 500 166 L 334.022 166 333.761 124.750 L 333.500 83.500 291.750 83.239 L 250 82.978 250 124.489 M 209 291.500 L 209 333 500 333 L 791 333 791 291.500 L 791 250 500 250 L 209 250 209 291.500 M 445 679.097 C 419.425 688.403, 393.438 697.863, 387.250 700.118 L 376 704.218 376 726.109 C 376 738.149, 376.362 748, 376.805 748 C 377.248 748, 391.986 742.832, 409.555 736.516 C 427.125 730.200, 441.837 725.025, 442.250 725.016 C 442.663 725.007, 443 770.900, 443 827 L 443 929 469.004 929 L 495.007 929 494.754 795.764 C 494.530 678.202, 494.324 662.507, 493 662.352 C 492.175 662.255, 470.575 669.790, 445 679.097 M 612.882 662.244 C 612.661 662.723, 597.293 797.499, 597.436 797.706 C 597.514 797.819, 606.657 800.109, 617.753 802.794 L 637.928 807.677 642.684 803.746 C 652.474 795.657, 662.977 792.499, 677.500 793.280 C 704.173 794.713, 718.034 811.463, 717.983 842.197 C 717.951 861.206, 713.468 874.629, 704.380 882.935 C 696.218 890.396, 684.678 893.366, 672.606 891.114 C 656.058 888.027, 645.391 877.731, 641.643 861.227 L 640.342 855.500 615.421 855.500 L 590.500 855.500 590.825 860.500 C 592.085 879.918, 602.930 899.789, 619.227 912.540 C 651.092 937.473, 702.866 939.501, 735.360 917.089 C 751.541 905.929, 763.217 886.438, 767.569 863.326 C 770.052 850.137, 769.132 825.980, 765.637 812.628 C 757.987 783.399, 741.468 765.571, 714.473 757.407 C 706.415 754.970, 703.868 754.684, 689.500 754.597 C 672.355 754.493, 666.861 755.549, 653.277 761.556 L 647.787 763.984 648.307 761.742 C 648.593 760.509, 650.082 747.466, 651.616 732.759 L 654.406 706.017 707.453 705.759 L 760.500 705.500 760.500 684 L 760.500 662.500 686.750 662.244 C 646.188 662.103, 612.947 662.103, 612.882 662.244 M 879 744 L 879 780 845.500 780 L 812 780 812 803.500 L 812 827 845.500 827 L 879 827 879 864.500 L 879 902 903.500 902 L 928 902 928 864.500 L 928 827 961.500 827 L 995 827 995 803.500 L 995 780 961.500 780 L 928 780 928 744 L 928 708 903.500 708 L 879 708 879 744"></path></svg></span><span style="line-height:1.3"><b style="font-size:20px;font-weight:500">15+ Years</b><br><span style="font-size:15px">Serving the area</span></span></div><span class="stat-div" aria-hidden="true" style="width:1px;align-self:stretch;background:rgba(255,255,255,.35)"></span><div class="stat-item" style="display:flex;align-items:center;gap:16px;padding:8px 48px"><span aria-hidden="true" style="width:72px;height:72px;border-radius:50%;background:#C5E08F;flex:none;display:flex;align-items:center;justify-content:center"><svg width="36" height="36" viewBox="0 -960 960 960" fill="#134C1F" aria-hidden="true"><path d="m354-287 126-76 126 77-33-144 111-96-146-13-58-136-58 135-146 13 111 97-33 143ZM233-120l65-281L80-590l288-25 112-265 112 265 288 25-218 189 65 281-247-149-247 149Zm247-350Z"></path></svg></span><span style="line-height:1.3"><b style="font-size:20px;font-weight:500">4.9 stars</b><br><span style="font-size:15px">Google reviews</span></span></div><span class="stat-div" aria-hidden="true" style="width:1px;align-self:stretch;background:rgba(255,255,255,.35)"></span><div class="stat-item" style="display:flex;align-items:center;gap:16px;padding:8px 48px"><span aria-hidden="true" style="width:72px;height:72px;border-radius:50%;background:#C5E08F;flex:none;display:flex;align-items:center;justify-content:center"><svg width="36" height="36" viewBox="0 -960 960 960" fill="#134C1F" aria-hidden="true"><path d="M320-160h320v-120q0-66-47-113t-113-47q-66 0-113 47t-47 113v120Zm273-407q47-47 47-113v-120H320v120q0 66 47 113t113 47q66 0 113-47ZM160-80v-80h80v-120q0-61 28.5-114.5T348-480q-51-32-79.5-85.5T240-680v-120h-80v-80h640v80h-80v120q0 61-28.5 114.5T612-480q51 32 79.5 85.5T720-280v120h80v80H160Z"></path></svg></span><span style="line-height:1.3"><b style="font-size:20px;font-weight:500">Two-hour</b><br><span style="font-size:15px">Full assessment</span></span></div>
+</div>
+</section>
+
+<section class="wrap" style="padding-top:96px;padding-bottom:56px;display:flex;flex-direction:column;gap:56px">
+<div style="max-width:640px;margin:0 auto;text-align:center">
+<h2 class="h2-sm" style="margin:0 0 20px;font-weight:500">Is keeping up wearing you out?</h2>
+<p style="margin:0 0 20px">Maybe you're focusing harder at dinner out, or asking people to repeat themselves. Maybe you're turning up the TV at night—even though the morning volume was fine. Or maybe it's easier to just tune out: <br><em>Smile. Nod. Hope for no questions. Repeat.</em></p>
+<p style="margin: 0; font-weight: 400">Hearing that takes work is hearing that needs help.</p>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:24px">
+<img src="/_blob/88f465c97588cc63ff38c795675ee588" alt="Patient in the sound booth during a hearing test, with the audiologist visible through the window" style="flex: 1 1 380px; min-width: 0; width: 100%; height: 414px; aspect-ratio: 16/9; align-self: center; object-fit: cover; object-position: 50% 40%; border-radius: 14px; display: block">
+<div class="card" style="flex:1 1 380px;padding:40px;display:flex;flex-direction:column;justify-content:center;gap:16px;font-size:1em">
+<p style="margin:0">As hearing diminishes (even a little), your brain has to:</p>
+<ul style="margin:0;padding-left:24px;display:flex;flex-direction:column;gap:4px"><li>Read lips</li><li>Watch body language</li><li>Fill in missed words</li></ul>
+<p style="margin:0">That extra effort comes at a price: it's linked to social retreat, cognitive decline, and even higher risk of falls. The good news?</p>
+<p style="margin:0;padding-left:18px;border-left:3px solid #86BA32;font-size:20px;font-weight:500;line-height:1.4">The earlier we catch hearing loss, the more we can do about it.</p>
+</div>
+</div>
+<div class="on-dark" style="background:#252F5B;color:#fff;border-radius:14px;padding:56px 32px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:20px">
+<h2 class="serif" style="margin:0;line-height:1.15">Don't smile and<br>nod your life away.</h2>
+<p style="margin: 0; max-width: 620px; text-align: center">You have options <em>(yes—plural)</em>. Come in, and we'll find out how your brain is actually processing sound. Then, we'll fine-tune a treatment plan for <em>your ears</em> and all you need them to hear, whether it's family dinners, work meetings, or the grandkids' soccer games.</p>
+<div style="display:flex;flex-wrap:wrap;justify-content:center;gap:16px;margin-top:8px"><a class="btn btn-w" href="tel:+17046330023">Call us: (704) 633-0023</a><a class="btn btn-ow" href="About.dc.html">Meet your team</a></div>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:24px;align-items:stretch">
+<div style="flex:1 1 220px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;text-align:center"><p style="margin: 0; font-size: 1em; text-align: center">Not here for hearing loss?<br>No problem—we do plenty more.</p><a class="btn btn-o" href="Services.dc.html">View all services</a></div>
+<a href="Services.dc.html" class="card" style="flex:1 1 220px;min-height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-decoration:none;color:#252F5B"><span style="font-size:19px;font-weight:500">Ear Wax Removal</span><span class="eyebrow" style="font-size:15px;letter-spacing:.1em">Read more</span></a>
+<a href="Services.dc.html" class="card" style="flex:1 1 220px;min-height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-decoration:none;color:#252F5B"><span style="font-size:19px;font-weight:500">Tinnitus</span><span class="eyebrow" style="font-size:15px;letter-spacing:.1em">Read more</span></a>
+<a href="Services.dc.html" class="card" style="flex:1 1 220px;min-height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-decoration:none;color:#252F5B"><span style="font-size:19px;font-weight:500">Hearing Protection</span><span class="eyebrow" style="font-size:15px;letter-spacing:.1em">Read more</span></a>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:24px">
+<div style="flex:1 1 280px;display:flex;flex-direction:column;gap:24px"><img src="/_blob/927f0c18207b02f17a44113e381ff7f7" alt="Front-desk team member answering a patient's call" style="width:100%;height:240px;object-fit:cover;object-position:40% 30%;border-radius:14px;display:block"><img src="/_blob/58824ea4da7e1e316a9acf82c89e38c2" alt="Audiologist showing a hearing aid to a patient at a consultation table" style="width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;object-position:50% 50%;border-radius:14px;display:block"></div>
+<div style="flex:1 1 280px;display:flex;flex-direction:column;gap:24px"><img src="/_blob/520ad6d4706f7b4b70629eef3cd1f76d" alt="Audiologist fitting a hearing aid while the patient reads a tinnitus guide" style="width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;object-position:50% 30%;border-radius:14px;display:block"><img src="/_blob/d5ff8a8fe88c174a8e3c89a12a70dc3a" alt="Audiologist fitting a hearing aid for a smiling Army veteran" style="width:100%;height:260px;object-fit:cover;object-position:50% 50%;border-radius:14px;display:block"></div>
+<div style="flex:1 1 280px;display:flex;flex-direction:column;gap:24px"><img src="/_blob/9e0e7b5699540c2fd4d9862767773def" alt="Patient care coordinator on the phone at her desk" style="width:100%;height:240px;object-fit:cover;object-position:50% 30%;border-radius:14px;display:block"><img src="/_blob/c72b767e2387bc2b800ca31dcd9baf53" alt="Patient checking in at the front desk with a smiling receptionist" style="width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;object-position:35% 50%;border-radius:14px;display:block"></div>
+</div>
+</section>
+
+<section style="background:#EFF4E6;padding-top:96px;padding-bottom:96px">
+<div class="wrap" style="display:flex;flex-direction:column;gap:40px">
+<div style="text-align:center"><h2 class="serif" style="margin:0 0 12px;line-height:1.15">What to expect.</h2><p style="margin:0">Effortless hearing comes down to three deliberate steps.</p></div>
+<ol style="list-style:none;margin:0 auto;padding:0;max-width:760px;display:flex;flex-direction:column;gap:24px">
+<li class="on-dark" style="background:#252F5B;color:#fff;border-radius:10px;padding:28px;display:flex;flex-wrap:wrap;gap:24px;align-items:center"><img src="/_blob/9ab3d1d7e35415d653750470823b65b1" alt="Audiologist running a hearing test from the control desk while the patient sits in the sound booth" style="width:150px;height:150px;border-radius:50%;object-fit:cover;object-position:50% 50%;flex:none;display:block"><div style="flex:1 1 300px"><h3 style="margin:0 0 8px;font-weight:600">The effort test.</h3><p style="margin:0;font-size:1em">A standard beep test only tells us so much. So our <em>Functional Hearing Assessment</em> goes further, measuring how your brain processes sound, how it copes with noise, and how hard you're working to keep up. In just two hours, we see the whole picture.</p></div></li>
+<li class="on-dark" style="background:#252F5B;color:#fff;border-radius:10px;padding:28px;display:flex;flex-wrap:wrap;gap:24px;align-items:center"><img src="/_blob/2149377dbd2de202a7d703c0e5f05c47" alt="Close-up of a discreet behind-the-ear hearing aid" style="width:150px;height:150px;border-radius:50%;object-fit:cover;object-position:50% 50%;flex:none;display:block"><div style="flex:1 1 300px"><h3 style="margin:0 0 8px;font-weight:600">The perfect match.</h3><p style="margin:0;font-size:1em">From there, we prescribe what fits you. Maybe it's as simple as wax removal. If you need hearing aids, we're independent and free to select from all major manufacturers, so we can match the right devices to your brain, your anatomy, and the life you live.</p></div></li>
+<li class="on-dark" style="background:#252F5B;color:#fff;border-radius:10px;padding:28px;display:flex;flex-wrap:wrap;gap:24px;align-items:center"><img src="/_blob/bd9ee308e67ee9c75473e3869ca29075" alt="Two Hearing Solutions team members celebrating with arms raised" style="width:150px;height:150px;border-radius:50%;object-fit:cover;object-position:50% 50%;flex:none;display:block"><div style="flex:1 1 300px"><h3 style="margin:0 0 8px;font-weight:600">The out-of-the-drawer promise.</h3><p style="margin:0;font-size:1em">With regular check-ins for comfort, programming, and any little thing that bugs you, there's no reason your new devices won't be on your ears doing the hard work of hearing 12+ hours a day.</p></div></li>
+</ol>
+<div class="card" style="width:100%;max-width:760px;margin:0 auto;padding:32px 28px;border-radius:10px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:20px"><p style="margin:0;max-width:560px;font-size:1em;text-align:left">So come sit with us for a couple of hours. We'll show you what's really going on, and if it makes sense, you will try hearing aids while you're here.</p><div style="display:flex;flex-wrap:wrap;justify-content:center;gap:16px"><a class="btn" href="tel:+17046330023">Call us: (704) 633-0023</a><a class="btn btn-o" href="NewPatients.dc.html">New patient information</a></div></div>
+</div>
+</section>
+
+<section class="on-dark" aria-labelledby="reviews-h" style="background:#252F5B;padding-top:96px;padding-bottom:96px">
+<div class="wrap" style="display:flex;flex-direction:column;gap:40px">
+<h2 id="reviews-h" class="serif" style="margin:0;text-align:center;line-height:1.15">What our patients say.</h2>
+<div style="display:flex;align-items:center;gap:12px">
+<button class="arrow rv-arrow" aria-label="Previous testimonial"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg></button>
+<div style="flex:1;min-width:0;display:flex;flex-wrap:wrap;gap:24px">
+<figure class="rcard"><div style="display:flex;justify-content:space-between;align-items:flex-start"><span class="qmark" aria-hidden="true"><svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden="true"><path d="M9.5 6C6.5 7.3 4.5 10 4.5 13.6V18h5.5v-5.5H7.3c.2-2 1.3-3.6 3.2-4.6zm9 0c-3 1.3-5 4-5 7.6V18H19v-5.5h-2.7c.2-2 1.3-3.6 3.2-4.6z"></path></svg></span><div class="stars" role="img" aria-label="5 out of 5 stars"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg></div></div><blockquote class="rtext">Placeholder for testimony.</blockquote><figcaption class="rmeta"><b>Name</b><span>Google review</span></figcaption></figure>
+<figure class="rcard"><div style="display:flex;justify-content:space-between;align-items:flex-start"><span class="qmark" aria-hidden="true"><svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden="true"><path d="M9.5 6C6.5 7.3 4.5 10 4.5 13.6V18h5.5v-5.5H7.3c.2-2 1.3-3.6 3.2-4.6zm9 0c-3 1.3-5 4-5 7.6V18H19v-5.5h-2.7c.2-2 1.3-3.6 3.2-4.6z"></path></svg></span><div class="stars" role="img" aria-label="5 out of 5 stars"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg></div></div><blockquote class="rtext">Placeholder for testimony.</blockquote><figcaption class="rmeta"><b>Name</b><span>Google review</span></figcaption></figure>
+</div>
+<button class="arrow rv-arrow" aria-label="Next testimonial"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M9 5l7 7-7 7"></path></svg></button>
+</div>
+</div>
+</section>
+
+<section class="wrap" style="padding-top:96px;padding-bottom:96px;display:flex;flex-direction:column;gap:56px">
+<div style="display:flex;flex-wrap:wrap;gap:40px;align-items:center">
+<div style="flex:1 1 280px;display:flex;flex-direction:column;gap:16px"><h2 class="serif" style="margin:0;line-height:1.1">What's the investment?</h2><p style="margin:0;font-size:1em">We're upfront about our pricing and offer flexible payment paths.</p><p style="margin:0;font-size:1em">We even offer a monthly subscription plan if hearing aids turn out to be part of your treatment. When your term ends, your devices go on to a neighbor who needs them.</p><a href="NewPatients.dc.html" class="eyebrow" style="font-size:15px;letter-spacing:.1em;text-decoration:none">Explore payment paths &gt;&gt;</a></div>
+<img src="/_blob/1e7f1cc945b2abd54502055c64a241f7" alt="Audiologist reviewing a care plan on a clipboard with a patient" style="flex:2 1 460px;min-width:0;width:100%;height:480px;object-fit:cover;object-position:50% 30%;border-radius:14px;display:block">
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:24px;align-items:stretch">
+<div class="card" style="flex:1 1 380px;padding:32px">
+<h6 style="margin: 0 0 12px; font-size: 20px; line-height: 1.3; font-weight: 500; color: #134C1F">You may still be wondering...</h6>
+<sc-for list="{{faqA}}" as="q" hint-placeholder-count="7"><details class="faq"><summary>{{q}}<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" style="flex:none"><path d="M8 2v12M2 8h12"></path></svg></summary><p>[Answer to come]</p></details></sc-for>
+</div>
+<div class="card" style="flex:1 1 380px;padding:32px">
+<sc-for list="{{faqB}}" as="q" hint-placeholder-count="7"><details class="faq"><summary>{{q}}<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" style="flex:none"><path d="M8 2v12M2 8h12"></path></svg></summary><p>[Answer to come]</p></details></sc-for>
+</div>
+</div>
+<div class="on-dark qbar">
+<h2 class="serif" style="margin:0;font-size:32px;line-height:1.2">Have other questions?</h2>
+<div style="display:flex;flex-wrap:wrap;gap:12px"><a class="btn btn-ow" href="Contact.dc.html">Ask another question</a><a class="btn btn-w" href="tel:+17046330023">Call us: (704) 633-0023</a></div>
+</div>
+</section>
+
+<section class="loc-band" aria-labelledby="loc-h">
+<div class="wrap" style="display:flex;flex-direction:column;gap:40px">
+<div><p class="eyebrow" style="color:#134C1F">Location</p><h2 id="loc-h" class="serif" style="margin:12px 0 0;line-height:1.15">Visit us in Salisbury.</h2></div>
+<article class="loc-card">
+<div class="loc-info">
+<h3 style="margin:0;font-weight:600">Hearing Solutions of North Carolina</h3>
+<div class="drow"><span class="di"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg></span><address style="font-style:normal;padding-top:6px">464 Jake Alexander Boulevard West<br>Salisbury, NC 28147</address></div>
+<div class="drow" style="align-items:center"><span class="di"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"></path></svg></span><a href="tel:+17046330023" style="font-weight:700;font-size:20px;text-decoration:none">(704) 633-0023</a></div>
+<div class="drow" style="align-items:center"><span class="di"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6"></path><rect x="3" y="9" width="18" height="9" rx="2"></rect><path d="M6 14h12v7H6z"></path></svg></span><span>Fax: (704) 705-2363</span></div>
+<div class="drow" style="align-items:center"><span class="di"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg></span><span>Monday–Friday, 8:00 a.m.–5:00 p.m.</span></div>
+<a class="loc-dir" href="#">Get directions <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></a>
+</div>
+<div class="ph loc-map" role="img" aria-label="Map placeholder"><svg width="72" height="56" viewBox="0 0 72 56" fill="none" stroke="#9DB57E" stroke-width="2.5" aria-hidden="true"><path d="M2 10l22-8 24 8 22-8v44l-22 8-24-8-22 8z"></path><path d="M24 2v44M48 10v44"></path></svg></div>
+</article>
+</div>
+</section>
+
+<div class="on-dark" style="background:#252F5B;color:#fff">
+<section class="wrap" style="padding-top:88px;padding-bottom:88px;display:flex;flex-wrap:wrap;gap:40px;align-items:center">
+<img src="/_blob/5bf2a2ba9502bac26d2e0fef5dfc3017" alt="Audiologist holding hands with a young child wearing hearing-test headphones" style="flex:1 1 440px;min-width:0;width:100%;height:520px;object-fit:cover;object-position:50% 38%;border-radius:14px;display:block">
+<div style="flex:1 1 320px;display:flex;flex-direction:column;gap:16px;align-items:flex-start"><h2 class="serif" style="margin:0;line-height:1.1">Connection<br>is our mission.</h2><p style="margin:0;font-size:1em">Family. Friends. All your relationships ride on hearing. We don't lose sight of that.</p><p style="margin:0;font-size:1em">Book your <em>Functional Hearing Assessment</em>, and we'll do everything we can to keep you in the conversation.</p><a class="btn btn-w" href="tel:+17046330023" style="margin-top:8px">Call us: (704) 633-0023</a></div>
+</section>
+
+<footer class="site-footer" style="font-family:'Rubik',system-ui,sans-serif;color:#fff;font-size:18px;line-height:1.6">
+
+<div style="background:#252F5B">
+<div class="wrap" style="padding-top:72px">
+
+<div class="fgrid" style="width:100%;max-width:100%;margin:0 auto;display:flex;flex-direction:column;align-items:stretch">
+<div class="r1" style="display: flex; flex-wrap: wrap; gap: 40px 80px; align-items: flex-start; justify-content: space-between; padding-bottom: 48px; grid-template-columns: repeat(2, minmax(0, 1fr))">
+
+<div class="r1-col" style="flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; gap: 24px">
+<a href="Main.dc.html" style="display:inline-flex"><img src="/_blob/3aa284799f46bad20e1e4c500f1589c7" alt="Hearing Solutions of North Carolina, home" style="width:280px;height:auto;display:block;filter:brightness(0) invert(1)"></a>
+<a class="btn-g" href="tel:+17046330023">Call us: (704) 633-0023</a>
+</div>
+
+<div class="r1-col" style="flex:0 1 auto;display:flex;flex-direction:column;align-items:stretch;gap:16px">
+<h2 style="margin:0;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.3);font-size:20px;font-weight:600;color:#fff">Hearing Solutions of North Carolina</h2>
+<div class="r1-pair" style="display:flex;flex-wrap:wrap;gap:24px 40px;align-items:flex-start">
+<div class="r1-col" style="flex: 0 0 auto; display: flex; flex-direction: column; align-items: flex-start; gap: 4px">
+<p style="margin:0;display:flex;gap:10px;align-items:flex-start"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#86BA32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none;margin-top:4px"><path d="M12 21s-7-6.2-7-12a7 7 0 0 1 14 0c0 5.8-7 12-7 12z"></path><circle cx="12" cy="9" r="2.5"></circle></svg><span>464 Jake Alexander Boulevard West<br>Salisbury, NC 28147</span></p>
+<a href="#" style="display:inline-flex;align-items:center;gap:8px;font-weight:600;text-decoration:underline;text-underline-offset:4px;min-height:48px;margin-left:30px">Get directions<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+</div>
+<div class="r1-col" style="flex:0 0 auto;display:flex;flex-direction:column;align-items:flex-start;gap:6px">
+<p style="margin:0"><span class="lbl">Phone:</span> <a href="tel:+17046330023" style="text-decoration:none">(704) 633-0023</a></p>
+<p style="margin:0"><span class="lbl">Fax:</span> (704) 705-2363</p>
+<p style="margin:0"><span class="lbl">Hours:</span> Monday–Friday,<br>8:00 a.m.–5:00 p.m.</p>
+</div>
+</div>
+</div>
+
+</div>
+
+<nav aria-label="Footer" style="display:flex;flex-wrap:wrap;justify-content:center;gap:0 40px;padding:16px 0;border-top:1px solid rgba(255,255,255,.35);border-bottom:1px solid rgba(255,255,255,.35)">
+<a class="pn" href="About.dc.html">About</a>
+<a class="pn" href="Services.dc.html">Services</a>
+<a class="pn" href="NewPatients.dc.html">New Patients</a>
+<a class="pn" href="#">Patient Portal</a>
+<a class="pn" href="#">Blog</a>
+<a class="pn" href="Contact.dc.html">Contact Us</a>
+</nav>
+</div>
+
+<nav aria-label="Resources" style="display:flex;flex-wrap:wrap;justify-content:center;gap:0 28px;padding-top:24px;padding-bottom:48px;max-width:1120px;margin:0 auto;padding-left:24px;padding-right:24px">
+<a class="rl" href="#">Hearing Loss</a>
+<a class="rl" href="#">Benefits of Treating Hearing Loss</a>
+<a class="rl" href="#">Hearing Aid Overview</a>
+<a class="rl" href="#">Custom Hearing Aids</a>
+<a class="rl" href="#">Hearing Aid Products</a>
+<a class="rl" href="#">Consumer's Guide to Hearing Aids</a>
+<a class="rl" href="#">Informational Videos</a>
+<a class="rl" href="#">Reviews</a>
+</nav>
+
+</div>
+</div>
+
+<div style="background:#1A2246">
+<div class="wrap bar" style="padding-top:20px;padding-bottom:20px">
+<p style="margin:0;font-size:15px;color:#D6DAE8">© 2026 Hearing Solutions of North Carolina</p>
+<div style="display:flex;gap:8px"><a href="#" aria-label="Facebook" class="fsoc"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 8h3V4h-3c-2.8 0-4.5 1.8-4.5 4.6V11H7v4h2.5v9h4v-9h3l.5-4h-3.5V9c0-.6.4-1 1-1z"></path></svg></a><a href="#" aria-label="YouTube" class="fsoc"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.6 7.2c-.2-.9-.9-1.6-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4c-.9.2-1.6.9-1.8 1.8C2 8.8 2 12 2 12s0 3.2.4 4.8c.2.9.9 1.6 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4c.9-.2 1.6-.9 1.8-1.8.4-1.6.4-4.8.4-4.8s0-3.2-.4-4.8zM10 15V9l5.2 3L10 15z"></path></svg></a></div>
+<div class="bar-legal" style="display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px 24px"><a class="legal" href="#">Privacy Policy</a><a class="legal" href="#">Terms of Service</a><a class="legal" href="#">Accessibility</a><a class="legal" href="#">Sitemap</a></div>
+</div>
+</div>
+
+</footer>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":6300}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      faqA: [
+        "Am I going to be pressured into hearing aids?",
+        "How do I know my hearing is bad enough to bother?",
+        "I've tried hearing aids before and they didn't work. Will this be different?",
+        "Can you help me if I got my hearing aids somewhere else?",
+        "Do you take my insurance?",
+        "Does Medicare cover hearing aids?",
+        "Two hours is a long appointment. Do I have to?"
+      ],
+      faqB: [
+        "Should I just get hearing aids at a big-box store?",
+        "Who will I see?",
+        "Do you help with anything other than hearing loss?",
+        "Do you see VA patients?",
+        "Do I need a referral?",
+        "Can I book online?",
+        "Do you do real-ear measurement?"
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

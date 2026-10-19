@@ -1,0 +1,226 @@
+---
+// Site footer: one component, six styles (Review controls → Footer style), each
+// with a landscape or vertical logo. Offices, phone and hours come from the
+// practice data, so the office cards follow the "Offices: One / Two" setting.
+import { getSettings } from "../lib/settings";
+import Icon from "./Icon.astro";
+import Logo from "./Logo.astro";
+import { routes, telHref } from "../lib/routes";
+
+const { practice } = Astro.locals.site;
+
+const s = getSettings(Astro);
+const v = s.footer;
+const vt = s.footerLogo === "vertical";
+const tel = telHref(s.phone);
+const h = s.href;
+const year = 2026;
+
+// Link columns come from the EmDash "Footer: ..." menus (Menus screen). The
+// column headings belong to the design. Links to pages that aren't live are
+// already left out (src/data/site.ts).
+const m = Astro.locals.site.menus;
+const legal = m.footer_legal;
+const practiceLinks = m.footer_practice;
+const serviceLinks = m.footer_services;
+const patientLinks = m.footer_patients;
+const currentLinks = m.footer_current;
+const quickLinks = m.footer_quick;
+const explore = m.footer_explore;
+const social = [
+	{ label: "Facebook", icon: "facebook", href: practice.social.facebook },
+	{ label: "Instagram", icon: "instagram", href: practice.social.instagram },
+	{ label: "YouTube", icon: "youtube", href: practice.social.youtube },
+] as const;
+const brandCls = vt ? "fx-center" : "";
+---
+<div class="fxr">
+	{
+		v === "f1" && (
+			<footer class="fx">
+				<div class:list={["fx-in fx-f1", { v: vt }]}>
+					{vt && <div class="card fx-logo-card"><Logo shape="stacked" size={76} /></div>}
+					<div class="card" style="gap: 18px">
+						{!vt && <Logo />}
+						<p class="muted">{practice.tagline}</p>
+						<a class="fx-call" href={tel}><span class="ico"><Icon name="phone" /></span><span><small>Call us</small><b>{s.phone}</b></span></a>
+						<a class="btn btn-primary" href={h(routes.book)} style="align-self: flex-start">Book appointment</a>
+					</div>
+					<nav class="fx-col" aria-label="Our practice"><h2 class="h4">Our practice</h2><ul class="flinks">{practiceLinks.map((l) => <li><a href={h(l.href)} target={l.target}>{l.label}</a></li>)}</ul></nav>
+					<nav class="fx-col" aria-label="Our services"><h2 class="h4">Our services</h2><ul class="flinks">{serviceLinks.map((l) => <li><a href={h(l.href)} target={l.target}>{l.label}</a></li>)}</ul></nav>
+					<nav class="fx-col" aria-label="Patient information"><h2 class="h4">Patient information</h2><ul class="flinks">{patientLinks.map((l) => <li><a href={h(l.href)} target={l.target}>{l.label}</a></li>)}</ul></nav>
+				</div>
+				<div class="fbottom">
+					<span>© {year} {s.name}. All rights reserved.</span>
+					<nav aria-label="Legal"><ul class="legal">{legal.map((l) => <li><a href={h(l.href)} target={l.target}>{l.label}</a></li>)}</ul></nav>
+				</div>
+			</footer>
+		)
+	}
+	{
+		v === "f2" && (
+			<footer class="fx">
+				<div class="fx-in fx-f2">
+					<div class="fx-invite">
+						<h2>Let’s talk about your hearing.</h2>
+						<div class="rowf" style="gap: 12px">
+							<a class="btn btn-inverse" href={h(routes.book)}>Book appointment <Icon name="arrowR" /></a>
+							<a class="btn btn-ghost-on-p" href={tel}>Call {s.phone}</a>
+						</div>
+					</div>
+					<div class="card fx-f2c">
+						{!vt && (
+							<>
+								<Logo />
+								<ul class="flinks">
+									<li><a href={tel}><Icon name="phone" />&nbsp; Call {s.phone}</a></li>
+									<li><a href={h(routes.contact)}><Icon name="mail" />&nbsp; Contact us</a></li>
+								</ul>
+							</>
+						)}
+						{vt && (
+							<div class="fx-lc">
+								<Logo shape="stacked" size={64} />
+								<ul class="flinks">
+									<li><a href={tel}><Icon name="phone" />&nbsp; Call {s.phone}</a></li>
+									<li><a href={h(routes.contact)}><Icon name="mail" />&nbsp; Contact us</a></li>
+								</ul>
+							</div>
+						)}
+						<nav class="fx-sep" aria-label="Footer">
+							<ul class="flinks two">{quickLinks.map((l) => <li><a href={h(l.href)} target={l.target}>{l.label}</a></li>)}</ul>
+						</nav>
+					</div>
+				</div>
+				<div class="fbottom">
+					<span>© {year} {s.name}. All rights reserved.</span>
+					<nav aria-label="Legal"><ul class="legal">{legal.map((l) => <li><a href={h(l.href)} target={l.target}>{l.label}</a></li>)}</ul></nav>
+				</div>
+			</footer>
+		)
+	}
+	{
+		v === "f3" && (
+			<footer class="fx light">
+				<div class="fx-f3">
+					{vt ? <Logo shape="stacked" size={84} /> : <Logo size={56} />}
+					<p class="lead" style="margin: 0; max-width: 560px">{practice.tagline}</p>
+					<nav aria-label="Footer">
+						<ul class="fx-row">{quickLinks.map((l) => <li><a href={h(l.href)} target={l.target}>{l.label}</a></li>)}</ul>
+					</nav>
+					<div class="rowf" style="justify-content: center; gap: 16px 32px">
+						<a class="tel" href={tel}><span class="ico"><Icon name="phone" /></span>{s.phone}</a>
+						<a class="btn btn-primary" href={h(routes.book)}>Book appointment</a>
+					</div>
+				</div>
+				<div class="fbottom c">
+					<span>© {year} {s.name}. All rights reserved.</span>
+					<nav aria-label="Legal"><ul class="legal">{legal.map((l) => <li><a href={h(l.href)} target={l.target}>{l.label}</a></li>)}</ul></nav>
+				</div>
+			</footer>
+		)
+	}
+	{
+		v === "f4" && (
+			<footer class="fx">
+				<div class="fx-in fx-f4">
+					<div class:list={["card", brandCls]} style="gap: 18px">
+						{vt ? <Logo shape="stacked" size={72} /> : <Logo />}
+						<p class="muted">{practice.tagline}</p>
+						<a class="fx-call" href={tel}><span class="ico"><Icon name="phone" /></span><span><small>Call us</small><b>{s.phone}</b></span></a>
+						<a class="btn btn-primary" href={h(routes.book)}>Book appointment</a>
+					</div>
+					<nav class="fx-task new" aria-label="New patients">
+						<h2 class="h4 fx-th"><span class="dot" aria-hidden="true" />New patients</h2>
+						<ul class="fx-tlinks">{patientLinks.map((l) => <li><a href={h(l.href)} target={l.target}>{l.label} <Icon name="arrowR" size={18} /></a></li>)}</ul>
+					</nav>
+					<nav class="fx-task" aria-label="Current patients">
+						<h2 class="h4 fx-th"><span class="dot o" aria-hidden="true" />Current patients</h2>
+						<ul class="fx-tlinks">{currentLinks.map((l) => <li><a href={h(l.href)} target={l.target}>{l.label} <Icon name="arrowR" size={18} /></a></li>)}</ul>
+					</nav>
+					<nav class="fx-col" aria-label="Our practice"><h2 class="h4">Our practice</h2><ul class="flinks">{practiceLinks.map((l) => <li><a href={h(l.href)} target={l.target}>{l.label}</a></li>)}</ul></nav>
+				</div>
+				<div class="fbottom">
+					<span>© {year} {s.name}. All rights reserved.</span>
+					<nav aria-label="Legal"><ul class="legal">{legal.map((l) => <li><a href={h(l.href)} target={l.target}>{l.label}</a></li>)}</ul></nav>
+				</div>
+			</footer>
+		)
+	}
+	{
+		v === "f6" && (
+			<footer class="fx dark">
+				<div class="fx-in fx-f6">
+					<div class:list={["stack", brandCls]} style="gap: 18px">
+						{vt ? <Logo shape="stacked" size={72} /> : <Logo />}
+						<p class="muted">{practice.tagline}</p>
+						<a class="fx-call" href={tel}><span class="ico"><Icon name="phone" /></span><span><small>Call us</small><b>{s.phone}</b></span></a>
+						<a class="btn btn-inverse" href={h(routes.book)} style="align-self: flex-start">Book appointment</a>
+					</div>
+					<div class="fx-2col">
+						<nav aria-label="Our practice"><h2 class="h4">Our practice</h2><ul class="flinks">{practiceLinks.filter((l) => !l.href.startsWith("/locations/")).map((l) => <li><a href={h(l.href)} target={l.target}>{l.label}</a></li>)}</ul></nav>
+						<nav aria-label="Our services"><h2 class="h4">Our services</h2><ul class="flinks">{serviceLinks.map((l) => <li><a href={h(l.href)} target={l.target}>{l.label}</a></li>)}</ul></nav>
+					</div>
+					<nav class="fx-office" aria-label="Find your office">
+						<h2 class="h4 fx-th"><Icon name="pin" /> Find your office</h2>
+						<ul class="fx-tlinks">{s.offices.map((o) => <li><a href={h(routes.location(o.slug))}>{o.shortName} <Icon name="arrowR" size={18} /></a></li>)}</ul>
+						<a class="link-arrow" href={h(routes.contact)}>View all locations</a>
+					</nav>
+				</div>
+				<div class="fbottom">
+					<span>© {year} {s.name}. All rights reserved.</span>
+					<nav aria-label="Legal"><ul class="legal">{legal.map((l) => <li><a href={h(l.href)} target={l.target}>{l.label}</a></li>)}</ul></nav>
+				</div>
+			</footer>
+		)
+	}
+	{
+		v === "f7" && (
+			<footer class="ftr">
+				<div class:list={["fgrid", { one: s.officeCount === 1 }]}>
+					<div class:list={["card", brandCls]} style="gap: 18px">
+						{vt ? <Logo shape="stacked" size={72} /> : <Logo />}
+						<p class="muted">{practice.tagline}</p>
+						<a class="btn btn-primary" href={h(routes.book)} style="align-self: flex-start">Book appointment</a>
+						<a href={`mailto:${practice.email}`} style="font-size: 18px">{practice.email}</a>
+						<div class="social" style="margin-top: auto">
+							{social.map((x) => <a href={x.href} aria-label={`${s.name} on ${x.label}`}><Icon name={x.icon} size={22} /></a>)}
+						</div>
+					</div>
+					{s.offices.map((o) => (
+						<div class="card" style="gap: 12px">
+							<h2 class="h4">{o.name}</h2>
+							<address style="font-style: normal">{o.street}<br />{o.city}</address>
+							<a href={telHref(o.phone)} style="font-weight: 700; font-size: 19px">{o.phone}</a>
+							<dl class="hours" style="margin: 4px 0 0">{o.hours.map(([d, t]) => <><dt>{d}</dt><dd>{t}</dd></>)}</dl>
+							<a class="link-arrow" href={o.mapsUrl} style="font-size: 17px; margin-top: auto">Get directions</a>
+						</div>
+					))}
+					<nav class="card" style="gap: 8px" aria-label="Footer">
+						<h2 class="h4">Explore</h2>
+						<ul class="flinks">{explore.map((l) => <li><a href={h(l.href)} target={l.target}>{l.label}</a></li>)}</ul>
+					</nav>
+				</div>
+				{s.footerBadges && (
+					<div class="card fbadges">
+						<span class="state-label" style="font-size: 15px">Memberships and affiliations</span>
+						<div class="badges">
+							<div class="badge-ph">
+								<svg viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="16" cy="13" r="9" /><path d="m11 20-2 9 7-3 7 3-2-9" /></svg>
+								Professional association badge
+							</div>
+							<div class="badge-ph">
+								<svg viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M16 3 5 7v8c0 7 5 12 11 14 6-2 11-7 11-14V7z" /></svg>
+								Accreditation badge
+							</div>
+						</div>
+					</div>
+				)}
+				<div class="fbottom">
+					<span>© {year} {s.name}. All rights reserved.</span>
+					<nav aria-label="Legal"><ul class="legal">{legal.map((l) => <li><a href={h(l.href)} target={l.target}>{l.label}</a></li>)}</ul></nav>
+				</div>
+			</footer>
+		)
+	}
+</div>

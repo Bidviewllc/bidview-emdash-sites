@@ -1,0 +1,21 @@
+---
+// Headshot (4:5): the team member's photo, or a placeholder silhouette until one
+// is uploaded in EmDash.
+interface Props {
+	tone: string;
+	label?: string;
+	src?: string;
+	alt?: string;
+}
+const { tone, label = "Headshot · 4:5", src, alt = "" } = Astro.props;
+---
+{
+	src ? (
+		<div class:list={["ph", "has-img", tone]}><img src={src} alt={alt} loading="lazy" /></div>
+	) : (
+		<div class:list={["ph", tone]}>
+			<svg class="sil" viewBox="0 0 200 220" aria-hidden="true"><circle cx="100" cy="80" r="44" fill="currentColor"></circle><path d="M18 220c0-54 37-88 82-88s82 34 82 88z" fill="currentColor"></path></svg>
+			<span class="ph-label tl">{label}</span>
+		</div>
+	)
+}

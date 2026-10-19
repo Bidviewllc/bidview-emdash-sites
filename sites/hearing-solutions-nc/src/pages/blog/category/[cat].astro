@@ -1,0 +1,9 @@
+---
+import BlogArchive from "../../../components/BlogArchive.astro";
+
+const { categories } = Astro.locals.site;
+
+const cat = categories.find((c) => c.slug === Astro.params.cat);
+if (!cat) return Astro.rewrite("/404");
+---
+<BlogArchive cat={cat} />

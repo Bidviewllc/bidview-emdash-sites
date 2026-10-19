@@ -1,0 +1,124 @@
+---
+// Interior page hero (board "05 Page hero"). Four versions, chosen in Review
+// controls: Photo (placeholder), Example photo, No photo · Primary,
+// No photo · Light. Photo versions put the text left and a 3:2 photo right;
+// no-photo versions sit in a rounded colour panel with two soft rings.
+// "short" is the utility-page version: no photo, less height.
+import type { Photo } from "../data/site";
+import type { HeroKey } from "../lib/settings";
+import { getSettings } from "../lib/settings";
+import { routes, telHref } from "../lib/routes";
+
+interface Props {
+	crumbs: { label: string; href?: string }[];
+	title: string;
+	lead?: string;
+	/** Main button. Omit `book` to hide both buttons. */
+	book?: { label: string; href?: string } | false;
+	showCall?: boolean;
+	heroDefault?: HeroKey;
+	photoLabel?: string;
+	photoTone?: string;
+	/** Bottom padding of the photo version (the boards use 72 or 88). */
+	photoBottom?: number;
+	short?: boolean;
+	/** Hero photo of a record page (office, service...); fixed pages use their Pages record's. */
+	image?: Photo;
+}
+const {
+	crumbs,
+	title,
+	lead,
+	book = { label: "Book appointment" },
+	showCall = true,
+	heroDefault = "photo",
+	photoLabel = "Page hero photo · 3:2, landscape",
+	photoTone = "warm",
+	photoBottom = 88,
+	short = false,
+	image: ownImage,
+} = Astro.props;
+const s = getSettings(Astro);
+const image = ownImage ?? s.pageHeroImage;
+const hero = short ? "light" : s.heroFor(heroDefault, image);
+const withPhoto = hero === "photo" || hero === "example";
+const prim = hero === "primary";
+const shapeA = prim ? "color-mix(in srgb, var(--on-p) 8%, transparent)" : "color-mix(in srgb, var(--p) 7%, transparent)";
+const shapeB = prim ? "color-mix(in srgb, var(--on-p) 6%, transparent)" : "color-mix(in srgb, var(--a) 14%, transparent)";
+const tel = telHref(s.phone);
+const hasSlot = Astro.slots.has("default");
+---
+{
+	withPhoto ? (
+		<section class="pg-hero" style={`--pb: ${photoBottom}px`}>
+			<div class="wrap ihero">
+				<div class="stack g24">
+					<nav aria-label="Breadcrumb">
+						<ol class="crumbs">
+							{crumbs.map((c, i) =>
+								i < crumbs.length - 1 ? (
+									<>
+										<li><a href={s.href(c.href ?? routes.home)}>{c.label}</a></li>
+										<li class="sep" aria-hidden="true">/</li>
+									</>
+								) : (
+									<li aria-current="page">{c.label}</li>
+								),
+							)}
+						</ol>
+					</nav>
+					<h1 class="h1">{title}</h1>
+					{lead && <p class="lead">{lead}</p>}
+					{hasSlot && <slot />}
+					{book && (
+						<div class="rowf hero-btns" style="gap: 12px; margin-top: 4px">
+							<a class="btn btn-primary" href={s.href(book.href ?? routes.book)}>{book.label}</a>
+							{showCall && <a class="btn btn-secondary" href={tel}>Call {s.phone}</a>}
+						</div>
+					)}
+				</div>
+				{hero === "example" ? (
+					<div class="phimg"><img src="/assets/photos/consult.jpg" alt="An audiologist smiling as she talks with a patient across her desk" style="object-position: 55% 30%" /></div>
+				) : image ? (
+					<div class="phimg"><img src={image.src} alt={image.alt} /></div>
+				) : (
+					<div class:list={["ph", photoTone]} style="aspect-ratio: 3/2; border-radius: var(--r-hero)"><span class="ph-label">{photoLabel}</span></div>
+				)}
+			</div>
+		</section>
+	) : (
+		<div class="pg-hero-np">
+			<section class:list={["inophoto", { short, "on-p-text": prim }]} style={prim ? "background: var(--p); color: var(--on-p)" : "background: var(--l); color: var(--on-l)"}>
+				<div class="shape np1" style={`border-color: ${shapeA}`} />
+				{!short && <div class="shape np2" style={`border-color: ${shapeB}`} />}
+				<div class="wrap">
+					<div class="stack g24" style="max-width: 860px">
+						<nav aria-label="Breadcrumb">
+							<ol class="crumbs">
+								{crumbs.map((c, i) =>
+									i < crumbs.length - 1 ? (
+										<>
+											<li><a href={s.href(c.href ?? routes.home)}>{c.label}</a></li>
+											<li class="sep" aria-hidden="true">/</li>
+										</>
+									) : (
+										<li aria-current="page">{c.label}</li>
+									),
+								)}
+							</ol>
+						</nav>
+						<h1 class:list={["h1", { xl: !short }]} style="color: inherit">{title}</h1>
+						{lead && <p class="lead" style="color: inherit; opacity: .88; max-width: 720px">{lead}</p>}
+						{hasSlot && <slot />}
+						{book && (
+							<div class="rowf hero-btns" style="gap: 12px; margin-top: 4px">
+								<a class:list={["btn", prim ? "btn-inverse" : "btn-primary"]} href={s.href(book.href ?? routes.book)}>{book.label}</a>
+								{showCall && <a class:list={["btn", prim ? "btn-ghost-on-p" : "btn-secondary"]} href={tel}>Call {s.phone}</a>}
+							</div>
+						)}
+					</div>
+				</div>
+			</section>
+		</div>
+	)
+}

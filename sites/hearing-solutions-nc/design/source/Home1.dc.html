@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Home, desktop, part 1</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./d1.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>body{margin:0}</style>
+</helmet>
+<div class="d1 page" style="--p: {{P}}; --a: {{A}}; --l: {{L}}; --on-p: {{onP}}; --on-a: {{onA}}; --on-l: {{onL}}; --p-ink: {{pInk}}">
+
+  <dc-import name="SiteHeader" primary="{{P}}" accent="{{A}}" light="{{L}}" variant="{{headerStyle}}" hint-size="100%,96px"></dc-import>
+
+  <section class="hhero {{heroCls}}" style="min-height: {{heroMin}}">
+    <sc-if value="{{heroPhoto}}" hint-placeholder-val="{{true}}">
+      <div class="ph dark2"><span class="ph-label tr">Hero photo · 16:9 · calm, even area on the left</span></div>
+      <div class="scrim left"></div>
+      <div style="position: absolute; inset: auto 0 0 0; height: 240px; background: linear-gradient(to top, rgba(12,14,16,.5), transparent)"></div>
+    </sc-if>
+    <sc-if value="{{heroExample}}" hint-placeholder-val="{{false}}">
+      <div style="position: absolute; inset: 0; background: {{fadeColor}}"></div>
+      <img src="../assets/photos/consult.jpg" alt="An audiologist smiling as she talks with a patient across her desk" style="position: absolute; top: 0; bottom: 0; right: 0; left: 33.333%; width: 66.667%; height: 100%; object-fit: cover; object-position: 50% 30%">
+      <div style="position: absolute; top: 0; bottom: 0; left: 33.2%; width: 30%; background: linear-gradient(to right, {{fadeColor}} 0%, {{fadeMid}} 45%, {{fadeClear}} 100%)"></div>
+      <div style="position: absolute; inset: auto 0 0 0; height: 220px; background: linear-gradient(to top, rgba(12,14,16,.45), transparent)"></div>
+    </sc-if>
+    <sc-if value="{{heroNoPhoto}}" hint-placeholder-val="{{false}}">
+      <div class="shape" style="width: 780px; height: 780px; right: -170px; top: -280px; border: 76px solid {{shapeA}}"></div>
+      <div class="shape" style="width: 340px; height: 340px; right: 300px; top: 300px; border: 44px solid {{shapeB}}"></div>
+    </sc-if>
+    <div class="hcontent {{contentCls}}" style="padding-top: {{heroTop}}; padding-bottom: 200px">
+      <h1 class="h1" style="font-size: {{h1Size}}; max-width: {{h1Max}}">Hearing care that starts with listening to you</h1>
+      <p class="lead" style="max-width: {{leadMax}}; opacity: .92">Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor.</p>
+      <div class="rowf" style="gap: 12px; margin-top: 8px">
+        <a class="btn {{btn1Cls}}" href="#">Book appointment</a>
+        <a class="btn {{btn2Cls}}" href="tel:+15550100142" style="color: {{b2c}}; border-color: {{b2c}}">Call (555) 010-0142</a>
+      </div>
+    </div>
+    <div class="trust {{trustCls}} {{pausedCls}}">
+      <div class="track">
+        <ul class="marq" style="list-style: none; margin: 0" aria-label="Professional memberships and affiliations">
+          <sc-for list="{{loop}}" as="b" hint-placeholder-count="20">
+            <li aria-hidden="{{b.ah}}" style="display: flex; align-items: center"><img class="tlogo {{logoTone}}" src="{{b.src}}" alt="{{b.alt}}" style="height: {{b.h}}"></li>
+          </sc-for>
+        </ul>
+      </div>
+      <div class="rating">
+        <b>Rated 4.9/5 from 210 Google reviews</b>
+        <div class="stars" aria-hidden="true" style="color: {{starsColor}}"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"></path></svg></div>
+      </div>
+      <button class="pause" onClick="{{toggle}}" aria-label="{{pauseLabel}}">
+        <sc-if value="{{paused}}" hint-placeholder-val="{{false}}"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"></path></svg></sc-if>
+        <sc-if value="{{playing}}" hint-placeholder-val="{{true}}"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M9 5v14M15 5v14"></path></svg></sc-if>
+      </button>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap about">
+      <div class="ph stone"><span class="ph-label">Team photo · 3:2</span></div>
+      <div class="stack g24">
+        <span class="eyebrow">About us</span>
+        <h2 class="h2">A locally owned practice in Riverside</h2>
+        <p class="body">Nostrud exercitation ullamco laboris nisi ut aliquip ex ea. Commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum. Dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt. Mollit anim id est laborum curabitur pretium tincidunt lacus nulla. Gravida orci a odio nullam varius turpis et commodo pharetra est eros bibendum elit. Nec luctus magna felis sollicitudin mauris integer in mauris eu nibh euismod. Gravida praesent blandit odio eu enim pellentesque sed dapibus est sed. Lacinia sapien vel tellus lorem ipsum dolor sit amet consectetur adipiscing elit sed do.</p>
+        <div class="panel grid g-2" style="--pad: 12px">
+          <div class="fact"><b>35+ years</b><span>caring for Riverside</span></div>
+          <div class="fact"><b>Au.D.</b><span>Doctors of Audiology on staff</span></div>
+        </div>
+        <sc-if value="{{aboutLink}}" hint-placeholder-val="{{true}}">
+          <a class="link-arrow" href="#" style="align-self: flex-start">Read our story <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+        </sc-if>
+      </div>
+    </div>
+  </section>
+
+  <section class="band bg-light">
+    <div class="wrap stack g48">
+      <div class="stack g16 text-col">
+        <span class="eyebrow">Our team</span>
+        <h2 class="h2">Meet your hearing care team</h2>
+        <p class="lead">Eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi.</p>
+      </div>
+      <div class="grid g-3" style="gap: 16px">
+        <sc-for list="{{team}}" as="p" hint-placeholder-count="3">
+          <sc-if value="{{p.linked}}" hint-placeholder-val="{{true}}">
+            <a class="prov" href="#" aria-label="{{p.meet}}">
+              <span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"></path></svg></span>
+              <div class="who"><h3 class="pname">{{p.name}}</h3><span class="ptitle">{{p.title}}</span></div>
+              <div class="ph {{p.tone}}"><svg class="sil" viewBox="0 0 200 220" aria-hidden="true"><circle cx="100" cy="80" r="44" fill="currentColor"></circle><path d="M18 220c0-54 37-88 82-88s82 34 82 88z" fill="currentColor"></path></svg><span class="ph-label tl">Headshot · 4:5</span></div>
+            </a>
+          </sc-if>
+          <sc-if value="{{p.plain}}" hint-placeholder-val="{{false}}">
+            <div class="prov">
+              <div class="who" style="padding-right: 10px"><h3 class="pname">{{p.name}}</h3><span class="ptitle">{{p.title}}</span></div>
+              <div class="ph {{p.tone}}"><svg class="sil" viewBox="0 0 200 220" aria-hidden="true"><circle cx="100" cy="80" r="44" fill="currentColor"></circle><path d="M18 220c0-54 37-88 82-88s82 34 82 88z" fill="currentColor"></path></svg><span class="ph-label tl">Headshot · 4:5</span></div>
+            </div>
+          </sc-if>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap stack g48">
+      <div class="stack g16" style="max-width: 760px">
+        <span class="eyebrow">Services</span>
+        <h2 class="h2">Hearing care services in Riverside</h2>
+        <p class="lead">Ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum. Dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non. Proident sunt in.</p>
+      </div>
+      <div class="stack g24">
+        <div class="panel grid g-3">
+          <sc-for list="{{services}}" as="s" hint-placeholder-count="6">
+            <article class="card">
+              <h3 class="h3">{{s.t}}</h3>
+              <p class="muted">{{s.d}}</p>
+              <sc-if value="{{s.more}}" hint-placeholder-val="{{true}}"><div class="actions"><a class="btn btn-gray sm" href="#">Learn more<span class="sr"> about {{s.t}}</span></a></div></sc-if>
+            </article>
+          </sc-for>
+        </div>
+        <a class="link-arrow" href="#" style="align-self: flex-start">View all services <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+      </div>
+      <sc-if value="{{showSampleCard}}" hint-placeholder-val="{{true}}">
+        <div class="stack g12" style="max-width: 400px">
+          <span class="state-label">Card with optional photo (sample, not part of the grid)</span>
+          <div class="panel">
+            <article class="card">
+              <div class="ph sage" style="aspect-ratio: 4/3"><span class="ph-label">Service card image · 4:3</span></div>
+              <h3 class="h3" style="margin-top: 8px">Hearing Evaluations</h3>
+              <p class="muted">Culpa qui officia deserunt mollit anim id est laborum curabitur pretium tincidunt. Lacus nulla gravida orci a odio nullam varius.</p>
+              <div class="actions"><a class="btn btn-gray sm" href="#">Learn more<span class="sr"> about Hearing Evaluations</span></a></div>
+            </article>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"palette": {"editor": "enum", "options": ["Teal / Amber", "Navy / Coral", "Forest / Gold", "Custom"], "default": "Teal / Amber", "section": "Practice colors"}, "primary": {"editor": "color", "default": "#0F5E6B", "section": "Practice colors"}, "accent": {"editor": "color", "default": "#E0A33B", "section": "Practice colors"}, "light": {"editor": "color", "default": "#F6F1EA", "section": "Practice colors"}, "hero": {"editor": "enum", "options": ["Photo", "Example photo", "No photo · Primary", "No photo · Light"], "default": "Photo", "section": "Sections"}, "aboutLink": {"editor": "boolean", "default": true, "section": "Sections"}, "providersLinked": {"editor": "boolean", "default": true, "section": "Sections"}, "serviceLinks": {"editor": "enum", "options": ["Mixed", "All", "None"], "default": "Mixed", "section": "Sections"}, "showSampleCard": {"editor": "boolean", "default": true, "section": "Sections"}, "headerStyle": {"editor": "enum", "options": ["H1 · Classic two-bar", "H2 · Floating pill", "H3 · Single row (current)", "V1 · Overhanging logo badge", "V2 · Centered logo, split nav", "V3 · Logo spans two tiers", "V4 · Centered stack", "V5 · Logo over menu, stacked actions", "V6 · Logo over menu, side-by-side actions", "V7 · Logo over menu, Book only"], "default": "H3 · Single row (current)", "section": "Header and footer"}, "$preview": {"width": 1440, "height": 4600}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { paused: false }; }
+  renderVals() {
+    const presets = { 'Teal / Amber': ['#0F5E6B', '#E0A33B', '#F6F1EA'], 'Navy / Coral': ['#1E3A5F', '#E8735A', '#EEF3F8'], 'Forest / Gold': ['#2F5D3A', '#C9A227', '#F7F4EC'] };
+    const pr = presets[this.props.palette ?? 'Teal / Amber'];
+    const P = pr ? pr[0] : (this.props.primary ?? '#0F5E6B'), A = pr ? pr[1] : (this.props.accent ?? '#E0A33B'), L = pr ? pr[2] : (this.props.light ?? '#F6F1EA');
+    const hex = (h) => { h = String(h).replace('#', ''); if (h.length === 3) h = h.split('').map((c) => c + c).join(''); return h; };
+    const lum = (h) => { h = hex(h); const v = [0, 2, 4].map((i) => { const c = parseInt(h.substr(i, 2), 16) / 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); }); return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2]; };
+    const cr = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
+    const on = (c) => (cr(c, '#FFFFFF') >= cr(c, '#1B1F23') ? '#FFFFFF' : '#1B1F23');
+    const darken = (h, t) => '#' + [0, 2, 4].map((i) => Math.round(parseInt(hex(h).substr(i, 2), 16) * (1 - t)).toString(16).padStart(2, '0')).join('');
+    let ink = P; for (let t = 0.08; cr(ink, '#FFFFFF') < 4.5 && t < 0.9; t += 0.08) ink = darken(P, t);
+    const onP = on(P);
+    const fade = darken(P, 0.62);
+    const hero = this.props.hero ?? 'Photo';
+    const isPhoto = hero === 'Photo' || hero === 'Example photo', isPrim = hero === 'No photo · Primary';
+    const logoTone = (hero === 'No photo · Light' || (isPrim && onP !== '#FFFFFF')) ? 'black' : 'white';
+    const LOGOS = {
+      white: ['../assets/associations/white/ada.png', '../assets/associations/white/aaa.png', '../assets/associations/white/aba.png', '../assets/associations/white/asha.png', '../assets/associations/white/hearingup.png'],
+      black: ['../assets/associations/black/ada.png', '../assets/associations/black/aaa.png', '../assets/associations/black/aba.png', '../assets/associations/black/asha.png', '../assets/associations/black/hearingup.png']
+    };
+    const meta = [
+      { alt: 'Academy of Doctors of Audiology', h: '34px' },
+      { alt: 'American Academy of Audiology', h: '42px' },
+      { alt: 'American Board of Audiology', h: '46px' },
+      { alt: 'American Speech-Language-Hearing Association (ASHA)', h: '40px' },
+      { alt: 'HearingUp Network', h: '34px' }
+    ];
+    const set = meta.map((m, i) => ({ ...m, src: LOGOS[logoTone][i] }));
+    const loop = [...set, ...set].map((m) => ({ ...m, ah: 'false' })).concat([...set, ...set].map((m) => ({ ...m, alt: '', ah: 'true' })));
+    const linked = this.props.providersLinked ?? true;
+    const team = [
+      { name: 'Dr. Jordan Ellis, Au.D.', title: 'Owner and Audiologist', meet: 'Meet Dr. Ellis', tone: 'warm' },
+      { name: 'Dr. Priya Raman, Au.D.', title: 'Audiologist', meet: 'Meet Dr. Raman', tone: 'sage' },
+      { name: 'Morgan Lee', title: 'Patient Care Coordinator', meet: 'Meet Morgan Lee', tone: 'sky' }
+    ].map((p) => ({ ...p, linked, plain: !linked }));
+    const sl = this.props.serviceLinks ?? 'Mixed';
+    const services = [
+      { t: 'Hearing Evaluations', d: 'Culpa qui officia deserunt mollit anim id est laborum curabitur pretium tincidunt. Lacus nulla gravida orci a odio nullam varius.', more: true },
+      { t: 'Hearing Aid Fittings', d: 'Turpis et commodo pharetra est eros bibendum elit nec luctus magna felis sollicitudin mauris integer. In mauris eu nibh euismod.', more: true },
+      { t: 'Hearing Aid Repairs & Services', d: 'Gravida praesent blandit odio eu enim pellentesque sed dapibus est sed lacinia sapien. Vel tellus lorem ipsum dolor sit amet.', more: false },
+      { t: 'Ear Wax Removal', d: 'Consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore. Et dolore magna aliqua ut enim ad minim veniam quis.', more: true },
+      { t: 'Tinnitus Evaluation & Management', d: 'Nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis. Aute irure dolor in reprehenderit in voluptate velit.', more: false },
+      { t: 'Custom Hearing Protection', d: 'Esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in. Culpa qui officia deserunt mollit.', more: false }
+    ].map((s) => ({ ...s, more: sl === 'All' ? true : sl === 'None' ? false : s.more }));
+    const paused = !!this.state.paused;
+    return {
+      headerStyle: this.props.headerStyle ?? 'H3 · Single row (current)',
+      P, A, L, onP, onA: on(A), onL: on(L), pInk: ink,
+      heroPhoto: hero === 'Photo', heroExample: hero === 'Example photo', heroNoPhoto: !isPhoto,
+      heroCls: isPhoto ? '' : isPrim ? 'prim' : 'light',
+      heroMin: isPhoto ? '720px' : '660px',
+      heroTop: isPhoto ? '132px' : '112px',
+      h1Size: isPhoto ? '60px' : '68px',
+      h1Max: hero === 'Example photo' ? '620px' : '900px',
+      leadMax: hero === 'Example photo' ? '520px' : '600px',
+      fadeColor: fade, fadeMid: fade + 'C8', fadeClear: fade + '00',
+      contentCls: isPhoto ? 'on-dark' : isPrim ? 'on-p-text' : '',
+      btn1Cls: isPrim ? 'btn-inverse' : 'btn-primary',
+      btn2Cls: isPhoto ? '' : isPrim ? 'btn-ghost-on-p' : 'btn-secondary',
+      b2c: isPhoto ? '#FFFFFF' : isPrim ? onP : '#1B1F23',
+      trustCls: isPhoto ? '' : isPrim ? 'on-p' : 'on-light',
+      starsColor: isPrim && cr(A, P) < 2 ? onP : A,
+      shapeA: isPrim ? 'color-mix(in srgb, var(--on-p) 7%, transparent)' : 'color-mix(in srgb, var(--p) 7%, transparent)',
+      shapeB: isPrim ? 'color-mix(in srgb, var(--on-p) 5%, transparent)' : 'color-mix(in srgb, var(--a) 14%, transparent)',
+      aboutLink: this.props.aboutLink ?? true,
+      showSampleCard: this.props.showSampleCard ?? true,
+      loop, logoTone, team, services, paused, playing: !paused,
+      pausedCls: paused ? 'paused' : '',
+      pauseLabel: paused ? 'Play logo scrolling' : 'Pause logo scrolling',
+      toggle: () => this.setState({ paused: !this.state.paused })
+    };
+  }
+}
+</script>
+</body>
+</html>

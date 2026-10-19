@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.astro/
+.wrangler/
+.emdash/
+.env
+.env.*
+!.env.example
+*.log

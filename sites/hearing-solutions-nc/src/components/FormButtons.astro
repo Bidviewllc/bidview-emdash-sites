@@ -1,0 +1,34 @@
+---
+// "Download PDF" and "Fill out online" for a patient resource with forms.
+// Each button shows when its file or link is set on the resource; while Review
+// controls are on, a missing one shows as a placeholder so the design reads.
+import type { Resource } from "../data/types";
+import Icon from "./Icon.astro";
+
+interface Props {
+	r: Resource;
+	/** Full-width buttons (sidebar). */
+	block?: boolean;
+}
+const { r, block = false } = Astro.props;
+const review = Astro.locals.site.practice.reviewControls;
+const pdf = r.formsPdf ?? (review ? "#" : undefined);
+const online = r.formsUrl ?? (review ? "#" : undefined);
+const cls = block ? "block" : "sm";
+---
+{
+	(pdf || online) && (
+		<div class:list={["actions", { rowf: !block, stack: block, g12: block }]} style={block ? undefined : "gap: 10px"}>
+			{pdf && (
+				<a class:list={["btn btn-secondary", cls]} href={pdf} download={r.formsPdf ? "" : undefined}>
+					<Icon name="doc" size={18} /> Download PDF<span class="sr"> of {r.t}</span>
+				</a>
+			)}
+			{online && (
+				<a class:list={["btn btn-primary", cls]} href={online} target={r.formsUrl ? "_blank" : undefined} rel={r.formsUrl ? "noopener" : undefined}>
+					Fill out online<span class="sr"> ({r.t})</span>
+				</a>
+			)}
+		</div>
+	)
+}

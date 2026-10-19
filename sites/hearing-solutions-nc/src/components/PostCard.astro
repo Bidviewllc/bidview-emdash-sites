@@ -1,0 +1,31 @@
+---
+// Blog card: image (16:9 or square, set once per site), category and date,
+// title, summary. The whole card is the link.
+import { getSettings } from "../lib/settings";
+import Icon from "./Icon.astro";
+import { routes } from "../lib/routes";
+import type { Post } from "../data/types";
+
+interface Props {
+	p: Post;
+	square?: boolean;
+	showCat?: boolean;
+}
+const { p, square = false, showCat = true } = Astro.props;
+const s = getSettings(Astro);
+---
+<a class="post" href={s.href(routes.post(p.slug))}>
+	<div class="img">
+		{
+			p.image ? (
+				<div class:list={["ph", "has-img", p.tone]} style={`aspect-ratio: ${square ? "1/1" : "16/9"}`}><img src={p.image} alt="" loading="lazy" /></div>
+			) : (
+				<div class:list={["ph", p.tone]} style={`aspect-ratio: ${square ? "1/1" : "16/9"}`}><span class="ph-label tl">{square ? "1:1" : "16:9"}</span></div>
+			)
+		}
+		<span class="badge" aria-hidden="true"><Icon name="arrowUR" size={22} /></span>
+	</div>
+	<span class="date">{showCat && <><span class="pcat">{p.cat}</span><span aria-hidden="true"> · </span></>}{p.date}</span>
+	<h3 class="ptitle">{p.title}</h3>
+	<p class="sum">{p.summary}</p>
+</a>

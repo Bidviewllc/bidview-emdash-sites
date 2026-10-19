@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Blog cards and featured post</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./d1.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>body{margin:0}</style>
+</helmet>
+<div class="d1 sheet" style="min-height: 3000px; --p: {{P}}; --a: {{A}}; --l: {{L}}; --on-p: {{onP}}; --on-a: {{onA}}; --on-l: {{onL}}; --p-ink: {{pInk}}">
+  <div class="sheet-head">
+    <span class="eyebrow">Components 16–17</span>
+    <h1 class="sheet-title">Blog cards and featured post</h1>
+    <p class="sheet-sub">No card background or border: the rounded image carries the shape. The image ratio is set once per site, 16:9 or square.</p>
+  </div>
+
+  <div class="spec">Featured post row</div>
+  <div class="vp">
+    <div class="wrap">
+      <article class="feat">
+        <a href="#" class="post" style="display: block" tabindex="-1" aria-hidden="true"><div class="ph warm" style="aspect-ratio: 4/3; border-radius: 28px"><span class="ph-label">Blog featured image · 16:9 (cropped 4:3 here)</span></div></a>
+        <div class="stack g16">
+          <span class="small muted">September 16, 2026</span>
+          <h2 class="h2" style="font-size: 44px">What to expect at your first hearing test</h2>
+          <p class="lead">A step-by-step look at the visit, from the first conversation to the results, so nothing comes as a surprise. Most people are surprised how relaxed it is.</p>
+          <div style="padding-top: 8px"><a class="btn btn-primary" href="#">Read article <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></a></div>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <div class="spec">Blog cards · 16:9</div>
+  <div class="vp">
+    <section class="section" style="padding: 24px 0 0">
+      <div class="wrap stack g48">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 48px">
+          <div class="stack g16"><span class="eyebrow">Latest posts</span><h2 class="h2">From our blog</h2></div>
+          <a class="link-arrow" href="#">All posts <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+        </div>
+        <div class="grid g-3" style="gap: 32px">
+          <sc-for list="{{posts}}" as="p" hint-placeholder-count="3">
+            <a class="post" href="#">
+              <div class="img"><div class="ph {{p.tone}}" style="aspect-ratio: 16/9"><span class="ph-label tl">16:9</span></div><span class="badge" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"></path></svg></span></div>
+              <span class="date">{{p.date}}</span>
+              <h3 class="ptitle">{{p.title}}</h3>
+              <p class="sum">{{p.sum}}</p>
+            </a>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="row-specs" style="margin-top: 16px"><p class="note">The whole card is one link. Hover underlines the headline in Accent. One-line summary is optional.</p></div>
+
+  <div class="spec">Blog cards · square (1:1), summary off</div>
+  <div class="vp">
+    <div class="wrap">
+      <div class="grid g-3" style="gap: 32px">
+        <sc-for list="{{posts}}" as="p" hint-placeholder-count="3">
+          <a class="post" href="#">
+            <div class="img"><div class="ph {{p.tone}}" style="aspect-ratio: 1/1"><span class="ph-label tl">1:1</span></div><span class="badge" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"></path></svg></span></div>
+            <span class="date">{{p.date}}</span>
+            <h3 class="ptitle">{{p.title}}</h3>
+          </a>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <div class="spec">Mobile · featured stacks image first, cards one per row</div>
+  <div class="phones">
+    <div class="phone-col">
+      <div class="phone m">
+        <section class="section" style="padding: 32px 0 40px">
+          <div class="wrap">
+            <article class="feat">
+              <div class="ph warm" style="aspect-ratio: 16/9; border-radius: 22px"><span class="ph-label">16:9</span></div>
+              <div class="stack g12">
+                <span class="small muted">September 16, 2026</span>
+                <h2 class="h2" style="font-size: 28px">What to expect at your first hearing test</h2>
+                <p class="body muted">A step-by-step look at the visit, from the first conversation to the results.</p>
+                <a class="btn btn-primary block" href="#" style="margin-top: 4px">Read article</a>
+              </div>
+            </article>
+          </div>
+        </section>
+      </div>
+    </div>
+    <div class="phone-col">
+      <div class="phone m">
+        <section class="section" style="padding: 32px 0 40px">
+          <div class="wrap stack g32">
+            <div class="stack g12"><span class="eyebrow">Latest posts</span><h2 class="h2">From our blog</h2></div>
+            <sc-for list="{{postsM}}" as="p" hint-placeholder-count="2">
+              <a class="post" href="#">
+                <div class="img"><div class="ph {{p.tone}}" style="aspect-ratio: 16/9"></div><span class="badge" aria-hidden="true" style="width: 48px; height: 48px"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"></path></svg></span></div>
+                <span class="date">{{p.date}}</span>
+                <h3 class="ptitle" style="font-size: 22px">{{p.title}}</h3>
+              </a>
+            </sc-for>
+            <a class="link-arrow" href="#">All posts</a>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"primary":{"editor":"color","default":"#0F5E6B","options":["#0F5E6B","#1E3A5F","#2F5D3A"],"section":"Practice colors"},"accent":{"editor":"color","default":"#E0A33B","options":["#E0A33B","#E8735A","#C9A227"],"section":"Practice colors"},"light":{"editor":"color","default":"#F6F1EA","options":["#F6F1EA","#EEF3F8","#F7F4EC"],"section":"Practice colors"},"$preview":{"width":1440,"height":3000}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const P = this.props.primary ?? '#0F5E6B', A = this.props.accent ?? '#E0A33B', L = this.props.light ?? '#F6F1EA';
+    const hex = (h) => { h = String(h).replace('#', ''); if (h.length === 3) h = h.split('').map((c) => c + c).join(''); return h; };
+    const lum = (h) => { h = hex(h); const v = [0, 2, 4].map((i) => { const c = parseInt(h.substr(i, 2), 16) / 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); }); return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2]; };
+    const cr = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
+    const on = (c) => (cr(c, '#FFFFFF') >= cr(c, '#1B1F23') ? '#FFFFFF' : '#1B1F23');
+    const darken = (h, t) => '#' + [0, 2, 4].map((i) => Math.round(parseInt(hex(h).substr(i, 2), 16) * (1 - t)).toString(16).padStart(2, '0')).join('');
+    let ink = P; for (let t = 0.08; cr(ink, '#FFFFFF') < 4.5 && t < 0.9; t += 0.08) ink = darken(P, t);
+    const posts = [
+      { date: 'September 22, 2026', title: 'Five signs it may be time for a hearing check', sum: 'Small everyday clues that are easy to brush off.', tone: 'sage' },
+      { date: 'September 9, 2026', title: 'How to care for rechargeable hearing aids', sum: 'A two-minute nightly routine that adds years.', tone: 'sky' },
+      { date: 'August 28, 2026', title: 'Helping a parent who won’t admit they can’t hear', sum: 'How to start the conversation kindly.', tone: 'stone' }
+    ];
+    return { P, A, L, onP: on(P), onA: on(A), onL: on(L), pInk: ink, posts, postsM: posts.slice(0, 2) };
+  }
+}
+</script>
+</body>
+</html>

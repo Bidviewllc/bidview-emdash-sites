@@ -1,0 +1,111 @@
+---
+// Page 12 · Blog archive body (boards BlogPage, BlogPageSquare, BlogPageList,
+// BlogPageCategory, BlogMobile). Shared by /blog and /blog/category/<cat>.
+// Short no-photo hero → category chips (real links) → featured post (All only)
+// → grid or list → pager → CTA.
+import Base from "../layouts/Base.astro";
+import { getSettings } from "../lib/settings";
+import CtaBand from "./CtaBand.astro";
+import Icon from "./Icon.astro";
+import PageHero from "./PageHero.astro";
+import PostCard from "./PostCard.astro";
+import type { Tweak } from "./ReviewControls.astro";
+import { routes } from "../lib/routes";
+import type { Post } from "../data/types";
+
+const { categories, featured, posts } = Astro.locals.site;
+
+interface Props {
+	cat?: { name: string; slug: string };
+}
+const { cat } = Astro.props;
+const tweaks: Tweak[] = [
+	{ key: "layout", label: "Layout", type: "choice", default: "grid", options: [["grid", "Grid · 16:9"], ["square", "Grid · square"], ["list", "List"]] },
+];
+const s = getSettings(Astro);
+const tx = s.text;
+const h = s.href;
+const layout = s.choice("layout", ["grid", "square", "list"], "grid");
+const shown: Post[] = cat ? posts.filter((p) => p.catSlug === cat.slug) : posts;
+const title = cat ? `${cat.name} articles` : tx("heading");
+---
+<Base title={`${title} | ${s.name}`} description={tx("description")} pageName={cat ? "Blog category" : "Blog archive"} current="blog" tweaks={tweaks}>
+	<PageHero
+		crumbs={cat ? [{ label: "Home" }, { label: "Blog", href: routes.blog }, { label: cat.name }] : [{ label: "Home" }, { label: "Blog" }]}
+		title={title}
+		lead={tx("intro")}
+		short
+		book={false}
+	/>
+
+	<section class="band bl-chips">
+		<div class="wrap">
+			<nav class="chip-row" aria-label="Blog categories">
+				<a class:list={["cat-chip", { on: !cat }]} href={h(routes.blog)} aria-current={!cat ? "page" : undefined}>All</a>
+				{categories.map((c) => (
+					<a class:list={["cat-chip", { on: cat?.slug === c.slug }]} href={h(routes.category(c.slug))} aria-current={cat?.slug === c.slug ? "page" : undefined}>{c.name}</a>
+				))}
+			</nav>
+		</div>
+	</section>
+
+	{
+		!cat && (
+			<section class="band bl-feat-band">
+				<div class="wrap">
+					<article class="feat bl-feat">
+						<a href={h(routes.post(featured.slug))} class="post" tabindex="-1" aria-hidden="true"><div class="img"><div class="ph warm" style="aspect-ratio: 16/9; border-radius: var(--r-hero)"><span class="ph-label">Featured image · 16:9</span></div></div></a>
+						<div class="stack g16">
+							<div class="rowf" style="gap: 12px; align-items: center"><span class="tag">{featured.cat}</span><span class="small muted">{featured.date}</span></div>
+							<h2 class="h2 feat-title">{featured.title}</h2>
+							<p class="lead" style="margin: 0">{featured.summary}</p>
+							<span class="body"><b>{featured.author}</b></span>
+							<div style="padding-top: 8px"><a class="btn btn-primary" href={h(routes.post(featured.slug))}>Read article<span class="sr"> {featured.title}</span> <Icon name="arrowUR" /></a></div>
+						</div>
+					</article>
+				</div>
+			</section>
+		)
+	}
+
+	<section class="band bl-main">
+		<div class="wrap stack g48">
+			{
+				layout !== "list" ? (
+					<div class="grid g-3 posts-grid" style="gap: 48px 32px">
+						{shown.map((p) => <PostCard p={p} square={layout === "square"} />)}
+					</div>
+				) : (
+					<div class="bl-list">
+						{shown.map((p) => (
+							<article class="feat bl-row">
+								<a href={h(routes.post(p.slug))} class="post" tabindex="-1" aria-hidden="true"><div class="img"><div class:list={["ph", p.tone]} style="aspect-ratio: 16/9; border-radius: 24px"><span class="ph-label tl">16:9</span></div></div></a>
+								<div class="stack g12">
+									<div class="rowf" style="gap: 12px; align-items: center"><span class="tag">{p.cat}</span><span class="small muted">{p.date}</span></div>
+									<h2 class="h3 row-title">{p.title}</h2>
+									<p class="body muted" style="margin: 0">{p.summary}</p>
+									<span class="small"><b>{p.author}</b></span>
+									<div style="padding-top: 6px"><a class="btn btn-primary sm" href={h(routes.post(p.slug))}>Read article<span class="sr"> {p.title}</span> <Icon name="arrowUR" size={18} /></a></div>
+								</div>
+							</article>
+						))}
+					</div>
+				)
+			}
+			{
+				!cat && (
+					<nav class="pager" aria-label="Blog pages">
+						<a class="pg on" href={h(routes.blog)} aria-current="page">1</a>
+						<a class="pg" href={h(routes.blog)}>2</a>
+						<a class="pg" href={h(routes.blog)}>3</a>
+						<a class="pg next" href={h(routes.blog)}>Next <Icon name="arrowR" /></a>
+					</nav>
+				)
+			}
+		</div>
+	</section>
+
+	<div class="cta-wrap">
+		<CtaBand id="blcta" heading={tx("cta_heading")} text={tx("cta_text")} photoLabel="Lifestyle photo · conversation, meal, outdoors" />
+	</div>
+</Base>

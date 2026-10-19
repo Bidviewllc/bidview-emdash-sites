@@ -1,0 +1,105 @@
+---
+// Page 4 · Hearing aids hub (boards HearingAidsHub, HearingAidsMobile, HearingAidsAlt).
+// Hero → brand cards → styles (optional) → OTC vs prescription (optional) → CTA.
+import CtaBand from "../../components/CtaBand.astro";
+import PageHero from "../../components/PageHero.astro";
+import type { Tweak } from "../../components/ReviewControls.astro";
+import StyleIllustration from "../../components/StyleIllustration.astro";
+import Base from "../../layouts/Base.astro";
+import { getSettings } from "../../lib/settings";
+import { routes } from "../../lib/routes";
+
+const { brands, hearingAidStyles, practice } = Astro.locals.site;
+
+const tweaks: Tweak[] = [
+	{ key: "brandlinks", label: "Brand “Learn more”", type: "choice", default: "mixed", options: [["mixed", "Mixed (pages that exist)"], ["all", "All cards"], ["none", "None"]] },
+	{ key: "styles", label: "Hearing aid styles", type: "bool", default: true },
+	{ key: "otc", label: "OTC vs. prescription", type: "bool", default: true },
+];
+const s = getSettings(Astro);
+const tx = s.text;
+const hero = s.heroFor("photo");
+const withPhoto = hero === "photo" || hero === "example";
+const brandLinks = s.choice("brandlinks", ["mixed", "all", "none"], "mixed");
+const showStyles = s.bool("styles", true);
+const showOtc = s.bool("otc", true);
+---
+<Base title={`${tx("heading")} | ${s.name}`} description={tx("description")} pageName="Hearing aids hub" current="hearing-aids" tweaks={tweaks} heroDefault="photo">
+	<PageHero
+		crumbs={[{ label: "Home" }, { label: "Hearing Aids" }]}
+		title={tx("heading")}
+		lead={tx("intro")}
+	/>
+
+	<section class:list={["band first", { "after-photo": withPhoto }]}>
+		<div class="wrap stack g48">
+			<div class="stack g16 text-col"><span class="eyebrow">Brands</span><h2 class="h2">{tx("ha_brands_heading")}</h2></div>
+			<div class="panel grid g-4 brand-grid">
+				{
+					brands.filter((b) => !b.hideFromHub).map((b) => {
+						const linked = brandLinks === "all" ? true : brandLinks === "none" ? false : b.hasPage;
+						return (
+							<article class="card brand-card" style="padding: 28px">
+								<div class="blogo-slot"><img src={b.logo} alt={`${b.name} logo`} style={`max-height: ${b.logoHeight}`} /></div>
+								<h3 class="h3">{b.name}</h3>
+								<p class="muted" style="font-size: 18px">{b.summary}</p>
+								{linked && (
+									<div class="actions">
+										<a class="btn btn-gray sm" href={s.href(routes.brand(b.slug))}>Learn more<span class="sr"> about {b.name} hearing aids</span></a>
+									</div>
+								)}
+							</article>
+						);
+					})
+				}
+			</div>
+		</div>
+	</section>
+
+	{
+		showStyles && (
+			<section class="band bg-light">
+				<div class="wrap stack g48">
+					<div class="stack g16 text-col"><span class="eyebrow">Styles</span><h2 class="h2">{tx("ha_styles_heading")}</h2></div>
+					<div class="panel grid g-4">
+						{hearingAidStyles.map((st) => (
+							<article class="card" style="padding: 16px 16px 28px">
+								<StyleIllustration k={st.k} alt={st.alt} />
+								<div class="stack g8" style="padding: 0 12px">
+									<h3 class="h4">{st.t}</h3>
+									<p class="muted" style="font-size: 18px">{st.d}</p>
+								</div>
+							</article>
+						))}
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		showOtc && (
+			<section class:list={["band", { pt0: !showStyles }]}>
+				<div class="wrap stack g48">
+					<div class="stack g16 text-col"><span class="eyebrow">Compare</span><h2 class="h2">{tx("ha_compare_heading")}</h2></div>
+					<div class="panel grid g-2">
+						<article class="card cmp-card">
+							<span class="cmp-tag" style="background: var(--panel); color: var(--ink)">Over-the-counter</span>
+							<h3 class="h3">{tx("ha_otc_heading")}</h3>
+							<p>{tx("ha_otc_text")}</p>
+						</article>
+						<article class="card cmp-card">
+							<span class="cmp-tag" style="background: var(--a-tint); color: var(--ink)">Prescription</span>
+							<h3 class="h3">{tx("ha_rx_heading")}</h3>
+							<p>{tx("ha_rx_text")}</p>
+						</article>
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	<div class:list={["cta-wrap", { "after-inset": !showOtc }]}>
+		<CtaBand id="hacta" heading={tx("cta_heading")} text={tx("cta_text")} photoLabel="Lifestyle photo · conversation, meal, outdoors" />
+	</div>
+</Base>

@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Hearing aid brand page, mobile</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./d1.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>body{margin:0}</style>
+</helmet>
+<div class="d1 sheet" style="min-height: 7800px; padding-top: 56px; --p: {{P}}; --a: {{A}}; --l: {{L}}; --on-p: {{onP}}; --on-a: {{onA}}; --on-l: {{onL}}; --p-ink: {{pInk}}">
+  <div class="sheet-head" style="padding-bottom: 32px">
+    <h1 class="sheet-title" style="font-size: 32px">Brand page · mobile, 390 wide</h1>
+    <p class="sheet-sub">One continuous page across three columns, read left to right. Model cards stack one per row under each line heading; the no-photo hero sits at the bottom of column 3.</p>
+  </div>
+  <div class="phones">
+
+    <div class="page-col">
+      <div class="phone m">
+        <header class="hdr bar">
+          <a class="logo" href="#" aria-label="Lakeview Hearing Center, home"><svg viewBox="0 0 40 40" width="38" height="38" aria-hidden="true"><circle cx="20" cy="20" r="20" style="fill: var(--p)"></circle><path d="M12 20v0M16 15.5v9M20 11v18M24 15.5v9M28 18.5v3" style="stroke: var(--on-p)" stroke-width="2.6" stroke-linecap="round" fill="none"></path></svg><span class="lw"><b>Lakeview</b><span>Hearing Center</span></span></a>
+          <div style="display: flex; gap: 8px; margin-left: auto">
+            <a class="icon-btn" href="tel:+15550100142" aria-label="Call (555) 010-0142" style="background: var(--p); color: var(--on-p)"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"></path></svg></a>
+            <button class="icon-btn" aria-label="Open menu" aria-expanded="false" style="background: var(--panel); color: var(--ink)"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg></button>
+          </div>
+        </header>
+        <section style="padding: 28px 0 8px">
+          <div class="wrap ihero">
+            <div class="stack g16">
+              <nav aria-label="Breadcrumb"><ol class="crumbs"><li><a href="#">Home</a></li><li class="sep" aria-hidden="true">/</li><li><a href="#">Hearing Aids</a></li><li class="sep" aria-hidden="true">/</li><li aria-current="page">Phonak</li></ol></nav>
+              <img src="../assets/brands/phonak.png" alt="Phonak" style="height: 40px; width: auto; align-self: flex-start">
+              <h1 class="h1">Phonak Hearing Aids in Riverside</h1>
+              <p class="body">Pharetra est eros bibendum elit nec luctus magna felis sollicitudin mauris integer. In mauris eu nibh euismod gravida praesent blandit odio eu enim. Pellentesque sed dapibus est sed lacinia sapien vel tellus lorem ipsum dolor sit amet consectetur. Adipiscing elit sed do eiusmod tempor incididunt ut labore.</p>
+              <p class="body">Eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui. Officia deserunt mollit anim id est laborum curabitur pretium tincidunt lacus nulla. Gravida orci a odio nullam varius turpis et commodo pharetra est.</p>
+              <div class="stack g12" style="margin-top: 4px">
+                <a class="btn btn-primary block" href="#">Book appointment</a>
+                <a class="btn btn-secondary block" href="tel:+15550100142">Call (555) 010-0142</a>
+              </div>
+            </div>
+            <div class="ph sky" style="aspect-ratio: 3/2; border-radius: 24px"><span class="ph-label">Product lifestyle photo · 3:2</span></div>
+          </div>
+        </section>
+        <section class="band" style="padding-top: 40px">
+          <div class="wrap stack g32">
+            <div class="stack g12">
+              <span class="eyebrow">Current models</span>
+              <h2 class="h2">Current Phonak hearing aid models</h2>
+              <p class="body">Sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            </div>
+            <sc-for list="{{lines1}}" as="ln" hint-placeholder-count="1">
+              <div class="stack g16">
+                <h3 class="h3 line-h">{{ln.t}}</h3>
+                <div class="panel grid">
+                  <sc-for list="{{ln.models}}" as="m" hint-placeholder-count="3">
+                  <article class="card model" style="padding: 12px 12px 24px">
+                    <div class="pimg"><svg viewBox="0 0 100 100" width="40%" aria-hidden="true"><path d="M60 14c11 0 18 9 18 20v24c0 9-7 16-16 16s-16-7-16-16V32c0-10 5-18 14-18z" fill="currentColor" fill-opacity=".14" stroke="currentColor" stroke-width="2.5"></path><path d="M50 66C36 72 28 80 28 88" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"></path><circle cx="28" cy="88" r="5" fill="currentColor" fill-opacity=".4"></circle></svg><span class="ph-label">Product image · 1:1</span></div>
+                    <div class="stack g12" style="padding: 0 8px">
+                      <h4 class="h3">{{m.n}}</h4>
+                      <p class="muted" style="font-size: 18px">{{m.d}}</p>
+                      <sc-if value="{{m.hasF}}" hint-placeholder-val="{{false}}">
+                        <div class="stack g8">
+                          <span class="feat-h">Key features</span>
+                          <ul class="checks-list"><sc-for list="{{m.f}}" as="f" hint-placeholder-count="3"><li>{{f.t}}</li></sc-for></ul>
+                        </div>
+                      </sc-if>
+                    </div>
+                  </article>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </section>
+      </div>
+      <span class="cont">Continues in column 2 →</span>
+    </div>
+
+    <div class="page-col">
+      <div class="phone m">
+        <section class="band" style="padding-top: 32px">
+          <div class="wrap stack g32">
+            <sc-for list="{{lines2}}" as="ln" hint-placeholder-count="2">
+              <div class="stack g16">
+                <h3 class="h3 line-h">{{ln.t}}</h3>
+                <div class="panel grid">
+                  <sc-for list="{{ln.models}}" as="m" hint-placeholder-count="3">
+                  <article class="card model" style="padding: 12px 12px 24px">
+                    <div class="pimg"><svg viewBox="0 0 100 100" width="40%" aria-hidden="true"><path d="M60 14c11 0 18 9 18 20v24c0 9-7 16-16 16s-16-7-16-16V32c0-10 5-18 14-18z" fill="currentColor" fill-opacity=".14" stroke="currentColor" stroke-width="2.5"></path><path d="M50 66C36 72 28 80 28 88" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"></path><circle cx="28" cy="88" r="5" fill="currentColor" fill-opacity=".4"></circle></svg><span class="ph-label">Product image · 1:1</span></div>
+                    <div class="stack g12" style="padding: 0 8px">
+                      <h4 class="h3">{{m.n}}</h4>
+                      <p class="muted" style="font-size: 18px">{{m.d}}</p>
+                      <sc-if value="{{m.hasF}}" hint-placeholder-val="{{false}}">
+                        <div class="stack g8">
+                          <span class="feat-h">Key features</span>
+                          <ul class="checks-list"><sc-for list="{{m.f}}" as="f" hint-placeholder-count="3"><li>{{f.t}}</li></sc-for></ul>
+                        </div>
+                      </sc-if>
+                    </div>
+                  </article>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </section>
+        <section class="band bg-light">
+          <div class="wrap stack g24">
+            <div class="stack g12"><span class="eyebrow">Accessories</span><h2 class="h2">Phonak accessories and assistive technology</h2></div>
+            <p class="body">Orci a odio nullam varius turpis et commodo pharetra est eros bibendum elit nec. Luctus magna felis sollicitudin mauris integer in mauris eu nibh euismod gravida.</p>
+            <div class="panel"><div class="card" style="padding: 24px">
+              <ul class="checks-list" style="gap: 14px">
+                <li style="font-size: 18px; font-weight: 700">Roger On</li>
+                <li style="font-size: 18px; font-weight: 700">TV Connector</li>
+                <li style="font-size: 18px; font-weight: 700">PartnerMic</li>
+                <li style="font-size: 18px; font-weight: 700">Charger Case Go</li>
+                <li style="font-size: 18px; font-weight: 700">Phonak Remote Mic</li>
+              </ul>
+            </div></div>
+          </div>
+        </section>
+      </div>
+      <span class="cont">Continues in column 3 →</span>
+    </div>
+
+    <div class="page-col">
+      <div class="phone m">
+        <section class="band bg-gray">
+          <div class="wrap stack g24">
+            <span class="eyebrow">Older models</span>
+            <h2 class="h2">Older Phonak models we support</h2>
+            <p class="body">Enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex.</p>
+            <div><ul class="chips"><li>Audéo Paradise</li><li>Naída Paradise</li><li>Audéo Marvel</li><li>Bolero Marvel</li><li>Virto Marvel</li></ul></div>
+          </div>
+        </section>
+        <section class="band">
+          <div class="wrap stack g24">
+            <div class="stack g12" style="align-items: center; text-align: center"><span class="eyebrow">FAQ</span><h2 class="h2">Frequently asked questions about Phonak hearing aids</h2></div>
+            <div class="acc-list">
+        <sc-for list="{{faq}}" as="it" hint-placeholder-count="4">
+          <div class="acc {{it.cls}}">
+            <h3 style="margin: 0"><button class="acc-btn" aria-expanded="{{it.exp}}" onClick="{{it.toggle}}">
+              <span>{{it.q}}</span>
+              <span class="acc-ic" aria-hidden="true">
+                <sc-if value="{{it.open}}" hint-placeholder-val="{{false}}"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14"></path></svg></sc-if>
+                <sc-if value="{{it.closed}}" hint-placeholder-val="{{true}}"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></sc-if>
+              </span>
+            </button></h3>
+            <sc-if value="{{it.open}}" hint-placeholder-val="{{false}}"><div class="acc-body"><p>{{it.a}}</p></div></sc-if>
+          </div>
+        </sc-for>
+      </div>
+      
+            <a class="btn btn-secondary block" href="#">Contact us</a>
+          </div>
+        </section>
+        <section class="band bg-light">
+          <div class="wrap stack g24">
+            <div class="stack g12"><span class="eyebrow">Care at Lakeview</span><h2 class="h2">Phonak hearing aid care at Lakeview Hearing Center</h2></div>
+            <p class="body">Culpa qui officia deserunt mollit anim id est laborum. Curabitur pretium tincidunt lacus nulla gravida orci a odio nullam varius turpis et. Commodo pharetra est eros bibendum elit nec luctus magna felis.</p>
+            <div style="aspect-ratio: 3/2; border-radius: 24px; overflow: hidden; position: relative"><img src="../assets/photos/waiting-room.jpg" alt="The Lakeview Hearing Center waiting room" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover"></div>
+          </div>
+        </section>
+        <section class="cta" aria-labelledby="bmcta" style="padding-top: 48px; padding-bottom: 48px">
+          <div class="cta-emo on-dark">
+            <div class="ph dark"><span class="ph-label tr">16:9</span></div>
+            <div class="scrim"></div>
+            <div class="inner" style="gap: 8px"><span class="eyebrow on-dark">Start your hearing journey</span><p class="big">Get back to the conversations you’ve been missing</p></div>
+          </div>
+          <div class="cta-act">
+            <h2 class="h2" id="bmcta">Let’s find the right Phonak for your ears</h2>
+            <p class="body" style="color: var(--on-p)">Et dolore magna aliqua ut enim ad minim veniam quis nostrud. Exercitation ullamco laboris nisi ut aliquip ex.</p>
+            <a class="btn btn-inverse" href="#">Book appointment</a>
+            <a class="btn btn-ghost-on-p" href="tel:+15550100142">Call (555) 010-0142</a>
+          </div>
+        </section>
+        <footer class="ftr">
+          <div class="fgrid">
+            <div class="card" style="gap: 16px">
+              <a class="logo" href="#" aria-label="Lakeview Hearing Center, home"><svg viewBox="0 0 40 40" width="40" height="40" aria-hidden="true"><circle cx="20" cy="20" r="20" style="fill: var(--p)"></circle><path d="M12 20v0M16 15.5v9M20 11v18M24 15.5v9M28 18.5v3" style="stroke: var(--on-p)" stroke-width="2.6" stroke-linecap="round" fill="none"></path></svg><span class="lw"><b>Lakeview</b><span>Hearing Center</span></span></a>
+              <a class="btn btn-primary block" href="#">Book appointment</a>
+            </div>
+          </div>
+          <div class="fbottom">
+            <nav aria-label="Legal"><ul class="legal"><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Use</a></li><li><a href="#">Accessibility</a></li><li><a href="#">Sitemap</a></li></ul></nav>
+            <span>© 2026 Lakeview Hearing Center</span>
+          </div>
+        </footer>
+      </div>
+      <span class="cont">End of page (footer shortened; full footer on the Home mobile board)</span>
+      <div class="phone m" style="padding: 12px 0; margin-top: 32px">
+        <section class="inophoto bg-light" style="margin: 0 12px">
+          <div class="shape" style="width: 300px; height: 300px; right: -120px; top: -110px; border: 36px solid color-mix(in srgb, var(--p) 7%, transparent)"></div>
+          <div class="wrap">
+            <div class="stack g16">
+              <nav aria-label="Breadcrumb"><ol class="crumbs"><li><a href="#">Home</a></li><li class="sep" aria-hidden="true">/</li><li><a href="#">Hearing Aids</a></li><li class="sep" aria-hidden="true">/</li><li aria-current="page">Phonak</li></ol></nav>
+              <div class="panel" style="--pad: 8px; background: color-mix(in srgb, #fff 55%, transparent); align-self: flex-start"><div class="card" style="padding: 14px 20px"><img src="../assets/brands/phonak.png" alt="Phonak" style="height: 34px; width: auto"></div></div>
+              <h1 class="h1 xl">Phonak Hearing Aids in Riverside</h1>
+              <p class="lead" style="color: var(--on-l); opacity: .85">Pharetra est eros bibendum elit nec luctus magna felis sollicitudin mauris integer.</p>
+              <a class="btn btn-primary block" href="#">Book appointment</a>
+            </div>
+          </div>
+        </section>
+      </div>
+      <span class="note">No-photo hero (Light). On mobile the logo panel moves above the heading.</span>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"palette":{"editor":"enum","options":["Teal / Amber","Navy / Coral","Forest / Gold"],"default":"Teal / Amber","section":"Practice colors"},"$preview":{"width":1440,"height":7800}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { faq: 0 }; }
+  renderVals() {
+    const presets = { 'Teal / Amber': ['#0F5E6B', '#E0A33B', '#F6F1EA'], 'Navy / Coral': ['#1E3A5F', '#E8735A', '#EEF3F8'], 'Forest / Gold': ['#2F5D3A', '#C9A227', '#F7F4EC'] };
+    const [P, A, L] = presets[this.props.palette ?? 'Teal / Amber'] || presets['Teal / Amber'];
+    const hex = (h) => { h = String(h).replace('#', ''); if (h.length === 3) h = h.split('').map((c) => c + c).join(''); return h; };
+    const lum = (h) => { h = hex(h); const x = [0, 2, 4].map((i) => { const c = parseInt(h.substr(i, 2), 16) / 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); }); return 0.2126 * x[0] + 0.7152 * x[1] + 0.0722 * x[2]; };
+    const cr = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
+    const on = (c) => (cr(c, '#FFFFFF') >= cr(c, '#1B1F23') ? '#FFFFFF' : '#1B1F23');
+    const darken = (h, t) => '#' + [0, 2, 4].map((i) => Math.round(parseInt(hex(h).substr(i, 2), 16) * (1 - t)).toString(16).padStart(2, '0')).join('');
+    let ink = P; for (let t = 0.08; cr(ink, '#FFFFFF') < 4.5 && t < 0.9; t += 0.08) ink = darken(P, t);
+    const M = (n, d, f) => ({ n, d, f: (f || []).map((t) => ({ t })), hasF: !!(f && f.length) });
+    const lines = [
+      { t: 'Audéo EON Line', models: [
+        M('Audéo EON R', 'Ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit. Esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat. Non proident sunt in culpa qui officia deserunt mollit anim id est laborum curabitur pretium. Tincidunt lacus nulla gravida orci a odio nullam varius. Turpis et commodo pharetra est eros bibendum elit nec luctus magna felis sollicitudin.', ['Mauris integer in mauris eu nibh euismod gravida.', 'Praesent blandit odio eu enim pellentesque sed dapibus est.', 'Sed lacinia sapien vel tellus lorem ipsum.']),
+        M('Audéo EON Sphere', 'Dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut. Labore et dolore magna aliqua ut enim ad minim veniam quis. Nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor. In reprehenderit in voluptate velit esse cillum dolore eu. Fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui. Officia deserunt mollit anim id est laborum curabitur pretium tincidunt.', ['Lacus nulla gravida orci a odio nullam varius.', 'Turpis et commodo pharetra est eros bibendum elit nec luctus.']),
+        M('CROS EON R', 'Magna felis sollicitudin mauris integer in mauris eu nibh euismod gravida praesent. Blandit odio eu enim pellentesque sed dapibus est sed lacinia sapien. Vel tellus lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt. Ut labore et dolore magna aliqua ut enim ad. Minim veniam quis.')
+      ] },
+      { t: 'Infinio Line', models: [
+        M('Audéo Infinio', 'Nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit. In voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim. Id est laborum curabitur.'),
+        M('Virto R Infinio', 'Pretium tincidunt lacus nulla gravida orci a odio nullam varius turpis. Et commodo pharetra est eros bibendum elit nec luctus magna felis sollicitudin mauris integer in. Mauris eu nibh euismod gravida praesent blandit odio eu. Enim pellentesque sed dapibus est sed lacinia sapien vel tellus lorem ipsum dolor. Sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut.'),
+        M('CROS Infinio', 'Enim ad minim veniam quis nostrud exercitation ullamco laboris nisi. Ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate. Velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat. Non proident sunt in culpa qui officia deserunt mollit anim id. Est laborum curabitur pretium tincidunt lacus nulla gravida.')
+      ] },
+      { t: 'Lumity Line', models: [
+        M('Audéo Lumity', 'Orci a odio nullam varius turpis et commodo pharetra. Est eros bibendum elit nec luctus magna felis sollicitudin mauris integer in mauris. Eu nibh euismod gravida praesent blandit odio eu enim pellentesque sed dapibus est sed lacinia sapien vel. Tellus lorem ipsum dolor sit amet.'),
+        M('Naída Lumity', 'Consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut. Aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit. In voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non. Proident sunt in culpa qui officia deserunt mollit.'),
+        M('Sky Lumity', 'Anim id est laborum curabitur pretium tincidunt lacus nulla gravida orci a odio. Nullam varius turpis et commodo pharetra est eros bibendum elit nec luctus magna felis sollicitudin mauris integer. In mauris eu nibh euismod gravida praesent blandit odio eu. Enim pellentesque sed dapibus est sed lacinia sapien vel tellus lorem ipsum dolor sit. Amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et. Dolore magna aliqua ut.'),
+        M('Phonak Slim', 'Enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo. Consequat duis aute irure dolor in reprehenderit in voluptate. Velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non. Proident sunt in culpa qui officia deserunt mollit anim id est laborum curabitur pretium tincidunt lacus nulla. Gravida.')
+      ] }
+    ];
+    const faqItems = [
+      { q: 'Are Phonak hearing aids rechargeable?', a: 'Nulla pariatur excepteur sint occaecat cupidatat non proident sunt in. Culpa qui officia deserunt mollit anim id est laborum curabitur pretium tincidunt lacus nulla. Gravida orci a odio nullam varius turpis et commodo pharetra est eros. Bibendum elit nec luctus magna felis sollicitudin mauris integer in mauris. Eu nibh euismod gravida praesent blandit odio eu.' },
+      { q: 'Do Phonak hearing aids work with my phone?', a: 'Enim pellentesque sed dapibus est sed lacinia sapien vel. Tellus lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor. Incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris. Nisi ut aliquip ex ea commodo consequat duis aute irure. Dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur. Sint occaecat.' },
+      { q: 'Which Phonak model is right for me?', a: 'Cupidatat non proident sunt in culpa qui officia deserunt mollit anim. Id est laborum curabitur pretium tincidunt lacus nulla gravida orci a odio nullam varius turpis. Et commodo pharetra est eros bibendum elit nec luctus. Magna felis sollicitudin mauris integer in mauris eu nibh euismod gravida praesent blandit. Odio eu enim pellentesque sed dapibus est sed lacinia sapien vel tellus lorem ipsum dolor sit amet. Consectetur adipiscing elit sed do.' },
+      { q: 'Can you repair my older Phonak hearing aids?', a: 'Eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam. Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum. Dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in.' }
+    ];
+    const faq = faqItems.map((it, i) => { const isOpen = this.state.faq === i; return { ...it, open: isOpen, closed: !isOpen, exp: isOpen ? 'true' : 'false', cls: isOpen ? 'open' : '', toggle: () => this.setState({ faq: this.state.faq === i ? -1 : i }) }; });
+    return { P, A, L, onP: on(P), onA: on(A), onL: on(L), pInk: ink, lines1: lines.slice(0, 1), lines2: lines.slice(1), faq };
+  }
+}
+</script>
+</body>
+</html>

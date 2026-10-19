@@ -1,0 +1,65 @@
+---
+// Provider card: name on top, 4:5 headshot below. Linked cards go to the
+// profile page. "horizontal" is the Location page version.
+//
+// Layouts (Review controls · Team cards):
+//   overlay  the round arrow sits on the photo (the design's default)
+//   side     the round arrow sits to the right of the name and title
+//   list     photo on the left, name, title and short bio on the right; for
+//            team members without a profile page who still want a bio
+import { getSettings, type TeamLayout } from "../lib/settings";
+import Headshot from "./Headshot.astro";
+import Icon from "./Icon.astro";
+import { routes } from "../lib/routes";
+import type { Provider } from "../data/types";
+
+interface Props {
+	p: Provider;
+	linked: boolean;
+	horizontal?: boolean;
+	/** Defaults to the Review controls choice. */
+	layout?: TeamLayout;
+}
+const { p, linked, horizontal = false } = Astro.props;
+const s = getSettings(Astro);
+const layout: TeamLayout = horizontal ? "overlay" : (Astro.props.layout ?? s.team);
+const href = s.href(routes.provider(p.slug));
+---
+{
+	layout === "list" ? (
+		<article class="prov prov-list">
+			<Headshot src={p.headshot} tone={p.tone} label="4:5" />
+			<div class="who"><h3 class="pname">{p.name}</h3><span class="ptitle">{p.title}</span></div>
+			<div class="pbody">
+				<p class="pbio">{p.bio}</p>
+				{linked && <a class="link-arrow" href={href}>Read full bio<span class="sr"> of {p.name}</span> <Icon name="arrowR" size={18} /></a>}
+			</div>
+		</article>
+	) : layout === "side" ? (
+		linked ? (
+			<a class="prov prov-side" href={href} aria-label={p.meet}>
+				<Headshot src={p.headshot} tone={p.tone} />
+				<div class="who-row">
+					<div class="who"><h3 class="pname">{p.name}</h3><span class="ptitle">{p.title}</span><slot /></div>
+					<span class="arrow" aria-hidden="true"><Icon name="arrowUR" /></span>
+				</div>
+			</a>
+		) : (
+			<div class="prov prov-side">
+				<Headshot src={p.headshot} tone={p.tone} />
+				<div class="who"><h3 class="pname">{p.name}</h3><span class="ptitle">{p.title}</span><slot /></div>
+			</div>
+		)
+	) : linked ? (
+		<a class:list={["prov", { provh: horizontal }]} href={href} aria-label={p.meet}>
+			<span class="arrow" aria-hidden="true"><Icon name="arrowUR" /></span>
+			<div class="who"><h3 class="pname">{p.name}</h3><span class="ptitle">{p.title}</span><slot /></div>
+			<Headshot src={p.headshot} tone={p.tone} />
+		</a>
+	) : (
+		<div class:list={["prov", { provh: horizontal }]}>
+			<div class="who" style="padding-right: 10px"><h3 class="pname">{p.name}</h3><span class="ptitle">{p.title}</span><slot /></div>
+			<Headshot src={p.headshot} tone={p.tone} />
+		</div>
+	)
+}

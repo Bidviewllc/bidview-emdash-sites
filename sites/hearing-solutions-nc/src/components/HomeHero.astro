@@ -1,0 +1,71 @@
+---
+// Home hero with the trust bar. Four versions: Photo, Example photo,
+// No photo · Primary, No photo · Light. "Photo" uses the photo uploaded on the
+// Home record in the Pages list (a placeholder until then; see heroFor).
+// Desktop: text over the photo. Phone: the photo comes first (4:5) with the
+// trust bar on it, and the text sits on white underneath (HomeMobile board).
+import { cr, darken, on } from "../lib/color";
+import { getSettings } from "../lib/settings";
+import TrustBar from "./TrustBar.astro";
+import { routes, telHref } from "../lib/routes";
+
+const s = getSettings(Astro);
+const tx = s.text;
+const hero = s.heroFor("photo");
+/** Uploaded hero photo (Pages: Home), or the review-only example photo. */
+const img = hero === "example" ? { src: "/assets/photos/consult.jpg", alt: "An audiologist smiling as she talks with a patient across her desk" } : s.pageHeroImage;
+const { P, A } = s.colors;
+const onP = on(P);
+const isPhoto = hero === "photo" || hero === "example";
+const isPrim = hero === "primary";
+
+const tone = hero === "light" || (isPrim && onP !== "#FFFFFF") ? "black" : "white";
+const fade = darken(P, 0.62);
+const starsColor = isPrim && cr(A, P) < 2 ? onP : A;
+const heroCls = isPhoto ? "is-photo" : isPrim ? "prim" : "light";
+const contentCls = isPhoto ? "on-dark" : isPrim ? "on-p-text" : "";
+const btn1 = isPrim ? "btn-inverse" : "btn-primary";
+const btn2 = isPhoto ? "btn-on-photo" : isPrim ? "btn-ghost-on-p" : "btn-secondary";
+const trustCls = isPhoto ? "on-photo" : isPrim ? "on-p" : "on-light";
+const shapeA = isPrim ? "color-mix(in srgb, var(--on-p) 7%, transparent)" : "color-mix(in srgb, var(--p) 7%, transparent)";
+const shapeB = isPrim ? "color-mix(in srgb, var(--on-p) 5%, transparent)" : "color-mix(in srgb, var(--a) 14%, transparent)";
+---
+<section class:list={["hhero", heroCls]} data-v={hero}>
+	{
+		isPhoto && (
+			<div class="hmedia">
+				{!img ? (
+					<>
+						<div class="ph dark2"><span class="ph-label tr">Hero photo · 16:9 · calm, even area on the left</span></div>
+						<div class="scrim left" />
+					</>
+				) : (
+					<>
+						<div class="ex-fill" style={`background: ${fade}`} />
+						<img class="ex-img" src={img.src} alt={img.alt} />
+						<div class="ex-fade" style={`background: linear-gradient(to right, ${fade} 0%, ${fade}C8 45%, ${fade}00 100%)`} />
+					</>
+				)}
+				<div class="h-bottom" />
+				<TrustBar variant={trustCls} tone={tone} starsColor={starsColor} />
+			</div>
+		)
+	}
+	{
+		!isPhoto && (
+			<>
+				<div class="shape s1" style={`border-color: ${shapeA}`} />
+				<div class="shape s2" style={`border-color: ${shapeB}`} />
+			</>
+		)
+	}
+	<div class:list={["hcontent", contentCls]}>
+		<h1 class="h1">{tx("heading")}</h1>
+		<p class="lead">{tx("intro")}</p>
+		<div class="rowf hero-btns" style="gap: 12px; margin-top: 8px">
+			<a class:list={["btn", btn1]} href={s.href(routes.book)}>Book appointment</a>
+			<a class:list={["btn", btn2]} href={telHref(s.phone)}>Call {s.phone}</a>
+		</div>
+	</div>
+	{!isPhoto && <TrustBar variant={trustCls} tone={tone} starsColor={starsColor} />}
+</section>

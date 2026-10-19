@@ -1,0 +1,18 @@
+---
+// Google Map for an office, searched by practice name and address so Google
+// shows the business card (rating, reviews, hours) with the pin. No API key
+// (Liz, 2026-10-16). Loads lazily; "Get directions" links stay beside it.
+import type { Office } from "../data/practice";
+
+interface Props {
+	o: Office;
+	class?: string;
+	style?: string;
+}
+const { o, class: cls, style } = Astro.props;
+const name = Astro.locals.site.practice.name;
+const q = [name, o.street, o.city].filter(Boolean).join(", ");
+---
+<div class:list={["map-embed", cls]} style={style}>
+	<iframe src={`https://maps.google.com/maps?q=${encodeURIComponent(q)}&output=embed`} title={`Map: ${name}, ${o.street}, ${o.city}`} loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+</div>

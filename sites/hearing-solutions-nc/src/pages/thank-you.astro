@@ -1,0 +1,25 @@
+---
+// Page 17 · Thank you (boards ThankYouPage, ThankYouMobile). Shown after a form
+// is sent. Centred Light panel: check mark, H1, callback line with a tappable
+// phone number, "Back to home" and "Read our patient resources".
+import Icon from "../components/Icon.astro";
+import Base from "../layouts/Base.astro";
+import { getSettings } from "../lib/settings";
+import { routes, telHref } from "../lib/routes";
+
+const s = getSettings(Astro);
+---
+<Base title={`Thank you | ${s.name}`} description="We got your message." pageName="Thank you">
+	<div class="pg-hero-np ty-wrap">
+		<section class="ty-hero" aria-labelledby="ty-h" style="background: var(--l); color: var(--on-l)">
+			<div class="wrap">
+				<div class="stack g24 ty-col">
+					<span class="ty-mark" aria-hidden="true"><Icon name="check" size={40} /></span>
+					<h1 class="h1 xl" id="ty-h" style="color: inherit">Thank you, we got your message</h1>
+					<p class="lead" style="color: inherit; margin: 0">We’ll call you within one business day. If you need us sooner, call <a class="ty-tel" href={telHref(s.phone)}>{s.phone}</a>.</p>
+					<div class="ty-links"><a class="btn btn-primary" href={s.href(routes.home)}>Back to home</a><a class="btn btn-secondary" href={s.href(routes.resources)}>Read our patient resources</a></div>
+				</div>
+			</div>
+		</section>
+	</div>
+</Base>
