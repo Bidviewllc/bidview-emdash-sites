@@ -1839,6 +1839,16 @@
 					"type": "image"
 				},
 				{
+					"slug": "side_heading",
+					"label": "Sidebar call box – Headline (blog posts, resource and service pages)",
+					"type": "string"
+				},
+				{
+					"slug": "side_text",
+					"label": "Sidebar call box – Text (*words* in asterisks are italic)",
+					"type": "text"
+				},
+				{
 					"slug": "team_photo",
 					"label": "Team photo – Home “About us” and About “Our story” (3:2)",
 					"type": "image"
@@ -3405,7 +3415,7 @@
 							"q": "",
 							"qa": "",
 							"more_label": "More about scheduling",
-							"more": "[Additional details to come]"
+							"more": ""
 						},
 						{
 							"id": "first-visit",
@@ -3415,7 +3425,7 @@
 							"q": "Prefer a shorter visit that can be billed to insurance?",
 							"qa": "[Standard Hearing Evaluation details to come]",
 							"more_label": "More about your first visit",
-							"more": "[Additional details to come]"
+							"more": ""
 						},
 						{
 							"id": "fitting",
@@ -3425,7 +3435,7 @@
 							"q": "",
 							"qa": "",
 							"more_label": "More about hearing aid fitting",
-							"more": "[Additional details to come]"
+							"more": ""
 						},
 						{
 							"id": "check-ins",
@@ -3435,7 +3445,7 @@
 							"q": "",
 							"qa": "",
 							"more_label": "More about check-ins",
-							"more": "[Additional details to come]"
+							"more": ""
 						},
 						{
 							"id": "ongoing-care",
@@ -3445,7 +3455,7 @@
 							"q": "",
 							"qa": "",
 							"more_label": "More about ongoing care",
-							"more": "[Additional details to come]"
+							"more": ""
 						}
 					],
 					"np_invest": [
@@ -4255,6 +4265,8 @@
 				"status": "published",
 				"data": {
 					"title": "Shared sections",
+					"side_heading": "Don't smile and nod your life away.",
+					"side_text": "You have options *(yes—plural)*. Come in, and we'll find out how your brain is actually processing sound. Then, we'll fine-tune a treatment plan for *your ears*.",
 					"cta_heading": "Let's talk today.",
 					"cta_text": "Most patients tell us they wish they'd come in sooner.\nSo if you've been meaning to get this checked:"
 				}

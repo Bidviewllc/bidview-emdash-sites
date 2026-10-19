@@ -5,6 +5,7 @@
 // sticky sidebar with the call card and recent articles → related articles →
 // the shared closing band. Dropped from the template: breadcrumbs, image
 // placeholders, the sample author text, Book buttons (the phone instead).
+import HsSideCall from "../../components/hs/HsSideCall.astro";
 import "../../styles/hsnc-reskin.css";
 import HsCtaBand from "../../components/hs/HsCtaBand.astro";
 import HsIcon from "../../components/hs/HsIcon.astro";
@@ -83,18 +84,13 @@ const body = (() => {
 						}
 					</div>
 					<aside class="hs-aside" aria-label="Call us and recent articles">
-						<div class="hs-callbox">
-							<h2 class="hs-serif">Book a hearing evaluation</h2>
-							<p>Call us and we’ll find a time that works for you.</p>
-							<a class="hs-btn hs-btn-w" href={tel}>Call us: {s.phone}</a>
-						</div>
+						<HsSideCall />
 						{
 							recent.length > 0 && (
 								<div class="rs-scard" style="gap:8px">
 									<h2 style="margin-bottom:6px">Recent articles</h2>
 									{recent.map((p) => (
 										<a class="mini-post" href={h(routes.post(p.slug))}>
-											{p.image ? <img src={p.image} alt="" style="width:72px;height:72px;object-fit:cover" loading="lazy" /> : <div class="hs-ph" style="width:72px;height:72px;border-radius:8px;background:#fff" />}
 											<div style="display:flex;flex-direction:column;gap:2px"><span class="date">{p.date}</span><b>{p.title}</b></div>
 										</a>
 									))}

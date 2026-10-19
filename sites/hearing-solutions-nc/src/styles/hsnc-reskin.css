@@ -149,3 +149,7 @@
 .d1 .hs .mid-cta .mc-t { font-weight: 400; }
 .d1 .hs .mid-cta .hs-btn { margin-top: 4px; }
 .d1 .rs-post .hs-ph { background: var(--hs-sage); }
+
+/* Sidebar post lists are text only (Liz, 2026-10-19): date and title, no thumbnail. */
+.d1 .hs .mini-post { grid-template-columns: 1fr; padding: 10px 0; border-bottom: 1px solid var(--hs-sage-2); }
+.d1 .hs .mini-post:last-child { border-bottom: 0; }

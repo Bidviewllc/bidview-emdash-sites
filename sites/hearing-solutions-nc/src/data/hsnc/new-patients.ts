@@ -72,7 +72,7 @@ const page: HsPage = {
 					q: "",
 					qa: "",
 					more_label: "More about scheduling",
-					more: "[Additional details to come]",
+					more: "",
 				},
 				{
 					id: "first-visit",
@@ -82,7 +82,7 @@ const page: HsPage = {
 					q: "Prefer a shorter visit that can be billed to insurance?",
 					qa: "[Standard Hearing Evaluation details to come]",
 					more_label: "More about your first visit",
-					more: "[Additional details to come]",
+					more: "",
 				},
 				{
 					id: "fitting",
@@ -92,7 +92,7 @@ const page: HsPage = {
 					q: "",
 					qa: "",
 					more_label: "More about hearing aid fitting",
-					more: "[Additional details to come]",
+					more: "",
 				},
 				{
 					id: "check-ins",
@@ -102,7 +102,7 @@ const page: HsPage = {
 					q: "",
 					qa: "",
 					more_label: "More about check-ins",
-					more: "[Additional details to come]",
+					more: "",
 				},
 				{
 					id: "ongoing-care",
@@ -112,7 +112,7 @@ const page: HsPage = {
 					q: "",
 					qa: "",
 					more_label: "More about ongoing care",
-					more: "[Additional details to come]",
+					more: "",
 				},
 			],
 		},

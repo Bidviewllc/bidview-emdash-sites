@@ -389,6 +389,11 @@ export async function loadSite() {
 		reviewsByLocation,
 		reviewsFromGoogle: fromGoogle,
 		/** The shared booking band (Shared sections), for pages without their own. */
+		/** The sidebar call box (Shared sections) on blog posts, resource and service pages. */
+		sideBox: {
+			heading: (typeof shared.side_heading === "string" && shared.side_heading.trim()) || SHARED_DEFAULTS.side_heading,
+			text: (typeof shared.side_text === "string" && shared.side_text.trim()) || SHARED_DEFAULTS.side_text,
+		},
 		sharedBand: {
 			heading: (typeof shared.cta_heading === "string" && shared.cta_heading.trim()) || SHARED_DEFAULTS.cta_heading,
 			text: (typeof shared.cta_text === "string" && shared.cta_text.trim()) || SHARED_DEFAULTS.cta_text,

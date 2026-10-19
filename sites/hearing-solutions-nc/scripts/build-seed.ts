@@ -151,6 +151,8 @@ const sharedCollection = {
 		str("cta_heading", "Booking band – Headline"),
 		txt("cta_text", "Booking band – Description"),
 		image("cta_photo", "Booking band – Photo (older adult laughing with family, or on a walk)"),
+		str("side_heading", "Sidebar call box – Headline (blog posts, resource and service pages)"),
+		txt("side_text", "Sidebar call box – Text (*words* in asterisks are italic)"),
 		image("team_photo", "Team photo – Home “About us” and About “Our story” (3:2)"),
 	],
 };

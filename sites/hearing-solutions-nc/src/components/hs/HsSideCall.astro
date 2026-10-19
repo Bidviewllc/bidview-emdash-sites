@@ -1,0 +1,15 @@
+---
+// Sidebar call box on blog posts, resource and service pages: navy, serif
+// headline, text, Call button. Wording: Pages → Shared sections (sidebar call box).
+import { inline } from "../../lib/hs";
+import { telHref } from "../../lib/routes";
+import { getSettings } from "../../lib/settings";
+
+const s = getSettings(Astro);
+const { heading, text } = Astro.locals.site.sideBox;
+---
+<div class="hs-callbox">
+	<h2 class="hs-serif" set:html={inline(s.fill(heading))} />
+	{text && <p set:html={inline(s.fill(text))} />}
+	<a class="hs-btn hs-btn-w" href={telHref(s.phone)}>Call us: {s.phone}</a>
+</div>

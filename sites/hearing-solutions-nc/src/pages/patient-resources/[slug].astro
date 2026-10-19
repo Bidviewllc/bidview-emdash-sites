@@ -6,6 +6,7 @@
 // the call card) → more resources → the shared closing band. Only resources
 // with "Give this its own page" on. Dropped from the template: breadcrumbs,
 // the Book button (the phone instead).
+import HsSideCall from "../../components/hs/HsSideCall.astro";
 import "../../styles/hsnc-reskin.css";
 import DetailHero from "../../components/DetailHero.astro";
 import FormButtons from "../../components/FormButtons.astro";
@@ -70,11 +71,7 @@ const related = [...others.filter((x) => x.tags[0] === r.tags[0]), ...others.fil
 							</div>
 						)
 					}
-					<div class="hs-callbox">
-						<h2 class="hs-serif">Questions about this?</h2>
-						<p>Call us and we'll walk you through it.</p>
-						<a class="hs-btn hs-btn-w" href={tel}>Call us: {s.phone}</a>
-					</div>
+					<HsSideCall />
 				</aside>
 			</div>
 		</section>

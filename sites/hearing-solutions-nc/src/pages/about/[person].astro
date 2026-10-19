@@ -1,8 +1,8 @@
 ---
 // Team profile (template Page 7, HSNC reskin; no HSNC board). Light green hero
-// with the 4:5 headshot → bio (only when there is one) → intro video (only with
+// with the 4:5 headshot → bio (lorem ipsum until one is added) → intro video (only with
 // a video link) → services → location (as Home) → the shared closing band.
-// Dropped from the template: breadcrumbs, the sample bio and sample video
+// Dropped from the template: breadcrumbs, the sample video
 // player, the Book button (the phone instead).
 import "../../styles/hsnc-reskin.css";
 import HsCtaBand from "../../components/hs/HsCtaBand.astro";
@@ -22,7 +22,13 @@ const tweaks: Tweak[] = [{ key: "video", label: "Intro video", type: "bool", def
 const s = getSettings(Astro);
 const h = s.href;
 /** Bio from EmDash; nothing shows until there is one. */
-const bio = ptHas(person.bioRich) ? s.fill(ptToHtml(person.bioRich).html) : person.bio?.trim() ? `<p>${person.bio.replace(/</g, "&lt;")}</p>` : undefined;
+/** Placeholder until the bios come over from the current site (Liz, 2026-10-19: lorem ipsum where the bio goes). */
+const BIO_PLACEHOLDER = [
+	"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+	"Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+	"Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod gravida.",
+].map((t) => `<p>${t}</p>`).join("");
+const bio = ptHas(person.bioRich) ? s.fill(ptToHtml(person.bioRich).html) : person.bio?.trim() ? `<p>${person.bio.replace(/</g, "&lt;")}</p>` : BIO_PLACEHOLDER;
 /** YouTube or Vimeo link as an embed address. */
 const embed = (() => {
 	const u = person.videoUrl ?? "";

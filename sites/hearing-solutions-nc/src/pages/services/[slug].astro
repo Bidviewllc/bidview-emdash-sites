@@ -4,6 +4,7 @@
 // green hero → rich text with a right sidebar (call card, reviews, recent
 // posts) → FAQ → related services → the shared closing band. Dropped from the
 // template: breadcrumbs, Book buttons (the phone instead).
+import HsSideCall from "../../components/hs/HsSideCall.astro";
 import "../../styles/hsnc-reskin.css";
 import DetailHero from "../../components/DetailHero.astro";
 import HsCtaBand from "../../components/hs/HsCtaBand.astro";
@@ -115,11 +116,7 @@ const toc = rich ? rich.headings : sampleToc;
 			</div>
 
 			<aside class="hs-aside" aria-label="Call us and reviews">
-				<div class="hs-callbox">
-					<h2 class="hs-serif">{service.bookLabel}</h2>
-					{service.sidebarText && <p>{s.fill(service.sidebarText)}</p>}
-					<a class="hs-btn hs-btn-w" href={tel}>Call us: {s.phone}</a>
-				</div>
+				<HsSideCall />
 
 				{
 					rvList.length > 0 && (
@@ -161,7 +158,6 @@ const toc = rich ? rich.headings : sampleToc;
 							<h2 style="margin-bottom:6px">From our audiologists</h2>
 							{posts.map((p) => (
 								<a class="mini-post" href={h(routes.post(p.slug))}>
-									{p.image ? <img src={p.image} alt="" style="width:72px;height:72px;object-fit:cover" loading="lazy" /> : <div class="hs-ph" style="width:72px;height:72px;border-radius:8px;background:#fff" />}
 									<div style="display:flex;flex-direction:column;gap:2px"><span class="date">{p.date}</span><b>{p.title}</b></div>
 								</a>
 							))}

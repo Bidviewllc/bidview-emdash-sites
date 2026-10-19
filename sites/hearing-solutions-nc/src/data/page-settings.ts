@@ -35,6 +35,9 @@ export const CTA_MODE_OPTIONS = ["Use the shared booking band", "Customize for t
 export const SHARED_COLLECTION = "shared_sections";
 export const SHARED_DEFAULTS = {
 	// HSNC: the Services board's closing band.
+	// Sidebar call box on blog posts, resource and service pages (Liz, 2026-10-19).
+	side_heading: "Don't smile and nod your life away.",
+	side_text: "You have options *(yes—plural)*. Come in, and we'll find out how your brain is actually processing sound. Then, we'll fine-tune a treatment plan for *your ears*.",
 	cta_heading: "Let's talk today.",
 	cta_text: ["Most patients tell us they wish they'd come in sooner.", "So if you've been meaning to get this checked:"].join(String.fromCharCode(10)),
 };
