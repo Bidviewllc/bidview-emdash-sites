@@ -294,7 +294,7 @@
   /* Guide Appears */
   .section--grant-intro { padding: 72px 32px; }
   .grant-intro { grid-template-columns: 1fr; gap: 40px; }
-  .grant-intro__photo { max-width: 360px; }
+  .grant-intro__photo { margin: 0; }
   .grant-intro__h { font-size: 40px; }
 
   /* Market Intelligence */
@@ -507,7 +507,7 @@
 
   /* Guide Appears */
   .section--grant-intro { padding: 56px 20px; }
-  .grant-intro__photo { max-width: 100%; aspect-ratio: 4/5; }
+  .grant-intro__photo { max-width: 220px; }
   .grant-intro__h { font-size: 32px; }
   .grant-intro__creds { grid-template-columns: 1fr; gap: 18px; }
   .grant-intro__body { font-size: 15px; }

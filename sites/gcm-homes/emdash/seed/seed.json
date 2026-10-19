@@ -1180,6 +1180,11 @@
 					"type": "string"
 				},
 				{
+					"slug": "guide_quote",
+					"label": "The Guide — quote under the photo",
+					"type": "text"
+				},
+				{
 					"slug": "pillars_eyebrow",
 					"label": "Road of Trials — eyebrow",
 					"type": "string"
@@ -2765,6 +2770,7 @@
 					"guide_body": "Restaurants came first. My grandfather ran a hamburger stand, and my parents owned two pizza restaurants in Lake Tahoe that I worked as a teenager, ran after college, and was running as COO when we sold them right before I left for law school. That's where I learned customer service: earn someone once, keep them for life. My father spent years as a general contractor in town, so I grew up on job sites too.",
 					"guide_body2": "I studied environmental law at Vermont Law School, in the JD and Master of Science programs, and I put that training to work on every contract, contingency, and land-use question in this basin. I'm not an attorney, but on contracts, negotiation, TRPA coverage rules, and regulatory law I'd put myself in the top fraction of a percent of agents in this industry. Add my father's construction background and 35 years of knowing who to call, and you get someone who can spot good bones, price the fix, and have the right specialist at your house in 90 minutes.",
 					"guide_cta": "LET'S TALK",
+					"guide_quote": "No matter where life takes you, it's hard to beat Incline Village. Something about this place always brings you back.",
 					"pillars_eyebrow": "WHAT YOU'RE UP AGAINST",
 					"pillars_heading": "Three Things This Market Does to People Who Don't Know It.",
 					"pillar1_title": "The Market Itself",

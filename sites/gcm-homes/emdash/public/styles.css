@@ -2039,17 +2039,25 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
 
    The photo has no name plate any more: the headline is his name.
 
-   /about/'s "Meeting the Mentor" block still uses the older .guide* classes.
-   That is a different section -- his bio on his own page, with its own four
-   credentials -- and is deliberately left on its own layout. */
+   /about/'s "The Guide" block uses the same layout with its own, longer copy,
+   and puts a pull quote under the photo in .grant-intro__side.
+
+   The photo column is a fixed 320px with the photo capped at 260px and
+   centred in it (Grant asked for a smaller photo, 2026-10-19). Everything
+   else, body copy and button included, runs down the right-hand column. */
 .grant-intro {
   display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 64px;
+  grid-template-columns: 320px 1fr;
+  gap: 56px;
   align-items: start;
 }
+.grant-intro__side { display: flex; flex-direction: column; gap: 40px; }
+.grant-intro__side .pullquote { margin: 0; }
+.grant-intro__side .pullquote__q { font-size: 22px; }
 .grant-intro__photo {
   width: 100%;
+  max-width: 260px;
+  margin: 0 auto;
   aspect-ratio: 328 / 414;
   border-radius: 5px;
   background-size: cover;
@@ -2069,14 +2077,16 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 28px 32px;
-  margin: 8px 0 0;
+  margin: 8px 0;
 }
+/* The column's 24px gap spaces the paragraphs; .guide__p's own padding would
+   double it on /about/. */
+.grant-intro__copy .guide__p { padding: 0; }
 .grant-intro__body {
   font-family: var(--font-sans);
   font-size: 16px;
   line-height: 1.625;
   color: var(--body);
-  margin-top: 8px;
 }
 /* The listing page's own wrapper: it is not inside .section/.container, so it
    carries its own padding and tone. */
