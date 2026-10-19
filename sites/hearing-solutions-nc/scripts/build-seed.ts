@@ -10,6 +10,7 @@ import { markdownToPortableText } from "emdash/client";
 import * as blog from "../src/data/blog";
 import * as s from "../src/data/practice";
 import { FOOTERS, HEADERS, TEAM_LAYOUTS } from "../src/lib/settings";
+import { HS_PAGES } from "../src/data/hsnc";
 import { CTA_FIELDS, CTA_MODE_OPTIONS, HERO_OPTIONS, MAIN, PAGE_TEXT, PAGES, SHARED_COLLECTION, SHARED_DEFAULTS, TEMPLATES_COLLECTION, type PageSetting } from "../src/data/page-settings";
 
 /** Brand logos are downloaded into the media library during setup. */
@@ -65,9 +66,25 @@ const AFTER_TEXT: Record<string, object[]> = {
 	about_journey_intro: [repeater("milestones", "Our journey – Milestones", [sub("y", "Year"), sub("t", "Text", "text")])],
 	about_values_heading: [repeater("values", "Our values – Values", [sub("icon", "Icon"), sub("t", "Heading"), sub("d", "Text", "text")])],
 };
+// HSNC page lists and photos (src/data/hsnc/): each sits after its section's text.
+for (const pg of Object.values(HS_PAGES)) {
+	for (const l of pg.lists ?? []) (AFTER_TEXT[l.after] ??= []).push(repeater(l.field, l.label, l.sub.map((x) => sub(x.slug, x.label, x.type ?? "string"))));
+}
+/** HSNC page photos: image fields at the end of the page's text, seeded with the design photos. */
+const hsPhotoFields = (slug: string) => (HS_PAGES[slug]?.photos ?? []).map((ph) => image(ph.field, ph.label));
+const hsSamples = (slug: string) => {
+	const pg = HS_PAGES[slug];
+	if (!pg) return {};
+	const media = (ph: { src: string; alt: string }) => ({ $media: { url: ASSET_HOST + ph.src, alt: ph.alt, filename: ph.src.split("/").pop() } });
+	return {
+		...(pg.hero ? { hero_image: media(pg.hero) } : {}),
+		...Object.fromEntries((pg.lists ?? []).map((l) => [l.field, l.default])),
+		...Object.fromEntries((pg.photos ?? []).map((ph) => [ph.field, media(ph.default)])),
+	};
+};
 /** Sample values for those fields. */
 const AFTER_TEXT_SAMPLES: Record<string, Record<string, unknown>> = {
-	home: { years: s.practice.years },
+	...(HS_PAGES.home ? {} : { home: { years: s.practice.years } }),
 	services: { first_visit: s.firstVisitSteps.map(({ t, d }) => ({ t, d })) },
 	about: { milestones: s.milestones.map(({ y, t }) => ({ y, t })), values: s.values.map(({ icon, t, d }) => ({ icon, t, d })) },
 };
@@ -88,6 +105,7 @@ const pageCollections = PAGES.filter((p) => p.collection).map((p, i) => {
 			title("Page name"),
 			...(p.hero ? [heroSelect("hero", "Hero"), image("hero_image", p.slug === "home" ? "Hero photo (16:9, calm area on the left)" : "Hero photo (3:2)")] : []),
 			...body.flatMap((f) => [textField(f), ...(AFTER_TEXT[f.field] ?? [])]),
+			...hsPhotoFields(p.slug),
 			...(p.slug === "about" ? [image("community_photo", "Community – Photo (3:2)")] : []),
 			...(LEGAL.includes(p.slug) ? [richText("body", "Page content (H2 headings make the table of contents)")] : []),
 			...(hasCta(p.slug)
@@ -360,6 +378,7 @@ const content = {
 					...(hasCta(p.slug) ? { cta_mode: ctaMode(p.slug) } : {}),
 					...(LEGAL.includes(p.slug) ? { body: md(`legal-${p.slug}.md`) } : {}),
 					...(AFTER_TEXT_SAMPLES[p.slug] ?? {}),
+					...hsSamples(p.slug),
 					...Object.fromEntries(p.settings.map((st) => [st.field, label(st, st.default)])),
 				}),
 			],

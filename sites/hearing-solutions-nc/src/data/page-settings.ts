@@ -12,6 +12,7 @@
 // try the other choices during review. Choice labels match Review controls.
 
 import pageText from "./page-text.json";
+import { HS_PAGES } from "./hsnc";
 
 /**
  * Page text: headings, intros and section copy for each Pages record, with
@@ -20,7 +21,11 @@ import pageText from "./page-text.json";
  * Text may use {city}, {name}, {short} and {phone}; the site fills them in.
  */
 export type PageText = { field: string; label: string; kind: "line" | "para"; default: string };
-export const PAGE_TEXT = pageText as Record<string, PageText[]>;
+export const PAGE_TEXT = {
+	...(pageText as Record<string, PageText[]>),
+	// HSNC: a designed page's own text replaces the template's (src/data/hsnc/).
+	...Object.fromEntries(Object.entries(HS_PAGES).filter(([, p]) => p.text.length).map(([slug, p]) => [slug, p.text])),
+} as Record<string, PageText[]>;
 
 /** Booking band (CTA) text fields; every page with one can use the shared band or customize. */
 export const CTA_FIELDS = ["cta_heading", "cta_text"];

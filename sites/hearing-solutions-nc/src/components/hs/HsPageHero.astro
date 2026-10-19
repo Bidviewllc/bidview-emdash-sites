@@ -1,0 +1,31 @@
+---
+// Split page hero (About, Services, New Patients, Contact boards): light green
+// band; the H1 is the small label, the big serif line under it, optional
+// paragraphs, photo on the right. No breadcrumbs, no buttons.
+import type { Photo } from "../../data/site";
+
+interface Props {
+	/** The H1 (small capitals label). */
+	label: string;
+	/** The big serif line, as HTML (may hold <em>). */
+	display: string;
+	/** Paragraphs under it, as HTML. */
+	paras?: string[];
+	photo?: Photo;
+	/** Photo aspect ratio, e.g. "4/3". */
+	ratio?: string;
+	/** object-position for the photo. */
+	pos?: string;
+}
+const { label, display, paras = [], photo, ratio = "4/3", pos = "50% 50%" } = Astro.props;
+---
+<div class="hs-mint">
+	<section class="hs-wrap hs-hsplit">
+		<div class="hs-htxt">
+			<h1 class="hs-eyebrow">{label}</h1>
+			<p class="hs-serif hs-display-sm" style={`margin:12px 0 ${paras.length ? "24px" : "0"};line-height:1.15`} set:html={display} />
+			{paras.length > 0 && <div style="max-width:540px;font-size:1em">{paras.map((p, i) => <p style={i < paras.length - 1 ? "margin:0 0 12px" : "margin:0"} set:html={p} />)}</div>}
+		</div>
+		{photo && <div class="hs-hpic"><img src={photo.src} alt={photo.alt} style={`width:100%;aspect-ratio:${ratio};object-fit:cover;object-position:${pos};border-radius:14px;display:block`} /></div>}
+	</section>
+</div>

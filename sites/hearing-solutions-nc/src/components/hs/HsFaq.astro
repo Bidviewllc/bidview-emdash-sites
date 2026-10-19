@@ -1,0 +1,17 @@
+---
+// FAQ rows (Home, New Patients boards): details/summary with a plus that turns
+// to a cross when open. Answers are plain text; blank lines start paragraphs.
+interface Props {
+	items: { q: string; a?: string }[];
+}
+const { items } = Astro.props;
+import HsIcon from "./HsIcon.astro";
+---
+{
+	items.map((f) => (
+		<details class="hs-faq">
+			<summary>{f.q}<HsIcon name="plus" size={16} /></summary>
+			{(f.a || "[Answer to come]").split(/\n\s*\n/).map((p) => <p>{p.trim()}</p>)}
+		</details>
+	))
+}

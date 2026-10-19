@@ -105,6 +105,9 @@
 .hs-arrow { background: none; border: 0; width: 44px; height: 44px; color: var(--hs-green); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex: none; padding: 0; }
 .hs-rv-arrow { color: #fff; width: 48px; height: 48px; border: 1px solid rgba(255, 255, 255, .35); border-radius: 50%; }
 .hs-rv-arrow:hover { background: #fff; color: var(--hs-navy); }
+.hs-rv-light .hs-rv-arrow { color: var(--hs-navy); border-color: rgba(37, 47, 91, .4); }
+.hs-rv-light .hs-rv-arrow:hover { background: var(--hs-navy); color: #fff; }
+.hs [hidden] { display: none !important; }
 
 /* reviews */
 .hs-rcard { flex: 1 1 320px; min-width: 0; margin: 0; background: #fff; border-radius: 14px; padding: 32px; display: flex; flex-direction: column; gap: 18px; color: var(--hs-navy); }
@@ -134,10 +137,9 @@
 .hs-loc-map iframe { display: block; width: 100%; height: 100%; min-height: 360px; border: 0; }
 
 /* split page hero (About, Services, New Patients, Contact) */
-.hs-phero { background: var(--hs-mint); }
-.hs-phero-in { display: flex; flex-wrap: wrap; align-items: center; gap: 48px; padding-top: 72px; padding-bottom: 72px; }
-.hs-phero-text { flex: 1 1 380px; display: flex; flex-direction: column; gap: 16px; }
-.hs-phero-img { flex: 1 1 420px; min-width: 0; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 14px; display: block; }
+.hs-hsplit { display: flex; flex-wrap: wrap; align-items: center; gap: 40px 56px; padding-top: 72px; padding-bottom: 72px; }
+.hs-hsplit > .hs-htxt { flex: 1 1 420px; min-width: 0; }
+.hs-hsplit > .hs-hpic { flex: 0 1 480px; min-width: 0; }
 
 /* sidebar layout (Services, New Patients) */
 .hs-side { display: grid; grid-template-columns: 280px minmax(0, 1fr); gap: 56px; align-items: start; }
@@ -147,6 +149,14 @@
 .d1 .hs-toc a:hover, .d1 .hs-toc a[aria-current="true"] { border-left-color: var(--hs-lime); color: var(--hs-green); }
 .hs-callbox { background: var(--hs-navy); color: #fff; border-radius: 14px; padding: 28px; display: flex; flex-direction: column; gap: 14px; align-items: flex-start; }
 .hs .hs-callbox h2 { color: #fff; font-size: 26px; }
+
+/* home */
+.hs-home-hero { background: linear-gradient(rgba(37, 47, 91, .62), rgba(37, 47, 91, .62)), var(--hero-img, none) center 45% / cover no-repeat, var(--hs-navy); }
+.hs-stat { display: flex; align-items: center; gap: 16px; padding: 8px 48px; }
+.hs-stat-ic { width: 72px; height: 72px; border-radius: 50%; background: var(--hs-lime-lt); flex: none; display: flex; align-items: center; justify-content: center; }
+.hs-stat-div { width: 1px; align-self: stretch; background: rgba(255, 255, 255, .35); }
+.d1 .hs-svc-card { flex: 1 1 220px; min-height: 150px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; text-decoration: none; color: var(--hs-navy); }
+.d1 .hs-svc-card:hover { background: var(--hs-sage-2); color: var(--hs-navy); }
 
 /* ---------- header ---------- */
 .hs-header { background: #fff; border-bottom: 1px solid var(--hs-sage); position: relative; z-index: 20; font-family: var(--hs-sans); color: var(--hs-navy); }
@@ -177,6 +187,7 @@
 /* ---------- footer ---------- */
 .hs-footer { font-family: var(--hs-sans); color: #fff; font-size: 18px; line-height: 1.6; }
 .hs-fmain { background: var(--hs-navy); }
+.hs-fmain > .hs-wrap { border-top: 1px solid rgba(255, 255, 255, .2); }
 .hs-fgrid { width: fit-content; max-width: 100%; margin: 0 auto; display: flex; flex-direction: column; align-items: stretch; }
 .hs-r1 { display: flex; flex-wrap: wrap; gap: 40px 80px; align-items: flex-start; justify-content: center; padding-bottom: 48px; }
 .hs-r1-col { flex: 0 0 auto; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
@@ -205,6 +216,8 @@
 
 /* ---------- phone and tablet ---------- */
 @media (max-width: 820px) {
+	.hs-stat-div { display: none; }
+	.hs-stat { width: 240px; padding: 8px 0; }
 	.hs-hide-m { display: none !important; }
 	.hs-burger { display: inline-flex; }
 	.hs-hlogo img { width: 150px; }
@@ -241,5 +254,5 @@
 	.hs-qbar { padding: 28px 24px; }
 	.hs-qbar h2 { font-size: 26px !important; }
 	.hs-sec, .hs-loc-band { padding-top: 64px; padding-bottom: 64px; }
-	.hs-phero-in { padding-top: 48px; padding-bottom: 48px; gap: 32px; }
+	.hs-hsplit { padding-top: 48px; padding-bottom: 48px; }
 }

@@ -1,0 +1,50 @@
+---
+// "What our patients say." (Home, About, Services, New Patients boards): two
+// review cards with round arrows either side that page through the reviews two
+// at a time (arrows hidden on phones, where cards stack). Navy, or light green
+// on Services. Reviews: the synced Google reviews (sample ones until a sync runs).
+import type { Review } from "../../data/types";
+import HsIcon from "./HsIcon.astro";
+
+interface Props {
+	tone?: "navy" | "light";
+	heading?: string;
+	reviews?: Review[];
+}
+const { tone = "navy", heading = "What our patients say.", reviews = Astro.locals.site.reviews } = Astro.props;
+const list = reviews.slice(0, 8);
+const id = `rv-${Math.random().toString(36).slice(2, 8)}`;
+---
+<section class:list={["hs-reviews", tone === "navy" ? "on-dark hs-navy" : "hs-rv-light hs-mint"]} aria-labelledby={`${id}-h`} style="padding-top:96px;padding-bottom:96px" data-hs-reviews>
+	<div class="hs-wrap" style="display:flex;flex-direction:column;gap:40px">
+		<h2 id={`${id}-h`} class="hs-serif" style="margin:0;text-align:center;line-height:1.15">{heading}</h2>
+		<div style="display:flex;align-items:center;gap:12px">
+			{list.length > 2 && <button class="hs-arrow hs-rv-arrow" type="button" aria-label="Previous testimonials" data-rv-prev><HsIcon name="prev" size={24} /></button>}
+			<div style="flex:1;min-width:0;display:flex;flex-wrap:wrap;gap:24px" aria-live="polite">
+				{
+					list.map((r, i) => (
+						<figure class="hs-rcard" data-rv-card hidden={i > 1}>
+							<div style="display:flex;justify-content:space-between;align-items:flex-start">
+								<span class="hs-qmark" aria-hidden="true"><HsIcon name="quote" size={26} /></span>
+								<div class="hs-stars" role="img" aria-label={`${r.rating ?? 5} out of 5 stars`}>{Array.from({ length: r.rating ?? 5 }, () => <HsIcon name="star" size={22} />)}</div>
+							</div>
+							<blockquote class="hs-rtext">{r.text}</blockquote>
+							<figcaption class="hs-rmeta"><b>{r.name}</b><span>Google review</span></figcaption>
+						</figure>
+					))
+				}
+			</div>
+			{list.length > 2 && <button class="hs-arrow hs-rv-arrow" type="button" aria-label="Next testimonials" data-rv-next><HsIcon name="next" size={24} /></button>}
+		</div>
+	</div>
+</section>
+<script>
+	document.querySelectorAll<HTMLElement>("[data-hs-reviews]").forEach((sec) => {
+		const cards = [...sec.querySelectorAll<HTMLElement>("[data-rv-card]")];
+		const pages = Math.ceil(cards.length / 2);
+		let at = 0;
+		const show = () => cards.forEach((c, i) => (c.hidden = Math.floor(i / 2) !== at));
+		sec.querySelector("[data-rv-prev]")?.addEventListener("click", () => ((at = (at - 1 + pages) % pages), show()));
+		sec.querySelector("[data-rv-next]")?.addEventListener("click", () => ((at = (at + 1) % pages), show()));
+	});
+</script>

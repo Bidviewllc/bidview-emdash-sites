@@ -279,6 +279,11 @@
 				},
 				{
 					"slug": "heading",
+					"label": "Hero – Label (the page’s H1)",
+					"type": "string"
+				},
+				{
+					"slug": "home_display",
 					"label": "Hero – Headline",
 					"type": "string"
 				},
@@ -288,48 +293,129 @@
 					"type": "text"
 				},
 				{
-					"slug": "home_about_heading",
-					"label": "About us – Headline",
+					"slug": "home_stats",
+					"label": "Stats strip (three, in order: calendar, star, hourglass icons)",
+					"type": "repeater",
+					"validation": {
+						"subFields": [
+							{
+								"slug": "n",
+								"label": "Big text",
+								"type": "string"
+							},
+							{
+								"slug": "t",
+								"label": "Small text",
+								"type": "string"
+							}
+						]
+					}
+				},
+				{
+					"slug": "home_problem_heading",
+					"label": "Is keeping up wearing you out? – Headline",
 					"type": "string"
 				},
 				{
-					"slug": "home_about_text",
-					"label": "About us – Description",
+					"slug": "home_problem_text",
+					"label": "Is keeping up wearing you out? – Text",
 					"type": "text"
 				},
 				{
-					"slug": "years",
-					"label": "About us – Years in practice (e.g. 35+ years)",
+					"slug": "home_card_intro",
+					"label": "Green card – First line",
 					"type": "string"
 				},
 				{
-					"slug": "home_team_heading",
-					"label": "Our team – Headline",
-					"type": "string"
+					"slug": "home_card_list",
+					"label": "Green card – List",
+					"type": "repeater",
+					"validation": {
+						"subFields": [
+							{
+								"slug": "t",
+								"label": "Item",
+								"type": "string"
+							}
+						]
+					}
 				},
 				{
-					"slug": "home_team_intro",
-					"label": "Our team – Description",
+					"slug": "home_card_text",
+					"label": "Green card – Text after the list",
 					"type": "text"
 				},
 				{
-					"slug": "home_services_heading",
-					"label": "Services – Headline",
+					"slug": "home_card_callout",
+					"label": "Green card – Callout",
 					"type": "string"
 				},
 				{
-					"slug": "home_services_intro",
-					"label": "Services – Description",
+					"slug": "home_panel_heading",
+					"label": "Navy panel – Headline",
 					"type": "text"
 				},
 				{
-					"slug": "home_brands_heading",
-					"label": "Hearing aids – Headline",
+					"slug": "home_panel_text",
+					"label": "Navy panel – Text",
+					"type": "text"
+				},
+				{
+					"slug": "home_services_text",
+					"label": "Services teaser – Text",
+					"type": "text"
+				},
+				{
+					"slug": "home_services_cards",
+					"label": "Services teaser – Cards (link: a Services page anchor, e.g. /services#tinnitus)",
+					"type": "repeater",
+					"validation": {
+						"subFields": [
+							{
+								"slug": "t",
+								"label": "Name",
+								"type": "string"
+							},
+							{
+								"slug": "href",
+								"label": "Link",
+								"type": "string"
+							}
+						]
+					}
+				},
+				{
+					"slug": "home_expect_heading",
+					"label": "What to expect – Headline",
 					"type": "string"
 				},
 				{
-					"slug": "home_brands_intro",
-					"label": "Hearing aids – Description",
+					"slug": "home_expect_intro",
+					"label": "What to expect – Description",
+					"type": "string"
+				},
+				{
+					"slug": "home_steps",
+					"label": "What to expect – Steps (photos below, in the same order)",
+					"type": "repeater",
+					"validation": {
+						"subFields": [
+							{
+								"slug": "t",
+								"label": "Heading",
+								"type": "string"
+							},
+							{
+								"slug": "d",
+								"label": "Text",
+								"type": "text"
+							}
+						]
+					}
+				},
+				{
+					"slug": "home_expect_cta",
+					"label": "What to expect – Closing card text",
 					"type": "text"
 				},
 				{
@@ -338,31 +424,123 @@
 					"type": "string"
 				},
 				{
-					"slug": "home_blog_heading",
-					"label": "Articles – Headline",
+					"slug": "home_invest_heading",
+					"label": "Investment – Headline",
 					"type": "string"
 				},
 				{
-					"slug": "cta_mode",
-					"label": "Booking band",
-					"type": "select",
-					"defaultValue": "Use the shared booking band",
+					"slug": "home_invest_text",
+					"label": "Investment – Text",
+					"type": "text"
+				},
+				{
+					"slug": "home_invest_link",
+					"label": "Investment – Link text",
+					"type": "string"
+				},
+				{
+					"slug": "home_faq_heading",
+					"label": "FAQ – Headline",
+					"type": "string"
+				},
+				{
+					"slug": "home_faq",
+					"label": "FAQ – Questions (the first half fill the left card)",
+					"type": "repeater",
 					"validation": {
-						"options": [
-							"Use the shared booking band",
-							"Customize for this page"
+						"subFields": [
+							{
+								"slug": "q",
+								"label": "Question",
+								"type": "string"
+							},
+							{
+								"slug": "a",
+								"label": "Answer",
+								"type": "text"
+							}
 						]
 					}
 				},
 				{
-					"slug": "cta_heading",
-					"label": "Booking band – Headline (only when customized)",
+					"slug": "home_qbar_heading",
+					"label": "FAQ – “Other questions” bar headline",
 					"type": "string"
 				},
 				{
-					"slug": "cta_text",
-					"label": "Booking band – Description (only when customized)",
+					"slug": "home_location_heading",
+					"label": "Location – Headline",
+					"type": "string"
+				},
+				{
+					"slug": "home_closing_heading",
+					"label": "Closing – Headline",
 					"type": "text"
+				},
+				{
+					"slug": "home_closing_text",
+					"label": "Closing – Text",
+					"type": "text"
+				},
+				{
+					"slug": "home_problem_photo",
+					"label": "Is keeping up wearing you out? – Photo",
+					"type": "image"
+				},
+				{
+					"slug": "home_mosaic_1",
+					"label": "Photo grid – 1 (left, short)",
+					"type": "image"
+				},
+				{
+					"slug": "home_mosaic_2",
+					"label": "Photo grid – 2 (left, square)",
+					"type": "image"
+				},
+				{
+					"slug": "home_mosaic_3",
+					"label": "Photo grid – 3 (middle, square)",
+					"type": "image"
+				},
+				{
+					"slug": "home_mosaic_4",
+					"label": "Photo grid – 4 (middle, short)",
+					"type": "image"
+				},
+				{
+					"slug": "home_mosaic_5",
+					"label": "Photo grid – 5 (right, short)",
+					"type": "image"
+				},
+				{
+					"slug": "home_mosaic_6",
+					"label": "Photo grid – 6 (right, square)",
+					"type": "image"
+				},
+				{
+					"slug": "home_step_1",
+					"label": "What to expect – Step 1 photo (round)",
+					"type": "image"
+				},
+				{
+					"slug": "home_step_2",
+					"label": "What to expect – Step 2 photo (round)",
+					"type": "image"
+				},
+				{
+					"slug": "home_step_3",
+					"label": "What to expect – Step 3 photo (round)",
+					"type": "image"
+				},
+				{
+					"slug": "home_invest_photo",
+					"label": "Investment – Photo",
+					"type": "image"
+				},
+				{
+					"slug": "home_closing_photo",
+					"label": "Closing – Photo",
+					"type": "image"
 				},
 				{
 					"slug": "home_trust_logos",
@@ -451,6 +629,25 @@
 					"slug": "intro",
 					"label": "Hero – Description",
 					"type": "text"
+				},
+				{
+					"slug": "home_stats",
+					"label": "Stats strip (three, in order: calendar, star, hourglass icons)",
+					"type": "repeater",
+					"validation": {
+						"subFields": [
+							{
+								"slug": "n",
+								"label": "Big text",
+								"type": "string"
+							},
+							{
+								"slug": "t",
+								"label": "Small text",
+								"type": "string"
+							}
+						]
+					}
 				},
 				{
 					"slug": "services_steps_heading",
@@ -560,6 +757,25 @@
 					"slug": "intro",
 					"label": "Hero – Description",
 					"type": "text"
+				},
+				{
+					"slug": "home_stats",
+					"label": "Stats strip (three, in order: calendar, star, hourglass icons)",
+					"type": "repeater",
+					"validation": {
+						"subFields": [
+							{
+								"slug": "n",
+								"label": "Big text",
+								"type": "string"
+							},
+							{
+								"slug": "t",
+								"label": "Small text",
+								"type": "string"
+							}
+						]
+					}
 				},
 				{
 					"slug": "ha_brands_heading",
@@ -686,6 +902,25 @@
 					"slug": "intro",
 					"label": "Hero – Description",
 					"type": "text"
+				},
+				{
+					"slug": "home_stats",
+					"label": "Stats strip (three, in order: calendar, star, hourglass icons)",
+					"type": "repeater",
+					"validation": {
+						"subFields": [
+							{
+								"slug": "n",
+								"label": "Big text",
+								"type": "string"
+							},
+							{
+								"slug": "t",
+								"label": "Small text",
+								"type": "string"
+							}
+						]
+					}
 				},
 				{
 					"slug": "about_story_heading",
@@ -885,6 +1120,25 @@
 					"type": "text"
 				},
 				{
+					"slug": "home_stats",
+					"label": "Stats strip (three, in order: calendar, star, hourglass icons)",
+					"type": "repeater",
+					"validation": {
+						"subFields": [
+							{
+								"slug": "n",
+								"label": "Big text",
+								"type": "string"
+							},
+							{
+								"slug": "t",
+								"label": "Small text",
+								"type": "string"
+							}
+						]
+					}
+				},
+				{
 					"slug": "contact_form_heading",
 					"label": "Message form – Headline",
 					"type": "string"
@@ -948,6 +1202,25 @@
 					"slug": "intro",
 					"label": "Hero – Description",
 					"type": "text"
+				},
+				{
+					"slug": "home_stats",
+					"label": "Stats strip (three, in order: calendar, star, hourglass icons)",
+					"type": "repeater",
+					"validation": {
+						"subFields": [
+							{
+								"slug": "n",
+								"label": "Big text",
+								"type": "string"
+							},
+							{
+								"slug": "t",
+								"label": "Small text",
+								"type": "string"
+							}
+						]
+					}
 				},
 				{
 					"slug": "book_call_heading",
@@ -1104,6 +1377,25 @@
 					"type": "text"
 				},
 				{
+					"slug": "home_stats",
+					"label": "Stats strip (three, in order: calendar, star, hourglass icons)",
+					"type": "repeater",
+					"validation": {
+						"subFields": [
+							{
+								"slug": "n",
+								"label": "Big text",
+								"type": "string"
+							},
+							{
+								"slug": "t",
+								"label": "Small text",
+								"type": "string"
+							}
+						]
+					}
+				},
+				{
 					"slug": "cta_mode",
 					"label": "Booking band",
 					"type": "select",
@@ -1194,6 +1486,25 @@
 					"slug": "intro",
 					"label": "Hero – Description",
 					"type": "text"
+				},
+				{
+					"slug": "home_stats",
+					"label": "Stats strip (three, in order: calendar, star, hourglass icons)",
+					"type": "repeater",
+					"validation": {
+						"subFields": [
+							{
+								"slug": "n",
+								"label": "Big text",
+								"type": "string"
+							},
+							{
+								"slug": "t",
+								"label": "Small text",
+								"type": "string"
+							}
+						]
+					}
 				},
 				{
 					"slug": "res_blog_heading",
@@ -2458,22 +2769,231 @@
 				"data": {
 					"title": "Home",
 					"hero": "Page default",
-					"heading": "Hearing care that starts with listening to you",
-					"intro": "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor.",
-					"home_about_heading": "A locally owned practice in {city}",
-					"home_about_text": "Nostrud exercitation ullamco laboris nisi ut aliquip ex ea. Commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum. Dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt. Mollit anim id est laborum curabitur pretium tincidunt lacus nulla. Gravida orci a odio nullam varius turpis et commodo pharetra est eros bibendum elit. Nec luctus magna felis sollicitudin mauris integer in mauris eu nibh euismod.",
-					"home_team_heading": "Meet your hearing care team",
-					"home_team_intro": "Eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi.",
-					"home_services_heading": "Hearing care services in {city}",
-					"home_services_intro": "Ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum. Dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non. Proident sunt in.",
-					"home_brands_heading": "Hearing aid brands we fit and service",
-					"home_brands_intro": "Anim id est laborum curabitur pretium tincidunt lacus nulla gravida orci a odio. Nullam varius turpis et commodo pharetra est eros bibendum elit nec luctus magna felis sollicitudin mauris integer. In mauris eu nibh euismod.",
-					"home_reviews_heading": "What our patients say",
-					"home_blog_heading": "From our audiologists",
-					"cta_heading": "Take the first step toward better hearing",
-					"cta_text": "Pretium tincidunt lacus nulla gravida orci a odio nullam varius turpis. Et commodo pharetra est eros bibendum elit.",
-					"cta_mode": "Use the shared booking band",
-					"years": "15+ years",
+					"heading": "Audiology Care in {city}, NC",
+					"home_display": "Effortless hearing.",
+					"intro": "You shouldn't have to work this hard to hear. We make it easier.",
+					"home_problem_heading": "Is keeping up wearing you out?",
+					"home_problem_text": "Maybe you're focusing harder at dinner out, or asking people to repeat themselves. Maybe you're turning up the TV at night—even though the morning volume was fine. Or maybe it's easier to just tune out:\n*Smile. Nod. Hope for no questions. Repeat.*\n\nHearing that takes work is hearing that needs help.",
+					"home_card_intro": "As hearing diminishes (even a little), your brain has to:",
+					"home_card_text": "That extra effort comes at a price: it's linked to social retreat, cognitive decline, and even higher risk of falls. The good news?",
+					"home_card_callout": "The earlier we catch hearing loss, the more we can do about it.",
+					"home_panel_heading": "Don't smile and\nnod your life away.",
+					"home_panel_text": "You have options *(yes—plural)*. Come in, and we'll find out how your brain is actually processing sound. Then, we'll fine-tune a treatment plan for *your ears* and all you need them to hear, whether it's family dinners, work meetings, or the grandkids' soccer games.",
+					"home_services_text": "Not here for hearing loss?\nNo problem—we do plenty more.",
+					"home_expect_heading": "What to expect.",
+					"home_expect_intro": "Effortless hearing comes down to three deliberate steps.",
+					"home_expect_cta": "So come sit with us for a couple of hours. We'll show you what's really going on, and if it makes sense, you will try hearing aids while you're here.",
+					"home_reviews_heading": "What our patients say.",
+					"home_invest_heading": "What's the investment?",
+					"home_invest_text": "We're upfront about our pricing and offer flexible payment paths.\n\nWe even offer a monthly subscription plan if hearing aids turn out to be part of your treatment. When your term ends, your devices go on to a neighbor who needs them.",
+					"home_invest_link": "Explore payment paths >>",
+					"home_faq_heading": "You may still be wondering...",
+					"home_qbar_heading": "Have other questions?",
+					"home_location_heading": "Visit us in {city}.",
+					"home_closing_heading": "Connection\nis our mission.",
+					"home_closing_text": "Family. Friends. All your relationships ride on hearing. We don't lose sight of that.\n\nBook your *Functional Hearing Assessment*, and we'll do everything we can to keep you in the conversation.",
+					"hero_image": {
+						"$media": {
+							"url": "https://hearing-solutions-nc.cameron-239.workers.dev/assets/hsnc/home-hero.jpg",
+							"alt": "",
+							"filename": "home-hero.jpg"
+						}
+					},
+					"home_stats": [
+						{
+							"n": "15+ Years",
+							"t": "Serving the area"
+						},
+						{
+							"n": "4.9 stars",
+							"t": "Google reviews"
+						},
+						{
+							"n": "Two-hour",
+							"t": "Full assessment"
+						}
+					],
+					"home_card_list": [
+						{
+							"t": "Read lips"
+						},
+						{
+							"t": "Watch body language"
+						},
+						{
+							"t": "Fill in missed words"
+						}
+					],
+					"home_services_cards": [
+						{
+							"t": "Ear Wax Removal",
+							"href": "/services#ear-spa"
+						},
+						{
+							"t": "Tinnitus",
+							"href": "/services#tinnitus"
+						},
+						{
+							"t": "Hearing Protection",
+							"href": "/services#custom-molds"
+						}
+					],
+					"home_steps": [
+						{
+							"t": "The effort test.",
+							"d": "A standard beep test only tells us so much. So our *Functional Hearing Assessment* goes further, measuring how your brain processes sound, how it copes with noise, and how hard you're working to keep up. In just two hours, we see the whole picture."
+						},
+						{
+							"t": "The perfect match.",
+							"d": "From there, we prescribe what fits you. Maybe it's as simple as wax removal. If you need hearing aids, we're independent and free to select from all major manufacturers, so we can match the right devices to your brain, your anatomy, and the life you live."
+						},
+						{
+							"t": "The out-of-the-drawer promise.",
+							"d": "With regular check-ins for comfort, programming, and any little thing that bugs you, there's no reason your new devices won't be on your ears doing the hard work of hearing 12+ hours a day."
+						}
+					],
+					"home_faq": [
+						{
+							"q": "Am I going to be pressured into hearing aids?",
+							"a": ""
+						},
+						{
+							"q": "How do I know my hearing is bad enough to bother?",
+							"a": ""
+						},
+						{
+							"q": "I've tried hearing aids before and they didn't work. Will this be different?",
+							"a": ""
+						},
+						{
+							"q": "Can you help me if I got my hearing aids somewhere else?",
+							"a": ""
+						},
+						{
+							"q": "Do you take my insurance?",
+							"a": ""
+						},
+						{
+							"q": "Does Medicare cover hearing aids?",
+							"a": ""
+						},
+						{
+							"q": "Two hours is a long appointment. Do I have to?",
+							"a": ""
+						},
+						{
+							"q": "Should I just get hearing aids at a big-box store?",
+							"a": ""
+						},
+						{
+							"q": "Who will I see?",
+							"a": ""
+						},
+						{
+							"q": "Do you help with anything other than hearing loss?",
+							"a": ""
+						},
+						{
+							"q": "Do you see VA patients?",
+							"a": ""
+						},
+						{
+							"q": "Do I need a referral?",
+							"a": ""
+						},
+						{
+							"q": "Can I book online?",
+							"a": ""
+						},
+						{
+							"q": "Do you do real-ear measurement?",
+							"a": ""
+						}
+					],
+					"home_problem_photo": {
+						"$media": {
+							"url": "https://hearing-solutions-nc.cameron-239.workers.dev/assets/hsnc/sound-booth-test.jpg",
+							"alt": "Patient in the sound booth during a hearing test, with the audiologist visible through the window",
+							"filename": "sound-booth-test.jpg"
+						}
+					},
+					"home_mosaic_1": {
+						"$media": {
+							"url": "https://hearing-solutions-nc.cameron-239.workers.dev/assets/hsnc/front-desk-call.jpg",
+							"alt": "Front-desk team member answering a patient's call",
+							"filename": "front-desk-call.jpg"
+						}
+					},
+					"home_mosaic_2": {
+						"$media": {
+							"url": "https://hearing-solutions-nc.cameron-239.workers.dev/assets/hsnc/hearing-aid-consult.jpg",
+							"alt": "Audiologist showing a hearing aid to a patient at a consultation table",
+							"filename": "hearing-aid-consult.jpg"
+						}
+					},
+					"home_mosaic_3": {
+						"$media": {
+							"url": "https://hearing-solutions-nc.cameron-239.workers.dev/assets/hsnc/fitting-tinnitus-guide.jpg",
+							"alt": "Audiologist fitting a hearing aid while the patient reads a tinnitus guide",
+							"filename": "fitting-tinnitus-guide.jpg"
+						}
+					},
+					"home_mosaic_4": {
+						"$media": {
+							"url": "https://hearing-solutions-nc.cameron-239.workers.dev/assets/hsnc/fitting-army-veteran.jpg",
+							"alt": "Audiologist fitting a hearing aid for a smiling Army veteran",
+							"filename": "fitting-army-veteran.jpg"
+						}
+					},
+					"home_mosaic_5": {
+						"$media": {
+							"url": "https://hearing-solutions-nc.cameron-239.workers.dev/assets/hsnc/care-coordinator-phone.jpg",
+							"alt": "Patient care coordinator on the phone at her desk",
+							"filename": "care-coordinator-phone.jpg"
+						}
+					},
+					"home_mosaic_6": {
+						"$media": {
+							"url": "https://hearing-solutions-nc.cameron-239.workers.dev/assets/hsnc/front-desk-checkin.jpg",
+							"alt": "Patient checking in at the front desk with a smiling receptionist",
+							"filename": "front-desk-checkin.jpg"
+						}
+					},
+					"home_step_1": {
+						"$media": {
+							"url": "https://hearing-solutions-nc.cameron-239.workers.dev/assets/hsnc/step-effort-test.jpg",
+							"alt": "Audiologist running a hearing test from the control desk while the patient sits in the sound booth",
+							"filename": "step-effort-test.jpg"
+						}
+					},
+					"home_step_2": {
+						"$media": {
+							"url": "https://hearing-solutions-nc.cameron-239.workers.dev/assets/hsnc/step-hearing-aid.jpg",
+							"alt": "Close-up of a discreet behind-the-ear hearing aid",
+							"filename": "step-hearing-aid.jpg"
+						}
+					},
+					"home_step_3": {
+						"$media": {
+							"url": "https://hearing-solutions-nc.cameron-239.workers.dev/assets/hsnc/step-celebrating.jpg",
+							"alt": "Two Hearing Solutions team members celebrating with arms raised",
+							"filename": "step-celebrating.jpg"
+						}
+					},
+					"home_invest_photo": {
+						"$media": {
+							"url": "https://hearing-solutions-nc.cameron-239.workers.dev/assets/hsnc/care-plan-clipboard.jpg",
+							"alt": "Audiologist reviewing a care plan on a clipboard with a patient",
+							"filename": "care-plan-clipboard.jpg"
+						}
+					},
+					"home_closing_photo": {
+						"$media": {
+							"url": "https://hearing-solutions-nc.cameron-239.workers.dev/assets/hsnc/child-headphones.jpg",
+							"alt": "Audiologist holding hands with a young child wearing hearing-test headphones",
+							"filename": "child-headphones.jpg"
+						}
+					},
 					"home_trust_logos": "Scrolling (with pause)",
 					"home_trust_rating": "In its own box",
 					"home_latest_posts": true,

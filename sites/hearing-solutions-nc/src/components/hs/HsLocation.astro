@@ -1,0 +1,33 @@
+---
+// "Visit us in Salisbury." (Home, About boards): light green band, one office
+// card with address, phone, fax, hours and "Get directions" beside the map.
+import { telHref } from "../../lib/routes";
+import { getSettings } from "../../lib/settings";
+import HsIcon from "./HsIcon.astro";
+
+interface Props {
+	heading?: string;
+	label?: string;
+}
+const s = getSettings(Astro);
+const o = s.offices[0];
+const { heading = `Visit us in ${o.shortName}.`, label = "Location" } = Astro.props;
+const name = Astro.locals.site.practice.name;
+const q = [name, o.street, o.city].filter(Boolean).join(", ");
+---
+<section class="hs-loc-band" aria-labelledby="loc-h">
+	<div class="hs-wrap" style="display:flex;flex-direction:column;gap:40px">
+		<div><p class="hs-eyebrow" style="color:var(--hs-green)">{label}</p><h2 id="loc-h" class="hs-serif" style="margin:12px 0 0;line-height:1.15">{heading}</h2></div>
+		<article class="hs-loc-card">
+			<div class="hs-loc-info">
+				<h3 style="margin:0;font-weight:600">{name}</h3>
+				<div class="hs-drow"><span class="hs-di"><HsIcon name="pin" /></span><address style="font-style:normal;padding-top:6px">{o.street}<br />{o.city}</address></div>
+				<div class="hs-drow" style="align-items:center"><span class="hs-di"><HsIcon name="phone2" /></span><a href={telHref(s.phone)} style="font-weight:700;font-size:20px;text-decoration:none">{s.phone}</a></div>
+				{o.fax && <div class="hs-drow" style="align-items:center"><span class="hs-di"><HsIcon name="fax" /></span><span>Fax: {o.fax}</span></div>}
+				{o.hoursLine && <div class="hs-drow" style="align-items:center"><span class="hs-di"><HsIcon name="clock" /></span><span>{o.hoursLine}</span></div>}
+				<a class="hs-loc-dir" href={o.mapsUrl}>Get directions <HsIcon name="arrowUp" size={18} /></a>
+			</div>
+			<div class="hs-loc-map"><iframe src={`https://maps.google.com/maps?q=${encodeURIComponent(q)}&output=embed`} title={`Map: ${name}, ${o.street}, ${o.city}`} loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>
+		</article>
+	</div>
+</section>
