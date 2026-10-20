@@ -17,10 +17,18 @@ import { CTA_FIELDS, CTA_MODE_OPTIONS, HERO_OPTIONS, MAIN, PAGE_TEXT, PAGES, SHA
 const ASSET_HOST = process.env.ASSET_HOST ?? "https://hearing-solutions-nc.cameron-239.workers.dev";
 
 /** Sample body text (Markdown in src/data/content) as EmDash rich text. */
+// Windows checkouts give CRLF; the Markdown converter only sees "## " headings and "- " lists with LF.
+const readText = (file: string) => readFileSync(new URL(`../src/data/content/${file}`, import.meta.url), "utf8").split(String.fromCharCode(13)).join("");
 const md = (file: string, vars: Record<string, string> = {}) =>
-	markdownToPortableText(
-		Object.entries(vars).reduce((s, [k, v]) => s.split(`{${k}}`).join(v), readFileSync(new URL(`../src/data/content/${file}`, import.meta.url), "utf8")),
-	);
+	markdownToPortableText(Object.entries(vars).reduce((s, [k, v]) => s.split(`{${k}}`).join(v), readText(file)));
+/** A team member's bio file has text (src/data/content/hsnc/team/<slug>.md). */
+const bio = (slug: string) => {
+	try {
+		return readFileSync(new URL(`../src/data/content/hsnc/team/${slug}.md`, import.meta.url), "utf8").trim().length > 0;
+	} catch {
+		return false;
+	}
+};
 const RT = JSON.parse(readFileSync(new URL("../src/data/content/record-text.json", import.meta.url), "utf8")) as Record<string, string>;
 const richText = (slug: string, label: string) => ({ slug, label, type: "portableText", searchable: true });
 
@@ -437,8 +445,9 @@ const content = {
 			sort_order: i + 1,
 		}),
 	),
+	// HSNC: the Products page brands (practice.ts). No models, accessories or FAQ yet: those
+	// sections stay hidden until they're filled in the admin.
 	brands: s.brands.map((b, i) => {
-		const d = s.brandDetails[b.slug] ?? s.genericBrandDetails(b.name);
 		return pub(`brand-${b.slug}`, b.slug, {
 			title: b.name,
 			logo: { $media: { url: ASSET_HOST + b.logo, alt: `${b.name} logo`, filename: `${b.slug}.png` } },
@@ -446,15 +455,15 @@ const content = {
 			summary: b.summary,
 			has_page: b.hasPage,
 			hide_from_hub: false,
-			models: d.lines.flatMap((l) => l.models.map((m) => ({ line: l.t, name: m.n, description: m.d, features: lines(m.f ?? []) }))),
-			accessories: lines(d.accessories),
-			older_models: lines(d.older),
-			intro: RT.brand_intro,
+			models: [],
+			accessories: "",
+			older_models: "",
+			intro: b.intro ?? "",
 			models_intro: RT.brand_models_intro,
 			accessories_intro: RT.brand_accessories_intro,
 			older_intro: RT.brand_older_intro,
 			care_text: RT.brand_care,
-			faq: s.brandFaq(b.name),
+			faq: [],
 			sort_order: i + 1,
 		});
 	}),
@@ -467,6 +476,8 @@ const content = {
 			tone: p.tone,
 			has_page: p.hasPage,
 			short_bio: p.bio,
+			// HSNC: profile bio from the current site's About page (empty file = no bio yet).
+			...(bio(p.slug) ? { bio: md(`hsnc/team/${p.slug}.md`) } : {}),
 			...(p.headshot ? { headshot: { $media: { url: ASSET_HOST + p.headshot, alt: p.name, filename: p.headshot.split("/").pop() } } } : {}),
 			offices: lines(p.offices),
 			sort_order: i + 1,
@@ -480,9 +491,10 @@ const content = {
 				title: p.title,
 				excerpt: p.summary,
 				post_date: dateIso(p.date),
-				author: s.providers.find((x) => x.name === p.author)?.slug ?? s.providers[0].slug,
+				author: s.providers.find((x) => x.name === p.author)?.slug ?? "lorin-oden",
 				featured: p.slug === blog.featured.slug,
-				content: md("post-body.md"),
+				content: md(`hsnc/posts/${p.slug}.md`),
+				...(p.image ? { featured_image: { $media: { url: p.image, alt: p.imageAlt ?? p.title, filename: p.image.split("/").pop() } } } : {}),
 				tone: p.tone,
 			},
 			{ category: [p.catSlug] },
@@ -492,7 +504,17 @@ const content = {
 		pub(
 			`resource-${r.slug}`,
 			r.slug,
-			{ title: r.t, summary: r.d, has_page: r.page, hide_from_hub: false, has_forms: r.forms, ...(r.page ? { content: md("resource-body.md") } : {}), sort_order: i + 1 },
+			{
+				title: r.t,
+				summary: r.d,
+				has_page: r.page,
+				hide_from_hub: !!r.hideFromHub,
+				has_forms: r.forms,
+				...(r.formsUrl ? { forms_url: r.formsUrl } : {}),
+				// HSNC: page text from the current site (src/data/content/hsnc/resources/).
+				...(r.body ? { content: md(`hsnc/resources/${r.slug}.md`) } : {}),
+				sort_order: i + 1,
+			},
 			{ resource_tag: r.tags.map(blog.slugify) },
 		),
 	),

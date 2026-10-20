@@ -87,7 +87,8 @@ export const PAGES: PageDef[] = [
 		title: "Hearing aids",
 		path: "/hearing-aids",
 		hero: true,
-		settings: [bool("hearing_aids_styles", "Hearing aid styles section", "styles"), bool("hearing_aids_otc", "OTC vs. prescription section", "otc")],
+		// HSNC: styles and OTC sections start off (template sample text only; no HSNC content yet).
+		settings: [bool("hearing_aids_styles", "Hearing aid styles section", "styles", false), bool("hearing_aids_otc", "OTC vs. prescription section", "otc", false)],
 	},
 	{
 		slug: "about", collection: "page_about",

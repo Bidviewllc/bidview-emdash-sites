@@ -1,0 +1,3 @@
+Jane Walters is a Board-Certified Hearing Instrument Specialist providing hearing aids, hearing tests, and other audiology services in Salisbury, NC.
+
+Jane Walters originally of Banner Elk NC and Albemarle NC received her Oto-tech Certificate in 2005, her NC Hearing Aid Dispensing License in 2007. Mrs. Walters obtained her National Board Certification in Hearing Instrument Sciences in 2008. Mrs. Walters worked at Carolina ENT Specialists and Charlotte Eye Ear Nose and Throat prior to joining Hearing Solutions in March 2017. Mrs. Walters and her husband Greg reside in Concord, NC with their Boston Terrier, Stella. The Walters have 2 adult married children and 4 precious grandchildren.

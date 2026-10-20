@@ -1,5 +1,6 @@
 import { defineMiddleware } from "astro:middleware";
 import { PAGES } from "./data/page-settings";
+import { redirectFor, redirectResponse } from "./data/hsnc/redirects";
 import { NotSetUpError, loadSite } from "./data/site";
 
 /**
@@ -10,6 +11,9 @@ import { NotSetUpError, loadSite } from "./data/site";
 export const onRequest = defineMiddleware(async (context, next) => {
 	const path = context.url.pathname.replace(/\/$/, "") || "/";
 	if (path.startsWith("/_emdash")) return next();
+	// HSNC: old WordPress addresses answer with a 301 to the new page, before any content loads.
+	const moved = redirectFor(context.url.pathname);
+	if (moved) return redirectResponse(moved, context.url.search);
 	try {
 		context.locals.site ??= await loadSite();
 	} catch (err) {

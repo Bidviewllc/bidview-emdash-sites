@@ -22,8 +22,8 @@ const tweaks: Tweak[] = [
 const s = getSettings(Astro);
 const tx = s.text;
 const brandLinks = s.choice("brandlinks", ["mixed", "all", "none"], "mixed");
-const showStyles = s.bool("styles", true);
-const showOtc = s.bool("otc", true);
+const showStyles = s.bool("styles", false);
+const showOtc = s.bool("otc", false);
 ---
 <Base title={`${tx("heading")} | ${s.name}`} description={tx("description")} pageName="Hearing aids hub" current="hearing-aids" tweaks={tweaks} heroDefault="photo">
 	<PageHero label="Hearing aids" title={tx("heading")} lead={tx("intro")} />

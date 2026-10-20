@@ -1,0 +1,216 @@
+{
+	"order": [
+		"Hearing loss",
+		"Hearing aids",
+		"Services",
+		"Patient info"
+	],
+	"resources": [
+		{
+			"slug": "hearing-loss",
+			"t": "Hearing Loss Overview",
+			"d": "In the United States, approximately 15% of the U.S. adult population experiences some degree of hearing difficulty, but only 16% of those individuals have done something to improve their hearing ability.",
+			"tags": [
+				"Hearing loss"
+			],
+			"page": true,
+			"forms": false,
+			"body": true
+		},
+		{
+			"slug": "benefits-of-treating-hearing-loss",
+			"t": "The Benefits of Treating Hearing Loss",
+			"d": "When speech sounds are no longer in your hearing range, it affects your speech recognition abilities and thus, how you communicate with others.",
+			"tags": [
+				"Hearing loss"
+			],
+			"page": true,
+			"forms": false,
+			"body": true
+		},
+		{
+			"slug": "hearing-aid-overview",
+			"t": "Hearing Aids Overview",
+			"d": "These hearing instruments are designed to maximize hearing by absorbing and processing sound.",
+			"tags": [
+				"Hearing aids"
+			],
+			"page": true,
+			"forms": false,
+			"body": true
+		},
+		{
+			"slug": "custom-hearing-aids",
+			"t": "Custom Hearing Aids",
+			"d": "As you might guess, custom hearing aids are uniquely designed for each individual wearer.",
+			"tags": [
+				"Hearing aids"
+			],
+			"page": true,
+			"forms": false,
+			"body": true
+		},
+		{
+			"slug": "consumers-guide-to-hearing-aids",
+			"t": "Consumer's Guide To Hearing Aids",
+			"d": "Fill out the form below to receive your copy of the Consumer's Guide to Hearing Aids!",
+			"tags": [
+				"Hearing aids"
+			],
+			"page": true,
+			"forms": true,
+			"body": true
+		},
+		{
+			"slug": "informational-videos",
+			"t": "Informational Videos",
+			"d": "",
+			"tags": [
+				"Hearing aids",
+				"Patient info"
+			],
+			"page": true,
+			"forms": false,
+			"body": true
+		},
+		{
+			"slug": "patient-portal",
+			"t": "Patient Portal",
+			"d": "",
+			"tags": [
+				"Patient info"
+			],
+			"page": false,
+			"forms": false,
+			"body": false,
+			"hideFromHub": true
+		},
+		{
+			"slug": "online-communication-training-program",
+			"t": "5 Keys Online Communication Training Program",
+			"d": "Scan this QR Code to download the 5 Keys Online Communication App",
+			"tags": [
+				"Patient info"
+			],
+			"page": true,
+			"forms": true,
+			"body": true,
+			"formsUrl": "https://5keyscommunication.activehosted.com/f/98"
+		},
+		{
+			"slug": "live-speech-mapping",
+			"t": "Live Speech Mapping/Real Ear Measurement",
+			"d": "Live speech mapping is a form of Real Ear Measurement, used to ensure that your hearing aids are programmed for your particular hearing needs during conversations.",
+			"tags": [
+				"Hearing aids",
+				"Services"
+			],
+			"page": true,
+			"forms": false,
+			"body": true
+		},
+		{
+			"slug": "assistive-listening-devices",
+			"t": "Assistive Listening Devices",
+			"d": "Assistive Listening Devices (ALDs) are a broad category of devices that help people with hearing issues to hear better.",
+			"tags": [
+				"Hearing aids",
+				"Services"
+			],
+			"page": true,
+			"forms": false,
+			"body": true
+		},
+		{
+			"slug": "earmolds-for-hearing-aids",
+			"t": "Earmolds for Hearing Aids",
+			"d": "Quite simply, the earmold is the part that goes into your ear canal.",
+			"tags": [
+				"Hearing aids",
+				"Services"
+			],
+			"page": true,
+			"forms": false,
+			"body": true
+		},
+		{
+			"slug": "cognivue-cognitive-testing",
+			"t": "Cognivue Cognitive Testing",
+			"d": "Hearing Solutions of North Carolina is proud to offer Cognivue cognitive testing as part of our Functional Hearing Assessment.",
+			"tags": [
+				"Services"
+			],
+			"page": true,
+			"forms": false,
+			"body": true
+		},
+		{
+			"slug": "functional-hearing-assessment",
+			"t": "Functional Hearing Assessment (FHA)",
+			"d": "A hearing evaluation gives us a good picture of how well your ears work.",
+			"tags": [
+				"Services"
+			],
+			"page": true,
+			"forms": false,
+			"body": true
+		},
+		{
+			"slug": "hearing-evaluations",
+			"t": "Hearing Evaluations",
+			"d": "At Hearing Solutions of North Carolina, we offer comprehensive hearing evaluations that thoroughly assess your hearing health and establish your hearing needs.",
+			"tags": [
+				"Services",
+				"Hearing loss"
+			],
+			"page": true,
+			"forms": false,
+			"body": true
+		},
+		{
+			"slug": "tinnitus-treatments",
+			"t": "Tinnitus Treatments",
+			"d": "Millions of Americans suffer from tinnitus, making it one of the most common conditions in the United States.",
+			"tags": [
+				"Services"
+			],
+			"page": true,
+			"forms": false,
+			"body": true
+		},
+		{
+			"slug": "ear-wax-removal",
+			"t": "Earwax Removal in Salisbury, NC",
+			"d": "Even though most of us would prefer not to have earwax, it can be quite helpful in moderate amounts.",
+			"tags": [
+				"Services"
+			],
+			"page": true,
+			"forms": false,
+			"body": true
+		},
+		{
+			"slug": "hearing-aid-repair",
+			"t": "Hearing Aid Repair in Salisbury, NC",
+			"d": "With proper care and maintenance, hearing aids can be long-lasting devices that work effectively for several years.",
+			"tags": [
+				"Services",
+				"Hearing aids"
+			],
+			"page": true,
+			"forms": false,
+			"body": true
+		},
+		{
+			"slug": "hearing-health-faqs",
+			"t": "Hearing Health FAQs",
+			"d": "At Hearing Solutions of North Carolina, we take a proactive approach to providing hearing healthcare to our patients.",
+			"tags": [
+				"Patient info"
+			],
+			"page": true,
+			"forms": false,
+			"body": true
+		}
+	]
+}
