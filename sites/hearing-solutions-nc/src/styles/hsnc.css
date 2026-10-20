@@ -182,8 +182,12 @@
 .hs-burger { display: none; width: 44px; height: 44px; padding: 0; border-radius: 8px; border: 1px solid var(--hs-rule); background: #fff; color: var(--hs-navy); align-items: center; justify-content: center; cursor: pointer; }
 .hs-mmenu { border-top: 1px solid var(--hs-sage); background: #fff; }
 .hs-mmenu ul { list-style: none; margin: 0; padding: 8px 0 16px; }
-.d1 .hs-mmenu a { display: flex; align-items: center; min-height: 52px; color: var(--hs-navy); text-decoration: none; font-size: 18px; font-weight: 500; border-bottom: 1px solid var(--hs-sage); }
+.d1 .hs-mmenu li a { display: flex; align-items: center; min-height: 52px; color: var(--hs-navy); text-decoration: none; font-size: 18px; font-weight: 500; border-bottom: 1px solid var(--hs-sage); }
 .hs-mmenu .hs-mextra { display: flex; flex-direction: column; gap: 12px; padding: 16px 0 24px; font-size: 16px; }
+.d1 .hs-mextra > a { color: var(--hs-navy); }
+.hs-mextra svg { flex: none; }
+/* Photo + text bands: when they stack, the text goes first. */
+.hs-txt-first { flex-wrap: wrap-reverse; }
 
 /* ---------- footer ---------- */
 .hs-footer { font-family: var(--hs-sans); color: #fff; font-size: 18px; line-height: 1.6; }

@@ -55,7 +55,7 @@ const href = (h: string) => (h.startsWith("/") ? s.href(h) : h);
 				{menu.map((l) => <li><a href={href(l.href)} target={l.target} aria-current={isCurrent(l.href) ? "page" : undefined}>{l.label}</a></li>)}
 			</ul>
 			<div class="hs-mextra">
-				<a href={office.mapsUrl} style="display:inline-flex;gap:8px;align-items:flex-start;text-decoration:none"><HsIcon name="pin" size={18} style="margin-top:4px" /><span>{office.street}, {office.city} · <span class="hs-dir" style="color:var(--hs-green);font-weight:600;text-decoration:underline">Get directions</span></span></a>
+				<a href={office.mapsUrl} style="display:inline-flex;gap:8px;align-items:flex-start;text-decoration:none"><HsIcon name="pin" size={24} style="margin-top:1px" /><span>{office.street}, {office.city} · <span class="hs-dir" style="color:var(--hs-green);font-weight:600;text-decoration:underline">Get directions</span></span></a>
 				<div style="display:flex;gap:8px">
 					{facebook && <a href={facebook} aria-label="Facebook" class="hs-soc"><HsIcon name="facebook" size={14} /></a>}
 					{youtube && <a href={youtube} aria-label="YouTube" class="hs-soc"><HsIcon name="youtube" size={16} /></a>}

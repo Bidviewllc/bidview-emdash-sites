@@ -166,7 +166,7 @@ const closingPhoto = photo("home_closing_photo");
 		<HsLocation heading={text("home_location_heading")} />
 
 		<div class="on-dark hs-navy">
-			<section class="hs-wrap" style="padding-top:88px;padding-bottom:88px;display:flex;flex-wrap:wrap;gap:40px;align-items:center">
+			<section class="hs-wrap hs-txt-first" style="padding-top:88px;padding-bottom:88px;display:flex;gap:40px;align-items:center">
 				{closingPhoto && <img class="hs-img" src={closingPhoto.src} alt={closingPhoto.alt} style="flex:1 1 440px;min-width:0;height:520px;object-position:50% 38%" loading="lazy" />}
 				<div style="flex:1 1 320px;display:flex;flex-direction:column;gap:16px;align-items:flex-start">
 					<h2 class="hs-serif" style="margin:0;line-height:1.1" set:html={html("home_closing_heading")} />

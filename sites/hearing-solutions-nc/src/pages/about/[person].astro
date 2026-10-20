@@ -60,7 +60,7 @@ const svc = services.filter((x) => x.onHome !== false && !x.hideFromHub);
 		{
 			bio && (
 				<section class="hs-wrap rs-sec" aria-label={`About ${person.short}`}>
-					<div class="rt" style="max-width: 820px" set:html={bio} />
+					<div class="rt" style="max-width: none" set:html={bio} />
 				</section>
 			)
 		}

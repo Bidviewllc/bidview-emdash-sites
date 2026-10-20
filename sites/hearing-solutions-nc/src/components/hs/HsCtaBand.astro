@@ -1,7 +1,7 @@
 ---
 // Closing call band (Services board; used on every page that ends with one and
-// has no closing section of its own): navy, photo left, a line of text, the
-// serif headline, Call and "New patient information". Wording and photo: Pages →
+// has no closing section of its own): navy, photo left, the serif headline, a
+// line of text, Call and "New patient information". Wording and photo: Pages →
 // Shared sections (booking band), unless the page passes its own.
 import type { Photo } from "../../data/site";
 import { inline } from "../../lib/hs";
@@ -10,7 +10,7 @@ import { getSettings } from "../../lib/settings";
 
 interface Props {
 	heading?: string;
-	/** Text above the headline (a line break stays one). */
+	/** Text under the headline (a line break stays one). */
 	text?: string;
 	photo?: Photo;
 	/** Second button; false for none. */
@@ -26,11 +26,11 @@ const {
 } = Astro.props;
 ---
 <div class="on-dark hs-navy hs">
-	<section class="hs-wrap" style="padding-top:88px;padding-bottom:88px;display:flex;flex-wrap:wrap;gap:40px;align-items:center">
+	<section class="hs-wrap hs-txt-first" style="padding-top:88px;padding-bottom:88px;display:flex;gap:40px;align-items:center">
 		{photo && <img class="hs-img" src={photo.src} alt={photo.alt} style="flex:1 1 440px;min-width:0;height:auto;aspect-ratio:5/4" loading="lazy" />}
 		<div style="flex:1 1 320px;display:flex;flex-direction:column;gap:16px;align-items:flex-start">
-			{text && <p style="margin:0;font-size:1em" set:html={inline(s.fill(text))} />}
 			<h2 class="hs-serif" style="margin:0;line-height:1.1" set:html={inline(s.fill(heading))} />
+			{text && <p style="margin:0;font-size:1em" set:html={inline(s.fill(text))} />}
 			<div class="hs-btns" style="gap:12px;margin-top:8px">
 				<a class="hs-btn hs-btn-w" href={telHref(s.phone)}>Call us: {s.phone}</a>
 				{second && <a class="hs-btn hs-btn-ow" href={s.href(second.href)}>{second.label}</a>}
