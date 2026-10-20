@@ -143,6 +143,8 @@ export const DEFAULT_FORMS: Record<string, () => FormDefinition> = {
 			[
 				field("text", "name", "Name", { required: true }),
 				field("email", "email", "Email", { required: true }),
+				// Phone added for HSNC (Liz, 2026-10-19); the current site's form has none.
+				field("tel", "phone", "Phone", { required: true }),
 				field("text", "day", "Preferred day of the week", { required: true }),
 				field("checkbox-group", "times", "Preferred time of the day", { required: true, options: opt("Morning", "Afternoon") }),
 				field("textarea", "reason", "Briefly describe the reason for your appointment"),

@@ -7,8 +7,7 @@
 	// https://hearing-solutions-nc.cameron-239.workers.dev and log in there.
 	// Version preview URLs show the site but can't log in to the admin.
 	//
-	// The D1 database, R2 bucket and KV namespace are created on first deploy;
-	// their ids go here.
+	// D1, R2 and KV created 2026-10-19 on the Bidview account.
 	"name": "hearing-solutions-nc",
 	"account_id": "239e9d015c7a3a39cdc2e9400312f553",
 	"main": "./src/worker.ts",
@@ -20,7 +19,7 @@
 		{
 			"binding": "DB",
 			"database_name": "hearing-solutions-nc-db",
-			"database_id": "TBD"
+			"database_id": "deca6516-706c-4a38-a128-d8b75e6cf038"
 		}
 	],
 	"r2_buckets": [
@@ -33,7 +32,7 @@
 	"kv_namespaces": [
 		{
 			"binding": "SESSION",
-			"id": "TBD"
+			"id": "3ae5356d3333474b81b80a9aea2c31a6"
 		}
 	],
 	// Hourly EmDash housekeeping (scheduled publishing, cleanup).
