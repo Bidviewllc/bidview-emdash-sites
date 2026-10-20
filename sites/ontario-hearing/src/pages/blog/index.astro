@@ -4,6 +4,7 @@ import CtaStrip from "../../components/CtaStrip.astro";
 import pagesData from "../../data/pages.json";
 import { getEmDashCollection } from "emdash";
 import { altFor } from "../../lib/imageAlts";
+import { RETIRED_POSTS } from "../../data/retired-posts";
 
 const mediaUrl = (img: any): string | null => {
   const key = img?.meta?.storageKey;
@@ -14,7 +15,7 @@ const mediaUrl = (img: any): string | null => {
 
 // Try CMS
 let entries: any[] = [];
-try { const r = await getEmDashCollection("blog_posts", { orderBy: { sort_order: "asc" }, limit: 100 }); entries = r?.entries ?? []; } catch {}
+try { const r = await getEmDashCollection("blog_posts", { orderBy: { sort_order: "asc" }, limit: 100 }); entries = (r?.entries ?? []).filter((en: any) => !RETIRED_POSTS.has(en.data?.slug)); } catch {}
 
 // Build list — prefer CMS rows, fall back to static pages.json
 const blogPosts = entries.length > 0

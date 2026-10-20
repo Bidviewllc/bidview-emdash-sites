@@ -5,6 +5,7 @@ import pagesData from "../data/pages.json";
 import { getEmDashEntry, getEmDashCollection } from "emdash";
 import { marked } from "marked";
 import { altFor, enforceAltInHtml } from "../lib/imageAlts";
+import { RETIRED_POSTS } from "../data/retired-posts";
 
 const mediaUrl = (img: any): string | null => {
   const key = img?.meta?.storageKey;
@@ -295,7 +296,7 @@ if (resolvedType === "blog") {
   try {
     const r = await getEmDashCollection("blog_posts", { orderBy: { sort_order: "asc" }, limit: 5 });
     recentPosts = (r?.entries ?? [])
-      .filter((en: any) => en.data?.slug !== fallback.slug)
+      .filter((en: any) => en.data?.slug !== fallback.slug && !RETIRED_POSTS.has(en.data?.slug))
       .slice(0, 4)
       .map((en: any) => ({
         slug: en.data?.slug,
