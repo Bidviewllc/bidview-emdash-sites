@@ -257,3 +257,17 @@
 	.hs-sec, .hs-loc-band { padding-top: 64px; padding-bottom: 64px; }
 	.hs-hsplit { padding-top: 48px; padding-bottom: 48px; }
 }
+
+/* ---------- rich text (content editor areas: service, blog post, resource, team bio, legal pages) ----------
+   Liz, 2026-10-20: every block (paragraph, heading, list, quote) gets the same space above and
+   below, and headings in the content are sans-serif for readability. Page titles are unchanged. */
+.d1 .rt > *, .d1 .hs .rt > * { margin: 0; padding-top: 0; padding-bottom: 0; }
+.d1 .rt > * + *, .d1 .hs .rt > * + *, .d1 .hs .rt > h2 + *, .d1 .hs .rt > h3 + * { margin-top: 20px; }
+.d1 .hs .rt h2, .d1 .hs .rt h3, .d1 .hs .rt h4, .d1 .rt h2, .d1 .rt h3, .d1 .rt h4 { font-family: var(--hs-sans); font-weight: 600; color: var(--hs-green); }
+.d1 .hs .rt h2, .d1 .rt h2 { font-size: 26px; line-height: 1.3; }
+.d1 .hs .rt h3, .d1 .rt h3 { font-size: 21px; line-height: 1.35; }
+.d1 .hs .rt h4, .d1 .rt h4 { font-size: 19px; line-height: 1.4; }
+@media (max-width: 600px) {
+	.d1 .hs .rt h2, .d1 .rt h2 { font-size: 23px; }
+	.d1 .hs .rt h3, .d1 .rt h3 { font-size: 20px; }
+}
