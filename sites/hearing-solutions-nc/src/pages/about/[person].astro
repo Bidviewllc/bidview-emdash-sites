@@ -12,6 +12,7 @@ import Base from "../../layouts/Base.astro";
 import { ptHas, ptToHtml } from "../../lib/portable-text";
 import { getSettings } from "../../lib/settings";
 import { routes, telHref } from "../../lib/routes";
+import { embedUrl } from "../../lib/video";
 
 const { practice, providers, services } = Astro.locals.site;
 
@@ -30,13 +31,7 @@ const BIO_PLACEHOLDER = [
 ].map((t) => `<p>${t}</p>`).join("");
 const bio = ptHas(person.bioRich) ? s.fill(ptToHtml(person.bioRich).html) : person.bio?.trim() ? `<p>${person.bio.replace(/</g, "&lt;")}</p>` : BIO_PLACEHOLDER;
 /** YouTube or Vimeo link as an embed address. */
-const embed = (() => {
-	const u = person.videoUrl ?? "";
-	const yt = u.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{6,})/);
-	if (yt) return `https://www.youtube-nocookie.com/embed/${yt[1]}`;
-	const vm = u.match(/vimeo\.com\/(?:video\/)?(\d+)/);
-	return vm ? `https://player.vimeo.com/video/${vm[1]}` : undefined;
-})();
+const embed = embedUrl(person.videoUrl);
 const showVideo = s.bool("video", true) && !!embed;
 const svc = services.filter((x) => x.onHome !== false && !x.hideFromHub);
 ---

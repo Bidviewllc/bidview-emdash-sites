@@ -219,16 +219,21 @@
 .hs-flegal { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px 24px; }
 .d1 .hs-flegal a { color: var(--hs-flink); text-decoration: none; font-size: 15px; }
 
+/* Header: the phone header (burger menu) on tablets too, up to 1199px. */
+@media (max-width: 1199px) {
+	.hs-hide-m { display: none !important; }
+	.hs-burger { display: inline-flex; }
+	.hs-hlogo img { width: 200px; }
+	.hs-hdiv { margin: 0 20px; height: 88px; }
+	.hs-hbot { justify-content: flex-end; min-height: 62px; }
+	.hs-htop { min-height: 44px; }
+}
 /* ---------- phone and tablet ---------- */
 @media (max-width: 820px) {
 	.hs-stat-div { display: none; }
 	.hs-stat { width: 240px; padding: 8px 0; }
-	.hs-hide-m { display: none !important; }
-	.hs-burger { display: inline-flex; }
 	.hs-hlogo img { width: 150px; }
 	.hs-hdiv { margin: 0 12px; height: 76px; }
-	.hs-hbot { justify-content: flex-end; min-height: 62px; }
-	.hs-htop { min-height: 44px; }
 	.hs-loc-card { grid-template-columns: 1fr; }
 	.hs-loc-map, .hs-loc-map iframe { min-height: 260px; }
 	.hs-loc-info { padding: 20px 12px 16px; }
@@ -241,7 +246,7 @@
 	.hs-side { grid-template-columns: 1fr; gap: 40px; }
 	.hs-aside { position: static; }
 }
-@media (min-width: 821px) {
+@media (min-width: 1200px) {
 	.hs-mmenu { display: none !important; }
 }
 @media (max-width: 600px) {

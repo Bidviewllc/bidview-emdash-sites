@@ -18,6 +18,7 @@ import Base from "../../layouts/Base.astro";
 import { ptHas, ptToHtml } from "../../lib/portable-text";
 import { routes, telHref } from "../../lib/routes";
 import { getSettings } from "../../lib/settings";
+import { embedVideoLists } from "../../lib/video";
 
 const { resources } = Astro.locals.site;
 const r = resources.find((x) => x.slug === Astro.params.slug);
@@ -28,7 +29,8 @@ const h = s.href;
 const tel = telHref(s.phone);
 const hero = s.heroFor("photo", r.heroImage);
 const rich = ptHas(r.content) ? ptToHtml(r.content) : undefined;
-const html = rich ? s.fill(rich.html) : "";
+/** A list of nothing but video links shows as players (Informational Videos). */
+const html = rich ? embedVideoLists(s.fill(rich.html)) : "";
 const toc = rich?.headings ?? [];
 /** Other resources on the same first topic, then any others, up to three. */
 const others = resources.filter((x) => x.slug !== r.slug && !x.hideFromHub);

@@ -34,6 +34,12 @@
 .d1 .hs .rt a { color: var(--hs-green); }
 .d1 .hs .rt blockquote { border-left: 4px solid var(--hs-lime); background: var(--hs-mint); border-radius: 0 14px 14px 0; font-family: var(--hs-serif); color: var(--hs-green); }
 .d1 .hs .rt li::marker { color: var(--hs-green); }
+/* video lists as players (src/lib/video.ts) */
+.hs .rt .rt-videos { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 32px 28px; }
+.hs .rt .rt-video { margin: 0; display: flex; flex-direction: column; gap: 12px; }
+.d1 .hs .rt .rt-video .vplayer { border-radius: 14px; }
+.hs .rt .rt-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.d1 .hs .rt .rt-video figcaption { font-size: 17px; font-weight: 500; line-height: 1.4; color: var(--hs-navy); }
 
 /* jump list / table of contents (accordion) */
 .d1 .hs .jump { background: var(--hs-mint); border: 0; border-radius: 14px; }
