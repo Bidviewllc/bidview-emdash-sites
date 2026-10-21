@@ -80,6 +80,8 @@ const adsForm = onLiveDomain(mk, Astro.url.host) && /^AW-\d+$/i.test(active(mk, 
 			rel="stylesheet"
 		/>
 		<Tracking mk={mk} place="head" />
+		{/* BugHerd feedback sidebar for the client review. Hard-coded rather than set in Marketing & tracking, which only writes on the live domain. Remove at launch. */}
+		<script is:inline type="text/javascript" src="https://www.bugherd.com/sidebarv2.js?apikey=jmdzo9igg9wchj31vgbt2g" async="true"></script>
 	</head>
 	<body class="d1 page" style={style} data-lshape={s.logoShape} data-ads-form={adsForm}>
 		<Tracking mk={mk} place="body-start" />
