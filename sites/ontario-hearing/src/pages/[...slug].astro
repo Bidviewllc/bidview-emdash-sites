@@ -138,6 +138,18 @@ const metaTitle = d.meta_title ?? fallback.meta_title ?? fallback.title;
 const metaDescription = d.meta_description ?? fallback.meta_description;
 const heroImage = mediaUrl(d.hero_image) ?? d.hero_image_url ?? fallback.featured_image ?? null;
 
+// Posts whose body was genuinely refreshed. Shown as "Updated" after the posted date.
+// Hand-kept on purpose: the CMS updated_at moves on any edit (links, typo fixes, bulk jobs).
+const UPDATED_DATES: Record<string, string> = {
+  "over-the-counter-hearing-aids": "2026-10-23",
+  "how-to-cure-tinnitus-naturally": "2026-10-23",
+  "what-are-the-first-signs-of-tinnitus": "2026-10-23",
+};
+const updatedIso = resolvedType === "blog" ? UPDATED_DATES[fallback.slug] ?? null : null;
+const updatedLabel = updatedIso
+  ? new Date(updatedIso + "T12:00:00Z").toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" })
+  : null;
+
 // Blog-specific
 const blogByline = resolvedType === "blog" ? {
   author: d.author ?? null,
@@ -340,6 +352,7 @@ if (resolvedType === "blog") {
     "description": metaDescription,
     "image": heroImage || undefined,
     "datePublished": blogByline?.date ? new Date(blogByline.date).toISOString() : undefined,
+    "dateModified": updatedIso ? new Date(updatedIso + "T12:00:00Z").toISOString() : undefined,
     "author": blogByline?.author ? {
       "@type": "Person",
       "name": blogByline.author,
@@ -436,6 +449,8 @@ if (resolvedType === "brand") {
             {blogByline.author && <span class="article-byline__author" {...e.author}>By {blogByline.author}</span>}
             {blogByline.date && <span class="article-byline__sep">·</span>}
             {blogByline.date && <span class="article-byline__date" {...e.date}>{blogByline.date}</span>}
+            {blogByline.date && updatedLabel && <span class="article-byline__sep">·</span>}
+            {blogByline.date && updatedLabel && <span class="article-byline__date">Updated {updatedLabel}</span>}
             {blogByline.category && <span class="article-byline__sep">·</span>}
             {blogByline.category && <span class="article-byline__category" {...e.category}>{blogByline.category}</span>}
           </div>
