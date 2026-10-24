@@ -11,7 +11,7 @@
  */
 interface Props {
   /** Which top-level nav item to highlight. */
-  active?: "home" | "about" | "services" | "aids" | "resources" | "contact";
+  active?: "home" | "about" | "pricing" | "services" | "aids" | "contact";
 }
 const { active } = Astro.props;
 ---
@@ -33,6 +33,7 @@ const { active } = Astro.props;
 <a href="/" style="display:block;padding:15px 6px;border-bottom:1px solid rgba(var(--navy-rgb),.1);font-size:17px;font-weight:700">Home</a>
 <a href="/services/" style="display:block;padding:15px 6px;border-bottom:1px solid rgba(var(--navy-rgb),.1);font-size:17px;font-weight:700">Services</a>
 <a href="/hearing-aids-products/" style="display:block;padding:15px 6px;border-bottom:1px solid rgba(var(--navy-rgb),.1);font-size:17px;font-weight:700">Hearing Aids</a>
+<a href="/pricing/" style="display:block;padding:15px 6px;border-bottom:1px solid rgba(var(--navy-rgb),.1);font-size:17px;font-weight:700">Pricing</a>
 <a href="/contact/" style="display:block;padding:15px 6px;border-bottom:1px solid rgba(var(--navy-rgb),.1);font-size:17px;font-weight:700">Contact</a>
 <a href="/book-appointment/" style="display:flex;min-height:52px;margin-top:18px;align-items:center;justify-content:center;padding:12px 24px;border-radius:999px;background:var(--brand-red);color:var(--white);font-size:16px;font-weight:750">Book Your Appointment</a>
 </div>
@@ -64,6 +65,9 @@ const { active } = Astro.props;
 <div style="margin:0 0 10px 10px;font-size:11px;font-weight:750;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)">The Practice</div>
 <a href="/about/" style="display:block;padding:9px 10px;border-radius:9px;font-size:15px;font-weight:700;transition:.2s" style-hover="background:var(--cream);color:var(--brand-red)">About Liberty Hearing Center</a>
 <a href="/hearing-the-call/" style="display:block;padding:9px 10px;border-radius:9px;font-size:15px;font-weight:700;transition:.2s" style-hover="background:var(--cream);color:var(--brand-red)">Giving Back</a>
+<a href="/resources/" style="display:block;padding:9px 10px;border-radius:9px;font-size:15px;font-weight:700;transition:.2s" style-hover="background:var(--cream);color:var(--brand-red)">Articles</a>
+<a href="/insurance-billing/" style="display:block;padding:9px 10px;border-radius:9px;font-size:15px;font-weight:700;transition:.2s" style-hover="background:var(--cream);color:var(--brand-red)">Insurance &amp; Billing</a>
+<a href="#" style="display:block;padding:9px 10px;border-radius:9px;font-size:15px;font-weight:700;transition:.2s" style-hover="background:var(--cream);color:var(--brand-red)">Community Resources</a>
 </div>
 <div>
 <div style="margin:0 0 10px 10px;font-size:11px;font-weight:750;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)">Our Staff</div>
@@ -83,6 +87,10 @@ const { active } = Astro.props;
 </div>
 </div>
 </div>
+</div>
+
+<div data-dd="1" style="position:relative">
+<a href="/pricing/" data-navkey="pricing" style="padding:12px 10px 22px;display:block;white-space:nowrap;font-size:16px;font-weight:700;transition:.3s" style-hover="color:var(--gold)">Pricing</a>
 </div>
 
 <div data-dd="1" style="position:static">
@@ -154,32 +162,6 @@ const { active } = Astro.props;
 </div>
 </div>
 
-<div data-dd="1" style="position:static">
-<a href="/resources/" data-navkey="resources" style="display:flex;align-items:center;gap:6px;padding:12px 10px 22px;white-space:nowrap;font-size:16px;font-weight:700;transition:.3s" style-hover="color:var(--gold)">Resources <span style="font-size:20px;line-height:1;opacity:.6">▾</span></a>
-<div data-ddpanel="1" style="position:absolute;right:0;top:100%;padding:24px 26px 26px;border:1px solid rgba(var(--navy-rgb),.12);border-top:3px solid var(--gold);border-radius:0 0 16px 16px;background:var(--white);box-shadow:0 24px 55px rgba(var(--navy-rgb),.18)">
-<div style="display:grid;grid-template-columns:240px 260px 250px;gap:30px">
-<div>
-<div style="margin:0 0 10px 10px;font-size:11px;font-weight:750;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)">Pricing &amp; Insurance</div>
-<div style="display:flex;flex-direction:column">
-<a href="/pricing/" style="padding:9px 10px;border-radius:9px;font-size:15px;font-weight:700;transition:.2s" style-hover="background:var(--cream);color:var(--brand-red)">Pricing</a>
-<a href="/insurance-billing/" style="padding:9px 10px;border-radius:9px;font-size:15px;font-weight:700;transition:.2s" style-hover="background:var(--cream);color:var(--brand-red)">Insurance &amp; Billing</a>
-</div>
-</div>
-<div>
-<div style="margin:0 0 10px 10px;font-size:11px;font-weight:750;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)">Other</div>
-<div style="display:flex;flex-direction:column">
-<a href="/resources/" style="padding:9px 10px;border-radius:9px;font-size:15px;font-weight:700;transition:.2s" style-hover="background:var(--cream);color:var(--brand-red)">Articles</a>
-<a href="#" style="padding:9px 10px;border-radius:9px;font-size:15px;font-weight:700;transition:.2s" style-hover="background:var(--cream);color:var(--brand-red)">Community Resources</a>
-</div>
-</div>
-<div style="padding:20px 22px;border:1px solid var(--cream-border);border-radius:14px;background:var(--cream);align-self:start">
-<div style="margin-bottom:14px;font-size:18px;font-weight:750;line-height:1.2;letter-spacing:-.01em">Can't find what you need?</div>
-<a href="/contact/#request" style="display:inline-flex;min-height:44px;align-items:center;justify-content:center;padding:11px 20px;border-radius:999px;background:var(--brand-red);color:var(--white);font-size:14px;font-weight:750;transition:.3s" style-hover="background:var(--navy)">Contact Us</a>
-</div>
-</div>
-</div>
-</div>
-
 <div data-dd="1" style="position:relative">
 <a href="/contact/" data-navkey="contact" style="padding:12px 10px 22px;display:block;white-space:nowrap;font-size:16px;font-weight:700;transition:.3s" style-hover="color:var(--gold)">Contact</a>
 </div>
@@ -211,7 +193,7 @@ const { active } = Astro.props;
     var found = grid ? grid.querySelectorAll("nav [data-dd]") : [];
     if (!found.length) return false;
     /* keep the order the mobile menu has always used */
-    var ORDER = ["home", "services", "aids", "about", "resources", "contact"];
+    var ORDER = ["home", "services", "aids", "about", "pricing", "contact"];
     var groups = [].slice.call(found).sort(function (a, b) {
       var ka = (a.querySelector("a[data-navkey]") || {}).dataset;
       var kb = (b.querySelector("a[data-navkey]") || {}).dataset;
