@@ -85,7 +85,7 @@ details{box-shadow:0 10px 30px rgba(var(--navy-rgb),.10)}
 [data-nav-active="about"] [data-navkey="about"],
 [data-nav-active="services"] [data-navkey="services"],
 [data-nav-active="aids"] [data-navkey="aids"],
-[data-nav-active="resources"] [data-navkey="resources"],
+[data-nav-active="pricing"] [data-navkey="pricing"],
 [data-nav-active="contact"] [data-navkey="contact"]{color:var(--brand-red)}
 
 /* --- Sudden-hearing-loss urgent banner + modal (homepage) ----------------
