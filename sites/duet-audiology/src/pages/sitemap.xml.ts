@@ -2,7 +2,6 @@
 // If you add a new public page, list its slug here.
 
 const SITE = 'https://duethearing.com';
-const today = new Date().toISOString().slice(0, 10);
 
 const urls: Array<{ path: string; priority: number; changefreq: string; lastmod?: string }> = [
   { path: '/', priority: 1.0, changefreq: 'weekly' },
@@ -40,7 +39,11 @@ const urls: Array<{ path: string; priority: number; changefreq: string; lastmod?
   { path: '/terms-of-service/', priority: 0.3, changefreq: 'yearly' },
 ];
 
-const body = `<?xml version="1.0" encoding="UTF-8"?>
+// The date must be read inside the handler. On Cloudflare Workers the clock is
+// frozen at 1970-01-01 outside a request, so a top-level new Date() gives 1970.
+export const GET = () => {
+  const today = new Date().toISOString().slice(0, 10);
+  const body = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map(u => `  <url>
     <loc>${SITE}${u.path}</loc>
@@ -49,8 +52,8 @@ ${urls.map(u => `  <url>
     <priority>${u.priority.toFixed(1)}</priority>
   </url>`).join('\n')}
 </urlset>`;
-
-export const GET = () => new Response(body, {
-  status: 200,
-  headers: { 'Content-Type': 'application/xml; charset=utf-8' }
-});
+  return new Response(body, {
+    status: 200,
+    headers: { 'Content-Type': 'application/xml; charset=utf-8' }
+  });
+};
