@@ -1839,11 +1839,16 @@
               "Monday",
               "Tuesday",
               "Wednesday",
-              "Thursday",
-              "Friday"
+              "Thursday"
             ],
             "opens": "09:00",
             "closes": "17:00"
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": "Friday",
+            "opens": "09:00",
+            "closes": "14:00"
           }
         ],
         "sameAs": [
@@ -1975,13 +1980,13 @@
               "Thursday"
             ],
             "opens": "09:00",
-            "closes": "16:30"
+            "closes": "17:00"
           },
           {
             "@type": "OpeningHoursSpecification",
             "dayOfWeek": "Friday",
             "opens": "09:00",
-            "closes": "12:00"
+            "closes": "14:00"
           }
         ],
         "sameAs": [
