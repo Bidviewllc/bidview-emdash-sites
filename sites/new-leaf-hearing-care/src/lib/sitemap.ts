@@ -1,6 +1,8 @@
 // Sitemap for newleafhearing.com. Shared by the build script (scripts/gen-sitemap.mjs,
 // which writes public/sitemap.xml as a static file) and the Worker fallback in
-// middleware.ts. Keep this file free of Astro and JSON imports so Node can load it.
+// middleware.ts. Code pages and collections come from shells.json; blog posts only live
+// in D1, so the build script passes them in. Keep this file free of Astro and JSON
+// imports so Node can load it.
 type Shells = Record<string, Record<string, unknown>>;
 
 const STATIC_PATHS = [
@@ -37,10 +39,19 @@ const sitemapMeta = (pathname: string): { priority: number; changefreq: string }
   return { priority: 0.6, changefreq: "monthly" };
 };
 
-const buildEntries = (shells: Shells) => {
+export type SitemapPost = { slug: string; lastmod?: string | null };
+
+const buildEntries = (shells: Shells, posts: SitemapPost[]) => {
   const contentPaths = Object.values(shells).flatMap((entries) => Object.keys(entries).map((slug) => `/${slug}/`));
-  return Array.from(new Set([...STATIC_PATHS, ...contentPaths]))
-  .map((pathname) => ({ pathname, ...sitemapMeta(pathname) }))
+  const postDates = new Map<string, string>();
+  for (const p of posts) {
+    const slug = String(p.slug || "").replace(/^\/+|\/+$/g, "");
+    if (!/^[a-z0-9][a-z0-9-]*$/i.test(slug)) continue;
+    const day = String(p.lastmod || "").slice(0, 10);
+    postDates.set(`/${slug}/`, /^\d{4}-\d{2}-\d{2}$/.test(day) ? day : "");
+  }
+  return Array.from(new Set([...STATIC_PATHS, ...contentPaths, ...postDates.keys()]))
+  .map((pathname) => ({ pathname, lastmod: postDates.get(pathname) || "", ...sitemapMeta(pathname) }))
   .sort((a, b) => b.priority - a.priority || a.pathname.localeCompare(b.pathname));
 };
 
@@ -53,11 +64,11 @@ const escapeXml = (value: string) =>
 
 // The date is read inside the call. On Cloudflare Workers the clock is frozen
 // at 1970-01-01 outside a request, so a top-level new Date() would give 1970.
-export const createSitemap = (shells: Shells, today = new Date().toISOString().slice(0, 10)) => {
-  const urls = buildEntries(shells)
+export const createSitemap = (shells: Shells, today = new Date().toISOString().slice(0, 10), posts: SitemapPost[] = []) => {
+  const urls = buildEntries(shells, posts)
     .map((u) => `  <url>
     <loc>${escapeXml(`${SITEMAP_ORIGIN}${u.pathname}`)}</loc>
-    <lastmod>${today}</lastmod>
+    <lastmod>${u.lastmod || today}</lastmod>
     <changefreq>${u.changefreq}</changefreq>
     <priority>${u.priority.toFixed(1)}</priority>
   </url>`)
