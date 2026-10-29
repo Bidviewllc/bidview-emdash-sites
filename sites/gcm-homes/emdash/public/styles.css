@@ -2044,7 +2044,11 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
 
    The photo column is a fixed 320px with the photo capped at 260px and
    centred in it (Grant asked for a smaller photo, 2026-10-19). Everything
-   else, body copy and button included, runs down the right-hand column. */
+   else, body copy and button included, runs down the right-hand column.
+
+   The photo is square, the same 1:1 as the headshot file, so nothing is
+   cropped off (2026-10-28: the old 328/414 portrait frame cut off his
+   shoulders, and Grant still did not like it). */
 .grant-intro {
   display: grid;
   grid-template-columns: 320px 1fr;
@@ -2058,10 +2062,10 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   width: 100%;
   max-width: 260px;
   margin: 0 auto;
-  aspect-ratio: 328 / 414;
+  aspect-ratio: 1 / 1;
   border-radius: 5px;
   background-size: cover;
-  background-position: center 20%;
+  background-position: center;
   box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
 }
 .grant-intro__copy { display: flex; flex-direction: column; gap: 24px; }

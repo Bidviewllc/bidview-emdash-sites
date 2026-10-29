@@ -49,7 +49,7 @@ export { PluginBridge };
 // filter chips on /reviews/, cards without stars for unrated recommendations.
 // v17 (2026-09-29): /reviews/ switches from the carousel to a grid (Liz); the
 // home page carousel is unchanged.
-const CACHE_VERSION = "v18";
+const CACHE_VERSION = "v19";
 const CACHEABLE_TYPE = /^(?:text\/html|application\/xml|text\/xml|text\/plain)/i;
 const ADMIN_COOKIE = /emdash[-_](session|edit-mode|admin)/i;
 
