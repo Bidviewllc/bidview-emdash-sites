@@ -112,8 +112,8 @@ const successMessage = d.val_success ?? "Thanks — Grant will be in touch with 
 ---
 
 <GcmLayout
-	title="Sell With Me — Grant C. Meyer Homes"
-	description="Pricing a Tahoe home is read, not calculated. Grant has watched every cycle in Incline Village and Crystal Bay for 35 years. Start with what your home is actually worth."
+	title="Sell With Us — Grant C. Meyer Homes"
+	description="Pricing a Tahoe home takes local judgment. Grant C. Meyer has watched every cycle in Incline Village and Crystal Bay since 1992. Start with what your home is worth."
 	content={entry ? { collection: "sellers_page", id: entry.data.id, slug: "sellers" } : undefined}
 >
 	<link rel="stylesheet" href="/sellers.css" />
@@ -124,7 +124,7 @@ const successMessage = d.val_success ?? "Thanks — Grant will be in touch with 
 		<div class="hero__veil"></div>
 		<div class="hero__copy">
 			<span class="eyebrow eyebrow--block" {...(e.hero_eyebrow ?? {})}>
-				{d.hero_eyebrow ?? "Sell With Me"}
+				{d.hero_eyebrow ?? "Sell With Us"}
 			</span>
 			<h1 class="hero__title" set:html={d.hero_headline ?? "Your Home's Value Here Isn't What an <em>Algorithm</em> Says It Is."} {...(e.hero_headline ?? {})}></h1>
 			<p class="hero__sub" {...(e.hero_sub ?? {})}>
@@ -495,7 +495,7 @@ const successMessage = d.val_success ?? "Thanks — Grant will be in touch with 
 					<input class="honeypot" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
 					{/* `message` is required by the API and every answer here is a labelled
 					    extra, so it carries what kind of enquiry this is. */}
-					<input type="hidden" name="message" value="Home valuation request from the Sell With Me page." />
+					<input type="hidden" name="message" value="Home valuation request from the Sell With Us page." />
 					<input type="hidden" name="reason" value="Home valuation request" />
 					<input type="hidden" name="source" value={Astro.url.pathname} />
 					<div class="form-sent" data-inquiry-sent style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12" /></svg> {successMessage}</div>
