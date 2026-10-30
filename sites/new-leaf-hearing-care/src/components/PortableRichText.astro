@@ -4,6 +4,7 @@ const { value = [] } = Astro.props;
 const slugify = (value) => String(value || "")
   .toLowerCase()
   .replace(/&/g, " and ")
+  .replace(/\+$/, " plus")
   .replace(/[^a-z0-9]+/g, "-")
   .replace(/^-+|-+$/g, "");
 
