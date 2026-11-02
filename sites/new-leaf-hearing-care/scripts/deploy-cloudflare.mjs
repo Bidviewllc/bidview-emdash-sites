@@ -8,6 +8,9 @@ if (target !== "staging" && target !== "production") {
   process.exit(1);
 }
 
+const gen = spawnSync("node", ["scripts/gen-sitemap.mjs"], { stdio: "inherit" });
+if (gen.status !== 0) process.exit(gen.status ?? 1);
+
 const build = spawnSync("npx", ["astro", "build"], {
   stdio: "inherit",
   shell: true,

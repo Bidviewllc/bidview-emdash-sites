@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro check && astro build",
+    "build": "node scripts/gen-sitemap.mjs && astro check && astro build",
     "build:cloudflare": "node scripts/build-cloudflare.mjs",
     "preview": "astro preview",
     "deploy:staging": "node scripts/deploy-cloudflare.mjs staging",

@@ -1,5 +1,6 @@
 import { defineMiddleware } from "astro:middleware";
 import shells from "./data/shells.json";
+import { createSitemap } from "./lib/sitemap";
 
 const FILE_EXTENSION_PATTERN = /\.[a-z0-9]+$/i;
 const PUBLIC_HTML_CACHE_CONTROL = "public, max-age=300, s-maxage=3600, stale-while-revalidate=86400";
@@ -9,19 +10,6 @@ const PRIVATE_CACHE_CONTROL = "no-store, max-age=0";
 const HTML_CACHE_VERSION = "2026-10-27-office-hours-v58";
 const PUBLIC_MEDIA_PREFIX = "/_emdash/api/media/file/";
 const CACHEABLE_MEDIA_TYPES = ["image/", "video/", "audio/"];
-const STATIC_PATHS = [
-  "/",
-  "/about/",
-  "/arvada-reviews/",
-  "/audiologist-hearing-aids-arvada-colorado/",
-  "/audiologist-hearing-aids-littleton-colorado/",
-  "/contact-us/",
-  "/community-resources/",
-  "/littleton-reviews/",
-  "/patient-resources/",
-  "/schedule-appointment/",
-  "/sitemap/"
-];
 // Old WordPress blog-category archives that 404'd after the rebuild.
 // Keys are lowercase and WITHOUT a trailing slash (normalised at lookup time),
 // so both /category/hearing and /category/hearing/ resolve.
@@ -31,26 +19,6 @@ const LEGACY_CATEGORY_REDIRECTS: Record<string, string> = {
   "/category/hearing": "/hearing-loss/",
   "/category/hearing-aid": "/hearing-aids-products/",
   "/category/newsletter": "/patient-resources/"
-};
-
-const CONTENT_PATHS = Object.entries(shells).flatMap(([collection, entries]) =>
-  Object.keys(entries).map((slug) => `/${slug}/`)
-);
-const SITEMAP_PATHS = Array.from(new Set([...STATIC_PATHS, ...CONTENT_PATHS])).sort();
-
-const escapeXml = (value: string) =>
-  value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-
-const createSitemap = (origin: string) => {
-  const urls = SITEMAP_PATHS
-    .map((pathname) => `  <url>\n    <loc>${escapeXml(`${origin}${pathname}`)}</loc>\n  </url>`)
-    .join("\n");
-
-  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
 };
 
 const isPrivatePath = (pathname: string) =>
@@ -165,7 +133,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
   }
 
   if (pathname === "/sitemap.xml") {
-    return new Response(createSitemap(context.url.origin), {
+    return new Response(createSitemap(shells), {
       headers: {
         "Content-Type": "application/xml; charset=utf-8",
         "Cache-Control": PUBLIC_HTML_CACHE_CONTROL,
