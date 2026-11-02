@@ -476,7 +476,7 @@ async function submitListingInquiry(e) {
     f.style.display = "none";
     msg.className = "form-sent";
     msg.style.display = "block";
-    msg.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12" /></svg> Thanks — Grant will be in touch within 24 hours.';
+    msg.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12" /></svg> Thanks. One of the team will call, text, or write back as soon as we possibly can.';
   } catch (err) {
     msg.style.color = "#c0392b";
     msg.textContent = err.message;
@@ -678,7 +678,7 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro) {
       <div class="local-card">
         <div class="local-card__copy">
           <div class="local-card__head">
-            <div class="local-card__lead">Where 35 Years Makes the Difference</div>
+            <div class="local-card__lead">Where Local Knowledge Makes the Difference</div>
             <div class="local-card__title">A Note From Grant</div>
           </div>
           <div class="local-card__body">
