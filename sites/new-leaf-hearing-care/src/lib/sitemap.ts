@@ -41,17 +41,21 @@ const sitemapMeta = (pathname: string): { priority: number; changefreq: string }
 
 export type SitemapPost = { slug: string; lastmod?: string | null };
 
-const buildEntries = (shells: Shells, posts: SitemapPost[]) => {
+const dayOf = (value?: string | null) => {
+  const day = String(value || "").slice(0, 10);
+  return /^\d{4}-\d{2}-\d{2}$/.test(day) ? day : "";
+};
+
+const buildEntries = (shells: Shells, posts: SitemapPost[], lastmods: Record<string, string>) => {
   const contentPaths = Object.values(shells).flatMap((entries) => Object.keys(entries).map((slug) => `/${slug}/`));
   const postDates = new Map<string, string>();
   for (const p of posts) {
     const slug = String(p.slug || "").replace(/^\/+|\/+$/g, "");
     if (!/^[a-z0-9][a-z0-9-]*$/i.test(slug)) continue;
-    const day = String(p.lastmod || "").slice(0, 10);
-    postDates.set(`/${slug}/`, /^\d{4}-\d{2}-\d{2}$/.test(day) ? day : "");
+    postDates.set(`/${slug}/`, dayOf(p.lastmod));
   }
   return Array.from(new Set([...STATIC_PATHS, ...contentPaths, ...postDates.keys()]))
-  .map((pathname) => ({ pathname, lastmod: postDates.get(pathname) || "", ...sitemapMeta(pathname) }))
+  .map((pathname) => ({ pathname, lastmod: dayOf(lastmods[pathname]) || postDates.get(pathname) || "", ...sitemapMeta(pathname) }))
   .sort((a, b) => b.priority - a.priority || a.pathname.localeCompare(b.pathname));
 };
 
@@ -62,16 +66,18 @@ const escapeXml = (value: string) =>
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
 
-// The date is read inside the call. On Cloudflare Workers the clock is frozen
-// at 1970-01-01 outside a request, so a top-level new Date() would give 1970.
-export const createSitemap = (shells: Shells, today = new Date().toISOString().slice(0, 10), posts: SitemapPost[] = []) => {
-  const urls = buildEntries(shells, posts)
-    .map((u) => `  <url>
-    <loc>${escapeXml(`${SITEMAP_ORIGIN}${u.pathname}`)}</loc>
-    <lastmod>${u.lastmod || today}</lastmod>
-    <changefreq>${u.changefreq}</changefreq>
-    <priority>${u.priority.toFixed(1)}</priority>
-  </url>`)
+// lastmod is the page's real last-edit date (YYYY-MM-DD) from `lastmods` (path -> date) or the
+// post's own date. A page with no known date gets NO <lastmod>: never the build or request date.
+export const createSitemap = (shells: Shells, lastmods: Record<string, string> = {}, posts: SitemapPost[] = []) => {
+  const urls = buildEntries(shells, posts, lastmods)
+    .map((u) => [
+      "  <url>",
+      `    <loc>${escapeXml(`${SITEMAP_ORIGIN}${u.pathname}`)}</loc>`,
+      ...(u.lastmod ? [`    <lastmod>${u.lastmod}</lastmod>`] : []),
+      `    <changefreq>${u.changefreq}</changefreq>`,
+      `    <priority>${u.priority.toFixed(1)}</priority>`,
+      "  </url>"
+    ].join("\n"))
     .join("\n");
 
   return `<?xml version="1.0" encoding="UTF-8"?>
