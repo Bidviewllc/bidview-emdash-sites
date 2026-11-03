@@ -45,10 +45,13 @@ const FIELDS = [
 	["hidden", "Hidden", "boolean", "INTEGER", 0, null],
 ];
 
+// emdash 1.x stores content datetimes as UTC ISO with milliseconds; datetime('now')
+// ("YYYY-MM-DD HH:MM:SS") sorts and compares wrong against it.
+const NOW_SQL = "(strftime('%Y-%m-%dT%H:%M:%fZ','now'))";
 const BASE_COLS = [
 	["id", "text primary key"], ["slug", "text"], ["status", "text default 'draft'"],
 	["author_id", "text"], ["primary_byline_id", "text"],
-	["created_at", "text default (datetime('now'))"], ["updated_at", "text default (datetime('now'))"],
+	["created_at", `text default ${NOW_SQL}`], ["updated_at", `text default ${NOW_SQL}`],
 	["published_at", "text"], ["scheduled_at", "text"], ["deleted_at", "text"],
 	["version", "integer default 1"], ["live_revision_id", "text"], ["draft_revision_id", "text"],
 	["locale", "text default 'en' not null"], ["translation_group", "text"],
@@ -87,7 +90,9 @@ for (const r of reviews) {
 }
 
 const sql = [];
-sql.push(`INSERT OR REPLACE INTO _emdash_collections (id,slug,label,label_singular,supports,source,has_seo,url_pattern,created_at,updated_at) VALUES (${S(CID)},${S(COL)},'Reviews','Review','["revisions"]','manual',0,NULL,datetime('now'),datetime('now'));`);
+// Upsert, not INSERT OR REPLACE: REPLACE deletes the row, resetting the columns set
+// in the admin (emdash 1.x: hidden, routable, sort_order, nav_group, ...).
+sql.push(`INSERT INTO _emdash_collections (id,slug,label,label_singular,supports,source,has_seo,url_pattern,created_at,updated_at) VALUES (${S(CID)},${S(COL)},'Reviews','Review','["revisions"]','manual',0,NULL,${NOW_SQL},${NOW_SQL}) ON CONFLICT(id) DO UPDATE SET slug=excluded.slug, label=excluded.label, label_singular=excluded.label_singular, supports=excluded.supports, source=excluded.source, has_seo=excluded.has_seo, url_pattern=excluded.url_pattern, updated_at=excluded.updated_at;`);
 sql.push(`DELETE FROM _emdash_fields WHERE collection_id=${S(CID)};`);
 sql.push(`INSERT INTO _emdash_fields (id,collection_id,slug,label,type,column_type,required,sort_order,searchable) VALUES (${S(`fld_${COL}_title`)},${S(CID)},'title','Reviewer name','string','TEXT',1,0,1);`);
 FIELDS.forEach(([slug, label, type, colType, req, validation], i) => {
@@ -105,8 +110,8 @@ for (const r of reviews) {
 	const id = `rev_${r.external_id}`;
 	sql.push(
 		`INSERT INTO ec_${COL} (id,slug,status,locale,version,title,published_at,updated_at,source,rating,review_date,body,location,source_url,featured,hidden,_external_id) ` +
-		`VALUES (${S(id)},${S(r.external_id)},'published','en',1,${S(r.name)},datetime('now'),datetime('now'),${S(r.source)},${S(r.rating ?? null)},${S(r.review_date || null)},${S(r.body)},${S(r.location || null)},${S(r.source_url || null)},${B(r.featured)},${B(r.hidden)},${S(r.external_id)}) ` +
-		`ON CONFLICT(id) DO UPDATE SET title=excluded.title, source=excluded.source, rating=excluded.rating, review_date=excluded.review_date, body=excluded.body, location=excluded.location, source_url=excluded.source_url, updated_at=datetime('now');`
+		`VALUES (${S(id)},${S(r.external_id)},'published','en',1,${S(r.name)},${NOW_SQL},${NOW_SQL},${S(r.source)},${S(r.rating ?? null)},${S(r.review_date || null)},${S(r.body)},${S(r.location || null)},${S(r.source_url || null)},${B(r.featured)},${B(r.hidden)},${S(r.external_id)}) ` +
+		`ON CONFLICT(id) DO UPDATE SET title=excluded.title, source=excluded.source, rating=excluded.rating, review_date=excluded.review_date, body=excluded.body, location=excluded.location, source_url=excluded.source_url, updated_at=${NOW_SQL};`
 	);
 }
 
