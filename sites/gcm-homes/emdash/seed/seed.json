@@ -445,8 +445,8 @@
 		},
 		{
 			"slug": "page_content",
-			"label": "Content Pages",
-			"labelSingular": "Content Page",
+			"label": "Concierge Page",
+			"labelSingular": "Concierge Page",
 			"urlPattern": "/{slug}",
 			"supports": [
 				"revisions"
