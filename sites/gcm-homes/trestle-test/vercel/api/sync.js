@@ -137,11 +137,13 @@ async function mirrorEmdashListings() {
   const tail = ` ON CONFLICT(id) DO UPDATE SET ${setClause}`;
   let batch = [], len = head.length + tail.length;
   const flush = async () => { if (batch.length) { await d1(head + batch.join(",") + tail); batch = []; len = head.length + tail.length; } };
+  // emdash 1.x stores content datetimes as UTC ISO with milliseconds, not datetime('now').
+  const now = sqlVal(new Date().toISOString());
   for (const r of rows) {
     const pt = (r.sub_type || r.type || "").replace(/([a-z])([A-Z])/g, "$1 $2");
     const vals = [
       sqlVal(r.id), sqlVal(r.slug || ("listing-" + r.id)), "'published'", "'en'", "1",
-      sqlVal(r.address || "(no address)"), "datetime('now')", "datetime('now')",
+      sqlVal(r.address || "(no address)"), now, now,
       sqlVal(r.city), sqlVal(r.state), sqlVal(r.zip),
       sqlVal(r.price != null ? "$" + Number(r.price).toLocaleString("en-US") : null),
       sqlVal(r.beds), sqlVal(r.baths), sqlVal(r.sqft != null ? Number(r.sqft).toLocaleString("en-US") : null),

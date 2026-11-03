@@ -251,22 +251,24 @@ export async function getOverride(listingKey: string): Promise<{ note: string | 
 export async function getNote(listingKey: string): Promise<string | null> {
 	return (await getOverride(listingKey)).note;
 }
+// emdash 1.x stores content datetimes as UTC ISO with milliseconds, not datetime('now').
+const NOW_SQL = "strftime('%Y-%m-%dT%H:%M:%fZ','now')";
 export async function setNote(listingKey: string, note: string): Promise<void> {
 	const trimmed = (note ?? "").toString().slice(0, 8000);
 	const v = trimmed.trim() === "" ? null : trimmed;
-	await DB().prepare("UPDATE ec_listings SET owner_note = ?, updated_at = datetime('now') WHERE id = ?").bind(v, listingKey).run();
+	await DB().prepare(`UPDATE ec_listings SET owner_note = ?, updated_at = ${NOW_SQL} WHERE id = ?`).bind(v, listingKey).run();
 }
 // Empty description = "reset to MLS": set it back to the snapshot so it tracks the
 // feed again. A non-empty value becomes the owner override (preserved across sync).
 export async function setDescription(listingKey: string, description: string): Promise<void> {
 	const trimmed = (description ?? "").toString().slice(0, 16000);
 	if (trimmed.trim() === "") {
-		await DB().prepare('UPDATE ec_listings SET description = "_mls_description", updated_at = datetime(\'now\') WHERE id = ?').bind(listingKey).run();
+		await DB().prepare(`UPDATE ec_listings SET description = "_mls_description", updated_at = ${NOW_SQL} WHERE id = ?`).bind(listingKey).run();
 		return;
 	}
 	// Store as Portable Text: pass through if already PT JSON, else convert plain text.
 	const val = trimmed.trim().startsWith("[") ? trimmed : plainToPortableText(trimmed);
-	await DB().prepare("UPDATE ec_listings SET description = ?, updated_at = datetime('now') WHERE id = ?").bind(val, listingKey).run();
+	await DB().prepare(`UPDATE ec_listings SET description = ?, updated_at = ${NOW_SQL} WHERE id = ?`).bind(val, listingKey).run();
 }
 // Resolve a listing's id from its slug (the client edits by slug; notes key on id).
 export async function keyForSlug(slug: string): Promise<string | null> {
