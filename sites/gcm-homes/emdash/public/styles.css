@@ -1187,6 +1187,20 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
 .card__tag { background: rgba(21,36,59,0.92); backdrop-filter: blur(4px); }
 /* The orange is light enough that white type on it fails contrast; navy reads. */
 .card__wf { background: var(--orange); color: var(--navy); }
+/* Status badge (2026-11-03): On market / Under contract / Pending / Sold. Same
+   size as the other two badges so the row wraps the same way. */
+.card__status {
+  font-size: 9px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: 5px 10px;
+  border-radius: 2px;
+  white-space: nowrap;
+}
+.card__status--live { background: rgba(255,255,255,0.92); color: var(--navy); }
+.card__status--uc, .card__status--pending { background: rgba(255,255,255,0.92); color: #a84a16; }
+.card__status--sold { background: #7a1f1f; color: #fff; }
 .card__count {
   position: absolute;
   bottom: 12px; right: 12px;
@@ -2465,6 +2479,21 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   align-items: flex-end;
   gap: 80px;
 }
+/* Status badge above the title: Under contract / Pending / Sold. */
+.listing-hero--fl .listing-hero__status {
+  align-self: flex-start;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 2px;
+  background: var(--orange);
+  color: var(--navy);
+  margin-bottom: 16px;
+}
+.listing-hero--fl .listing-hero__status--sold { background: #7a1f1f; color: #fff; }
 .listing-hero--fl .listing-hero__title {
   font-family: var(--font-noto);
   font-size: 48px;

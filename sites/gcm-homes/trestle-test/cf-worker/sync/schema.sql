@@ -78,6 +78,20 @@ CREATE TABLE IF NOT EXISTS listing_photos (
 );
 CREATE INDEX IF NOT EXISTS idx_photos_key ON listing_photos(listing_key);
 
+-- Sold / off-market archive (2026-11-03). Created and extended by sync.mjs itself
+-- (ensureSchema), so this is documentation: every `listings` column, plus the
+-- columns below. Nothing ever deletes from it. See sites/gcm-homes/SOLD-ARCHIVE-PLAN.md.
+--   parcel_number, list_agent_id, buyer_agent_id, co_list_agent_id, co_buyer_agent_id,
+--   buyer_agent, buyer_office,
+--   feed_status      -- last StandardStatus the feed reported
+--   archive_status   -- active | under_contract | sold | off_market | unknown
+--   close_price REAL, close_date, off_market_date, contract_date,
+--   first_seen_at, last_seen_at,
+--   owner_snapshot   -- JSON of Grant's ec_listings fields, copied as the row departs
+--   main_photo_url   -- the lead MLS photo URL, so a sold listing still has a picture
+--   source           -- sync | backfill
+-- Indexes: archive_status, slug, parcel_number, close_date.
+
 CREATE TABLE IF NOT EXISTS sync_meta (
   id             INTEGER PRIMARY KEY CHECK (id = 1),
   last_synced_at TEXT,

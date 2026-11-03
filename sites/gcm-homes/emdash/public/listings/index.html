@@ -727,6 +727,7 @@
       <h4 class="footer__h">Properties</h4>
       <div class="footer__links">
         <a href="/listings/">Search Listings</a>
+        <a href="/sold/">Recently Sold</a>
         <a href="/buyers/">For Buyers</a>
         <a href="/sellers/">For Sellers</a>
       </div>
@@ -1004,6 +1005,15 @@ function sortView(rows) {
 
 /* ------------------------------------------------------------- rendering */
 
+/* One status badge per card: On market / Under contract / Pending (Liz's labels,
+   from statusLabel in src/lib/listings.ts). The sync keeps under-contract and
+   pending homes on the site now, so the badge is what tells them apart. */
+function statusBadge(l) {
+  const label = l.statusLabel || "On market";
+  const mod = label === "On market" ? "live" : label === "Pending" ? "pending" : "uc";
+  return `<div class="card__status card__status--${mod}">${esc(label)}</div>`;
+}
+
 function cardHTML(l) {
   const media = l.photo
     ? `<img class="card__img" src="${esc(l.photo)}" alt="${esc(l.address)}" loading="lazy"
@@ -1023,6 +1033,7 @@ function cardHTML(l) {
         <div class="card__badges">
           <div class="card__tag">${esc(l.category || "Property")}</div>
           ${l.waterfront ? `<div class="card__wf">Waterfront</div>` : ""}
+          ${statusBadge(l)}
         </div>
         ${l.photosCount ? `<div class="card__count">${l.photosCount} photos</div>` : ""}
         ${CAN_SWIPE && l.photo && l.photosCount > 1 ? dotsHTML(Math.min(l.photosCount, MAX_PHOTOS)) : ""}

@@ -422,6 +422,13 @@ let featCount = 0;
 
 function fmt(price) { return price ? "$" + Number(price).toLocaleString() : "—"; }
 function fmtSqft(n) { return n ? Number(n).toLocaleString() + " sq.ft." : "—"; }
+// "2026-09-17" -> "September 2026". Close dates are date-only, so anchor to UTC
+// or the day before can slip through in US time zones.
+function fmtDate(d) {
+  if (!d) return "—";
+  const t = Date.parse(String(d).length <= 10 ? `${d}T00:00:00Z` : d);
+  return Number.isNaN(t) ? "—" : new Date(t).toLocaleDateString("en-US", { month: "long", year: "numeric", timeZone: "UTC" });
+}
 function escapeHtml(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
 // "Total Days on Market" (cumulative across relists) only earns a row when the
 // property has actually been relisted -- otherwise it just repeats the number
@@ -612,14 +619,24 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro) {
 
   // The neighbourhood is derived per listing by point-in-polygon matching; fall
   // back to city/state when a listing sits outside every traced area.
-  const crumb = listing.neighborhood || [listing.city, listing.state].filter(Boolean).join(", ");
+  let crumb = listing.neighborhood || [listing.city, listing.state].filter(Boolean).join(", ");
+
+  // Status (2026-11-03). Under-contract and pending homes stay on the site now,
+  // and sold ones live on from the archive with one photo and the close facts.
+  // Liz's labels come from the API (statusLabel); "On market" gets no badge here.
+  const sold = listing.sold || null;
+  const statusText = listing.statusLabel || "On market";
+  const statusBadge = statusText === "On market" ? "" :
+    `<div class="listing-hero__status${sold ? " listing-hero__status--sold" : ""}">${escapeHtml(statusText)}</div>`;
+  if (sold && sold.representedLabel) crumb = `${crumb} · ${sold.representedLabel}`;
 
   // Return the visitor to the search they came from, filters intact. The listings
   // page stashes its current URL (including the filter query string) on every
   // change; fall back to the unfiltered index when there is nothing stored.
-  let backHref = "/listings/";
-  let backLabel = "Back to All Listings";
+  let backHref = listing.archived ? "/sold/" : "/listings/";
+  let backLabel = listing.archived ? "Back to Recently Sold" : "Back to All Listings";
   try {
+    if (listing.archived) throw new Error("archived: keep the sold link");
     const stored = sessionStorage.getItem("gcm:listingsUrl");
     if (stored) {
       backHref = stored;
@@ -627,7 +644,7 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro) {
     }
   } catch (e) { /* private mode — keep the default */ }
 
-  const filmstrip = photos.length > 0 ? `
+  const filmstrip = (photos.length > 0 && !listing.archived) ? `
     <section class="filmstrip-section">
       <div class="filmstrip-wrap">
         <div class="filmstrip__header">
@@ -657,9 +674,17 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro) {
     ]],
     ["Property Info", [
       ["Garage", listing.garage ? listing.garage + " spaces" : "—"],
-      ["View", fmtEnum(listing.view) || "—"], ["Sub-Type", fmtEnum(listing.subType) || "—"], ["Status", fmtEnum(listing.status)],
+      ["View", fmtEnum(listing.view) || "—"], ["Sub-Type", fmtEnum(listing.subType) || "—"], ["Status", statusText],
     ]],
-    ["Financial", [
+    ["Financial", sold ? [
+      // A sold listing: the close facts instead of a days-on-market that would
+      // keep counting to today.
+      ["Sold Price", fmt(sold.closePrice || listing.price)],
+      ["Closed", fmtDate(sold.closeDate)],
+      ["List Price", fmt(listing.price)],
+      ["Annual Taxes", listing.taxes ? fmt(listing.taxes) : "—"],
+      ["Agent", listing.agent || "Grant C. Meyer"],
+    ] : [
       ["List Price", fmt(listing.price)],
       ["Annual Taxes", listing.taxes ? fmt(listing.taxes) : "—"],
       ["Days on Market", listing.daysOnMarket ?? "—"],
@@ -839,6 +864,7 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro) {
       </div>
       <div class="listing-hero__bottom">
         <div>
+          ${statusBadge}
           <h1 class="listing-hero__title">${escapeHtml(listing.address)}</h1>
           <div class="listing-hero__crumb">${escapeHtml(crumb)}</div>
         </div>
@@ -852,8 +878,8 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro) {
             <div class="listing-hero__stat__v">${listing.baths || "—"} BA</div>
           </div>
           <div class="listing-hero__stat">
-            <div class="listing-hero__stat__l">LIST PRICE</div>
-            <div class="listing-hero__stat__v listing-hero__stat__v--price">${fmt(listing.price)}</div>
+            <div class="listing-hero__stat__l">${sold ? "SOLD PRICE" : "LIST PRICE"}</div>
+            <div class="listing-hero__stat__v listing-hero__stat__v--price">${fmt(sold ? (sold.closePrice || listing.price) : listing.price)}</div>
           </div>
         </div>
       </div>
@@ -1063,6 +1089,7 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro) {
           <h4 class="footer__h">Properties</h4>
           <div class="footer__links">
             <a href="/listings/">Search Listings</a>
+            <a href="/sold/">Recently Sold</a>
             <a href="/buyers/">For Buyers</a>
             <a href="/sellers/">For Sellers</a>
           </div>
@@ -1094,7 +1121,7 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro) {
     </footer>
   `;
 
-  document.title = `${listing.address} — Grant C. Meyer Homes`;
+  document.title = `${listing.address}${listing.sold ? " (Sold)" : ""} — Grant C. Meyer Homes`;
   featShift(0);
   syncSaved();
 
@@ -1167,6 +1194,16 @@ async function load() {
   try {
     const resp = await fetch(endpoint);
     const data = await resp.json();
+    if (resp.status === 410 || data.gone) {
+      // Expired, withdrawn or cancelled. The server answers 410 so search engines
+      // drop the URL; a person who followed an old link gets somewhere to go.
+      document.getElementById("app").innerHTML = `
+        <div class="loading">
+          <p>This listing is no longer available.</p>
+          <p style="margin-top:14px"><a class="btn btn--dark" href="/listings/">SEARCH CURRENT LISTINGS</a> &nbsp; <a class="btn btn--dark" href="/sold/">RECENTLY SOLD</a></p>
+        </div>`;
+      return;
+    }
     if (data.error) throw new Error(data.error);
     canEdit = !!data.canEdit;
     render(data.listing, data.photos || [], data.marketIntel || null, data.area || null, data.contact || null, data.grantIntro || null);

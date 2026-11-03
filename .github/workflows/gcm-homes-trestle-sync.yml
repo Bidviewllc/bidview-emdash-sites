@@ -25,6 +25,12 @@ on:
   schedule:
     - cron: "0 */2 * * *"
   workflow_dispatch:
+    inputs:
+      mode:
+        description: "sync = the normal run. backfill-sold = one-time pull of Grant's past sales (+ $5M+ sales) into listing_archive."
+        type: choice
+        default: sync
+        options: [sync, backfill-sold]
 
 # Never let two syncs overlap — the sync does DELETE + re-INSERT on the listings
 # tables, so a concurrent run could interleave. Queue instead of cancelling.
@@ -54,6 +60,7 @@ jobs:
           TRESTLE_CLIENT_ID: ${{ secrets.GCM_TRESTLE_CLIENT_ID }}
           TRESTLE_CLIENT_SECRET: ${{ secrets.GCM_TRESTLE_CLIENT_SECRET }}
           CF_API_TOKEN: ${{ secrets.GCM_CF_API_TOKEN }}
+          SYNC_MODE: ${{ inputs.mode || 'sync' }}
         run: |
           set -o pipefail
           echo '### Trestle → D1 sync' >> "$GITHUB_STEP_SUMMARY"

@@ -17,13 +17,18 @@ const slug = String(Astro.params.slug || "").replace(/\/+$/, "");
 const origin = new URL(Astro.request.url).origin;
 let head = "";
 try {
-	const result = await bySlug(slug);
+	const result: any = await bySlug(slug);
+	// Expired / withdrawn / cancelled: answer 410 so search engines drop the URL.
+	// (The raw page would otherwise load, call the API, and show the same thing.)
+	if (result?.gone) return new Response("This listing is no longer available.", { status: 410, headers: { "content-type": "text/plain; charset=utf-8", "Cache-Control": "public, s-maxage=3600" } });
 	const l = result?.listing as any;
 	if (l) {
 		const url = `${origin}/homes/${slug}/`;
 		const cityState = [l.city, l.state].filter(Boolean).join(", ");
-		const priceStr = l.price ? "$" + Number(l.price).toLocaleString("en-US") : "";
-		const title = `${l.address}${cityState ? ", " + cityState : ""}${priceStr ? " — " + priceStr : ""} | Grant C. Meyer Homes`;
+		const sold = l.sold || null;
+		const shownPrice = sold ? (sold.closePrice || l.price) : l.price;
+		const priceStr = shownPrice ? "$" + Number(shownPrice).toLocaleString("en-US") : "";
+		const title = `${l.address}${cityState ? ", " + cityState : ""}${sold ? " — Sold" : ""}${priceStr ? (sold ? " for " : " — ") + priceStr : ""} | Grant C. Meyer Homes`;
 		const meta = [
 			l.beds && `${l.beds} bd`, l.baths && `${l.baths} ba`,
 			l.sqft && `${Number(l.sqft).toLocaleString("en-US")} sq ft`,
@@ -38,7 +43,7 @@ try {
 			image: photos.slice(0, 6),
 		};
 		if (l.listingDate) ld.datePosted = l.listingDate;
-		if (l.price) ld.offers = { "@type": "Offer", price: Number(l.price), priceCurrency: "USD", availability: "https://schema.org/InStock", url };
+		if (shownPrice) ld.offers = { "@type": "Offer", price: Number(shownPrice), priceCurrency: "USD", availability: sold ? "https://schema.org/SoldOut" : "https://schema.org/InStock", url };
 		head = [
 			`<meta name="description" content="${attr(desc)}" />`,
 			`<link rel="canonical" href="${attr(url)}" />`,
