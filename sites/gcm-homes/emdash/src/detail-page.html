@@ -75,6 +75,8 @@
     .prop-desc__body blockquote { margin: 16px 0; padding: 8px 18px; border-left: 3px solid var(--orange); color: var(--navy); font-style: italic; }
     .prop-desc__body a { color: var(--orange); text-decoration: underline; }
     .prop-desc__flag { margin-top: 12px; font-family: var(--font-sans); font-size: 12px; font-weight: 600; color: var(--orange); }
+    /* The "edited" pencil has no width/height attributes; unsized, it fills the column. */
+    .prop-desc__flag > svg { width: 1.15em; height: 1.15em; vertical-align: -0.2em; margin-right: 2px; }
 
     /* --- .aside-fl__cta was authored for a <button>; used here as a link, which is
            inline by default, so it needs an explicit box. --- */
