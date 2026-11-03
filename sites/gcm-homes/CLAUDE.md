@@ -330,6 +330,13 @@ Vince: "Lets give Liz Github actions. NO vercel. For her to decide" (cadence is 
   still populated (flooring 168, tour 107).
 - **LESSON: the mirror is wrapped in try/catch as non-fatal, so a broken mirror does NOT fail the sync.** Don't trust
   a green sync — grep the log for `emdash mirror:` (success) vs `emdash mirror (non-fatal):` (silent failure).
+- **2026-11-03 — it went silent again, for a month.** From 2026-10-04 every mirror aborted on the same UNIQUE
+  error (`listings` 146 vs `ec_listings` 120, nothing refreshed). Cause: two LIVE listings at 893 Donna Drive. The
+  sync gives one the plain slug and the other `<slug>-<ListingKey>`, and which one gets the plain slug follows feed
+  order, so it flipped; the stale row still held it. The delete-first fix only covers departed ids. **Fix (all three
+  paths):** before the upsert, park any `ec_listings` slug a different live id is about to take
+  (`slug || '~' || id`); the upsert then writes the real slug. Owner columns untouched. **The workflow now raises a
+  `::warning::` annotation + a summary line for any `(non-fatal):` log line**, so a broken mirror shows on the run.
 
 ### 2026-09-10 — EDGE CACHE added (home page 386ms → 86ms) + Community copy fully CMS-editable
 Two of the three open "ready to work on" items, done + verified.
