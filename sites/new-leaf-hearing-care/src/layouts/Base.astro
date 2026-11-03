@@ -32,6 +32,11 @@ const schemaData = schemaByPath as {
   pages: Record<string, Array<Record<string, unknown>>>;
 };
 const schemaKey = Astro.url.pathname.endsWith("/") ? Astro.url.pathname : `${Astro.url.pathname}/`;
+
+// Any address that is not the production domain (the staging worker, a workers.dev preview) must never be indexed:
+// its canonical points at itself, so without this a staging copy could compete with the live page.
+const onProductionHost = /(^|\.)newleafhearing\.com$/.test(Astro.url.hostname);
+const robotsNoindex = noindex || !onProductionHost;
 const pageSchemas = [...(schemaData.sitewide ?? []), ...(schemaData.pages?.[schemaKey] ?? [])];
 ---
 <!doctype html>
@@ -40,7 +45,7 @@ const pageSchemas = [...(schemaData.sitewide ?? []), ...(schemaData.pages?.[sche
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="google-site-verification" content="XOKQX1xQrUCbDuy759l9TjPxdrwqpgTEQQP01gPjVj0" />
-    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    {robotsNoindex && <meta name="robots" content="noindex, nofollow" />}
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
     <link rel="canonical" href={canonicalUrl} />
