@@ -22,8 +22,8 @@ const STATIC_PATHS = [
 
 // Sitemap entries carry lastmod, changefreq and priority, same layout as the
 // Duet Hearing sitemap. The canonical host is fixed (not the request origin),
-// so newleafhearing.com and www both list www URLs.
-const SITEMAP_ORIGIN = "https://www.newleafhearing.com";
+// so every host lists non-www URLs (non-www is the preferred host in GSC).
+const SITEMAP_ORIGIN = "https://newleafhearing.com";
 
 const sitemapMeta = (pathname: string): { priority: number; changefreq: string } => {
   if (pathname === "/") return { priority: 1.0, changefreq: "weekly" };
