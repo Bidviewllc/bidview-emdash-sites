@@ -7,7 +7,7 @@ const PUBLIC_HTML_CACHE_CONTROL = "public, max-age=300, s-maxage=3600, stale-whi
 const EDGE_HTML_CACHE_CONTROL = "public, max-age=3600, stale-while-revalidate=86400";
 const PUBLIC_MEDIA_CACHE_CONTROL = "public, max-age=31536000, immutable";
 const PRIVATE_CACHE_CONTROL = "no-store, max-age=0";
-const HTML_CACHE_VERSION = "2026-10-27-office-hours-v58";
+const HTML_CACHE_VERSION = "2026-11-03-non-www-canonical-v59";
 const PUBLIC_MEDIA_PREFIX = "/_emdash/api/media/file/";
 const CACHEABLE_MEDIA_TYPES = ["image/", "video/", "audio/"];
 // Old WordPress blog-category archives that 404'd after the rebuild.
@@ -109,6 +109,17 @@ const applyPublicMediaCacheHeaders = (response: Response) => {
 export const onRequest = defineMiddleware(async (context, next) => {
   const { pathname } = context.url;
   const method = context.request.method.toUpperCase();
+
+  // Non-www is the canonical host: send www to the same path on the apex.
+  if (context.url.hostname === "www.newleafhearing.com") {
+    const target = new URL(context.url);
+    target.hostname = "newleafhearing.com";
+    return new Response(null, {
+      status: method === "GET" || method === "HEAD" ? 301 : 308,
+      headers: { Location: target.toString(), "Cache-Control": "public, max-age=3600" }
+    });
+  }
+
   const workerCache = canCacheHtmlRequest(method, pathname) ? getWorkerCache() : undefined;
   const htmlCacheKey = workerCache ? getHtmlCacheKey(context.url) : undefined;
 
