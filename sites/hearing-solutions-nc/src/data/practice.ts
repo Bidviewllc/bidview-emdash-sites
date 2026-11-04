@@ -248,7 +248,7 @@ export const services: Service[] = [
 		ctaHeading: "",
 		hubHeading: "Custom Molds &\nHearing Protection",
 		hubText: "We make all kinds of custom earpieces, each molded to fit your ear exactly. Some protect your hearing—on the job, at the range, at concerts. Others solve everyday problems: keeping water out when you swim, blocking noise when you sleep, or, if you're a musician, giving you a precise in-ear monitor fit. Whatever you need, a custom mold seals better and stays more comfortable than anything off the shelf.",
-		hubItems: [{ t: "Digital ear scan", d: "[Description to come]" }],
+		hubItems: [{ t: "Digital ear scan", d: "Most places still make ear impressions the old way—packing putty into your ear and waiting for it to set. We don't. We take a fast, precise digital scan of your ear instead: about fifteen minutes, nothing messy, completely painless, and accurate down to the detail. Every custom piece we make starts here." }],
 		hubButton: "question",
 	},
 ];
