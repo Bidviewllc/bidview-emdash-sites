@@ -52,7 +52,22 @@ const FIELD_TYPE = (slug) => {
 	if (slug === "description") return ["portableText", "json"];
 	if (slug.endsWith("_image")) return ["image", "json"];
 	if (slug === "owner_note" || slug === "local_perspective") return ["text", "text"];
+	// One URL per line / pasted embed code, so both want a multi-line box.
+	if (slug === "note_videos" || slug === "floor_plan_embed") return ["text", "text"];
+	// A list the owner adds to one plan at a time: each item is a name + an upload.
+	if (slug === "floor_plan_images") return ["repeater", "json"];
 	return ["string", "text"];
+};
+// Extra field config, stored in _emdash_fields.validation. A repeater's items are
+// built from its subFields; emdash's admin renders an upload box for "image".
+const FIELD_VALIDATION = {
+	floor_plan_images: {
+		subFields: [
+			{ slug: "label", type: "string", label: "Name (e.g. Main level, Upper level)" },
+			{ slug: "image", type: "image", label: "Floor plan image", required: true },
+		],
+		maxItems: 12,
+	},
 };
 
 // MLS_FIELDS are refreshed from the feed on every sync (display/reference — editing
@@ -69,7 +84,7 @@ const MLS_FIELDS = [
 	["flooring", "Flooring"], ["fireplaces", "Fireplaces"], ["fireplace_yn", "Fireplace (Y/N)"],
 	["fireplace_features", "Fireplace Features"], ["roof", "Roof"], ["utilities", "Utilities"],
 	["pool_features", "Pool Features"], ["listing_date", "Date Listed"], ["hoa_frequency", "HOA Frequency"],
-	["tour_url_mls", "3D Tour (MLS)"], ["mls_number", "MLS #"], ["stories", "Stories"],
+	["tour_url_mls", "3D Tour link from the MLS, for reference only (updated by every sync). A Matterport link here already plays on the page; if it is another 3D tour that suits the section, copy it into 3D Tour URL above"], ["mls_number", "MLS #"], ["stories", "Stories"],
 	["arch_style", "Architectural Style"], ["construction", "Construction"], ["lot_features", "Lot Features"],
 	["condition", "Condition"], ["lot_sqft", "Lot (sq ft)"],
 ];
@@ -78,13 +93,23 @@ const OWNER_FIELDS = [
 	["description", "Description (editable — overrides the MLS remarks)"],
 	["owner_note", "Note From Grant — paragraph (shown publicly)"],
 	["note_image", "Note From Grant — image"],
-	["tour_url", "3D Tour URL (section is hidden when empty)"],
+	["tour_url", "3D Tour URL, played right on the listing page (when empty, a Matterport link from the MLS is used; with neither, the section is hidden)"],
+	["note_videos", "Note From Grant — video links, one per line (YouTube, Vimeo or an .mp4 link)"],
+	["floor_plan_embed", "Interactive Floor Plan — paste the link or the embed code (section is hidden when empty)"],
+	["floor_plan_images", "Floor Plan Images — add one per level (shown with, or instead of, the interactive plan)"],
 ];
 const FIELDS = [...MLS_FIELDS, ...OWNER_FIELDS];
+// Order in the admin form: as FIELDS, except the MLS tour link sits directly under
+// the owner's 3D Tour URL, so the two can be compared and copied across.
+const ADMIN_ORDER = FIELDS.filter(([s]) => s !== "tour_url_mls")
+	.flatMap((f) => f[0] === "tour_url" ? [f, FIELDS.find(([s]) => s === "tour_url_mls")] : [f]);
+// emdash 1.x stores content datetimes as UTC ISO with milliseconds; datetime('now')
+// ("YYYY-MM-DD HH:MM:SS") sorts and compares wrong against it.
+const NOW_SQL = "(strftime('%Y-%m-%dT%H:%M:%fZ','now'))";
 const BASE_COLS = [
 	["id", "text primary key"], ["slug", "text"], ["status", "text default 'draft'"],
 	["author_id", "text"], ["primary_byline_id", "text"],
-	["created_at", "text default (datetime('now'))"], ["updated_at", "text default (datetime('now'))"],
+	["created_at", `text default ${NOW_SQL}`], ["updated_at", `text default ${NOW_SQL}`],
 	["published_at", "text"], ["scheduled_at", "text"], ["deleted_at", "text"],
 	["version", "integer default 1"], ["live_revision_id", "text"], ["draft_revision_id", "text"],
 	["locale", "text default 'en' not null"], ["translation_group", "text"],
@@ -94,15 +119,18 @@ const BASE_COLS = [
 export async function mirrorListings(log = console.log) {
 	// 1) register the collection + fields (backend-only: no url_pattern, the site's
 	//    own /homes/:slug route renders the public detail page).
+	//    Upsert, not INSERT OR REPLACE: REPLACE deletes the row, resetting the columns
+	//    set in the admin (emdash 1.x: hidden, routable, sort_order, nav_group, ...).
 	const cid = "col_listings";
-	await d1(`INSERT OR REPLACE INTO _emdash_collections (id,slug,label,label_singular,supports,source,has_seo,url_pattern,created_at,updated_at) VALUES ('${cid}','listings','Listings','Listing','["revisions"]','manual',0,NULL,datetime('now'),datetime('now'))`);
+	await d1(`INSERT INTO _emdash_collections (id,slug,label,label_singular,supports,source,has_seo,url_pattern,created_at,updated_at) VALUES ('${cid}','listings','Listings','Listing','["revisions"]','manual',0,NULL,${NOW_SQL},${NOW_SQL}) ON CONFLICT(id) DO UPDATE SET slug=excluded.slug, label=excluded.label, label_singular=excluded.label_singular, supports=excluded.supports, source=excluded.source, has_seo=excluded.has_seo, url_pattern=excluded.url_pattern, updated_at=excluded.updated_at`);
 	await d1(`DELETE FROM _emdash_fields WHERE collection_id='${cid}'`);
 	// title first (base column) — required so emdash's editor/save recognizes it.
 	await d1(`INSERT OR REPLACE INTO _emdash_fields (id,collection_id,slug,label,type,column_type,required,sort_order,searchable) VALUES ('fld_listings_title','${cid}','title','Address','string','TEXT',1,0,1)`);
 	let order = 1;
-	for (const [slug, label] of FIELDS) {
+	for (const [slug, label] of ADMIN_ORDER) {
 		const [ftype, fcol] = FIELD_TYPE(slug);
-		await d1(`INSERT OR REPLACE INTO _emdash_fields (id,collection_id,slug,label,type,column_type,required,sort_order,searchable) VALUES ('fld_listings_${slug}','${cid}','${slug}',${S(label)},'${ftype}','${fcol}',0,${order++},${slug === "city" || slug === "property_type" ? 1 : 0})`);
+		const validation = FIELD_VALIDATION[slug] ? S(JSON.stringify(FIELD_VALIDATION[slug])) : "NULL";
+		await d1(`INSERT OR REPLACE INTO _emdash_fields (id,collection_id,slug,label,type,column_type,required,sort_order,searchable,validation) VALUES ('fld_listings_${slug}','${cid}','${slug}',${S(label)},'${ftype}','${fcol}',0,${order++},${slug === "city" || slug === "property_type" ? 1 : 0},${validation})`);
 	}
 	const cols = [...BASE_COLS.map(([n, t]) => `"${n}" ${t}`), ...FIELDS.map(([s]) => `"${s}" text`)];
 	await d1(`CREATE TABLE IF NOT EXISTS ec_listings (${cols.join(", ")}, constraint "ec_listings_slug_locale_unique" unique ("slug","locale"))`);
@@ -134,15 +162,23 @@ export async function mirrorListings(log = console.log) {
 		...trackedCols.map((c) => `"${c}"=excluded."${c}"`),
 		`"description"=CASE WHEN ec_listings."description" IS ec_listings."_mls_description" THEN excluded."description" ELSE ec_listings."description" END`,
 	].join(",");
+	// 2c) Also before the upsert: park any slug that a DIFFERENT live listing is about
+	// to take. Two live listings at one address get "<addr>" and "<addr>-<ListingKey>",
+	// and which one gets the plain slug can flip between syncs (feed order). The row
+	// still holding it then trips unique(slug,locale) on the other's insert — a slug
+	// swap between two live ids, which 2b can't catch (893 Donna Drive, 2026-10-04).
+	// The parked "<slug>~<id>" is overwritten by the upsert below.
+	await d1(`UPDATE ec_listings SET slug = slug || '~' || id WHERE EXISTS (SELECT 1 FROM listings l WHERE COALESCE(l.slug, 'listing-' || l.id) = ec_listings.slug AND l.id <> ec_listings.id)`);
 	const head = `INSERT INTO ec_listings (${insertCols.join(",")}) VALUES `;
 	const tail = ` ON CONFLICT(id) DO UPDATE SET ${setClause}`;
 	let batch = [], sqlLen = head.length + tail.length;
 	const flush = async () => { if (batch.length) { await d1(head + batch.join(",") + tail); batch = []; sqlLen = head.length + tail.length; } };
+	const now = S(new Date().toISOString());
 	for (const r of rows) {
 		const propType = (r.sub_type || r.type || "").replace(/([a-z])([A-Z])/g, "$1 $2");
 		const vals = [
 			S(r.id), S(r.slug || `listing-${r.id}`), "'published'", "'en'", "1",
-			S(r.address || "(no address)"), "datetime('now')", "datetime('now')",
+			S(r.address || "(no address)"), now, now,
 			S(r.city), S(r.state), S(r.zip),
 			S(r.price != null ? "$" + Number(r.price).toLocaleString("en-US") : null),
 			S(r.beds), S(r.baths), S(r.sqft != null ? Number(r.sqft).toLocaleString("en-US") : null),

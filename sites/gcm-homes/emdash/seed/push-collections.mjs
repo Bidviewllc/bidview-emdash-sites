@@ -6,7 +6,7 @@
  * writes our collections straight into the deployed D1's emdash tables
  * (_emdash_collections, _emdash_fields, ec_<slug>) via the D1 REST API, matching
  * emdash's schema (mirrors the Ontario generate-setup pattern). Idempotent:
- * deterministic ids + INSERT OR REPLACE, and it never touches pages/posts.
+ * deterministic ids + upserts, and it never touches pages/posts.
  *
  * Run:  node --env-file=.env seed/push-collections.mjs   (reads GCM_D1_TOKEN)
  *
@@ -49,11 +49,15 @@ const S = (v) => v === null || v === undefined ? "NULL" : (typeof v === "number"
 
 // emdash field type -> ec_ column SQL type
 const colType = (t) => (t === "portableText" || t === "image" || t === "reference" ? "json" : "text");
+// emdash 1.x stores every content datetime as UTC ISO with milliseconds
+// ("2026-11-03T15:56:00.123Z"); SQLite's datetime('now') format sorts and
+// compares wrong against it.
+const NOW_SQL = "(strftime('%Y-%m-%dT%H:%M:%fZ','now'))";
 // Base columns every ec_ table has (from ec_pages). `title` is a base column too.
 const BASE_COLS = [
 	["id", "text primary key"], ["slug", "text"], ["status", "text default 'draft'"],
 	["author_id", "text"], ["primary_byline_id", "text"],
-	["created_at", "text default (datetime('now'))"], ["updated_at", "text default (datetime('now'))"],
+	["created_at", `text default ${NOW_SQL}`], ["updated_at", `text default ${NOW_SQL}`],
 	["published_at", "text"], ["scheduled_at", "text"], ["deleted_at", "text"],
 	["version", "integer default 1"], ["live_revision_id", "text"], ["draft_revision_id", "text"],
 	["locale", "text default 'en' not null"], ["translation_group", "text"],
@@ -64,8 +68,11 @@ async function pushCollection(col) {
 	const cid = `col_${col.slug}`;
 	const supports = JSON.stringify(col.supports || []);
 	const hasSeo = (col.supports || []).includes("seo") ? 1 : 0;
-	// 1) collection row
-	await d1(`INSERT OR REPLACE INTO _emdash_collections (id,slug,label,label_singular,supports,source,has_seo,url_pattern,created_at,updated_at) VALUES (${S(cid)},${S(col.slug)},${S(col.label)},${S(col.labelSingular || col.label)},${S(supports)},'manual',${hasSeo},${S(col.urlPattern || null)},datetime('now'),datetime('now'))`);
+	// 1) collection row. An upsert, not INSERT OR REPLACE: REPLACE deletes the row,
+	// which resets every column this script doesn't set (emdash 1.x added hidden,
+	// routable, sort_order, nav_group, ... that are set in the admin) and cascades
+	// into _emdash_fields.
+	await d1(`INSERT INTO _emdash_collections (id,slug,label,label_singular,supports,source,has_seo,url_pattern,created_at,updated_at) VALUES (${S(cid)},${S(col.slug)},${S(col.label)},${S(col.labelSingular || col.label)},${S(supports)},'manual',${hasSeo},${S(col.urlPattern || null)},${NOW_SQL},${NOW_SQL}) ON CONFLICT(id) DO UPDATE SET slug=excluded.slug, label=excluded.label, label_singular=excluded.label_singular, supports=excluded.supports, source=excluded.source, has_seo=excluded.has_seo, url_pattern=excluded.url_pattern, updated_at=excluded.updated_at`);
 
 	// 2) field rows. `title` MUST be registered (emdash's editor always submits a
 	// `title` value; if it isn't a known field, every save fails with
@@ -98,13 +105,27 @@ async function pushEntries(col) {
 	const fieldSlugs = (col.fields || []).map((f) => f.slug);
 	const jsonFields = new Set((col.fields || []).filter((f) => colType(f.type) === "json").map((f) => f.slug));
 
-	// Which rows has a human edited? emdash's admin stamps updated_at as ISO-8601
-	// with a trailing Z; this script writes SQLite's "YYYY-MM-DD HH:MM:SS". Anything
-	// matching the former was last written by a person, not by seeding.
+	// Which rows has a human edited? Each write stamps the hidden `_seeded_at` column
+	// with the same value as updated_at; an admin save moves updated_at and leaves
+	// _seeded_at behind. (`_`-prefixed so emdash's save validator skips it.)
+	// julianday() compares instants, so the old "YYYY-MM-DD HH:MM:SS" stamps still
+	// match after emdash 1.x rewrites updated_at as "...T...Z".
+	//
+	// Before 1.x the date FORMAT was the marker (the admin wrote ISO, this script
+	// wrote SQLite's format). When the column is first added, rows still in the old
+	// format are adopted as seeded. Run after the 1.x migration has rewritten them,
+	// nothing is adopted and every row reads as edited: entries are skipped, never
+	// overwritten.
+	try {
+		await d1(`ALTER TABLE ec_${col.slug} ADD COLUMN "_seeded_at" text`);
+		const res = await d1(`UPDATE ec_${col.slug} SET "_seeded_at"=updated_at WHERE updated_at NOT LIKE '%T%Z'`);
+		console.log(`  · ${col.slug}: added _seeded_at, adopted ${res?.[0]?.meta?.changes ?? 0} seeded row(s)`);
+	} catch { /* column exists */ }
+
 	const edited = new Set();
 	if (!FORCE) {
 		try {
-			const res = await d1(`SELECT id FROM ec_${col.slug} WHERE updated_at LIKE '%T%Z'`);
+			const res = await d1(`SELECT id FROM ec_${col.slug} WHERE "_seeded_at" IS NULL OR julianday(updated_at) IS NOT julianday("_seeded_at")`);
 			for (const r of res?.[0]?.results || []) edited.add(String(r.id));
 		} catch { /* table may not exist on the first run */ }
 	}
@@ -117,8 +138,9 @@ async function pushEntries(col) {
 			continue;
 		}
 		const data = e.data || {};
-		const cols = ["id", "slug", "status", "locale", "version", "title", "published_at", "updated_at"];
-		const vals = [S(e.id), S(e.slug), S(e.status || "published"), "'en'", "1", S(data.title || ""), "datetime('now')", "datetime('now')"];
+		const now = S(new Date().toISOString());
+		const cols = ["id", "slug", "status", "locale", "version", "title", "published_at", "updated_at", "_seeded_at"];
+		const vals = [S(e.id), S(e.slug), S(e.status || "published"), "'en'", "1", S(data.title || ""), now, now, now];
 		for (const fs2 of fieldSlugs) {
 			if (fs2 === "title") continue;
 			cols.push(`"${fs2}"`);

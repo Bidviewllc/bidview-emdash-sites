@@ -67,3 +67,12 @@ jobs:
           echo '```' >> "$GITHUB_STEP_SUMMARY"
           node sync/sync.mjs 2>&1 | tee -a "$GITHUB_STEP_SUMMARY"
           echo '```' >> "$GITHUB_STEP_SUMMARY"
+          # The admin mirror (and any other "(non-fatal)" step) never fails the run,
+          # so a green run can hide a broken mirror — it did for a month (2026-10).
+          # Raise each one as a warning annotation + a line in the summary.
+          if grep -q '(non-fatal):' "$GITHUB_STEP_SUMMARY"; then
+            grep '(non-fatal):' "$GITHUB_STEP_SUMMARY" | while IFS= read -r line; do
+              echo "::warning title=GCM sync - non-fatal step failed::${line//%/%25}"
+            done
+            echo '> ⚠️ **A non-fatal step failed** (see the log above). The listings synced, but the admin may be out of date.' >> "$GITHUB_STEP_SUMMARY"
+          fi

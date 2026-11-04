@@ -126,15 +126,24 @@ async function mirrorEmdashListings() {
     ...trackedCols.map(c => `"${c}"=excluded."${c}"`),
     `"description"=CASE WHEN ec_listings."description" IS ec_listings."_mls_description" THEN excluded."description" ELSE ec_listings."description" END`,
   ].join(",");
+  // Also before the upsert: park any slug that a DIFFERENT live listing is about to
+  // take. Two live listings at one address get "<addr>" and "<addr>-<ListingKey>",
+  // and which one gets the plain slug can flip between runs (feed order). The row
+  // still holding it then trips unique(slug,locale) on the other's insert — a slug
+  // swap between two live ids, which the delete above can't catch (893 Donna Drive,
+  // 2026-10-04). The parked "<slug>~<id>" is overwritten by the upsert below.
+  await d1(`UPDATE ec_listings SET slug = slug || '~' || id WHERE EXISTS (SELECT 1 FROM listings l WHERE COALESCE(l.slug, 'listing-' || l.id) = ec_listings.slug AND l.id <> ec_listings.id)`);
   const head = `INSERT INTO ec_listings (${insertCols.join(",")}) VALUES `;
   const tail = ` ON CONFLICT(id) DO UPDATE SET ${setClause}`;
   let batch = [], len = head.length + tail.length;
   const flush = async () => { if (batch.length) { await d1(head + batch.join(",") + tail); batch = []; len = head.length + tail.length; } };
+  // emdash 1.x stores content datetimes as UTC ISO with milliseconds, not datetime('now').
+  const now = sqlVal(new Date().toISOString());
   for (const r of rows) {
     const pt = (r.sub_type || r.type || "").replace(/([a-z])([A-Z])/g, "$1 $2");
     const vals = [
       sqlVal(r.id), sqlVal(r.slug || ("listing-" + r.id)), "'published'", "'en'", "1",
-      sqlVal(r.address || "(no address)"), "datetime('now')", "datetime('now')",
+      sqlVal(r.address || "(no address)"), now, now,
       sqlVal(r.city), sqlVal(r.state), sqlVal(r.zip),
       sqlVal(r.price != null ? "$" + Number(r.price).toLocaleString("en-US") : null),
       sqlVal(r.beds), sqlVal(r.baths), sqlVal(r.sqft != null ? Number(r.sqft).toLocaleString("en-US") : null),

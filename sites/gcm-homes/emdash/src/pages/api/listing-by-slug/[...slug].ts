@@ -12,6 +12,20 @@ import { realPhone } from "../../../lib/contact-details";
 import { getGrantIntro } from "../../../lib/grant-intro";
 export const prerender = false;
 
+// floor_plan_images is an emdash repeater: a JSON array of { label, image } items,
+// where image is a media object. Hand the page plain { label, url } pairs and drop
+// items saved without an upload.
+function floorPlanImages(raw: unknown): { label: string | null; url: string }[] {
+	let items: any = raw;
+	if (typeof raw === "string") {
+		try { items = JSON.parse(raw); } catch { return []; }
+	}
+	if (!Array.isArray(items)) return [];
+	return items
+		.map((it: any) => ({ label: String(it?.label ?? "").trim() || null, url: imageUrl(it?.image) }))
+		.filter((it): it is { label: string | null; url: string } => !!it.url);
+}
+
 export const GET: APIRoute = async ({ params, locals }) => {
 	try {
 		const slug = String(params.slug || "").replace(/\/+$/, "");
@@ -27,7 +41,9 @@ export const GET: APIRoute = async ({ params, locals }) => {
 		// Name the neighborhood by point-in-polygon so the detail page can show it
 		// instead of city/state. Falls back to null outside every traced area.
 		const area = neighborhoodForPoint((result as any).listing?.lng, (result as any).listing?.lat);
-		const listing = { ...(result as any).listing, neighborhood: area?.name ?? null, neighborhoodSlug: area?.slug ?? null };
+		// noteImage is an emdash image field (a JSON media object), same as the
+		// neighbourhood images below -- resolve it to a URL before the page sees it.
+		const listing = { ...(result as any).listing, noteImage: imageUrl((result as any).listing?.noteImage), floorPlanImages: floorPlanImages((result as any).listing?.floorPlanImages), neighborhood: area?.name ?? null, neighborhoodSlug: area?.slug ?? null };
 
 		// B4 + B5. Both are optional: when there is no market-intelligence post for this
 		// neighborhood, or no imagery on the neighborhood entry, the page hides that

@@ -49,9 +49,16 @@ export { PluginBridge };
 // filter chips on /reviews/, cards without stars for unrated recommendations.
 // v17 (2026-09-29): /reviews/ switches from the carousel to a grid (Liz); the
 // home page carousel is unchanged.
-// v20 (2026-11-03): status badges on /listings/ cards, sold listing pages, the
+// v20 (2026-11-03): listing page -- mosaic gallery in the description column,
+// lightbox no longer flashes between photos, Grant's note takes videos, and an
+// interactive floor plan section with a jump link under Quick Statistics.
+// v21 (2026-11-03): emdash 0.30 -> 1.4. New build, new asset hashes; cached
+// 0.30 HTML would point at assets the deploy removed.
+// v22 (2026-11-04): listing page -- floor plan and 3D tour bands, the 3D tour
+// plays in place, MLS Matterport links fill an empty 3D tour.
+// v23 (2026-11-04): status badges on /listings/ cards, sold listing pages, the
 // new /sold/ page and its footer link in every chrome copy.
-const CACHE_VERSION = "v20";
+const CACHE_VERSION = "v23";
 const CACHEABLE_TYPE = /^(?:text\/html|application\/xml|text\/xml|text\/plain)/i;
 const ADMIN_COOKIE = /emdash[-_](session|edit-mode|admin)/i;
 

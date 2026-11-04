@@ -322,8 +322,11 @@ async function archivedBySlug(slug: string) {
 			descriptionIsCustom: !!customPT,
 			ownerNote: clean(snap.owner_note),
 			headline: clean(snap.headline),
-			tourUrl: clean(snap.tour_url),
+			tourUrl: clean(snap.tour_url) ?? matterportFrom(row.tour_url_mls),
 			noteImage: clean(snap.note_image),
+			noteVideos: clean(snap.note_videos),
+			floorPlanEmbed: clean(snap.floor_plan_embed),
+			floorPlanImages: clean(snap.floor_plan_images),
 			archived: true,
 			sold: {
 				closePrice: row.close_price ?? null,
@@ -334,6 +337,20 @@ async function archivedBySlug(slug: string) {
 		},
 		photos: photo ? [photo] : [],
 	};
+}
+
+// The 3D tour section only plays Matterport tours. The MLS tour field is more often
+// a whole marketing site or a video, so it fills the section only when it holds a
+// Matterport link; the admin sees the raw value under the 3D Tour URL field and can
+// copy anything else across by hand. The field sometimes holds two links.
+function matterportFrom(raw: unknown): string | null {
+	for (const part of String(raw ?? "").split(/[\s,]+/)) {
+		try {
+			const u = new URL(part);
+			if (/(^|\.)matterport\.com$/i.test(u.hostname) && (u.searchParams.get("m") || /\/models\/[A-Za-z0-9]+/.test(u.pathname))) return u.href;
+		} catch { /* not a URL */ }
+	}
+	return null;
 }
 
 export async function bySlug(slug: string) {
@@ -358,8 +375,11 @@ export async function bySlug(slug: string) {
 			// Empty headline falls back to the address at render time, so a corrected
 			// address keeps flowing through rather than being frozen into a field.
 			headline: ov.headline,
-			tourUrl: ov.tourUrl,
+			tourUrl: ov.tourUrl ?? matterportFrom(detail.tourUrlMls),
 			noteImage: ov.noteImage,
+			noteVideos: ov.noteVideos,
+			floorPlanEmbed: ov.floorPlanEmbed,
+			floorPlanImages: ov.floorPlanImages,
 		},
 		photos: (results ?? []).map((p: any) => p.url),
 	};
@@ -372,34 +392,39 @@ export async function bySlug(slug: string) {
 // both land here and show on the site. The Trestle sync's mirror updates only the
 // MLS columns (ON CONFLICT DO UPDATE), never these two, so overrides survive every
 // sync. A set description REPLACES the MLS remarks; clearing it reverts to MLS.
-export async function getOverride(listingKey: string): Promise<{ note: string | null; description: string | null; mlsDescription: string | null; isOverride: boolean; headline: string | null; tourUrl: string | null; noteImage: string | null }> {
+export async function getOverride(listingKey: string): Promise<{ note: string | null; description: string | null; mlsDescription: string | null; isOverride: boolean; headline: string | null; tourUrl: string | null; noteImage: string | null; noteVideos: string | null; floorPlanEmbed: string | null; floorPlanImages: string | null }> {
 	try {
-		const row = await DB().prepare('SELECT owner_note, description, headline, tour_url, note_image, "_mls_description" AS mls_description FROM ec_listings WHERE id = ?').bind(listingKey).first();
+		// SELECT * rather than a column list: a newly added owner field then reads
+		// as null until mirror-listings.mjs has added its column, instead of the
+		// whole query failing and blanking every override on the page.
+		const row = await DB().prepare('SELECT *, "_mls_description" AS mls_description FROM ec_listings WHERE id = ?').bind(listingKey).first();
 		const clean = (v: any) => { const s = (v ?? "").toString().trim(); return s === "" ? null : s; };
 		const description = clean((row as any)?.description);
 		const mlsDescription = clean((row as any)?.mls_description);
-		return { note: clean((row as any)?.owner_note), description, mlsDescription, isOverride: !!(description && description !== mlsDescription), headline: clean((row as any)?.headline), tourUrl: clean((row as any)?.tour_url), noteImage: clean((row as any)?.note_image) };
-	} catch { return { note: null, description: null, mlsDescription: null, isOverride: false, headline: null, tourUrl: null, noteImage: null }; }
+		return { note: clean((row as any)?.owner_note), description, mlsDescription, isOverride: !!(description && description !== mlsDescription), headline: clean((row as any)?.headline), tourUrl: clean((row as any)?.tour_url), noteImage: clean((row as any)?.note_image), noteVideos: clean((row as any)?.note_videos), floorPlanEmbed: clean((row as any)?.floor_plan_embed), floorPlanImages: clean((row as any)?.floor_plan_images) };
+	} catch { return { note: null, description: null, mlsDescription: null, isOverride: false, headline: null, tourUrl: null, noteImage: null, noteVideos: null, floorPlanEmbed: null, floorPlanImages: null }; }
 }
 export async function getNote(listingKey: string): Promise<string | null> {
 	return (await getOverride(listingKey)).note;
 }
+// emdash 1.x stores content datetimes as UTC ISO with milliseconds, not datetime('now').
+const NOW_SQL = "strftime('%Y-%m-%dT%H:%M:%fZ','now')";
 export async function setNote(listingKey: string, note: string): Promise<void> {
 	const trimmed = (note ?? "").toString().slice(0, 8000);
 	const v = trimmed.trim() === "" ? null : trimmed;
-	await DB().prepare("UPDATE ec_listings SET owner_note = ?, updated_at = datetime('now') WHERE id = ?").bind(v, listingKey).run();
+	await DB().prepare(`UPDATE ec_listings SET owner_note = ?, updated_at = ${NOW_SQL} WHERE id = ?`).bind(v, listingKey).run();
 }
 // Empty description = "reset to MLS": set it back to the snapshot so it tracks the
 // feed again. A non-empty value becomes the owner override (preserved across sync).
 export async function setDescription(listingKey: string, description: string): Promise<void> {
 	const trimmed = (description ?? "").toString().slice(0, 16000);
 	if (trimmed.trim() === "") {
-		await DB().prepare('UPDATE ec_listings SET description = "_mls_description", updated_at = datetime(\'now\') WHERE id = ?').bind(listingKey).run();
+		await DB().prepare(`UPDATE ec_listings SET description = "_mls_description", updated_at = ${NOW_SQL} WHERE id = ?`).bind(listingKey).run();
 		return;
 	}
 	// Store as Portable Text: pass through if already PT JSON, else convert plain text.
 	const val = trimmed.trim().startsWith("[") ? trimmed : plainToPortableText(trimmed);
-	await DB().prepare("UPDATE ec_listings SET description = ?, updated_at = datetime('now') WHERE id = ?").bind(val, listingKey).run();
+	await DB().prepare(`UPDATE ec_listings SET description = ?, updated_at = ${NOW_SQL} WHERE id = ?`).bind(val, listingKey).run();
 }
 // Resolve a listing's id from its slug (the client edits by slug; notes key on id).
 export async function keyForSlug(slug: string): Promise<string | null> {
