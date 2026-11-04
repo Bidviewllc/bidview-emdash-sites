@@ -10,7 +10,7 @@
 
   <!-- The site design system. This page used to re-implement ~300 lines of it in an
        inline <style> block, which is why it drifted from the design. Everything the
-       listing sections need — .listing-hero--fl, .aside-fl, .filmstrip, .feat-card,
+       listing sections need — .listing-hero--fl, .aside-fl, .feat-card,
        .grant-intro, .invite, .lb — already lives in these two files. -->
   <link rel="stylesheet" href="/styles.css" />
   <link rel="stylesheet" href="/responsive.css" />
@@ -93,6 +93,136 @@
     .aside-fl--dark .aside-fl__row__l { color: rgba(255, 255, 255, 0.62); }
     .aside-fl--dark .aside-fl__row__v { color: var(--white); }
 
+    /* --- Floor plan jump link, under Quick Statistics. Outline rather than
+           orange so "Schedule a private tour" stays the one primary action. --- */
+    a.aside-fl__fp {
+      display: block; text-align: center; text-decoration: none;
+      font-family: var(--font-sans); font-weight: 600; font-size: 12px;
+      letter-spacing: 0.18em; text-transform: uppercase; color: var(--white);
+      padding: 18px 20px; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.35);
+      transition: border-color 180ms ease, background 180ms ease;
+    }
+    a.aside-fl__fp:hover { border-color: var(--orange); background: rgba(247, 148, 91, 0.12); }
+
+    @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+    /* Clears the fixed .nav when the jump link lands. */
+    #propGallery { scroll-margin-top: 120px; }
+    #floor-plans, #tour { scroll-margin-top: 24px; }
+
+    /* --- Property gallery: a mosaic in the description column. Tiles follow a
+           12-photo cycle (big, four small, two wide, four small around a big one
+           on the right) that fills its rows exactly, so "Load more" appends whole
+           cycles with no holes. Only the final partial cycle gets its own fill
+           pattern (see galleryTileClass). Row height is tied to the column width
+           through container units, so tiles keep a landscape shape at any size. --- */
+    .pgallery { margin-top: 64px; container-type: inline-size; }
+    .pgallery__head {
+      display: flex; align-items: baseline; justify-content: space-between;
+      gap: 16px; margin-bottom: 20px; flex-wrap: wrap;
+    }
+    .pgallery__h { font-family: var(--font-noto); font-weight: 400; font-size: 28px; color: var(--navy); line-height: 1.2; }
+    .pgallery__grid {
+      --gap: 8px;
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--gap);
+      grid-auto-rows: calc((100cqw - 3 * var(--gap)) / 4 * 0.75);
+    }
+    .pgallery__tile {
+      position: relative; overflow: hidden; border-radius: 4px; padding: 0;
+      border: 0; background: var(--beige); cursor: zoom-in; display: block;
+    }
+    .pgallery__tile img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform 500ms cubic-bezier(0.22, 0.7, 0.2, 1);
+    }
+    .pgallery__tile:hover img { transform: scale(1.04); }
+    .pgallery__tile:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
+    .pgallery__tile--big { grid-column: span 2; grid-row: span 2; }
+    .pgallery__tile--right { grid-column: 3 / span 2; grid-row: span 2; }
+    .pgallery__tile--wide { grid-column: span 2; }
+    .pgallery__tile--full { grid-column: 1 / -1; grid-row: span 2; }
+    .pgallery__foot { display: flex; align-items: center; justify-content: center; gap: 20px; margin-top: 28px; flex-wrap: wrap; }
+    .pgallery__count { font-family: var(--font-sans); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+    .pgallery__more {
+      font-family: var(--font-sans); font-weight: 600; font-size: 12px; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--navy); background: transparent;
+      border: 1px solid var(--navy); border-radius: 6px; padding: 16px 32px; cursor: pointer;
+      transition: background 180ms ease, color 180ms ease;
+    }
+    .pgallery__more:hover { background: var(--navy); color: var(--white); }
+    .pgallery__more[hidden] { display: none; }
+
+    /* --- Lightbox. The .lb shell is built once per open and only the <img>
+           source changes between photos, so neither the backdrop fade nor the
+           zoom-in in styles.css replays on every arrow press -- replaying them is
+           what flashed the page through. The next photo is decoded before it is
+           swapped in; until then the current one dims slightly. --- */
+    .lb__img { transition: opacity 160ms ease; }
+    .lb__img.is-loading { opacity: 0.6; }
+    .lb__img.is-plan { background: #fff; padding: 16px; border-radius: 4px; }
+
+    /* --- Note From Grant media: image, one video or several, from the admin. --- */
+    /* One item fills the column; with more, the first runs full width and the
+       rest sit two to a row under it (a lone last one spans the row), so three
+       or four videos don't stack into a column far taller than the note. */
+    .note-media { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .note-media > :first-child, .note-media > :last-child:nth-child(even) { grid-column: 1 / -1; }
+    .note-media .local-card__photo { height: auto; aspect-ratio: 16 / 9; }
+    .note-media__video {
+      position: relative; aspect-ratio: 16 / 9; border-radius: 8px; overflow: hidden;
+      background: var(--navy); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+    .note-media__video iframe, .note-media__video video {
+      position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; object-fit: cover;
+    }
+    .grant-note__more { margin-top: 12px; font-family: var(--font-sans); font-size: 12px; font-weight: 600; }
+    .grant-note__more a { color: var(--orange); }
+
+    /* --- Interactive floor plan: full width, the same frame as the 3D tour. --- */
+    /* The 3D tour and the floor plan sit in full-width bands, navy then beige,
+       so they read as their own sections against the cream page. */
+    .tour-band { background: var(--navy); padding: 96px 0; }
+    /* The card is navy too; a faint edge keeps it from melting into the band
+       when a listing has no photo to put behind it. */
+    .tour-band .matterport { box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12); }
+    .matterport:focus-visible { outline: 2px solid var(--orange); outline-offset: 4px; }
+    /* Once launched, the card holds the tour itself at the same size. */
+    .matterport.is-playing { cursor: default; transform: none; background: #000; }
+    .matterport.is-playing iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; }
+    .floorplan { background: var(--beige); padding: 96px 0; }
+    .floorplan__head {
+      max-width: 1320px; margin: 0 auto 28px; padding: 0 32px;
+      display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap;
+    }
+    .floorplan__h { font-family: var(--font-noto); font-weight: 400; font-size: 34px; line-height: 1.2; color: var(--navy); margin-top: 8px; }
+    .floorplan__open { font-family: var(--font-sans); font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--navy); display: inline-flex; align-items: center; gap: 8px; }
+    .floorplan__open:hover { color: var(--orange); }
+    button.floorplan__open { background: none; border: 0; padding: 0; cursor: pointer; }
+    .floorplan__open[hidden] { display: none; }
+    .floorplan__tabs { max-width: 1320px; margin: -8px auto 20px; padding: 0 32px; display: flex; flex-wrap: wrap; gap: 8px; }
+    .floorplan__tab {
+      font-family: var(--font-sans); font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--navy); background: transparent; border: 1px solid var(--line); border-radius: 999px;
+      padding: 10px 18px; cursor: pointer; transition: border-color 150ms ease, background 150ms ease, color 150ms ease;
+    }
+    .floorplan__tab:hover { border-color: var(--navy); }
+    .floorplan__tab[aria-selected="true"] { background: var(--navy); border-color: var(--navy); color: var(--white); }
+    .floorplan__frame {
+      margin: 0 32px; border-radius: 8px; overflow: hidden; background: var(--white);
+      border: 1px solid var(--line); height: min(82vh, 820px); min-height: 480px;
+    }
+    .floorplan__frame.is-image { height: auto; min-height: 0; }
+    /* Self-sizing embed: the frame follows the iframe, which the plan page
+       resizes; 640px is only what shows until it reports in. */
+    /* These plans also draw their own frame, so ours would make a box in a box. */
+    .floorplan__frame.is-auto { height: auto; min-height: 0; border-color: transparent; background: transparent; }
+    .floorplan__frame.is-auto iframe { height: 640px; }
+    .floorplan__panel { height: 100%; }
+    .floorplan__panel[hidden] { display: none; }
+    .floorplan__frame iframe { width: 100%; height: 100%; border: 0; display: block; }
+    .floorplan__img { display: block; width: 100%; padding: 24px; background: none; border: 0; cursor: zoom-in; }
+    .floorplan__img img { display: block; width: 100%; max-height: min(78vh, 780px); object-fit: contain; margin: 0 auto; }
+    .lb__nav[hidden] { display: none; }
+
     /* --- Loading state --- */
     .loading { text-align: center; padding: 220px 40px; color: var(--muted); }
     .loading__spinner { width: 40px; height: 40px; border: 3px solid var(--line); border-top-color: var(--navy); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px; }
@@ -142,8 +272,8 @@
 
       /* --- Everything that is navigation, marketing or interactive --- */
       .nav, .nav__drawer, .nav__scrim, .back-bar, .footer,
-      .listing-hero, .filmstrip-section, .section--features .features-nav,
-      .matterport, .section--market, .section--community, .section--grant-intro,
+      .listing-hero, .pgallery, .floorplan, .section--features .features-nav,
+      .tour-band, .section--market, .section--community, .section--grant-intro,
       #listing-contact, .lightbox, .listing-hero__share,
       .grant-note__btn, .grant-note__editor, .grant-note__status,
       .prop-desc__flag, .aside-fl__cta, .cta-arrow {
@@ -317,9 +447,31 @@
     @media (max-width: 1024px) {
       body { padding-top: 80px; }
       .back-bar { padding: 18px 24px; }
+      #propGallery { scroll-margin-top: 100px; }
+      #floor-plans, #tour { scroll-margin-top: 36px; }
+      .floorplan__head { padding: 0 24px; }
+      .floorplan__frame { margin: 0 24px; }
+      .floorplan__tabs { padding: 0 24px; }
+      .floorplan__h { font-size: 28px; }
+      /* Media above the copy once the card stacks, as .local-card__photo does. */
+      .note-media { order: -1; }
+      .note-media .local-card__photo { order: 0; }
     }
     @media (max-width: 640px) {
       .back-bar { padding: 14px 20px; }
+      .pgallery { margin-top: 48px; }
+      .pgallery__h { font-size: 24px; }
+      /* Two columns: every span-2 tile becomes a full row, so the cycle still
+         fills its rows exactly. */
+      .pgallery__grid { --gap: 6px; grid-template-columns: repeat(2, 1fr); grid-auto-rows: calc((100cqw - var(--gap)) / 2 * 0.75); }
+      .pgallery__tile--right { grid-column: span 2; }
+      .floorplan, .tour-band { padding: 64px 0; }
+      .floorplan__head { padding: 0 20px; }
+      .floorplan__frame { margin: 0 20px; height: 70vh; min-height: 420px; }
+      .floorplan__frame.is-image, .floorplan__frame.is-auto { height: auto; min-height: 0; }
+      .floorplan__tabs { padding: 0 20px; }
+      .floorplan__img { padding: 12px; }
+      .floorplan__h { font-size: 24px; }
       .grant-note { padding: 20px; }
       .grant-note__body { font-size: 16px; }
       .prop-desc__body { font-size: 15px; }
@@ -414,6 +566,9 @@
 <script>
 const API = "";
 let photos = [];
+let fpImages = [];
+let fpNames = [];
+let fpAutoHeight = false;
 let lbIndex = 0;
 let canEdit = false;
 let currentSlug = "";
@@ -520,14 +675,32 @@ async function saveNote() {
   }
 }
 
-/* ---------------- Lightbox (.lb — styles live in styles.css) ---------------- */
-function renderLightbox() {
+/* ---------------- Lightbox (.lb — styles live in styles.css) ----------------
+   The shell is built once when the lightbox opens; moving between photos only
+   swaps the <img> source. It used to rebuild the whole thing on every arrow
+   press, which replayed the open animations from transparent and flashed the
+   page through between photos. The next photo is decoded off-screen first and
+   swapped in once it is ready, and its neighbours are fetched ahead, so the
+   frame never goes blank. */
+const lbCache = new Map();
+let lbToken = 0;
+// What the lightbox is paging through: the listing photos, or the floor plan
+// images (which carry names and sit on white, since plans are often
+// transparent PNGs that would vanish on the dark backdrop).
+let lbList = [];
+let lbNames = null;
+function lbPreload(i) {
+  const src = lbList[(i + lbList.length) % lbList.length];
+  if (!src) return null;
+  let img = lbCache.get(src);
+  if (!img) { img = new Image(); img.decoding = "async"; img.src = src; lbCache.set(src, img); }
+  return img;
+}
+function buildLightbox() {
   const host = document.getElementById("lbHost");
-  if (lbIndex === null) { host.innerHTML = ""; document.body.style.overflow = ""; return; }
-  const total = photos.length;
   host.innerHTML = `
-    <div class="lb" onclick="closeLightbox()" role="dialog" aria-modal="true">
-      <img class="lb__img" src="${photos[lbIndex]}" alt="Photo ${lbIndex + 1}" onclick="event.stopPropagation()" />
+    <div class="lb" onclick="closeLightbox()" role="dialog" aria-modal="true" aria-label="Photo gallery">
+      <img class="lb__img" id="lbImg" alt="" onclick="event.stopPropagation()" />
       <button class="lb__close" onclick="event.stopPropagation();closeLightbox()" aria-label="Close">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
       </button>
@@ -537,16 +710,229 @@ function renderLightbox() {
       <button class="lb__nav lb__nav--next" onclick="event.stopPropagation();lbNav(1)" aria-label="Next">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
       </button>
-      <div class="lb__counter">${String(lbIndex + 1).padStart(2, "0")} / ${String(total).padStart(2, "0")}</div>
+      <div class="lb__counter" id="lbCounter"></div>
     </div>`;
+  // Swipe on touch screens. Horizontal only, so a vertical drag never pages.
+  const lb = host.firstElementChild;
+  let x0 = null, y0 = null;
+  lb.addEventListener("touchstart", e => { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+  lb.addEventListener("touchend", e => {
+    if (x0 === null) return;
+    const dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0;
+    x0 = null;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) lbNav(dx < 0 ? 1 : -1);
+  });
+}
+function showLightboxPhoto() {
+  const img = document.getElementById("lbImg");
+  const counter = document.getElementById("lbCounter");
+  if (!img) return;
+  const total = lbList.length;
+  const i = lbIndex;
+  const src = lbList[i];
+  const token = ++lbToken;
+  counter.textContent = lbNames
+    ? (total > 1 ? `${lbNames[i]} · ${i + 1} / ${total}` : lbNames[i])
+    : `${String(i + 1).padStart(2, "0")} / ${String(total).padStart(2, "0")}`;
+  const swap = () => {
+    if (token !== lbToken) return; // a later arrow press has already moved on
+    img.src = src;
+    img.alt = lbNames ? lbNames[i] : `Photo ${i + 1} of ${total}`;
+    img.classList.remove("is-loading");
+  };
+  const next = lbPreload(i);
+  // First open: show the photo straight away; the zoom-in covers its arrival.
+  if (!img.getAttribute("src") || (next.complete && next.naturalWidth)) swap();
+  else {
+    img.classList.add("is-loading");
+    (next.decode ? next.decode() : Promise.reject()).then(swap, () => { next.onload = swap; next.onerror = swap; if (next.complete) swap(); });
+  }
+  lbPreload(i + 1);
+  lbPreload(i - 1);
+}
+function openLightbox(i, list = photos, names = null) {
+  if (!list.length) return;
+  // Switching between photos and plans: drop the old image so the first one
+  // of the new set shows at once instead of fading from the wrong picture.
+  if (list !== lbList) { const old = document.getElementById("lbImg"); if (old) old.removeAttribute("src"); }
+  lbList = list;
+  lbNames = names;
+  lbIndex = i;
+  if (!document.getElementById("lbImg")) buildLightbox();
+  document.getElementById("lbImg").classList.toggle("is-plan", !!names);
+  document.querySelector(".lb__nav--prev").hidden = document.querySelector(".lb__nav--next").hidden = list.length < 2;
+  showLightboxPhoto();
   document.body.style.overflow = "hidden";
 }
-function openLightbox(i) { lbIndex = i; renderLightbox(); }
-function closeLightbox() { lbIndex = null; renderLightbox(); }
+function closeLightbox() {
+  lbIndex = null;
+  lbToken++;
+  document.getElementById("lbHost").innerHTML = "";
+  document.body.style.overflow = "";
+}
 function lbNav(dir) {
-  if (lbIndex === null || !photos.length) return;
-  lbIndex = (lbIndex + dir + photos.length) % photos.length;
-  renderLightbox();
+  if (lbIndex === null || lbList.length < 2) return;
+  lbIndex = (lbIndex + dir + lbList.length) % lbList.length;
+  showLightboxPhoto();
+}
+
+/* ---------------- Floor plans (tabs + zoom) ---------------- */
+function showFloorPlan(k) {
+  const sec = document.getElementById("floor-plans");
+  if (!sec) return;
+  sec.querySelectorAll("[data-fp]").forEach(el => {
+    const on = el.dataset.fp === String(k);
+    if (el.getAttribute("role") === "tab") el.setAttribute("aria-selected", on);
+    else el.hidden = !on;
+  });
+  const panel = document.getElementById("fpPanel" + k);
+  // Images size to their own shape; the embed keeps the tall fixed frame,
+  // unless it reports its own height.
+  const isImage = !!panel && panel.classList.contains("floorplan__panel--image");
+  const frame = document.getElementById("fpFrame");
+  frame.classList.toggle("is-image", isImage);
+  frame.classList.toggle("is-auto", !isImage && fpAutoHeight);
+}
+function openPlanZoom(n) {
+  openLightbox(n, fpImages, fpNames);
+}
+
+/* ---------------- 3D tour, played in place ---------------- */
+// Matterport links come in a few shapes (/show/?m=ID, /models/ID). The model ID
+// is all the player needs.
+function matterportId(url) {
+  try {
+    const u = new URL(String(url || "").trim());
+    if (!/(^|\.)matterport\.com$/i.test(u.hostname)) return null;
+    const id = u.searchParams.get("m") || (u.pathname.match(/\/models\/([A-Za-z0-9]+)/) || [])[1];
+    return id && /^[A-Za-z0-9]{8,}$/.test(id) ? id : null;
+  } catch { return null; }
+}
+// What the tour frame loads. A Matterport tour starts straight away (play=1),
+// since the visitor has already clicked to launch it. Any other https link Grant
+// enters is loaded as it is.
+function tourEmbedSrc(url) {
+  const id = matterportId(url);
+  if (id) return `https://my.matterport.com/show/?m=${id}&play=1&qs=1`;
+  try { const u = new URL(String(url || "").trim()); return u.protocol === "https:" ? u.href : null; } catch { return null; }
+}
+let tourSrc = null;
+// Swaps the cover card for the tour itself, so the visitor never leaves the page.
+// The frame is only created on click: a Matterport tour is heavy to load.
+function playTour() {
+  const card = document.getElementById("tourCard");
+  if (!card || !tourSrc || card.classList.contains("is-playing")) return;
+  card.classList.add("is-playing");
+  card.removeAttribute("role");
+  card.removeAttribute("tabindex");
+  card.removeAttribute("aria-label");
+  card.innerHTML = `<iframe src="${escapeHtml(tourSrc)}" title="${escapeHtml(card.dataset.title || "3D tour")}" allow="fullscreen; xr-spatial-tracking; autoplay" allowfullscreen></iframe>`;
+}
+function tourKey(e) {
+  if (e.key === "Enter" || e.key === " ") { e.preventDefault(); playTour(); }
+}
+
+/* ---------------- Property gallery (mosaic + Load more) ---------------- */
+const GALLERY_STEP = 24;
+let galleryShown = 0;
+// Tile shape for photo i of total. Whole 12-photo cycles use the mosaic
+// pattern; the last, partial cycle is laid out to fill its rows exactly:
+// wide tiles first (2 cells each) until the cell count is a multiple of 4, then
+// small ones. A single leftover photo runs the full width.
+function galleryTileClass(i, total) {
+  const rem = total % 12;
+  const tailStart = total - rem;
+  if (i < tailStart) {
+    const p = i % 12;
+    if (p === 0) return " pgallery__tile--big";
+    if (p === 5 || p === 6) return " pgallery__tile--wide";
+    if (p === 9) return " pgallery__tile--right";
+    return "";
+  }
+  if (rem === 1) return " pgallery__tile--full";
+  const wides = (4 - (rem % 4)) % 4;
+  return (i - tailStart) < wides ? " pgallery__tile--wide" : "";
+}
+function galleryTiles(from, to) {
+  let html = "";
+  for (let i = from; i < to; i++) {
+    html += `<button type="button" class="pgallery__tile${galleryTileClass(i, photos.length)}" onclick="openLightbox(${i})" aria-label="Open photo ${i + 1} of ${photos.length}">` +
+      `<img src="${escapeHtml(photos[i])}" alt="" loading="${i < 6 ? "eager" : "lazy"}" decoding="async" /></button>`;
+  }
+  return html;
+}
+function syncGalleryFoot() {
+  const more = document.getElementById("galleryMore");
+  const count = document.getElementById("galleryCount");
+  const left = photos.length - galleryShown;
+  if (count) {
+    count.textContent = `Showing ${galleryShown} of ${photos.length} photos`;
+    // Nothing was ever held back, so there is nothing to count.
+    count.hidden = photos.length <= GALLERY_STEP;
+  }
+  if (more) {
+    more.hidden = left <= 0;
+    more.textContent = left > GALLERY_STEP ? `Load ${GALLERY_STEP} more photos` : `Load the last ${left} photo${left === 1 ? "" : "s"}`;
+  }
+}
+function loadMoreGallery() {
+  const grid = document.getElementById("galleryGrid");
+  if (!grid) return;
+  const to = Math.min(photos.length, galleryShown + GALLERY_STEP);
+  grid.insertAdjacentHTML("beforeend", galleryTiles(galleryShown, to));
+  const first = grid.children[galleryShown];
+  galleryShown = to;
+  syncGalleryFoot();
+  // Keyboard users land on the first new photo rather than back at the button.
+  if (first) first.focus({ preventScroll: true });
+}
+
+/* ---------------- Embeds (Grant's videos, the floor plan) ----------------
+   The admin fields take a plain link or pasted embed code. Embed code is
+   reduced to its iframe src; anything that isn't an http(s) URL is dropped. */
+function embedSources(raw) {
+  const text = String(raw || "");
+  const fromIframes = [...text.matchAll(/<iframe[^>]*\ssrc=["']([^"']+)["']/gi)].map(m => m[1]);
+  const list = fromIframes.length ? fromIframes : text.split(/\s*\n\s*/);
+  return list.map(s => s.trim().replace(/&amp;/g, "&")).filter(s => /^https?:\/\//i.test(s));
+}
+// Embeds that size themselves (DX's interactive floor plans use iframe-resizer:
+// the plan page reports its own height and the frame grows to fit, so there is
+// no inner scrollbar and no empty space). Recognised from the pasted code, or
+// from the host when only the link was pasted. The pasted <script> tags are
+// never run; the matching library is loaded from cdnjs instead.
+function embedSizesItself(raw, src) {
+  return /iFrameResize|iframe-?resizer/i.test(String(raw || "")) || /(^|\.)dx\.media$/i.test(new URL(src).hostname);
+}
+let iframeResizerLoad = null;
+function autoSizeFloorPlan() {
+  const frame = document.getElementById("fpEmbed");
+  if (!frame || !fpAutoHeight) return;
+  iframeResizerLoad ||= new Promise((resolve, reject) => {
+    const sc = document.createElement("script");
+    sc.src = "https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.2.11/iframeResizer.min.js";
+    sc.onload = resolve;
+    sc.onerror = reject;
+    document.head.appendChild(sc);
+  });
+  // If the library can't load, the frame simply keeps its default height.
+  iframeResizerLoad.then(() => window.iFrameResize({ checkOrigin: [new URL(frame.src).origin], log: false }, frame), () => {});
+}
+function videoEmbed(url) {
+  let m;
+  if ((m = url.match(/(?:youtube(?:-nocookie)?\.com\/(?:watch\?(?:[^#]*&)?v=|embed\/|shorts\/|live\/)|youtu\.be\/)([\w-]{11})/i)))
+    return { kind: "iframe", src: `https://www.youtube-nocookie.com/embed/${m[1]}?rel=0` };
+  if ((m = url.match(/vimeo\.com\/(?:video\/)?(\d+)(?:\/([\da-f]+))?/i)))
+    return { kind: "iframe", src: `https://player.vimeo.com/video/${m[1]}${m[2] ? "?h=" + m[2] : ""}` };
+  if (/\.(mp4|webm|m4v|mov)(?:[?#]|$)/i.test(url)) return { kind: "file", src: url };
+  // Any other player (Wistia, Loom, the photographer's own host) is embedded as given.
+  return { kind: "iframe", src: url };
+}
+function videoHtml(v, label) {
+  const src = escapeHtml(v.src);
+  return v.kind === "file"
+    ? `<div class="note-media__video"><video src="${src}" controls playsinline preload="metadata" aria-label="${escapeHtml(label)}"></video></div>`
+    : `<div class="note-media__video"><iframe src="${src}" title="${escapeHtml(label)}" loading="lazy" allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowfullscreen></iframe></div>`;
 }
 document.addEventListener("keydown", e => {
   if (lbIndex === null) return;
@@ -580,6 +966,7 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro) {
   const contactPhone = (contact && contact.phone) || "";
   photos = photoUrls;
   lbIndex = null;
+  galleryShown = Math.min(photos.length, GALLERY_STEP);
 
   const descHtml = listing.descriptionHtml || "<p>Contact Grant for full details on this exceptional Incline Village property.</p>";
   const descBlock = `
@@ -602,7 +989,8 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro) {
           <button class="grant-note__btn" onclick="toggleNoteEdit()">Cancel</button>
           <span id="noteStatus" class="grant-note__status"></span>
         </div>
-      </div>` : ""}
+      </div>
+      <div class="grant-note__more"><a href="/_emdash/admin/content/listings/${listing.id}?locale=en" target="_blank" rel="noopener">Add a photo or videos, or the floor plan, in the backend</a></div>` : ""}
     </div>` : "";
 
   // .listing-hero__img is a background-image layer in styles.css, not an <img>.
@@ -627,20 +1015,62 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro) {
     }
   } catch (e) { /* private mode — keep the default */ }
 
-  const filmstrip = photos.length > 0 ? `
-    <section class="filmstrip-section">
-      <div class="filmstrip-wrap">
-        <div class="filmstrip__header">
-          <div class="filmstrip__header__t">Property Gallery</div>
-          <div class="eyebrow eyebrow--muted">${photos.length} Photos · Scroll <span class="cta-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg></span></div>
+  // Sits in the description column, under the description. The first
+  // GALLERY_STEP photos render now; "Load more" appends the rest in steps.
+  const gallery = photos.length > 0 ? `
+    <div class="pgallery" id="propGallery">
+      <div class="pgallery__head">
+        <h3 class="pgallery__h">Property Gallery</h3>
+        <div class="eyebrow eyebrow--muted">${photos.length} Photo${photos.length === 1 ? "" : "s"}</div>
+      </div>
+      <div class="pgallery__grid" id="galleryGrid">${galleryTiles(0, galleryShown)}</div>
+      <div class="pgallery__foot">
+        <span class="pgallery__count" id="galleryCount"></span>
+        <button type="button" class="pgallery__more" id="galleryMore" onclick="loadMoreGallery()"></button>
+      </div>
+    </div>` : "";
+
+  // ---- Floor plans: an interactive embed (e.g. the DX floor map) from the
+  //      admin's floor_plan_embed field, and/or uploaded plan images from
+  //      floor_plan_images. More than one view gets tabs. Hidden, along with
+  //      its jump link in Quick Statistics, when both are empty. ----
+  const floorPlanSrc = embedSources(listing.floorPlanEmbed)[0] || "";
+  fpAutoHeight = !!floorPlanSrc && embedSizesItself(listing.floorPlanEmbed, floorPlanSrc);
+  const planImages = Array.isArray(listing.floorPlanImages) ? listing.floorPlanImages : [];
+  fpImages = planImages.map(p => p.url);
+  fpNames = planImages.map((p, n) => p.label || (planImages.length > 1 ? `Plan ${n + 1}` : "Floor plan"));
+  const fpViews = [
+    ...(floorPlanSrc ? [{ kind: "embed", label: "Interactive plan" }] : []),
+    ...planImages.map((p, n) => ({ kind: "image", label: fpNames[n], n })),
+  ];
+  const arrow = `<span class="cta-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg></span>`;
+  const fpAction = (v, k) => v.kind === "embed"
+    ? `<a class="floorplan__open" data-fp="${k}" href="${escapeHtml(floorPlanSrc)}" target="_blank" rel="noopener"${k ? " hidden" : ""}>Open full screen ${arrow}</a>`
+    : `<button type="button" class="floorplan__open" data-fp="${k}" onclick="openPlanZoom(${v.n})"${k ? " hidden" : ""}>View larger ${arrow}</button>`;
+  const fpPanel = (v, k) => v.kind === "embed"
+    ? `<div class="floorplan__panel" id="fpPanel${k}" role="tabpanel" data-fp="${k}"${k ? " hidden" : ""}>
+         <iframe id="fpEmbed" src="${escapeHtml(floorPlanSrc)}" title="Interactive floor plan of ${escapeHtml(listing.address)}" loading="lazy" allow="fullscreen; xr-spatial-tracking" allowfullscreen></iframe>
+       </div>`
+    : `<div class="floorplan__panel floorplan__panel--image" id="fpPanel${k}" role="tabpanel" data-fp="${k}"${k ? " hidden" : ""}>
+         <button type="button" class="floorplan__img" onclick="openPlanZoom(${v.n})" aria-label="View ${escapeHtml(v.label)} larger">
+           <img src="${escapeHtml(fpImages[v.n])}" alt="${escapeHtml(v.label)} floor plan of ${escapeHtml(listing.address)}" loading="lazy" decoding="async" />
+         </button>
+       </div>`;
+  const floorPlanSection = fpViews.length ? `
+    <section class="floorplan" id="floor-plans">
+      <div class="floorplan__head">
+        <div>
+          <div class="eyebrow">${floorPlanSrc ? "Interactive Floor Plan" : (planImages.length > 1 ? "Floor Plans" : "Floor Plan")}</div>
+          <h2 class="floorplan__h">Find your way around ${escapeHtml(listing.address)}</h2>
         </div>
-        <div class="filmstrip">
-          ${photos.map((src, i) => `<div class="filmstrip__tile" style="background-image:url('${src}')" onclick="openLightbox(${i})" role="button" tabindex="0" aria-label="Open photo ${i + 1}"></div>`).join("")}
-          <button class="filmstrip__cta" onclick="openLightbox(0)">
-            <div class="filmstrip__cta__t">View Full<br />Photo Gallery</div>
-            <div class="filmstrip__cta__c">${photos.length} PHOTOS<span class="cta-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg></span></div>
-          </button>
-        </div>
+        <div class="floorplan__actions">${fpViews.map(fpAction).join("")}</div>
+      </div>
+      ${fpViews.length > 1 ? `
+      <div class="floorplan__tabs" role="tablist" aria-label="Floor plans">
+        ${fpViews.map((v, k) => `<button type="button" role="tab" class="floorplan__tab" data-fp="${k}" aria-controls="fpPanel${k}" aria-selected="${k === 0}" onclick="showFloorPlan(${k})">${escapeHtml(v.label)}</button>`).join("")}
+      </div>` : ""}
+      <div class="floorplan__frame${fpViews[0].kind === "image" ? " is-image" : (fpAutoHeight ? " is-auto" : "")}" id="fpFrame">
+        ${fpViews.map(fpPanel).join("")}
       </div>
     </section>` : "";
 
@@ -671,9 +1101,19 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro) {
   featPage = 0;
 
   // ---- B3: Note From Grant as its own section, in the design's .local-card ----
-  // Shown to everyone whenever a note exists. The inline editor stays in the body
-  // column for logged-in admins so editing still happens in one place.
-  const localSection = note ? `
+  // Shown to everyone whenever a note, image or video exists. The inline editor
+  // stays in the body column for logged-in admins so editing still happens in
+  // one place. Media is set in the backend: note_image, plus note_videos (one
+  // link per line). Videos come first; an image alongside them follows.
+  const noteVideos = embedSources(listing.noteVideos).map(videoEmbed);
+  const noteMediaItems = [
+    ...noteVideos.map((v, i) => videoHtml(v, noteVideos.length > 1 ? `A video from Grant (${i + 1} of ${noteVideos.length})` : "A video from Grant")),
+    ...(listing.noteImage ? [`<div class="local-card__photo" style="background-image:url('${escapeHtml(listing.noteImage)}')"></div>`] : []),
+  ];
+  const noteMedia = noteMediaItems.length === 1 && !noteVideos.length
+    ? noteMediaItems[0]
+    : noteMediaItems.length ? `<div class="note-media">${noteMediaItems.join("")}</div>` : "";
+  const localSection = (note || noteMedia) ? `
     <section class="section--local">
       <div class="local-card">
         <div class="local-card__copy">
@@ -681,19 +1121,24 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro) {
             <div class="local-card__lead">Where Local Knowledge Makes the Difference</div>
             <div class="local-card__title">A Note From Grant</div>
           </div>
+          ${note ? `
           <div class="local-card__body">
             <p>${noteToHtml(note)}</p>
-          </div>
+          </div>` : ""}
           <div class="local-card__attr" style="color:var(--orange)">&mdash; GRANT C. MEYER</div>
         </div>
-        ${listing.noteImage ? `<div class="local-card__photo" style="background-image:url('${listing.noteImage}')"></div>` : ""}
+        ${noteMedia}
       </div>
     </section>` : "";
 
-  // ---- B2: 3D tour. Hidden entirely when no tour URL is set. ----
-  const tourSection = listing.tourUrl ? `
-    <section style="padding:0 0 96px">
-      <div class="matterport">
+  // ---- B2: 3D tour. Hidden entirely when there is no tour to play. Grant's 3D Tour
+  //      URL wins; otherwise the API passes on the MLS tour link only when it is a
+  //      Matterport. Clicking the card plays the tour in place (playTour). ----
+  tourSrc = tourEmbedSrc(listing.tourUrl);
+  const tourSection = tourSrc ? `
+    <section class="tour-band" id="tour">
+      <div class="matterport" id="tourCard" role="button" tabindex="0" aria-label="Launch the 3D tour"
+           data-title="3D tour of ${escapeHtml(listing.address)}" onclick="playTour()" onkeydown="tourKey(event)">
         ${photos[0] ? `<div class="matterport__bg" style="background-image:url('${photos[0]}')"></div>` : ""}
         <div class="matterport__inner">
           <div class="matterport__play">
@@ -701,7 +1146,7 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro) {
           </div>
           <h3 class="matterport__h">Experience ${escapeHtml(listing.address)} in 3D</h3>
           <p class="matterport__p">Take a virtual walk through every room of this residence before you set foot in Tahoe.</p>
-          <a class="matterport__cta" href="${listing.tourUrl}" target="_blank" rel="noopener">Launch 3D Tour</a>
+          <span class="matterport__cta">Launch 3D Tour</span>
         </div>
       </div>
     </section>` : "";
@@ -868,6 +1313,7 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro) {
           <div class="listing-body__rule listing-body__rule--figma"></div>
           ${descBlock}
           ${canEdit ? noteBlock : ""}
+          ${gallery}
         </div>
         <aside class="aside-fl aside-fl--dark">
           <div class="eyebrow eyebrow--muted aside-fl__h">QUICK STATISTICS</div>
@@ -889,6 +1335,8 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro) {
                 <span class="aside-fl__row__v">${v || v === 0 ? escapeHtml(v) : "—"}</span>
               </div>`).join("")}
           </div>
+          ${tourSrc ? `<a class="aside-fl__fp" href="#tour">TAKE THE 3D TOUR</a>` : ""}
+          ${fpViews.length ? `<a class="aside-fl__fp" href="#floor-plans">VIEW THE FLOOR PLAN${fpViews.length > 1 ? "S" : ""}</a>` : ""}
           <a class="aside-fl__cta" href="#listing-contact">SCHEDULE A PRIVATE TOUR</a>
         </aside>
       </div>
@@ -927,9 +1375,9 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro) {
 
     </div>
 
-    ${filmstrip}
-
     ${tourSection}
+
+    ${floorPlanSection}
 
     ${localSection}
 
@@ -1095,6 +1543,8 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro) {
   `;
 
   document.title = `${listing.address} — Grant C. Meyer Homes`;
+  syncGalleryFoot();
+  autoSizeFloorPlan();
   featShift(0);
   syncSaved();
 
