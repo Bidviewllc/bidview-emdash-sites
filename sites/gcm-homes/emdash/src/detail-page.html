@@ -212,7 +212,18 @@
       margin: 0 32px; border-radius: 8px; overflow: hidden; background: var(--white);
       border: 1px solid var(--line); height: min(82vh, 820px); min-height: 480px;
     }
-    .floorplan__frame.is-image { height: auto; min-height: 0; }
+    /* Image plans: one fixed 4:3 frame for every tab (DX plans are 4000x3000),
+       so moving between plans never shrinks the section and regrows it while
+       the next image loads. Other shapes letterbox inside it. */
+    .floorplan__frame.is-image { height: auto; min-height: 0; aspect-ratio: 4 / 3; max-height: min(82vh, 820px); }
+    .floorplan__panel--image { position: relative; }
+    .floorplan__panel--image .floorplan__img { height: 100%; }
+    .floorplan__zoomhint {
+      position: absolute; right: 16px; bottom: 16px; pointer-events: none;
+      display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px;
+      background: rgba(20, 33, 61, 0.86); color: var(--white);
+      font-family: var(--font-sans); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+    }
     /* Self-sizing embed: the frame follows the iframe, which the plan page
        resizes; 640px is only what shows until it reports in. */
     /* These plans also draw their own frame, so ours would make a box in a box. */
@@ -222,7 +233,36 @@
     .floorplan__panel[hidden] { display: none; }
     .floorplan__frame iframe { width: 100%; height: 100%; border: 0; display: block; }
     .floorplan__img { display: block; width: 100%; padding: 24px; background: none; border: 0; cursor: zoom-in; }
-    .floorplan__img img { display: block; width: 100%; max-height: min(78vh, 780px); object-fit: contain; margin: 0 auto; }
+    .floorplan__img img { display: block; width: 100%; height: 100%; object-fit: contain; margin: 0 auto; }
+
+    /* --- Zoom in the full-screen viewer (photos and floor plans). The image is
+           moved with a transform, so the layout never changes while zooming. --- */
+    .lb { overflow: hidden; touch-action: none; }
+    .lb__img { cursor: zoom-in; user-select: none; -webkit-user-drag: none; }
+    /* The open animation animates transform too; once zoomed, ours must win. */
+    .lb__img.is-zoomed { cursor: grab; animation: none; }
+    .lb__img.is-dragging { cursor: grabbing; }
+    .lb__img.is-easing { transition: opacity 160ms ease, transform 200ms ease; }
+    .lb__zoom {
+      position: absolute; right: 32px; bottom: 26px; display: flex; gap: 8px; z-index: 2;
+    }
+    .lb__zoom button {
+      width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); color: var(--white);
+      cursor: pointer; backdrop-filter: blur(6px); transition: background 180ms ease;
+    }
+    .lb__zoom button:hover { background: rgba(255,255,255,0.2); }
+    .lb__zoom button:disabled { opacity: 0.35; cursor: default; }
+    .lb__hint {
+      position: absolute; left: 50%; top: 32px; transform: translateX(-50%); pointer-events: none;
+      color: rgba(255,255,255,0.75); font-family: var(--font-sans); font-size: 12px; letter-spacing: 0.06em;
+      transition: opacity 400ms ease;
+    }
+    .lb__hint.is-gone { opacity: 0; }
+    @media (max-width: 640px) {
+      .lb__zoom { right: 16px; bottom: 16px; }
+      .lb__zoom button { width: 40px; height: 40px; }
+    }
     .lb__nav[hidden] { display: none; }
 
     /* --- Loading state --- */
@@ -708,8 +748,20 @@ function lbPreload(i) {
 function buildLightbox() {
   const host = document.getElementById("lbHost");
   host.innerHTML = `
-    <div class="lb" onclick="closeLightbox()" role="dialog" aria-modal="true" aria-label="Photo gallery">
-      <img class="lb__img" id="lbImg" alt="" onclick="event.stopPropagation()" />
+    <div class="lb" onclick="lbBackdropClick()" role="dialog" aria-modal="true" aria-label="Photo gallery">
+      <img class="lb__img" id="lbImg" alt="" draggable="false" onclick="event.stopPropagation()" />
+      <div class="lb__hint" id="lbHint">Scroll, pinch or click to zoom · drag to move around</div>
+      <div class="lb__zoom" onclick="event.stopPropagation()">
+        <button type="button" id="lbZoomOut" onclick="lbZoomStep(-1)" aria-label="Zoom out">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12" /></svg>
+        </button>
+        <button type="button" id="lbZoomIn" onclick="lbZoomStep(1)" aria-label="Zoom in">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
+        </button>
+        <button type="button" id="lbZoomReset" onclick="lbZoomReset(true)" aria-label="Fit to screen">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 9 4 4 9 4" /><polyline points="20 9 20 4 15 4" /><polyline points="4 15 4 20 9 20" /><polyline points="20 15 20 20 15 20" /></svg>
+        </button>
+      </div>
       <button class="lb__close" onclick="event.stopPropagation();closeLightbox()" aria-label="Close">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
       </button>
@@ -721,17 +773,119 @@ function buildLightbox() {
       </button>
       <div class="lb__counter" id="lbCounter"></div>
     </div>`;
-  // Swipe on touch screens. Horizontal only, so a vertical drag never pages.
+  // Swipe on touch screens. Horizontal only, so a vertical drag never pages, and
+  // never while zoomed or after a pinch: then a drag moves around the image.
   const lb = host.firstElementChild;
   let x0 = null, y0 = null;
-  lb.addEventListener("touchstart", e => { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+  lb.addEventListener("touchstart", e => {
+    if (e.touches.length > 1 || lbZ.s > 1.01) { x0 = null; return; }
+    x0 = e.touches[0].clientX; y0 = e.touches[0].clientY;
+  }, { passive: true });
   lb.addEventListener("touchend", e => {
-    if (x0 === null) return;
+    if (x0 === null || lbZ.s > 1.01 || lbZ.pinched) { x0 = null; return; }
     const dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0;
     x0 = null;
     if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) lbNav(dx < 0 ? 1 : -1);
   });
+  lbBindZoom(lb, document.getElementById("lbImg"));
 }
+
+/* ---------------- Lightbox zoom ----------------
+   The image is scaled and moved with a CSS transform (origin: its centre), so
+   nothing reflows. Wheel and pinch zoom toward the pointer; a click zooms into
+   the spot clicked, and a second click fits it back; a drag moves around while
+   zoomed. The most you can zoom is whatever shows the image at about 1.5x its
+   real pixels (min 3x, max 8x), so a 4000px floor plan stays sharp. */
+const lbZ = { s: 1, x: 0, y: 0, pinched: false };
+let lbDraggedAt = 0;
+// Sizes come from layout (offsetWidth etc.), which a transform never changes, so
+// they hold even mid-animation. The .lb backdrop is fixed at 0,0, so offsets
+// relative to it are screen coordinates.
+function lbMaxScale() {
+  const img = document.getElementById("lbImg");
+  if (!img || !img.naturalWidth) return 4;
+  return Math.max(3, Math.min(8, (img.naturalWidth / Math.max(img.offsetWidth, 1)) * 1.5));
+}
+function lbApply(ease) {
+  const img = document.getElementById("lbImg");
+  if (!img) return;
+  // Keep the image covering the view: it can't be dragged off past its edges.
+  const w = img.offsetWidth, h = img.offsetHeight;
+  const mx = Math.max(0, (w * lbZ.s - window.innerWidth) / 2 + 40);
+  const my = Math.max(0, (h * lbZ.s - window.innerHeight) / 2 + 40);
+  if (lbZ.s <= 1) { lbZ.x = 0; lbZ.y = 0; }
+  lbZ.x = Math.max(-mx, Math.min(mx, lbZ.x));
+  lbZ.y = Math.max(-my, Math.min(my, lbZ.y));
+  img.classList.toggle("is-easing", !!ease);
+  img.style.transform = lbZ.s > 1 || lbZ.x || lbZ.y ? `translate(${lbZ.x}px, ${lbZ.y}px) scale(${lbZ.s})` : "";
+  img.classList.toggle("is-zoomed", lbZ.s > 1.01);
+  const out = document.getElementById("lbZoomOut"), inn = document.getElementById("lbZoomIn");
+  if (out) out.disabled = lbZ.s <= 1.01;
+  if (inn) inn.disabled = lbZ.s >= lbMaxScale() - 0.01;
+}
+// Zoom to scale s, keeping the screen point (px, py) where it is.
+function lbZoomTo(s, px, py, ease) {
+  const img = document.getElementById("lbImg");
+  if (!img) return;
+  s = Math.max(1, Math.min(lbMaxScale(), s));
+  const cx = img.offsetLeft + img.offsetWidth / 2, cy = img.offsetTop + img.offsetHeight / 2; // untransformed centre
+  if (px == null) { px = window.innerWidth / 2; py = window.innerHeight / 2; }
+  lbZ.x = (px - cx) - ((px - cx) - lbZ.x) * (s / lbZ.s);
+  lbZ.y = (py - cy) - ((py - cy) - lbZ.y) * (s / lbZ.s);
+  lbZ.s = s;
+  lbApply(ease);
+  lbHideHint();
+}
+function lbZoomStep(dir) { lbZoomTo(lbZ.s * (dir > 0 ? 1.6 : 1 / 1.6), null, null, true); }
+function lbZoomReset(ease) { lbZ.s = 1; lbZ.x = 0; lbZ.y = 0; lbZ.pinched = false; lbApply(ease); }
+function lbHideHint() { const h = document.getElementById("lbHint"); if (h) h.classList.add("is-gone"); }
+// A drag that ends over the backdrop must not count as a click that closes it.
+function lbBackdropClick() { if (Date.now() - lbDraggedAt > 300) closeLightbox(); }
+function lbBindZoom(lb, img) {
+  lb.addEventListener("wheel", e => {
+    e.preventDefault();
+    lbZoomTo(lbZ.s * Math.exp(-e.deltaY * 0.0015), e.clientX, e.clientY, false);
+  }, { passive: false });
+  const pts = new Map();
+  let start = null; // drag or pinch in progress
+  img.addEventListener("pointerdown", e => {
+    pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    try { img.setPointerCapture(e.pointerId); } catch {} // keeps the drag if the pointer leaves the image
+    start = pts.size === 2
+      ? { pinch: true, d: lbPtsDist(pts), s: lbZ.s }
+      : { pinch: false, x: e.clientX, y: e.clientY, ox: lbZ.x, oy: lbZ.y, moved: false };
+    if (pts.size === 2) lbZ.pinched = true;
+  });
+  img.addEventListener("pointermove", e => {
+    if (!pts.has(e.pointerId) || !start) return;
+    pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (start.pinch && pts.size === 2) {
+      const [a, b] = [...pts.values()];
+      lbZoomTo(start.s * (lbPtsDist(pts) / start.d), (a.x + b.x) / 2, (a.y + b.y) / 2, false);
+    } else if (!start.pinch && lbZ.s > 1.01) {
+      const dx = e.clientX - start.x, dy = e.clientY - start.y;
+      if (Math.abs(dx) + Math.abs(dy) > 4) { start.moved = true; img.classList.add("is-dragging"); }
+      lbZ.x = start.ox + dx; lbZ.y = start.oy + dy;
+      lbApply(false);
+    }
+  });
+  const end = e => {
+    pts.delete(e.pointerId);
+    img.classList.remove("is-dragging");
+    if (start && (start.moved || start.pinch)) lbDraggedAt = Date.now();
+    if (pts.size === 0) start = null;
+    else if (pts.size === 1) { const [p] = [...pts.values()]; start = { pinch: false, x: p.x, y: p.y, ox: lbZ.x, oy: lbZ.y, moved: true }; }
+  };
+  img.addEventListener("pointerup", end);
+  img.addEventListener("pointercancel", end);
+  // Click: zoom into that spot, or fit back if already zoomed. Not after a drag.
+  img.addEventListener("click", e => {
+    if (Date.now() - lbDraggedAt < 300) return;
+    if (lbZ.s > 1.01) lbZoomReset(true);
+    else lbZoomTo(Math.min(2.5, lbMaxScale()), e.clientX, e.clientY, true);
+  });
+}
+function lbPtsDist(pts) { const [a, b] = [...pts.values()]; return Math.hypot(a.x - b.x, a.y - b.y) || 1; }
 function showLightboxPhoto() {
   const img = document.getElementById("lbImg");
   const counter = document.getElementById("lbCounter");
@@ -745,6 +899,7 @@ function showLightboxPhoto() {
     : `${String(i + 1).padStart(2, "0")} / ${String(total).padStart(2, "0")}`;
   const swap = () => {
     if (token !== lbToken) return; // a later arrow press has already moved on
+    if (img.getAttribute("src") !== src) lbZoomReset(false); // each image opens fitted
     img.src = src;
     img.alt = lbNames ? lbNames[i] : `Photo ${i + 1} of ${total}`;
     img.classList.remove("is-loading");
@@ -767,7 +922,11 @@ function openLightbox(i, list = photos, names = null) {
   lbList = list;
   lbNames = names;
   lbIndex = i;
-  if (!document.getElementById("lbImg")) buildLightbox();
+  if (!document.getElementById("lbImg")) {
+    buildLightbox();
+    setTimeout(lbHideHint, 4500);
+  }
+  lbZoomReset(false);
   document.getElementById("lbImg").classList.toggle("is-plan", !!names);
   document.querySelector(".lb__nav--prev").hidden = document.querySelector(".lb__nav--next").hidden = list.length < 2;
   showLightboxPhoto();
@@ -804,6 +963,17 @@ function showFloorPlan(k) {
 }
 function openPlanZoom(n) {
   openLightbox(n, fpImages, fpNames);
+}
+// Hidden plan tabs don't load until shown, so the first click on each used to
+// wait for its download. Fetch them all once the section comes near the screen;
+// a tab then shows its plan at once, from the browser cache.
+function preloadFloorPlans() {
+  const sec = document.getElementById("floor-plans");
+  if (!sec || fpImages.length < 2) return;
+  const go = () => fpImages.forEach(u => { const i = new Image(); i.decoding = "async"; i.src = u; });
+  if (!("IntersectionObserver" in window)) return go();
+  const io = new IntersectionObserver(es => { if (es.some(x => x.isIntersecting)) { io.disconnect(); go(); } }, { rootMargin: "800px 0px" });
+  io.observe(sec);
 }
 
 /* ---------------- 3D tour, played in place ---------------- */
@@ -948,6 +1118,9 @@ document.addEventListener("keydown", e => {
   if (e.key === "Escape") closeLightbox();
   if (e.key === "ArrowLeft") lbNav(-1);
   if (e.key === "ArrowRight") lbNav(1);
+  if (e.key === "+" || e.key === "=") lbZoomStep(1);
+  if (e.key === "-" || e.key === "_") lbZoomStep(-1);
+  if (e.key === "0") lbZoomReset(true);
 });
 
 /* ---------------- Features carousel ----------------
@@ -1075,6 +1248,7 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro) {
          <button type="button" class="floorplan__img" onclick="openPlanZoom(${v.n})" aria-label="View ${escapeHtml(v.label)} larger">
            <img src="${escapeHtml(fpImages[v.n])}" alt="${escapeHtml(v.label)} floor plan of ${escapeHtml(listing.address)}" loading="lazy" decoding="async" />
          </button>
+         <span class="floorplan__zoomhint" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7" /><line x1="21" y1="21" x2="16.5" y2="16.5" /><line x1="11" y1="8" x2="11" y2="14" /><line x1="8" y1="11" x2="14" y2="11" /></svg>Click to zoom</span>
        </div>`;
   const floorPlanSection = fpViews.length ? `
     <section class="floorplan" id="floor-plans">
@@ -1575,6 +1749,7 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro) {
   document.title = `${listing.address}${listing.sold ? " (Sold)" : ""} — Grant C. Meyer Homes`;
   syncGalleryFoot();
   autoSizeFloorPlan();
+  preloadFloorPlans();
   featShift(0);
   syncSaved();
 
