@@ -4,7 +4,7 @@
 // + every active listing URL (from D1). Origin is taken from the request, so it's
 // correct on the workers.dev host now and on grantcmeyer.com after cutover.
 import type { APIRoute } from "astro";
-import { allActive } from "../lib/listings";
+import { allLive, soldSlugs } from "../lib/listings";
 
 export const prerender = false;
 
@@ -21,11 +21,14 @@ export const GET: APIRoute = async ({ request }) => {
 	const urls: Array<{ path: string; pr: string; cf: string }> = [];
 	urls.push({ path: "/", pr: "1.0", cf: "weekly" });
 	urls.push({ path: "/listings/", pr: "0.9", cf: "daily" });
+	urls.push({ path: "/sold/", pr: "0.7", cf: "weekly" });
 	for (const p of ["/buyers/", "/sellers/", "/community/", "/concierge/", "/about/", "/reviews/", "/contact/"]) urls.push({ path: p, pr: "0.7", cf: "monthly" });
 	for (const n of NEIGHBORHOODS) urls.push({ path: `/neighborhood/${n}/`, pr: "0.6", cf: "weekly" });
 	try {
-		const listings = await allActive();
+		const listings = await allLive();
 		for (const l of listings as any[]) if (l?.slug) urls.push({ path: `/homes/${l.slug}/`, pr: "0.8", cf: "daily" });
+		// Sold pages stay live (one photo, the close facts) the way Zillow keeps old listings up.
+		for (const slug of await soldSlugs()) urls.push({ path: `/homes/${slug}/`, pr: "0.4", cf: "monthly" });
 	} catch { /* if D1 read fails, still emit the static pages */ }
 
 	const body =

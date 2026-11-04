@@ -115,6 +115,44 @@ export function featuresOf(r: any): string[] {
 	return f;
 }
 
+// ── Status ───────────────────────────────────────────────────────────────────
+// The sync keeps Active, ActiveUnderContract and Pending listings on the site
+// (2026-11-03; before that a home vanished the moment it went under contract),
+// and `listing_archive` holds what left the feed. These are Liz's labels for
+// the badge every card and detail page shows. The MLS calls
+// ActiveUnderContract "Contingent"; we don't.
+export const STATUS_LABELS: Record<string, string> = {
+	Active: "On market",
+	ActiveUnderContract: "Under contract",
+	Pending: "Pending",
+	Closed: "Sold",
+};
+export const statusLabel = (status: string | null | undefined): string =>
+	STATUS_LABELS[String(status ?? "")] ?? "On market";
+// What the live pull keeps, in the order the cards sort them (on market first).
+const LIVE_STATUSES = "('Active','ActiveUnderContract','Pending')";
+const LIVE_ORDER = "CASE l.status WHEN 'Active' THEN 0 WHEN 'ActiveUnderContract' THEN 1 ELSE 2 END";
+
+// ── Recently Sold ────────────────────────────────────────────────────────────
+// Grant's MLS agent id, as the feed writes it in the four agent-id fields.
+export const GRANT_AGENT_ID = "meyergra111";
+// Liz, 2026-11-03: /sold/ shows every sale Grant was on a side of, plus any
+// other closed sale at or above this price in the last few years. The sync's
+// backfill uses the same floor (SOLD_OTHERS_MIN_PRICE in sync.mjs); this one
+// only decides what the page shows, so lowering it here never needs a re-pull
+// as long as it stays at or above the sync's.
+export const SOLD_OTHERS_MIN_PRICE = 5_000_000;
+export const SOLD_OTHERS_YEARS = 3;
+
+/** Which side(s) Grant represented on an archive row, or null if neither. */
+export function representedBy(r: any): "seller" | "buyer" | "both" | null {
+	const seller = r.list_agent_id === GRANT_AGENT_ID || r.co_list_agent_id === GRANT_AGENT_ID;
+	const buyer = r.buyer_agent_id === GRANT_AGENT_ID || r.co_buyer_agent_id === GRANT_AGENT_ID;
+	return seller && buyer ? "both" : seller ? "seller" : buyer ? "buyer" : null;
+}
+export const representedLabel = (side: ReturnType<typeof representedBy>): string | null =>
+	side === "both" ? "Represented both sides" : side === "seller" ? "Represented the seller" : side === "buyer" ? "Represented the buyer" : null;
+
 export function toListing(r: any) {
 	return {
 		id: r.id, slug: r.slug, address: r.address,
@@ -122,6 +160,7 @@ export function toListing(r: any) {
 		price: r.price, beds: r.beds, baths: r.baths,
 		sqft: r.sqft, lotAcres: r.lot_acres, yearBuilt: r.year_built,
 		type: r.type, subType: r.sub_type, category: r.category, status: r.status,
+		statusLabel: statusLabel(r.status),
 		lat: r.lat, lng: r.lng, view: r.view, waterfront: r.waterfront === 1,
 		dom: liveDom(r), photosCount: r.photos_count, agent: r.agent, office: r.office,
 		updated: r.updated, photo: r.photo, feats: featuresOf(r),
@@ -133,6 +172,7 @@ export function toDetail(r: any) {
 		price: r.price, beds: r.beds, baths: r.baths, bathsFull: r.baths_full, bathsHalf: r.baths_half,
 		sqft: r.sqft, lotAcres: r.lot_acres, yearBuilt: r.year_built, garage: r.garage,
 		view: r.view, description: r.description, status: r.status,
+		statusLabel: statusLabel(r.status),
 		type: r.type, subType: r.sub_type, category: r.category,
 		taxes: r.taxes, daysOnMarket: liveDom(r), agent: r.agent, office: r.office,
 		lat: r.lat, lng: r.lng, hoaFee: r.hoa_fee, heating: r.heating, cooling: r.cooling,
@@ -149,13 +189,62 @@ export function toDetail(r: any) {
 	};
 }
 
-export async function allActive() {
+/**
+ * Everything on the market: active, under contract and pending, in that order,
+ * then priciest first. Feeds /listings/ (where the status badge tells them
+ * apart) and the sitemap. The home, community and neighbourhood pages keep
+ * their own `status='Active'` queries, so featured rows stay on-market only.
+ */
+export async function allLive() {
 	// LEFT JOIN the emdash mirror so cards can surface a "Grant's note" flag. Owner
 	// note lives in ec_listings.owner_note (preserved across every sync).
 	const { results } = await DB().prepare(
-		"SELECT l.*, e.owner_note AS owner_note FROM listings l LEFT JOIN ec_listings e ON e.id = l.id WHERE l.status='Active' ORDER BY (l.photo IS NULL), l.price DESC"
+		`SELECT l.*, e.owner_note AS owner_note FROM listings l LEFT JOIN ec_listings e ON e.id = l.id WHERE l.status IN ${LIVE_STATUSES} ORDER BY ${LIVE_ORDER}, (l.photo IS NULL), l.price DESC`
 	).all();
 	return (results ?? []).map((r: any) => ({ ...toListing(r), ownerNote: r.owner_note ?? null }));
+}
+
+// ── Sold listings (listing_archive) ──────────────────────────────────────────
+// Rows the sync marked `sold`, shaped like a card plus the close facts. A row
+// Grant hid while it was live stays hidden (the flag travels in owner_snapshot).
+function toSoldCard(r: any) {
+	const side = representedBy(r);
+	return {
+		...toListing(r),
+		photo: r.main_photo_url || r.photo || null,
+		closePrice: r.close_price ?? null,
+		closeDate: r.close_date ?? null,
+		represented: side,
+		representedLabel: representedLabel(side),
+	};
+}
+const NOT_HIDDEN_ARCHIVE = "COALESCE(json_extract(owner_snapshot, '$.hidden'), '') IN ('', '0', 'false')";
+const GRANT_ON_A_SIDE = `(list_agent_id = ? OR buyer_agent_id = ? OR co_list_agent_id = ? OR co_buyer_agent_id = ?)`;
+
+/** Every closed sale Grant was on a side of, newest close first. */
+export async function soldByGrant() {
+	try {
+		const { results } = await DB().prepare(
+			`SELECT * FROM listing_archive WHERE archive_status = 'sold' AND ${GRANT_ON_A_SIDE} AND ${NOT_HIDDEN_ARCHIVE} ORDER BY close_date DESC, close_price DESC`
+		).bind(GRANT_AGENT_ID, GRANT_AGENT_ID, GRANT_AGENT_ID, GRANT_AGENT_ID).all();
+		return (results ?? []).map(toSoldCard);
+	} catch { return []; }
+}
+/** Other agents' closed sales at or above the floor, within the window. */
+export async function soldNotable() {
+	try {
+		const since = new Date();
+		since.setFullYear(since.getFullYear() - SOLD_OTHERS_YEARS);
+		const { results } = await DB().prepare(
+			`SELECT * FROM listing_archive WHERE archive_status = 'sold' AND NOT ${GRANT_ON_A_SIDE} AND close_price >= ? AND close_date >= ? AND ${NOT_HIDDEN_ARCHIVE} ORDER BY close_date DESC, close_price DESC`
+		).bind(GRANT_AGENT_ID, GRANT_AGENT_ID, GRANT_AGENT_ID, GRANT_AGENT_ID, SOLD_OTHERS_MIN_PRICE, since.toISOString().slice(0, 10)).all();
+		return (results ?? []).map(toSoldCard);
+	} catch { return []; }
+}
+/** Slugs of every sold listing the site shows, for the sitemap. */
+export async function soldSlugs(): Promise<string[]> {
+	const [a, b] = await Promise.all([soldByGrant(), soldNotable()]);
+	return [...a, ...b].map((l: any) => l.slug).filter(Boolean);
 }
 /**
  * The lead photo of one active Residential listing, picked at random -- a house,
@@ -203,6 +292,53 @@ export async function listingPhotos(listingKey: string, n: number): Promise<stri
 	return (results ?? []).map((p: any) => p.url);
 }
 
+/**
+ * A listing that is no longer live, looked up in the archive. Sold rows come
+ * back shaped like a live listing (one photo, the close facts, Grant's saved
+ * fields) so the detail page can show them with a Sold badge. Anything else
+ * that left the feed (expired, withdrawn, cancelled) returns `{ gone: true }`
+ * and the routes answer 410 so search engines drop the URL.
+ */
+async function archivedBySlug(slug: string) {
+	let row: any;
+	try {
+		row = await DB().prepare("SELECT * FROM listing_archive WHERE slug = ? ORDER BY (archive_status = 'sold') DESC, close_date DESC LIMIT 1").bind(slug).first();
+	} catch { row = null; }
+	if (!row) return null;
+	if (row.archive_status !== "sold") return { gone: true as const };
+	let snap: any = {};
+	try { snap = row.owner_snapshot ? JSON.parse(row.owner_snapshot) : {}; } catch { snap = {}; }
+	const clean = (v: any) => { const s = (v ?? "").toString().trim(); return s === "" ? null : s; };
+	const customPT = clean(snap.description);
+	const descriptionHtml = portableTextToHtml(customPT ? (customPT.startsWith("[") ? customPT : plainToPortableText(customPT)) : plainToPortableText(row.description ?? ""));
+	const detail = toDetail(row);
+	detail.description = descriptionHtml;
+	const side = representedBy(row);
+	const photo = row.main_photo_url || row.photo || null;
+	return {
+		listing: {
+			...detail,
+			descriptionHtml,
+			descriptionIsCustom: !!customPT,
+			ownerNote: clean(snap.owner_note),
+			headline: clean(snap.headline),
+			tourUrl: clean(snap.tour_url) ?? matterportFrom(row.tour_url_mls),
+			noteImage: clean(snap.note_image),
+			noteVideos: clean(snap.note_videos),
+			floorPlanEmbed: clean(snap.floor_plan_embed),
+			floorPlanImages: clean(snap.floor_plan_images),
+			archived: true,
+			sold: {
+				closePrice: row.close_price ?? null,
+				closeDate: row.close_date ?? null,
+				represented: side,
+				representedLabel: representedLabel(side),
+			},
+		},
+		photos: photo ? [photo] : [],
+	};
+}
+
 // The 3D tour section only plays Matterport tours. The MLS tour field is more often
 // a whole marketing site or a video, so it fills the section only when it holds a
 // Matterport link; the admin sees the raw value under the 3D Tour URL field and can
@@ -219,7 +355,7 @@ function matterportFrom(raw: unknown): string | null {
 
 export async function bySlug(slug: string) {
 	const row = await DB().prepare("SELECT * FROM listings WHERE slug = ?").bind(slug).first();
-	if (!row) return null;
+	if (!row) return archivedBySlug(slug);
 	const { results } = await DB().prepare(
 		"SELECT url FROM listing_photos WHERE listing_key = ? ORDER BY ord"
 	).bind((row as any).id).all();

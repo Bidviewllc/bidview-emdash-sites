@@ -31,6 +31,8 @@ export const GET: APIRoute = async ({ params, locals }) => {
 		const slug = String(params.slug || "").replace(/\/+$/, "");
 		const result = await bySlug(slug);
 		if (!result) return new Response(JSON.stringify({ error: "Not found" }), { status: 404, headers: { "Content-Type": "application/json" } });
+		// Expired / withdrawn / cancelled: in the archive for Grant, gone for everyone else.
+		if ((result as any).gone) return new Response(JSON.stringify({ error: "This listing is no longer available.", gone: true }), { status: 410, headers: { "Content-Type": "application/json", "Cache-Control": "public, s-maxage=3600" } });
 		// canEdit = the requester is a logged-in emdash admin (set by emdash auth
 		// middleware). Lets the detail page show the inline owner-note editor.
 		const canEdit = !!(locals as any)?.user;

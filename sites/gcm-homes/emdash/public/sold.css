@@ -1,0 +1,46 @@
+/* /sold/ — Recently Sold. Reuses the contact/reviews page hero (contact.css
+   .chero) and the listing card (.card in styles.css); this file only adds the
+   grid and the sold-specific lines on a card. */
+
+.sold-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 32px;
+	max-width: 1280px;
+	margin: 0 auto;
+}
+.sold-section + .sold-section { margin-top: 72px; }
+.sold-section .section-title { margin-bottom: 36px; }
+.sold-section .section-lead { max-width: 640px; margin: 14px auto 0; text-align: center; }
+
+/* The close facts replace the live card's price line: sold price, then when. */
+.card__closed {
+	font-size: 11px;
+	color: var(--muted);
+	letter-spacing: 0.07em;
+	text-transform: uppercase;
+	margin-top: 4px;
+}
+/* "Represented the seller / buyer / both sides" — Grant's line, in his colour. */
+.card__side {
+	margin-top: auto;
+	padding-top: 14px;
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: #a84a16;
+}
+.sold-empty {
+	text-align: center;
+	color: var(--muted);
+	padding: 24px 0 8px;
+}
+
+@media (max-width: 1024px) {
+	.sold-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+}
+@media (max-width: 640px) {
+	.sold-grid { grid-template-columns: 1fr; gap: 20px; }
+	.sold-section + .sold-section { margin-top: 56px; }
+}
