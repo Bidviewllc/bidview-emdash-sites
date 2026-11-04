@@ -58,7 +58,10 @@ export { PluginBridge };
 // plays in place, MLS Matterport links fill an empty 3D tour.
 // v23 (2026-11-04): status badges on /listings/ cards, sold listing pages, the
 // new /sold/ page and its footer link in every chrome copy.
-const CACHE_VERSION = "v23";
+// v25 (2026-11-04): listing page -- floor plan tabs keep one fixed frame (no
+// collapse while the next plan loads), plans preload, and the full-screen viewer
+// zooms (wheel, pinch, click, +/- buttons) and pans. v24 is PR #235's.
+const CACHE_VERSION = "v25";
 const CACHEABLE_TYPE = /^(?:text\/html|application\/xml|text\/xml|text\/plain)/i;
 const ADMIN_COOKIE = /emdash[-_](session|edit-mode|admin)/i;
 
