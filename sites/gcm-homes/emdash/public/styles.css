@@ -1823,7 +1823,8 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   display: flex;
   flex-direction: column;
   flex: 0 0 calc((100% - 56px) / 3); /* show 3 across with 28px gaps */
-  min-height: 520px;
+  /* No min-height (was 520px): cards size to their rows. The track's default
+     stretch still makes every card as tall as the tallest one. */
 }
 .feat-card__h {
   font-family: var(--font-noto);
