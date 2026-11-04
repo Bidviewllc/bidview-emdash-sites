@@ -11,5 +11,6 @@ export default defineConfig({
 	redirects: {
 		"/team/": "/",
 		"/audiologist/": "/",
+		"/audiologist/allison-may/": "/",
 	},
 });

@@ -4,6 +4,48 @@
 Luxury real estate site for Grant C. Meyer, Incline Village / Lake Tahoe.
 Stack: emdash (Cloudflare Workers + Astro + D1 + R2) — **not yet set up**, design phase only.
 
+## ▶ emdash 0.30 → 1.4 UPGRADE (2026-11-03, Liz) — branch `gcm-emdash-1x`, NOT deployed
+**Code:** `emdash` + `@emdash-cms/cloudflare` ^1.4.0, astro ^7.4.5, `@astrojs/cloudflare` ^14.4.4, wrangler ^4.157.0.
+None of the official 1.0 breaking changes apply to this site (docs.emdashcms.com/upgrade-to-v1). `src/worker.ts`
+still works: 1.4's worker default export keeps `scheduled()` and `PluginBridge`. CACHE_VERSION → **v21** (#225 holds v20).
+**The real changes are in OUR scripts, which write straight into emdash's tables:**
+- **Dates.** 1.x migration `079_datetime_normalization` rewrites every `created_at/updated_at/published_at` in every
+  `ec_*` table to UTC ISO with ms (`2026-10-04T18:00:55.000Z`). Our writes used `datetime('now')`
+  (`YYYY-MM-DD HH:MM:SS`). All writers now emit ISO: `seed/push-collections.mjs`, `seed/mirror-listings.mjs`,
+  `seed/reviews.mjs`, both sync files, and the inline note/description editor in `src/lib/listings.ts`.
+  No `site:timezone` option is set, so 079 reads the old values as UTC — correct, same instant.
+  **Don't set a site timezone in the admin before the upgrade** or every old date shifts 5–6 h.
+- **`push-collections.mjs` edit detection.** It used "updated_at is ISO ⇒ a human edited it". After 079 every row is
+  ISO. Now: hidden `_seeded_at` column, stamped with the same value as updated_at on each seed write; edited =
+  `_seeded_at IS NULL OR julianday(updated_at) IS NOT julianday(_seeded_at)`. On first run it adopts rows still in
+  the old format as seeded. **It must run once BEFORE deploying 1.x** (see step 1). If it first runs after,
+  it adopts nothing and skips every entry — safe, never overwrites.
+- **Collection rows are upserted** (`ON CONFLICT(id) DO UPDATE` of only our columns), not `INSERT OR REPLACE`.
+  1.x adds admin-set columns to `_emdash_collections` (hidden, routable, sort_order, nav_group, edit_locking,
+  title_field, date_field, admin_config), and `_emdash_fields` now FKs to it `ON DELETE CASCADE`. REPLACE wiped them.
+**Rehearsed on a local copy of live D1** (export of every table except the FTS5 ones and the `contact_submissions` data; loaded via
+`node:sqlite` because wrangler's local import hits SQLITE_TOOBIG): 053 → `091_redirect_artifacts`, 672 old dates normalized,
+no errors. All page types 200 (home, content pages, community, neighborhoods, listings hub, detail, reviews, posts,
+sitemap 170, `/api/listings` 146); a full post renders through `Block`; the admin save path works for listings (owner note
+→ public API) and neighborhoods; scripts tested old-vs-new through a D1-REST shim on copies: same skip set as the old
+script, admin collection settings now survive, edited Crystal Bay preserved while the other 14 re-seed.
+`astro check` shows 11 errors, all also on 0.30 (missing `cloudflare:workers`/ExecutionContext types; `Block` type/value name clash).
+**Deploy order — follow exactly:**
+1. While still on 0.30: `cd emdash && node --env-file=.env seed/push-collections.mjs` (adds `_seeded_at` and adopts seeded rows;
+   prints "adopted N"). It also re-pushes `seed.json` to UNEDITED rows, as any run does.
+2. Restore point: `npx wrangler d1 time-travel info gcm-homes-db` — note the bookmark.
+3. Merge to `main` at the same time as the deploy. The GitHub Actions sync runs `sync.mjs` from `main` every 2 h, and the
+   old code writes old-format dates.
+4. `npx wrangler deploy`. The FIRST request runs 38 migrations (auto mode); warm it with one request while `npx wrangler tail`
+   runs, and look for `[datetime migration] … using UTC` and no errors. A stuck "migration lock is held" →
+   docs.emdashcms.com/deployment/core-migrations/#release-a-stuck-migration-lock.
+5. Check: pages, an admin save, `/api/listings`.
+6. **Rollback is code AND database:** migrations are irreversible, so `wrangler rollback` alone leaves a 1.4 schema under 0.30
+   code. Restore D1 to the step-2 bookmark (`wrangler d1 time-travel restore`) as well.
+**Known, separate (not caused by the upgrade): the listings mirror has failed on every sync since ~2026-10-04.**
+Two live listings at 893 Donna Drive; the sync re-slugged one to `…-1171145341` but `ec_listings` still holds the plain slug
+for it, so the upsert trips unique(slug,locale) and the mirror aborts as "non-fatal". Admin Listings is stale: 120 rows vs 146 live.
+
 ## ▶ emdash REBUILD — Phase 2 COMPLETE (2026-08-12): WHOLE SITE ported into emdash, live + verified
 **Live on `https://gcm-homes-emdash.cameron-239.workers.dev`** (worker version `e36cd870`, 2026-08-12). Every page of
 the prototype is now an emdash/Astro page; content text comes from emdash collections (proven editable: changing a
@@ -330,6 +372,13 @@ Vince: "Lets give Liz Github actions. NO vercel. For her to decide" (cadence is 
   still populated (flooring 168, tour 107).
 - **LESSON: the mirror is wrapped in try/catch as non-fatal, so a broken mirror does NOT fail the sync.** Don't trust
   a green sync — grep the log for `emdash mirror:` (success) vs `emdash mirror (non-fatal):` (silent failure).
+- **2026-11-03 — it went silent again, for a month.** From 2026-10-04 every mirror aborted on the same UNIQUE
+  error (`listings` 146 vs `ec_listings` 120, nothing refreshed). Cause: two LIVE listings at 893 Donna Drive. The
+  sync gives one the plain slug and the other `<slug>-<ListingKey>`, and which one gets the plain slug follows feed
+  order, so it flipped; the stale row still held it. The delete-first fix only covers departed ids. **Fix (all three
+  paths):** before the upsert, park any `ec_listings` slug a different live id is about to take
+  (`slug || '~' || id`); the upsert then writes the real slug. Owner columns untouched. **The workflow now raises a
+  `::warning::` annotation + a summary line for any `(non-fatal):` log line**, so a broken mirror shows on the run.
 
 ### 2026-09-10 — EDGE CACHE added (home page 386ms → 86ms) + Community copy fully CMS-editable
 Two of the three open "ready to work on" items, done + verified.
