@@ -7,7 +7,6 @@ const urls: Array<{ path: string; priority: number; changefreq: string; lastmod?
   { path: '/', priority: 1.0, changefreq: 'weekly', lastmod: '2026-10-06' },
   { path: '/audiologist/lori-halvorson/', priority: 0.9, changefreq: 'monthly', lastmod: '2026-10-06' },
   { path: '/audiologist/ann-benny-stephen/', priority: 0.9, changefreq: 'monthly', lastmod: '2026-10-06' },
-  { path: '/audiologist/allison-may/', priority: 0.9, changefreq: 'monthly', lastmod: '2026-10-06' },
   { path: '/team/kristen-halvorson/', priority: 0.7, changefreq: 'monthly', lastmod: '2026-07-09' },
   { path: '/team/rebecca-keller/', priority: 0.7, changefreq: 'monthly', lastmod: '2026-10-06' },
   { path: '/team/rozanna-shambrook/', priority: 0.6, changefreq: 'monthly', lastmod: '2026-10-06' },
