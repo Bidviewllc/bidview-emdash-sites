@@ -6,6 +6,20 @@ import { portableTextToHtml, plainToPortableText } from "./portabletext";
 
 const DB = () => (env as any).DB as any;
 
+// ── Owner checkboxes (ec_listings, never written by the Trestle sync) ────────
+// SQL fragments for any query that joins `listings l LEFT JOIN ec_listings e
+// ON e.id = l.id`. The columns are TEXT, and the admin checkbox saves a tick as
+// '1.0' (so an untick as '0.0'), while SQL writes '1'/'0', so anything but
+// empty/0/0.0/false counts as on.
+// "Hide from search" drops a listing from every list, search, featured row,
+// neighbourhood page, random section photo and the sitemap; its detail page
+// still answers a direct link, with a noindex tag.
+const OFF = "('', '0', '0.0', 'false')";
+export const NOT_HIDDEN = `COALESCE(e.hidden, '') IN ${OFF}`;
+const IS_FEATURED = `COALESCE(e.featured, '') NOT IN ${OFF}`;
+// "Featured" listings sort ahead of the rest; put this first in ORDER BY.
+export const FEATURED_FIRST = `(${IS_FEATURED}) DESC`;
+
 // ── Days on market ───────────────────────────────────────────────────────────
 // Trestle does NOT recompute DaysOnMarket daily. The MLS writes it when the
 // record changes and then leaves it, so the feed hands us a number that is
@@ -132,6 +146,10 @@ export const statusLabel = (status: string | null | undefined): string =>
 // What the live pull keeps, in the order the cards sort them (on market first).
 const LIVE_STATUSES = "('Active','ActiveUnderContract','Pending')";
 const LIVE_ORDER = "CASE l.status WHEN 'Active' THEN 0 WHEN 'ActiveUnderContract' THEN 1 ELSE 2 END";
+// Which listings may sit in a featured row (home, community, blog sidebar). On
+// market by default; a listing ticked "Featured" stays in while under contract or
+// pending too (Liz, SOLD-ARCHIVE-PLAN.md section 7), with its status badge.
+export const FEATURED_ROW = `(l.status = 'Active' OR (${IS_FEATURED} AND l.status IN ${LIVE_STATUSES})) AND ${NOT_HIDDEN}`;
 
 // ── Recently Sold ────────────────────────────────────────────────────────────
 // Grant's MLS agent id, as the feed writes it in the four agent-id fields.
@@ -189,17 +207,29 @@ export function toDetail(r: any) {
 	};
 }
 
+/** True when the listing at `slug` is ticked "Hide from search" (detail page adds noindex). */
+export async function isHiddenSlug(slug: string): Promise<boolean> {
+	try {
+		const row = await DB().prepare(
+			`SELECT 1 AS h FROM listings l JOIN ec_listings e ON e.id = l.id WHERE l.slug = ? AND NOT (${NOT_HIDDEN})`
+		).bind(slug).first();
+		return !!row;
+	} catch {
+		return false;
+	}
+}
+
 /**
  * Everything on the market: active, under contract and pending, in that order,
  * then priciest first. Feeds /listings/ (where the status badge tells them
- * apart) and the sitemap. The home, community and neighbourhood pages keep
- * their own `status='Active'` queries, so featured rows stay on-market only.
+ * apart) and the sitemap. Listings ticked "Hide from search" are left out. The
+ * home, community and blog featured rows use FEATURED_ROW instead.
  */
 export async function allLive() {
 	// LEFT JOIN the emdash mirror so cards can surface a "Grant's note" flag. Owner
 	// note lives in ec_listings.owner_note (preserved across every sync).
 	const { results } = await DB().prepare(
-		`SELECT l.*, e.owner_note AS owner_note FROM listings l LEFT JOIN ec_listings e ON e.id = l.id WHERE l.status IN ${LIVE_STATUSES} ORDER BY ${LIVE_ORDER}, (l.photo IS NULL), l.price DESC`
+		`SELECT l.*, e.owner_note AS owner_note FROM listings l LEFT JOIN ec_listings e ON e.id = l.id WHERE l.status IN ${LIVE_STATUSES} AND ${NOT_HIDDEN} ORDER BY ${LIVE_ORDER}, (l.photo IS NULL), l.price DESC`
 	).all();
 	return (results ?? []).map((r: any) => ({ ...toListing(r), ownerNote: r.owner_note ?? null }));
 }
@@ -255,7 +285,7 @@ export async function soldSlugs(): Promise<string[]> {
 export async function randomHomePhoto(): Promise<string | null> {
 	try {
 		const row = await DB().prepare(
-			"SELECT photo FROM listings WHERE status='Active' AND type='Residential' AND photo IS NOT NULL AND photo != '' ORDER BY RANDOM() LIMIT 1"
+			`SELECT l.photo FROM listings l LEFT JOIN ec_listings e ON e.id = l.id WHERE l.status='Active' AND l.type='Residential' AND l.photo IS NOT NULL AND l.photo != '' AND ${NOT_HIDDEN} ORDER BY RANDOM() LIMIT 1`
 		).first();
 		return (row as any)?.photo ?? null;
 	} catch {
@@ -271,7 +301,7 @@ export async function randomHomePhoto(): Promise<string | null> {
 export async function randomHomePhotos(n: number): Promise<string[]> {
 	try {
 		const { results } = await DB().prepare(
-			"SELECT photo FROM listings WHERE status='Active' AND type='Residential' AND photo IS NOT NULL AND photo != '' ORDER BY RANDOM() LIMIT ?"
+			`SELECT l.photo FROM listings l LEFT JOIN ec_listings e ON e.id = l.id WHERE l.status='Active' AND l.type='Residential' AND l.photo IS NOT NULL AND l.photo != '' AND ${NOT_HIDDEN} ORDER BY RANDOM() LIMIT ?`
 		).bind(n).all();
 		return (results ?? []).map((r: any) => r.photo);
 	} catch {

@@ -58,7 +58,11 @@ export { PluginBridge };
 // plays in place, MLS Matterport links fill an empty 3D tour.
 // v23 (2026-11-04): status badges on /listings/ cards, sold listing pages, the
 // new /sold/ page and its footer link in every chrome copy.
-const CACHE_VERSION = "v23";
+// v24 (2026-11-04): listings ticked "Featured" in the admin lead the featured
+// rows on /, /community/ and the blog sidebar (and may stay there under
+// contract); "Hide from search" drops a listing from every list, search and the
+// sitemap.
+const CACHE_VERSION = "v24";
 const CACHEABLE_TYPE = /^(?:text\/html|application\/xml|text\/xml|text\/plain)/i;
 const ADMIN_COOKIE = /emdash[-_](session|edit-mode|admin)/i;
 

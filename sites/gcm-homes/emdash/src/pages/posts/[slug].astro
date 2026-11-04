@@ -19,6 +19,7 @@ import PostCardC from "../../components/PostCard.astro";
 import PostBlock from "../../components/PostBlock.astro";
 import { resolveStarterSiteIdentity } from "../../utils/site-identity";
 import { imageUrl } from "../../lib/media";
+import { statusLabel } from "../../lib/listings";
 import { extractH2s, formatDate, readMinutes, listPosts, featuredListingPool } from "../../lib/posts";
 
 const slug = decodeSlug(Astro.params.slug);
@@ -181,6 +182,7 @@ const tagOf = (l: any) =>
 										<img class="card__img" src={l.photo} alt={l.address || "Featured listing"} loading="lazy" />
 										<div class="card__badges">
 											<div class="card__tag">{tagOf(l)}</div>
+											{l.status && l.status !== "Active" ? <div class={`card__status card__status--${l.status === "Pending" ? "pending" : "uc"}`}>{statusLabel(l.status)}</div> : null}
 											{l.waterfront ? <div class="card__wf">Waterfront</div> : null}
 										</div>
 									</div>
