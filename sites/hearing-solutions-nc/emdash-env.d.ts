@@ -560,6 +560,22 @@ export interface Service {
   terms?: Record<string, TaxonomyTerm[]>;
 }
 
+export interface Testimonial {
+  id: string;
+  slug: string | null;
+  status: string;
+  title: string;
+  text: string;
+  rating?: "5 stars" | "4 stars" | "3 stars" | "2 stars" | "1 star";
+  show_on_home?: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  byline?: BylineSummary | null;
+  bylines?: ContentBylineCredit[];
+  terms?: Record<string, TaxonomyTerm[]>;
+}
+
 declare module "emdash" {
   interface EmDashCollections {
     practice: Practice;
@@ -583,5 +599,6 @@ declare module "emdash" {
     providers: Provider;
     resources: Resource;
     services: Service;
+    testimonials: Testimonial;
   }
 }

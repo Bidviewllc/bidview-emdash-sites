@@ -2,7 +2,8 @@
 // "What our patients say." (Home, About, Services, New Patients boards): two
 // review cards with round arrows either side that page through the reviews two
 // at a time (arrows hidden on phones, where cards stack). Navy, or light green
-// on Services. Reviews: the synced Google reviews (sample ones until a sync runs).
+// on Services. Reviews: the synced Google reviews (sample ones until a sync runs);
+// Home passes its own list, with the testimonials ticked for Home first.
 import type { Review } from "../../data/types";
 import HsIcon from "./HsIcon.astro";
 
@@ -29,7 +30,7 @@ const id = `rv-${Math.random().toString(36).slice(2, 8)}`;
 								<div class="hs-stars" role="img" aria-label={`${r.rating ?? 5} out of 5 stars`}>{Array.from({ length: r.rating ?? 5 }, () => <HsIcon name="star" size={22} />)}</div>
 							</div>
 							<blockquote class="hs-rtext">{r.text}</blockquote>
-							<figcaption class="hs-rmeta"><b>{r.name}</b><span>Google review</span></figcaption>
+							<figcaption class="hs-rmeta"><b>{r.name}</b><span>{r.testimonial ? "Patient testimonial" : "Google review"}</span></figcaption>
 						</figure>
 					))
 				}

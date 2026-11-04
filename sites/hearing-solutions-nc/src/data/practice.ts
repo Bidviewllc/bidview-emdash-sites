@@ -124,6 +124,8 @@ export type Review = {
 	rating?: number;
 	/** Office short name (Reviews page filter). */
 	loc?: string;
+	/** A testimonial added in the admin (Testimonials), not a Google review. */
+	testimonial?: boolean;
 };
 
 export const practice = {

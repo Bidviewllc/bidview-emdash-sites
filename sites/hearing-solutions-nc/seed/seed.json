@@ -2348,6 +2348,51 @@
 			]
 		},
 		{
+			"slug": "testimonials",
+			"label": "Testimonials",
+			"labelSingular": "Testimonial",
+			"description": "Patient testimonials added by hand. Published ones show on the Reviews page, mixed in with the Google reviews; tick “Show on the home page” to add one to the Home reviews band.",
+			"supports": [
+				"drafts"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Patient name (as it should show, e.g. Mary S.)",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "text",
+					"label": "Testimonial",
+					"type": "text",
+					"required": true
+				},
+				{
+					"slug": "rating",
+					"label": "Star rating",
+					"type": "select",
+					"defaultValue": "5 stars",
+					"validation": {
+						"options": [
+							"5 stars",
+							"4 stars",
+							"3 stars",
+							"2 stars",
+							"1 star"
+						]
+					}
+				},
+				{
+					"slug": "show_on_home",
+					"label": "Show on the home page",
+					"type": "boolean",
+					"defaultValue": false
+				}
+			]
+		},
+		{
 			"slug": "posts",
 			"label": "Blog posts",
 			"labelSingular": "Blog post",

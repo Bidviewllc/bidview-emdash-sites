@@ -78,11 +78,13 @@ export async function loadSite() {
 			(r) => (r.error ? undefined : ((r.entry as Entry | null)?.data ?? null)),
 			() => undefined,
 		);
-	const [menuList, pageData, templatesData, sharedData] = await Promise.all([
+	const [menuList, pageData, templatesData, sharedData, testimonialE] = await Promise.all([
 		Promise.all(MENU_NAMES.map((n) => getMenu(n))),
 		Promise.all(PAGES.map((d) => (d.collection ? single(d.collection) : Promise.resolve(undefined)))),
 		single(TEMPLATES_COLLECTION),
 		single(SHARED_COLLECTION),
+		// None until the Testimonials type exists on the site (scripts/sync-schema.ts).
+		all("testimonials").catch(() => [] as Entry[]),
 	]);
 	const p = (practiceRes.entry as Entry | null)?.data;
 	if (!p) throw new NotSetUpError("No practice record (Practice details, slug main).");
@@ -380,12 +382,40 @@ export async function loadSite() {
 	}
 	const reviewPlace = offices.find((o) => o.placeId)?.placeId;
 
+	// Testimonials added in the admin (no date). Home: the ones ticked "Show on
+	// the home page" come first, then the Google reviews. Reviews page: all of
+	// them in a new order each visit, spread evenly through the Google reviews.
+	const testimonials: (Review & { home: boolean })[] = testimonialE
+		.filter((e) => String(e.data.text ?? "").trim())
+		.map((e) => {
+			const text = String(e.data.text).trim();
+			const rating = Number(String(e.data.rating ?? "").match(/[1-5]/)?.[0] ?? 5);
+			return { name: String(e.data.title ?? "").trim() || "Patient", date: "", text, rating, long: text.length > 260, testimonial: true, home: !!e.data.show_on_home };
+		});
+	const shuffled = [...testimonials];
+	for (let i = shuffled.length - 1; i > 0; i--) {
+		const j = Math.floor(Math.random() * (i + 1));
+		[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+	}
+	const google = reviewsPage ?? reviewList;
+	const total = google.length + shuffled.length;
+	let gi = 0;
+	let ti = 0;
+	// Slot k is a testimonial when it starts the next 1/T share of the list, so they
+	// spread evenly and a Google review (the newest) still comes first.
+	const mixed: Review[] = Array.from({ length: total }, (_, k) =>
+		Math.floor(((k + 1) * shuffled.length) / total) > Math.floor((k * shuffled.length) / total) ? shuffled[ti++] : google[gi++],
+	);
+
 	return {
 		practice,
 		/** Reviews, newest first (min-star setting applied). Sample reviews until the first sync. */
 		reviews: reviewList,
+		/** Home reviews band: the testimonials ticked for Home, then the Google reviews. */
+		homeReviews: [...testimonials.filter((t) => t.home), ...reviewList],
 		sidebarReviews: sidebarList,
-		reviewsPage: reviewsPage ?? reviewList,
+		/** Reviews page: the Google reviews with every testimonial mixed in. */
+		reviewsPage: mixed,
 		reviewsByLocation,
 		reviewsFromGoogle: fromGoogle,
 		/** The shared booking band (Shared sections), for pages without their own. */

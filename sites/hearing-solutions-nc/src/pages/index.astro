@@ -139,7 +139,7 @@ const closingPhoto = photo("home_closing_photo");
 			</div>
 		</section>
 
-		<HsReviews heading={text("home_reviews_heading")} />
+		<HsReviews heading={text("home_reviews_heading")} reviews={Astro.locals.site.homeReviews} />
 
 		<section class="hs-wrap" style="padding-top:96px;padding-bottom:96px;display:flex;flex-direction:column;gap:56px">
 			<div style="display:flex;flex-wrap:wrap;gap:40px;align-items:center">

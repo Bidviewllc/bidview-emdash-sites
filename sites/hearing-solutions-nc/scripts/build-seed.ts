@@ -311,6 +311,22 @@ const collections = [
 		],
 	},
 	{
+		// Testimonials the practice adds by hand (no date). The Home reviews band
+		// shows the ones ticked for it, before the Google reviews; the Reviews page
+		// spreads all of them through the Google reviews in a new order each visit.
+		slug: "testimonials",
+		label: "Testimonials",
+		labelSingular: "Testimonial",
+		description: "Patient testimonials added by hand. Published ones show on the Reviews page, mixed in with the Google reviews; tick “Show on the home page” to add one to the Home reviews band.",
+		supports: ["drafts"],
+		fields: [
+			title("Patient name (as it should show, e.g. Mary S.)"),
+			txt("text", "Testimonial", { required: true }),
+			select("rating", "Star rating", ["5 stars", "4 stars", "3 stars", "2 stars", "1 star"], "5 stars"),
+			bool("show_on_home", "Show on the home page"),
+		],
+	},
+	{
 		slug: "posts",
 		label: "Blog posts",
 		labelSingular: "Blog post",

@@ -1,7 +1,8 @@
 ---
 // Reviews (template Page 11, HSNC reskin; no HSNC board). Light green hero with
 // the rating and "Leave us a review on Google" → location filter (two offices
-// only) → masonry of review cards (the HSNC review card) → "Show more" → the
+// only) → masonry of review cards (the HSNC review card; testimonials from the
+// admin are mixed in, labelled "Patient testimonial") → "Show more" → the
 // shared closing band. Dropped from the template: breadcrumbs.
 import "../styles/hsnc-reskin.css";
 import HsCtaBand from "../components/hs/HsCtaBand.astro";
@@ -59,7 +60,7 @@ const filters = ["All", ...s.offices.map((o) => o.shortName)];
 								<div class="hs-stars" role="img" aria-label={`${r.rating ?? 5} out of 5 stars`}>{Array.from({ length: r.rating ?? 5 }, () => <HsIcon name="star" size={22} />)}</div>
 							</div>
 							<blockquote class="hs-rtext">{r.text}</blockquote>
-							<figcaption class="hs-rmeta"><b>{r.name}</b><span>{r.date}</span>{two && r.loc && <span>{r.loc}</span>}</figcaption>
+							<figcaption class="hs-rmeta"><b>{r.name}</b><span>{r.testimonial ? "Patient testimonial" : r.date}</span>{two && r.loc && <span>{r.loc}</span>}</figcaption>
 						</figure>
 					))
 				}
