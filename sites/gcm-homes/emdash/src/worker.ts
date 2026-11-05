@@ -66,7 +66,8 @@ export { PluginBridge };
 // (no collapse while the next plan loads), plans preload, and the full-screen
 // viewer zooms (wheel, pinch, click, +/- buttons) and pans.
 // v26 (2026-11-04): #235 merged after #236, so a new number again.
-const CACHE_VERSION = "v26";
+// v27 (2026-11-05): listing page location map is a Google Maps embed (was Leaflet).
+const CACHE_VERSION = "v27";
 const CACHEABLE_TYPE = /^(?:text\/html|application\/xml|text\/xml|text\/plain)/i;
 const ADMIN_COOKIE = /emdash[-_](session|edit-mode|admin)/i;
 
