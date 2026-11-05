@@ -191,8 +191,8 @@
     .matterport.is-playing { cursor: default; transform: none; background: #000; }
     .matterport.is-playing iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; }
     .floorplan { background: var(--beige); padding: 96px 0; }
-    /* --- Location map (Leaflet + CARTO tiles, the same as the /listings/ map).
-           Loaded only when the section nears the screen. --- */
+    /* --- Location map: a Google Maps embed, the same keyless iframe Vince uses on
+           the other Bidview sites. Lazy-loaded by the browser. --- */
     .listing-map { background: var(--white); padding: 96px 0; }
     .listing-map__head {
       max-width: 1320px; margin: 0 auto 28px; padding: 0 32px;
@@ -202,14 +202,9 @@
       margin: 0 max(32px, calc((100% - 1256px) / 2)); height: min(60vh, 520px); min-height: 360px;
       border-radius: 8px; overflow: hidden; border: 1px solid var(--line); background: var(--beige-2);
     }
-    .listing-map__map { width: 100%; height: 100%; }
+    .listing-map__map { display: block; width: 100%; height: 100%; border: 0; }
     .listing-map__area { max-width: 1320px; margin: 18px auto 0; padding: 0 32px; font-family: var(--font-sans); font-size: 15px; color: var(--navy); }
     .listing-map__area a { color: var(--orange); }
-    .listing-map__pin {
-      width: 22px; height: 22px; border-radius: 50%; background: var(--orange);
-      border: 4px solid var(--white); box-shadow: 0 0 0 2px var(--navy), 0 6px 14px rgba(20, 33, 61, 0.35);
-    }
-    .listing-map .leaflet-container { font-family: var(--font-sans); }
     .floorplan__head {
       max-width: 1320px; margin: 0 auto 28px; padding: 0 32px;
       display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap;
@@ -637,7 +632,6 @@ let photos = [];
 let fpImages = [];
 let fpNames = [];
 let fpAutoHeight = false;
-let mapLatLng = null;
 let lbIndex = 0;
 let canEdit = false;
 let currentSlug = "";
@@ -1003,47 +997,6 @@ function preloadFloorPlans() {
   io.observe(sec);
 }
 
-/* ---------------- Location map ----------------
-   Leaflet is only fetched once the map section comes within 600px of the
-   screen, so listings that are never scrolled that far don't pay for it.
-   Scroll-wheel zoom is off, so scrolling the page past the map never gets
-   caught by it; the +/- buttons and a pinch still zoom. */
-let leafletLoad = null;
-function loadLeaflet() {
-  leafletLoad ||= new Promise((resolve, reject) => {
-    const css = document.createElement("link");
-    css.rel = "stylesheet";
-    css.href = "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css";
-    document.head.appendChild(css);
-    const sc = document.createElement("script");
-    sc.src = "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js";
-    sc.onload = resolve;
-    sc.onerror = reject;
-    document.head.appendChild(sc);
-  });
-  return leafletLoad;
-}
-function initListingMap() {
-  const el = document.getElementById("listingMap");
-  if (!el || !mapLatLng) return;
-  const draw = () => loadLeaflet().then(() => {
-    if (el.dataset.ready) return;
-    el.dataset.ready = "1";
-    const map = L.map(el, { scrollWheelZoom: false }).setView(mapLatLng, 14);
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
-      subdomains: "abcd", maxZoom: 19,
-    }).addTo(map);
-    L.marker(mapLatLng, {
-      icon: L.divIcon({ className: "", html: '<div class="listing-map__pin"></div>', iconSize: [22, 22], iconAnchor: [11, 11] }),
-      keyboard: false,
-    }).addTo(map);
-  }, () => {}); // if Leaflet can't load, the section keeps its plain background
-  if (!("IntersectionObserver" in window)) return draw();
-  const io = new IntersectionObserver(es => { if (es.some(x => x.isIntersecting)) { io.disconnect(); draw(); } }, { rootMargin: "600px 0px" });
-  io.observe(el);
-}
-
 /* ---------------- 3D tour, played in place ---------------- */
 // Matterport links come in a few shapes (/show/?m=ID, /models/ID). The model ID
 // is all the player needs.
@@ -1336,10 +1289,20 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro) {
       </div>
     </section>` : "";
 
-  // ---- Location map. Hidden when the feed has no coordinates for the listing. ----
-  mapLatLng = Number(listing.lat) && Number(listing.lng) ? [Number(listing.lat), Number(listing.lng)] : null;
-  const directions = mapLatLng ? `https://www.google.com/maps/dir/?api=1&destination=${mapLatLng[0]},${mapLatLng[1]}` : "";
-  const mapSection = mapLatLng ? `
+  // ---- Location map: a keyless Google Maps embed (output=embed), as on the other
+  //      Bidview sites. The feed writes units without a "#" ("807 Alder Avenue 82"),
+  //      so a trailing unit after a street-type word is dropped and Google pins the
+  //      building. No street address -> the MLS coordinates. Hidden with neither. ----
+  const mapLatLng = Number(listing.lat) && Number(listing.lng) ? [Number(listing.lat), Number(listing.lng)] : null;
+  const street = String(listing.address || "").trim()
+    .replace(/^(.*\b(?:Avenue|Ave|Drive|Dr|Street|St|Road|Rd|Way|Boulevard|Blvd|Court|Ct|Lane|Ln|Circle|Cir|Place|Pl|Highway|Hwy|Trail|Terrace|Route \d+))\s+#?[\w-]+$/i, "$1");
+  const mapQuery = /\d/.test(street)
+    ? [street, listing.city, [listing.state, listing.zip].filter(Boolean).join(" ")].filter(Boolean).join(", ")
+    : (mapLatLng ? mapLatLng.join(",") : "");
+  const mapSrc = mapQuery ? `https://maps.google.com/maps?q=${encodeURIComponent(mapQuery)}&z=15&output=embed` : "";
+  const directions = mapLatLng ? `https://www.google.com/maps/dir/?api=1&destination=${mapLatLng[0]},${mapLatLng[1]}`
+    : (mapQuery ? `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(mapQuery)}` : "");
+  const mapSection = mapSrc ? `
     <section class="listing-map" id="location">
       <div class="listing-map__head">
         <div>
@@ -1349,7 +1312,7 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro) {
         <a class="floorplan__open" href="${directions}" target="_blank" rel="noopener">Get directions ${arrow}</a>
       </div>
       <div class="listing-map__frame">
-        <div class="listing-map__map" id="listingMap" role="region" aria-label="Map showing ${escapeHtml(listing.address)}"></div>
+        <iframe class="listing-map__map" src="${escapeHtml(mapSrc)}" title="Map showing ${escapeHtml(listing.address)}" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
       </div>
       ${listing.neighborhood && listing.neighborhoodSlug ? `
       <p class="listing-map__area">In the <a href="/neighborhood/${escapeHtml(listing.neighborhoodSlug)}/">${escapeHtml(listing.neighborhood)}</a> neighborhood of ${escapeHtml(listing.city || "Incline Village")}.</p>` : ""}
@@ -1840,7 +1803,6 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro) {
   syncGalleryFoot();
   autoSizeFloorPlan();
   preloadFloorPlans();
-  initListingMap();
   featShift(0);
   syncSaved();
 
