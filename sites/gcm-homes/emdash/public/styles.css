@@ -613,6 +613,21 @@ a:hover .cta-arrow { transform: translateX(4px); }
   background-position: center 50%;
 }
 .emotion__veil { position: absolute; inset: 0; background: rgba(0,0,0,0.32); }
+
+/* Background video (home hero + the "Coming to Ski" band). Sits over the still
+   photo, under the veil, so the photo shows while it loads. Reduced-motion
+   visitors get the photo only. */
+.bg-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .bg-video { display: none; }
+}
 .emotion__card {
   position: relative;
   z-index: 1;
