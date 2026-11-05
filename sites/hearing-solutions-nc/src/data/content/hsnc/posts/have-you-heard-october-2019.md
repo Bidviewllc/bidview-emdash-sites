@@ -1,0 +1,17 @@
+October is Audiology Awareness Month! The American Academy of Audiology is encouraging you to remember how important your hearing is to your daily life, along with encouraging hearing screenings and hearing protection.
+
+One in four U.S. adults has hearing loss due to noise exposure! We talked last month about activities this time of year that are too loud; such as hunting and leaf blowing. These and other seasonal activities can have a negative effect on our hearing if proper hearing protection is not worn.
+
+Last month I had two different experiences, that are worth mentioning, when talking about the harmful effects of the loud world in which we live.
+
+My husband and I attended a beautiful wedding at Childress Winery. The reception was held in the pavilion with a DJ playing music. My friend, the mother of the bride, bought a set of adorable pink ear muffs for her 2 month old granddaughter. I was thrilled the baby had on her hearing protection. As the night went on, I wished I had mine. As an audiology nerd, I have a loud level meter app on my iPhone. During dinner the music averaged 83dB but by the end of the evening the music was averaging 97dB. Unnecessarily too loud! Next time, I will try to remember to bring my ear plugs with me.
+
+A few weeks later, we attended the Hootie and The Blowfish concert at PNC Music Pavilion. My husband and I went with two other couples. It was a great show! Once again, I activated my sound level meter. Remember normal conversation is between 60-70dB. OSHA mandates the use of hearing protection for employees at 85dB. My sound level meter peaked at 107dB. Pain can occur at 125dB. I hate to think we were the only 6 attending the concert who wore hearing protection. My friends were glad I reminded them to bring their ear plugs.
+
+On a technology note: Direct connectivity between hearing aids and Apple products (iPhones) have been available for years. Jane and I are pleased to see hearing aid manufacturers working with Google, Samsung and other android platforms to provide this type of connectivity.
+
+On another technology note: The small completely-in-the-canal style device now has direct connectivity to select smart phones. Historically this very small style hearing device did not have enough room for the blue tooth antennae, but with the magic of miniaturization it now works.
+
+Leasing: Over the past several months, we have noticed a significant increase in the number of our patients making the decision to lease their new hearing devices. For many it is a great option instead of direct purchase or financing. Remember, when you lease you don’t own your hearing aids. The benefits of leasing include making a small monthly payment for the right to wear them, full repair/loss & damage coverage during the lease period, and knowing in 3-4 years you will be fit with new hearing aids as your lease is rolled over into new technology. With the rapid advancement in digital processing technology, what we had to offer even 3 years ago is nothing like what we have now. Can’t wait to see what will be available in the next 3 years!
+
+So if you would like to further discuss the various options we offer to improve hearing ability, give Beth or Jamie a call at (704) 212-2376 to schedule an appointment. Remember to like us on Facebook and visit our website at [www.hearingsolutionsofnc.com](/). Jane and I look forward to seeing you soon!

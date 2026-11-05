@@ -513,7 +513,7 @@ const content = {
 				...(p.image ? { featured_image: { $media: { url: p.image, alt: p.imageAlt ?? p.title, filename: p.image.split("/").pop() } } } : {}),
 				tone: p.tone,
 			},
-			{ category: [p.catSlug] },
+			{ category: (p.cats ?? [p.cat]).map(blog.slugify) },
 		),
 	),
 	resources: blog.resources.map((r, i) =>

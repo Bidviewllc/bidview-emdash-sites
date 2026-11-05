@@ -1,0 +1,19 @@
+As we ring in the New Year, it is time to reflect on the past year, expand on the jobs well done and learn from those that did not go so well.
+
+Jane, Beth, Jamie and I will continue to make a difference in the lives of those that choose us to be their hearing healthcare provider. The patient journey starts with acknowledging your communication challenges. Throughout the year we will expand on our “patient’s journey”. Every month we will walk you through each step of the journey so you understand that all hearing healthcare providers are not the same.
+
+This is Jacki’s journey. She is medical student who had been struggling. Her review is on our website: ([www.hearingsolutionsofnc.com](/)). Jacki is thrilled that we cared to listen and walked with her on her journey. .
+
+“_I cannot say enough good things about the staff here… I showed up at the office for a second opinion after my test results were never explained to me at another office. As a person under 30 struggling to hear, I felt like I was never taken seriously. Everyone here is incredible. They take the time to listen to you, ask you questions, and thoroughly explain everything. After being fitted for hearing aids I can talk on the phone, hear conversations, and function much better in all parts of my life. It’s made me so much happier! When I had a question about my hearing aids and was unable to talk on the phone due to my schedule, I asked to be emailed. Jane emailed me within the hour offering advice. They also verified things with my insurance prior to me buying them. I cannot say enough great things about Dr. Oden, Jane, Beth and Jamie.”_
+
+As we move into the New Year, we also like to learn from last year’s mistakes. Actually these are mistakes our patients made. Please learn from them so you don’t make the same ones.
+
+As you know from reading my monthly articles, I also perform hearing evaluations at Dr. Whitaker’s office. He is an otolaryngologist (ENT) with Novant Health Pinnacle Ear Nose Throat and Allergy with his office a few buildings down from ours. Last month I tested Jennifer, a 17 year old high school student with recent onset tinnitus; ringing in her ears. This is a population we usually do not see complaining of tinnitus.
+
+So, what happened? Jennifer was mowing the grass on a riding lawnmower using earbuds, listening to music. Her cell phone volume was loud enough to hear above the level of the lawnmower. A new song started, the volume was so high she pulled the earbuds out of her ears as quickly as she could. Her ears immediately began to ring. I saw her six months later and her ears were still ringing. There is no cure. The damage was done. What is our lesson here?
+
+I see so many people using earbuds when using their leaf blowers and lawnmowers. These power tools are loud enough to cause hearing loss. Listening to loud music on top of the loudness of these machines is foolish. Earbuds are NOT hearing protection. Please use proper hearing protection. If you are unsure what to use, we can help.
+
+I tested another patient at Dr. Whitaker’s office who is actually my neighbor. For twenty years I talked to him about using hearing protection but he did not heed my advice. Four days after the onset of his tinnitus, he went to Lowes and bought a set of muffs. His audiometric evaluation revealed a mild to severe high frequency sensorineural hearing loss. This audiometric pattern is text book noise induced hearing loss. In addition to his tinnitus, he has difficulty understanding his soft spoken wife. If he had only listened to me 20 years ago his hearing outcome would be different.
+
+Please appreciate the wonderful gift of hearing. Protect it. Evaluate it. Seek help to improve it. Jane, Beth, Jamie and I look forward to working with you in 2020. Like us on Facebook, follow us on Twitter, check out our website or give us a call at (704) 212-2376. We look forward to seeing you soon.

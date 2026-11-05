@@ -6,16 +6,24 @@
 // breadcrumbs, the Book button (the phone instead), photo placeholders.
 import "../../styles/hsnc-reskin.css";
 import HsCtaBand from "../../components/hs/HsCtaBand.astro";
+import ResourcePage from "../../components/ResourcePage.astro";
+import { resourceAt } from "../../lib/resource-paths";
 import HsFaq from "../../components/hs/HsFaq.astro";
 import type { Tweak } from "../../components/ReviewControls.astro";
 import Base from "../../layouts/Base.astro";
 import { getSettings } from "../../lib/settings";
 import { routes, telHref } from "../../lib/routes";
 
-const { brandDetails, brandFaqs, brands, practice } = Astro.locals.site;
+const { brandDetails, brandFaqs, brands, practice, resources } = Astro.locals.site;
 
-const brand = brands.find((b) => b.slug === Astro.params.brand);
-if (!brand || !brand.hasPage) return Astro.rewrite("/404");
+// A patient resource kept at its live address under /hearing-aids/ (Earmolds for Hearing Aids).
+const keptSlug = resourceAt(Astro.url.pathname);
+const kept = keptSlug ? resources.find((x) => x.slug === keptSlug && x.page) : undefined;
+
+const found = kept ? undefined : brands.find((b) => b.slug === Astro.params.brand);
+if (!kept && (!found || !found.hasPage)) return Astro.rewrite("/404");
+/** The brand (an empty stand-in while drawing a kept resource instead; nothing below shows then). */
+const brand = found ?? ({ slug: "", name: "" } as NonNullable<typeof found>);
 const detail = brandDetails[brand.slug] ?? { lines: [], accessories: [], older: [] };
 
 const tweaks: Tweak[] = [];
@@ -28,6 +36,7 @@ const faq = brandFaqs[brand.slug] ?? [];
 const office = practice.photos.office;
 const productSvg = `<path d="M60 14c11 0 18 9 18 20v24c0 9-7 16-16 16s-16-7-16-16V32c0-10 5-18 14-18z" fill="currentColor" fill-opacity=".14" stroke="currentColor" stroke-width="2.5"></path><path d="M50 66C36 72 28 80 28 88" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"></path><circle cx="28" cy="88" r="5" fill="currentColor" fill-opacity=".4"></circle>`;
 ---
+{kept ? <ResourcePage r={kept} /> : (
 <Base title={`${title} | ${s.name}`} description={brand.summary} pageName="Brand page" current="hearing-aids" tweaks={tweaks} heroDefault="photo">
 	<div class="hs">
 		<div class="hs-mint rs-hero">
@@ -135,3 +144,4 @@ const productSvg = `<path d="M60 14c11 0 18 9 18 20v24c0 9-7 16-16 16s-16-7-16-1
 		<HsCtaBand />
 	</div>
 </Base>
+)}

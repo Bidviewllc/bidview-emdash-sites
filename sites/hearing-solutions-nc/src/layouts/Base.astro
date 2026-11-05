@@ -94,18 +94,50 @@ const adsForm = onLiveDomain(mk, Astro.url.host) && /^AW-\d+$/i.test(active(mk, 
 		{s.showPanel && <ReviewControls pageName={pageName} tweaks={tweaks} heroDefault={heroDefault} />}
 		<script>
 			import { referral } from "../scripts/referral";
-			// Accordions (FAQ, tables of contents, resource lists): the button opens and closes its panel.
+			// Accordions: one open at a time on the whole page (Liz, 2026-11-05). Two kinds:
+			// the template's button accordions ([data-acc]: FAQ, tables of contents, resource
+			// lists) and the HSNC fold-outs (<details> in the page body). Opening one closes
+			// every other open one, except the one it sits inside; the row just opened stays
+			// put on screen while rows above it close.
+			const setAcc = (acc: HTMLElement, open: boolean) => {
+				const btn = acc.querySelector<HTMLButtonElement>("button[aria-controls]");
+				const panel = btn && document.getElementById(btn.getAttribute("aria-controls")!);
+				if (!btn || !panel) return;
+				panel.hidden = !open;
+				btn.setAttribute("aria-expanded", String(open));
+				acc.classList.toggle("open", open);
+			};
+			const closeOthers = (opened: HTMLElement, anchor: HTMLElement) => {
+				const before = anchor.getBoundingClientRect().top;
+				document.querySelectorAll<HTMLDetailsElement>("main details[open]").forEach((d) => {
+					if (d !== opened && !d.contains(opened)) d.open = false;
+				});
+				document.querySelectorAll<HTMLElement>("[data-acc].open").forEach((a) => {
+					if (a !== opened && !a.contains(opened)) setAcc(a, false);
+				});
+				const shift = anchor.getBoundingClientRect().top - before;
+				if (shift) window.scrollBy(0, shift);
+			};
 			document.querySelectorAll<HTMLElement>("[data-acc]").forEach((acc) => {
 				const btn = acc.querySelector<HTMLButtonElement>("button[aria-controls]");
 				const panel = btn && document.getElementById(btn.getAttribute("aria-controls")!);
 				if (!btn || !panel) return;
 				btn.addEventListener("click", () => {
 					const open = panel.hidden;
-					panel.hidden = !open;
-					btn.setAttribute("aria-expanded", String(open));
-					acc.classList.toggle("open", open);
+					setAcc(acc, open);
+					if (open) closeOthers(acc, btn);
 				});
 			});
+			// "toggle" doesn't bubble, so listen while it travels down (capture).
+			document.addEventListener(
+				"toggle",
+				(e) => {
+					const d = e.target;
+					if (!(d instanceof HTMLDetailsElement) || !d.open || !d.closest("main")) return;
+					closeOthers(d, d.querySelector("summary") ?? d);
+				},
+				true,
+			);
 			// Events for whichever tracking is on (Marketing & tracking): gtag when GA4 or Ads
 			// is loaded, else the Tag Manager dataLayer.
 			const track = (event: string, params: Record<string, string> = {}) => {

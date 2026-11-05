@@ -309,7 +309,7 @@ export const routes = {
 	home: "/",
 	services: "/services",
 	service: (slug: string) => `/services/${slug}`,
-	hearingAids: "/hearing-aids",
+	hearingAids: "/products",
 	brand: (slug: string) => `/hearing-aids/${slug}`,
 	about: "/about",
 	provider: (slug: string) => `/about/${slug}`,

@@ -1,0 +1,17 @@
+Jane and I are thrilled to announce the publishing of our first YouTube video. Our initial video details the proper cleaning and maintenance of rechargeable mini behind the ear devices. Proper care of hearing devices is critical to receive superb sound quality and maintain function. We are amazed how many people we see that were fit with hearing aids elsewhere and never taught how to take care for them. “Just bring them in periodically and we will clean them for you.” Anything on the body, especially in a warm, waxy environment needs to be cleaned nightly. We instruct our patients how to clean their hearing aids nightly, but also see them for period maintenance checks. At the time of their hearing device fitting, there is a lot of information to absorb at one time, so having a video to watch can be extremely helpful.
+
+To view our video, go to our website [www.hearingsolutionsofnc.com](/). While you are on our website, take a few minutes to look around. There is a lot of great information about our services and the manufacturers we work with. After you have had time to look around, click on the YouTube icon in the upper right hand corner. This will take you directly to our video channel. We will continue to upload videos, so look often for additional information.
+
+In addition to educating the public around hearing healthcare issues and sharing technology advancement with you, we love to have our patients share their experiences as well. As part of this sharing process, we have incorporated patient reviews into our website. We have an independent company that posts them on our website. We are thrilled with the positive responses and find it interesting what folks have to say about their experiences working with us.
+
+Choosing your hearing healthcare professional is a very important decision. It is one that we take very seriously. The majority of our patients are referred to us by their physician, medical provider or a friend. We would like to share some of the reviews we have received recently.
+
+_“I did not think I needed hearing aids, but after the initial office visit, I decided to try the hearing aids. I am so glad I did! I didn’t realize what I was missing!” Ronnie W. 2/19/2020._
+
+_“Always excellent service from friendly caring professionals. Highly recommend Hearing Solutions.” Tim N. 2/16/2020._
+
+_“Hearing Solutions staff along with Dr. Oden have been wonderful to work with. I received my first pair of aids 5 years ago. The difference in my hearing was amazing. Under my plan I returned every quarter for a checkup and cleaning. I have upgraded my hearing aids with latest new technology, and wow my hearing is even better. If you are having hearing problems I would highly recommend you contact Dr. Oden for an evaluation. You will find Dr. Oden and her staff to be very professional and a pleasure to work with. They are the BEST!!” Bob F. 2/13/2020._
+
+_“I would gladly discuss why a person with a hearing problem should go to Hearing Solutions!. The entire staff at Hearing Solutions in Salisbury, North Carolina went above and beyond to make sure I was taken care of. I would gladly recommend the entire staff and office to anyone in need of like the name says, Hearing Solutions. I personally want to thank them for doing everything in their power to resolve my hearing issues.” Louis G. 2/2/2020_
+
+If you would like to make an appointment, give us a call at (704) 212-2376. Jane, Beth, Jamie and I look forward to seeing you soon.

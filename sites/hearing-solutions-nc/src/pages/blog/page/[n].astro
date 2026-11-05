@@ -1,0 +1,12 @@
+---
+// /blog/page/2, /blog/page/3...: the blog list, 10 posts a page (src/lib/blog-pages.ts).
+// /blog/page/1 goes to /blog; a page past the end is a 404.
+import BlogArchive from "../../../components/BlogArchive.astro";
+import { listed, pageParam } from "../../../lib/blog-pages";
+
+const { featured, posts } = Astro.locals.site;
+if (Astro.params.n === "1") return Astro.redirect("/blog", 301);
+const page = pageParam(Astro.params.n, listed(posts, featured).length);
+if (!page) return Astro.rewrite("/404");
+---
+<BlogArchive page={page} />

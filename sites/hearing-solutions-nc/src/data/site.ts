@@ -238,6 +238,7 @@ export async function loadSite() {
 			tone: e.data.tone || "warm",
 			cat: cat?.label ?? "",
 			catSlug: cat?.slug ?? "",
+			catSlugs: (e.data.terms?.category ?? []).map((c: { slug: string }) => c.slug),
 			author: providers.find((x) => x.slug === e.data.author)?.name ?? "",
 			image: imgSrc(e.data.featured_image),
 			featured: !!e.data.featured,
@@ -411,8 +412,13 @@ export async function loadSite() {
 		practice,
 		/** Reviews, newest first (min-star setting applied). Sample reviews until the first sync. */
 		reviews: reviewList,
-		/** Home reviews band: the testimonials ticked for Home, then the Google reviews. */
-		homeReviews: [...testimonials.filter((t) => t.home), ...reviewList],
+		/**
+		 * "What our patients say" band (Home, About, Services, New Patients): the
+		 * testimonials ticked for Home, then the Google reviews once a sync has run.
+		 * Until then the ticked testimonials alone (Liz, 2026-11-05: no sample reviews),
+		 * unless none are ticked, so the band is never empty.
+		 */
+		homeReviews: ((home) => (fromGoogle ? [...home, ...reviewList] : home.length ? home : reviewList))(testimonials.filter((t) => t.home)),
 		sidebarReviews: sidebarList,
 		/** Reviews page: the Google reviews with every testimonial mixed in. */
 		reviewsPage: mixed,

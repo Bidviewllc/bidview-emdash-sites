@@ -13,6 +13,7 @@
 
 import pageText from "./page-text.json";
 import { HS_PAGES } from "./hsnc";
+import { resourceAt } from "../lib/resource-paths";
 
 /**
  * Page text: headings, intros and section copy for each Pages record, with
@@ -85,7 +86,7 @@ export const PAGES: PageDef[] = [
 	{
 		slug: "hearing-aids", collection: "page_hearing_aids",
 		title: "Hearing aids",
-		path: "/hearing-aids",
+		path: "/products",
 		hero: true,
 		// HSNC: styles and OTC sections start off (template sample text only; no HSNC content yet).
 		settings: [bool("hearing_aids_styles", "Hearing aid styles section", "styles", false), bool("hearing_aids_otc", "OTC vs. prescription section", "otc", false)],
@@ -153,6 +154,8 @@ export function pageFor(pathname: string): PageDef | undefined {
 	const p = pathname.replace(/\/$/, "") || "/";
 	const exact = PAGES.find((d) => d.path === p);
 	if (exact) return exact;
+	// A patient resource kept at its live-site address (/hearing-aids).
+	if (resourceAt(p)) return PAGES.find((d) => d.slug === "resource-pages");
 	const first = p.split("/")[1];
 	const template: Record<string, string> = {
 		services: "service-pages",
@@ -161,6 +164,6 @@ export function pageFor(pathname: string): PageDef | undefined {
 		locations: "location-pages",
 		"patient-resources": "resource-pages",
 	};
-	if (first === "blog") return PAGES.find((d) => d.slug === (p.startsWith("/blog/category/") ? "blog" : "blog-posts"));
+	if (first === "blog") return PAGES.find((d) => d.slug === (p.startsWith("/blog/category/") || p.startsWith("/blog/page/") ? "blog" : "blog-posts"));
 	return PAGES.find((d) => d.slug === template[first]);
 }

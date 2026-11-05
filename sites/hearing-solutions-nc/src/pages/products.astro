@@ -1,0 +1,61 @@
+---
+// Products (/products; Liz, 2026-11-05): the live site's Products page, same address
+// and content, in the new style. Light green hero ("Products") → one row per brand:
+// its logo beside the brand's full write-up (the brand record's "intro", blank line =
+// new paragraph) → the shared closing band. Brands come in their sort order and
+// "Hide from hub" leaves one out. This is the template's hearing aids hub (Pages →
+// Hearing aids), moved from /hearing-aids; the old /hearing-aids/ was the live site's
+// Hearing Aid Overview and now redirects to that resource page.
+import "../styles/hsnc-reskin.css";
+import HsCtaBand from "../components/hs/HsCtaBand.astro";
+import PageHero from "../components/PageHero.astro";
+import Base from "../layouts/Base.astro";
+import { getSettings } from "../lib/settings";
+import { routes } from "../lib/routes";
+
+const { brands } = Astro.locals.site;
+const s = getSettings(Astro);
+const tx = s.text;
+const paras = (t = "") => t.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
+const shown = brands.filter((b) => !b.hideFromHub);
+---
+<Base title={`${tx("heading")} | ${s.name}`} description={tx("description")} pageName="Products" current="hearing-aids" heroDefault="photo">
+	<PageHero label="Hearing aids" title={tx("heading")} lead={tx("intro")} />
+
+	<div class="hs">
+		<section class="hs-wrap rs-sec">
+			<div class="prod-list">
+				{
+					shown.map((b) => (
+						<article class="prod-row" id={b.slug} aria-labelledby={`prod-${b.slug}`}>
+							<div class="prod-logo"><img src={b.logo} alt={`${b.name} logo`} style={`max-height: ${b.logoHeight}`} loading="lazy" /></div>
+							<div class="prod-text">
+								<h2 class="hs-serif" id={`prod-${b.slug}`}>{b.name}</h2>
+								{paras(b.intro || b.summary).map((p) => <p>{p}</p>)}
+								{b.hasPage && <a class="hs-btn hs-btn-o" href={s.href(routes.brand(b.slug))}>Learn more<span class="sr"> about {b.name} hearing aids</span></a>}
+							</div>
+						</article>
+					))
+				}
+			</div>
+		</section>
+		<HsCtaBand />
+	</div>
+</Base>
+
+<style>
+	.prod-list { display: flex; flex-direction: column; }
+	.prod-row { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 48px; align-items: start; padding: 48px 0; border-top: 1px solid var(--hs-rule); scroll-margin-top: 24px; }
+	.prod-row:first-child { border-top: 0; padding-top: 0; }
+	.prod-logo { background: #fff; border: 1px solid var(--hs-rule); border-radius: 14px; aspect-ratio: 1; display: grid; place-items: center; padding: 28px; }
+	.prod-logo img { max-width: 100%; width: auto; height: auto; }
+	.prod-text { display: flex; flex-direction: column; gap: 16px; max-width: 72ch; }
+	.prod-text h2 { margin: 0; font-size: 32px; line-height: 1.2; color: var(--hs-navy); }
+	.prod-text p { margin: 0; }
+	.prod-text .hs-btn { align-self: flex-start; }
+	@media (max-width: 767px) {
+		.prod-row { grid-template-columns: minmax(0, 1fr); gap: 20px; padding: 36px 0; }
+		.prod-logo { max-width: 180px; padding: 22px; }
+		.prod-text h2 { font-size: 26px; }
+	}
+</style>

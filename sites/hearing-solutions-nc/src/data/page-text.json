@@ -128,19 +128,19 @@
 			"field": "heading",
 			"label": "Hero – Headline",
 			"kind": "line",
-			"default": "Hearing aids in {city}"
+			"default": "Products"
 		},
 		{
 			"field": "intro",
 			"label": "Hero – Description",
 			"kind": "para",
-			"default": "We offer Oticon, Phonak, ReSound, Signia, Starkey and Widex hearing aids."
+			"default": ""
 		},
 		{
 			"field": "description",
 			"label": "Search results – Description (about 150 characters)",
 			"kind": "para",
-			"default": "The hearing aid brands we fit and service, the styles to choose from, and how prescription hearing aids compare."
+			"default": "Every patient has unique hearing needs and we want to provide a unique listening experience to our patients. Check our page for more information."
 		},
 		{
 			"field": "ha_brands_heading",

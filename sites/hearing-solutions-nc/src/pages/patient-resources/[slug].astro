@@ -1,96 +1,12 @@
 ---
-// Patient resource page (no HSNC board; HSNC reskin of the template's). These
-// hold the pages moved over from the current site's footer "Resources" links.
-// Light green hero (DetailHero) with the topics → content (rich text; H2s make
-// a "Jump to" list) beside a sidebar (forms card when the resource has forms,
-// the call card) → more resources → the shared closing band. Only resources
-// with "Give this its own page" on. Dropped from the template: breadcrumbs,
-// the Book button (the phone instead).
-import HsSideCall from "../../components/hs/HsSideCall.astro";
-import "../../styles/hsnc-reskin.css";
-import DetailHero from "../../components/DetailHero.astro";
-import FormButtons from "../../components/FormButtons.astro";
-import HsCtaBand from "../../components/hs/HsCtaBand.astro";
-import HsIcon from "../../components/hs/HsIcon.astro";
-import Icon from "../../components/Icon.astro";
-import ResCard from "../../components/ResCard.astro";
-import Base from "../../layouts/Base.astro";
-import { ptHas, ptToHtml } from "../../lib/portable-text";
-import { routes, telHref } from "../../lib/routes";
-import { getSettings } from "../../lib/settings";
-import { embedVideoLists } from "../../lib/video";
+// Patient resource page: /patient-resources/<slug> for resources with "Give this its
+// own page" on. The page itself is src/components/ResourcePage.astro. A resource that
+// keeps its live-site address (src/lib/resource-paths.ts) is drawn there instead, and
+// this address redirects to it (src/data/hsnc/redirects.ts).
+import ResourcePage from "../../components/ResourcePage.astro";
 
 const { resources } = Astro.locals.site;
 const r = resources.find((x) => x.slug === Astro.params.slug);
 if (!r || !r.page) return Astro.rewrite("/404");
-
-const s = getSettings(Astro);
-const h = s.href;
-const tel = telHref(s.phone);
-const hero = s.heroFor("photo", r.heroImage);
-const rich = ptHas(r.content) ? ptToHtml(r.content) : undefined;
-/** A list of nothing but video links shows as players (Informational Videos). */
-const html = rich ? embedVideoLists(s.fill(rich.html)) : "";
-const toc = rich?.headings ?? [];
-/** Other resources on the same first topic, then any others, up to three. */
-const others = resources.filter((x) => x.slug !== r.slug && !x.hideFromHub);
-const related = [...others.filter((x) => x.tags[0] === r.tags[0]), ...others.filter((x) => x.tags[0] !== r.tags[0])].slice(0, 3);
 ---
-<Base title={`${r.t} | ${s.name}`} description={r.d} pageName="Patient resource" current="resources" tweaks={[]} heroDefault="photo">
-	<DetailHero label="Patient resources" title={r.t} intro={r.d} hero={hero} image={r.heroImage}>
-		{r.tags.length > 0 && <ul class="res-tags" aria-label="Topics" style="margin: 0">{r.tags.map((t) => <li class="tag">{t}</li>)}</ul>}
-	</DetailHero>
-
-	<div class="hs">
-		<section class="hs-wrap rs-sec">
-			<div class="rs-side">
-				<div class="rs-stack" style="gap:32px">
-					{
-						toc.length > 1 && (
-							<nav class="jump acc" aria-label="On this page" data-acc>
-								<h2 style="margin: 0">
-									<button class="jump-btn" type="button" aria-expanded="false" aria-controls="res-toc">
-										<span>Jump to</span>
-										<span class="acc-ic" aria-hidden="true"><span class="i-open"><Icon name="chevD" size={22} /></span><span class="i-close"><Icon name="chevU" size={22} /></span></span>
-									</button>
-								</h2>
-								<div class="jump-body" id="res-toc" hidden>
-									<ol>{toc.map((t) => <li><a href={`#${t.id}`}>{t.label}</a></li>)}</ol>
-								</div>
-							</nav>
-						)
-					}
-					{html ? <article class="rt" set:html={html} /> : <article class="rt"><p>{r.d}</p></article>}
-				</div>
-
-				<aside class="hs-aside" aria-label="Forms and call us">
-					{
-						r.forms && (
-							<div class="rs-scard">
-								<h2>Forms</h2>
-								<p class="muted">Fill these out before your visit to save time on the day.</p>
-								<FormButtons r={r} block />
-							</div>
-						)
-					}
-					<HsSideCall />
-				</aside>
-			</div>
-		</section>
-
-		{
-			related.length > 0 && (
-				<section class="hs-mint">
-					<div class="hs-wrap rs-sec rs-stack">
-						<div class="rs-shead">
-							<div class="rs-head"><p class="hs-eyebrow">Patient resources</p><h2 class="hs-serif">More patient resources</h2></div>
-							<a class="rs-more" href={h(routes.resources)}>All resources <HsIcon name="arrow" size={18} /></a>
-						</div>
-						<div class="grid g-3" style="gap:24px">{related.map((x) => <ResCard r={x} />)}</div>
-					</div>
-				</section>
-			)
-		}
-		<HsCtaBand />
-	</div>
-</Base>
+<ResourcePage r={r} />

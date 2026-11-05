@@ -3,12 +3,14 @@
 // without their own page) and doesn't know the fixed pages, so the template
 // writes its own. Left out: pages switched off, records without "own page",
 // pages hidden with the SEO panel's "hide from search", and the thank-you,
-// legal and review pages. Addresses use the live domain once it's set.
+// legal and review pages. Addresses use the live domain once it's set. The list is the
+// Sitemap page's (src/lib/site-pages.ts), less the legal pages.
 import type { APIRoute } from "astro";
 import { env } from "cloudflare:workers";
 import { PAGES } from "../data/page-settings";
 import { getMarketing } from "../lib/marketing";
 import { siteOrigin } from "../lib/seo";
+import { siteGroups } from "../lib/site-pages";
 
 export const prerender = false;
 
@@ -40,20 +42,8 @@ export const GET: APIRoute = async ({ locals, url }) => {
 	const origin = siteOrigin(await getMarketing(), url);
 	const hidden = await hiddenRecords();
 	const paths: string[] = [];
-	const add = (p: string, collection?: string, slug?: string) => {
-		if (SKIP.has(p) || (collection && hidden.has(`${collection}/${slug}`))) return;
-		paths.push(p);
-	};
-	for (const def of PAGES) if (def.path && def.collection && site.pages[def.slug]?.on) add(def.path, def.collection, "main");
-	for (const x of site.services) if (x.hasPage) add(`/services/${x.slug}`, "services", x.slug);
-	for (const x of site.brands) if (x.hasPage) add(`/hearing-aids/${x.slug}`, "brands", x.slug);
-	for (const x of site.providers) if (x.hasPage) add(`/about/${x.slug}`, "providers", x.slug);
-	// HSNC: no location pages (one office; its details are on Contact).
-	if (site.pages.blog?.on) {
-		for (const x of [site.featured, ...site.posts].filter(Boolean)) add(`/blog/${x!.slug}`, "posts", x!.slug);
-		for (const c of site.categories) add(`/blog/category/${c.slug}`);
-	}
-	for (const x of site.resources) if (x.page) add(`/patient-resources/${x.slug}`, "resources", x.slug);
+	for (const g of siteGroups(site))
+		for (const l of g.links) if (!SKIP.has(l.path) && !(l.collection && hidden.has(`${l.collection}/${l.slug}`))) paths.push(l.path);
 
 	const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;");
 	const xml = `<?xml version="1.0" encoding="UTF-8"?>

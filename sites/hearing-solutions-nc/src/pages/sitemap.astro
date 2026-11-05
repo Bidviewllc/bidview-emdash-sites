@@ -1,0 +1,85 @@
+---
+// Sitemap: a link to every live page on the site (the live site had one at /sitemap/).
+// No design board; HSNC reskin: the light green short hero (as on the legal pages),
+// then one block per group in columns. The list is src/lib/site-pages.ts, the same
+// one /sitemap.xml uses, so a page switched off or unpublished drops out of both.
+// Blog posts are a long list, so they sit last, in two columns.
+import "../styles/hsnc-reskin.css";
+import Base from "../layouts/Base.astro";
+import HsCtaBand from "../components/hs/HsCtaBand.astro";
+import { getSettings } from "../lib/settings";
+import { siteGroups } from "../lib/site-pages";
+import { telHref } from "../lib/routes";
+
+const s = getSettings(Astro);
+const h = s.href;
+const groups = siteGroups(Astro.locals.site);
+const posts = groups.find((g) => g.title === "Blog posts");
+const rest = groups.filter((g) => g !== posts);
+---
+<Base title={`Sitemap | ${s.name}`} description={`Every page on the ${s.name} website.`} pageName="Sitemap">
+	<div class="hs">
+		<div class="hs-mint rs-hero">
+			<section class="hs-wrap hs-hsplit rs-short">
+				<div class="hs-htxt rs-htxt" style="max-width:760px">
+					<p class="hs-eyebrow">Sitemap</p>
+					<h1 class="hs-serif rs-h1">Every page on our site</h1>
+					<p class="rs-lead">Can't find what you're looking for? Call us at <a href={`tel:+1${s.phone.replace(/\D/g, "")}`} style="font-weight:600">{s.phone}</a> and we'll point you the right way.</p>
+				</div>
+			</section>
+		</div>
+
+		<section class="hs-wrap rs-sec sm-wrap" aria-label="Site pages">
+			<div class="sm-grid">
+				{
+					rest.map((g) => (
+						<div class="sm-group">
+							<h2 class="hs-serif">{g.title}</h2>
+							<ul>
+								{g.links.map((l) => (
+									<li>
+										<a href={h(l.path)}>{l.label}</a>
+									</li>
+								))}
+							</ul>
+						</div>
+					))
+				}
+			</div>
+			{
+				posts && (
+					<div class="sm-group sm-posts">
+						<h2 class="hs-serif">{posts.title} ({posts.links.length})</h2>
+						<ul>
+							{posts.links.map((l) => (
+								<li>
+									<a href={h(l.path)}>{l.label}</a>
+								</li>
+							))}
+						</ul>
+					</div>
+				)
+			}
+		</section>
+
+		<HsCtaBand />
+	</div>
+</Base>
+
+<style>
+	.sm-wrap { display: flex; flex-direction: column; gap: 56px; }
+	.sm-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 48px 40px; align-items: start; }
+	.sm-group h2 { margin: 0 0 12px; font-size: 26px; line-height: 1.2; font-weight: 400; color: var(--hs-navy); padding-bottom: 10px; border-bottom: 1px solid var(--hs-rule); }
+	.sm-group ul { margin: 0; padding: 0; list-style: none; }
+	.sm-group li { break-inside: avoid; }
+	.sm-group a { display: inline-flex; align-items: center; min-height: 40px; padding: 4px 0; color: var(--hs-navy); text-decoration: underline; text-decoration-color: color-mix(in srgb, currentColor 35%, transparent); text-underline-offset: 4px; line-height: 1.35; }
+	.sm-group a:hover { color: var(--hs-green); text-decoration-color: currentColor; }
+	.sm-posts ul { columns: 2; column-gap: 40px; }
+	@media (max-width: 1023px) {
+		.sm-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+	}
+	@media (max-width: 640px) {
+		.sm-grid { grid-template-columns: 1fr; gap: 36px; }
+		.sm-posts ul { columns: 1; }
+	}
+</style>

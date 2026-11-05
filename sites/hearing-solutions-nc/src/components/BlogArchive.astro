@@ -13,14 +13,16 @@ import PageHero from "./PageHero.astro";
 import PostCard from "./PostCard.astro";
 import type { Tweak } from "./ReviewControls.astro";
 import { routes } from "../lib/routes";
-import type { Post } from "../data/types";
+import { PER_PAGE, listed, pageCount, pagerItems } from "../lib/blog-pages";
 
 const { categories, featured, posts } = Astro.locals.site;
 
 interface Props {
 	cat?: { name: string; slug: string };
+	/** Page number (1 = the plain /blog or category address). */
+	page?: number;
 }
-const { cat } = Astro.props;
+const { cat, page = 1 } = Astro.props;
 const tweaks: Tweak[] = [
 	{ key: "layout", label: "Layout", type: "choice", default: "grid", options: [["grid", "Grid · 16:9"], ["square", "Grid · square"], ["list", "List"]] },
 ];
@@ -28,11 +30,15 @@ const s = getSettings(Astro);
 const tx = s.text;
 const h = s.href;
 const layout = s.choice("layout", ["grid", "square", "list"], "grid");
-const shown: Post[] = cat ? posts.filter((p) => p.catSlug === cat.slug) : posts;
-const title = cat ? `${cat.name} articles` : tx("heading");
+const all = listed(posts, featured, cat?.slug);
+const pages = pageCount(all.length);
+const shown = all.slice((page - 1) * PER_PAGE, page * PER_PAGE);
+const pageHref = (n: number) => h(cat ? routes.categoryPage(cat.slug, n) : routes.blogPage(n));
+const heading = cat ? `${cat.name} articles` : tx("heading");
+const title = page > 1 ? `${heading} – Page ${page}` : heading;
 ---
 <Base title={`${title} | ${s.name}`} description={tx("description")} pageName={cat ? "Blog category" : "Blog archive"} current="blog" tweaks={tweaks}>
-	<PageHero label="Blog" title={title} lead={tx("intro")} short book={false} />
+	<PageHero label="Blog" title={heading} lead={page > 1 ? `Page ${page} of ${pages}` : tx("intro")} short book={false} />
 
 	<div class="hs">
 		<section class="hs-wrap" style="padding-top:48px">
@@ -45,7 +51,7 @@ const title = cat ? `${cat.name} articles` : tx("heading");
 		</section>
 
 		{
-			!cat && featured && (
+			!cat && page === 1 && featured && (
 				<section class="hs-wrap" style="padding-top:48px">
 					<article class="feat bl-feat">
 						{featured.image ? (
@@ -92,12 +98,19 @@ const title = cat ? `${cat.name} articles` : tx("heading");
 				)
 			}
 			{
-				!cat && (
+				pages > 1 && (
 					<nav class="pager" aria-label="Blog pages">
-						<a class="pg on" href={h(routes.blog)} aria-current="page">1</a>
-						<a class="pg" href={h(routes.blog)}>2</a>
-						<a class="pg" href={h(routes.blog)}>3</a>
-						<a class="pg next" href={h(routes.blog)}>Next <Icon name="arrowR" /></a>
+						{page > 1 && <a class="pg next" href={pageHref(page - 1)} rel="prev"><Icon name="arrowL" /> Previous</a>}
+						{pagerItems(page, pages).map((n) =>
+							n === "gap" ? (
+								<span class="pg pg-gap" aria-hidden="true">…</span>
+							) : n === page ? (
+								<a class="pg on" href={pageHref(n)} aria-current="page"><span class="sr">Page </span>{n}</a>
+							) : (
+								<a class="pg" href={pageHref(n)}><span class="sr">Page </span>{n}</a>
+							),
+						)}
+						{page < pages && <a class="pg next" href={pageHref(page + 1)} rel="next">Next <Icon name="arrowR" /></a>}
 					</nav>
 				)
 			}

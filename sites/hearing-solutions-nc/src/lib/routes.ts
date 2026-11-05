@@ -1,4 +1,5 @@
 // Site addresses and small helpers that don't depend on the practice's content.
+import { RESOURCE_PATHS } from "./resource-paths";
 
 export const slugify = (s: string) =>
 	s
@@ -14,7 +15,8 @@ export const routes = {
 	home: "/",
 	services: "/services",
 	service: (slug: string) => `/services/${slug}`,
-	hearingAids: "/hearing-aids",
+	/** The hearing aids hub: HSNC keeps the live site's Products page address. */
+	hearingAids: "/products",
 	brand: (slug: string) => `/hearing-aids/${slug}`,
 	about: "/about",
 	provider: (slug: string) => `/about/${slug}`,
@@ -25,7 +27,11 @@ export const routes = {
 	blog: "/blog",
 	post: (slug: string) => `/blog/${slug}`,
 	category: (slug: string) => `/blog/category/${slug}`,
-	resource: (slug: string) => `/patient-resources/${slug}`,
+	/** Blog pages 2, 3...: /blog/page/<n> (page 1 is /blog itself). */
+	blogPage: (n: number) => (n > 1 ? `/blog/page/${n}` : "/blog"),
+	categoryPage: (slug: string, n: number) => (n > 1 ? `/blog/category/${slug}/page/${n}` : `/blog/category/${slug}`),
+	/** A patient resource page (a few keep their live-site address: src/lib/resource-paths.ts). */
+	resource: (slug: string) => RESOURCE_PATHS[slug] ?? `/patient-resources/${slug}`,
 	resources: "/new-patients",
 	privacy: "/privacy-policy",
 	terms: "/terms-of-use",

@@ -8,6 +8,7 @@
 //  - Thank-you, legal, 404 and the review pages are noindex by default.
 import { getEmDashEntry } from "emdash";
 import { pageFor } from "../data/page-settings";
+import { resourceAt } from "./resource-paths";
 import { onLiveDomain, type Marketing } from "./marketing";
 
 /** Record-page templates and the collection their records live in. */
@@ -28,10 +29,12 @@ export type PanelSeo = { title?: string | null; description?: string | null; noI
 /** The admin record behind this address (for its SEO panel), if any. */
 export function contentFor(path: string): { collection: string; slug: string } | undefined {
 	const def = pageFor(path);
-	if (!def || path.startsWith("/blog/category/")) return undefined;
+	// Category and numbered blog pages have no record of their own (the Blog page's
+	// SEO title would otherwise repeat on every page).
+	if (!def || path.startsWith("/blog/category/") || path.startsWith("/blog/page/")) return undefined;
 	if (def.collection) return { collection: def.collection, slug: "main" };
 	const collection = def.template && TEMPLATE_COLLECTION[def.template];
-	const slug = path.replace(/\/$/, "").split("/").pop();
+	const slug = resourceAt(path) ?? path.replace(/\/$/, "").split("/").pop();
 	return collection && slug ? { collection, slug } : undefined;
 }
 

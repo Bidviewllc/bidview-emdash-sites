@@ -1,39 +1,12 @@
 ---
-// Anything without a page of its own. Paths for content that comes later
-// (the sitemap) get a short "coming later" note in the HSNC light green band;
-// everything else gets the 404 page.
-import "../styles/hsnc-reskin.css";
+// Anything without a page of its own: patient resources kept at their live-site
+// address (src/lib/resource-paths.ts, e.g. /hearing-services/ear-wax-removal) get the
+// resource page; everything else gets the 404 page.
 import NotFound from "../components/NotFound.astro";
-import Base from "../layouts/Base.astro";
-import { getSettings } from "../lib/settings";
-import { routes, telHref } from "../lib/routes";
+import ResourcePage from "../components/ResourcePage.astro";
+import { resourceAt } from "../lib/resource-paths";
 
-const s = getSettings(Astro);
-const slug = Astro.params.slug ?? "";
-const later = /^sitemap$/.test(slug);
-const last = slug.split("/").filter(Boolean).pop() ?? "";
-const name = last.replace(/-/g, " ").replace(/^\w/, (c) => c.toUpperCase()) || "This page";
+const keptSlug = resourceAt(`/${Astro.params.slug ?? ""}`);
+const kept = keptSlug ? Astro.locals.site.resources.find((x) => x.slug === keptSlug && x.page) : undefined;
 ---
-{
-	later ? (
-		<Base title={`${name} | ${s.name}`} description="This page comes in a later build step." pageName={name}>
-			<div class="hs">
-				<div class="hs-mint rs-hero">
-					<section class="hs-wrap hs-hsplit rs-short">
-						<div class="hs-htxt rs-htxt" style="max-width:760px">
-							<p class="hs-eyebrow">Coming later</p>
-							<h1 class="hs-serif rs-h1">{name}</h1>
-							<p class="rs-lead">This page comes in a later build step.</p>
-							<div class="hs-btns" style="gap:12px;margin-top:8px">
-								<a class="hs-btn" href={s.href(routes.home)}>Go to the home page</a>
-								<a class="hs-btn hs-btn-o" href={telHref(s.phone)}>Call us: {s.phone}</a>
-							</div>
-						</div>
-					</section>
-				</div>
-			</div>
-		</Base>
-	) : (
-		<NotFound />
-	)
-}
+{kept ? <ResourcePage r={kept} /> : <NotFound />}

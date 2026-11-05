@@ -4,14 +4,17 @@
 import { HS_PAGES } from "../data/hsnc";
 import type { Photo } from "../data/site";
 import { getSettings } from "./settings";
+import { keptHref } from "./resource-paths";
 
 const esc = (t: string) => t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 /**
- * Light formatting for HSNC text, as HTML: *words* are italic, **words** bold, a
+ * Light formatting for HSNC text, as HTML: *words* are italic, **words** bold,
+ * [words](/link) a link (site paths, #anchors and http(s) addresses only), a
  * single line break stays a line break. Everything else is escaped.
  */
 export const inline = (t: string) =>
 	esc(t)
+		.replace(/\[([^\]]+)\]\(((?:\/|#|https?:\/\/)[^)\s"]*)\)/g, (_, label: string, href: string) => `<a href="${keptHref(href)}">${label}</a>`)
 		.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
 		.replace(/\*(.+?)\*/g, "<em>$1</em>")
 		.split("\n")

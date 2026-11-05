@@ -71,6 +71,7 @@
 .d1 .hs .feat-title { font-family: var(--hs-serif); color: var(--hs-green); }
 .d1 .hs .pager .pg { border-radius: 3px; border-color: var(--hs-navy); color: var(--hs-navy); }
 .d1 .hs .pager .pg.on { background: var(--hs-navy); color: #fff; }
+.d1 .hs .pager .pg-gap { background: none; min-width: 24px; padding: 0; pointer-events: none; }
 .rs-post-img { width: 100%; aspect-ratio: 3/2; object-fit: cover; border-radius: 14px; display: block; }
 .rs-byline { display: flex; align-items: center; gap: 14px; }
 .rs-byline img, .rs-avatar { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; object-position: 50% 20%; flex: none; background: var(--hs-sage-2); }

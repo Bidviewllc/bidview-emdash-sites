@@ -35,7 +35,7 @@ handed off from Claude Design in `design/`.
   Defaults are left out of URLs.
 - `src/lib/color.ts`: the colour logic, ported exactly. The same maths is
   duplicated in `ReviewControls.astro` for live colour previews; keep them in step.
-- `src/pages/[...slug].astro`: a stand-in for pages not built yet (the sitemap).
+- `src/pages/[...slug].astro`: the 404 page, and HSNC resource pages kept at their live-site address (`src/lib/resource-paths.ts`). The sitemap page is `src/pages/sitemap.astro` (list in `src/lib/site-pages.ts`, shared with `/sitemap.xml`).
 
 ## Decisions (Liz, 2026-10-14)
 - Service detail: recent posts card is ON by default, in the sidebar (Vince: no

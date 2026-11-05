@@ -2,8 +2,9 @@
 // "What our patients say." (Home, About, Services, New Patients boards): two
 // review cards with round arrows either side that page through the reviews two
 // at a time (arrows hidden on phones, where cards stack). Navy, or light green
-// on Services. Reviews: the synced Google reviews (sample ones until a sync runs);
-// Home passes its own list, with the testimonials ticked for Home first.
+// on Services. Reviews (Liz, 2026-11-05: every band matches Home): the testimonials
+// ticked "Show on the home page" first, then the synced Google reviews (sample ones
+// until a sync runs). The Reviews page has its own full list, not this band.
 import type { Review } from "../../data/types";
 import HsIcon from "./HsIcon.astro";
 
@@ -12,7 +13,7 @@ interface Props {
 	heading?: string;
 	reviews?: Review[];
 }
-const { tone = "navy", heading = "What our patients say.", reviews = Astro.locals.site.reviews } = Astro.props;
+const { tone = "navy", heading = "What our patients say.", reviews = Astro.locals.site.homeReviews } = Astro.props;
 const list = reviews.slice(0, 8);
 const id = `rv-${Math.random().toString(36).slice(2, 8)}`;
 ---

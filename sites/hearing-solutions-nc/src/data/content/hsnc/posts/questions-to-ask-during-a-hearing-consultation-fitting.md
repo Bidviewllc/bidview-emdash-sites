@@ -1,0 +1,22 @@
+Scheduling an appointment for a hearing consultation and fitting is a major step in prioritizing and improving your hearing health! This appointment has critical outcomes that include identifying your hearing needs and the most effective ways to treat those needs. Starting this journey of hearing healthcare can transform your overall health and daily life. You may be feeling a little anxious and unsure what to expect from your consultation and fitting. By learning what this appointment involves and thinking about questions you can ask, you can establish expectations, feel more comfortable, and maximize your appointment!
+
+### What You Can Expect During Your Appointment
+
+There are a few components of a hearing consultation and fitting: evaluating hearing, making a diagnosis, and establishing a treatment plan. You can expect a noninvasive process and the following steps:
+
+- _Intake:_ similar to most medical appointments, this one will start with a general medical intake. This discussion will include questions about your medical history, hearing health concerns, any symptoms you could be experiencing, lifestyle considerations (profession, daily activities etc.). This information helps establish potential risk factors that can contribute to hearing loss
+- _Hearing Test:_ the next step is the hearing exam which starts with a physical assessment of your ears. The hearing healthcare specialist will use an otoscope, an instrument designed to look into the ears, to see if there is anything that could be preventing sound from being absorbed and processed: accumulated ear wax, any bone growths, injuries etc. Afterwards, you will wear headphones (in a silent room or sound booth) and be guided through sounds that are played at different frequencies; indicating what you can hear.
+- _Results:_ your results will be tracked and presented to you after. You will learn if you have any degree of hearing loss and what this looks like for you: the type of hearing loss you are experiencing, the sounds that may be more challenging to hear, and the specifics of impairment that is present in each ear. The hearing healthcare specialist will also recommend the most effective treatment options for you.
+- _Fitting:_ the most common treatment for hearing loss is hearing aids. These are electronic devices that provide ample support for absorbing and processing sound. Your hearing healthcare provider will recommend hearing aids that meet your specific hearing needs. Once you decide on a type, you will be fitted which involves ensuring that the device fits comfortably. Your hearing aids will also be programmed with the settings that are most beneficial for your hearing. You will also learn how to effectively use and maintain the device.
+
+Another important aspect of this appointment is asking questions and learning about your hearing health. This is a great time to discuss your concerns and have your questions answered by a licensed expert!
+
+### Questions to Ask
+
+You probably have questions you have been thinking about and need clarified. Here are a few additional questions you can ask during your appointment:
+
+- **Should I wear my hearing aids all of the time?** Integrating a hearing device into daily life takes time and involves retraining how you hear. Adjusting to how this feels is a process so it is helpful to ask how often you should wear your hearing aids in the first few days. It is important to know how much time during the day you should spend wearing your hearing aids. Be sure to also ask about taking breaks!
+- **What are the features my hearing aids come with?** You will learn about the various settings and features of your hearing aids. Make sure you feel comfortable operating and maximizing these features which can include Bluetooth connectivity, voice recognition, background noise reduction etc. You want to feel as comfortable as possible with changing programs and settings as well as knowing how to maximize features.
+- **Are there warranty options?** There is an adjustment period when you’re transitioning to wearing hearing aids daily. But it is also important to be aware of the possibility that your hearing aids may not be compatible with what you are looking for. Be sure to discuss this with your hearing healthcare provider and to specifically ask about warranty options, trial periods, damage insurance etc.
+
+Other questions about your hearing and hearing devices? We’re here to help! [Contact us today to schedule an appointment or to receive assistance with your devices.](/contact-us/)

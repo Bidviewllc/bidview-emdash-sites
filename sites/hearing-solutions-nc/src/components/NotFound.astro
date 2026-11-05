@@ -15,9 +15,11 @@ const h = s.href;
 const showSearch = s.bool("search", true);
 const popular = [
 	{ t: "Services", d: "Hearing tests, fittings, tinnitus care and more", href: routes.services },
-	{ t: "Hearing Aids", d: "Styles, brands and what fits your life", href: routes.hearingAids },
+	{ t: "Hearing Aid Products", d: "The hearing aid brands we fit and service", href: routes.hearingAids },
 	{ t: "Contact", d: s.officeCount === 2 ? "Phone, email and both office locations" : "Phone, email and our office location", href: routes.contact },
-	{ t: "Book Appointment", d: "Pick a time online or request a call", href: routes.book },
+	// HSNC books by phone only (Draftium: "Can I book online? No"), so the template's
+	// Book Appointment card is a Call card.
+	{ t: `Call ${s.phone}`, d: "We'll find the right appointment for you", href: telHref(s.phone) },
 ];
 Astro.response.status = 404;
 ---

@@ -1,0 +1,14 @@
+---
+// /blog/category/<cat>/page/2...: a category's posts, 10 a page (src/lib/blog-pages.ts).
+// .../page/1 goes to the category's own address; a page past the end is a 404.
+import BlogArchive from "../../../../../components/BlogArchive.astro";
+import { listed, pageParam } from "../../../../../lib/blog-pages";
+
+const { categories, featured, posts } = Astro.locals.site;
+const cat = categories.find((c) => c.slug === Astro.params.cat);
+if (!cat) return Astro.rewrite("/404");
+if (Astro.params.n === "1") return Astro.redirect(`/blog/category/${cat.slug}`, 301);
+const page = pageParam(Astro.params.n, listed(posts, featured, cat.slug).length);
+if (!page) return Astro.rewrite("/404");
+---
+<BlogArchive cat={cat} page={page} />

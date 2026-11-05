@@ -61,3 +61,6 @@
 	.hs .hs-np-step h2 { font-size: 26px; }
 }
 
+/* Welcome video (a YouTube or Vimeo link on the New patients record): a 16:9 player in the slot. */
+.hs-np-video-on { height: auto; aspect-ratio: 16 / 9; background: #000; border-radius: 14px; overflow: hidden; }
+.hs-np-video-on iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }

@@ -2,6 +2,7 @@
 // styles: paragraphs, H2/H3/H4, bulleted and numbered lists, block quotes,
 // bold/italic/underline/code, links and images with captions. H2s get ids so
 // pages can build a "Jump to" list from them. Unknown block types are skipped.
+import { keptHref } from "./resource-paths";
 
 type Span = { _type: string; text?: string; marks?: string[] };
 type MarkDef = { _key: string; _type: string; href?: string; blank?: boolean };
@@ -40,7 +41,7 @@ function spans(b: PTBlock) {
 				else if (m === "strike-through") html = `<s>${html}</s>`;
 				else {
 					const d = defs.get(m);
-					if (d?.href) html = `<a href="${esc(d.href)}"${d.blank ? ' target="_blank" rel="noopener"' : ""}>${html}</a>`;
+					if (d?.href) html = `<a href="${esc(keptHref(d.href))}"${d.blank ? ' target="_blank" rel="noopener"' : ""}>${html}</a>`;
 				}
 			}
 			return html;

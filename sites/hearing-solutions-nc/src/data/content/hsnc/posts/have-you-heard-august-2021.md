@@ -1,0 +1,19 @@
+Last month we discussed the fact that we are in the process of changing our diagnostic procedures. We are incorporating ear to brain testing. Historically, hearing healthcare professionals have only evaluated the peripheral auditory system. We now have the tools and knowledge to test ear to brain evaluating the strong connection between audition and cognition. We are the only audiology clinic in the area incorporating this type of testing procedure. Remember our brain has to process what we hear.
+
+So why is untreated [hearing loss](/hearing-loss-overview/) bad for your brain? Very often, people are not aware of changes in their hearing because it occurs slowly over a matter of years. The signs may be subtle- you have to turn the TV up, or you struggle to hear your grandkids. Even after diagnosis, people wait an average of 7-10 years to actually get the hearing help they need.
+
+Failing to treat hearing impairment can result in auditory-deprivation and overtime, the parts of your brain responsible for hearing can shrink or atrophy from lack of use. Auditory deprivation occurs when your brain is deprived of sound, such as from untreated hearing loss. Over time, your brain loses the ability to process sound. If left untreated, the parts of the brain normally responsible for hearing get “reassigned” to other tasks. Vision, memory and cognition are affected.
+
+Remember: Hearing is a brain activity. Your ears detect sound and deliver that information as electrical impulses via the auditory nerve, but it’s within your brain that these electrical impulses are translated into what we recognize as sound, music and speech.
+
+When fewer sounds make their way to the brain, the brain reacts by shifting how it operates. Even with only minor hearing loss, the parts of your brain that handle auditory processing can switch to visual processing instead. Other negative changes in your brain may happen as well, and as a result, even after getting hearing aids, processing sounds/speech may be challenging.
+
+If you let your hearing loss go untreated for too long, the auditory parts of your brain may be “reassigned” to other functions. This can make it harder to treat hearing loss with standard treatments like [hearing aids](/hearing-aids/). We call this phenomenon “use it or lose it”. The longer you wait to seek treatment the more the brain has trouble understanding and processing information.
+
+Is auditory deprivation permanent? Overall, the brain is very flexible and it can make a lot of changes. Neural plasticity varies from person to person. A small study found that wearing hearing aids “may reverse compensatory changes in cortical resource allocations”-in other words, negative changes in your brain may improve with consistent hearing aid use.
+
+Our goal is to encourage your brain to reorganize by providing appropriate amplification, brain training exercises if needed, as well as assistive listening devices. We live in a very noisy world and we need to know how your brain works to process the information your ears send to it. If we don’t measure it we can’t help you develop the hearing treatment plan most appropriate for you.
+
+A Functional Hearing Assessment incorporates, but is not limited to, speech in noise testing, loudness tolerance testing as well as cognitive processing testing. I will keep you posted as our new procedures come together.
+
+If you are interested in scheduling an appointment to discuss how appropriate auditory stimulation can improve your cognitive function and communication ability, give Jamie or Diane a call at [704-633-0023](tel:17046330023). We appreciate your patience as Jane is out of the office recuperating from total ankle replacement surgery… she, Cheryl and I look forward to seeing you soon. Remember to check out our revised website ([www.hearingsolutionsofnc.com/](/)) and like us on Facebook.

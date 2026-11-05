@@ -22,6 +22,10 @@ export type Post = {
 	tone: string;
 	cat: string;
 	catSlug: string;
+	/** Every category the post is filed under (seed); the first is `cat`. */
+	cats?: string[];
+	/** Slugs of every category the post is filed under (site; category pages list it under each). */
+	catSlugs?: string[];
 	author: string;
 	/** Featured image URL; a placeholder shows when there is none. */
 	image?: string;
@@ -43,6 +47,7 @@ const allHsPosts: Post[] = hsPosts.map((p) => ({
 	tone: "warm",
 	cat: p.cat,
 	catSlug: slugify(p.cat),
+	cats: ("cats" in p && Array.isArray(p.cats) ? p.cats : [p.cat]) as string[],
 	author: p.author,
 	...(p.image ? { image: p.image.url, imageAlt: p.image.alt } : {}),
 	featured: p.featured,
@@ -54,7 +59,7 @@ export const featured: Post = allHsPosts.find((p) => p.featured) ?? allHsPosts[0
 export const posts: Post[] = allHsPosts.filter((p) => p !== featured);
 
 /** Only the categories the posts use. */
-export const categories = [...new Set(allHsPosts.map((p) => p.cat))].map((name) => ({ name, slug: slugify(name) }));
+export const categories = [...new Set(allHsPosts.flatMap((p) => p.cats ?? [p.cat]))].map((name) => ({ name, slug: slugify(name) }));
 
 /** Article body (same sample body for every post). "MIDCTA" marks where the mid-article booking box goes. */
 export const articleBody: string[] = postBody.body.map((b: string) => b.replace(/src="[^"]*"/, 'src="/assets/photos/consult.jpg" loading="lazy"'));

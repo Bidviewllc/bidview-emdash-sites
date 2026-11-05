@@ -15,12 +15,15 @@ import NpStep from "../components/hs/NpStep.astro";
 import Base from "../layouts/Base.astro";
 import { hs } from "../lib/hs";
 import { routes, telHref } from "../lib/routes";
+import { embedUrl } from "../lib/video";
 import "../styles/hsnc-np.css";
 
 const { text, html, htmlParas, list, photo, hero, s } = hs(Astro, "patient-resources");
 const h = s.href;
 const tel = telHref(s.phone);
 const investPhoto = photo("np_invest_photo");
+/** Welcome video (Pages → New patients: "Welcome video" link); none = no slot (the placeholder shows only while reviewing). */
+const video = embedUrl(text("np_video"));
 const otherPhoto = photo("np_other_photo");
 const anchor = (href: string) => (href.startsWith("#") ? href : h(href));
 ---
@@ -46,9 +49,19 @@ const anchor = (href: string) => (href.startsWith("#") ? href : h(href));
 					<div style="display:flex;flex-wrap:wrap;gap:12px">{list("np_choices").map((c) => <a class="hs-btn hs-btn-o" href={anchor(c.href)}>{c.t}</a>)}</div>
 				</div>
 				<div id="steps" class="hs-np-steps">
-					<div class="hs-ph hs-np-video" role="img" aria-label="Welcome video placeholder">
-						<span aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5l12 7-12 7z" /></svg></span>
-					</div>
+					{
+						video ? (
+							<div class="hs-np-video hs-np-video-on">
+								<iframe src={video} title={text("np_video_title") || "Welcome video"} loading="lazy" allow="fullscreen; picture-in-picture" allowfullscreen />
+							</div>
+						) : (
+							Astro.locals.site.practice.reviewControls && (
+								<div class="hs-ph hs-np-video" role="img" aria-label="Welcome video placeholder">
+									<span aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5l12 7-12 7z" /></svg></span>
+								</div>
+							)
+						)
+					}
 					{list("np_steps").map((st) => <NpStep step={st} />)}
 				</div>
 			</div>
