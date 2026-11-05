@@ -60,8 +60,14 @@ async function loadLastmods(): Promise<Map<string, string>> {
   return map;
 }
 
+// lastmod is nice to have, the sitemap is not. If D1 is slow (the database is in Asia-Pacific) give up after 1.5s and
+// answer without lastmod, instead of holding the request until the crawler abandons it (57% of robots/sitemap
+// requests were abandoned after ~10s, Worker logs 2026-10-30..11-05).
+const withTimeout = <T,>(p: Promise<T>, ms: number, fallback: T): Promise<T> =>
+  Promise.race([p, new Promise<T>(r => setTimeout(() => r(fallback), ms))]);
+
 export const GET: APIRoute = async () => {
-  const lastmods = await loadLastmods();
+  const lastmods = await withTimeout(loadLastmods(), 1500, new Map<string, string>());
   const urls = (pagesData as Page[]).map(p => {
     const loc = SITE + p.url_path;
     return `  <url>
