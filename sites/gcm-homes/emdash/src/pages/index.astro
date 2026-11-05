@@ -28,20 +28,36 @@ const proofReviews = await homeReviews();
 
 // Featured listings — live from the Trestle-synced D1 tables (read-only).
 // Astro 6 exposes Cloudflare bindings via `cloudflare:workers`, not Astro.locals.
-// Listings ticked "Featured" in the admin (ec_listings.featured, an owner field the
-// sync never overwrites) come first; the rest of the nine fill by price, so the
-// carousel is never short and looks as before when nothing is ticked.
+// `boolean` fields arrive from D1 as text, and which text depends on who wrote it
+// (the admin checkbox vs a SQL update), so accept anything that isn't a clear no.
+const isOn = (v: any) =>
+	v != null && v !== "" && v !== 0 && v !== "0" && v !== false && v !== "false";
+
+// Every listing ticked "Featured" in the admin (ec_listings.featured, an owner field
+// the sync never overwrites) is shown, however many there are (Liz, 2026-11-05: all of
+// Grant's listings belong on the home page). When fewer than MIN_CARDS are ticked, the
+// priciest other listings fill the carousel up to MIN_CARDS, so it is never short and
+// looks as before when nothing is ticked.
+const MIN_CARDS = 9;
+const MAX_CARDS = 30; // hard cap on the query; the carousel is still one row
 let featured: any[] = [];
 try {
 	const DB = (env as any)?.DB;
 	if (DB) {
 		const { results } = await DB.prepare(
-			`SELECT l.id, l.slug, l.status, l.address, l.city, l.state, l.price, l.beds, l.baths, l.sqft, l.lot_acres, l.category, l.sub_type, l.type, l.waterfront, l.photos_count, l.photo
+			`SELECT l.id, l.slug, l.status, l.address, l.city, l.state, l.price, l.beds, l.baths, l.sqft, l.lot_acres, l.category, l.sub_type, l.type, l.waterfront, l.photos_count, l.photo, e.featured AS featured
 			 FROM listings l LEFT JOIN ec_listings e ON e.id = l.id
 			 WHERE l.photo IS NOT NULL AND ${FEATURED_ROW}
-			 ORDER BY ${FEATURED_FIRST}, l.price DESC LIMIT 9`
+			 ORDER BY ${FEATURED_FIRST}, l.price DESC LIMIT ${MAX_CARDS}`
 		).all();
-		featured = results ?? [];
+		// Rows arrive featured-first, then by price, so: all the ticked ones, then
+		// top up with the rest until MIN_CARDS.
+		const rows: any[] = results ?? [];
+		featured = rows.filter((l) => isOn(l.featured));
+		for (const l of rows) {
+			if (featured.length >= MIN_CARDS) break;
+			if (!isOn(l.featured)) featured.push(l);
+		}
 	}
 } catch { featured = []; }
 // ---- The Proof ---------------------------------------------------------------
@@ -61,10 +77,6 @@ try {
 // the test once the real overviews are written.
 const SEED_FILLER = /is one of the fifteen areas that make up/i;
 
-// `boolean` fields arrive from D1 as text, and which text depends on who wrote it
-// (the admin checkbox vs a SQL update), so accept anything that isn't a clear no.
-const isOn = (v: any) =>
-	v != null && v !== "" && v !== 0 && v !== "0" && v !== false && v !== "false";
 
 let micro: any[] = [];
 try {
