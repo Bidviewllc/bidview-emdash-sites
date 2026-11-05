@@ -1,8 +1,11 @@
-// Dynamic sitemap that emits every URL from pages.json, with lastmod from D1.
-// Served at /sitemap.xml.
+// Sitemap for every URL in pages.json. Built once at deploy time (prerender), so crawlers never wait on the database:
+// as a live route 57% of robots/sitemap requests were abandoned after ~10s (Worker logs 2026-10-30..11-05).
+// lastmod comes from src/data/lastmods.json, written from D1 by scripts/gen-lastmods.mjs before each build.
 import type { APIRoute } from "astro";
-import { env } from "cloudflare:workers";
 import pagesData from "../data/pages.json";
+import lastmodData from "../data/lastmods.json";
+
+export const prerender = true;
 
 const SITE = "https://ontariohearing.com";
 
@@ -32,36 +35,11 @@ const changefreq = (type: string, slug: string) => {
   return "monthly";
 };
 
-// lastmod = the date the page's CMS row was last saved (updated_at in D1).
-// Pages that are hardcoded in .astro files (home, about, contact, team, ...)
-// have no CMS row, so they get no <lastmod> rather than a made-up one.
-const TABLES = [
-  "ec_service_pages", "ec_blog_posts", "ec_brand_pages", "ec_location_pages",
-  "ec_resource_pages", "ec_condition_pages", "ec_legal_pages",
-];
-
-async function loadLastmods(): Promise<Map<string, string>> {
-  const map = new Map<string, string>();
-  const db = (env as any).DB;
-  if (!db) return map;
-  try {
-    // One query per table: D1 rejects a UNION ALL across this many tables.
-    const batches = await db.batch(
-      TABLES.map(t => db.prepare(`SELECT slug, substr(updated_at, 1, 10) AS d FROM ${t} WHERE deleted_at IS NULL`)),
-    );
-    for (const { results } of batches) {
-      for (const r of results || []) {
-        if (/^\d{4}-\d{2}-\d{2}$/.test(r.d) && r.d > (map.get(r.slug) || "")) map.set(r.slug, r.d);
-      }
-    }
-  } catch (err) {
-    console.error("sitemap lastmod lookup failed (non-fatal):", err);
-  }
-  return map;
-}
+// lastmod = the date the page's CMS row was last saved. Pages hardcoded in .astro files (home, about, contact, team,
+// ...) have no CMS row, so they get no <lastmod> rather than a made-up one.
+const lastmods = new Map<string, string>(Object.entries(lastmodData as Record<string, string>));
 
 export const GET: APIRoute = async () => {
-  const lastmods = await loadLastmods();
   const urls = (pagesData as Page[]).map(p => {
     const loc = SITE + p.url_path;
     return `  <url>

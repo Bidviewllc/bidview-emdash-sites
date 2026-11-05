@@ -7,8 +7,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "deploy": "astro build && wrangler deploy",
-    "deploy:staging": "astro build && wrangler deploy --env staging"
+    "deploy": "node scripts/gen-lastmods.mjs && astro build && wrangler deploy",
+    "deploy:staging": "node scripts/gen-lastmods.mjs && astro build && wrangler deploy --env staging"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^13.1.6",
