@@ -12,7 +12,6 @@ const urls: Array<{ path: string; priority: number; changefreq: string; lastmod?
   { path: '/team/rozanna-shambrook/', priority: 0.6, changefreq: 'monthly', lastmod: '2026-10-06' },
   { path: '/team/gigi-anderson/', priority: 0.6, changefreq: 'monthly', lastmod: '2026-07-09' },
   { path: '/team/susan-fink/', priority: 0.6, changefreq: 'monthly', lastmod: '2026-07-29' },
-  { path: '/team/kaylie-fuentes/', priority: 0.6, changefreq: 'monthly', lastmod: '2026-07-09' },
   { path: '/team/kaleo/', priority: 0.5, changefreq: 'monthly', lastmod: '2026-07-09' },
   // Article template hidden until real content is ready.
   // { path: '/articles/how-hearing-loss-affects-cognition/', priority: 0.8, changefreq: 'monthly' },
