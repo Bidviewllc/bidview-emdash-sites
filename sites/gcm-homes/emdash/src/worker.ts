@@ -67,13 +67,58 @@ export { PluginBridge };
 // viewer zooms (wheel, pinch, click, +/- buttons) and pans.
 // v26 (2026-11-04): #235 merged after #236, so a new number again.
 // v27 (2026-11-05): listing page location map is a Google Maps embed (was Leaflet).
-const CACHE_VERSION = "v28";
+// v28 (2026-11-05): home hero and the "Coming to Ski" band play background videos.
+// v29 (2026-11-06, PR #240): home hero "Buy with us" / "Sell with us" buttons.
+// v30 (2026-11-06, PR #241): home carousel shows every featured listing.
+const CACHE_VERSION = "v30";
+
+// Only plain file names under site-video/ in R2; no paths, no other keys.
+const SITE_VIDEO_NAME = /^[a-z0-9-]+\.(mp4|jpg)$/;
+
+async function serveSiteVideo(request: Request, url: URL, env: { MEDIA?: any }): Promise<Response> {
+	if (request.method !== "GET" && request.method !== "HEAD") return new Response("Method not allowed", { status: 405 });
+	const name = url.pathname.slice("/media/video/".length);
+	if (!SITE_VIDEO_NAME.test(name) || !env.MEDIA) return new Response("Not found", { status: 404 });
+
+	const key = `site-video/${name}`;
+	const ranged = request.headers.has("Range");
+	const obj = await env.MEDIA.get(key, ranged ? { range: request.headers } : undefined);
+	if (!obj) return new Response("Not found", { status: 404 });
+
+	const headers = new Headers();
+	obj.writeHttpMetadata(headers);
+	if (!headers.get("Content-Type")) headers.set("Content-Type", name.endsWith(".mp4") ? "video/mp4" : "image/jpeg");
+	headers.set("Cache-Control", "public, max-age=604800");
+	headers.set("Accept-Ranges", "bytes");
+	headers.set("ETag", obj.httpEtag);
+
+	const r = obj.range as { offset?: number; length?: number; suffix?: number } | undefined;
+	if (ranged && r) {
+		const size = obj.size as number;
+		const start = r.suffix != null ? size - r.suffix : (r.offset ?? 0);
+		const length = r.suffix != null ? r.suffix : (r.length ?? size - start);
+		headers.set("Content-Range", `bytes ${start}-${start + length - 1}/${size}`);
+		headers.set("Content-Length", String(length));
+		return new Response(request.method === "HEAD" ? null : obj.body, { status: 206, headers });
+	}
+	headers.set("Content-Length", String(obj.size));
+	return new Response(request.method === "HEAD" ? null : obj.body, { status: 200, headers });
+}
 const CACHEABLE_TYPE = /^(?:text\/html|application\/xml|text\/xml|text\/plain)/i;
 const ADMIN_COOKIE = /emdash[-_](session|edit-mode|admin)/i;
 
 export default {
 	async fetch(request: Request, env: unknown, ctx: ExecutionContext): Promise<Response> {
 		const url = new URL(request.url);
+
+		// Background videos (home hero + "Coming to Ski" band). The files live in
+		// R2 (`gcm-homes-media`, keys under site-video/), not in the repo. emdash's
+		// own /_emdash/api/media/file/ route ignores Range requests, and Safari /
+		// iOS will not play an MP4 without them, so these get their own route.
+		if (url.pathname.startsWith("/media/video/")) {
+			return serveSiteVideo(request, url, env as any);
+		}
+
 		const isAdmin = ADMIN_COOKIE.test(request.headers.get("Cookie") || "");
 		const bypass =
 			request.method !== "GET" ||

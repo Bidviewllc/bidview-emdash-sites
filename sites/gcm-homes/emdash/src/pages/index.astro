@@ -151,6 +151,14 @@ try {
 // Defaults to the design's skier, self-hosted. Swappable from the CMS.
 const emotionImage = firstImageUrl(d.emotion_image) ?? "/assets/emotion-lifestyle.jpg";
 
+// ---- Background videos ---------------------------------------------------------
+// Files are in R2 (gcm-homes-media, site-video/), served by src/worker.ts. To swap
+// one, upload a new file under a new name and change the name here.
+const HERO_VIDEO = "/media/video/gcm-hero.mp4";
+const HERO_POSTER = "/media/video/gcm-hero-poster.jpg";
+const EMOTION_VIDEO = "/media/video/gcm-lifestyle.mp4";
+const EMOTION_POSTER = "/media/video/gcm-lifestyle-poster.jpg";
+
 const money = (n: number) => (n ? "$" + Number(n).toLocaleString("en-US") : "—");
 // The card's fact row, as pairs so each figure can be bolded the way the
 // /listings/ cards do it. Falls back to lot size when there's no house on the lot.
@@ -176,10 +184,11 @@ const tagOf = (l: any) =>
 >
 	{/* HERO */}
 	<section class="hero" data-screen-label="01 Hero">
+		{/* Aerial Tahoe video. The still photo stays underneath while the video loads
+		    (and for visitors who ask for reduced motion). The dusk→night cycle is off
+		    here: tinting moving daytime footage navy every 36s looked wrong. */}
 		<div class="hero__img"></div>
-		<div class="hero__dusk"></div>
-		<div class="hero__night"></div>
-		<div class="hero__stars"></div>
+		<video class="bg-video" src={HERO_VIDEO} poster={HERO_POSTER} autoplay muted loop playsinline preload="auto" aria-hidden="true" tabindex="-1"></video>
 		<div class="hero__veil"></div>
 		<div class="hero__copy">
 			<h1 class="hero__title" set:html={d.hero_headline ?? 'The View From Here <em>Changes Everything.</em>'} {...(e.hero_headline ?? {})}></h1>
@@ -187,8 +196,8 @@ const tagOf = (l: any) =>
 				{d.hero_sub ?? "Falling in love with Lake Tahoe is easy. Finding the right home in a market this unique… that's where it gets interesting."}
 			</p>
 			<div class="hero__cta">
-				<a class="btn btn--orange" href="/listings/">{d.hero_cta_primary ?? "EXPLORE TAHOE HOMES"}</a>
-				<a class="btn btn--ghost-light" href="/contact/">{d.hero_cta_secondary ?? "WHAT IS YOUR HOME WORTH"}</a>
+				<a class="btn btn--orange" href="/buyers/">{d.hero_cta_primary ?? "BUY WITH US"}</a>
+				<a class="btn btn--ghost-light" href="/sellers/">{d.hero_cta_secondary ?? "SELL WITH US"}</a>
 			</div>
 		</div>
 	</section>
@@ -236,6 +245,7 @@ const tagOf = (l: any) =>
 	     the CMS via the Emotion background image field. */}
 	<section class="emotion emotion--bc" data-screen-label="03 Emotional Weight">
 		<div class="emotion__bg" style={`background-image:url('${emotionImage}')`}></div>
+		<video class="bg-video" src={EMOTION_VIDEO} poster={EMOTION_POSTER} autoplay muted loop playsinline preload="metadata" aria-hidden="true" tabindex="-1"></video>
 		<div class="emotion__veil emotion__veil--bc"></div>
 		<div class="emotion-bc__card">
 			<div class="emotion-bc__left">
