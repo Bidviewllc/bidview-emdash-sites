@@ -71,7 +71,8 @@ export { PluginBridge };
 // v29 (2026-11-06, PR #240): home hero "Buy with us" / "Sell with us" buttons.
 // v30 (2026-11-06, PR #241): home carousel shows every featured listing.
 // v31 (2026-11-06, PR #244): footer "Client Reviews" link in every chrome copy.
-const CACHE_VERSION = "v31";
+// v32 (2026-11-06, PR #246): Sold Listings admin collection; sold pages read ec_sold_listings.
+const CACHE_VERSION = "v32";
 
 // Only plain file names under site-video/ in R2; no paths, no other keys.
 const SITE_VIDEO_NAME = /^[a-z0-9-]+\.(mp4|jpg)$/;

@@ -213,7 +213,12 @@ export async function isHiddenSlug(slug: string): Promise<boolean> {
 		const row = await DB().prepare(
 			`SELECT 1 AS h FROM listings l JOIN ec_listings e ON e.id = l.id WHERE l.slug = ? AND NOT (${NOT_HIDDEN})`
 		).bind(slug).first();
-		return !!row;
+		if (row) return true;
+		// A sold page: the tick lives in ec_sold_listings (or the snapshot taken as it left the feed).
+		const sold = await DB().prepare(
+			`SELECT 1 AS h FROM listing_archive a LEFT JOIN ec_sold_listings e ON e.id = a.id WHERE a.slug = ? AND NOT (${NOT_HIDDEN_ARCHIVE})`
+		).bind(slug).first();
+		return !!sold;
 	} catch {
 		return false;
 	}
@@ -234,13 +239,17 @@ export async function allLive() {
 	return (results ?? []).map((r: any) => ({ ...toListing(r), ownerNote: r.owner_note ?? null }));
 }
 
-// ── Sold listings (listing_archive) ──────────────────────────────────────────
-// Rows the sync marked `sold`, shaped like a card plus the close facts. A row
-// Grant hid while it was live stays hidden (the flag travels in owner_snapshot).
+// ── Sold listings (listing_archive + ec_sold_listings) ───────────────────────
+// Rows the sync marked `sold`, shaped like a card plus the close facts. Grant's
+// fields for a sale live in the `sold_listings` admin collection
+// (ec_sold_listings, built by seed/mirror-sold-listings.mjs and kept fresh by
+// the sync). Until a sale has a row there, the Hidden tick he set while the
+// listing was live still counts (it travels in owner_snapshot).
 function toSoldCard(r: any) {
 	const side = representedBy(r);
 	return {
 		...toListing(r),
+		headline: r.e_headline || null,
 		photo: r.main_photo_url || r.photo || null,
 		closePrice: r.close_price ?? null,
 		closeDate: r.close_date ?? null,
@@ -248,14 +257,17 @@ function toSoldCard(r: any) {
 		representedLabel: representedLabel(side),
 	};
 }
-const NOT_HIDDEN_ARCHIVE = "COALESCE(json_extract(owner_snapshot, '$.hidden'), '') IN ('', '0', 'false')";
-const GRANT_ON_A_SIDE = `(list_agent_id = ? OR buyer_agent_id = ? OR co_list_agent_id = ? OR co_buyer_agent_id = ?)`;
+const NOT_HIDDEN_ARCHIVE = `COALESCE(NULLIF(e.hidden, ''), json_extract(a.owner_snapshot, '$.hidden'), '') IN ${OFF}`;
+const GRANT_ON_A_SIDE = `(a.list_agent_id = ? OR a.buyer_agent_id = ? OR a.co_list_agent_id = ? OR a.co_buyer_agent_id = ?)`;
+// "Featured sale" in the admin leads its section on /sold/.
+const SOLD_FEATURED_FIRST = `(COALESCE(e.featured, '') NOT IN ${OFF}) DESC`;
+const SOLD_SELECT = `SELECT a.*, e.headline AS e_headline FROM listing_archive a LEFT JOIN ec_sold_listings e ON e.id = a.id`;
 
 /** Every closed sale Grant was on a side of, newest close first. */
 export async function soldByGrant() {
 	try {
 		const { results } = await DB().prepare(
-			`SELECT * FROM listing_archive WHERE archive_status = 'sold' AND ${GRANT_ON_A_SIDE} AND ${NOT_HIDDEN_ARCHIVE} ORDER BY close_date DESC, close_price DESC`
+			`${SOLD_SELECT} WHERE a.archive_status = 'sold' AND ${GRANT_ON_A_SIDE} AND ${NOT_HIDDEN_ARCHIVE} ORDER BY ${SOLD_FEATURED_FIRST}, a.close_date DESC, a.close_price DESC`
 		).bind(GRANT_AGENT_ID, GRANT_AGENT_ID, GRANT_AGENT_ID, GRANT_AGENT_ID).all();
 		return (results ?? []).map(toSoldCard);
 	} catch { return []; }
@@ -266,7 +278,7 @@ export async function soldNotable() {
 		const since = new Date();
 		since.setFullYear(since.getFullYear() - SOLD_OTHERS_YEARS);
 		const { results } = await DB().prepare(
-			`SELECT * FROM listing_archive WHERE archive_status = 'sold' AND NOT ${GRANT_ON_A_SIDE} AND close_price >= ? AND close_date >= ? AND ${NOT_HIDDEN_ARCHIVE} ORDER BY close_date DESC, close_price DESC`
+			`${SOLD_SELECT} WHERE a.archive_status = 'sold' AND NOT ${GRANT_ON_A_SIDE} AND a.close_price >= ? AND a.close_date >= ? AND ${NOT_HIDDEN_ARCHIVE} ORDER BY ${SOLD_FEATURED_FIRST}, a.close_date DESC, a.close_price DESC`
 		).bind(GRANT_AGENT_ID, GRANT_AGENT_ID, GRANT_AGENT_ID, GRANT_AGENT_ID, SOLD_OTHERS_MIN_PRICE, since.toISOString().slice(0, 10)).all();
 		return (results ?? []).map(toSoldCard);
 	} catch { return []; }
@@ -336,11 +348,22 @@ async function archivedBySlug(slug: string) {
 	} catch { row = null; }
 	if (!row) return null;
 	if (row.archive_status !== "sold") return { gone: true as const };
-	let snap: any = {};
-	try { snap = row.owner_snapshot ? JSON.parse(row.owner_snapshot) : {}; } catch { snap = {}; }
 	const clean = (v: any) => { const s = (v ?? "").toString().trim(); return s === "" ? null : s; };
-	const customPT = clean(snap.description);
-	const descriptionHtml = portableTextToHtml(customPT ? (customPT.startsWith("[") ? customPT : plainToPortableText(customPT)) : plainToPortableText(row.description ?? ""));
+	// Grant's fields: the Sold Listings admin row once the mirror has made one
+	// (edits after the sale land there), else the snapshot taken as the listing
+	// left the feed. A description still equal to the MLS snapshot is not "custom".
+	const ov = await getOverride(row.id, "ec_sold_listings");
+	let fields: { description: string | null; isCustom: boolean; note: string | null; headline: string | null; tourUrl: string | null; noteImage: string | null; noteVideos: string | null; floorPlanEmbed: string | null; floorPlanImages: string | null };
+	if (ov.exists) {
+		fields = { description: ov.description ?? ov.mlsDescription, isCustom: ov.isOverride, note: ov.note, headline: ov.headline, tourUrl: ov.tourUrl, noteImage: ov.noteImage, noteVideos: ov.noteVideos, floorPlanEmbed: ov.floorPlanEmbed, floorPlanImages: ov.floorPlanImages };
+	} else {
+		let snap: any = {};
+		try { snap = row.owner_snapshot ? JSON.parse(row.owner_snapshot) : {}; } catch { snap = {}; }
+		const customPT = clean(snap.description);
+		fields = { description: customPT, isCustom: !!customPT, note: clean(snap.owner_note), headline: clean(snap.headline), tourUrl: clean(snap.tour_url), noteImage: clean(snap.note_image), noteVideos: clean(snap.note_videos), floorPlanEmbed: clean(snap.floor_plan_embed), floorPlanImages: clean(snap.floor_plan_images) };
+	}
+	const pt = fields.description;
+	const descriptionHtml = portableTextToHtml(pt ? (pt.startsWith("[") ? pt : plainToPortableText(pt)) : plainToPortableText(row.description ?? ""));
 	const detail = toDetail(row);
 	detail.description = descriptionHtml;
 	const side = representedBy(row);
@@ -349,14 +372,14 @@ async function archivedBySlug(slug: string) {
 		listing: {
 			...detail,
 			descriptionHtml,
-			descriptionIsCustom: !!customPT,
-			ownerNote: clean(snap.owner_note),
-			headline: clean(snap.headline),
-			tourUrl: clean(snap.tour_url) ?? matterportFrom(row.tour_url_mls),
-			noteImage: clean(snap.note_image),
-			noteVideos: clean(snap.note_videos),
-			floorPlanEmbed: clean(snap.floor_plan_embed),
-			floorPlanImages: clean(snap.floor_plan_images),
+			descriptionIsCustom: fields.isCustom,
+			ownerNote: fields.note,
+			headline: fields.headline,
+			tourUrl: fields.tourUrl ?? matterportFrom(row.tour_url_mls),
+			noteImage: fields.noteImage,
+			noteVideos: fields.noteVideos,
+			floorPlanEmbed: fields.floorPlanEmbed,
+			floorPlanImages: fields.floorPlanImages,
 			archived: true,
 			sold: {
 				closePrice: row.close_price ?? null,
@@ -422,42 +445,55 @@ export async function bySlug(slug: string) {
 // both land here and show on the site. The Trestle sync's mirror updates only the
 // MLS columns (ON CONFLICT DO UPDATE), never these two, so overrides survive every
 // sync. A set description REPLACES the MLS remarks; clearing it reverts to MLS.
-export async function getOverride(listingKey: string): Promise<{ note: string | null; description: string | null; mlsDescription: string | null; isOverride: boolean; headline: string | null; tourUrl: string | null; noteImage: string | null; noteVideos: string | null; floorPlanEmbed: string | null; floorPlanImages: string | null }> {
+export async function getOverride(listingKey: string, table: OwnerTable = "ec_listings"): Promise<{ exists: boolean; note: string | null; description: string | null; mlsDescription: string | null; isOverride: boolean; headline: string | null; tourUrl: string | null; noteImage: string | null; noteVideos: string | null; floorPlanEmbed: string | null; floorPlanImages: string | null }> {
 	try {
 		// SELECT * rather than a column list: a newly added owner field then reads
-		// as null until mirror-listings.mjs has added its column, instead of the
+		// as null until the mirror script has added its column, instead of the
 		// whole query failing and blanking every override on the page.
-		const row = await DB().prepare('SELECT *, "_mls_description" AS mls_description FROM ec_listings WHERE id = ?').bind(listingKey).first();
+		const row = await DB().prepare(`SELECT *, "_mls_description" AS mls_description FROM ${table} WHERE id = ?`).bind(listingKey).first();
 		const clean = (v: any) => { const s = (v ?? "").toString().trim(); return s === "" ? null : s; };
 		const description = clean((row as any)?.description);
 		const mlsDescription = clean((row as any)?.mls_description);
-		return { note: clean((row as any)?.owner_note), description, mlsDescription, isOverride: !!(description && description !== mlsDescription), headline: clean((row as any)?.headline), tourUrl: clean((row as any)?.tour_url), noteImage: clean((row as any)?.note_image), noteVideos: clean((row as any)?.note_videos), floorPlanEmbed: clean((row as any)?.floor_plan_embed), floorPlanImages: clean((row as any)?.floor_plan_images) };
-	} catch { return { note: null, description: null, mlsDescription: null, isOverride: false, headline: null, tourUrl: null, noteImage: null, noteVideos: null, floorPlanEmbed: null, floorPlanImages: null }; }
+		return { exists: !!row, note: clean((row as any)?.owner_note), description, mlsDescription, isOverride: !!(description && description !== mlsDescription), headline: clean((row as any)?.headline), tourUrl: clean((row as any)?.tour_url), noteImage: clean((row as any)?.note_image), noteVideos: clean((row as any)?.note_videos), floorPlanEmbed: clean((row as any)?.floor_plan_embed), floorPlanImages: clean((row as any)?.floor_plan_images) };
+	} catch { return { exists: false, note: null, description: null, mlsDescription: null, isOverride: false, headline: null, tourUrl: null, noteImage: null, noteVideos: null, floorPlanEmbed: null, floorPlanImages: null }; }
 }
 export async function getNote(listingKey: string): Promise<string | null> {
 	return (await getOverride(listingKey)).note;
 }
 // emdash 1.x stores content datetimes as UTC ISO with milliseconds, not datetime('now').
 const NOW_SQL = "strftime('%Y-%m-%dT%H:%M:%fZ','now')";
-export async function setNote(listingKey: string, note: string): Promise<void> {
+export async function setNote(listingKey: string, note: string, table: OwnerTable = "ec_listings"): Promise<void> {
 	const trimmed = (note ?? "").toString().slice(0, 8000);
 	const v = trimmed.trim() === "" ? null : trimmed;
-	await DB().prepare(`UPDATE ec_listings SET owner_note = ?, updated_at = ${NOW_SQL} WHERE id = ?`).bind(v, listingKey).run();
+	await DB().prepare(`UPDATE ${table} SET owner_note = ?, updated_at = ${NOW_SQL} WHERE id = ?`).bind(v, listingKey).run();
 }
 // Empty description = "reset to MLS": set it back to the snapshot so it tracks the
 // feed again. A non-empty value becomes the owner override (preserved across sync).
-export async function setDescription(listingKey: string, description: string): Promise<void> {
+export async function setDescription(listingKey: string, description: string, table: OwnerTable = "ec_listings"): Promise<void> {
 	const trimmed = (description ?? "").toString().slice(0, 16000);
 	if (trimmed.trim() === "") {
-		await DB().prepare(`UPDATE ec_listings SET description = "_mls_description", updated_at = ${NOW_SQL} WHERE id = ?`).bind(listingKey).run();
+		await DB().prepare(`UPDATE ${table} SET description = "_mls_description", updated_at = ${NOW_SQL} WHERE id = ?`).bind(listingKey).run();
 		return;
 	}
 	// Store as Portable Text: pass through if already PT JSON, else convert plain text.
 	const val = trimmed.trim().startsWith("[") ? trimmed : plainToPortableText(trimmed);
-	await DB().prepare(`UPDATE ec_listings SET description = ?, updated_at = ${NOW_SQL} WHERE id = ?`).bind(val, listingKey).run();
+	await DB().prepare(`UPDATE ${table} SET description = ?, updated_at = ${NOW_SQL} WHERE id = ?`).bind(val, listingKey).run();
 }
 // Resolve a listing's id from its slug (the client edits by slug; notes key on id).
 export async function keyForSlug(slug: string): Promise<string | null> {
 	const row = await DB().prepare("SELECT id FROM listings WHERE slug = ?").bind(slug).first();
 	return (row as any)?.id ?? null;
+}
+// Which owner table a slug's fields live in: ec_listings while the listing is
+// live, ec_sold_listings once it has sold (the inline note editor on a sold page
+// writes there). Null when the slug is unknown or the sale is not shown.
+export type OwnerTable = "ec_listings" | "ec_sold_listings";
+export async function ownerRowForSlug(slug: string): Promise<{ id: string; table: OwnerTable } | null> {
+	const live = await keyForSlug(slug);
+	if (live) return { id: live, table: "ec_listings" };
+	try {
+		const row = await DB().prepare("SELECT id FROM ec_sold_listings WHERE slug = ?").bind(slug).first();
+		if ((row as any)?.id) return { id: (row as any).id, table: "ec_sold_listings" };
+	} catch { /* collection not built yet */ }
+	return null;
 }
