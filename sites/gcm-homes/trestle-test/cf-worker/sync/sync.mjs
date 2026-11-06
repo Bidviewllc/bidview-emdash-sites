@@ -260,6 +260,66 @@ async function mirrorEmdashListings() {
   // (departed listings were removed before the upsert — see the note above)
   console.log("emdash mirror: ec_listings upserted", rows.length, "listings (owner cols preserved)");
 }
+// Mirror the sold rows of `listing_archive` into the emdash `sold_listings`
+// collection (ec_sold_listings) so Grant can edit a past sale like a live
+// listing. Same contract as mirrorEmdashListings: MLS columns refresh on every
+// run, the owner columns (headline, description, note, images, tour, floor
+// plans, featured, hidden) are only ever INSERTED, seeded from owner_snapshot
+// (what he had on the live listing). Rows are never deleted. The collection and
+// table are registered once by emdash/seed/mirror-sold-listings.mjs, which also
+// holds the field list this must stay in step with.
+const SOLD_MLS_FIELDS = ["sold_price","close_date","represented","city","state","zip","beds","baths","sqft","lot_acres","year_built","property_type","view","photo","listing_date","list_price","mls_number","tour_url_mls"];
+const SOLD_OWNER_FIELDS = ["featured","hidden","headline","description","owner_note","note_image","tour_url","note_videos","floor_plan_embed","floor_plan_images"];
+const SHOWN_SOLD_WHERE = `archive_status = 'sold' AND (list_agent_id = '${GRANT_AGENT_ID}' OR buyer_agent_id = '${GRANT_AGENT_ID}' ` +
+  `OR co_list_agent_id = '${GRANT_AGENT_ID}' OR co_buyer_agent_id = '${GRANT_AGENT_ID}' OR close_price >= ${SOLD_OTHERS_MIN_PRICE})`;
+async function mirrorEmdashSoldListings() {
+  const lr = await d1(`SELECT * FROM listing_archive WHERE ${SHOWN_SOLD_WHERE}`);
+  const rows = lr?.[0]?.results ?? [];
+  if (!rows.length) { console.log("emdash sold mirror: no sold rows to mirror"); return; }
+  const money = n => n != null && n !== "" ? "$" + Number(n).toLocaleString("en-US") : null;
+  const represented = r => {
+    const seller = r.list_agent_id === GRANT_AGENT_ID || r.co_list_agent_id === GRANT_AGENT_ID;
+    const buyer = r.buyer_agent_id === GRANT_AGENT_ID || r.co_buyer_agent_id === GRANT_AGENT_ID;
+    return seller && buyer ? "Both sides" : seller ? "The seller" : buyer ? "The buyer" : "—";
+  };
+  const clean = v => { const s = (v ?? "").toString().trim(); return s === "" ? null : s; };
+  const insertCols = ["id","slug","status","locale","version","title","published_at","updated_at", ...SOLD_MLS_FIELDS.map(s => '"' + s + '"'), ...SOLD_OWNER_FIELDS.map(s => '"' + s + '"'), '"_mls_description"'];
+  const setClause = ["slug","title","updated_at", ...SOLD_MLS_FIELDS, "_mls_description"].map(c => `"${c}"=excluded."${c}"`).join(",");
+  const head = `INSERT INTO ec_sold_listings (${insertCols.join(",")}) VALUES `;
+  const tail = ` ON CONFLICT(id) DO UPDATE SET ${setClause}`;
+  let batch = [], len = head.length + tail.length;
+  const flush = async () => { if (batch.length) { await d1(head + batch.join(",") + tail); batch = []; len = head.length + tail.length; } };
+  const now = sqlVal(new Date().toISOString());
+  for (const r of rows) {
+    let snap = {};
+    try { snap = r.owner_snapshot ? JSON.parse(r.owner_snapshot) : {}; } catch { snap = {}; }
+    const pt = (r.sub_type || r.type || "").replace(/([a-z])([A-Z])/g, "$1 $2");
+    const mlsPT = ptFromPlain(r.description);
+    const snapDesc = clean(snap.description);
+    const description = snapDesc ? (snapDesc.startsWith("[") ? snapDesc : ptFromPlain(snapDesc)) : mlsPT;
+    const vals = [
+      sqlVal(r.id), sqlVal(r.slug || ("sold-" + r.id)), "'published'", "'en'", "1",
+      sqlVal(r.address || "(no address)"), now, now,
+      sqlVal(money(r.close_price ?? r.price)), sqlVal(r.close_date), sqlVal(represented(r)),
+      sqlVal(r.city), sqlVal(r.state), sqlVal(r.zip),
+      sqlVal(r.beds), sqlVal(r.baths), sqlVal(r.sqft != null ? Number(r.sqft).toLocaleString("en-US") : null),
+      sqlVal(r.lot_acres), sqlVal(r.year_built), sqlVal(pt || null), sqlVal(r.view),
+      sqlVal(r.main_photo_url || r.photo || null),
+      sqlVal(r.listing_date), sqlVal(money(r.price)),
+      sqlVal(r.mls_number), sqlVal(r.tour_url_mls),
+      sqlVal(clean(snap.featured)), sqlVal(clean(snap.hidden)), sqlVal(clean(snap.headline)), sqlVal(description),
+      sqlVal(clean(snap.owner_note)), sqlVal(clean(snap.note_image)), sqlVal(clean(snap.tour_url)), sqlVal(clean(snap.note_videos)),
+      sqlVal(clean(snap.floor_plan_embed)), sqlVal(clean(snap.floor_plan_images)),
+      sqlVal(mlsPT),
+    ];
+    const tuple = "(" + vals.join(",") + ")";
+    if (len + tuple.length + 1 > 90000 || batch.length >= 40) await flush();
+    batch.push(tuple); len += tuple.length + 1;
+  }
+  await flush();
+  console.log("emdash sold mirror: ec_sold_listings upserted", rows.length, "sold listings (owner cols preserved)");
+}
+
 async function insertRows(table, cols, rows, perBatch) {
   const head = `INSERT OR REPLACE INTO ${table} (${cols.join(",")}) VALUES `;
   let i = 0;
@@ -532,6 +592,7 @@ async function main() {
 
   if (SYNC_MODE === "backfill-sold") {
     await backfillSold(token);
+    try { await mirrorEmdashSoldListings(); } catch (e) { console.error("emdash sold mirror (non-fatal):", e.message); }
     console.log(`backfill complete in ${((Date.now() - t0) / 1000).toFixed(1)}s`);
     return;
   }
@@ -579,6 +640,8 @@ async function main() {
   // backend browse view stays fresh. Non-fatal — a mirror failure never breaks the
   // core sync. The collection/table are registered once by emdash/seed/mirror-listings.mjs.
   try { await mirrorEmdashListings(); } catch (e) { console.error("emdash mirror (non-fatal):", e.message); }
+  // Same for the Sold Listings collection: new sales become editable after this run.
+  try { await mirrorEmdashSoldListings(); } catch (e) { console.error("emdash sold mirror (non-fatal):", e.message); }
 
   const verify = await d1("SELECT (SELECT count(*) FROM listings) l, (SELECT count(*) FROM listing_photos) p, (SELECT count(*) FROM listing_archive) a, (SELECT count(*) FROM listing_archive WHERE archive_status='sold') s");
   console.log("D1 now holds:", JSON.stringify(verify?.[0]?.results?.[0] || verify));

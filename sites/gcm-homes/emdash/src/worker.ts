@@ -67,7 +67,7 @@ export { PluginBridge };
 // viewer zooms (wheel, pinch, click, +/- buttons) and pans.
 // v26 (2026-11-04): #235 merged after #236, so a new number again.
 // v27 (2026-11-05): listing page location map is a Google Maps embed (was Leaflet).
-const CACHE_VERSION = "v27";
+const CACHE_VERSION = "v30";
 const CACHEABLE_TYPE = /^(?:text\/html|application\/xml|text\/xml|text\/plain)/i;
 const ADMIN_COOKIE = /emdash[-_](session|edit-mode|admin)/i;
 
