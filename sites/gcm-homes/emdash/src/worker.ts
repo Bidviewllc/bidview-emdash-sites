@@ -70,7 +70,8 @@ export { PluginBridge };
 // v28 (2026-11-05): home hero and the "Coming to Ski" band play background videos.
 // v29 (2026-11-06, PR #240): home hero "Buy with us" / "Sell with us" buttons.
 // v30 (2026-11-06, PR #241): home carousel shows every featured listing.
-const CACHE_VERSION = "v30";
+// v31 (2026-11-06, PR #244): footer "Client Reviews" link in every chrome copy.
+const CACHE_VERSION = "v31";
 
 // Only plain file names under site-video/ in R2; no paths, no other keys.
 const SITE_VIDEO_NAME = /^[a-z0-9-]+\.(mp4|jpg)$/;
