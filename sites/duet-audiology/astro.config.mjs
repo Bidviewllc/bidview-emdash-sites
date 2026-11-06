@@ -12,5 +12,6 @@ export default defineConfig({
 		"/team/": "/",
 		"/audiologist/": "/",
 		"/audiologist/allison-may/": "/",
+		"/team/kaylie-fuentes/": "/",
 	},
 });
