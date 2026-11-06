@@ -69,7 +69,8 @@ export { PluginBridge };
 // v27 (2026-11-05): listing page location map is a Google Maps embed (was Leaflet).
 // v28 (2026-11-05): home hero and the "Coming to Ski" band play background videos.
 // v29 (2026-11-06, PR #240): home hero "Buy with us" / "Sell with us" buttons.
-const CACHE_VERSION = "v29";
+// v30 (2026-11-06, PR #241): home carousel shows every featured listing.
+const CACHE_VERSION = "v30";
 
 // Only plain file names under site-video/ in R2; no paths, no other keys.
 const SITE_VIDEO_NAME = /^[a-z0-9-]+\.(mp4|jpg)$/;
