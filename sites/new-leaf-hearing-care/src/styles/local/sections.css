@@ -604,6 +604,24 @@ display: none;
 display: flex;
 }
 
+/* Desktop carousel: clip to the content width so exactly 4 cards show (no peeking
+   neighbours), with the arrows centred underneath. */
+@media (min-width: 1025px) {
+  .team-section.has-carousel .team-carousel {
+    width: min(1280px, calc(100% - 40px));
+    margin: 0 auto;
+  }
+
+  .team-section.has-carousel .team-track {
+    width: 100%;
+  }
+
+  .team-section.has-carousel .team-controls {
+    justify-content: center;
+    gap: 16px;
+  }
+}
+
 .team-nav {
 width: 52px;
   height: 52px;

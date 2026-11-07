@@ -46,6 +46,9 @@
               "@id": "https://newleafhearing.com/audiologist/julie-raney/#person"
             },
             {
+              "@id": "https://newleafhearing.com/audiologist/lindsay-collins/#person"
+            },
+            {
               "@id": "https://newleafhearing.com/audiologist/lisa-marie-bell/#person"
             },
             {
@@ -231,6 +234,62 @@
           "Hearing assessments",
           "Hearing aids",
           "Communication support"
+        ]
+      }
+    ],
+    "/audiologist/lindsay-collins/": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "@id": "https://newleafhearing.com/audiologist/lindsay-collins/#person",
+        "name": "Lindsay Collins",
+        "honorificSuffix": "Au.D., CCC-A, CH-TM",
+        "jobTitle": "Audiologist",
+        "url": "https://newleafhearing.com/audiologist/lindsay-collins/",
+        "image": "https://newleafhearing.com/assets/new-leaf-hearing-care-lindsay.webp",
+        "worksFor": {
+          "@id": "https://newleafhearing.com/#littleton"
+        },
+        "description": "Lindsay Collins, Au.D., CCC-A, CH-TM is a certified audiologist at New Leaf Hearing Care's Littleton, CO office.",
+        "hasCredential": [
+          {
+            "@type": "EducationalOccupationalCredential",
+            "credentialCategory": "Professional Certification",
+            "name": "Certificate of Clinical Competence in Audiology (CCC-A)",
+            "recognizedBy": {
+              "@type": "Organization",
+              "name": "American Speech-Language-Hearing Association (ASHA)",
+              "url": "https://www.asha.org/"
+            }
+          },
+          {
+            "@type": "EducationalOccupationalCredential",
+            "credentialCategory": "Professional Certification",
+            "name": "Certificate Holder – Tinnitus Management (CH-TM)",
+            "recognizedBy": {
+              "@type": "Organization",
+              "name": "American Board of Audiology (ABA)",
+              "url": "https://www.boardofaudiology.org/"
+            }
+          }
+        ],
+        "alumniOf": [
+          {
+            "@type": "CollegeOrUniversity",
+            "name": "Texas Tech University Health Sciences Center",
+            "description": "Doctor of Audiology (Au.D.)"
+          },
+          {
+            "@type": "CollegeOrUniversity",
+            "name": "University of Arizona",
+            "description": "Bachelor of Science (B.S.)"
+          }
+        ],
+        "knowsAbout": [
+          "Audiology",
+          "Hearing assessments",
+          "Hearing aids",
+          "Tinnitus management"
         ]
       }
     ],
