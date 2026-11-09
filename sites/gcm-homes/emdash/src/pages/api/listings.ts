@@ -1,10 +1,10 @@
 import type { APIRoute } from "astro";
-import { allLive } from "../../lib/listings";
+import { allLive, lastSyncedAt } from "../../lib/listings";
 export const prerender = false;
 export const GET: APIRoute = async () => {
 	try {
-		const listings = await allLive();
-		return new Response(JSON.stringify({ count: listings.length, listings }), {
+		const [listings, syncedAt] = await Promise.all([allLive(), lastSyncedAt()]);
+		return new Response(JSON.stringify({ count: listings.length, syncedAt, listings }), {
 			headers: { "Content-Type": "application/json", "Cache-Control": "public, s-maxage=120" },
 		});
 	} catch (e: any) {

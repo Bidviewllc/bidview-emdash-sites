@@ -171,11 +171,42 @@ export function representedBy(r: any): "seller" | "buyer" | "both" | null {
 export const representedLabel = (side: ReturnType<typeof representedBy>): string | null =>
 	side === "both" ? "Represented both sides" : side === "seller" ? "Represented the seller" : side === "buyer" ? "Represented the buyer" : null;
 
+// ── Bathrooms ────────────────────────────────────────────────────────────────
+// The feed's BathroomsTotalInteger counts a half bath as a whole one (2 full + 1
+// half = 3), so the headline figure overstated the home and disagreed with the
+// description. Every half bath counts as 0.5 here ("2.5"); the listing page's
+// details table still shows full and half separately. Falls back to the feed's
+// total when the full-bath count is missing (14 of 181 live listings, 2026-11-06).
+export function bathsOf(r: any): number | null {
+	const full = r.baths_full ?? r.bathsFull;
+	const half = r.baths_half ?? r.bathsHalf;
+	if (full == null || full === "") return r.baths ?? null;
+	return Number(full) + 0.5 * Number(half || 0);
+}
+
+// ── Listing brokerage credit ─────────────────────────────────────────────────
+// IDX rules: every listing display names the listing brokerage, in a readable
+// size and colour. Cards print this line; the listing page prints the agent too.
+export const courtesyOf = (r: any): string | null =>
+	r.office ? `Listing courtesy of ${r.office}` : null;
+
+/**
+ * When the sync last finished pulling the MLS (sync_meta), as an ISO string.
+ * IDX rules ask for the date the data was last updated on every display; the
+ * search page and listing page print it. Null if the table can't be read.
+ */
+export async function lastSyncedAt(): Promise<string | null> {
+	try {
+		const row: any = await DB().prepare("SELECT last_synced_at FROM sync_meta WHERE id = 1").first();
+		return row?.last_synced_at ?? null;
+	} catch { return null; }
+}
+
 export function toListing(r: any) {
 	return {
 		id: r.id, slug: r.slug, address: r.address,
 		city: r.city, state: r.state, zip: r.zip,
-		price: r.price, beds: r.beds, baths: r.baths,
+		price: r.price, beds: r.beds, baths: bathsOf(r),
 		sqft: r.sqft, lotAcres: r.lot_acres, yearBuilt: r.year_built,
 		type: r.type, subType: r.sub_type, category: r.category, status: r.status,
 		statusLabel: statusLabel(r.status),
@@ -187,7 +218,7 @@ export function toListing(r: any) {
 export function toDetail(r: any) {
 	return {
 		id: r.id, address: r.address, city: r.city, state: r.state, zip: r.zip,
-		price: r.price, beds: r.beds, baths: r.baths, bathsFull: r.baths_full, bathsHalf: r.baths_half,
+		price: r.price, beds: r.beds, baths: bathsOf(r), bathsFull: r.baths_full, bathsHalf: r.baths_half,
 		sqft: r.sqft, lotAcres: r.lot_acres, yearBuilt: r.year_built, garage: r.garage,
 		view: r.view, description: r.description, status: r.status,
 		statusLabel: statusLabel(r.status),

@@ -15,7 +15,7 @@ import ContactCta from "../components/ContactCta.astro";
 import { getEmDashEntry } from "emdash";
 import { env } from "cloudflare:workers";
 import { NEIGHBORHOODS } from "../lib/neighborhoods";
-import { FEATURED_ROW, FEATURED_FIRST, statusLabel } from "../lib/listings";
+import { FEATURED_ROW, FEATURED_FIRST, statusLabel, bathsOf, courtesyOf } from "../lib/listings";
 
 const DEF_FACTS = [
 	{ num: "6,225–7,700", unit: "ft", label: "Elevation range" },
@@ -87,7 +87,7 @@ try {
 	const DB = (env as any)?.DB;
 	if (DB) {
 		const { results } = await DB.prepare(
-			`SELECT l.id, l.slug, l.status, l.address, l.price, l.beds, l.baths, l.sqft, l.category, l.type, l.photo
+			`SELECT l.id, l.slug, l.status, l.address, l.price, l.beds, l.baths, l.baths_full, l.baths_half, l.office, l.sqft, l.category, l.type, l.photo
 			 FROM listings l LEFT JOIN ec_listings e ON e.id = l.id
 			 WHERE l.photo IS NOT NULL AND ${FEATURED_ROW}
 			 ORDER BY ${FEATURED_FIRST}, l.price DESC LIMIT 3`,
@@ -96,7 +96,7 @@ try {
 	}
 } catch { featured = []; }
 const fmt = (n: number) => (n ? "$" + Number(n).toLocaleString("en-US") : "—");
-const meta = (l: any) => [l.beds && `${l.beds} BD`, l.baths && `${l.baths} BA`, l.sqft && `${Number(l.sqft).toLocaleString()} SQ.FT.`].filter(Boolean).join(" | ");
+const meta = (l: any) => [l.beds && `${l.beds} BD`, bathsOf(l) && `${bathsOf(l)} BA`, l.sqft && `${Number(l.sqft).toLocaleString()} SQ.FT.`].filter(Boolean).join(" | ");
 ---
 
 <GcmLayout
@@ -268,6 +268,7 @@ const meta = (l: any) => [l.beds && `${l.beds} BD`, l.baths && `${l.baths} BA`, 
 								<h3 class="cg-fcard__addr">{l.address}</h3>
 								<div class="cg-fcard__meta">{meta(l)}</div>
 								<div class="cg-fcard__price">{fmt(l.price)}</div>
+								{courtesyOf(l) && <div class="cg-fcard__courtesy">{courtesyOf(l)}</div>}
 							</div>
 						</a>
 					))}

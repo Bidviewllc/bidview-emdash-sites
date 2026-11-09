@@ -72,7 +72,10 @@ export { PluginBridge };
 // v30 (2026-11-06, PR #241): home carousel shows every featured listing.
 // v31 (2026-11-06, PR #244): footer "Client Reviews" link in every chrome copy.
 // v32 (2026-11-06, PR #246): Sold Listings admin collection; sold pages read ec_sold_listings.
-const CACHE_VERSION = "v32";
+// v33 (2026-11-06): listing compliance -- listing brokerage on every card and
+//      listing page, MLS # / source / last updated, half baths count 0.5, Equal
+//      Housing Opportunity in every footer, readable MLS credit line.
+const CACHE_VERSION = "v33";
 
 // Only plain file names under site-video/ in R2; no paths, no other keys.
 const SITE_VIDEO_NAME = /^[a-z0-9-]+\.(mp4|jpg)$/;

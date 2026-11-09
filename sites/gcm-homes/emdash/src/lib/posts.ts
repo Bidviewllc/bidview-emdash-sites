@@ -196,7 +196,7 @@ export async function featuredListingPool(): Promise<any[]> {
 	if (!DB) return [];
 	try {
 		const { results } = await DB.prepare(
-			`SELECT l.id, l.slug, l.status, l.address, l.city, l.state, l.price, l.beds, l.baths, l.sqft, l.lot_acres, l.category, l.sub_type, l.type, l.waterfront, l.photo
+			`SELECT l.id, l.slug, l.status, l.address, l.city, l.state, l.price, l.beds, l.baths, l.baths_full, l.baths_half, l.office, l.sqft, l.lot_acres, l.category, l.sub_type, l.type, l.waterfront, l.photo
 			 FROM listings l LEFT JOIN ec_listings e ON e.id = l.id
 			 WHERE l.photo IS NOT NULL AND ${FEATURED_ROW}
 			 ORDER BY ${FEATURED_FIRST}, l.price DESC LIMIT 9`,

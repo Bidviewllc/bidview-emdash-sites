@@ -34,7 +34,11 @@ try {
 			l.sqft && `${Number(l.sqft).toLocaleString("en-US")} sq ft`,
 		].filter(Boolean).join(" · ");
 		const kind = (l.subType || l.type || "Property").replace(/([a-z])([A-Z])/g, "$1 $2");
-		const desc = (`${l.address}, ${cityState}. ${priceStr}${meta ? " · " + meta : ""}. ${kind} presented by Grant C. Meyer — Lake Tahoe luxury real estate in Incline Village & Crystal Bay.`).replace(/\s+/g, " ").trim().slice(0, 300);
+		// Only Grant's own listings say "presented by Grant" in search results; anyone
+		// else's names its listing brokerage (compliance thread, 2026-11-06).
+		const grantsOwn = /grant/i.test(String(l.agent || "")) && /meyer/i.test(String(l.agent || ""));
+		const byLine = grantsOwn ? "presented by Grant C. Meyer" : (l.office ? `listed by ${l.office}` : "");
+		const desc = (`${l.address}, ${cityState}. ${priceStr}${meta ? " · " + meta : ""}. ${kind}${byLine ? " " + byLine : ""}. Lake Tahoe luxury real estate in Incline Village & Crystal Bay.`).replace(/\s+/g, " ").trim().slice(0, 300);
 		const photos: string[] = Array.isArray(result?.photos) ? result!.photos : [];
 		const ogImage = photos[0] || `${origin}/assets/hero-tahoe.jpg`;
 		const ld: any = {

@@ -95,6 +95,27 @@
     .aside-fl--dark .aside-fl__row__l { color: rgba(255, 255, 255, 0.62); }
     .aside-fl--dark .aside-fl__row__v { color: var(--white); }
 
+    /* --- Listing brokerage + MLS facts (compliance, 2026-11-06). IDX rules want
+           the listing brokerage in a readable size and colour, so these sit at
+           near-full white on the navy panel rather than the faint label grey. --- */
+    .listing-info {
+      margin-top: 4px; padding-top: 18px;
+      border-top: 1px solid rgba(255, 255, 255, 0.14);
+      display: flex; flex-direction: column; gap: 8px;
+      font-family: var(--font-sans); font-size: 13px; line-height: 1.5;
+      color: rgba(255, 255, 255, 0.9);
+    }
+    .listing-info__l {
+      display: block; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.7);
+    }
+    /* Under the address on the hero photo; the hero veil keeps white text legible. */
+    .listing-hero__credit {
+      order: 3; margin-top: 10px;
+      font-family: var(--font-sans); font-size: 14px; line-height: 1.4;
+      color: var(--white); text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55);
+    }
+
     /* --- Floor plan jump link, under Quick Statistics. Outline rather than
            orange so "Schedule a private tour" stays the one primary action. --- */
     a.aside-fl__fp {
@@ -367,6 +388,9 @@
       .print-sheet__price {
         font-family: 'Noto Serif', Georgia, serif; font-size: 16pt;
         font-weight: 400; letter-spacing: 0; color: #15243b; margin-left: auto;
+      }
+      .print-sheet__credit {
+        font-family: 'Manrope', sans-serif; font-size: 9pt; color: #44474d; margin-top: 2mm;
       }
 
       /* --- Condensed stats + Grant's note, side by side --- */
@@ -646,6 +670,12 @@ function fmtDate(d) {
   if (!d) return "—";
   const t = Date.parse(String(d).length <= 10 ? `${d}T00:00:00Z` : d);
   return Number.isNaN(t) ? "—" : new Date(t).toLocaleDateString("en-US", { month: "long", year: "numeric", timeZone: "UTC" });
+}
+// "2026-11-06T14:02:11Z" -> "Nov 6, 2026", for the "last updated" line.
+function fmtDay(d) {
+  if (!d) return null;
+  const t = Date.parse(String(d).length <= 10 ? `${d}T00:00:00Z` : d);
+  return Number.isNaN(t) ? null : new Date(t).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 }
 function escapeHtml(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
 // "Total Days on Market" (cumulative across relists) only earns a row when the
@@ -1162,7 +1192,7 @@ function featShift(dir) {
 window.addEventListener("resize", () => featShift(0));
 
 /* ---------------- Render ---------------- */
-function render(listing, photoUrls, marketIntel, area, contact, grantIntro) {
+function render(listing, photoUrls, marketIntel, area, contact, grantIntro, syncedAt) {
   // Only ever a genuine number: the API's realPhone() returns null for the
   // placeholders still sitting in the CMS, and the footer line is omitted
   // rather than printing something a buyer might dial.
@@ -1213,6 +1243,21 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro) {
   const statusBadge = statusText === "On market" ? "" :
     `<div class="listing-hero__status${sold ? " listing-hero__status--sold" : ""}">${escapeHtml(statusText)}</div>`;
   if (sold && sold.representedLabel) crumb = `${crumb} · ${sold.representedLabel}`;
+
+  // Listing brokerage, MLS number, source and last update (compliance thread,
+  // 2026-11-06). IDX rules: name the listing brokerage on every listing, readable,
+  // never Grant's name in place of a blank agent. "Last updated" is the last sync
+  // for a live listing; a sold one no longer syncs, so it is the MLS's own date.
+  const creditWho = [listing.agent, listing.office].filter(Boolean).join(", ");
+  const heroCredit = creditWho ? `<div class="listing-hero__credit">Listing courtesy of ${escapeHtml(creditWho)}</div>` : "";
+  const updatedOn = fmtDay(listing.archived ? listing.updated : (syncedAt || listing.updated));
+  const listingInfo = `
+    <div class="listing-info">
+      ${creditWho ? `<div class="listing-info__row"><span class="listing-info__l">Listing courtesy of</span> ${escapeHtml(creditWho)}</div>` : ""}
+      ${listing.mlsNumber ? `<div class="listing-info__row"><span class="listing-info__l">MLS #</span> ${escapeHtml(listing.mlsNumber)}</div>` : ""}
+      <div class="listing-info__row"><span class="listing-info__l">Source</span> Incline Village Realtors&reg; MLS</div>
+      ${updatedOn ? `<div class="listing-info__row"><span class="listing-info__l">Last updated</span> ${escapeHtml(updatedOn)}</div>` : ""}
+    </div>`;
 
   // Return the visitor to the search they came from, filters intact. The listings
   // page stashes its current URL (including the filter query string) on every
@@ -1340,13 +1385,15 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro) {
       ["Closed", fmtDate(sold.closeDate)],
       ["List Price", fmt(listing.price)],
       ["Annual Taxes", listing.taxes ? fmt(listing.taxes) : "—"],
-      ["Agent", listing.agent || "Grant C. Meyer"],
+      ["Listing Agent", listing.agent || "—"],
+      ["Listing Office", listing.office || "—"],
     ] : [
       ["List Price", fmt(listing.price)],
       ["Annual Taxes", listing.taxes ? fmt(listing.taxes) : "—"],
       ["Days on Market", listing.daysOnMarket ?? "—"],
       ...totalDomRows(listing),
-      ["Agent", listing.agent || "Grant C. Meyer"],
+      ["Listing Agent", listing.agent || "—"],
+      ["Listing Office", listing.office || "—"],
     ]],
   ];
   featCount = featureCards.length;
@@ -1518,6 +1565,7 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro) {
         ${listing.sqft ? `<span>${fmtSqft(listing.sqft)}</span>` : ""}
         <span class="print-sheet__price">${fmt(listing.price)}</span>
       </div>
+      ${creditWho ? `<div class="print-sheet__credit">Listing courtesy of ${escapeHtml(creditWho)}${listing.mlsNumber ? ` · MLS # ${escapeHtml(listing.mlsNumber)}` : ""}</div>` : ""}
     </div>
 
     <section class="listing-hero listing-hero--fl">
@@ -1539,6 +1587,7 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro) {
           ${statusBadge}
           <h1 class="listing-hero__title">${escapeHtml(listing.address)}</h1>
           <div class="listing-hero__crumb">${escapeHtml(crumb)}</div>
+          ${heroCredit}
         </div>
         <div class="listing-hero__stats">
           <div class="listing-hero__stat">
@@ -1591,6 +1640,7 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro) {
           ${tourSrc ? `<a class="aside-fl__fp" href="#tour">TAKE THE 3D TOUR</a>` : ""}
           ${fpViews.length ? `<a class="aside-fl__fp" href="#floor-plans">VIEW THE FLOOR PLAN${fpViews.length > 1 ? "S" : ""}</a>` : ""}
           <a class="aside-fl__cta" href="#listing-contact">SCHEDULE A PRIVATE TOUR</a>
+          ${listingInfo}
         </aside>
       </div>
     </section>
@@ -1789,12 +1839,13 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro) {
         </div>
       </div>
       <div class="footer__bottom">
-        <span style="font-size:12px;line-height:1.6;color:rgba(255,255,255,0.45);max-width:640px">
+        <span class="footer__disclaimer">
           Listing data via Trestle (Cotality), courtesy of Incline Village Realtors&reg;. Information is deemed reliable but not guaranteed and should be independently verified.
         </span>
         <span class="footer__disclaimer">
           Grant C. Meyer, REALTOR&reg;, NV License S.171136 &middot; Coldwell Banker Select Real Estate, 931 Tahoe Boulevard, Incline Village, NV 89451. Each office is independently owned and operated.
         </span>
+        <span class="footer__eho"><img src="/assets/equal-housing.svg" alt="" width="30" height="30" /><span><strong>Equal Housing Opportunity.</strong> We are pledged to the letter and spirit of U.S. policy for the achievement of equal housing opportunity throughout the Nation.</span></span>
         <span>&copy; 2026 Grant C. Meyer Homes.</span>
       </div>
     </footer>
@@ -1888,7 +1939,7 @@ async function load() {
     }
     if (data.error) throw new Error(data.error);
     canEdit = !!data.canEdit;
-    render(data.listing, data.photos || [], data.marketIntel || null, data.area || null, data.contact || null, data.grantIntro || null);
+    render(data.listing, data.photos || [], data.marketIntel || null, data.area || null, data.contact || null, data.grantIntro || null, data.syncedAt || null);
   } catch (e) {
     document.getElementById("app").innerHTML = `<div class="loading">Failed to load listing: ${escapeHtml(e.message)}</div>`;
   }
