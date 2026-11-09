@@ -1,18 +1,26 @@
 /**
- * Mirror the Trestle-synced `listings` table into an emdash `listings` collection
- * (ec_listings) so all properties are BROWSABLE in the admin backend.
+ * Register the emdash `listings` collection (ec_listings) and fill it with ONE
+ * ROW PER HOME from `listing_archive`, keyed by parcel number (`p-<parcel>`).
  *
- * Design: listings are synced from the MLS and are the source of truth — they are
- * NOT hand-editable in the CMS (the next sync would overwrite). This collection is
- * a read-only mirror for visibility. The one owner-editable overlay is the
- * per-listing "Note From Grant" (listing_notes table + inline detail-page editor),
- * surfaced here as `owner_note` for reference.
+ * 2026-11-09 (PROPERTY-PAGES-PLAN.md, Liz 2026-11-06). Before this the collection
+ * mirrored the live `listings` table one row per MLS listing number, and a home
+ * got a new admin row (and a new page) every time it was relisted or resold. Now
+ * a home has one row for life: its MLS columns and `home_status` follow the
+ * current listing, Grant's columns are his and survive every sync, and
+ * `show_grant` decides whether his content shows on the page (on by default
+ * only when he is the listing agent; it resets when a new listing starts).
  *
- * Idempotent. Run standalone to (re)build the mirror, or import { mirrorListings }
- * from a sync job to keep it fresh after each Trestle pull.
+ * The Trestle sync (trestle-test/cf-worker/sync/sync.mjs, mirrorEmdashHomes) keeps
+ * the rows fresh after every pull with its own copy of mirrorHomes(). This
+ * script is for (a) registering or changing the collection's fields and (b) a
+ * manual rebuild. It refuses to run while rows keyed by listing number remain:
+ * run seed/migrate-homes.mjs first (one time, with backups).
  *
- * Run:  CF_API_TOKEN=<cameron> node seed/mirror-listings.mjs
+ * Run:  node --env-file=.env seed/mirror-listings.mjs            (reads GCM_D1_TOKEN)
+ *       node --env-file=.env seed/mirror-listings.mjs --register-only
  */
+import { registerListingsCollection, mirrorHomes } from "./lib/homes.mjs";
+
 const CF_ACCOUNT = process.env.CF_ACCOUNT_ID || "239e9d015c7a3a39cdc2e9400312f553";
 const CF_DB      = process.env.CF_D1_DATABASE_ID || "614044b7-3e0c-41ee-ac78-7805cbab6d99";
 const D1_URL = `https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT}/d1/database/${CF_DB}/query`;
@@ -32,182 +40,15 @@ async function d1(sql) {
 	if (!r.ok || !j.success) throw new Error(`D1 error ${r.status}: ${JSON.stringify(j.errors || j).slice(0, 300)}`);
 	return j.result;
 }
-const S = (v) => v === null || v === undefined ? "NULL" : (typeof v === "number" ? String(v) : "'" + String(v).replace(/'/g, "''") + "'");
-
-// Plain MLS remarks -> Portable Text JSON (deterministic keys so description and the
-// _mls_description snapshot are byte-identical for the "track until edited" compare).
-// Mirrors src/lib/portabletext.ts plainToPortableText.
-function plainToPortableText(plain) {
-	const text = (plain ?? "").toString();
-	const paras = text.split(/\n{2,}/).map((s) => s.trim()).filter(Boolean);
-	const list = paras.length ? paras : (text.trim() ? [text.trim()] : []);
-	return JSON.stringify(list.map((p, i) => ({
-		_type: "block", _key: "b" + i, style: "normal", markDefs: [],
-		children: [{ _type: "span", _key: "s" + i, text: p, marks: [] }],
-	})));
-}
-// emdash field type per slug. description is rich text (WYSIWYG); owner_note and
-// local_perspective are paragraphs (textarea); *_image fields store JSON; featured
-// and hidden are checkboxes (text column, like ec_neighborhoods.featured).
-const FIELD_TYPE = (slug) => {
-	if (slug === "description") return ["portableText", "json"];
-	if (slug === "featured" || slug === "hidden") return ["boolean", "text"];
-	if (slug.endsWith("_image")) return ["image", "json"];
-	if (slug === "owner_note" || slug === "local_perspective") return ["text", "text"];
-	// One URL per line / pasted embed code, so both want a multi-line box.
-	if (slug === "note_videos" || slug === "floor_plan_embed") return ["text", "text"];
-	// A list the owner adds to one plan at a time: each item is a name + an upload.
-	if (slug === "floor_plan_images") return ["repeater", "json"];
-	return ["string", "text"];
-};
-// Extra field config, stored in _emdash_fields.validation. A repeater's items are
-// built from its subFields; emdash's admin renders an upload box for "image".
-const FIELD_VALIDATION = {
-	floor_plan_images: {
-		subFields: [
-			{ slug: "label", type: "string", label: "Name (e.g. Main level, Upper level)" },
-			{ slug: "image", type: "image", label: "Floor plan image", required: true },
-		],
-		maxItems: 12,
-	},
-};
-
-// MLS_FIELDS are refreshed from the feed on every sync (display/reference — editing
-// them in admin is overwritten). OWNER_FIELDS are owner-authored and PRESERVED across
-// every sync — they are the source of truth the public site reads. title=address +
-// slug are base emdash columns.
-const MLS_FIELDS = [
-	["city", "City"], ["state", "State"], ["zip", "ZIP"],
-	["price", "Price"], ["beds", "Beds"], ["baths", "Baths"], ["sqft", "Sq Ft"],
-	["lot_acres", "Lot (acres)"], ["year_built", "Year Built"],
-	["property_type", "Property Type"], ["mls_status", "MLS Status"], ["view", "View"],
-	["photo", "Primary Photo"], ["dom", "Days on Market"],
-	// Added 2026-08-19 (Liz's field request — MLS-authoritative, refreshed each sync):
-	["flooring", "Flooring"], ["fireplaces", "Fireplaces"], ["fireplace_yn", "Fireplace (Y/N)"],
-	["fireplace_features", "Fireplace Features"], ["roof", "Roof"], ["utilities", "Utilities"],
-	["pool_features", "Pool Features"], ["listing_date", "Date Listed"], ["hoa_frequency", "HOA Frequency"],
-	["tour_url_mls", "3D Tour link from the MLS, for reference only (updated by every sync). A Matterport link here already plays on the page; if it is another 3D tour that suits the section, copy it into 3D Tour URL above"], ["mls_number", "MLS #"], ["stories", "Stories"],
-	["arch_style", "Architectural Style"], ["construction", "Construction"], ["lot_features", "Lot Features"],
-	["condition", "Condition"], ["lot_sqft", "Lot (sq ft)"],
-];
-const OWNER_FIELDS = [
-	// Added 2026-09-25: ticked listings lead the home page carousel + community
-	// page "Featured" row; empty slots fill with the priciest active listings.
-	["featured", "Featured listing (home page + community page)"],
-	["hidden", "Hide from search (off every list, search and the sitemap; the page still opens by direct link)"],
-	["headline", "Property Headline (leave empty to use the street address)"],
-	["description", "Description (editable — overrides the MLS remarks)"],
-	["owner_note", "Note From Grant — paragraph (shown publicly)"],
-	["note_image", "Note From Grant — image"],
-	["tour_url", "3D Tour URL, played right on the listing page (when empty, a Matterport link from the MLS is used; with neither, the section is hidden)"],
-	["note_videos", "Note From Grant — video links, one per line (YouTube, Vimeo or an .mp4 link)"],
-	["floor_plan_embed", "Interactive Floor Plan — paste the link or the embed code (section is hidden when empty)"],
-	["floor_plan_images", "Floor Plan Images — add one per level (shown with, or instead of, the interactive plan)"],
-];
-const FIELDS = [...MLS_FIELDS, ...OWNER_FIELDS];
-// Order in the admin form: as FIELDS, except the MLS tour link sits directly under
-// the owner's 3D Tour URL, so the two can be compared and copied across.
-const ADMIN_ORDER = FIELDS.filter(([s]) => s !== "tour_url_mls")
-	.flatMap((f) => f[0] === "tour_url" ? [f, FIELDS.find(([s]) => s === "tour_url_mls")] : [f]);
-// emdash 1.x stores content datetimes as UTC ISO with milliseconds; datetime('now')
-// ("YYYY-MM-DD HH:MM:SS") sorts and compares wrong against it.
-const NOW_SQL = "(strftime('%Y-%m-%dT%H:%M:%fZ','now'))";
-const BASE_COLS = [
-	["id", "text primary key"], ["slug", "text"], ["status", "text default 'draft'"],
-	["author_id", "text"], ["primary_byline_id", "text"],
-	["created_at", `text default ${NOW_SQL}`], ["updated_at", `text default ${NOW_SQL}`],
-	["published_at", "text"], ["scheduled_at", "text"], ["deleted_at", "text"],
-	["version", "integer default 1"], ["live_revision_id", "text"], ["draft_revision_id", "text"],
-	["locale", "text default 'en' not null"], ["translation_group", "text"],
-	["title", "text default '' not null"],
-];
 
 export async function mirrorListings(log = console.log) {
-	// 1) register the collection + fields (backend-only: no url_pattern, the site's
-	//    own /homes/:slug route renders the public detail page).
-	//    Upsert, not INSERT OR REPLACE: REPLACE deletes the row, resetting the columns
-	//    set in the admin (emdash 1.x: hidden, routable, sort_order, nav_group, ...).
-	const cid = "col_listings";
-	await d1(`INSERT INTO _emdash_collections (id,slug,label,label_singular,supports,source,has_seo,url_pattern,created_at,updated_at) VALUES ('${cid}','listings','Listings','Listing','["revisions"]','manual',0,NULL,${NOW_SQL},${NOW_SQL}) ON CONFLICT(id) DO UPDATE SET slug=excluded.slug, label=excluded.label, label_singular=excluded.label_singular, supports=excluded.supports, source=excluded.source, has_seo=excluded.has_seo, url_pattern=excluded.url_pattern, updated_at=excluded.updated_at`);
-	await d1(`DELETE FROM _emdash_fields WHERE collection_id='${cid}'`);
-	// title first (base column) — required so emdash's editor/save recognizes it.
-	await d1(`INSERT OR REPLACE INTO _emdash_fields (id,collection_id,slug,label,type,column_type,required,sort_order,searchable) VALUES ('fld_listings_title','${cid}','title','Address','string','TEXT',1,0,1)`);
-	let order = 1;
-	for (const [slug, label] of ADMIN_ORDER) {
-		const [ftype, fcol] = FIELD_TYPE(slug);
-		const validation = FIELD_VALIDATION[slug] ? S(JSON.stringify(FIELD_VALIDATION[slug])) : "NULL";
-		await d1(`INSERT OR REPLACE INTO _emdash_fields (id,collection_id,slug,label,type,column_type,required,sort_order,searchable,validation) VALUES ('fld_listings_${slug}','${cid}','${slug}',${S(label)},'${ftype}','${fcol}',0,${order++},${slug === "city" || slug === "property_type" ? 1 : 0},${validation})`);
-	}
-	const cols = [...BASE_COLS.map(([n, t]) => `"${n}" ${t}`), ...FIELDS.map(([s]) => `"${s}" text`)];
-	await d1(`CREATE TABLE IF NOT EXISTS ec_listings (${cols.join(", ")}, constraint "ec_listings_slug_locale_unique" unique ("slug","locale"))`);
-	for (const [s] of FIELDS) { try { await d1(`ALTER TABLE ec_listings ADD COLUMN "${s}" text`); } catch { /* exists */ } }
-	// _mls_description = a hidden snapshot of the live MLS remarks (NOT a registered
-	// editable field). It lets the sync "track until edited": while description still
-	// equals the snapshot, it follows the feed; once edited, description is preserved.
-	try { await d1(`ALTER TABLE ec_listings ADD COLUMN "_mls_description" text`); } catch { /* exists */ }
-
-	// 2) read the synced listings (MLS source)
-	const lr = await d1("SELECT * FROM listings");
-	const rows = lr[0]?.results ?? [];
-
-	// 2b) Drop rows no longer in the feed FIRST — this must happen BEFORE the
-	// upsert. A re-listed property gets a NEW ListingKey but the SAME address,
-	// hence the same slug; if the stale row still holds that slug the insert trips
-	// unique(slug,locale) and the whole mirror aborts. (Hit for real 2026-09-10.)
-	const liveIds = rows.map((r) => `'${String(r.id).replace(/'/g, "''")}'`);
-	if (liveIds.length) await d1(`DELETE FROM ec_listings WHERE id NOT IN (${liveIds.join(",")})`);
-
-	// 3) UPSERT that PRESERVES owner edits. New listings insert with description +
-	//    _mls_description = the MLS remarks (so the admin box is pre-filled). Existing
-	//    listings: MLS columns + _mls_description always refresh; `description` follows
-	//    the feed ONLY while it still equals the snapshot (unedited) — once the owner
-	//    edits it, it's preserved. owner_note/status/version/revisions never touched.
-	const insertCols = ["id", "slug", "status", "locale", "version", "title", "published_at", "updated_at", ...MLS_FIELDS.map(([s]) => `"${s}"`), "description", "_mls_description"];
-	const trackedCols = ["slug", "title", "updated_at", ...MLS_FIELDS.map(([s]) => s), "_mls_description"];
-	const setClause = [
-		...trackedCols.map((c) => `"${c}"=excluded."${c}"`),
-		`"description"=CASE WHEN ec_listings."description" IS ec_listings."_mls_description" THEN excluded."description" ELSE ec_listings."description" END`,
-	].join(",");
-	// 2c) Also before the upsert: park any slug that a DIFFERENT live listing is about
-	// to take. Two live listings at one address get "<addr>" and "<addr>-<ListingKey>",
-	// and which one gets the plain slug can flip between syncs (feed order). The row
-	// still holding it then trips unique(slug,locale) on the other's insert — a slug
-	// swap between two live ids, which 2b can't catch (893 Donna Drive, 2026-10-04).
-	// The parked "<slug>~<id>" is overwritten by the upsert below.
-	await d1(`UPDATE ec_listings SET slug = slug || '~' || id WHERE EXISTS (SELECT 1 FROM listings l WHERE COALESCE(l.slug, 'listing-' || l.id) = ec_listings.slug AND l.id <> ec_listings.id)`);
-	const head = `INSERT INTO ec_listings (${insertCols.join(",")}) VALUES `;
-	const tail = ` ON CONFLICT(id) DO UPDATE SET ${setClause}`;
-	let batch = [], sqlLen = head.length + tail.length;
-	const flush = async () => { if (batch.length) { await d1(head + batch.join(",") + tail); batch = []; sqlLen = head.length + tail.length; } };
-	const now = S(new Date().toISOString());
-	for (const r of rows) {
-		const propType = (r.sub_type || r.type || "").replace(/([a-z])([A-Z])/g, "$1 $2");
-		const vals = [
-			S(r.id), S(r.slug || `listing-${r.id}`), "'published'", "'en'", "1",
-			S(r.address || "(no address)"), now, now,
-			S(r.city), S(r.state), S(r.zip),
-			S(r.price != null ? "$" + Number(r.price).toLocaleString("en-US") : null),
-			S(r.beds), S(r.baths), S(r.sqft != null ? Number(r.sqft).toLocaleString("en-US") : null),
-			S(r.lot_acres), S(r.year_built), S(propType || null), S(r.mls_status ?? r.status), S(r.view),
-			S(r.photo), S(r.dom),
-			S(r.flooring), S(r.fireplaces), S(r.fireplace_yn), S(r.fireplace_features), S(r.roof), S(r.utilities),
-			S(r.pool_features), S(r.listing_date), S(r.hoa_frequency), S(r.tour_url_mls), S(r.mls_number), S(r.stories),
-			S(r.arch_style), S(r.construction), S(r.lot_features), S(r.condition), S(r.lot_sqft),
-			S(plainToPortableText(r.description)), S(plainToPortableText(r.description)),
-		];
-		const tuple = `(${vals.join(",")})`;
-		if (sqlLen + tuple.length + 1 > 90000 || batch.length >= 40) await flush();
-		batch.push(tuple); sqlLen += tuple.length + 1;
-	}
-	await flush();
-
-	// (departed listings were already removed in step 2b, before the upsert)
-	log(`✓ mirrored ${rows.length} listings into ec_listings (owner description/note preserved)`);
-	return rows.length;
+	await registerListingsCollection(d1, log);
+	if (process.argv.includes("--register-only")) return 0;
+	return mirrorHomes(d1, log);
 }
 
 // Standalone run
 if (import.meta.url === `file://${process.argv[1]}` || process.argv[1]?.endsWith("mirror-listings.mjs")) {
-	if (!TOKEN) { console.error("CF_API_TOKEN required"); process.exit(1); }
+	if (!TOKEN) { console.error("GCM_D1_TOKEN required"); process.exit(1); }
 	mirrorListings().then(() => console.log("done")).catch((e) => { console.error("MIRROR FAILED:", e.message); process.exit(1); });
 }
