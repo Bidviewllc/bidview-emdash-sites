@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { bySlug } from "../../../lib/listings";
+import { bySlug, lastSyncedAt } from "../../../lib/listings";
 import { neighborhoodForPoint } from "../../../lib/neighborhoods";
 import { imageUrl } from "../../../lib/media";
 import { env } from "cloudflare:workers";
@@ -84,8 +84,8 @@ export const GET: APIRoute = async ({ params, locals }) => {
 			contact = { phone: realPhone((cta as any)?.entry?.data?.phone) };
 		} catch { contact = { phone: null }; }
 
-		const grantIntro = await getGrantIntro();
-		return new Response(JSON.stringify({ ...result, listing, marketIntel, area: areaInfo, canEdit, contact, grantIntro }), { headers: { "Content-Type": "application/json", "Cache-Control": cache } });
+		const [grantIntro, syncedAt] = await Promise.all([getGrantIntro(), lastSyncedAt()]);
+		return new Response(JSON.stringify({ ...result, listing, marketIntel, area: areaInfo, canEdit, contact, grantIntro, syncedAt }), { headers: { "Content-Type": "application/json", "Cache-Control": cache } });
 	} catch (e: any) {
 		return new Response(JSON.stringify({ error: e.message }), { status: 500, headers: { "Content-Type": "application/json" } });
 	}

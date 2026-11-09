@@ -10,7 +10,7 @@ import GcmLayout from "../../layouts/GcmLayout.astro";
 import { getEmDashEntry } from "emdash";
 import { env } from "cloudflare:workers";
 import { bySlug, listingsInNeighborhood } from "../../lib/neighborhoods";
-import { NOT_HIDDEN } from "../../lib/listings";
+import { NOT_HIDDEN, bathsOf, courtesyOf } from "../../lib/listings";
 
 const { slug } = Astro.params as { slug: string };
 const area = bySlug(slug);
@@ -42,14 +42,14 @@ try {
 	const DB = (env as any)?.DB;
 	if (DB) {
 		const { results } = await DB.prepare(
-			`SELECT l.id, l.slug, l.address, l.price, l.beds, l.baths, l.sqft, l.category, l.type, l.photo, l.lat, l.lng
+			`SELECT l.id, l.slug, l.address, l.price, l.beds, l.baths, l.baths_full, l.baths_half, l.office, l.sqft, l.category, l.type, l.photo, l.lat, l.lng
 			 FROM listings l LEFT JOIN ec_listings e ON e.id = l.id WHERE l.status='Active' AND ${NOT_HIDDEN}`,
 		).all();
 		homes = listingsInNeighborhood(slug, results ?? []).sort((a: any, b: any) => (b.price ?? -1) - (a.price ?? -1));
 	}
 } catch { homes = []; }
 const fmt = (n: number) => (n ? "$" + Number(n).toLocaleString("en-US") : "—");
-const meta = (l: any) => [l.beds && `${l.beds} BD`, l.baths && `${l.baths} BA`, l.sqft && `${Number(l.sqft).toLocaleString()} SQ.FT.`].filter(Boolean).join(" | ");
+const meta = (l: any) => [l.beds && `${l.beds} BD`, bathsOf(l) && `${bathsOf(l)} BA`, l.sqft && `${Number(l.sqft).toLocaleString()} SQ.FT.`].filter(Boolean).join(" | ");
 ---
 
 <GcmLayout
@@ -122,6 +122,7 @@ const meta = (l: any) => [l.beds && `${l.beds} BD`, l.baths && `${l.baths} BA`, 
 										<h3 class="cg-fcard__addr">{l.address}</h3>
 										<div class="cg-fcard__meta">{meta(l)}</div>
 										<div class="cg-fcard__price">{fmt(l.price)}</div>
+										{courtesyOf(l) && <div class="cg-fcard__courtesy">{courtesyOf(l)}</div>}
 									</div>
 								</a>
 							))}

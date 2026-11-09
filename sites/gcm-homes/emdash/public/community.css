@@ -152,6 +152,7 @@
 .cg-fcard__addr { font-family: var(--font-serif); font-size: 20px; color: var(--navy); font-weight: 500; margin: 8px 0 6px; }
 .cg-fcard__meta { font-size: 12px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
 .cg-fcard__price { font-family: var(--font-serif); font-size: 24px; color: var(--navy); }
+.cg-fcard__courtesy { font-size: 11px; line-height: 1.4; color: var(--body); margin-top: 10px; }
 
 /* Neighborhood sub-page */
 .nb-hero { position: relative; padding: 150px 0 70px; background: var(--navy); overflow: hidden; }

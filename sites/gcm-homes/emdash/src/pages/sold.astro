@@ -13,7 +13,7 @@
 // live keeps it off this page too.
 import GcmLayout from "../layouts/GcmLayout.astro";
 import ContactCta from "../components/ContactCta.astro";
-import { soldByGrant, soldNotable, SOLD_OTHERS_MIN_PRICE, SOLD_OTHERS_YEARS } from "../lib/listings";
+import { soldByGrant, soldNotable, SOLD_OTHERS_MIN_PRICE, SOLD_OTHERS_YEARS, courtesyOf } from "../lib/listings";
 
 const [grant, notable] = await Promise.all([soldByGrant(), soldNotable()]);
 
@@ -87,6 +87,7 @@ const floor = "$" + (SOLD_OTHERS_MIN_PRICE / 1_000_000) + "M";
 										{metaBits(l).map(([n, unit]) => <span><b>{n}</b> {unit}</span>)}
 									</div>
 								)}
+								{courtesyOf(l) && <div class="card__courtesy">{courtesyOf(l)}</div>}
 								{l.representedLabel && <div class="card__side">{l.representedLabel}</div>}
 							</div>
 						</a>
@@ -124,6 +125,7 @@ const floor = "$" + (SOLD_OTHERS_MIN_PRICE / 1_000_000) + "M";
 										{metaBits(l).map(([n, unit]) => <span><b>{n}</b> {unit}</span>)}
 									</div>
 								)}
+								{courtesyOf(l) && <div class="card__courtesy">{courtesyOf(l)}</div>}
 							</div>
 						</a>
 					))}

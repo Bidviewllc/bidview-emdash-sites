@@ -7,7 +7,7 @@ import GcmLayout from "../layouts/GcmLayout.astro";
 import { getEmDashEntry, getTermsForEntries } from "emdash";
 import { env } from "cloudflare:workers";
 import { firstImageUrl } from "../lib/media";
-import { FEATURED_ROW, FEATURED_FIRST, statusLabel } from "../lib/listings";
+import { FEATURED_ROW, FEATURED_FIRST, statusLabel, bathsOf, courtesyOf } from "../lib/listings";
 // "The Proof" is the shared review carousel over every client review, featured
 // ones first (src/lib/reviews.ts). The About page still reads
 // lib/testimonials.ts, which stays empty for now.
@@ -45,7 +45,7 @@ try {
 	const DB = (env as any)?.DB;
 	if (DB) {
 		const { results } = await DB.prepare(
-			`SELECT l.id, l.slug, l.status, l.address, l.city, l.state, l.price, l.beds, l.baths, l.sqft, l.lot_acres, l.category, l.sub_type, l.type, l.waterfront, l.photos_count, l.photo, e.featured AS featured
+			`SELECT l.id, l.slug, l.status, l.address, l.city, l.state, l.price, l.beds, l.baths, l.baths_full, l.baths_half, l.office, l.sqft, l.lot_acres, l.category, l.sub_type, l.type, l.waterfront, l.photos_count, l.photo, e.featured AS featured
 			 FROM listings l LEFT JOIN ec_listings e ON e.id = l.id
 			 WHERE l.photo IS NOT NULL AND ${FEATURED_ROW}
 			 ORDER BY ${FEATURED_FIRST}, l.price DESC LIMIT ${MAX_CARDS}`
@@ -165,7 +165,7 @@ const money = (n: number) => (n ? "$" + Number(n).toLocaleString("en-US") : "—
 const metaBits = (l: any) => {
 	const bits: Array<[string, string]> = [];
 	if (l.beds) bits.push([String(l.beds), "BD"]);
-	if (l.baths) bits.push([String(l.baths), "BA"]);
+	if (bathsOf(l)) bits.push([String(bathsOf(l)), "BA"]);
 	if (l.sqft) bits.push([Number(l.sqft).toLocaleString(), "SQFT"]);
 	if (!bits.length && l.lot_acres) bits.push([String(l.lot_acres), "ACRES"]);
 	return bits;
@@ -322,6 +322,7 @@ const tagOf = (l: any) =>
 									{metaBits(l).map(([n, unit]) => <span><b>{n}</b> {unit}</span>)}
 								</div>
 							)}
+							{courtesyOf(l) && <div class="card__courtesy">{courtesyOf(l)}</div>}
 						</div>
 					</a>
 				))}

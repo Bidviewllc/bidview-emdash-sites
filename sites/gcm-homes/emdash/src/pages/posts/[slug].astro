@@ -19,7 +19,7 @@ import PostCardC from "../../components/PostCard.astro";
 import PostBlock from "../../components/PostBlock.astro";
 import { resolveStarterSiteIdentity } from "../../utils/site-identity";
 import { imageUrl } from "../../lib/media";
-import { statusLabel } from "../../lib/listings";
+import { statusLabel, bathsOf, courtesyOf } from "../../lib/listings";
 import { extractH2s, formatDate, readMinutes, listPosts, featuredListingPool } from "../../lib/posts";
 
 const slug = decodeSlug(Astro.params.slug);
@@ -60,7 +60,7 @@ const money = (n: number) => (n ? "$" + Number(n).toLocaleString("en-US") : "Pri
 const metaBits = (l: any) => {
 	const bits: Array<[string, string]> = [];
 	if (l.beds) bits.push([String(l.beds), "BD"]);
-	if (l.baths) bits.push([String(l.baths), "BA"]);
+	if (bathsOf(l)) bits.push([String(bathsOf(l)), "BA"]);
 	if (l.sqft) bits.push([Number(l.sqft).toLocaleString(), "SQFT"]);
 	if (!bits.length && l.lot_acres) bits.push([String(l.lot_acres), "ACRES"]);
 	return bits;
@@ -195,6 +195,7 @@ const tagOf = (l: any) =>
 												{metaBits(l).map(([n, unit]) => <span><b>{n}</b> {unit}</span>)}
 											</div>
 										)}
+										{courtesyOf(l) && <div class="card__courtesy">{courtesyOf(l)}</div>}
 									</div>
 								</a>
 							))}
