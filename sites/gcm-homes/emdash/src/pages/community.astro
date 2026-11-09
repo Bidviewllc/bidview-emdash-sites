@@ -15,7 +15,7 @@ import ContactCta from "../components/ContactCta.astro";
 import { getEmDashEntry } from "emdash";
 import { env } from "cloudflare:workers";
 import { NEIGHBORHOODS } from "../lib/neighborhoods";
-import { FEATURED_ROW, FEATURED_FIRST, statusLabel, bathsOf, courtesyOf } from "../lib/listings";
+import { FEATURED_ROW, FEATURED_FIRST, HOME_JOIN, HOME_SLUG_COL, statusLabel, bathsOf, courtesyOf } from "../lib/listings";
 
 const DEF_FACTS = [
 	{ num: "6,225–7,700", unit: "ft", label: "Elevation range" },
@@ -87,8 +87,8 @@ try {
 	const DB = (env as any)?.DB;
 	if (DB) {
 		const { results } = await DB.prepare(
-			`SELECT l.id, l.slug, l.status, l.address, l.price, l.beds, l.baths, l.baths_full, l.baths_half, l.office, l.sqft, l.category, l.type, l.photo
-			 FROM listings l LEFT JOIN ec_listings e ON e.id = l.id
+			`SELECT l.id, l.slug, l.status, l.address, l.price, l.beds, l.baths, l.baths_full, l.baths_half, l.office, l.sqft, l.category, l.type, l.photo, ${HOME_SLUG_COL}
+			 FROM listings l ${HOME_JOIN}
 			 WHERE l.photo IS NOT NULL AND ${FEATURED_ROW}
 			 ORDER BY ${FEATURED_FIRST}, l.price DESC LIMIT 3`,
 		).all();
@@ -261,7 +261,7 @@ const meta = (l: any) => [l.beds && `${l.beds} BD`, bathsOf(l) && `${bathsOf(l)}
 				</div>
 				<div class="cg-featured">
 					{featured.map((l) => (
-						<a class="cg-fcard" href={`/homes/${l.slug}/`}>
+						<a class="cg-fcard" href={`/homes/${l.home_slug || l.slug}/`}>
 							<div class="cg-fcard__media" style={l.photo ? `background-image:url(${l.photo})` : ""}></div>
 							<div class="cg-fcard__body">
 								<div class="eyebrow eyebrow--muted">{l.category || l.type || "Residential"}{l.status && l.status !== "Active" ? ` · ${statusLabel(l.status)}` : ""}</div>

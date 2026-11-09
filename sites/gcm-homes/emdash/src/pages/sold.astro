@@ -1,21 +1,24 @@
 ---
 // /sold/ — Recently Sold.
 //
-// Data: `listing_archive`, the table the Trestle sync never deletes from
-// (src/lib/listings.ts: soldByGrant, soldNotable). Two sections, Liz's call
-// (2026-11-03): every closed sale Grant was on a side of, back to 2011, and then
-// other agents' closed sales at or above SOLD_OTHERS_MIN_PRICE in the last
-// SOLD_OTHERS_YEARS, so his own work stays distinct from the market context.
+// Data: `listing_archive`, the table the Trestle sync never deletes from, joined
+// to the home rows in `ec_listings` (src/lib/listings.ts: soldHomes). Two
+// sections, Liz's call (2026-11-03): every home Grant was on a side of a sale
+// of, back to 2011, and then other agents' closed sales at or above
+// SOLD_OTHERS_MIN_PRICE in the last SOLD_OTHERS_YEARS, so his own work stays
+// distinct from the market context.
 //
-// Each card carries one photo only (the listing's MLS lead photo), the sold
-// price and the month it closed. A sold listing's own page stays live at
-// /homes/<slug>/ with a Sold badge. "Hide from search" on a listing while it was
-// live keeps it off this page too.
+// ONE CARD PER HOME (Liz, 2026-11-06, decision 4): a home Grant sold more than
+// once is one card that says so ("2 sales with Grant"), showing the newest sale
+// he was on. Each card carries one photo only (the MLS lead photo), the sold
+// price and the month it closed, and links to the home's one page at
+// /homes/<slug>/ (its Sale History section lists every sale). "Hide from search"
+// on the home keeps it off this page too.
 import GcmLayout from "../layouts/GcmLayout.astro";
 import ContactCta from "../components/ContactCta.astro";
-import { soldByGrant, soldNotable, SOLD_OTHERS_MIN_PRICE, SOLD_OTHERS_YEARS, courtesyOf } from "../lib/listings";
+import { soldHomes, SOLD_OTHERS_MIN_PRICE, SOLD_OTHERS_YEARS, courtesyOf } from "../lib/listings";
 
-const [grant, notable] = await Promise.all([soldByGrant(), soldNotable()]);
+const { grant, notable } = await soldHomes();
 
 const seo = {
 	title: "Recently Sold — Grant C. Meyer Homes",
@@ -42,6 +45,9 @@ const metaBits = (l: any) => {
 const tagOf = (l: any) =>
 	l.category || String(l.subType || l.type || "Property").replace(/([a-z])([A-Z])/g, "$1 $2");
 const floor = "$" + (SOLD_OTHERS_MIN_PRICE / 1_000_000) + "M";
+// The badge: the home's status today. A sold home that is back on the market
+// says so, so a visitor is not surprised on its page.
+const badge = (l: any) => l.statusLabel && l.statusLabel !== "Sold" ? `Sold · now ${l.statusLabel.toLowerCase()}` : "Sold";
 ---
 
 <GcmLayout title={seo.title} description={seo.description}>
@@ -53,7 +59,7 @@ const floor = "$" + (SOLD_OTHERS_MIN_PRICE / 1_000_000) + "M";
 			<span class="eyebrow">Recently Sold</span>
 			<h1 class="h1 chero__h">The homes that <em>found their people.</em></h1>
 			<p class="section-lead chero__lead">
-				Every sale Grant has represented in Incline Village and Crystal Bay, with the price it closed at and when.
+				Every home Grant has represented in Incline Village and Crystal Bay, with the price it closed at and when.
 			</p>
 		</div>
 	</section>
@@ -74,13 +80,13 @@ const floor = "$" + (SOLD_OTHERS_MIN_PRICE / 1_000_000) + "M";
 								{l.photo ? <img class="card__img" src={l.photo} alt={l.address} loading="lazy" /> : <div class="card__ph">⌂</div>}
 								<div class="card__badges">
 									<div class="card__tag">{tagOf(l)}</div>
-									<div class="card__status card__status--sold">Sold</div>
+									<div class="card__status card__status--sold">{badge(l)}</div>
 								</div>
 							</div>
 							<div class="card__body">
 								<div class="card__price">{money(l.closePrice || l.price)}</div>
 								{monthYear(l.closeDate) && <div class="card__closed">Closed {monthYear(l.closeDate)}</div>}
-								<div class="card__addr">{l.address || "Address on request"}</div>
+								<div class="card__addr">{l.headline || l.address || "Address on request"}</div>
 								<div class="card__city">{[l.city, l.state].filter(Boolean).join(", ") || "Lake Tahoe"}</div>
 								{metaBits(l).length > 0 && (
 									<div class="card__meta">
@@ -88,7 +94,7 @@ const floor = "$" + (SOLD_OTHERS_MIN_PRICE / 1_000_000) + "M";
 									</div>
 								)}
 								{courtesyOf(l) && <div class="card__courtesy">{courtesyOf(l)}</div>}
-								{l.representedLabel && <div class="card__side">{l.representedLabel}</div>}
+								{l.representedLabel && <div class="card__side">{l.grantSales > 1 ? `${l.grantSales} sales with Grant` : l.representedLabel}</div>}
 							</div>
 						</a>
 					))}
@@ -112,12 +118,12 @@ const floor = "$" + (SOLD_OTHERS_MIN_PRICE / 1_000_000) + "M";
 								{l.photo ? <img class="card__img" src={l.photo} alt={l.address} loading="lazy" /> : <div class="card__ph">⌂</div>}
 								<div class="card__badges">
 									<div class="card__tag">{tagOf(l)}</div>
-									<div class="card__status card__status--sold">Sold</div>
+									<div class="card__status card__status--sold">{badge(l)}</div>
 								</div>
 							</div>
 							<div class="card__body">
 								<div class="card__price">{money(l.closePrice || l.price)}</div>
-								{monthYear(l.closeDate) && <div class="card__closed">Closed {monthYear(l.closeDate)}</div>}
+								{monthYear(l.closeDate) && <div class="card__closed">Closed {monthYear(l.closeDate)}{l.sales > 1 ? ` · ${l.sales} sales on record` : ""}</div>}
 								<div class="card__addr">{l.address || "Address on request"}</div>
 								<div class="card__city">{[l.city, l.state].filter(Boolean).join(", ") || "Lake Tahoe"}</div>
 								{metaBits(l).length > 0 && (

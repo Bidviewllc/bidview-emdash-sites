@@ -165,7 +165,7 @@ Street, a 3D tour link each): kept, switched off by decision 3.
 Order matters, because the old site code looks up Grant's fields by listing number and the old sync deletes any
 `ec_listings` row not in the live feed:
 
-1. Merge both PRs (sync + scripts; site). From then on the Actions sync runs the new mirror, which **skips itself**
+1. Merge both PRs (#250 sync + scripts; #251 site). From then on the Actions sync runs the new mirror, which **skips itself**
    (a `(non-fatal)` warning in the run) until step 3 has run.
 2. `cd sites/gcm-homes/emdash && node --env-file=.env seed/export-d1.mjs --out "C:\Dev\TheCube-2\08-clients\client-grant-meyer-homes\09-deliverables\one-page-per-home-<date>"`
    then `node --env-file=.env seed/migrate-homes.mjs --live` (dry run: read the conflict list).

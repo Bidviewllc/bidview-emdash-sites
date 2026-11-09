@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { bySlug, lastSyncedAt, listingHistory } from "../../../lib/listings";
+import { bySlug, lastSyncedAt, listingHistory, saleHistory } from "../../../lib/listings";
 import { neighborhoodForPoint } from "../../../lib/neighborhoods";
 import { imageUrl } from "../../../lib/media";
 import { env } from "cloudflare:workers";
@@ -29,10 +29,14 @@ function floorPlanImages(raw: unknown): { label: string | null; url: string }[] 
 export const GET: APIRoute = async ({ params, locals }) => {
 	try {
 		const slug = String(params.slug || "").replace(/\/+$/, "");
-		const result = await bySlug(slug);
+		let result: any = await bySlug(slug);
+		// An old URL for a home (the page route 301s; the API just answers for the
+		// home and names its real slug so the page can fix the address bar).
+		let canonicalSlug: string | null = null;
+		if (result?.redirect) { canonicalSlug = result.redirect; result = await bySlug(result.redirect); }
 		if (!result) return new Response(JSON.stringify({ error: "Not found" }), { status: 404, headers: { "Content-Type": "application/json" } });
-		// Expired / withdrawn / cancelled: in the archive for Grant, gone for everyone else.
-		if ((result as any).gone) return new Response(JSON.stringify({ error: "This listing is no longer available.", gone: true }), { status: 410, headers: { "Content-Type": "application/json", "Cache-Control": "public, s-maxage=3600" } });
+		// Expired / withdrawn / cancelled, nothing shown about the home: gone for everyone.
+		if (result.gone) return new Response(JSON.stringify({ error: "This listing is no longer available.", gone: true }), { status: 410, headers: { "Content-Type": "application/json", "Cache-Control": "public, s-maxage=3600" } });
 		// canEdit = the requester is a logged-in emdash admin (set by emdash auth
 		// middleware). Lets the detail page show the inline owner-note editor.
 		const canEdit = !!(locals as any)?.user;
@@ -40,10 +44,10 @@ export const GET: APIRoute = async ({ params, locals }) => {
 		const cache = canEdit ? "private, no-store" : "public, s-maxage=120";
 		// Name the neighborhood by point-in-polygon so the detail page can show it
 		// instead of city/state. Falls back to null outside every traced area.
-		const area = neighborhoodForPoint((result as any).listing?.lng, (result as any).listing?.lat);
+		const area = neighborhoodForPoint(result.listing?.lng, result.listing?.lat);
 		// noteImage is an emdash image field (a JSON media object), same as the
 		// neighbourhood images below -- resolve it to a URL before the page sees it.
-		const listing = { ...(result as any).listing, noteImage: imageUrl((result as any).listing?.noteImage), floorPlanImages: floorPlanImages((result as any).listing?.floorPlanImages), neighborhood: area?.name ?? null, neighborhoodSlug: area?.slug ?? null };
+		const listing = { ...result.listing, noteImage: imageUrl(result.listing?.noteImage), floorPlanImages: floorPlanImages(result.listing?.floorPlanImages), neighborhood: area?.name ?? null, neighborhoodSlug: area?.slug ?? null };
 
 		// B4 + B5. Both are optional: when there is no market-intelligence post for this
 		// neighborhood, or no imagery on the neighborhood entry, the page hides that
@@ -84,10 +88,17 @@ export const GET: APIRoute = async ({ params, locals }) => {
 			contact = { phone: realPhone((cta as any)?.entry?.data?.phone) };
 		} catch { contact = { phone: null }; }
 
-		// Listing history: off-market listings only for a logged-in admin, whose
-		// response is private/no-store (above), so they never reach the edge cache.
-		const [grantIntro, syncedAt, history] = await Promise.all([getGrantIntro(), lastSyncedAt(), listingHistory(listing.id, canEdit)]);
-		return new Response(JSON.stringify({ ...result, listing, marketIntel, area: areaInfo, canEdit, contact, grantIntro, syncedAt, history }), { headers: { "Content-Type": "application/json", "Cache-Control": cache } });
+		// Listing history (per event) and sale history (per listing number), both
+		// grouped by the home's parcel. Off-market listings only reach a logged-in
+		// admin, whose response is private/no-store (above), so they never hit the
+		// edge cache.
+		const home = result.home;
+		const [grantIntro, syncedAt, history, sales] = await Promise.all([
+			getGrantIntro(), lastSyncedAt(),
+			listingHistory(home?.parcel ?? null, listing.id, canEdit),
+			saleHistory(home?.parcel ?? null, listing.id, home?.currentListing ?? null, canEdit),
+		]);
+		return new Response(JSON.stringify({ ...result, listing, canonicalSlug, marketIntel, area: areaInfo, canEdit, contact, grantIntro, syncedAt, history, sales }), { headers: { "Content-Type": "application/json", "Cache-Control": cache } });
 	} catch (e: any) {
 		return new Response(JSON.stringify({ error: e.message }), { status: 500, headers: { "Content-Type": "application/json" } });
 	}

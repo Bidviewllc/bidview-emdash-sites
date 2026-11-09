@@ -77,7 +77,10 @@ export { PluginBridge };
 //      Housing Opportunity in every footer, readable MLS credit line.
 // v34 (2026-11-09): listing page -- Listing History accordion under Features &
 //      Amenities (every MLS listing of the home, by parcel; listing_events).
-const CACHE_VERSION = "v34";
+// v35 (2026-11-09): one page per HOME -- listing URLs are per home (old ones
+//      301), the listing page gains a Sale History section and Grant's content
+//      switch, /sold/ shows one card per home, /listings/ gets a Status filter.
+const CACHE_VERSION = "v35";
 
 // Only plain file names under site-video/ in R2; no paths, no other keys.
 const SITE_VIDEO_NAME = /^[a-z0-9-]+\.(mp4|jpg)$/;

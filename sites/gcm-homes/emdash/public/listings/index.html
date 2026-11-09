@@ -118,6 +118,8 @@
        dropdown under the pill on the desktop bar, an accordion row inside the
        filter sheet below 1400px. Collapsed by default in both, so a long list
        of view options never buries the Features list under it. */
+    .card__closed { font-size: 11px; color: var(--muted); letter-spacing: 0.07em; text-transform: uppercase; margin-top: 4px; }
+    .card__status--off { background: rgba(255,255,255,0.92); color: var(--muted); }
     .msel { position: relative; display: inline-flex; flex: none; }
     .msel__btn {
       display: inline-flex; align-items: center; gap: 7px; padding: 9px 14px;
@@ -608,6 +610,16 @@
   <div class="fsel"><select id="ptype" aria-label="Property type"></select><span class="fsel__chev" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg></span></div>
   <div class="fsel"><select id="city" aria-label="City"></select><span class="fsel__chev" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg></span></div>
 
+  <!-- Status (2026-11-09, one page per home): On market / Under contract /
+       Pending are on by default; Sold is off by default (Liz, 2026-09-28) and
+       loads the sold homes from /api/sold-listings the first time it is ticked. -->
+  <div class="msel" id="statusMsel">
+    <button class="msel__btn" type="button" aria-expanded="false" aria-controls="statusMselPanel">
+      <span>Status</span><span class="msel__n"></span><svg class="msel__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg>
+    </button>
+    <div class="msel__panel" id="statusMselPanel" role="group" aria-label="Status" hidden></div>
+  </div>
+
   <!-- Options are rendered by buildMsels() from the data, so an option nothing
        matches never appears. Waterfront now lives inside Features. -->
   <div class="msel" id="viewMsel">
@@ -808,9 +820,20 @@ const esc = s => String(s ?? "").replace(/[&<>"']/g, c =>
 
 const PRICE_STEPS = [500e3, 750e3, 1e6, 1.5e6, 2e6, 3e6, 5e6, 10e6, 20e6, 50e6];
 
+/* Status reads the HOME's status (statusLabel from the API: On market, Under
+   contract, Pending, Sold). The three live ones are on by default; Sold is off
+   by default (Liz, 2026-09-28) so buyers see homes they can buy first. Sold
+   homes are not in /api/listings: the first tick of Sold fetches them from
+   /api/sold-listings (one card per home) and merges them into ALL. */
+const STATUS_OPTS = [
+  ["On market", "On market"], ["Under contract", "Under contract"], ["Pending", "Pending"], ["Sold", "Sold"],
+];
+const DEFAULT_STATUS = ["On market", "Under contract", "Pending"];
+let SOLD_LOADED = false, soldLoading = null;
+
 const state = {
   q: "", priceMin: "", priceMax: "", beds: "", baths: "",
-  ptype: "", city: "", views: [], feats: [], sort: "featured", mapSync: false,
+  ptype: "", city: "", status: DEFAULT_STATUS.slice(), views: [], feats: [], sort: "featured", mapSync: false,
 };
 
 /* ------------------------------------------------- multi-select catalogues --
@@ -871,9 +894,13 @@ const FEAT_GROUPS = [
 ];
 
 const MSELS = [
+  { id: "statusMsel", kind: "status" },
   { id: "viewMsel", kind: "views" },
   { id: "featMsel", kind: "feats" },
 ];
+const selOf = kind => kind === "views" ? state.views : kind === "feats" ? state.feats : state.status;
+const statusOf = l => l.statusLabel || "On market";
+const isDefaultStatus = () => state.status.length === DEFAULT_STATUS.length && DEFAULT_STATUS.every(v => state.status.includes(v));
 
 const viewTokens = l => String(l.view || "").split(",").map(t => t.trim()).filter(Boolean);
 
@@ -891,6 +918,7 @@ function writeStateToUrl() {
     // "featured" is the default sort, so it stays out of the URL.
     if (state[k] && !(k === "sort" && state[k] === "featured")) p.set(k, state[k]);
   });
+  if (!isDefaultStatus()) p.set("status", state.status.join(","));
   if (state.views.length) p.set("views", state.views.join(","));
   if (state.feats.length) p.set("feats", state.feats.join(","));
   const qs = p.toString();
@@ -909,6 +937,7 @@ function readStateFromUrl() {
     if (el) el.value = state[k];
   });
   const list = k => (p.get(k) || "").split(",").map(v => v.trim()).filter(Boolean);
+  if (p.has("status")) state.status = list("status").filter(v => STATUS_OPTS.some(([k]) => k === v));
   state.views = list("views");
   state.feats = list("feats");
   // Links shared before Waterfront moved into Features still carry ?waterfront=1.
@@ -976,6 +1005,7 @@ function matches(l, skip) {
   if (state.baths && !(l.baths >= +state.baths)) return false;
   if (state.ptype && l.category !== state.ptype) return false;
   if (state.city  && l.city !== state.city) return false;
+  if (skip !== "status" && !state.status.includes(statusOf(l))) return false;
   // Views are OR (lake or mountains), features are AND (garage and A/C) —
   // which is how each reads out loud, and how every portal behaves.
   if (skip !== "views" && state.views.length) {
@@ -1013,7 +1043,7 @@ function sortView(rows) {
    pending homes on the site now, so the badge is what tells them apart. */
 function statusBadge(l) {
   const label = l.statusLabel || "On market";
-  const mod = label === "On market" ? "live" : label === "Pending" ? "pending" : "uc";
+  const mod = label === "On market" ? "live" : label === "Pending" ? "pending" : label === "Sold" ? "sold" : label === "Off market" ? "off" : "uc";
   return `<div class="card__status card__status--${mod}">${esc(label)}</div>`;
 }
 
@@ -1043,6 +1073,7 @@ function cardHTML(l) {
       </div>
       <div class="card__body">
         <div class="card__price">${fmtFull(l.price, l)}</div>
+        ${l.closeDate ? `<div class="card__closed">Closed ${esc(new Date(l.closeDate.length <= 10 ? l.closeDate + "T00:00:00Z" : l.closeDate).toLocaleDateString("en-US", { month: "long", year: "numeric", timeZone: "UTC" }))}${l.grantSales > 1 ? ` · ${l.grantSales} sales with Grant` : l.representedLabel ? ` · ${esc(l.representedLabel)}` : ""}</div>` : ""}
         <div class="card__addr">${esc(l.address || "Address on request")}</div>
         <div class="card__city">${esc(cityLine)}</div>
         ${bits.length ? `<div class="card__meta">${bits.join("")}</div>` : ""}
@@ -1366,7 +1397,7 @@ function renderMap() {
 
 const isUnfiltered = () =>
   !state.q && !state.priceMin && !state.priceMax && !state.beds &&
-  !state.baths && !state.ptype && !state.city &&
+  !state.baths && !state.ptype && !state.city && isDefaultStatus() &&
   !state.views.length && !state.feats.length;
 
 /** Two-way highlight between a card and its pin. */
@@ -1413,7 +1444,7 @@ function syncChips() {
 
   const dirty = !!(state.q || state.priceMin || state.priceMax || state.beds ||
                    state.baths || state.ptype || state.city || state.mapSync ||
-                   state.views.length || state.feats.length);
+                   !isDefaultStatus() || state.views.length || state.feats.length);
   document.getElementById("clearAll").classList.toggle("show", dirty);
 
   syncSheet();
@@ -1425,7 +1456,7 @@ function syncChips() {
 function clearAll() {
   Object.assign(state, {
     q: "", priceMin: "", priceMax: "", beds: "", baths: "",
-    ptype: "", city: "", views: [], feats: [], mapSync: false,
+    ptype: "", city: "", status: DEFAULT_STATUS.slice(), views: [], feats: [], mapSync: false,
   });
   document.getElementById("q").value = "";
   ["priceMin", "priceMax", "beds", "baths", "ptype", "city"].forEach(id =>
@@ -1522,7 +1553,7 @@ function closeSheet() {
 function syncSheet() {
   const n = [state.priceMin || state.priceMax, state.beds, state.baths,
              state.ptype, state.city].filter(Boolean).length +
-            state.views.length + state.feats.length;
+            state.views.length + state.feats.length + (isDefaultStatus() ? 0 : 1);
   document.getElementById("fbMore").classList.toggle("is-set", n > 0);
   document.getElementById("fbMoreN").textContent = n || "";
   document.getElementById("fsheetApply").textContent =
@@ -1553,6 +1584,10 @@ function optHTML(kind, value, label) {
 
 function buildMsels() {
   const avail = availableOpts();
+  // Status options are fixed: Sold is offered even before any sold home is
+  // loaded, since ticking it is what loads them.
+  document.getElementById("statusMselPanel").innerHTML =
+    STATUS_OPTS.map(([v, lab]) => optHTML("status", v, lab)).join("");
   document.getElementById("viewMselPanel").innerHTML =
     VIEW_OPTS.filter(([v]) => avail.views.has(v))
              .map(([v, lab]) => optHTML("views", v, lab)).join("");
@@ -1574,29 +1609,32 @@ function buildMsels() {
     are OR, so they count against every filter EXCEPT the view group; features
     are AND, so they count within the results you already have. */
 function optionCounts() {
-  const views = new Map(), feats = new Map();
+  const views = new Map(), feats = new Map(), status = new Map();
   for (const l of ALL) {
+    if (matches(l, "status")) status.set(statusOf(l), (status.get(statusOf(l)) || 0) + 1);
     if (!matches(l, "views")) continue;
     for (const t of viewTokens(l)) views.set(t, (views.get(t) || 0) + 1);
   }
   for (const l of VIEW) for (const k of (l.feats || [])) feats.set(k, (feats.get(k) || 0) + 1);
-  return { views, feats };
+  return { views, feats, status };
 }
 
 function syncMsels() {
   const counts = optionCounts();
   for (const { id, kind } of MSELS) {
     const root = document.getElementById(id);
-    const sel = kind === "views" ? state.views : state.feats;
-    root.classList.toggle("is-set", sel.length > 0);
-    root.querySelector(".msel__n").textContent = sel.length || "";
+    const sel = selOf(kind);
+    // Status shows as "set" only when it differs from the default three.
+    root.classList.toggle("is-set", kind === "status" ? !isDefaultStatus() : sel.length > 0);
+    root.querySelector(".msel__n").textContent = kind === "status" ? (isDefaultStatus() ? "" : sel.length || "0") : (sel.length || "");
     root.querySelectorAll(".msel__opt").forEach(opt => {
       const val = opt.dataset.opt;
       const on = sel.includes(val);
       const n = counts[kind].get(val) || 0;
       opt.querySelector("input").checked = on;
-      opt.querySelector(".msel__cnt").textContent = n;
-      opt.classList.toggle("is-empty", !n && !on);
+      // Sold shows no count until the sold homes have been loaded.
+      opt.querySelector(".msel__cnt").textContent = kind === "status" && val === "Sold" && !SOLD_LOADED ? "" : n;
+      opt.classList.toggle("is-empty", !n && !on && !(kind === "status" && val === "Sold" && !SOLD_LOADED));
     });
   }
 }
@@ -1656,10 +1694,11 @@ function wire() {
     root.querySelector(".msel__panel").addEventListener("change", e => {
       const box = e.target.closest('input[type="checkbox"]');
       if (!box) return;
-      const sel = kind === "views" ? state.views : state.feats;
+      const sel = selOf(kind);
       const at = sel.indexOf(box.value);
       if (box.checked && at < 0) sel.push(box.value);
       if (!box.checked && at >= 0) sel.splice(at, 1);
+      if (kind === "status" && box.value === "Sold" && box.checked) { loadSold().then(apply); return; }
       apply();
     });
   });
@@ -1726,6 +1765,24 @@ function initMap() {
   map.on("moveend", () => { if (state.mapSync) applyListOnly(); });
 }
 
+/** Sold homes, one card per home, fetched once when Sold is first ticked (or
+    arrives on the URL). Merged into ALL so every filter and the map treat them
+    like any other card; the Sold badge and the sold price tell them apart. */
+function loadSold() {
+  if (SOLD_LOADED) return Promise.resolve();
+  if (soldLoading) return soldLoading;
+  soldLoading = fetch(`${API}/api/sold-listings`)
+    .then(r => r.ok ? r.json() : { listings: [] })
+    .then(data => {
+      const have = new Set(ALL.map(l => l.slug));
+      for (const l of (data.listings || [])) if (!have.has(l.slug)) ALL.push(l);
+      SOLD_LOADED = true;
+      buildDataControls();
+    })
+    .catch(() => { SOLD_LOADED = true; });
+  return soldLoading;
+}
+
 async function load() {
   document.getElementById("grid").innerHTML = skeletons(6);
   try {
@@ -1740,6 +1797,8 @@ async function load() {
     // shared link — or a return trip from a listing — reopens the same search.
     readStateFromUrl();
     buildMsels();
+    // A shared link with Sold ticked needs the sold homes before the first render.
+    if (state.status.includes("Sold")) await loadSold();
     document.getElementById("live").hidden = false;
     // When the sync last pulled the MLS (sync_meta), not when this page loaded:
     // the old stamp printed the visitor's own clock, which always looked fresh.

@@ -7,7 +7,7 @@ import GcmLayout from "../layouts/GcmLayout.astro";
 import { getEmDashEntry, getTermsForEntries } from "emdash";
 import { env } from "cloudflare:workers";
 import { firstImageUrl } from "../lib/media";
-import { FEATURED_ROW, FEATURED_FIRST, statusLabel, bathsOf, courtesyOf } from "../lib/listings";
+import { FEATURED_ROW, FEATURED_FIRST, HOME_JOIN, HOME_SLUG_COL, statusLabel, bathsOf, courtesyOf } from "../lib/listings";
 // "The Proof" is the shared review carousel over every client review, featured
 // ones first (src/lib/reviews.ts). The About page still reads
 // lib/testimonials.ts, which stays empty for now.
@@ -45,8 +45,8 @@ try {
 	const DB = (env as any)?.DB;
 	if (DB) {
 		const { results } = await DB.prepare(
-			`SELECT l.id, l.slug, l.status, l.address, l.city, l.state, l.price, l.beds, l.baths, l.baths_full, l.baths_half, l.office, l.sqft, l.lot_acres, l.category, l.sub_type, l.type, l.waterfront, l.photos_count, l.photo, e.featured AS featured
-			 FROM listings l LEFT JOIN ec_listings e ON e.id = l.id
+			`SELECT l.id, l.slug, l.status, l.address, l.city, l.state, l.price, l.beds, l.baths, l.baths_full, l.baths_half, l.office, l.sqft, l.lot_acres, l.category, l.sub_type, l.type, l.waterfront, l.photos_count, l.photo, e.featured AS featured, ${HOME_SLUG_COL}
+			 FROM listings l ${HOME_JOIN}
 			 WHERE l.photo IS NOT NULL AND ${FEATURED_ROW}
 			 ORDER BY ${FEATURED_FIRST}, l.price DESC LIMIT ${MAX_CARDS}`
 		).all();
@@ -303,7 +303,7 @@ const tagOf = (l: any) =>
 			</div>
 			<div class="fl-track" id="flTrack">
 				{featured.map((l) => (
-					<a class="card" href={`/homes/${l.slug}/`}>
+					<a class="card" href={`/homes/${l.home_slug || l.slug}/`}>
 						<div class="card__media">
 							<img class="card__img" src={l.photo} alt={l.address} loading="lazy" />
 							<div class="card__badges">
