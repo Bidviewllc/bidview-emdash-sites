@@ -154,17 +154,15 @@
       display: block; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
       color: rgba(255, 255, 255, 0.7);
     }
-    /* Neighbourhood above the hero stats (2026-11-09): label + the orange pill. */
+    /* Hero tags + credit (2026-11-09, Liz). Under the address: one orange block
+       reading "Neighborhood: <name>" (plus Grant's side on a sold home, as its
+       own block). The "Listing courtesy of" line sits under the stats. */
+    .listing-hero__tags { order: 2; display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .listing-hero--fl .listing-hero__tags .listing-hero__crumb { margin: 0; }
     .listing-hero__right { display: flex; flex-direction: column; align-items: flex-start; }
-    .listing-hero__hood { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 10px; }
-    .listing-hero__hood__l {
-      font-family: var(--font-sans); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.9); text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55);
-    }
-    .listing-hero--fl .listing-hero__hood .listing-hero__crumb { margin: 0; align-self: center; }
-    /* One gap under the neighbourhood line at every width (the stats row's own top padding is 20 / 0 / 16px). */
-    .listing-hero--fl .listing-hero__right .listing-hero__stats { padding-top: 14px; }
-    /* Under the address on the hero photo; the hero veil keeps white text legible. */
+    .listing-hero--fl .listing-hero__right .listing-hero__stats { padding-bottom: 12px; }
+    .listing-hero__right .listing-hero__credit { margin-top: 0; max-width: 46ch; }
+    /* Under the hero stats; the hero veil keeps white text legible. */
     .listing-hero__credit {
       order: 3; margin-top: 10px;
       font-family: var(--font-sans); font-size: 14px; line-height: 1.4;
@@ -1305,14 +1303,16 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro, sync
   const statusBadge = statusText === "On market" ? "" :
     `<div class="listing-hero__status${sold ? " listing-hero__status--sold" : ""}${statusText === "Off market" ? " listing-hero__status--off" : ""}">${escapeHtml(statusText)}</div>`;
   if (sold && sold.representedLabel) crumb = `${crumb} · ${sold.representedLabel}`;
-  // 2026-11-09 (Liz): the neighbourhood pill sits on the right, above the
-  // Bedrooms / Bathrooms / Price stats, behind a "Neighborhood:" label. Under
-  // the address stays only what is not a neighbourhood: Grant's side on a sold
-  // home, or city/state when the home sits outside every traced area.
-  const hoodBlock = listing.neighborhood
-    ? `<div class="listing-hero__hood"><span class="listing-hero__hood__l">Neighborhood:</span><span class="listing-hero__crumb">${escapeHtml(listing.neighborhood)}</span></div>`
+  // 2026-11-09 (Liz): under the address, one orange block reading
+  // "Neighborhood: <name>". Grant's side on a sold home is its own block beside
+  // it. A home outside every traced area keeps its plain city/state block.
+  const heroTags = [
+    listing.neighborhood ? `Neighborhood: ${listing.neighborhood}` : [listing.city, listing.state].filter(Boolean).join(", "),
+    sold && sold.representedLabel,
+  ].filter(Boolean);
+  const heroTagsBlock = heroTags.length
+    ? `<div class="listing-hero__tags">${heroTags.map(x => `<div class="listing-hero__crumb">${escapeHtml(x)}</div>`).join("")}</div>`
     : "";
-  const leftCrumb = listing.neighborhood ? ((sold && sold.representedLabel) || "") : crumb;
 
   // Listing brokerage, MLS number, source and last update (compliance thread,
   // 2026-11-06). IDX rules: name the listing brokerage on every listing, readable,
@@ -1688,11 +1688,9 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro, sync
         <div>
           ${statusBadge}
           <h1 class="listing-hero__title">${escapeHtml(listing.address)}</h1>
-          ${leftCrumb ? `<div class="listing-hero__crumb">${escapeHtml(leftCrumb)}</div>` : ""}
-          ${heroCredit}
+          ${heroTagsBlock}
         </div>
         <div class="listing-hero__right">
-        ${hoodBlock}
         <div class="listing-hero__stats">
           <div class="listing-hero__stat">
             <div class="listing-hero__stat__l">BEDROOMS</div>
@@ -1707,6 +1705,7 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro, sync
             <div class="listing-hero__stat__v listing-hero__stat__v--price">${fmt(sold ? (sold.closePrice || listing.price) : listing.price)}</div>
           </div>
         </div>
+        ${heroCredit}
         </div>
       </div>
     </section>

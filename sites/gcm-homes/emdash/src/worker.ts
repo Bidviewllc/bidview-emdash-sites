@@ -81,8 +81,9 @@ export { PluginBridge };
 //      301), the listing page gains a Sale History section and Grant's content
 //      switch, /sold/ shows one card per home, /listings/ gets a Status filter.
 // v36 (2026-11-09): listing page -- Sale History section removed (Listing
-//      History stays), neighbourhood pill moved above the hero stats with a
-//      "Neighborhood:" label, lighter text in the showing call-to-action;
+//      History stays), the hero's orange block reads "Neighborhood: <name>",
+//      "Listing courtesy of" moves under the hero stats, lighter text in the
+//      showing call-to-action;
 //      footer disclaimers + copyright laid out two by two on every page.
 const CACHE_VERSION = "v36";
 
