@@ -75,7 +75,9 @@ export { PluginBridge };
 // v33 (2026-11-06): listing compliance -- listing brokerage on every card and
 //      listing page, MLS # / source / last updated, half baths count 0.5, Equal
 //      Housing Opportunity in every footer, readable MLS credit line.
-const CACHE_VERSION = "v33";
+// v34 (2026-11-09): listing page -- Listing History accordion under Features &
+//      Amenities (every MLS listing of the home, by parcel; listing_events).
+const CACHE_VERSION = "v34";
 
 // Only plain file names under site-video/ in R2; no paths, no other keys.
 const SITE_VIDEO_NAME = /^[a-z0-9-]+\.(mp4|jpg)$/;

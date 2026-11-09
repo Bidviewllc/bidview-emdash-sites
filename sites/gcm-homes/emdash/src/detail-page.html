@@ -82,6 +82,47 @@
            inline by default, so it needs an explicit box. --- */
     a.aside-fl__cta { display: block; text-align: center; text-decoration: none; }
 
+    /* --- Listing history (2026-11-09): a closed accordion under the Features &
+           Amenities cards, same white card and type as .feat-card. --- */
+    .lhist { width: 100%; background: var(--white); border: 1px solid rgba(197,198,206,0.45); }
+    .lhist__sum {
+      list-style: none; cursor: pointer; display: flex; align-items: center; gap: 16px;
+      padding: 26px 36px; font-family: var(--font-noto); font-weight: 400; font-size: 26px; color: var(--navy);
+    }
+    .lhist__sum::-webkit-details-marker { display: none; }
+    .lhist__sum:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
+    .lhist__count {
+      margin-left: auto; font-family: var(--font-sans); font-size: 11px; letter-spacing: 0.09em;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .lhist__chev { width: 20px; height: 20px; flex: none; color: var(--navy); transition: transform 200ms ease; }
+    .lhist[open] .lhist__chev { transform: rotate(180deg); }
+    .lhist__body { padding: 0 36px 30px; }
+    .lhist__table { width: 100%; border-collapse: collapse; font-family: var(--font-sans); }
+    .lhist__table th {
+      text-align: left; font-size: 11px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase;
+      color: var(--muted); padding: 0 12px 10px 0; border-bottom: 1px solid #E5E7EB;
+    }
+    .lhist__table td {
+      font-size: 14px; color: var(--ink); padding: 13px 12px 13px 0; vertical-align: top;
+      border-bottom: 1px solid rgba(197,198,206,0.25);
+    }
+    .lhist__table tr:last-child td { border-bottom: none; }
+    .lhist__table th:last-child, .lhist__table td:last-child { text-align: right; padding-right: 0; white-space: nowrap; }
+    .lhist__table td:first-child { white-space: nowrap; color: var(--body); }
+    .lhist__chg { display: block; font-size: 12px; color: var(--body); }
+    .lhist__row--admin td { color: var(--muted); }
+    .lhist__tag {
+      display: inline-block; margin-left: 6px; font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--navy); background: rgba(247,148,91,0.25); padding: 2px 6px; border-radius: 2px;
+    }
+    .lhist__note { margin-top: 16px; font-family: var(--font-sans); font-size: 12px; line-height: 1.5; color: var(--body); }
+    @media (max-width: 640px) {
+      .lhist__sum { padding: 20px 20px; font-size: 22px; }
+      .lhist__body { padding: 0 20px 22px; }
+      .lhist__table td { font-size: 13px; }
+    }
+
     /* --- Quick Statistics: dark panel, design typography. ONLY colours are
            overridden here. Every size, weight, letter-spacing and gap still comes
            from .aside-fl in styles.css, so the type now matches the design while
@@ -355,7 +396,7 @@
       .tour-band, .section--market, .section--community, .section--grant-intro,
       #listing-contact, .lightbox, .listing-hero__share,
       .grant-note__btn, .grant-note__editor, .grant-note__status,
-      .prop-desc__flag, .aside-fl__cta, .cta-arrow {
+      .prop-desc__flag, .aside-fl__cta, .cta-arrow, .lhist {
         display: none !important;
       }
 
@@ -672,10 +713,13 @@ function fmtDate(d) {
   return Number.isNaN(t) ? "—" : new Date(t).toLocaleDateString("en-US", { month: "long", year: "numeric", timeZone: "UTC" });
 }
 // "2026-11-06T14:02:11Z" -> "Nov 6, 2026", for the "last updated" line.
+// A date-only value ("2026-08-28") is a calendar day, so it is read and shown in
+// UTC; read as UTC midnight but shown in US time it printed the day before.
 function fmtDay(d) {
   if (!d) return null;
-  const t = Date.parse(String(d).length <= 10 ? `${d}T00:00:00Z` : d);
-  return Number.isNaN(t) ? null : new Date(t).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+  const dateOnly = String(d).length <= 10;
+  const t = Date.parse(dateOnly ? `${d}T00:00:00Z` : d);
+  return Number.isNaN(t) ? null : new Date(t).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", ...(dateOnly ? { timeZone: "UTC" } : {}) });
 }
 function escapeHtml(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
 // "Total Days on Market" (cumulative across relists) only earns a row when the
@@ -1192,7 +1236,7 @@ function featShift(dir) {
 window.addEventListener("resize", () => featShift(0));
 
 /* ---------------- Render ---------------- */
-function render(listing, photoUrls, marketIntel, area, contact, grantIntro, syncedAt) {
+function render(listing, photoUrls, marketIntel, area, contact, grantIntro, syncedAt, history) {
   // Only ever a genuine number: the API's realPhone() returns null for the
   // placeholders still sitting in the CMS, and the footer line is omitted
   // rather than printing something a buyer might dial.
@@ -1251,6 +1295,38 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro, sync
   const creditWho = [listing.agent, listing.office].filter(Boolean).join(", ");
   const heroCredit = creditWho ? `<div class="listing-hero__credit">Listing courtesy of ${escapeHtml(creditWho)}</div>` : "";
   const updatedOn = fmtDay(listing.archived ? listing.updated : (syncedAt || listing.updated));
+
+  // Listing history: every MLS listing of this home, newest first, in a closed
+  // accordion under Features & Amenities. Built server-side (listingHistory in
+  // src/lib/listings.ts); off-market rows only arrive for a logged-in admin.
+  const hist = Array.isArray(history) ? history : [];
+  const fmtChange = c => {
+    if (c == null || !isFinite(c) || c === 0) return "";
+    const pct = Math.abs(c * 100).toFixed(1).replace(/\.0$/, "");
+    return `<span class="lhist__chg">${c < 0 ? "\u2212" : "+"}${pct}%</span>`;
+  };
+  const historyBlock = hist.length ? `
+        <details class="lhist" id="listing-history">
+          <summary class="lhist__sum">
+            <span>Listing History</span>
+            <span class="lhist__count">${hist.length} ${hist.length === 1 ? "event" : "events"}</span>
+            <svg class="lhist__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg>
+          </summary>
+          <div class="lhist__body">
+            <table class="lhist__table">
+              <thead><tr><th scope="col">Date</th><th scope="col">Event</th><th scope="col">Price</th></tr></thead>
+              <tbody>
+                ${hist.map(e => `
+                <tr${e.adminOnly ? ' class="lhist__row--admin"' : ""}>
+                  <td>${escapeHtml(fmtDay(e.date) || "")}</td>
+                  <td>${escapeHtml(e.event)}${e.adminOnly ? '<span class="lhist__tag">Only admins see this</span>' : ""}</td>
+                  <td>${e.price ? fmt(e.price) : "&mdash;"}${fmtChange(e.change)}</td>
+                </tr>`).join("")}
+              </tbody>
+            </table>
+            <p class="lhist__note">From the Incline Village Realtors&reg; MLS. Every price change is recorded from November 2026; before that, only each listing's latest change is known.</p>
+          </div>
+        </details>` : "";
   const listingInfo = `
     <div class="listing-info">
       ${creditWho ? `<div class="listing-info__row"><span class="listing-info__l">Listing courtesy of</span> ${escapeHtml(creditWho)}</div>` : ""}
@@ -1704,6 +1780,7 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro, sync
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
           </button>
         </div>
+        ${historyBlock}
       </div>
     </section>
 
@@ -1939,7 +2016,7 @@ async function load() {
     }
     if (data.error) throw new Error(data.error);
     canEdit = !!data.canEdit;
-    render(data.listing, data.photos || [], data.marketIntel || null, data.area || null, data.contact || null, data.grantIntro || null, data.syncedAt || null);
+    render(data.listing, data.photos || [], data.marketIntel || null, data.area || null, data.contact || null, data.grantIntro || null, data.syncedAt || null, data.history || []);
   } catch (e) {
     document.getElementById("app").innerHTML = `<div class="loading">Failed to load listing: ${escapeHtml(e.message)}</div>`;
   }

@@ -27,10 +27,10 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "sync = the normal run. backfill-sold = one-time pull of Grant's past sales (+ $5M+ sales) into listing_archive."
+        description: "sync = the normal run. backfill-sold = one-time pull of Grant's past sales (+ $5M+ sales) into listing_archive. backfill-history = one-time pull of every past sale of every archived home, for the listing history table."
         type: choice
         default: sync
-        options: [sync, backfill-sold]
+        options: [sync, backfill-sold, backfill-history]
 
 # Never let two syncs overlap — the sync does DELETE + re-INSERT on the listings
 # tables, so a concurrent run could interleave. Queue instead of cancelling.
