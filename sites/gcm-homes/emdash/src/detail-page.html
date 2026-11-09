@@ -154,7 +154,7 @@
       display: block; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
       color: rgba(255, 255, 255, 0.7);
     }
-    /* Features & Amenities as a grid (2026-11-09, trial for Liz): all four cards
+    /* Features & Amenities as a grid (2026-11-09, Liz; was a carousel): all four cards
        on screen at once, no arrows. 4 across on a wide screen, 2 x 2 on a tablet,
        one column on a phone. Screen only: print has its own two-column rule. */
     @media screen {
@@ -727,8 +727,6 @@ let fpAutoHeight = false;
 let lbIndex = 0;
 let canEdit = false;
 let currentSlug = "";
-let featPage = 0;
-let featCount = 0;
 
 function fmt(price) { return price ? "$" + Number(price).toLocaleString() : "—"; }
 function fmtSqft(n) { return n ? Number(n).toLocaleString() + " sq.ft." : "—"; }
@@ -1245,24 +1243,6 @@ document.addEventListener("keydown", e => {
   if (e.key === "0") lbZoomReset(true);
 });
 
-/* ---------------- Features carousel ----------------
-   .features-viewport clips and .features-track translates, so the arrows are
-   required — without them only the first three cards would ever be reachable.
-   Transform matches the design's maths: 3 cards visible, 28px gap.            */
-function featShift(dir) {
-  const visible = window.innerWidth <= 640 ? 1 : (window.innerWidth <= 1024 ? 2 : 3);
-  const maxPage = Math.max(0, featCount - visible);
-  featPage = Math.min(maxPage, Math.max(0, featPage + dir));
-  const track = document.getElementById("featTrack");
-  if (track && track.classList.contains("features-track--grid")) return; // grid trial: nothing to page
-  if (track) track.style.transform = `translateX(calc(${-featPage} * (100% / ${visible}) - ${featPage} * 28px / ${visible}))`;
-  const prev = document.getElementById("featPrev");
-  const next = document.getElementById("featNext");
-  if (prev) prev.disabled = featPage === 0;
-  if (next) next.disabled = featPage >= maxPage;
-}
-window.addEventListener("resize", () => featShift(0));
-
 /* ---------------- Render ---------------- */
 function render(listing, photoUrls, marketIntel, area, contact, grantIntro, syncedAt, history) {
   // Only ever a genuine number: the API's realPhone() returns null for the
@@ -1514,8 +1494,6 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro, sync
       ["Listing Office", listing.office || "—"],
     ]],
   ];
-  featCount = featureCards.length;
-  featPage = 0;
 
   // ---- B3: Note From Grant as its own section, in the design's .local-card ----
   // Shown to everyone whenever a note, image or video exists. The inline editor
@@ -1969,7 +1947,6 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro, sync
   syncGalleryFoot();
   autoSizeFloorPlan();
   preloadFloorPlans();
-  featShift(0);
   syncSaved();
 
   // The print sheet's closing line carries the URL it came from, so a printed

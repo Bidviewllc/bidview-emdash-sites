@@ -84,7 +84,8 @@ export { PluginBridge };
 //      History stays), the hero's orange block reads "Neighborhood: <name>",
 //      "Listing courtesy of" moves under the hero stats, lighter text in the
 //      showing call-to-action;
-//      footer disclaimers + copyright laid out two by two on every page.
+//      Features & Amenities is a grid, not a carousel; footer disclaimers +
+//      copyright laid out two by two on every page.
 const CACHE_VERSION = "v36";
 
 // Only plain file names under site-video/ in R2; no paths, no other keys.
