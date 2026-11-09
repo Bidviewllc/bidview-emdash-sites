@@ -4,6 +4,24 @@
 Luxury real estate site for Grant C. Meyer, Incline Village / Lake Tahoe.
 Stack: emdash (Cloudflare Workers + Astro + D1 + R2) — **not yet set up**, design phase only.
 
+## ▶ ONE PAGE PER HOME (2026-11-09, Liz) — branch `gcm-one-page-per-home`, built, NOT yet migrated/deployed
+Plan, findings and the shipping order: **`PROPERTY-PAGES-PLAN.md`** (read "What was found while building" and
+"Shipping it"). In one paragraph: the admin "Listings" collection (`ec_listings`) is one row per HOME, id
+`p-<parcel with punctuation stripped>`, never deleted; `home_status` (On market / Under contract / Pending / Sold /
+Off market) and the MLS columns follow the home's current listing (`_current_listing`); Grant's columns are his;
+`show_grant` ('1.0'/'0.0') decides whether his content shows and resets to its default (on only when he is the
+listing agent) when a new listing number starts. `listings` gained `parcel_number`; `property_slugs` maps every
+URL ever used to its home and the page route 301s. The Sold Listings collection (PR #246) is folded in and
+retired (`_retired_ec_sold_listings`). **Gotchas:** the sync's `mirrorEmdashHomes()` is a COPY of
+`emdash/seed/lib/homes.mjs mirrorHomes()` (Actions checks out only `trestle-test`) — change both; the mirror
+refuses to run while rows keyed by listing number remain, so `seed/migrate-homes.mjs --live --apply` must run
+before the first post-merge sync does anything, and the site deploy follows it at once. The admin status filter
+is the **search box** (EmDash 1.4 has no custom-field filter UI; `home_status` is searchable + indexed + a list
+column). Two editor panels come from the native plugin `src/plugins/gcm-admin/` (registered in
+`astro.config.mjs`; its module must export `createPlugin`). Rehearse anything that touches these tables on a
+full local copy: `node --env-file=.env seed/export-d1.mjs --out <scratch> --all`, then swap the file in as
+`.wrangler/state/v3/d1/miniflare-D1DatabaseObject/<hash>.sqlite` under a stopped `astro dev`.
+
 ## ▶ emdash 0.30 → 1.4 UPGRADE (2026-11-03, Liz) — branch `gcm-emdash-1x`, NOT deployed
 **Code:** `emdash` + `@emdash-cms/cloudflare` ^1.4.0, astro ^7.4.5, `@astrojs/cloudflare` ^14.4.4, wrangler ^4.157.0.
 None of the official 1.0 breaking changes apply to this site (docs.emdashcms.com/upgrade-to-v1). `src/worker.ts`

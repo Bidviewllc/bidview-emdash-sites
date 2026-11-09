@@ -22,6 +22,16 @@
  */
 
 export const GRANT_AGENT_ID = "meyergra111";
+// The MLS writes the same parcel two ways across the years ("130-191-07" and
+// "13019107"; 7 homes in the archive had both, 2026-11-09), so homes are keyed
+// by the parcel with its punctuation stripped: id `p-13019107`. The SQL twin
+// (for joins from `listings`) is PARCEL_SQL.
+// A Washoe APN is 8 digits; one listing in 200 writes it with a "-000" suffix
+// (130-202-15-000 for 130-202-15), which is dropped. Douglas County APNs are
+// 12 digits and are left alone. Multi-parcel listings ("123-131-04,05,06") keep
+// their whole string: they are one home each as far as the MLS is concerned.
+export const normParcel = (s) => { const n = String(s ?? "").replace(/[^0-9a-zA-Z]/g, ""); return n.length === 11 && n.endsWith("000") ? n.slice(0, 8) : n; };
+export const PARCEL_SQL = (col) => { const x = `replace(replace(replace(${col},'-',''),' ',''),'.','')`; return `CASE WHEN length(${x}) = 11 AND ${x} LIKE '%000' THEN substr(${x},1,8) ELSE ${x} END`; };
 export const HOME_STATUSES = ["On market", "Under contract", "Pending", "Sold", "Off market"];
 export const COLLECTION_ID = "col_listings";
 
@@ -166,9 +176,10 @@ export const ARCHIVE_HOME_COLS = "id, slug, address, city, state, price, beds, b
 export function homesFrom(archiveRows) {
 	const byParcel = new Map();
 	for (const a of archiveRows) {
-		if (!a.parcel_number || a.archive_status === "unknown") continue;
-		if (!byParcel.has(a.parcel_number)) byParcel.set(a.parcel_number, []);
-		byParcel.get(a.parcel_number).push(a);
+		const key = normParcel(a.parcel_number);
+		if (!key || a.archive_status === "unknown") continue;
+		if (!byParcel.has(key)) byParcel.set(key, []);
+		byParcel.get(key).push(a);
 	}
 	for (const rows of byParcel.values()) rows.sort(newestFirst);
 	return byParcel;
@@ -236,7 +247,7 @@ export async function mirrorHomes(d1, log = console.log) {
 		let slug = was?.slug;
 		if (!slug) {
 			slug = homeBaseSlug(cur);
-			if (taken.has(slug)) slug = `${slug}-${slugify(parcel) || "2"}`;
+			if (taken.has(slug)) slug = `${slug}-${parcel.toLowerCase() || "2"}`;
 			taken.add(slug);
 			inserted++;
 		} else if (was.cur && was.cur !== cur.id) {

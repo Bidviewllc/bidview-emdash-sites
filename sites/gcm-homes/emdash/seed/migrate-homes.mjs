@@ -12,7 +12,8 @@
  *      every other edited row is kept on its listing's archive row
  *      (owner_snapshot), where the admin's Listing history panel shows it.
  *      Homes with edits on more than one row are listed: read them before --apply.
- *   3. Empties ec_listings, drops the MLS columns that moved into the "From the
+ *   3. Adds listings.parcel_number (filled from the archive), empties
+ *      ec_listings, drops the MLS columns that moved into the "From the
  *      MLS" panel, registers the new fields (seed/lib/homes.mjs) and fills one
  *      row per home (mirrorHomes), then writes the winning edits onto each home.
  *      show_grant is left at its default: on when Grant is the listing agent of
@@ -35,7 +36,7 @@
  */
 import {
 	S, OWNER_COLS, ADMIN_ORDER, INTERNAL_COLS, homesFrom, ARCHIVE_HOME_COLS,
-	registerListingsCollection, mirrorHomes, newestFirst,
+	registerListingsCollection, mirrorHomes, newestFirst, normParcel,
 } from "./lib/homes.mjs";
 
 const APPLY = process.argv.includes("--apply");
@@ -123,21 +124,23 @@ async function main() {
 			const edits = editsOf(r);
 			if (!Object.keys(edits).length) continue;
 			const a = byKey.get(r.id);
-			if (!a?.parcel_number) { orphans.push({ source, key: r.id, title: r.title, edits: Object.keys(edits) }); continue; }
-			if (!cands.has(a.parcel_number)) cands.set(a.parcel_number, []);
-			cands.get(a.parcel_number).push({ key: r.id, source, edits, a });
+			const parcel = normParcel(a?.parcel_number);
+			if (!parcel) { orphans.push({ source, key: r.id, title: r.title, edits: Object.keys(edits) }); continue; }
+			if (!cands.has(parcel)) cands.set(parcel, []);
+			cands.get(parcel).push({ key: r.id, source, edits, a });
 		}
 	}
 	// Grant's edits saved on archive rows as listings left the feed count too.
 	for (const a of archive) {
-		if (!a.owner_snapshot || !a.parcel_number) continue;
+		const parcel = normParcel(a.parcel_number);
+		if (!a.owner_snapshot || !parcel) continue;
 		let snap; try { snap = JSON.parse(a.owner_snapshot); } catch { continue; }
 		const edits = editsOf({ ...snap, _mls_description: null });
 		if (!Object.keys(edits).length) continue;
-		const list = cands.get(a.parcel_number) || [];
+		const list = cands.get(parcel) || [];
 		if (list.some((c) => c.key === a.id)) continue; // the ec row for this listing already counts
 		list.push({ key: a.id, source: "archive snapshot", edits, a });
-		cands.set(a.parcel_number, list);
+		cands.set(parcel, list);
 	}
 	const multi = [];
 	const winners = new Map(); // parcel -> candidate
@@ -163,7 +166,7 @@ async function main() {
 	// Decision 3 preview: homes whose edits came from a listing where Grant was NOT
 	// the listing agent will have those edits saved but switched OFF.
 	const offButEdited = [...winners.values()].filter((c) => {
-		const cur = homes.get(c.a.parcel_number)?.[0];
+		const cur = homes.get(normParcel(c.a.parcel_number))?.[0];
 		return cur && !(cur.list_agent_id === "meyergra111" || cur.co_list_agent_id === "meyergra111");
 	});
 	if (offButEdited.length) {
@@ -199,6 +202,14 @@ async function main() {
 	}
 	console.log(`archive snapshots written for ${snaps} non-winning row(s)`);
 
+	// ── 2b. listings.parcel_number: the site joins a live listing to its home by it.
+	// The new sync adds and fills it on its next run; adding it here means the
+	// site works the moment it deploys, before any sync has run.
+	const lcols = (await rows("PRAGMA table_info(listings)")).map((c) => c.name);
+	if (!lcols.includes("parcel_number")) await d1("ALTER TABLE listings ADD COLUMN parcel_number TEXT");
+	await d1("UPDATE listings SET parcel_number = (SELECT a.parcel_number FROM listing_archive a WHERE a.id = listings.id) WHERE parcel_number IS NULL");
+	console.log("listings.parcel_number filled from the archive");
+
 	// ── 3. rebuild ec_listings as homes ──
 	await d1("DELETE FROM ec_listings");
 	for (const c of RETIRED_COLS) { try { await d1(`ALTER TABLE ec_listings DROP COLUMN "${c}"`); } catch { /* not there */ } }
@@ -218,7 +229,7 @@ async function main() {
 	const slugRows = [];
 	for (const r of [...oldListings, ...oldSold]) {
 		const a = byKey.get(r.id);
-		if (r.slug && a?.parcel_number && !String(r.slug).includes("~")) slugRows.push([r.slug, `p-${a.parcel_number}`]);
+		if (r.slug && normParcel(a?.parcel_number) && !String(r.slug).includes("~")) slugRows.push([r.slug, `p-${normParcel(a.parcel_number)}`]);
 	}
 	for (let i = 0; i < slugRows.length; i += 200) {
 		const tuples = slugRows.slice(i, i + 200).map(([s, id]) => `(${S(s)},${S(id)},${S(now)})`).join(",");

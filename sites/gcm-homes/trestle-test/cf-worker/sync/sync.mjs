@@ -255,6 +255,10 @@ function newestFirst(x, y) {
     || String(y.first_seen_at || "").localeCompare(String(x.first_seen_at || "")) || String(y.id).localeCompare(String(x.id));
 }
 const homeBaseSlug = a => `${slugify(a.city) || "lake-tahoe"}-${slugify(a.state) || "nv"}/${slugify(a.address) || "home"}`;
+// The MLS writes the same parcel two ways across the years ("130-191-07" and
+// "13019107"), so a home is keyed by the parcel with its punctuation stripped.
+// A Washoe APN is 8 digits; a few listings add a "-000" suffix, dropped here.
+const normParcel = s => { const n = String(s ?? "").replace(/[^0-9a-zA-Z]/g, ""); return n.length === 11 && n.endsWith("000") ? n.slice(0, 8) : n; };
 const homeBaths = a => a.baths_full == null || a.baths_full === "" ? (a.baths ?? null) : Number(a.baths_full) + 0.5 * Number(a.baths_half || 0);
 function homeMlsValues(a, remarks, now) {
   const sold = a.archive_status === "sold";
@@ -276,8 +280,10 @@ async function mirrorEmdashHomes() {
   const ar = await d1(`SELECT ${ARCHIVE_HOME_COLS} FROM listing_archive WHERE parcel_number IS NOT NULL AND parcel_number <> '' AND archive_status <> 'unknown'`);
   const homes = new Map();
   for (const a of ar?.[0]?.results ?? []) {
-    if (!homes.has(a.parcel_number)) homes.set(a.parcel_number, []);
-    homes.get(a.parcel_number).push(a);
+    const key = normParcel(a.parcel_number);
+    if (!key) continue;
+    if (!homes.has(key)) homes.set(key, []);
+    homes.get(key).push(a);
   }
   for (const rows of homes.values()) rows.sort(newestFirst);
   if (!homes.size) { console.log("home mirror: no archive rows with a parcel yet"); return; }
@@ -311,7 +317,7 @@ async function mirrorEmdashHomes() {
     let slug = was?.slug;
     if (!slug) {
       slug = homeBaseSlug(cur);
-      if (taken.has(slug)) slug = `${slug}-${slugify(parcel) || "2"}`;
+      if (taken.has(slug)) slug = `${slug}-${parcel.toLowerCase() || "2"}`;
       taken.add(slug);
       inserted++;
     } else if (was.cur && was.cur !== cur.id) {
