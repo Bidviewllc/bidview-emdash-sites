@@ -70,7 +70,7 @@ listing of a home and is filled on every archive row**, so homes are grouped by 
 ### The listing page
 
 - Top of the page: status badge and the current listing's facts (or, when sold, the sale facts).
-- New **Sale history** section: one line per listing number, newest first. Listed date and price, outcome (sold /
+- **Removed 2026-11-09 (Liz: Listing History is enough; one history on the page).** Was: new **Sale history** section: one line per listing number, newest first. Listed date and price, outcome (sold /
   off market / current), close date and price, listing brokerage, and Grant's side when he was on one.
 - Grant's content (headline, custom description, Note From Grant with image and videos, floor plans, his 3D tour
   link) shows only while the switch is on. With it off, the page uses the MLS description, and a Matterport link

@@ -117,15 +117,6 @@
       color: var(--navy); background: rgba(247,148,91,0.25); padding: 2px 6px; border-radius: 2px;
     }
     .lhist__note { margin-top: 16px; font-family: var(--font-sans); font-size: 12px; line-height: 1.5; color: var(--body); }
-    /* Sale history (2026-11-09): one line per MLS listing of this home, above the
-       per-event accordion; same card. The current listing is marked. */
-    .lhist + .lhist { border-top: none; }
-    .lhist__table--sales td { white-space: normal; }
-    .lhist__table--sales td:last-child { text-align: left; white-space: normal; }
-    .lhist__table--sales th:last-child { text-align: left; }
-    .lhist__now { display: inline-block; margin-left: 6px; font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: #fff; background: var(--navy); padding: 2px 6px; border-radius: 2px; }
-    .lhist__sub { display: block; font-size: 12px; color: var(--body); }
-    .lhist__grant { color: #a84a16; font-weight: 600; }
     .listing-hero__status--off { background: rgba(255,255,255,0.92); color: var(--muted); }
     /* Admin-only notice when Grant's content is switched off for this home. */
     .grant-off { margin: 0 0 24px; padding: 14px 18px; border: 1px dashed rgba(168,74,22,0.6); background: rgba(247,148,91,0.12); font-family: var(--font-sans); font-size: 13px; line-height: 1.5; color: var(--ink); }
@@ -163,6 +154,16 @@
       display: block; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
       color: rgba(255, 255, 255, 0.7);
     }
+    /* Neighbourhood above the hero stats (2026-11-09): label + the orange pill. */
+    .listing-hero__right { display: flex; flex-direction: column; align-items: flex-start; }
+    .listing-hero__hood { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 10px; }
+    .listing-hero__hood__l {
+      font-family: var(--font-sans); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.9); text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55);
+    }
+    .listing-hero--fl .listing-hero__hood .listing-hero__crumb { margin: 0; align-self: center; }
+    /* One gap under the neighbourhood line at every width (the stats row's own top padding is 20 / 0 / 16px). */
+    .listing-hero--fl .listing-hero__right .listing-hero__stats { padding-top: 14px; }
     /* Under the address on the hero photo; the hero veil keeps white text legible. */
     .listing-hero__credit {
       order: 3; margin-top: 10px;
@@ -1249,7 +1250,7 @@ function featShift(dir) {
 window.addEventListener("resize", () => featShift(0));
 
 /* ---------------- Render ---------------- */
-function render(listing, photoUrls, marketIntel, area, contact, grantIntro, syncedAt, history, salesList) {
+function render(listing, photoUrls, marketIntel, area, contact, grantIntro, syncedAt, history) {
   // Only ever a genuine number: the API's realPhone() returns null for the
   // placeholders still sitting in the CMS, and the footer line is omitted
   // rather than printing something a buyer might dial.
@@ -1304,6 +1305,14 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro, sync
   const statusBadge = statusText === "On market" ? "" :
     `<div class="listing-hero__status${sold ? " listing-hero__status--sold" : ""}${statusText === "Off market" ? " listing-hero__status--off" : ""}">${escapeHtml(statusText)}</div>`;
   if (sold && sold.representedLabel) crumb = `${crumb} · ${sold.representedLabel}`;
+  // 2026-11-09 (Liz): the neighbourhood pill sits on the right, above the
+  // Bedrooms / Bathrooms / Price stats, behind a "Neighborhood:" label. Under
+  // the address stays only what is not a neighbourhood: Grant's side on a sold
+  // home, or city/state when the home sits outside every traced area.
+  const hoodBlock = listing.neighborhood
+    ? `<div class="listing-hero__hood"><span class="listing-hero__hood__l">Neighborhood:</span><span class="listing-hero__crumb">${escapeHtml(listing.neighborhood)}</span></div>`
+    : "";
+  const leftCrumb = listing.neighborhood ? ((sold && sold.representedLabel) || "") : crumb;
 
   // Listing brokerage, MLS number, source and last update (compliance thread,
   // 2026-11-06). IDX rules: name the listing brokerage on every listing, readable,
@@ -1342,32 +1351,6 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro, sync
               </tbody>
             </table>
             <p class="lhist__note">From the Incline Village Realtors&reg; MLS. Every price change is recorded from November 2026; before that, only each listing's latest change is known.</p>
-          </div>
-        </details>` : "";
-  // Sale history (2026-11-09, one page per home): one line per MLS listing of this
-  // home, newest first -- listed date and price, outcome, close facts, the
-  // listing brokerage and Grant's side. The per-event accordion above becomes the
-  // detail under it. Built server-side (saleHistory in src/lib/listings.ts).
-  const sales = Array.isArray(salesList) ? salesList : [];
-  const saleBlock = sales.length > 1 || (sales.length === 1 && sales[0].outcome === "Sold") ? `
-        <details class="lhist" id="sale-history" open>
-          <summary class="lhist__sum">
-            <span>Sale History</span>
-            <span class="lhist__count">${sales.length} ${sales.length === 1 ? "listing" : "listings"}</span>
-            <svg class="lhist__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg>
-          </summary>
-          <div class="lhist__body">
-            <table class="lhist__table lhist__table--sales">
-              <thead><tr><th scope="col">Listed</th><th scope="col">Outcome</th><th scope="col">Listing brokerage</th></tr></thead>
-              <tbody>
-                ${sales.map(s => `
-                <tr${s.adminOnly ? ' class="lhist__row--admin"' : ""}>
-                  <td>${escapeHtml(fmtDay(s.listedDate) || "\u2014")}${s.listPrice ? `<span class="lhist__sub">${fmt(s.listPrice)}${s.originalPrice && Number(s.originalPrice) !== Number(s.listPrice) ? ` (first asked ${fmt(s.originalPrice)})` : ""}</span>` : ""}</td>
-                  <td>${escapeHtml(s.outcome)}${s.current ? '<span class="lhist__now">Current</span>' : ""}${s.adminOnly ? '<span class="lhist__tag">Only admins see this</span>' : ""}${s.closeDate ? `<span class="lhist__sub">${escapeHtml(fmtDay(s.closeDate) || "")}${s.closePrice ? ` \u00b7 ${fmt(s.closePrice)}` : ""}</span>` : ""}</td>
-                  <td>${escapeHtml([s.agent, s.office].filter(Boolean).join(", ") || "\u2014")}${s.grantSide ? `<span class="lhist__sub lhist__grant">${escapeHtml(s.grantSide)}</span>` : ""}</td>
-                </tr>`).join("")}
-              </tbody>
-            </table>
           </div>
         </details>` : "";
   const listingInfo = `
@@ -1705,9 +1688,11 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro, sync
         <div>
           ${statusBadge}
           <h1 class="listing-hero__title">${escapeHtml(listing.address)}</h1>
-          <div class="listing-hero__crumb">${escapeHtml(crumb)}</div>
+          ${leftCrumb ? `<div class="listing-hero__crumb">${escapeHtml(leftCrumb)}</div>` : ""}
           ${heroCredit}
         </div>
+        <div class="listing-hero__right">
+        ${hoodBlock}
         <div class="listing-hero__stats">
           <div class="listing-hero__stat">
             <div class="listing-hero__stat__l">BEDROOMS</div>
@@ -1721,6 +1706,7 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro, sync
             <div class="listing-hero__stat__l">${sold ? "SOLD PRICE" : "LIST PRICE"}</div>
             <div class="listing-hero__stat__v listing-hero__stat__v--price">${fmt(sold ? (sold.closePrice || listing.price) : listing.price)}</div>
           </div>
+        </div>
         </div>
       </div>
     </section>
@@ -1824,7 +1810,6 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro, sync
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
           </button>
         </div>
-        ${saleBlock}
         ${historyBlock}
       </div>
     </section>
@@ -1871,7 +1856,7 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro, sync
         <div class="invite">
           <div class="invite__left">
             <h2 class="invite__h">Schedule a Private Showing.</h2>
-            <p style="font-size:16px;line-height:1.7;color:var(--muted);margin-top:12px;max-width:38ch">
+            <p style="font-size:16px;line-height:1.7;color:rgba(255,255,255,0.9);margin-top:12px;max-width:38ch">
               Interested in ${escapeHtml(listing.address)}? Reach out and Grant will arrange a private tour at your convenience.
             </p>
             <div class="invite__agent">
@@ -2067,7 +2052,7 @@ async function load() {
       currentSlug = data.canonicalSlug;
       try { history.replaceState(null, "", `/homes/${data.canonicalSlug}/`); } catch (e) { /* ignore */ }
     }
-    render(data.listing, data.photos || [], data.marketIntel || null, data.area || null, data.contact || null, data.grantIntro || null, data.syncedAt || null, data.history || [], data.sales || []);
+    render(data.listing, data.photos || [], data.marketIntel || null, data.area || null, data.contact || null, data.grantIntro || null, data.syncedAt || null, data.history || []);
   } catch (e) {
     document.getElementById("app").innerHTML = `<div class="loading">Failed to load listing: ${escapeHtml(e.message)}</div>`;
   }

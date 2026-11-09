@@ -80,7 +80,11 @@ export { PluginBridge };
 // v35 (2026-11-09): one page per HOME -- listing URLs are per home (old ones
 //      301), the listing page gains a Sale History section and Grant's content
 //      switch, /sold/ shows one card per home, /listings/ gets a Status filter.
-const CACHE_VERSION = "v35";
+// v36 (2026-11-09): listing page -- Sale History section removed (Listing
+//      History stays), neighbourhood pill moved above the hero stats with a
+//      "Neighborhood:" label, lighter text in the showing call-to-action;
+//      footer disclaimers + copyright laid out two by two on every page.
+const CACHE_VERSION = "v36";
 
 // Only plain file names under site-video/ in R2; no paths, no other keys.
 const SITE_VIDEO_NAME = /^[a-z0-9-]+\.(mp4|jpg)$/;

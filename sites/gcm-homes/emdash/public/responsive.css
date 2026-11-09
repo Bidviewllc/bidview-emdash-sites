@@ -251,7 +251,7 @@
   .footer__cols { grid-template-columns: 1.4fr 1fr 1fr; gap: 40px; }
   .footer__brand { grid-column: 1 / -1; }
   .footer__brand img { height: 60px; }
-  .footer__bottom { flex-direction: column; gap: 16px; align-items: flex-start; }
+  .footer__bottom { gap: 20px 32px; }
 
   /* ===== Listing detail ===== */
 
@@ -445,7 +445,7 @@
   .footer__brand img { height: 60px; }
   .footer__h { font-size: 11px; margin-bottom: 16px; }
   .footer__links a { font-size: 13px; }
-  .footer__bottom { font-size: 12px; }
+  .footer__bottom { font-size: 12px; grid-template-columns: 1fr; gap: 16px; }
   .footer__bottom__links { gap: 18px; flex-wrap: wrap; }
 
   /* ===== Listing detail ===== */
