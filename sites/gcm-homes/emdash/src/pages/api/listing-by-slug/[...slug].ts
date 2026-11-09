@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { bySlug, lastSyncedAt } from "../../../lib/listings";
+import { bySlug, lastSyncedAt, listingHistory } from "../../../lib/listings";
 import { neighborhoodForPoint } from "../../../lib/neighborhoods";
 import { imageUrl } from "../../../lib/media";
 import { env } from "cloudflare:workers";
@@ -84,8 +84,10 @@ export const GET: APIRoute = async ({ params, locals }) => {
 			contact = { phone: realPhone((cta as any)?.entry?.data?.phone) };
 		} catch { contact = { phone: null }; }
 
-		const [grantIntro, syncedAt] = await Promise.all([getGrantIntro(), lastSyncedAt()]);
-		return new Response(JSON.stringify({ ...result, listing, marketIntel, area: areaInfo, canEdit, contact, grantIntro, syncedAt }), { headers: { "Content-Type": "application/json", "Cache-Control": cache } });
+		// Listing history: off-market listings only for a logged-in admin, whose
+		// response is private/no-store (above), so they never reach the edge cache.
+		const [grantIntro, syncedAt, history] = await Promise.all([getGrantIntro(), lastSyncedAt(), listingHistory(listing.id, canEdit)]);
+		return new Response(JSON.stringify({ ...result, listing, marketIntel, area: areaInfo, canEdit, contact, grantIntro, syncedAt, history }), { headers: { "Content-Type": "application/json", "Cache-Control": cache } });
 	} catch (e: any) {
 		return new Response(JSON.stringify({ error: e.message }), { status: 500, headers: { "Content-Type": "application/json" } });
 	}

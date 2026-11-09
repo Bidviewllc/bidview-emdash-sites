@@ -190,6 +190,80 @@ export function bathsOf(r: any): number | null {
 export const courtesyOf = (r: any): string | null =>
 	r.office ? `Listing courtesy of ${r.office}` : null;
 
+// ── Listing history (2026-11-09) ─────────────────────────────────────────────
+// Every MLS listing of the same home (grouped by parcel number in
+// listing_archive), turned into one dated list: listed, price changes, under
+// contract / pending, back on market, sold. Price and status changes come from
+// listing_events, which the sync fills (see recordEvents in sync.mjs); before
+// 2026-11-09 only each listing's latest change is known.
+//
+// Listings that ended off market (expired, withdrawn, cancelled) are left out
+// for visitors: the IDX feed itself never carries those statuses, which usually
+// means the MLS's display rules don't allow them on a public site. A logged-in
+// admin sees them, marked adminOnly, so Grant still has the full story.
+export type HistoryEvent = {
+	date: string;
+	event: string;
+	price: number | null;
+	change: number | null; // price change as a fraction of the old price
+	adminOnly: boolean;
+};
+const STATUS_EVENT: Record<string, string> = {
+	ActiveUnderContract: "Under contract",
+	Pending: "Pending",
+	Active: "Back on market",
+};
+// Same-day order, earliest step first: listed, price change, contract, sold.
+const EVENT_RANK: Record<string, number> = { Listed: 0, "Price change": 1, "Back on market": 1, "Under contract": 2, Pending: 3, Sold: 4, "Off market": 4 };
+const whenMs = (d: string) => Date.parse(d.length <= 10 ? `${d}T00:00:00Z` : d);
+
+export async function listingHistory(listingId: string, admin = false): Promise<HistoryEvent[]> {
+	try {
+		const me: any = await DB().prepare("SELECT parcel_number FROM listing_archive WHERE id = ?").bind(listingId).first();
+		// SELECT *, not a column list: original_price arrives with the first sync after
+		// this deploy (ensureSchema adds it), and a missing column must not empty the table.
+		const COLS = "*";
+		const { results } = me?.parcel_number
+			? await DB().prepare(`SELECT ${COLS} FROM listing_archive WHERE parcel_number = ?`).bind(me.parcel_number).all()
+			: await DB().prepare(`SELECT ${COLS} FROM listing_archive WHERE id = ?`).bind(listingId).all();
+		const rows: any[] = results ?? [];
+		if (!rows.length) return [];
+		let events: any[] = [];
+		try {
+			const ids = rows.map(r => r.id);
+			const ev = await DB().prepare(
+				`SELECT listing_key, kind, at, price, from_price, status, from_status FROM listing_events WHERE listing_key IN (${ids.map(() => "?").join(",")})`
+			).bind(...ids).all();
+			events = ev.results ?? [];
+		} catch { events = []; } // table not created yet (first sync after deploy makes it)
+
+		const out: HistoryEvent[] = [];
+		for (const r of rows) {
+			if (r.archive_status === "unknown") continue;
+			const offMarket = r.archive_status === "off_market";
+			if (offMarket && !admin) continue;
+			const mine = events.filter(e => e.listing_key === r.id);
+			const priceEvs = mine.filter(e => e.kind === "price").sort((a, b) => whenMs(a.at) - whenMs(b.at));
+			const statusEvs = mine.filter(e => e.kind === "status");
+			const add = (date: string | null, event: string, price: number | null = null, change: number | null = null) => {
+				if (date && !Number.isNaN(whenMs(date))) out.push({ date, event, price, change, adminOnly: offMarket });
+			};
+			add(r.listing_date, r.office ? `Listed by ${r.office}` : "Listed", r.original_price ?? priceEvs[0]?.from_price ?? r.price ?? null);
+			for (const e of priceEvs) add(e.at, "Price change", e.price ?? null, e.from_price ? (e.price - e.from_price) / e.from_price : null);
+			for (const e of statusEvs) if (STATUS_EVENT[e.status] && !(e.status === "Active" && !e.from_status)) add(e.at, STATUS_EVENT[e.status]);
+			// A sale's contract date, when no status change already covers it.
+			if (r.contract_date && !statusEvs.some(e => e.status === "Pending" || e.status === "ActiveUnderContract")) add(r.contract_date, "Under contract");
+			if (r.archive_status === "sold") add(r.close_date, "Sold", r.close_price ?? null);
+			if (offMarket) add(r.off_market_date, "Off market");
+		}
+		const rank = (e: HistoryEvent) => EVENT_RANK[e.event.startsWith("Listed") ? "Listed" : e.event] ?? 1;
+		// Newest first; on the same day the later step comes first.
+		return out.sort((a, b) => (whenMs(b.date.slice(0, 10)) - whenMs(a.date.slice(0, 10))) || (rank(b) - rank(a)));
+	} catch {
+		return [];
+	}
+}
+
 /**
  * When the sync last finished pulling the MLS (sync_meta), as an ISO string.
  * IDX rules ask for the date the data was last updated on every display; the

@@ -11,7 +11,7 @@
  * Env (with sensible fallbacks for local runs):
  *   TRESTLE_CLIENT_ID / TRESTLE_CLIENT_SECRET
  *   CF_ACCOUNT_ID / CF_D1_DATABASE_ID / CF_API_TOKEN
- *   SYNC_MODE = "sync" (default) | "backfill-sold"
+ *   SYNC_MODE = "sync" (default) | "backfill-sold" | "backfill-history"
  *
  * 2026-11-03 — the sold / off-market ARCHIVE (sites/gcm-homes/SOLD-ARCHIVE-PLAN.md).
  *   Before this, every run deleted a listing the moment it left the active feed,
@@ -79,6 +79,11 @@ const FULL_SELECT = [
   "ParcelNumber", "ListAgentMlsId", "BuyerAgentMlsId", "CoListAgentMlsId", "CoBuyerAgentMlsId",
   "BuyerAgentFullName", "BuyerOfficeName", "ClosePrice", "CloseDate", "OffMarketDate",
   "PurchaseContractDate",
+  // Added 2026-11-09 (listing history on the listing page): the first asking price,
+  // the price before the latest change and when it changed, and when the status
+  // last changed. OriginalListPrice / StatusChangeTimestamp are on every record;
+  // PreviousListPrice / PriceChangeTimestamp only once a price has changed (~45%).
+  "OriginalListPrice", "PreviousListPrice", "PriceChangeTimestamp", "StatusChangeTimestamp",
 ].join(",");
 
 // Grant's MLS agent id (ListAgentMlsId / BuyerAgentMlsId in the feed).
@@ -393,14 +398,19 @@ const ARCHIVE_EXTRA_COLS = [
   "first_seen_at", "last_seen_at",
   "owner_snapshot",   // JSON of Grant's ec_listings fields, taken as the row departs
   "main_photo_url",   // the lead MLS photo, kept so a sold listing still has a picture
-  "source",           // sync | backfill
+  "source",           // sync | backfill | backfill-history
+  // Added 2026-11-09 (listing history):
+  "original_price",   // OriginalListPrice: the first asking price of this listing
+  "previous_price",   // PreviousListPrice: the price before the latest change
+  "price_change_at",  // PriceChangeTimestamp
+  "status_change_at", // StatusChangeTimestamp
 ];
 const ARCHIVE_COLS = [...LCOLS, ...ARCHIVE_EXTRA_COLS];
 // SQLite stores a number in a TEXT-affinity column as text, which would break
 // `close_price >= …` and the price formatting, so the numeric columns are typed.
 const NUMERIC_COLS = new Set(["price","beds","baths","baths_full","baths_half","sqft","lot_acres","year_built","garage",
   "lat","lng","waterfront","dom","photos_count","taxes","hoa_fee","fireplaces","fireplace_yn","stories","lot_sqft",
-  "cum_dom","main_level_beds","spa_yn","close_price"]);
+  "cum_dom","main_level_beds","spa_yn","close_price","original_price","previous_price"]);
 const colType = c => NUMERIC_COLS.has(c) ? "REAL" : "TEXT";
 
 // Create the archive table on first run; add any column that is new since.
@@ -418,6 +428,14 @@ async function ensureSchema() {
   await d1("CREATE INDEX IF NOT EXISTS idx_archive_slug ON listing_archive(slug)");
   await d1("CREATE INDEX IF NOT EXISTS idx_archive_parcel ON listing_archive(parcel_number)");
   await d1("CREATE INDEX IF NOT EXISTS idx_archive_close ON listing_archive(close_date)");
+  // One row per price or status change the sync has seen (2026-11-09). The feed only
+  // carries the latest change, so the full run of price cuts exists only from the
+  // day this table started. `at` is the MLS timestamp when the feed gives one, so
+  // a change seen twice (feed field + our own comparison) lands on the same key.
+  await d1("CREATE TABLE IF NOT EXISTS listing_events (" +
+    "listing_key TEXT NOT NULL, kind TEXT NOT NULL, at TEXT NOT NULL, " +
+    "price REAL, from_price REAL, status TEXT, from_status TEXT, recorded_at TEXT, " +
+    "PRIMARY KEY (listing_key, kind, at))");
 }
 
 function archiveStatusOf(standardStatus) {
@@ -444,6 +462,8 @@ function buildArchiveRow(l, slug, primary, source, now) {
     null,          // owner_snapshot: never written by the upsert
     primary,
     source,
+    l.OriginalListPrice ?? null, l.PreviousListPrice ?? null,
+    l.PriceChangeTimestamp || null, l.StatusChangeTimestamp || null,
   ];
 }
 
@@ -493,6 +513,47 @@ async function snapshotDepartingOwnerFields(liveIds) {
     );
   }
   console.log(`owner snapshot: kept Grant's fields for ${rows.length} departing listing(s)`);
+}
+
+// Price and status changes, recorded BEFORE the archive upsert overwrites the last
+// values we saw. Two sources, both INSERT OR IGNORE so re-runs add nothing:
+//  - the feed's own latest change (PreviousListPrice -> ListPrice at
+//    PriceChangeTimestamp; a non-Active status at StatusChangeTimestamp), which
+//    also seeds history for listings that changed before this table existed;
+//  - our comparison with the archive row from the last run, which catches every
+//    change from now on even when the feed's timestamp field is empty.
+async function recordEvents(records, now) {
+  if (!records.length) return;
+  const prev = {};
+  for (let i = 0; i < records.length; i += 200) {
+    const ids = records.slice(i, i + 200).map(l => sqlVal(l.ListingKey)).join(",");
+    const res = await d1(`SELECT id, price, feed_status FROM listing_archive WHERE id IN (${ids})`);
+    for (const a of res?.[0]?.results ?? []) prev[a.id] = a;
+  }
+  const events = [];
+  for (const l of records) {
+    const p = prev[l.ListingKey];
+    const price = l.ListPrice ?? null;
+    if (l.PreviousListPrice != null && l.PriceChangeTimestamp && price != null && Number(l.PreviousListPrice) !== Number(price)) {
+      events.push([l.ListingKey, "price", l.PriceChangeTimestamp, price, l.PreviousListPrice, null, null, now]);
+    }
+    if (p && p.price != null && price != null && Number(p.price) !== Number(price)) {
+      events.push([l.ListingKey, "price", l.PriceChangeTimestamp || now, price, p.price, null, null, now]);
+    }
+    if (l.StandardStatus && l.StandardStatus !== "Active" && l.StandardStatus !== "Closed" && l.StatusChangeTimestamp) {
+      events.push([l.ListingKey, "status", l.StatusChangeTimestamp, null, null, l.StandardStatus, null, now]);
+    }
+    if (p && p.feed_status && l.StandardStatus && p.feed_status !== l.StandardStatus) {
+      events.push([l.ListingKey, "status", l.StatusChangeTimestamp || now, null, null, l.StandardStatus, p.feed_status, now]);
+    }
+  }
+  if (!events.length) { console.log("events: no price or status changes"); return; }
+  const cols = ["listing_key", "kind", "at", "price", "from_price", "status", "from_status", "recorded_at"];
+  for (let i = 0; i < events.length; i += 50) {
+    const tuples = events.slice(i, i + 50).map(e => "(" + e.map(sqlVal).join(",") + ")").join(",");
+    await d1(`INSERT OR IGNORE INTO listing_events (${cols.join(",")}) VALUES ${tuples}`);
+  }
+  console.log(`events: ${events.length} price/status change(s) checked in`);
 }
 
 // Archive rows that were live last run but are not in this pull: ask the feed what
@@ -582,6 +643,41 @@ async function backfillSold(token) {
   console.log("backfill: archive now holds", v?.[0]?.results?.[0]?.n, "sold listings");
 }
 
+// SYNC_MODE=backfill-history (2026-11-09): every closed sale of every home the
+// archive knows (by parcel), at any price and on any side, so each listing page's
+// history goes back to the MLS's oldest record. The sold backfill only took
+// Grant's sales and $5M+ ones. New listing keys only, and no photos: a row that
+// is already archived keeps everything it has. These rows are not added to
+// /sold/ (its filters are unchanged); they feed the history table. Re-runnable.
+async function backfillHistory(token) {
+  const r = await d1("SELECT DISTINCT parcel_number p FROM listing_archive WHERE parcel_number IS NOT NULL AND parcel_number <> ''");
+  const parcels = (r?.[0]?.results ?? []).map(x => x.p);
+  const have = await d1("SELECT id FROM listing_archive");
+  const known = new Set((have?.[0]?.results ?? []).map(a => a.id));
+  const raw = [];
+  for (let i = 0; i < parcels.length; i += 25) {
+    const batch = parcels.slice(i, i + 25).map(p => p.replace(/'/g, "''"));
+    raw.push(...await fetchProperties(token, `StandardStatus eq 'Closed' and ParcelNumber in ('${batch.join("','")}')`, FULL_SELECT, 10));
+  }
+  const fresh = raw.filter(l => !known.has(l.ListingKey));
+  console.log(`history backfill: ${parcels.length} homes, ${raw.length} closed sales in the feed, ${fresh.length} new to the archive`);
+  const slugs = await assignArchiveSlugs(fresh);
+  const now = new Date().toISOString();
+  await upsertArchive(fresh.map(l => buildArchiveRow(l, slugs[l.ListingKey], null, "backfill-history", now)));
+  // Older closed records carry their own last price change; keep it as history too.
+  await recordEvents(fresh, now);
+  // Rows already archived get just the new price fields (the upsert is skipped for
+  // them so their photo and Grant's snapshot are untouched).
+  const old = raw.filter(l => known.has(l.ListingKey));
+  for (const l of old) {
+    await d1(`UPDATE listing_archive SET original_price=${sqlVal(l.OriginalListPrice ?? null)}, previous_price=${sqlVal(l.PreviousListPrice ?? null)}, ` +
+      `price_change_at=${sqlVal(l.PriceChangeTimestamp || null)}, status_change_at=${sqlVal(l.StatusChangeTimestamp || null)} WHERE id=${sqlVal(l.ListingKey)}`);
+  }
+  await recordEvents(old, now);
+  const v = await d1("SELECT count(*) n FROM listing_archive WHERE archive_status='sold'");
+  console.log("history backfill: archive now holds", v?.[0]?.results?.[0]?.n, "sold listings");
+}
+
 /* ------------------------------------------------------------------- main */
 async function main() {
   if (!CF_TOKEN) throw new Error("CF_API_TOKEN env var is required");
@@ -596,7 +692,12 @@ async function main() {
     console.log(`backfill complete in ${((Date.now() - t0) / 1000).toFixed(1)}s`);
     return;
   }
-  if (SYNC_MODE !== "sync") throw new Error(`Unknown SYNC_MODE "${SYNC_MODE}" (use "sync" or "backfill-sold")`);
+  if (SYNC_MODE === "backfill-history") {
+    await backfillHistory(token);
+    console.log(`history backfill complete in ${((Date.now() - t0) / 1000).toFixed(1)}s`);
+    return;
+  }
+  if (SYNC_MODE !== "sync") throw new Error(`Unknown SYNC_MODE "${SYNC_MODE}" (use "sync", "backfill-sold" or "backfill-history")`);
 
   const raw = await fetchLive(token);
   const byStatus = {};
@@ -624,6 +725,9 @@ async function main() {
     for (const p of arr) photoRows.push([key, p.ord, p.url]);
   }
 
+  // Price/status changes first: they compare against the archive row from last run,
+  // which the upsert below overwrites. Non-fatal, like every extra step.
+  try { await recordEvents(raw, now); } catch (e) { console.error("events (non-fatal):", e.message); }
   // Archive first, before anything is deleted: a crash from here on loses nothing.
   await upsertArchive(archiveRows);
   console.log(`archive: upserted ${archiveRows.length} live listings`);
