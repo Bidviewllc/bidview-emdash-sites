@@ -298,50 +298,6 @@ export async function listingHistory(parcel: string | null, listingId: string, a
 	}
 }
 
-// ── Sale history (2026-11-09, plan stage 5) ──────────────────────────────────
-// One line per MLS listing number of the home, newest first: when it was listed
-// and for how much, how it ended, the close facts, the listing brokerage and
-// Grant's side when he was on one. The per-event table above stays as the
-// detail under it. Off-market listings are admin-only, as in listingHistory.
-export type SaleHistoryRow = {
-	key: string;
-	current: boolean;
-	listedDate: string | null;
-	listPrice: number | null;
-	originalPrice: number | null;
-	outcome: string; // On market / Under contract / Pending / Sold / Off market
-	closeDate: string | null;
-	closePrice: number | null;
-	office: string | null;
-	agent: string | null;
-	grantSide: string | null; // "Represented the seller" etc., or null
-	adminOnly: boolean;
-};
-const outcomeOf = (a: any): string =>
-	a.archive_status === "active" ? "On market"
-	: a.archive_status === "under_contract" ? (a.feed_status === "Pending" ? "Pending" : "Under contract")
-	: a.archive_status === "sold" ? "Sold" : "Off market";
-
-export async function saleHistory(parcel: string | null, listingId: string, currentKey: string | null, admin = false): Promise<SaleHistoryRow[]> {
-	const rows = await archiveRowsForHome(parcel, listingId);
-	return rows
-		.filter(a => admin || a.archive_status !== "off_market")
-		.map(a => ({
-			key: a.id,
-			current: a.id === currentKey,
-			listedDate: a.listing_date ?? null,
-			listPrice: a.price ?? null,
-			originalPrice: a.original_price ?? null,
-			outcome: outcomeOf(a),
-			closeDate: a.archive_status === "sold" ? (a.close_date ?? null) : null,
-			closePrice: a.archive_status === "sold" ? (a.close_price ?? null) : null,
-			office: a.office ?? null,
-			agent: a.agent ?? null,
-			grantSide: representedLabel(representedBy(a)),
-			adminOnly: a.archive_status === "off_market",
-		}));
-}
-
 /**
  * When the sync last finished pulling the MLS (sync_meta), as an ISO string.
  * IDX rules ask for the date the data was last updated on every display; the

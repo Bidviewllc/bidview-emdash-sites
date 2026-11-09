@@ -1523,6 +1523,18 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
   font-size: 12px; line-height: 1.6; color: var(--white); max-width: 640px;
 }
 .footer__eho img { flex: none; width: 30px; height: 30px; }
+/* 2026-11-09 (Liz): the three disclaimers and the copyright sit two by two --
+   row 1 the MLS data line and the brokerage line, row 2 Equal Housing and the
+   copyright. One column on phones (responsive.css). */
+.footer__bottom {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px 56px;
+  align-items: start;
+}
+.footer__bottom .footer__disclaimer,
+.footer__bottom .footer__eho { max-width: none; }
+.footer__bottom > span:last-child { align-self: center; }
 
 /* ===== Listing detail page ===== */
 .listing-hero {
