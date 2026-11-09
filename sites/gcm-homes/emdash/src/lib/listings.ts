@@ -1,24 +1,50 @@
 // Read-only listings access from the Trestle-synced D1 tables (listings,
-// listing_photos). Shapes rows into the same JSON the prototype's listings/
-// detail JS expects, so that client code ports over unchanged.
+// listing_photos, listing_archive) and the admin "Listings" collection
+// (ec_listings). Shapes rows into the same JSON the prototype's listings/detail
+// JS expects, so that client code ports over unchanged.
+//
+// 2026-11-09 — ONE PAGE PER HOME (sites/gcm-homes/PROPERTY-PAGES-PLAN.md).
+// The MLS gives a home a new listing number every time it is relisted or
+// resold, and the site used to make a new page per listing. Now a HOME is one
+// row in ec_listings, keyed by parcel number (`p-<parcel>`), with one URL that
+// never changes; every URL ever used for it (`property_slugs`) answers 301.
+// The home row carries Grant's fields, its status (`home_status`) and the key of
+// its current listing (`_current_listing`); the MLS facts come from `listings`
+// while that listing is live and from `listing_archive` afterwards.
 import { env } from "cloudflare:workers";
 import { portableTextToHtml, plainToPortableText } from "./portabletext";
 
 const DB = () => (env as any).DB as any;
 
 // ── Owner checkboxes (ec_listings, never written by the Trestle sync) ────────
-// SQL fragments for any query that joins `listings l LEFT JOIN ec_listings e
-// ON e.id = l.id`. The columns are TEXT, and the admin checkbox saves a tick as
-// '1.0' (so an untick as '0.0'), while SQL writes '1'/'0', so anything but
+// SQL fragments for any query that joins the live table to its home row:
+//   listings l ${HOME_JOIN}   (= LEFT JOIN ec_listings e ON e.id = 'p-' || l.parcel_number)
+// The columns are TEXT, and the admin checkbox saves a tick as '1.0' (so an
+// untick as '0.0'), while SQL writes '1'/'0', so anything but
 // empty/0/0.0/false counts as on.
-// "Hide from search" drops a listing from every list, search, featured row,
-// neighbourhood page, random section photo and the sitemap; its detail page
-// still answers a direct link, with a noindex tag.
+// "Hide from search" drops a home from every list, search, featured row,
+// neighbourhood page, random section photo and the sitemap; its page still
+// answers a direct link, with a noindex tag.
 const OFF = "('', '0', '0.0', 'false')";
-export const NOT_HIDDEN = `COALESCE(e.hidden, '') IN ${OFF}`;
+// The MLS writes the same parcel two ways across the years ("130-191-07" and
+// "13019107"), so a home's id is `p-` + the parcel with punctuation stripped.
+// A Washoe APN is 8 digits; a few listings add a "-000" suffix, dropped here
+// (Douglas County's 12-digit APNs are left alone). Same rule as seed/lib/homes.mjs.
+export const PARCEL_SQL = (col: string): string => { const x = `replace(replace(replace(${col},'-',''),' ',''),'.','')`; return `CASE WHEN length(${x}) = 11 AND ${x} LIKE '%000' THEN substr(${x},1,8) ELSE ${x} END`; };
+export const normParcel = (s: unknown): string => { const n = String(s ?? "").replace(/[^0-9a-zA-Z]/g, ""); return n.length === 11 && n.endsWith("000") ? n.slice(0, 8) : n; };
+export const HOME_JOIN = `LEFT JOIN ec_listings e ON e.id = 'p-' || ${PARCEL_SQL("l.parcel_number")}`;
+// A home can carry two live MLS records at once (893 Donna Drive, 807 Alder 38
+// on 2026-11-09: the same home entered twice). One page per home means one
+// card: only the home's current listing is shown while that listing is live.
+const CURRENT_ONLY = `(e.id IS NULL OR e."_current_listing" IS NULL OR e."_current_listing" = l.id OR NOT EXISTS (SELECT 1 FROM listings l2 WHERE l2.id = e."_current_listing"))`;
+export const NOT_HIDDEN = `COALESCE(e.hidden, '') IN ${OFF} AND ${CURRENT_ONLY}`;
 const IS_FEATURED = `COALESCE(e.featured, '') NOT IN ${OFF}`;
 // "Featured" listings sort ahead of the rest; put this first in ORDER BY.
 export const FEATURED_FIRST = `(${IS_FEATURED}) DESC`;
+// Cards link to the HOME's URL (e.slug), never to a per-listing slug; add this
+// to any SELECT that feeds toListing() so the link is right first time.
+export const HOME_SLUG_COL = "e.slug AS home_slug";
+const isOn = (v: any) => v != null && !["", "0", "0.0", "false"].includes(String(v).trim());
 
 // ── Days on market ───────────────────────────────────────────────────────────
 // Trestle does NOT recompute DaysOnMarket daily. The MLS writes it when the
@@ -134,7 +160,9 @@ export function featuresOf(r: any): string[] {
 // (2026-11-03; before that a home vanished the moment it went under contract),
 // and `listing_archive` holds what left the feed. These are Liz's labels for
 // the badge every card and detail page shows. The MLS calls
-// ActiveUnderContract "Contingent"; we don't.
+// ActiveUnderContract "Contingent"; we don't. A HOME's status (ec_listings
+// .home_status, set by the sync from its current listing) uses the same five
+// words: On market, Under contract, Pending, Sold, Off market.
 export const STATUS_LABELS: Record<string, string> = {
 	Active: "On market",
 	ActiveUnderContract: "Under contract",
@@ -143,6 +171,8 @@ export const STATUS_LABELS: Record<string, string> = {
 };
 export const statusLabel = (status: string | null | undefined): string =>
 	STATUS_LABELS[String(status ?? "")] ?? "On market";
+export const HOME_STATUSES = ["On market", "Under contract", "Pending", "Sold", "Off market"] as const;
+export type HomeStatus = (typeof HOME_STATUSES)[number];
 // What the live pull keeps, in the order the cards sort them (on market first).
 const LIVE_STATUSES = "('Active','ActiveUnderContract','Pending')";
 const LIVE_ORDER = "CASE l.status WHEN 'Active' THEN 0 WHEN 'ActiveUnderContract' THEN 1 ELSE 2 END";
@@ -217,16 +247,21 @@ const STATUS_EVENT: Record<string, string> = {
 const EVENT_RANK: Record<string, number> = { Listed: 0, "Price change": 1, "Back on market": 1, "Under contract": 2, Pending: 3, Sold: 4, "Off market": 4 };
 const whenMs = (d: string) => Date.parse(d.length <= 10 ? `${d}T00:00:00Z` : d);
 
-export async function listingHistory(listingId: string, admin = false): Promise<HistoryEvent[]> {
+/** Every archive row of one home, newest listing first (a live one first of all). */
+async function archiveRowsForHome(parcel: string | null, listingId: string): Promise<any[]> {
 	try {
-		const me: any = await DB().prepare("SELECT parcel_number FROM listing_archive WHERE id = ?").bind(listingId).first();
-		// SELECT *, not a column list: original_price arrives with the first sync after
-		// this deploy (ensureSchema adds it), and a missing column must not empty the table.
-		const COLS = "*";
-		const { results } = me?.parcel_number
-			? await DB().prepare(`SELECT ${COLS} FROM listing_archive WHERE parcel_number = ?`).bind(me.parcel_number).all()
-			: await DB().prepare(`SELECT ${COLS} FROM listing_archive WHERE id = ?`).bind(listingId).all();
-		const rows: any[] = results ?? [];
+		const { results } = parcel
+			? await DB().prepare(`SELECT * FROM listing_archive WHERE ${PARCEL_SQL("parcel_number")} = ?`).bind(parcel).all()
+			: await DB().prepare("SELECT * FROM listing_archive WHERE id = ?").bind(listingId).all();
+		const rows: any[] = (results ?? []).filter((r: any) => r.archive_status !== "unknown");
+		const live = (a: any) => a.archive_status === "active" || a.archive_status === "under_contract" ? 1 : 0;
+		return rows.sort((x, y) => (live(y) - live(x)) || String(y.listing_date || "").localeCompare(String(x.listing_date || "")) || String(y.first_seen_at || "").localeCompare(String(x.first_seen_at || "")));
+	} catch { return []; }
+}
+
+export async function listingHistory(parcel: string | null, listingId: string, admin = false): Promise<HistoryEvent[]> {
+	try {
+		const rows = await archiveRowsForHome(parcel, listingId);
 		if (!rows.length) return [];
 		let events: any[] = [];
 		try {
@@ -239,7 +274,6 @@ export async function listingHistory(listingId: string, admin = false): Promise<
 
 		const out: HistoryEvent[] = [];
 		for (const r of rows) {
-			if (r.archive_status === "unknown") continue;
 			const offMarket = r.archive_status === "off_market";
 			if (offMarket && !admin) continue;
 			const mine = events.filter(e => e.listing_key === r.id);
@@ -264,6 +298,50 @@ export async function listingHistory(listingId: string, admin = false): Promise<
 	}
 }
 
+// ── Sale history (2026-11-09, plan stage 5) ──────────────────────────────────
+// One line per MLS listing number of the home, newest first: when it was listed
+// and for how much, how it ended, the close facts, the listing brokerage and
+// Grant's side when he was on one. The per-event table above stays as the
+// detail under it. Off-market listings are admin-only, as in listingHistory.
+export type SaleHistoryRow = {
+	key: string;
+	current: boolean;
+	listedDate: string | null;
+	listPrice: number | null;
+	originalPrice: number | null;
+	outcome: string; // On market / Under contract / Pending / Sold / Off market
+	closeDate: string | null;
+	closePrice: number | null;
+	office: string | null;
+	agent: string | null;
+	grantSide: string | null; // "Represented the seller" etc., or null
+	adminOnly: boolean;
+};
+const outcomeOf = (a: any): string =>
+	a.archive_status === "active" ? "On market"
+	: a.archive_status === "under_contract" ? (a.feed_status === "Pending" ? "Pending" : "Under contract")
+	: a.archive_status === "sold" ? "Sold" : "Off market";
+
+export async function saleHistory(parcel: string | null, listingId: string, currentKey: string | null, admin = false): Promise<SaleHistoryRow[]> {
+	const rows = await archiveRowsForHome(parcel, listingId);
+	return rows
+		.filter(a => admin || a.archive_status !== "off_market")
+		.map(a => ({
+			key: a.id,
+			current: a.id === currentKey,
+			listedDate: a.listing_date ?? null,
+			listPrice: a.price ?? null,
+			originalPrice: a.original_price ?? null,
+			outcome: outcomeOf(a),
+			closeDate: a.archive_status === "sold" ? (a.close_date ?? null) : null,
+			closePrice: a.archive_status === "sold" ? (a.close_price ?? null) : null,
+			office: a.office ?? null,
+			agent: a.agent ?? null,
+			grantSide: representedLabel(representedBy(a)),
+			adminOnly: a.archive_status === "off_market",
+		}));
+}
+
 /**
  * When the sync last finished pulling the MLS (sync_meta), as an ISO string.
  * IDX rules ask for the date the data was last updated on every display; the
@@ -278,12 +356,16 @@ export async function lastSyncedAt(): Promise<string | null> {
 
 export function toListing(r: any) {
 	return {
-		id: r.id, slug: r.slug, address: r.address,
+		id: r.id,
+		// The home's URL when the row was joined to its home (HOME_SLUG_COL); the
+		// per-listing slug otherwise, which 301s to the home anyway.
+		slug: r.home_slug || r.slug,
+		address: r.address,
 		city: r.city, state: r.state, zip: r.zip,
 		price: r.price, beds: r.beds, baths: bathsOf(r),
 		sqft: r.sqft, lotAcres: r.lot_acres, yearBuilt: r.year_built,
 		type: r.type, subType: r.sub_type, category: r.category, status: r.status,
-		statusLabel: statusLabel(r.status),
+		statusLabel: r.home_status || statusLabel(r.status),
 		lat: r.lat, lng: r.lng, view: r.view, waterfront: r.waterfront === 1,
 		dom: liveDom(r), photosCount: r.photos_count, agent: r.agent, office: r.office,
 		updated: r.updated, photo: r.photo, feats: featuresOf(r),
@@ -312,86 +394,119 @@ export function toDetail(r: any) {
 	};
 }
 
-/** True when the listing at `slug` is ticked "Hide from search" (detail page adds noindex). */
-export async function isHiddenSlug(slug: string): Promise<boolean> {
+// ── Homes (ec_listings, one row per parcel) ──────────────────────────────────
+export type HomeRow = Record<string, any> & { id: string; slug: string; home_status: HomeStatus | null };
+
+/**
+ * The home a URL slug belongs to. A direct hit on the home's own slug comes
+ * back as `{ home }`; a slug from property_slugs (an old per-listing URL, a
+ * misspelling, the `incline-village-ca` one) comes back as `{ home, redirect }`
+ * so the route can 301 to the home's URL. Null when the slug is unknown.
+ */
+export async function homeBySlug(slug: string): Promise<{ home: HomeRow; redirect: string | null } | null> {
 	try {
-		const row = await DB().prepare(
-			`SELECT 1 AS h FROM listings l JOIN ec_listings e ON e.id = l.id WHERE l.slug = ? AND NOT (${NOT_HIDDEN})`
-		).bind(slug).first();
-		if (row) return true;
-		// A sold page: the tick lives in ec_sold_listings (or the snapshot taken as it left the feed).
-		const sold = await DB().prepare(
-			`SELECT 1 AS h FROM listing_archive a LEFT JOIN ec_sold_listings e ON e.id = a.id WHERE a.slug = ? AND NOT (${NOT_HIDDEN_ARCHIVE})`
-		).bind(slug).first();
-		return !!sold;
-	} catch {
-		return false;
-	}
+		const home: any = await DB().prepare("SELECT * FROM ec_listings WHERE slug = ?").bind(slug).first();
+		if (home) return { home, redirect: null };
+		const ps: any = await DB().prepare("SELECT property_id FROM property_slugs WHERE slug = ?").bind(slug).first();
+		if (!ps?.property_id) return null;
+		const target: any = await DB().prepare("SELECT * FROM ec_listings WHERE id = ?").bind(ps.property_id).first();
+		return target ? { home: target, redirect: target.slug } : null;
+	} catch { return null; }
+}
+export const parcelOf = (home: HomeRow): string | null => home.id.startsWith("p-") ? home.id.slice(2) : null;
+
+/** True when the home at `slug` is ticked "Hide from search" (detail page adds noindex). */
+export async function isHiddenSlug(slug: string): Promise<boolean> {
+	const h = await homeBySlug(slug);
+	return !!h && isOn(h.home.hidden);
 }
 
 /**
  * Everything on the market: active, under contract and pending, in that order,
  * then priciest first. Feeds /listings/ (where the status badge tells them
- * apart) and the sitemap. Listings ticked "Hide from search" are left out. The
+ * apart) and the sitemap. Homes ticked "Hide from search" are left out. The
  * home, community and blog featured rows use FEATURED_ROW instead.
  */
 export async function allLive() {
-	// LEFT JOIN the emdash mirror so cards can surface a "Grant's note" flag. Owner
-	// note lives in ec_listings.owner_note (preserved across every sync).
+	// Join the home row for the URL, the hidden tick and Grant's note flag.
 	const { results } = await DB().prepare(
-		`SELECT l.*, e.owner_note AS owner_note FROM listings l LEFT JOIN ec_listings e ON e.id = l.id WHERE l.status IN ${LIVE_STATUSES} AND ${NOT_HIDDEN} ORDER BY ${LIVE_ORDER}, (l.photo IS NULL), l.price DESC`
+		`SELECT l.*, ${HOME_SLUG_COL}, e.home_status AS home_status, e.owner_note AS owner_note FROM listings l ${HOME_JOIN} WHERE l.status IN ${LIVE_STATUSES} AND ${NOT_HIDDEN} ORDER BY ${LIVE_ORDER}, (l.photo IS NULL), l.price DESC`
 	).all();
 	return (results ?? []).map((r: any) => ({ ...toListing(r), ownerNote: r.owner_note ?? null }));
 }
 
-// ── Sold listings (listing_archive + ec_sold_listings) ───────────────────────
-// Rows the sync marked `sold`, shaped like a card plus the close facts. Grant's
-// fields for a sale live in the `sold_listings` admin collection
-// (ec_sold_listings, built by seed/mirror-sold-listings.mjs and kept fresh by
-// the sync). Until a sale has a row there, the Hidden tick he set while the
-// listing was live still counts (it travels in owner_snapshot).
-function toSoldCard(r: any) {
-	const side = representedBy(r);
-	return {
-		...toListing(r),
-		headline: r.e_headline || null,
-		photo: r.main_photo_url || r.photo || null,
-		closePrice: r.close_price ?? null,
-		closeDate: r.close_date ?? null,
-		represented: side,
-		representedLabel: representedLabel(side),
-	};
-}
-const NOT_HIDDEN_ARCHIVE = `COALESCE(NULLIF(e.hidden, ''), json_extract(a.owner_snapshot, '$.hidden'), '') IN ${OFF}`;
+// ── Sold homes (listing_archive grouped by parcel + the home row) ────────────
+// One card per HOME, not per sale (Liz, decision 4): 571 Dale Drive is one
+// card that says "2 sales with Grant". A home belongs in Grant's section when
+// he was on a side of any of its sales; otherwise it is a notable sale when a
+// sale closed at or above the floor within the window.
+export type SoldHome = ReturnType<typeof toListing> & {
+	homeId: string;
+	headline: string | null;
+	closePrice: number | null;
+	closeDate: string | null;
+	represented: ReturnType<typeof representedBy>;
+	representedLabel: string | null;
+	grantSales: number;
+	sales: number;
+	featured: boolean;
+};
 const GRANT_ON_A_SIDE = `(a.list_agent_id = ? OR a.buyer_agent_id = ? OR a.co_list_agent_id = ? OR a.co_buyer_agent_id = ?)`;
-// "Featured sale" in the admin leads its section on /sold/.
-const SOLD_FEATURED_FIRST = `(COALESCE(e.featured, '') NOT IN ${OFF}) DESC`;
-const SOLD_SELECT = `SELECT a.*, e.headline AS e_headline FROM listing_archive a LEFT JOIN ec_sold_listings e ON e.id = a.id`;
 
-/** Every closed sale Grant was on a side of, newest close first. */
-export async function soldByGrant() {
+async function soldArchiveRows(): Promise<any[]> {
+	const since = new Date();
+	since.setFullYear(since.getFullYear() - SOLD_OTHERS_YEARS);
 	try {
 		const { results } = await DB().prepare(
-			`${SOLD_SELECT} WHERE a.archive_status = 'sold' AND ${GRANT_ON_A_SIDE} AND ${NOT_HIDDEN_ARCHIVE} ORDER BY ${SOLD_FEATURED_FIRST}, a.close_date DESC, a.close_price DESC`
-		).bind(GRANT_AGENT_ID, GRANT_AGENT_ID, GRANT_AGENT_ID, GRANT_AGENT_ID).all();
-		return (results ?? []).map(toSoldCard);
-	} catch { return []; }
-}
-/** Other agents' closed sales at or above the floor, within the window. */
-export async function soldNotable() {
-	try {
-		const since = new Date();
-		since.setFullYear(since.getFullYear() - SOLD_OTHERS_YEARS);
-		const { results } = await DB().prepare(
-			`${SOLD_SELECT} WHERE a.archive_status = 'sold' AND NOT ${GRANT_ON_A_SIDE} AND a.close_price >= ? AND a.close_date >= ? AND ${NOT_HIDDEN_ARCHIVE} ORDER BY ${SOLD_FEATURED_FIRST}, a.close_date DESC, a.close_price DESC`
+			`SELECT a.*, e.slug AS home_slug, e.id AS home_id, e.headline AS e_headline, e.featured AS e_featured, e.hidden AS e_hidden, e.show_grant AS e_show_grant, e.photo AS e_photo, e.home_status AS home_status
+			 FROM listing_archive a JOIN ec_listings e ON e.id = 'p-' || ${PARCEL_SQL("a.parcel_number")}
+			 WHERE a.archive_status = 'sold' AND (${GRANT_ON_A_SIDE} OR (a.close_price >= ? AND a.close_date >= ?))
+			 ORDER BY a.close_date DESC, a.close_price DESC`
 		).bind(GRANT_AGENT_ID, GRANT_AGENT_ID, GRANT_AGENT_ID, GRANT_AGENT_ID, SOLD_OTHERS_MIN_PRICE, since.toISOString().slice(0, 10)).all();
-		return (results ?? []).map(toSoldCard);
+		return results ?? [];
 	} catch { return []; }
 }
-/** Slugs of every sold listing the site shows, for the sitemap. */
+
+/** Every sold home the site shows, one entry per home, newest close first. */
+export async function soldHomes(): Promise<{ grant: SoldHome[]; notable: SoldHome[] }> {
+	const rows = await soldArchiveRows();
+	const byHome = new Map<string, any[]>();
+	for (const r of rows) {
+		if (isOn(r.e_hidden)) continue;
+		if (!byHome.has(r.home_id)) byHome.set(r.home_id, []);
+		byHome.get(r.home_id)!.push(r);
+	}
+	const grant: SoldHome[] = [], notable: SoldHome[] = [];
+	for (const [homeId, sales] of byHome) {
+		const grantSales = sales.filter(s => representedBy(s));
+		// The card shows the newest sale; when Grant was on one, his newest.
+		const lead = grantSales[0] ?? sales[0];
+		const side = representedBy(lead);
+		const card: SoldHome = {
+			...toListing(lead),
+			slug: lead.home_slug,
+			homeId,
+			// Grant's headline shows only while his content switch is on.
+			headline: isOn(lead.e_show_grant) ? (lead.e_headline || null) : null,
+			photo: lead.main_photo_url || lead.photo || lead.e_photo || null,
+			statusLabel: lead.home_status || "Sold",
+			closePrice: lead.close_price ?? null,
+			closeDate: lead.close_date ?? null,
+			represented: side,
+			representedLabel: representedLabel(side),
+			grantSales: grantSales.length,
+			sales: sales.length,
+			featured: isOn(lead.e_featured),
+		};
+		(grantSales.length ? grant : notable).push(card);
+	}
+	const order = (a: SoldHome, b: SoldHome) => (Number(b.featured) - Number(a.featured)) || String(b.closeDate || "").localeCompare(String(a.closeDate || "")) || ((b.closePrice ?? 0) - (a.closePrice ?? 0));
+	return { grant: grant.sort(order), notable: notable.sort(order) };
+}
+/** Slugs (home URLs) of every sold home the site shows, for the sitemap. */
 export async function soldSlugs(): Promise<string[]> {
-	const [a, b] = await Promise.all([soldByGrant(), soldNotable()]);
-	return [...a, ...b].map((l: any) => l.slug).filter(Boolean);
+	const { grant, notable } = await soldHomes();
+	return [...grant, ...notable].map(h => h.slug).filter(Boolean);
 }
 /**
  * The lead photo of one active Residential listing, picked at random -- a house,
@@ -402,7 +517,7 @@ export async function soldSlugs(): Promise<string[]> {
 export async function randomHomePhoto(): Promise<string | null> {
 	try {
 		const row = await DB().prepare(
-			`SELECT l.photo FROM listings l LEFT JOIN ec_listings e ON e.id = l.id WHERE l.status='Active' AND l.type='Residential' AND l.photo IS NOT NULL AND l.photo != '' AND ${NOT_HIDDEN} ORDER BY RANDOM() LIMIT 1`
+			`SELECT l.photo FROM listings l ${HOME_JOIN} WHERE l.status='Active' AND l.type='Residential' AND l.photo IS NOT NULL AND l.photo != '' AND ${NOT_HIDDEN} ORDER BY RANDOM() LIMIT 1`
 		).first();
 		return (row as any)?.photo ?? null;
 	} catch {
@@ -418,7 +533,7 @@ export async function randomHomePhoto(): Promise<string | null> {
 export async function randomHomePhotos(n: number): Promise<string[]> {
 	try {
 		const { results } = await DB().prepare(
-			`SELECT l.photo FROM listings l LEFT JOIN ec_listings e ON e.id = l.id WHERE l.status='Active' AND l.type='Residential' AND l.photo IS NOT NULL AND l.photo != '' AND ${NOT_HIDDEN} ORDER BY RANDOM() LIMIT ?`
+			`SELECT l.photo FROM listings l ${HOME_JOIN} WHERE l.status='Active' AND l.type='Residential' AND l.photo IS NOT NULL AND l.photo != '' AND ${NOT_HIDDEN} ORDER BY RANDOM() LIMIT ?`
 		).bind(n).all();
 		return (results ?? []).map((r: any) => r.photo);
 	} catch {
@@ -439,64 +554,6 @@ export async function listingPhotos(listingKey: string, n: number): Promise<stri
 	return (results ?? []).map((p: any) => p.url);
 }
 
-/**
- * A listing that is no longer live, looked up in the archive. Sold rows come
- * back shaped like a live listing (one photo, the close facts, Grant's saved
- * fields) so the detail page can show them with a Sold badge. Anything else
- * that left the feed (expired, withdrawn, cancelled) returns `{ gone: true }`
- * and the routes answer 410 so search engines drop the URL.
- */
-async function archivedBySlug(slug: string) {
-	let row: any;
-	try {
-		row = await DB().prepare("SELECT * FROM listing_archive WHERE slug = ? ORDER BY (archive_status = 'sold') DESC, close_date DESC LIMIT 1").bind(slug).first();
-	} catch { row = null; }
-	if (!row) return null;
-	if (row.archive_status !== "sold") return { gone: true as const };
-	const clean = (v: any) => { const s = (v ?? "").toString().trim(); return s === "" ? null : s; };
-	// Grant's fields: the Sold Listings admin row once the mirror has made one
-	// (edits after the sale land there), else the snapshot taken as the listing
-	// left the feed. A description still equal to the MLS snapshot is not "custom".
-	const ov = await getOverride(row.id, "ec_sold_listings");
-	let fields: { description: string | null; isCustom: boolean; note: string | null; headline: string | null; tourUrl: string | null; noteImage: string | null; noteVideos: string | null; floorPlanEmbed: string | null; floorPlanImages: string | null };
-	if (ov.exists) {
-		fields = { description: ov.description ?? ov.mlsDescription, isCustom: ov.isOverride, note: ov.note, headline: ov.headline, tourUrl: ov.tourUrl, noteImage: ov.noteImage, noteVideos: ov.noteVideos, floorPlanEmbed: ov.floorPlanEmbed, floorPlanImages: ov.floorPlanImages };
-	} else {
-		let snap: any = {};
-		try { snap = row.owner_snapshot ? JSON.parse(row.owner_snapshot) : {}; } catch { snap = {}; }
-		const customPT = clean(snap.description);
-		fields = { description: customPT, isCustom: !!customPT, note: clean(snap.owner_note), headline: clean(snap.headline), tourUrl: clean(snap.tour_url), noteImage: clean(snap.note_image), noteVideos: clean(snap.note_videos), floorPlanEmbed: clean(snap.floor_plan_embed), floorPlanImages: clean(snap.floor_plan_images) };
-	}
-	const pt = fields.description;
-	const descriptionHtml = portableTextToHtml(pt ? (pt.startsWith("[") ? pt : plainToPortableText(pt)) : plainToPortableText(row.description ?? ""));
-	const detail = toDetail(row);
-	detail.description = descriptionHtml;
-	const side = representedBy(row);
-	const photo = row.main_photo_url || row.photo || null;
-	return {
-		listing: {
-			...detail,
-			descriptionHtml,
-			descriptionIsCustom: fields.isCustom,
-			ownerNote: fields.note,
-			headline: fields.headline,
-			tourUrl: fields.tourUrl ?? matterportFrom(row.tour_url_mls),
-			noteImage: fields.noteImage,
-			noteVideos: fields.noteVideos,
-			floorPlanEmbed: fields.floorPlanEmbed,
-			floorPlanImages: fields.floorPlanImages,
-			archived: true,
-			sold: {
-				closePrice: row.close_price ?? null,
-				closeDate: row.close_date ?? null,
-				represented: side,
-				representedLabel: representedLabel(side),
-			},
-		},
-		photos: photo ? [photo] : [],
-	};
-}
-
 // The 3D tour section only plays Matterport tours. The MLS tour field is more often
 // a whole marketing site or a video, so it fills the section only when it holds a
 // Matterport link; the admin sees the raw value under the 3D Tour URL field and can
@@ -511,94 +568,154 @@ function matterportFrom(raw: unknown): string | null {
 	return null;
 }
 
-export async function bySlug(slug: string) {
-	const row = await DB().prepare("SELECT * FROM listings WHERE slug = ?").bind(slug).first();
-	if (!row) return archivedBySlug(slug);
-	const { results } = await DB().prepare(
-		"SELECT url FROM listing_photos WHERE listing_key = ? ORDER BY ord"
-	).bind((row as any).id).all();
-	const ov = await getOverride((row as any).id);
-	// description is stored as Portable Text (WYSIWYG). Fall back to the live MLS
-	// remarks (converted) if the snapshot is somehow missing.
-	const effectivePT = ov.description ?? ov.mlsDescription ?? plainToPortableText((row as any).description ?? "");
+/**
+ * Off-market rule (plan, URLs): a home whose current listing left the feed
+ * without closing keeps its page, with the Off market badge, when the site shows
+ * a sale of it or Grant was ever on a side of one of its listings. Any other
+ * off-market home answers 410 so search engines drop the URL.
+ */
+async function keepsOffMarketPage(parcel: string | null): Promise<boolean> {
+	if (!parcel) return false;
+	try {
+		const since = new Date();
+		since.setFullYear(since.getFullYear() - SOLD_OTHERS_YEARS);
+		const row: any = await DB().prepare(
+			`SELECT 1 AS k FROM listing_archive a WHERE ${PARCEL_SQL("a.parcel_number")} = ? AND (${GRANT_ON_A_SIDE} OR (a.archive_status = 'sold' AND a.close_price >= ? AND a.close_date >= ?)) LIMIT 1`
+		).bind(parcel, GRANT_AGENT_ID, GRANT_AGENT_ID, GRANT_AGENT_ID, GRANT_AGENT_ID, SOLD_OTHERS_MIN_PRICE, since.toISOString().slice(0, 10)).first();
+		return !!row;
+	} catch { return false; }
+}
+
+/**
+ * The listing page's data for a URL slug. Resolves the slug to its HOME, then
+ * reads the home's current listing: from `listings` (full MLS data, every
+ * photo) while it is live, from `listing_archive` (one photo, the close facts)
+ * once it has sold or left the feed. Grant's fields come from the home row and
+ * are returned only while his content switch (show_grant) is on; with it off
+ * the page shows the MLS remarks, and a Matterport link from the MLS still
+ * plays. Returns `{ redirect }` for an old URL, `{ gone }` for an off-market
+ * home the site no longer shows, null for an unknown slug.
+ */
+export async function bySlug(slug: string): Promise<any> {
+	const found = await homeBySlug(slug);
+	if (!found) return null;
+	if (found.redirect && found.redirect !== slug) return { redirect: found.redirect as string, home: found.home };
+	const home = found.home;
+	const parcel = parcelOf(home);
+	const currentKey: string | null = home._current_listing ?? null;
+	let row: any = currentKey ? await DB().prepare("SELECT * FROM listings WHERE id = ?").bind(currentKey).first() : null;
+	// A live listing of this home that the mirror has not caught up with yet.
+	if (!row && parcel) row = await DB().prepare(`SELECT * FROM listings WHERE ${PARCEL_SQL("parcel_number")} = ? ORDER BY listing_date DESC LIMIT 1`).bind(parcel).first();
+	const live = !!row;
+	if (!row && currentKey) row = await DB().prepare("SELECT * FROM listing_archive WHERE id = ?").bind(currentKey).first();
+	if (!row) return null;
+
+	const homeStatus: string = home.home_status || (live ? statusLabel(row.status) : (row.archive_status === "sold" ? "Sold" : "Off market"));
+	if (homeStatus === "Off market" && !(await keepsOffMarketPage(parcel))) return { gone: true as const };
+
+	let photos: string[] = [];
+	if (live) {
+		const { results } = await DB().prepare("SELECT url FROM listing_photos WHERE listing_key = ? ORDER BY ord").bind(row.id).all();
+		photos = (results ?? []).map((p: any) => p.url);
+	} else {
+		const one = row.main_photo_url || row.photo || home.photo || null;
+		photos = one ? [one] : [];
+	}
+
+	const showGrant = isOn(home.show_grant);
+	const ov = overrideFrom(home);
+	// Description is stored as Portable Text (WYSIWYG). With the switch off, the
+	// live MLS remarks are shown whatever Grant wrote.
+	const mlsPT = plainToPortableText(row.description ?? "");
+	const effectivePT = showGrant ? (ov.description ?? ov.mlsDescription ?? mlsPT) : (ov.mlsDescription ?? mlsPT);
 	const descriptionHtml = portableTextToHtml(effectivePT);
 	const detail = toDetail(row);
 	detail.description = descriptionHtml; // legacy field now carries rendered HTML
+	detail.statusLabel = homeStatus;
+	if (!live) detail.status = homeStatus === "Sold" ? "Closed" : "OffMarket";
+	const side = !live && row.archive_status === "sold" ? representedBy(row) : null;
 	return {
 		listing: {
 			...detail,
+			slug: home.slug,
+			homeId: home.id,
+			parcel,
+			showGrant,
 			descriptionHtml,
-			descriptionIsCustom: ov.isOverride,
-			ownerNote: ov.note,
+			descriptionIsCustom: showGrant && ov.isOverride,
+			ownerNote: showGrant ? ov.note : null,
 			// Empty headline falls back to the address at render time, so a corrected
 			// address keeps flowing through rather than being frozen into a field.
-			headline: ov.headline,
-			tourUrl: ov.tourUrl ?? matterportFrom(detail.tourUrlMls),
-			noteImage: ov.noteImage,
-			noteVideos: ov.noteVideos,
-			floorPlanEmbed: ov.floorPlanEmbed,
-			floorPlanImages: ov.floorPlanImages,
+			headline: showGrant ? ov.headline : null,
+			tourUrl: (showGrant ? ov.tourUrl : null) ?? matterportFrom(detail.tourUrlMls),
+			noteImage: showGrant ? ov.noteImage : null,
+			noteVideos: showGrant ? ov.noteVideos : null,
+			floorPlanEmbed: showGrant ? ov.floorPlanEmbed : null,
+			floorPlanImages: showGrant ? ov.floorPlanImages : null,
+			archived: !live,
+			sold: !live && row.archive_status === "sold" ? {
+				closePrice: row.close_price ?? null,
+				closeDate: row.close_date ?? null,
+				represented: side,
+				representedLabel: representedLabel(side),
+			} : null,
 		},
-		photos: (results ?? []).map((p: any) => p.url),
+		photos,
+		home: { id: home.id, slug: home.slug, status: homeStatus, showGrant, hidden: isOn(home.hidden), parcel, currentListing: row.id },
 	};
 }
 
-// --- Per-listing owner overrides (note + description) ------------------------
-// Source of truth = the emdash `listings` collection (ec_listings), columns
-// `description` + `owner_note`, keyed by the listing id. This is the SAME row the
-// admin backend edits, so an edit in /_emdash/admin OR the inline detail-page editor
-// both land here and show on the site. The Trestle sync's mirror updates only the
-// MLS columns (ON CONFLICT DO UPDATE), never these two, so overrides survive every
-// sync. A set description REPLACES the MLS remarks; clearing it reverts to MLS.
-export async function getOverride(listingKey: string, table: OwnerTable = "ec_listings"): Promise<{ exists: boolean; note: string | null; description: string | null; mlsDescription: string | null; isOverride: boolean; headline: string | null; tourUrl: string | null; noteImage: string | null; noteVideos: string | null; floorPlanEmbed: string | null; floorPlanImages: string | null }> {
+// --- Per-home owner fields (Grant's) ------------------------------------------
+// Source of truth = the emdash `listings` collection (ec_listings), one row per
+// home. This is the SAME row the admin backend edits, so an edit in /_emdash/admin
+// OR the inline note editor on the listing page both land here. The Trestle
+// sync's mirror updates only the MLS columns (ON CONFLICT DO UPDATE), never
+// these, so they survive every sync. A set description REPLACES the MLS
+// remarks; clearing it reverts to MLS (description = _mls_description).
+type Override = { exists: boolean; note: string | null; description: string | null; mlsDescription: string | null; isOverride: boolean; headline: string | null; tourUrl: string | null; noteImage: string | null; noteVideos: string | null; floorPlanEmbed: string | null; floorPlanImages: string | null; showGrant: boolean };
+const clean = (v: any) => { const s = (v ?? "").toString().trim(); return s === "" ? null : s; };
+function overrideFrom(row: any): Override {
+	const description = clean(row?.description);
+	const mlsDescription = clean(row?._mls_description ?? row?.mls_description);
+	return { exists: !!row, note: clean(row?.owner_note), description, mlsDescription, isOverride: !!(description && description !== mlsDescription), headline: clean(row?.headline), tourUrl: clean(row?.tour_url), noteImage: clean(row?.note_image), noteVideos: clean(row?.note_videos), floorPlanEmbed: clean(row?.floor_plan_embed), floorPlanImages: clean(row?.floor_plan_images), showGrant: isOn(row?.show_grant) };
+}
+export async function getOverride(homeId: string): Promise<Override> {
 	try {
 		// SELECT * rather than a column list: a newly added owner field then reads
 		// as null until the mirror script has added its column, instead of the
 		// whole query failing and blanking every override on the page.
-		const row = await DB().prepare(`SELECT *, "_mls_description" AS mls_description FROM ${table} WHERE id = ?`).bind(listingKey).first();
-		const clean = (v: any) => { const s = (v ?? "").toString().trim(); return s === "" ? null : s; };
-		const description = clean((row as any)?.description);
-		const mlsDescription = clean((row as any)?.mls_description);
-		return { exists: !!row, note: clean((row as any)?.owner_note), description, mlsDescription, isOverride: !!(description && description !== mlsDescription), headline: clean((row as any)?.headline), tourUrl: clean((row as any)?.tour_url), noteImage: clean((row as any)?.note_image), noteVideos: clean((row as any)?.note_videos), floorPlanEmbed: clean((row as any)?.floor_plan_embed), floorPlanImages: clean((row as any)?.floor_plan_images) };
-	} catch { return { exists: false, note: null, description: null, mlsDescription: null, isOverride: false, headline: null, tourUrl: null, noteImage: null, noteVideos: null, floorPlanEmbed: null, floorPlanImages: null }; }
+		const row = await DB().prepare("SELECT * FROM ec_listings WHERE id = ?").bind(homeId).first();
+		return overrideFrom(row);
+	} catch { return overrideFrom(null); }
 }
-export async function getNote(listingKey: string): Promise<string | null> {
-	return (await getOverride(listingKey)).note;
+export async function getNote(homeId: string): Promise<string | null> {
+	return (await getOverride(homeId)).note;
 }
 // emdash 1.x stores content datetimes as UTC ISO with milliseconds, not datetime('now').
 const NOW_SQL = "strftime('%Y-%m-%dT%H:%M:%fZ','now')";
-export async function setNote(listingKey: string, note: string, table: OwnerTable = "ec_listings"): Promise<void> {
+export async function setNote(homeId: string, note: string): Promise<void> {
 	const trimmed = (note ?? "").toString().slice(0, 8000);
 	const v = trimmed.trim() === "" ? null : trimmed;
-	await DB().prepare(`UPDATE ${table} SET owner_note = ?, updated_at = ${NOW_SQL} WHERE id = ?`).bind(v, listingKey).run();
+	await DB().prepare(`UPDATE ec_listings SET owner_note = ?, updated_at = ${NOW_SQL} WHERE id = ?`).bind(v, homeId).run();
 }
 // Empty description = "reset to MLS": set it back to the snapshot so it tracks the
 // feed again. A non-empty value becomes the owner override (preserved across sync).
-export async function setDescription(listingKey: string, description: string, table: OwnerTable = "ec_listings"): Promise<void> {
+export async function setDescription(homeId: string, description: string): Promise<void> {
 	const trimmed = (description ?? "").toString().slice(0, 16000);
 	if (trimmed.trim() === "") {
-		await DB().prepare(`UPDATE ${table} SET description = "_mls_description", updated_at = ${NOW_SQL} WHERE id = ?`).bind(listingKey).run();
+		await DB().prepare(`UPDATE ec_listings SET description = "_mls_description", updated_at = ${NOW_SQL} WHERE id = ?`).bind(homeId).run();
 		return;
 	}
 	// Store as Portable Text: pass through if already PT JSON, else convert plain text.
 	const val = trimmed.trim().startsWith("[") ? trimmed : plainToPortableText(trimmed);
-	await DB().prepare(`UPDATE ${table} SET description = ?, updated_at = ${NOW_SQL} WHERE id = ?`).bind(val, listingKey).run();
+	await DB().prepare(`UPDATE ec_listings SET description = ?, updated_at = ${NOW_SQL} WHERE id = ?`).bind(val, homeId).run();
 }
-// Resolve a listing's id from its slug (the client edits by slug; notes key on id).
+/** The home (ec_listings id + its URL slug) a page slug belongs to, or null. */
+export async function homeIdForSlug(slug: string): Promise<{ id: string; slug: string } | null> {
+	const h = await homeBySlug(slug);
+	return h ? { id: h.home.id, slug: h.home.slug } : null;
+}
+// Kept for callers that still think in listing keys: the home id is the key now.
 export async function keyForSlug(slug: string): Promise<string | null> {
-	const row = await DB().prepare("SELECT id FROM listings WHERE slug = ?").bind(slug).first();
-	return (row as any)?.id ?? null;
-}
-// Which owner table a slug's fields live in: ec_listings while the listing is
-// live, ec_sold_listings once it has sold (the inline note editor on a sold page
-// writes there). Null when the slug is unknown or the sale is not shown.
-export type OwnerTable = "ec_listings" | "ec_sold_listings";
-export async function ownerRowForSlug(slug: string): Promise<{ id: string; table: OwnerTable } | null> {
-	const live = await keyForSlug(slug);
-	if (live) return { id: live, table: "ec_listings" };
-	try {
-		const row = await DB().prepare("SELECT id FROM ec_sold_listings WHERE slug = ?").bind(slug).first();
-		if ((row as any)?.id) return { id: (row as any).id, table: "ec_sold_listings" };
-	} catch { /* collection not built yet */ }
-	return null;
+	return (await homeIdForSlug(slug))?.id ?? null;
 }

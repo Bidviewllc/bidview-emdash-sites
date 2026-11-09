@@ -117,6 +117,19 @@
       color: var(--navy); background: rgba(247,148,91,0.25); padding: 2px 6px; border-radius: 2px;
     }
     .lhist__note { margin-top: 16px; font-family: var(--font-sans); font-size: 12px; line-height: 1.5; color: var(--body); }
+    /* Sale history (2026-11-09): one line per MLS listing of this home, above the
+       per-event accordion; same card. The current listing is marked. */
+    .lhist + .lhist { border-top: none; }
+    .lhist__table--sales td { white-space: normal; }
+    .lhist__table--sales td:last-child { text-align: left; white-space: normal; }
+    .lhist__table--sales th:last-child { text-align: left; }
+    .lhist__now { display: inline-block; margin-left: 6px; font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: #fff; background: var(--navy); padding: 2px 6px; border-radius: 2px; }
+    .lhist__sub { display: block; font-size: 12px; color: var(--body); }
+    .lhist__grant { color: #a84a16; font-weight: 600; }
+    .listing-hero__status--off { background: rgba(255,255,255,0.92); color: var(--muted); }
+    /* Admin-only notice when Grant's content is switched off for this home. */
+    .grant-off { margin: 0 0 24px; padding: 14px 18px; border: 1px dashed rgba(168,74,22,0.6); background: rgba(247,148,91,0.12); font-family: var(--font-sans); font-size: 13px; line-height: 1.5; color: var(--ink); }
+    .grant-off a { color: #a84a16; font-weight: 600; }
     @media (max-width: 640px) {
       .lhist__sum { padding: 20px 20px; font-size: 22px; }
       .lhist__body { padding: 0 20px 22px; }
@@ -1236,7 +1249,7 @@ function featShift(dir) {
 window.addEventListener("resize", () => featShift(0));
 
 /* ---------------- Render ---------------- */
-function render(listing, photoUrls, marketIntel, area, contact, grantIntro, syncedAt, history) {
+function render(listing, photoUrls, marketIntel, area, contact, grantIntro, syncedAt, history, salesList) {
   // Only ever a genuine number: the API's realPhone() returns null for the
   // placeholders still sitting in the CMS, and the footer line is omitted
   // rather than printing something a buyer might dial.
@@ -1249,10 +1262,14 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro, sync
   const descBlock = `
     <div class="prop-desc" id="propDesc">
       <div class="prop-desc__body" id="propDescBody">${descHtml}</div>
-      ${canEdit ? `<div class="prop-desc__flag">${listing.descriptionIsCustom ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9" /><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" /></svg> Custom description (edited). ` : ""}<a href="/_emdash/admin/content/${listing.archived ? "sold_listings" : "listings"}/${listing.id}?locale=en" target="_blank" rel="noopener">Edit description in the backend <span class="cta-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg></span></a></div>` : ""}
+      ${canEdit ? `<div class="prop-desc__flag">${listing.descriptionIsCustom ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9" /><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" /></svg> Custom description (edited). ` : ""}<a href="/_emdash/admin/content/listings/${listing.homeId || listing.id}?locale=en" target="_blank" rel="noopener">Edit description in the backend <span class="cta-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg></span></a></div>` : ""}
     </div>`;
 
   const note = listing.ownerNote || "";
+  // Grant's content switch (2026-11-09): with it off the API sends none of his
+  // fields and the MLS text shows. A logged-in admin sees why, with the way back on.
+  const grantOff = canEdit && listing.showGrant === false ? `
+    <div class="grant-off">Grant's content is switched off for this home (it shows the MLS description; the headline, note, tours and floor plans stay saved). It is off by default when Grant is not the listing agent. <a href="/_emdash/admin/content/listings/${listing.homeId || listing.id}?locale=en" target="_blank" rel="noopener">Switch it on in the backend</a>.</div>` : "";
   const noteBlock = (note || canEdit) ? `
     <div class="grant-note${note ? "" : " grant-note--empty"}" id="grantNote">
       <div class="eyebrow grant-note__label">A Note From Grant</div>
@@ -1267,7 +1284,7 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro, sync
           <span id="noteStatus" class="grant-note__status"></span>
         </div>
       </div>
-      <div class="grant-note__more"><a href="/_emdash/admin/content/${listing.archived ? "sold_listings" : "listings"}/${listing.id}?locale=en" target="_blank" rel="noopener">Add a photo or videos, or the floor plan, in the backend</a></div>` : ""}
+      <div class="grant-note__more"><a href="/_emdash/admin/content/listings/${listing.homeId || listing.id}?locale=en" target="_blank" rel="noopener">Add a photo or videos, or the floor plan, in the backend</a></div>` : ""}
     </div>` : "";
 
   // .listing-hero__img is a background-image layer in styles.css, not an <img>.
@@ -1285,7 +1302,7 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro, sync
   const sold = listing.sold || null;
   const statusText = listing.statusLabel || "On market";
   const statusBadge = statusText === "On market" ? "" :
-    `<div class="listing-hero__status${sold ? " listing-hero__status--sold" : ""}">${escapeHtml(statusText)}</div>`;
+    `<div class="listing-hero__status${sold ? " listing-hero__status--sold" : ""}${statusText === "Off market" ? " listing-hero__status--off" : ""}">${escapeHtml(statusText)}</div>`;
   if (sold && sold.representedLabel) crumb = `${crumb} · ${sold.representedLabel}`;
 
   // Listing brokerage, MLS number, source and last update (compliance thread,
@@ -1325,6 +1342,32 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro, sync
               </tbody>
             </table>
             <p class="lhist__note">From the Incline Village Realtors&reg; MLS. Every price change is recorded from November 2026; before that, only each listing's latest change is known.</p>
+          </div>
+        </details>` : "";
+  // Sale history (2026-11-09, one page per home): one line per MLS listing of this
+  // home, newest first -- listed date and price, outcome, close facts, the
+  // listing brokerage and Grant's side. The per-event accordion above becomes the
+  // detail under it. Built server-side (saleHistory in src/lib/listings.ts).
+  const sales = Array.isArray(salesList) ? salesList : [];
+  const saleBlock = sales.length > 1 || (sales.length === 1 && sales[0].outcome === "Sold") ? `
+        <details class="lhist" id="sale-history" open>
+          <summary class="lhist__sum">
+            <span>Sale History</span>
+            <span class="lhist__count">${sales.length} ${sales.length === 1 ? "listing" : "listings"}</span>
+            <svg class="lhist__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg>
+          </summary>
+          <div class="lhist__body">
+            <table class="lhist__table lhist__table--sales">
+              <thead><tr><th scope="col">Listed</th><th scope="col">Outcome</th><th scope="col">Listing brokerage</th></tr></thead>
+              <tbody>
+                ${sales.map(s => `
+                <tr${s.adminOnly ? ' class="lhist__row--admin"' : ""}>
+                  <td>${escapeHtml(fmtDay(s.listedDate) || "\u2014")}${s.listPrice ? `<span class="lhist__sub">${fmt(s.listPrice)}${s.originalPrice && Number(s.originalPrice) !== Number(s.listPrice) ? ` (first asked ${fmt(s.originalPrice)})` : ""}</span>` : ""}</td>
+                  <td>${escapeHtml(s.outcome)}${s.current ? '<span class="lhist__now">Current</span>' : ""}${s.adminOnly ? '<span class="lhist__tag">Only admins see this</span>' : ""}${s.closeDate ? `<span class="lhist__sub">${escapeHtml(fmtDay(s.closeDate) || "")}${s.closePrice ? ` \u00b7 ${fmt(s.closePrice)}` : ""}</span>` : ""}</td>
+                  <td>${escapeHtml([s.agent, s.office].filter(Boolean).join(", ") || "\u2014")}${s.grantSide ? `<span class="lhist__sub lhist__grant">${escapeHtml(s.grantSide)}</span>` : ""}</td>
+                </tr>`).join("")}
+              </tbody>
+            </table>
           </div>
         </details>` : "";
   const listingInfo = `
@@ -1689,8 +1732,9 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro, sync
         <div>
           <h2 class="listing-body__h listing-body__h--figma">${escapeHtml(listing.headline || (listing.address + (listing.city ? ", " + listing.city : "")))}</h2>
           <div class="listing-body__rule listing-body__rule--figma"></div>
+          ${grantOff}
           ${descBlock}
-          ${canEdit ? noteBlock : ""}
+          ${canEdit && listing.showGrant !== false ? noteBlock : ""}
           ${gallery}
         </div>
         <aside class="aside-fl aside-fl--dark">
@@ -1780,6 +1824,7 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro, sync
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
           </button>
         </div>
+        ${saleBlock}
         ${historyBlock}
       </div>
     </section>
@@ -2016,7 +2061,13 @@ async function load() {
     }
     if (data.error) throw new Error(data.error);
     canEdit = !!data.canEdit;
-    render(data.listing, data.photos || [], data.marketIntel || null, data.area || null, data.contact || null, data.grantIntro || null, data.syncedAt || null, data.history || []);
+    // An old URL (a per-listing or misspelt slug) answered for the home: put the
+    // home's own URL in the address bar so copies and bookmarks carry the right one.
+    if (data.canonicalSlug && slug && data.canonicalSlug !== slug) {
+      currentSlug = data.canonicalSlug;
+      try { history.replaceState(null, "", `/homes/${data.canonicalSlug}/`); } catch (e) { /* ignore */ }
+    }
+    render(data.listing, data.photos || [], data.marketIntel || null, data.area || null, data.contact || null, data.grantIntro || null, data.syncedAt || null, data.history || [], data.sales || []);
   } catch (e) {
     document.getElementById("app").innerHTML = `<div class="loading">Failed to load listing: ${escapeHtml(e.message)}</div>`;
   }

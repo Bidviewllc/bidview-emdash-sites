@@ -12,7 +12,7 @@
 import { getTermsForEntries } from "emdash";
 import { env } from "cloudflare:workers";
 import { firstImageUrl } from "./media";
-import { FEATURED_ROW, FEATURED_FIRST } from "./listings";
+import { FEATURED_ROW, FEATURED_FIRST, HOME_JOIN, HOME_SLUG_COL } from "./listings";
 
 export const POSTS_PER_PAGE = 9;
 
@@ -196,8 +196,8 @@ export async function featuredListingPool(): Promise<any[]> {
 	if (!DB) return [];
 	try {
 		const { results } = await DB.prepare(
-			`SELECT l.id, l.slug, l.status, l.address, l.city, l.state, l.price, l.beds, l.baths, l.baths_full, l.baths_half, l.office, l.sqft, l.lot_acres, l.category, l.sub_type, l.type, l.waterfront, l.photo
-			 FROM listings l LEFT JOIN ec_listings e ON e.id = l.id
+			`SELECT l.id, l.slug, l.status, l.address, l.city, l.state, l.price, l.beds, l.baths, l.baths_full, l.baths_half, l.office, l.sqft, l.lot_acres, l.category, l.sub_type, l.type, l.waterfront, l.photo, ${HOME_SLUG_COL}
+			 FROM listings l ${HOME_JOIN}
 			 WHERE l.photo IS NOT NULL AND ${FEATURED_ROW}
 			 ORDER BY ${FEATURED_FIRST}, l.price DESC LIMIT 9`,
 		).all();

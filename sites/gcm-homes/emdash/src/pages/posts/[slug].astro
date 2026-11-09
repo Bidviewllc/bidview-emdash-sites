@@ -177,7 +177,7 @@ const tagOf = (l: any) =>
 						<div class="post-listing" data-listing-pool>
 							<span class="eyebrow eyebrow--muted">Featured Listing</span>
 							{pool.map((l: any, i: number) => (
-								<a class="card" href={`/homes/${l.slug}/`} data-listing-pick hidden={i !== 0}>
+								<a class="card" href={`/homes/${l.home_slug || l.slug}/`} data-listing-pick hidden={i !== 0}>
 									<div class="card__media">
 										<img class="card__img" src={l.photo} alt={l.address || "Featured listing"} loading="lazy" />
 										<div class="card__badges">

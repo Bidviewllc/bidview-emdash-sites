@@ -7,9 +7,14 @@
 // listing up server-side and inject a real per-listing <head> before returning the
 // raw HTML. The page body is still built client-side (unchanged); this only fixes
 // the crawlable/shareable head. Returned raw so Astro doesn't parse the page's ${}.
+//
+// 2026-11-09 — one page per HOME. The slug resolves to a home (ec_listings) via
+// its own slug or property_slugs; an old URL (a per-listing `-<number>` slug, a
+// misspelling, the `incline-village-ca` one) answers 301 to the home's URL, and
+// an off-market home the site no longer shows answers 410.
 export const prerender = false;
 import rawHtml from "../../detail-page.html?raw";
-import { bySlug, isHiddenSlug } from "../../lib/listings";
+import { bySlug } from "../../lib/listings";
 
 const attr = (s: any) => String(s ?? "").replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
@@ -18,9 +23,15 @@ const origin = new URL(Astro.request.url).origin;
 let head = "";
 try {
 	const result: any = await bySlug(slug);
-	// Expired / withdrawn / cancelled: answer 410 so search engines drop the URL.
-	// (The raw page would otherwise load, call the API, and show the same thing.)
+	// An old URL for a home: send search engines and visitors to the one URL that
+	// never changes. Cacheable for a day; the mapping only ever grows.
+	if (result?.redirect) return Astro.redirect(`/homes/${result.redirect}/`, 301);
+	// Expired / withdrawn / cancelled, and nothing the site shows about the home:
+	// answer 410 so search engines drop the URL.
 	if (result?.gone) return new Response("This listing is no longer available.", { status: 410, headers: { "content-type": "text/plain; charset=utf-8", "Cache-Control": "public, s-maxage=3600" } });
+	// Not a home we know: the raw page would say "Failed to load" with a 200,
+	// so give search engines the right answer instead.
+	if (result === null) return new Response(rawHtml, { status: 404, headers: { "content-type": "text/html; charset=utf-8", "Cache-Control": "public, s-maxage=300" } });
 	const l = result?.listing as any;
 	if (l) {
 		const url = `${origin}/homes/${slug}/`;
@@ -48,6 +59,9 @@ try {
 		};
 		if (l.listingDate) ld.datePosted = l.listingDate;
 		if (shownPrice) ld.offers = { "@type": "Offer", price: Number(shownPrice), priceCurrency: "USD", availability: sold ? "https://schema.org/SoldOut" : "https://schema.org/InStock", url };
+		// "Hide from search" in the admin: the page still opens by direct link,
+		// but search engines are told to leave it out.
+		const hidden = result?.home?.hidden === true;
 		head = [
 			`<meta name="description" content="${attr(desc)}" />`,
 			`<link rel="canonical" href="${attr(url)}" />`,
@@ -62,9 +76,7 @@ try {
 			`<meta name="twitter:description" content="${attr(desc)}" />`,
 			`<meta name="twitter:image" content="${attr(ogImage)}" />`,
 			`<script type="application/ld+json">${JSON.stringify(ld).replace(/</g, "\\u003c")}</script>`,
-			// "Hide from search" in the admin: the page still opens by direct link,
-			// but search engines are told to leave it out.
-			...((await isHiddenSlug(slug)) ? [`<meta name="robots" content="noindex" />`] : []),
+			...(hidden ? [`<meta name="robots" content="noindex" />`] : []),
 		].join("\n  ");
 		// Replace the static <title> with the real one, then inject the rest before </head>.
 		var outHtml = rawHtml
