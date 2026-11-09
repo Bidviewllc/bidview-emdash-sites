@@ -17,7 +17,9 @@ retired (`_retired_ec_sold_listings`). **Gotchas:** the sync's `mirrorEmdashHome
 refuses to run while rows keyed by listing number remain, so `seed/migrate-homes.mjs --live --apply` must run
 before the first post-merge sync does anything, and the site deploy follows it at once. The admin status filter
 is the **search box** (EmDash 1.4 has no custom-field filter UI; `home_status` is searchable + indexed + a list
-column). Two editor panels come from the native plugin `src/plugins/gcm-admin/` (registered in
+column). `city` and `listing_agent` ("Agent name, Brokerage", written by the sync) are searchable too: typing
+"Grant" lists his listings. Labels of list-column fields stay short, because the list prints the whole label as the
+column header and never wraps it. Two editor panels come from the native plugin `src/plugins/gcm-admin/` (registered in
 `astro.config.mjs`; its module must export `createPlugin`). Rehearse anything that touches these tables on a
 full local copy: `node --env-file=.env seed/export-d1.mjs --out <scratch> --all`, then swap the file in as
 `.wrangler/state/v3/d1/miniflare-D1DatabaseObject/<hash>.sqlite` under a stopped `astro dev`.

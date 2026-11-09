@@ -43,7 +43,11 @@ export const COLLECTION_ID = "col_listings";
 // panel (src/plugins/gcm-admin), read from listing_archive, so they no longer
 // need columns here.
 export const OWNER_FIELDS = [
-	["show_grant", "boolean", "1. Status — Show Grant's content on this page (headline, description, Note From Grant, 3D tour, floor plans). On by default when Grant is the listing agent; off everywhere else. Resets when a new listing starts on this home"],
+	// Short on purpose: a list column (see LIST COLUMN LABELS below). It shows his
+	// headline, description, Note From Grant, 3D tour and floor plans on the page;
+	// on by default when Grant is the listing agent, off everywhere else, and it
+	// resets when a new listing starts on the home.
+	["show_grant", "boolean", "Show Grant's content"],
 	["featured", "boolean", "1. Status — Featured listing (home page + community page)"],
 	["hidden", "boolean", "1. Status — Hide from search (off every list, search and the sitemap; the page still opens by direct link)"],
 	["headline", "string", "2. Grant's content — Property headline (leave empty to use the street address)"],
@@ -57,13 +61,23 @@ export const OWNER_FIELDS = [
 ];
 // Written by the sync from the home's current listing; editing them in the admin
 // is overwritten on the next run.
-export const STATUS_FIELD = ["home_status", "select", "1. Status — from the MLS (set by every sync). To see only one status, type it in the search box above the list: On market, Under contract, Pending, Sold or Off market"];
+// LIST COLUMN LABELS (2026-11-09, Liz). The admin list prints a field's whole
+// label as its column header and never wraps it, so the four list columns
+// (ADMIN_CONFIG.listColumns) and the searchable agent field carry short labels.
+// How to filter the list is told to whoever uses it, not written in a label:
+// type a status (On market, Under contract, Pending, Sold, Off market), a city
+// or an agent's or brokerage's name in the search box above the list.
+export const STATUS_FIELD = ["home_status", "select", "MLS status"];
 export const MLS_FIELDS = [
-	["price", "string", "4. From the MLS — List price (refreshed by every sync)"],
+	["price", "string", "List price"],
 	["sold_price", "string", "4. From the MLS — Sold price (Sold homes)"],
 	["close_date", "string", "4. From the MLS — Closed (Sold homes)"],
 	["represented", "string", "4. From the MLS — Grant represented (Sold homes)"],
-	["city", "string", "4. From the MLS — City"],
+	["city", "string", "City"],
+	// "Agent name, Brokerage" of the home's current listing; searchable, so typing
+	// "Grant" in the list's search box shows his listings and any other name shows
+	// that agent's.
+	["listing_agent", "string", "Listing agent"],
 	["beds", "string", "4. From the MLS — Beds"],
 	["baths", "string", "4. From the MLS — Baths"],
 	["sqft", "string", "4. From the MLS — Sq Ft"],
@@ -86,6 +100,7 @@ export const ALL_FIELDS = [STATUS_FIELD, ...OWNER_FIELDS, ...MLS_FIELDS];
 // EmDash rejects every save ("unknown field on collection").
 export const INTERNAL_COLS = ["_mls_description", "_current_listing"];
 export const ADMIN_CONFIG = { listColumns: ["home_status", "city", "price", "show_grant"] };
+export const SEARCHABLE = ["home_status", "city", "listing_agent"];
 
 const COLUMN_TYPE = { portableText: "json", image: "json", repeater: "json" };
 const FIELD_VALIDATION = {
@@ -124,8 +139,9 @@ export async function registerListingsCollection(d1, log = console.log) {
 	for (const [slug, type, label] of ADMIN_ORDER) {
 		const validation = FIELD_VALIDATION[slug] ? S(JSON.stringify(FIELD_VALIDATION[slug])) : "NULL";
 		// home_status is searchable (the admin search box is the list filter) and
-		// indexed (so the API's fieldFilters can use it); city is searchable too.
-		const searchable = slug === "home_status" || slug === "city" ? 1 : 0;
+		// indexed (so the API's fieldFilters can use it); city and the listing
+		// agent are searchable too.
+		const searchable = SEARCHABLE.includes(slug) ? 1 : 0;
 		const indexed = slug === "home_status" ? 1 : 0;
 		await d1(`INSERT OR REPLACE INTO _emdash_fields (id,collection_id,slug,label,type,column_type,required,sort_order,searchable,indexed,validation) VALUES ('fld_listings_${slug}','${cid}','${slug}',${S(label)},'${type}','${COLUMN_TYPE[type] || "text"}',0,${order++},${searchable},${indexed},${validation})`);
 	}
@@ -170,7 +186,7 @@ export function newestFirst(x, y) {
 }
 export const homeBaseSlug = (a) => `${slugify(a.city) || "lake-tahoe"}-${slugify(a.state) || "nv"}/${slugify(a.address) || "home"}`;
 export const bathsOf = (a) => a.baths_full == null || a.baths_full === "" ? (a.baths ?? null) : Number(a.baths_full) + 0.5 * Number(a.baths_half || 0);
-export const ARCHIVE_HOME_COLS = "id, slug, address, city, state, price, beds, baths, baths_full, baths_half, sqft, photo, main_photo_url, listing_date, mls_number, tour_url_mls, list_agent_id, co_list_agent_id, buyer_agent_id, co_buyer_agent_id, close_price, close_date, archive_status, feed_status, first_seen_at, parcel_number";
+export const ARCHIVE_HOME_COLS = "id, slug, address, city, state, price, beds, baths, baths_full, baths_half, sqft, photo, main_photo_url, listing_date, mls_number, tour_url_mls, agent, office, list_agent_id, co_list_agent_id, buyer_agent_id, co_buyer_agent_id, close_price, close_date, archive_status, feed_status, first_seen_at, parcel_number";
 
 /** Group archive rows by parcel; each group sorted newest first. */
 export function homesFrom(archiveRows) {
@@ -186,6 +202,12 @@ export function homesFrom(archiveRows) {
 }
 
 /** The MLS-side VALUES for one home row, from its current listing `a`. */
+/** "Agent name, Brokerage" for the admin's searchable Listing agent field. */
+export const listingAgentText = (a) => {
+	const who = [a.agent, a.office].map((x) => (x || "").trim()).filter(Boolean).join(", ");
+	// Grant as co-listing agent only: his name is not in `agent`, so add it.
+	return grantListsIt(a) && !/grant meyer/i.test(who) ? [who, "Grant Meyer (co-listing agent)"].filter(Boolean).join(" · ") : (who || null);
+};
 export function homeMlsValues(a, remarks, now) {
 	const sold = a.archive_status === "sold";
 	return {
@@ -193,7 +215,7 @@ export function homeMlsValues(a, remarks, now) {
 		home_status: homeStatusOf(a),
 		price: money(a.price), sold_price: sold ? money(a.close_price) : null, close_date: sold ? (a.close_date || null) : null,
 		represented: sold ? representedText(a) : null,
-		city: a.city || null, beds: a.beds ?? null, baths: bathsOf(a),
+		city: a.city || null, listing_agent: listingAgentText(a), beds: a.beds ?? null, baths: bathsOf(a),
 		sqft: a.sqft != null ? Number(a.sqft).toLocaleString("en-US") : null,
 		mls_number: a.mls_number || null, listing_date: a.listing_date || null,
 		photo: a.main_photo_url || a.photo || null, tour_url_mls: a.tour_url_mls || null,

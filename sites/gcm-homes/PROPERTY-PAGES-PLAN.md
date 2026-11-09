@@ -124,8 +124,19 @@ collection by home status in the list view. Read from the installed `emdash` 1.4
 
 So: `home_status` is a `select` field (On market / Under contract / Pending / Sold / Off market), registered
 **searchable + indexed**, and a list column (`admin_config.listColumns = ["home_status","city","price","show_grant"]`).
-Grant types the status word in the search box above the Listings list and the list filters to it. The field's
-own label says so. If a later EmDash adds a field-filter UI, the indexed flag is already set.
+Grant types the status word in the search box above the Listings list and the list filters to it. If a later
+EmDash adds a field-filter UI, the indexed flag is already set.
+
+**Column names and the agent search (2026-11-09, Liz).** The list prints a field's whole label as its column
+header and never wraps it (`<th>{column.label}</th>` in the admin; only the cells are cut at a fixed width), so
+long labels pushed the list sideways. The list-column fields now carry short labels: **MLS status**, **City**,
+**List price**, **Show Grant's content**. The "type it in the search box" sentence is gone from the status label
+(it also showed on the edit form, where there is no search box); how to search is told to whoever uses the admin.
+A new field, **Listing agent** (`listing_agent`, "Agent name, Brokerage" of the home's current listing, written by
+every sync), is searchable: typing "Grant" shows his listings, any other name or brokerage shows theirs. The
+search box takes one term (a `LIKE` over address, slug, MLS status, city and listing agent), so a status and an
+agent cannot be combined. EmDash 1.4 has no field help text, and its byline filter (the one real dropdown) was
+considered for a Grant / other agents filter and not used.
 
 **Editor panels.** A native plugin declared in `astro.config.mjs` (`plugins: [{ id, version, entrypoint }]`, the
 module exporting `createPlugin()`) with `admin.editorPanels` puts the plugin in "blocks" admin mode; the editor
