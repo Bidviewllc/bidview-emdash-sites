@@ -32,6 +32,15 @@
  *      with each one's MLS main photo URL. Run once; safe to re-run.
  *   Photos are NOT copied anywhere (Liz, 2026-11-03): sold rows keep the Trestle
  *   URL of their main photo. If those ever stop loading, copy them to R2 then.
+ *
+ * 2026-11-09 — ONE PAGE PER HOME (sites/gcm-homes/PROPERTY-PAGES-PLAN.md).
+ *   The admin "Listings" collection (ec_listings) now holds one row per home,
+ *   keyed by parcel number (`p-<parcel>`), never deleted; its MLS columns and
+ *   `home_status` follow the home's current listing, Grant's columns are his,
+ *   and `show_grant` resets when a new listing number starts. `listings` gained
+ *   `parcel_number`; `property_slugs` maps every old URL to its home. The
+ *   Sold Listings collection (ec_sold_listings) is retired: a sold home is the
+ *   same row as its live listing was. See mirrorEmdashHomes() below.
  */
 
 // Trestle credentials come from the environment only (never commit secrets).
@@ -196,14 +205,27 @@ function sqlVal(v) {
   if (typeof v === "number") return Number.isFinite(v) ? String(v) : "NULL";
   return "'" + String(v).replace(/'/g, "''") + "'";
 }
-// Mirror the synced listings into the emdash `listings` collection (ec_listings)
-// for the admin backend. PRESERVES owner columns: new listings insert (description/
-// owner_note NULL); existing listings update ONLY the MLS columns via ON CONFLICT(id),
-// leaving description/owner_note/status/version/revisions untouched so admin + inline
-// edits survive every sync. Mirrors emdash/seed/mirror-listings.mjs.
-const EMDASH_MLS_FIELDS = ["city","state","zip","price","beds","baths","sqft","lot_acres","year_built","property_type","mls_status","view","photo","dom",
-  // Added 2026-08-19 (Liz's field request):
-  "flooring","fireplaces","fireplace_yn","fireplace_features","roof","utilities","pool_features","listing_date","hoa_frequency","tour_url_mls","mls_number","stories","arch_style","construction","lot_features","condition","lot_sqft"];
+/* ------------------------------------------------- admin: one row per HOME */
+// Mirror the archive into the emdash `listings` collection (ec_listings) with
+// ONE ROW PER HOME, keyed by parcel number (`p-<parcel>`), never deleted.
+// PROPERTY-PAGES-PLAN.md (Liz, 2026-11-06). Rules:
+//  - The MLS columns and `home_status` follow the home's CURRENT listing: the
+//    live one if any, else the newest by contract date (On market / Under
+//    contract / Pending / Sold / Off market).
+//  - Grant's columns (headline, description, note, images, tours, floor plans,
+//    featured, hidden) are only ever INSERTED; an unedited description still
+//    tracks the MLS remarks (description IS _mls_description).
+//  - `show_grant` resets to its default (on when Grant is the listing agent,
+//    else off) only when a NEW listing number starts on the home; his content
+//    stays saved, and what he had typed for the old listing is kept on that
+//    listing's archive row (owner_snapshot) for the admin's history panel.
+//  - `property_slugs` gets every slug ever used for the home, so old URLs 301.
+// This is a COPY of mirrorHomes() in emdash/seed/lib/homes.mjs (GitHub Actions
+// checks out only trestle-test, so the sync cannot import it). Change both.
+const HOME_MLS_FIELDS = ["price","sold_price","close_date","represented","city","beds","baths","sqft","mls_number","listing_date","photo","tour_url_mls"];
+const HOME_SET_COLS = ["title", "home_status", ...HOME_MLS_FIELDS, "_mls_description", "updated_at"];
+const HOME_OWNER_COLS = ["headline", "description", "owner_note", "note_image", "tour_url", "note_videos", "floor_plan_embed", "floor_plan_images", "featured", "hidden", "show_grant"];
+const ARCHIVE_HOME_COLS = "id, slug, address, city, state, price, beds, baths, baths_full, baths_half, sqft, photo, main_photo_url, listing_date, mls_number, tour_url_mls, list_agent_id, co_list_agent_id, buyer_agent_id, co_buyer_agent_id, close_price, close_date, archive_status, feed_status, first_seen_at, parcel_number";
 // Plain MLS remarks -> Portable Text JSON (WYSIWYG storage), deterministic keys.
 function ptFromPlain(plain) {
   const text = (plain ?? "").toString();
@@ -211,118 +233,110 @@ function ptFromPlain(plain) {
   const list = paras.length ? paras : (text.trim() ? [text.trim()] : []);
   return JSON.stringify(list.map((p, i) => ({ _type: "block", _key: "b" + i, style: "normal", markDefs: [], children: [{ _type: "span", _key: "s" + i, text: p, marks: [] }] })));
 }
-async function mirrorEmdashListings() {
-  const lr = await d1("SELECT * FROM listings");
-  const rows = lr?.[0]?.results ?? [];
-  // Drop departed listings FIRST — must precede the upsert. A re-listed property
-  // gets a NEW ListingKey but the SAME address/slug; if the stale row still holds
-  // that slug the insert trips unique(slug,locale) and aborts the whole mirror.
-  const liveIds = rows.map(r => "'" + String(r.id).replace(/'/g, "''") + "'");
-  if (liveIds.length) {
-    // Keep Grant's edits on the departing rows before they go (sold archive, step 4).
-    try { await snapshotDepartingOwnerFields(liveIds); } catch (e) { console.error("owner snapshot (non-fatal):", e.message); }
-    await d1(`DELETE FROM ec_listings WHERE id NOT IN (${liveIds.join(",")})`);
+const money = n => n != null && n !== "" ? "$" + Number(n).toLocaleString("en-US") : null;
+function homeStatusOf(a) {
+  switch (a.archive_status) {
+    case "active": return "On market";
+    case "under_contract": return a.feed_status === "Pending" ? "Pending" : "Under contract";
+    case "sold": return "Sold";
+    default: return "Off market";
   }
-  const insertCols = ["id","slug","status","locale","version","title","published_at","updated_at", ...EMDASH_MLS_FIELDS.map(s => '"' + s + '"'), "description", "_mls_description"];
-  const trackedCols = ["slug","title","updated_at", ...EMDASH_MLS_FIELDS, "_mls_description"];
-  const setClause = [
-    ...trackedCols.map(c => `"${c}"=excluded."${c}"`),
-    `"description"=CASE WHEN ec_listings."description" IS ec_listings."_mls_description" THEN excluded."description" ELSE ec_listings."description" END`,
-  ].join(",");
-  // Also before the upsert: park any slug that a DIFFERENT live listing is about to
-  // take. Two live listings at one address get "<addr>" and "<addr>-<ListingKey>",
-  // and which one gets the plain slug can flip between runs (feed order). The row
-  // still holding it then trips unique(slug,locale) on the other's insert — a slug
-  // swap between two live ids, which the delete above can't catch (893 Donna Drive,
-  // 2026-10-04). The parked "<slug>~<id>" is overwritten by the upsert below.
-  await d1(`UPDATE ec_listings SET slug = slug || '~' || id WHERE EXISTS (SELECT 1 FROM listings l WHERE COALESCE(l.slug, 'listing-' || l.id) = ec_listings.slug AND l.id <> ec_listings.id)`);
-  const head = `INSERT INTO ec_listings (${insertCols.join(",")}) VALUES `;
-  const tail = ` ON CONFLICT(id) DO UPDATE SET ${setClause}`;
-  let batch = [], len = head.length + tail.length;
-  const flush = async () => { if (batch.length) { await d1(head + batch.join(",") + tail); batch = []; len = head.length + tail.length; } };
-  // emdash 1.x stores content datetimes as UTC ISO with milliseconds, not datetime('now').
-  const now = sqlVal(new Date().toISOString());
-  for (const r of rows) {
-    const pt = (r.sub_type || r.type || "").replace(/([a-z])([A-Z])/g, "$1 $2");
-    const vals = [
-      sqlVal(r.id), sqlVal(r.slug || ("listing-" + r.id)), "'published'", "'en'", "1",
-      sqlVal(r.address || "(no address)"), now, now,
-      sqlVal(r.city), sqlVal(r.state), sqlVal(r.zip),
-      sqlVal(r.price != null ? "$" + Number(r.price).toLocaleString("en-US") : null),
-      sqlVal(r.beds), sqlVal(r.baths), sqlVal(r.sqft != null ? Number(r.sqft).toLocaleString("en-US") : null),
-      sqlVal(r.lot_acres), sqlVal(r.year_built), sqlVal(pt || null), sqlVal(r.status), sqlVal(r.view),
-      sqlVal(r.photo), sqlVal(r.dom),
-      sqlVal(r.flooring), sqlVal(r.fireplaces), sqlVal(r.fireplace_yn), sqlVal(r.fireplace_features), sqlVal(r.roof), sqlVal(r.utilities),
-      sqlVal(r.pool_features), sqlVal(r.listing_date), sqlVal(r.hoa_frequency), sqlVal(r.tour_url_mls), sqlVal(r.mls_number), sqlVal(r.stories),
-      sqlVal(r.arch_style), sqlVal(r.construction), sqlVal(r.lot_features), sqlVal(r.condition), sqlVal(r.lot_sqft),
-      sqlVal(ptFromPlain(r.description)), sqlVal(ptFromPlain(r.description)),
-    ];
-    const tuple = "(" + vals.join(",") + ")";
-    if (len + tuple.length + 1 > 90000 || batch.length >= 40) await flush();
-    batch.push(tuple); len += tuple.length + 1;
-  }
-  await flush();
-  // (departed listings were removed before the upsert — see the note above)
-  console.log("emdash mirror: ec_listings upserted", rows.length, "listings (owner cols preserved)");
 }
-// Mirror the sold rows of `listing_archive` into the emdash `sold_listings`
-// collection (ec_sold_listings) so Grant can edit a past sale like a live
-// listing. Same contract as mirrorEmdashListings: MLS columns refresh on every
-// run, the owner columns (headline, description, note, images, tour, floor
-// plans, featured, hidden) are only ever INSERTED, seeded from owner_snapshot
-// (what he had on the live listing). Rows are never deleted. The collection and
-// table are registered once by emdash/seed/mirror-sold-listings.mjs, which also
-// holds the field list this must stay in step with.
-const SOLD_MLS_FIELDS = ["sold_price","close_date","represented","city","state","zip","beds","baths","sqft","lot_acres","year_built","property_type","view","photo","listing_date","list_price","mls_number","tour_url_mls"];
-const SOLD_OWNER_FIELDS = ["featured","hidden","headline","description","owner_note","note_image","tour_url","note_videos","floor_plan_embed","floor_plan_images"];
-const SHOWN_SOLD_WHERE = `archive_status = 'sold' AND (list_agent_id = '${GRANT_AGENT_ID}' OR buyer_agent_id = '${GRANT_AGENT_ID}' ` +
-  `OR co_list_agent_id = '${GRANT_AGENT_ID}' OR co_buyer_agent_id = '${GRANT_AGENT_ID}' OR close_price >= ${SOLD_OTHERS_MIN_PRICE})`;
-async function mirrorEmdashSoldListings() {
-  const lr = await d1(`SELECT * FROM listing_archive WHERE ${SHOWN_SOLD_WHERE}`);
-  const rows = lr?.[0]?.results ?? [];
-  if (!rows.length) { console.log("emdash sold mirror: no sold rows to mirror"); return; }
-  const money = n => n != null && n !== "" ? "$" + Number(n).toLocaleString("en-US") : null;
-  const represented = r => {
-    const seller = r.list_agent_id === GRANT_AGENT_ID || r.co_list_agent_id === GRANT_AGENT_ID;
-    const buyer = r.buyer_agent_id === GRANT_AGENT_ID || r.co_buyer_agent_id === GRANT_AGENT_ID;
-    return seller && buyer ? "Both sides" : seller ? "The seller" : buyer ? "The buyer" : "—";
+const grantListsIt = a => a.list_agent_id === GRANT_AGENT_ID || a.co_list_agent_id === GRANT_AGENT_ID;
+function representedText(a) {
+  const seller = grantListsIt(a);
+  const buyer = a.buyer_agent_id === GRANT_AGENT_ID || a.co_buyer_agent_id === GRANT_AGENT_ID;
+  return seller && buyer ? "Both sides" : seller ? "The seller" : buyer ? "The buyer" : null;
+}
+// The home's current listing: a live one wins; otherwise the newest contract date.
+function newestFirst(x, y) {
+  const live = a => a.archive_status === "active" || a.archive_status === "under_contract" ? 1 : 0;
+  return (live(y) - live(x)) || String(y.listing_date || "").localeCompare(String(x.listing_date || ""))
+    || String(y.first_seen_at || "").localeCompare(String(x.first_seen_at || "")) || String(y.id).localeCompare(String(x.id));
+}
+const homeBaseSlug = a => `${slugify(a.city) || "lake-tahoe"}-${slugify(a.state) || "nv"}/${slugify(a.address) || "home"}`;
+const homeBaths = a => a.baths_full == null || a.baths_full === "" ? (a.baths ?? null) : Number(a.baths_full) + 0.5 * Number(a.baths_half || 0);
+function homeMlsValues(a, remarks, now) {
+  const sold = a.archive_status === "sold";
+  return {
+    title: a.address || "(no address)", home_status: homeStatusOf(a),
+    price: money(a.price), sold_price: sold ? money(a.close_price) : null, close_date: sold ? (a.close_date || null) : null,
+    represented: sold ? representedText(a) : null,
+    city: a.city || null, beds: a.beds ?? null, baths: homeBaths(a),
+    sqft: a.sqft != null ? Number(a.sqft).toLocaleString("en-US") : null,
+    mls_number: a.mls_number || null, listing_date: a.listing_date || null,
+    photo: a.main_photo_url || a.photo || null, tour_url_mls: a.tour_url_mls || null,
+    _mls_description: ptFromPlain(remarks), updated_at: now,
   };
-  const clean = v => { const s = (v ?? "").toString().trim(); return s === "" ? null : s; };
-  const insertCols = ["id","slug","status","locale","version","title","published_at","updated_at", ...SOLD_MLS_FIELDS.map(s => '"' + s + '"'), ...SOLD_OWNER_FIELDS.map(s => '"' + s + '"'), '"_mls_description"'];
-  const setClause = ["slug","title","updated_at", ...SOLD_MLS_FIELDS, "_mls_description"].map(c => `"${c}"=excluded."${c}"`).join(",");
-  const head = `INSERT INTO ec_sold_listings (${insertCols.join(",")}) VALUES `;
+}
+async function mirrorEmdashHomes() {
+  const legacy = (await d1("SELECT count(*) n FROM ec_listings WHERE id NOT LIKE 'p-%'"))?.[0]?.results?.[0]?.n ?? 0;
+  if (legacy > 0) throw new Error(`ec_listings still holds ${legacy} row(s) keyed by listing number; run emdash/seed/migrate-homes.mjs first`);
+  await d1("CREATE TABLE IF NOT EXISTS property_slugs (slug TEXT PRIMARY KEY, property_id TEXT NOT NULL, created_at TEXT)");
+  const ar = await d1(`SELECT ${ARCHIVE_HOME_COLS} FROM listing_archive WHERE parcel_number IS NOT NULL AND parcel_number <> '' AND archive_status <> 'unknown'`);
+  const homes = new Map();
+  for (const a of ar?.[0]?.results ?? []) {
+    if (!homes.has(a.parcel_number)) homes.set(a.parcel_number, []);
+    homes.get(a.parcel_number).push(a);
+  }
+  for (const rows of homes.values()) rows.sort(newestFirst);
+  if (!homes.size) { console.log("home mirror: no archive rows with a parcel yet"); return; }
+  const ex = await d1(`SELECT id, slug, "_current_listing" AS cur FROM ec_listings`);
+  const existing = new Map((ex?.[0]?.results ?? []).map(r => [r.id, r]));
+  const taken = new Set([...existing.values()].map(r => r.slug));
+  // MLS remarks only for the current listings (descriptions are the bulk of a row).
+  const currentIds = [...homes.values()].map(rows => rows[0].id);
+  const remarks = {};
+  for (let i = 0; i < currentIds.length; i += 100) {
+    const r = await d1(`SELECT id, description FROM listing_archive WHERE id IN (${currentIds.slice(i, i + 100).map(sqlVal).join(",")})`);
+    for (const row of r?.[0]?.results ?? []) remarks[row.id] = row.description;
+  }
+  const now = new Date().toISOString();
+  const insertCols = ["id", "slug", "status", "locale", "version", "published_at", "created_at", "description", "show_grant", "_current_listing", ...HOME_SET_COLS];
+  const setClause = [
+    ...HOME_SET_COLS.map(c => `"${c}"=excluded."${c}"`),
+    `"description"=CASE WHEN ec_listings."description" IS ec_listings."_mls_description" THEN excluded."description" ELSE ec_listings."description" END`,
+    `"show_grant"=CASE WHEN ec_listings."_current_listing" IS excluded."_current_listing" THEN ec_listings."show_grant" ELSE excluded."show_grant" END`,
+    `"_current_listing"=excluded."_current_listing"`,
+  ].join(",");
+  const head = `INSERT INTO ec_listings (${insertCols.map(c => `"${c}"`).join(",")}) VALUES `;
   const tail = ` ON CONFLICT(id) DO UPDATE SET ${setClause}`;
-  let batch = [], len = head.length + tail.length;
+  let batch = [], len = head.length + tail.length, inserted = 0, switched = 0;
   const flush = async () => { if (batch.length) { await d1(head + batch.join(",") + tail); batch = []; len = head.length + tail.length; } };
-  const now = sqlVal(new Date().toISOString());
-  for (const r of rows) {
-    let snap = {};
-    try { snap = r.owner_snapshot ? JSON.parse(r.owner_snapshot) : {}; } catch { snap = {}; }
-    const pt = (r.sub_type || r.type || "").replace(/([a-z])([A-Z])/g, "$1 $2");
-    const mlsPT = ptFromPlain(r.description);
-    const snapDesc = clean(snap.description);
-    const description = snapDesc ? (snapDesc.startsWith("[") ? snapDesc : ptFromPlain(snapDesc)) : mlsPT;
-    const vals = [
-      sqlVal(r.id), sqlVal(r.slug || ("sold-" + r.id)), "'published'", "'en'", "1",
-      sqlVal(r.address || "(no address)"), now, now,
-      sqlVal(money(r.close_price ?? r.price)), sqlVal(r.close_date), sqlVal(represented(r)),
-      sqlVal(r.city), sqlVal(r.state), sqlVal(r.zip),
-      sqlVal(r.beds), sqlVal(r.baths), sqlVal(r.sqft != null ? Number(r.sqft).toLocaleString("en-US") : null),
-      sqlVal(r.lot_acres), sqlVal(r.year_built), sqlVal(pt || null), sqlVal(r.view),
-      sqlVal(r.main_photo_url || r.photo || null),
-      sqlVal(r.listing_date), sqlVal(money(r.price)),
-      sqlVal(r.mls_number), sqlVal(r.tour_url_mls),
-      sqlVal(clean(snap.featured)), sqlVal(clean(snap.hidden)), sqlVal(clean(snap.headline)), sqlVal(description),
-      sqlVal(clean(snap.owner_note)), sqlVal(clean(snap.note_image)), sqlVal(clean(snap.tour_url)), sqlVal(clean(snap.note_videos)),
-      sqlVal(clean(snap.floor_plan_embed)), sqlVal(clean(snap.floor_plan_images)),
-      sqlVal(mlsPT),
-    ];
-    const tuple = "(" + vals.join(",") + ")";
+  const slugRows = [];
+  for (const [parcel, rows] of homes) {
+    const cur = rows[0];
+    const id = `p-${parcel}`;
+    const was = existing.get(id);
+    let slug = was?.slug;
+    if (!slug) {
+      slug = homeBaseSlug(cur);
+      if (taken.has(slug)) slug = `${slug}-${slugify(parcel) || "2"}`;
+      taken.add(slug);
+      inserted++;
+    } else if (was.cur && was.cur !== cur.id) {
+      const o = (await d1(`SELECT ${HOME_OWNER_COLS.map(c => `"${c}"`).join(",")}, "_mls_description" AS mls FROM ec_listings WHERE id=${sqlVal(id)}`))?.[0]?.results?.[0];
+      if (o) {
+        const snap = { ...Object.fromEntries(HOME_OWNER_COLS.map(c => [c, o[c] ?? null])), taken_at: now, listing_key: was.cur };
+        if (snap.description === o.mls) snap.description = null;
+        await d1(`UPDATE listing_archive SET owner_snapshot=${sqlVal(JSON.stringify(snap))} WHERE id=${sqlVal(was.cur)}`);
+      }
+      switched++;
+    }
+    const m = homeMlsValues(cur, remarks[cur.id], now);
+    const vals = [sqlVal(id), sqlVal(slug), "'published'", "'en'", "1", sqlVal(now), sqlVal(now), sqlVal(m._mls_description), sqlVal(grantListsIt(cur) ? "1.0" : "0.0"), sqlVal(cur.id), ...HOME_SET_COLS.map(c => sqlVal(m[c]))];
+    const tuple = `(${vals.join(",")})`;
     if (len + tuple.length + 1 > 90000 || batch.length >= 40) await flush();
     batch.push(tuple); len += tuple.length + 1;
+    slugRows.push([slug, id]);
+    for (const a of rows) if (a.slug) slugRows.push([a.slug, id]);
   }
   await flush();
-  console.log("emdash sold mirror: ec_sold_listings upserted", rows.length, "sold listings (owner cols preserved)");
+  for (let i = 0; i < slugRows.length; i += 200) {
+    const tuples = slugRows.slice(i, i + 200).map(([s, id]) => `(${sqlVal(s)},${sqlVal(id)},${sqlVal(now)})`).join(",");
+    await d1(`INSERT OR IGNORE INTO property_slugs (slug, property_id, created_at) VALUES ${tuples}`);
+  }
+  console.log(`emdash mirror: ${homes.size} homes in ec_listings (${inserted} new, ${switched} switched to a new listing), ${slugRows.length} slugs mapped`);
 }
 
 async function insertRows(table, cols, rows, perBatch) {
@@ -348,7 +362,10 @@ const LCOLS = ["id","slug","address","city","state","zip","price","beds","baths"
   // Added 2026-09-10:
   "cum_dom",
   // Added 2026-09-21 (Features filter):
-  "laundry_features","security_features","main_level_beds","assoc_amenities","spa_features","spa_yn"];
+  "laundry_features","security_features","main_level_beds","assoc_amenities","spa_features","spa_yn",
+  // Added 2026-11-09 (one page per home): relists keep the parcel, so the site
+  // joins a live listing to its home row (ec_listings id = 'p-<parcel>') by it.
+  "parcel_number"];
 
 // city-state/address, the way every listing URL on the site is built.
 function baseSlugOf(l) {
@@ -383,6 +400,8 @@ function buildListingRow(l, slug, primary) {
     flat(l.LaundryFeatures) || null, flat(l.SecurityFeatures) || null,
     l.MainLevelBedrooms ?? null, flat(l.AssociationAmenities) || null,
     flat(l.SpaFeatures) || null, l.SpaYN === true ? 1 : (l.SpaYN === false ? 0 : null),
+    // Added 2026-11-09:
+    l.ParcelNumber || null,
   ];
 }
 
@@ -390,7 +409,8 @@ function buildListingRow(l, slug, primary) {
 // `listing_archive` = every `listings` column, plus who was on each side and
 // what happened to the listing. Nothing deletes from it. See the header note.
 const ARCHIVE_EXTRA_COLS = [
-  "parcel_number", "list_agent_id", "buyer_agent_id", "co_list_agent_id", "co_buyer_agent_id",
+  // (parcel_number is a listings column since 2026-11-09)
+  "list_agent_id", "buyer_agent_id", "co_list_agent_id", "co_buyer_agent_id",
   "buyer_agent", "buyer_office",
   "feed_status",      // last StandardStatus the feed reported
   "archive_status",   // active | under_contract | sold | off_market | unknown
@@ -424,6 +444,12 @@ async function ensureSchema() {
   for (const c of ARCHIVE_COLS) {
     if (!have.has(c)) await d1(`ALTER TABLE listing_archive ADD COLUMN "${c}" ${colType(c)}`);
   }
+  // `listings` gained parcel_number on 2026-11-09 (the archive always had it).
+  const linfo = await d1("PRAGMA table_info(listings)");
+  if (!(linfo?.[0]?.results ?? []).some(r => r.name === "parcel_number")) await d1("ALTER TABLE listings ADD COLUMN parcel_number TEXT");
+  // Every URL ever used for a home -> its ec_listings row (301s). Filled by the
+  // home mirror below and by emdash/seed/migrate-homes.mjs.
+  await d1("CREATE TABLE IF NOT EXISTS property_slugs (slug TEXT PRIMARY KEY, property_id TEXT NOT NULL, created_at TEXT)");
   await d1("CREATE INDEX IF NOT EXISTS idx_archive_status ON listing_archive(archive_status)");
   await d1("CREATE INDEX IF NOT EXISTS idx_archive_slug ON listing_archive(slug)");
   await d1("CREATE INDEX IF NOT EXISTS idx_archive_parcel ON listing_archive(parcel_number)");
@@ -453,7 +479,7 @@ function buildArchiveRow(l, slug, primary, source, now) {
   const row = buildListingRow(l, slug, primary);
   return [
     ...row,
-    l.ParcelNumber || null, l.ListAgentMlsId || null, l.BuyerAgentMlsId || null,
+    l.ListAgentMlsId || null, l.BuyerAgentMlsId || null,
     l.CoListAgentMlsId || null, l.CoBuyerAgentMlsId || null,
     l.BuyerAgentFullName || null, l.BuyerOfficeName || null,
     l.StandardStatus || null, archiveStatusOf(l.StandardStatus),
@@ -486,33 +512,6 @@ async function upsertArchive(rows) {
     batch.push(tuple); len += tuple.length + 1;
   }
   await flush();
-}
-
-// Copy Grant's fields off the ec_listings rows that are about to be deleted
-// (those not in `liveIds`) into listing_archive.owner_snapshot. A departing row
-// with no archive entry yet (it left before the archive existed) gets a stub row
-// marked `unknown`, which the next reconcile pass sorts out.
-async function snapshotDepartingOwnerFields(liveIds) {
-  const r = await d1(`SELECT id, title, slug, headline, description, "_mls_description" AS mls_description, owner_note, note_image, tour_url, note_videos, floor_plan_embed, floor_plan_images, featured, hidden FROM ec_listings WHERE id NOT IN (${liveIds.join(",")})`);
-  const rows = r?.[0]?.results ?? [];
-  if (!rows.length) return;
-  const now = new Date().toISOString();
-  for (const e of rows) {
-    const snap = {
-      headline: e.headline || null,
-      // Only a real override is worth keeping; the MLS remarks are in the archive row.
-      description: (e.description && e.description !== e.mls_description) ? e.description : null,
-      owner_note: e.owner_note || null, note_image: e.note_image || null, tour_url: e.tour_url || null,
-      note_videos: e.note_videos || null, floor_plan_embed: e.floor_plan_embed || null,
-      floor_plan_images: e.floor_plan_images || null,
-      featured: e.featured || null, hidden: e.hidden || null, taken_at: now,
-    };
-    await d1(
-      `INSERT INTO listing_archive (id, slug, address, archive_status, first_seen_at, last_seen_at, owner_snapshot, source) VALUES (${sqlVal(e.id)}, ${sqlVal(e.slug)}, ${sqlVal(e.title)}, 'unknown', ${sqlVal(now)}, ${sqlVal(now)}, ${sqlVal(JSON.stringify(snap))}, 'sync') ` +
-      `ON CONFLICT(id) DO UPDATE SET owner_snapshot=excluded.owner_snapshot`
-    );
-  }
-  console.log(`owner snapshot: kept Grant's fields for ${rows.length} departing listing(s)`);
 }
 
 // Price and status changes, recorded BEFORE the archive upsert overwrites the last
@@ -688,7 +687,7 @@ async function main() {
 
   if (SYNC_MODE === "backfill-sold") {
     await backfillSold(token);
-    try { await mirrorEmdashSoldListings(); } catch (e) { console.error("emdash sold mirror (non-fatal):", e.message); }
+    try { await mirrorEmdashHomes(); } catch (e) { console.error("emdash mirror (non-fatal):", e.message); }
     console.log(`backfill complete in ${((Date.now() - t0) / 1000).toFixed(1)}s`);
     return;
   }
@@ -740,12 +739,11 @@ async function main() {
   await insertRows("listing_photos", ["listing_key","ord","url"], photoRows, 300);
   await d1(`INSERT OR REPLACE INTO sync_meta (id,last_synced_at,count) VALUES (1,${sqlVal(new Date().toISOString())},${listingRows.length})`);
 
-  // Keep the emdash admin "Listings" collection (ec_listings) in sync so the
-  // backend browse view stays fresh. Non-fatal — a mirror failure never breaks the
-  // core sync. The collection/table are registered once by emdash/seed/mirror-listings.mjs.
-  try { await mirrorEmdashListings(); } catch (e) { console.error("emdash mirror (non-fatal):", e.message); }
-  // Same for the Sold Listings collection: new sales become editable after this run.
-  try { await mirrorEmdashSoldListings(); } catch (e) { console.error("emdash sold mirror (non-fatal):", e.message); }
+  // Keep the emdash admin "Listings" collection (ec_listings, one row per home)
+  // in step with the archive. Non-fatal: a mirror failure never breaks the core
+  // sync, but the workflow flags the "(non-fatal)" line. The collection is
+  // registered once by emdash/seed/mirror-listings.mjs.
+  try { await mirrorEmdashHomes(); } catch (e) { console.error("emdash mirror (non-fatal):", e.message); }
 
   const verify = await d1("SELECT (SELECT count(*) FROM listings) l, (SELECT count(*) FROM listing_photos) p, (SELECT count(*) FROM listing_archive) a, (SELECT count(*) FROM listing_archive WHERE archive_status='sold') s");
   console.log("D1 now holds:", JSON.stringify(verify?.[0]?.results?.[0] || verify));
