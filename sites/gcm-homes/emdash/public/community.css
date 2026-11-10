@@ -158,7 +158,9 @@
 .nb-hero { position: relative; padding: 150px 0 70px; background: var(--navy); overflow: hidden; }
 .nb-hero__veil { position: absolute; inset: 0; background: linear-gradient(120deg, #15243b 0%, #1d3050 100%); }
 .nb-hero__copy { position: relative; text-align: center; color: #fff; }
-.nb-hero__back { display: inline-block; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.7); margin-bottom: 20px; }
+.nb-hero__back { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.7); margin-bottom: 20px; }
+/* The arrow had no size of its own, so it filled the line at 115px (2026-11-10). */
+.nb-hero__back svg { width: 1.15em; height: 1.15em; flex-shrink: 0; }
 .nb-hero__back:hover { color: var(--orange); }
 .nb-take { margin-top: 32px; padding: 26px 28px; background: var(--beige); border-left: 3px solid var(--orange); border-radius: 0 6px 6px 0; }
 .nb-take__l { margin-bottom: 10px; }
