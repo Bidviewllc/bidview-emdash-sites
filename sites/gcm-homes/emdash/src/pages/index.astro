@@ -7,6 +7,7 @@ import GcmLayout from "../layouts/GcmLayout.astro";
 import { getEmDashEntry, getTermsForEntries } from "emdash";
 import { env } from "cloudflare:workers";
 import { firstImageUrl } from "../lib/media";
+import { formatDate } from "../lib/posts";
 import { FEATURED_ROW, FEATURED_FIRST, HOME_JOIN, HOME_SLUG_COL, statusLabel, bathsOf, courtesyOf } from "../lib/listings";
 // "The Proof" is the shared review carousel over every client review, featured
 // ones first (src/lib/reviews.ts). The About page still reads
@@ -138,11 +139,7 @@ try {
 			// post has none — the label is hidden rather than guessed at.
 			category: (catsById.get(p.id) ?? []).map((t: any) => t.label).join(" · "),
 			image: firstImageUrl(p.featured_image) ?? POST_FALLBACK_IMAGES[i % POST_FALLBACK_IMAGES.length],
-			date: p.published_at
-				? new Date(String(p.published_at).replace(" ", "T") + "Z")
-					.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })
-					.toUpperCase()
-				: "",
+			date: formatDate(p.published_at).toUpperCase(),
 		}));
 	}
 } catch { posts = []; }

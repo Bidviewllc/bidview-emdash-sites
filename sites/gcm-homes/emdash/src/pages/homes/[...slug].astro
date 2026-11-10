@@ -18,6 +18,13 @@ import { bySlug } from "../../lib/listings";
 
 const attr = (s: any) => String(s ?? "").replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
+// Renders src/pages/404.astro in place (no redirect), keeping the status this
+// route decided on: 404 for a URL that was never a home, 410 for one that's gone.
+async function notFound(status: number, maxAge: number): Promise<Response> {
+	const page = await Astro.rewrite("/404");
+	return new Response(await page.text(), { status, headers: { "content-type": "text/html; charset=utf-8", "Cache-Control": `public, s-maxage=${maxAge}` } });
+}
+
 const slug = String(Astro.params.slug || "").replace(/\/+$/, "");
 const origin = new URL(Astro.request.url).origin;
 let head = "";
@@ -28,10 +35,12 @@ try {
 	if (result?.redirect) return Astro.redirect(`/homes/${result.redirect}/`, 301);
 	// Expired / withdrawn / cancelled, and nothing the site shows about the home:
 	// answer 410 so search engines drop the URL.
-	if (result?.gone) return new Response("This listing is no longer available.", { status: 410, headers: { "content-type": "text/plain; charset=utf-8", "Cache-Control": "public, s-maxage=3600" } });
+	// Visitors get the site's own not-found page, not a bare text line.
+	if (result?.gone) return notFound(410, 3600);
 	// Not a home we know: the raw page would say "Failed to load" with a 200,
 	// so give search engines the right answer instead.
-	if (result === null) return new Response(rawHtml, { status: 404, headers: { "content-type": "text/html; charset=utf-8", "Cache-Control": "public, s-maxage=300" } });
+	// The visitor sees the branded 404 page at the URL they typed.
+	if (result === null) return notFound(404, 300);
 	const l = result?.listing as any;
 	if (l) {
 		const url = `${origin}/homes/${slug}/`;

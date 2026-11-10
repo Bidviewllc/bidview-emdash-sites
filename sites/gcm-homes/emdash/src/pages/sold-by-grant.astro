@@ -1,0 +1,127 @@
+---
+// /sold-by-grant/ — the homes Grant sold. The page the site links to for
+// "Recently Sold" (Liz, 2026-11-09); /sold/ lists every sold home.
+//
+// Data: `listing_archive`, the table the Trestle sync never deletes from, joined
+// to the home rows in `ec_listings` (src/lib/listings.ts: soldHomes). Two
+// parts, Liz's call (2026-11-03): every home Grant was on a side of a sale
+// of, back to 2011, then other agents' closed sales at or above
+// SOLD_OTHERS_MIN_PRICE in the last SOLD_OTHERS_YEARS, so his own work stays
+// distinct from the market context.
+//
+// Grant's homes are a paged grid (12 a page, public/js/sold-pager.js). The
+// notable sales are a 9-card carousel on a navy band, with a link to /sold/
+// for the rest (Liz, 2026-11-09).
+//
+// ONE CARD PER HOME (Liz, 2026-11-06, decision 4): a home Grant sold more than
+// once is one card that says so ("2 sales with Grant"), showing the newest sale
+// he was on. Each card carries one photo only (the MLS lead photo), the sold
+// price and the month it closed, and links to the home's one page at
+// /homes/<slug>/ (its Listing History accordion lists every listing). "Hide from search"
+// on the home keeps it off this page too.
+import GcmLayout from "../layouts/GcmLayout.astro";
+import ContactCta from "../components/ContactCta.astro";
+import SoldCard from "../components/SoldCard.astro";
+import { soldHomes, SOLD_OTHERS_MIN_PRICE, SOLD_OTHERS_YEARS } from "../lib/listings";
+
+const { grant, notable } = await soldHomes();
+// Newest closings for the carousel, not the featured-first order of the grid.
+const market = [...notable]
+	.sort((a, b) => String(b.closeDate || "").localeCompare(String(a.closeDate || "")))
+	.slice(0, 9);
+
+const seo = {
+	title: "Sold by Grant C. Meyer — Grant C. Meyer Homes",
+	description:
+		"Homes Grant C. Meyer has sold in Incline Village and Crystal Bay, Lake Tahoe, with the sold price and closing date for each, plus the area's notable recent sales.",
+};
+const floor = "$" + (SOLD_OTHERS_MIN_PRICE / 1_000_000) + "M";
+const arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>';
+const arrowBack = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></svg>';
+---
+
+<GcmLayout title={seo.title} description={seo.description}>
+	<link rel="stylesheet" href="/contact.css" />
+	<link rel="stylesheet" href="/sold.css" />
+
+	<section class="section section--dark chero" data-screen-label="01 Hero">
+		<div class="container chero__inner">
+			<span class="eyebrow">Recently Sold</span>
+			<h1 class="h1 chero__h">The homes that <em>found their people.</em></h1>
+			<p class="section-lead chero__lead">
+				Every home Grant has represented in Incline Village and Crystal Bay, with the price it closed at and when.
+			</p>
+		</div>
+	</section>
+
+	<section class="section section--cream" data-screen-label="02 Sold by Grant">
+		<div class="container sold-section">
+			<div class="section-title section-title--nolead">
+				<span class="eyebrow">Sold by Grant</span>
+				<h2>Represented by Grant C. Meyer</h2>
+			</div>
+			{grant.length === 0 ? (
+				<p class="sold-empty">Recent sales are being added.</p>
+			) : (
+				<div class="sold-grid" id="sold-grant" data-paged="grant" data-per="12">
+					{grant.map((l: any) => <SoldCard l={l} />)}
+				</div>
+			)}
+		</div>
+	</section>
+
+	{market.length > 0 && (
+		<section class="section section--dark sold-market" data-screen-label="03 Notable Sales">
+			<div class="container">
+				<div class="section-title section-title--nolead">
+					<span class="eyebrow">The Market</span>
+					<h2>Notable sales on the North Shore</h2>
+					<p class="section-lead">
+						Closed sales of {floor} and above in Incline Village and Crystal Bay over the last {SOLD_OTHERS_YEARS} years, from the MLS.
+					</p>
+				</div>
+				<div class="fl-track" id="soldMarketTrack">
+					{market.map((l: any) => <SoldCard l={l} />)}
+				</div>
+				{market.length > 3 && (
+					<div class="fl-nav">
+						<button class="btn btn--icon fl-nav__prev" id="soldMarketPrev" aria-label="Previous sales" set:html={arrowBack}></button>
+						<button class="btn btn--icon fl-nav__next" id="soldMarketNext" aria-label="Next sales" set:html={arrow}></button>
+					</div>
+				)}
+				<div class="section-end-cta">
+					<a class="btn btn--orange" href="/sold/">VIEW ALL SOLD HOMES<span class="cta-arrow" aria-hidden="true" set:html={arrow}></span></a>
+				</div>
+			</div>
+		</section>
+	)}
+
+	<ContactCta id="sold-contact" bg="beige" />
+
+	<script is:inline src="/js/sold-pager.js" defer></script>
+	<script is:inline>
+		/* Notable-sales carousel: the home page's featured-listings pattern. A
+		   native scroll-snap track, so swipe works on its own; arrows move one card. */
+		(function () {
+			var track = document.getElementById("soldMarketTrack");
+			var prev = document.getElementById("soldMarketPrev");
+			var next = document.getElementById("soldMarketNext");
+			if (!track || !prev || !next) return;
+			function step() {
+				var card = track.querySelector(".card");
+				if (!card) return track.clientWidth;
+				return card.getBoundingClientRect().width + parseFloat(getComputedStyle(track).columnGap || "0");
+			}
+			function sync() {
+				var max = track.scrollWidth - track.clientWidth - 2;
+				prev.disabled = track.scrollLeft <= 2;
+				next.disabled = track.scrollLeft >= max;
+			}
+			prev.addEventListener("click", function () { track.scrollBy({ left: -step(), behavior: "smooth" }); });
+			next.addEventListener("click", function () { track.scrollBy({ left: step(), behavior: "smooth" }); });
+			track.addEventListener("scroll", sync, { passive: true });
+			window.addEventListener("resize", sync);
+			sync();
+		})();
+	</script>
+</GcmLayout>

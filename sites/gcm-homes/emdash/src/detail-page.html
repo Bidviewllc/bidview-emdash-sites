@@ -4,6 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Listing Detail — Grant C. Meyer Homes</title>
+  <link rel="icon" href="/favicon.ico" sizes="48x48" />
+  <link rel="icon" type="image/png" href="/favicon-32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="/icon-192.png" sizes="192x192" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400&family=Noto+Serif:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
@@ -1360,8 +1364,24 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro, sync
   // Return the visitor to the search they came from, filters intact. The listings
   // page stashes its current URL (including the filter query string) on every
   // change; fall back to the unfiltered index when there is nothing stored.
+  // A sold home goes back to the sold page the visitor came from, page number
+  // and all: Grant's (/sold-by-grant/) or every sale (/sold/, the default).
   let backHref = listing.archived ? "/sold/" : "/listings/";
-  let backLabel = listing.archived ? "Back to Recently Sold" : "Back to All Listings";
+  let backLabel = listing.archived ? "Back to Sold Homes" : "Back to All Listings";
+  if (listing.archived) {
+    try {
+      // sold-pager.js stores the sold page and page number the visitor was on.
+      const stored = sessionStorage.getItem("gcm:soldUrl") || "";
+      const ref = document.referrer ? new URL(document.referrer) : null;
+      const fromPath = ref && ref.origin === location.origin ? ref.pathname : "";
+      if (fromPath === "/sold-by-grant/" || (!fromPath && stored.indexOf("/sold-by-grant/") === 0)) {
+        backHref = stored.indexOf("/sold-by-grant/") === 0 ? stored : "/sold-by-grant/";
+        backLabel = "Back to Sold by Grant";
+      } else if (stored.indexOf("/sold/") === 0) {
+        backHref = stored;
+      }
+    } catch (e) { /* keep /sold/ */ }
+  }
   try {
     if (listing.archived) throw new Error("archived: keep the sold link");
     const stored = sessionStorage.getItem("gcm:listingsUrl");
@@ -1900,8 +1920,8 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro, sync
     <footer class="footer">
       <div class="footer__cols">
         <div class="footer__brand">
-          <img src="/assets/logo-white.png" alt="Grant C. Meyer Homes" style="height:100px" />
-          <p style="font-size:14px;line-height:1.6;color:rgba(255,255,255,0.7);margin-bottom:24px;max-width:280px">
+          <img src="/assets/logo-white.png" alt="Grant C. Meyer Homes" />
+          <p class="footer__brand__blurb">
             Incline Village since 1992. More property sold here than any other agent since 2019. Buying, selling, land and commercial, on Lake Tahoe's Nevada shore.
           </p>
         </div>
@@ -1909,7 +1929,7 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro, sync
           <h4 class="footer__h">Properties</h4>
           <div class="footer__links">
             <a href="/listings/">Search Listings</a>
-            <a href="/sold/">Recently Sold</a>
+            <a href="/sold-by-grant/">Recently Sold</a>
             <a href="/buyers/">For Buyers</a>
             <a href="/sellers/">For Sellers</a>
           </div>
@@ -2024,7 +2044,7 @@ async function load() {
       document.getElementById("app").innerHTML = `
         <div class="loading">
           <p>This listing is no longer available.</p>
-          <p style="margin-top:14px"><a class="btn btn--dark" href="/listings/">SEARCH CURRENT LISTINGS</a> &nbsp; <a class="btn btn--dark" href="/sold/">RECENTLY SOLD</a></p>
+          <p style="margin-top:14px"><a class="btn btn--dark" href="/listings/">SEARCH CURRENT LISTINGS</a> &nbsp; <a class="btn btn--dark" href="/sold-by-grant/">RECENTLY SOLD</a></p>
         </div>`;
       return;
     }

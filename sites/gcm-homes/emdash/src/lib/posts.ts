@@ -43,10 +43,14 @@ export interface Category {
 
 const db = () => (env as any)?.DB;
 
-/** D1 stores published_at as "YYYY-MM-DD HH:MM:SS" in UTC. */
+/** published_at is UTC, stored either as "YYYY-MM-DD HH:MM:SS" or as a full
+ *  ISO string ("2026-09-23T07:00:00.000Z", what the live posts hold). Only
+ *  the first form needs the "T" and "Z" added; adding them to the second made
+ *  every date invalid. */
 export function formatDate(v: unknown): string {
 	if (!v) return "";
-	const d = v instanceof Date ? v : new Date(String(v).replace(" ", "T") + "Z");
+	const s = String(v);
+	const d = v instanceof Date ? v : new Date(/[TZ]|[+-]\d\d:?\d\d$/.test(s) ? s : s.replace(" ", "T") + "Z");
 	if (isNaN(d.getTime())) return "";
 	return d.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" });
 }

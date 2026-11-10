@@ -32,10 +32,10 @@
 	"triggers": {
 		"crons": ["* * * * *"],
 	},
-	// Contact-form lead destination. Currently the bidview monitoring inbox so no
-	// lead is ever lost — SWAP for Grant's real email once confirmed. The Resend
+	// Contact-form lead destination: Grant's team inbox (Liz, 2026-11-09). The
+	// handler BCCs local@bidviewmarketing.com as a monitoring copy. The Resend
 	// API key is a worker SECRET (RESEND_API_KEY), not stored here.
 	"vars": {
-		"LEAD_TO": "local@bidviewmarketing.com",
+		"LEAD_TO": "TeamMeyer@cbselectre.com",
 	},
 }

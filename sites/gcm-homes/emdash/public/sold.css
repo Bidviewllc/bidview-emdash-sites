@@ -37,10 +37,59 @@
 	padding: 24px 0 8px;
 }
 
+/* Notable sales on /sold-by-grant/: a navy band so the market context reads
+   apart from Grant's own (cream) grid, with the home page's carousel. */
+.sold-market .section-title { margin-bottom: 40px; }
+.sold-market .section-title h2 { color: var(--white); }
+.sold-market .section-lead { max-width: 640px; margin: 14px auto 0; text-align: center; color: rgba(255, 255, 255, 0.85); }
+.sold-market .fl-nav .fl-nav__prev { border-color: rgba(255, 255, 255, 0.45); color: var(--white); }
+.sold-market .card__courtesy { color: var(--muted); }
+.sold-hero__cta { margin-top: 32px; display: flex; justify-content: center; }
+
+/* Pager under each grid (script at the foot of sold.astro). */
+.sold-grid > [hidden] { display: none; }
+.sold-pager {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 14px;
+	margin-top: 40px;
+}
+.sold-pager__count {
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--muted);
+}
+.sold-pager__btns { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px; }
+.sold-pager__btn {
+	min-width: 44px;
+	height: 44px;
+	padding: 0 12px;
+	border: 1px solid rgba(23, 37, 61, 0.18);
+	border-radius: 4px;
+	background: var(--white);
+	color: var(--navy);
+	font: 600 14px/1 var(--font-sans);
+	cursor: pointer;
+	transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+@media (hover: hover) {
+	.sold-pager__btn:hover:not(:disabled):not(.is-current) { border-color: var(--orange); color: var(--orange); }
+}
+.sold-pager__btn.is-current { background: var(--navy); border-color: var(--navy); color: var(--white); cursor: default; }
+.sold-pager__btn:disabled { opacity: 0.35; cursor: default; }
+.sold-pager__arrow { font-size: 18px; }
+.sold-pager__gap { min-width: 20px; text-align: center; color: var(--muted); }
+
 @media (max-width: 1024px) {
 	.sold-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
 }
 @media (max-width: 640px) {
 	.sold-grid { grid-template-columns: 1fr; gap: 20px; }
+	.sold-pager__btns { gap: 4px; }
+	.sold-pager__btn { min-width: 36px; height: 40px; padding: 0 6px; }
+	.sold-pager__gap { min-width: 14px; }
 	.sold-section + .sold-section { margin-top: 56px; }
 }

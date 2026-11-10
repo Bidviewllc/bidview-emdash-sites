@@ -86,7 +86,7 @@ export { PluginBridge };
 //      showing call-to-action;
 //      Features & Amenities is a grid, not a carousel; footer disclaimers +
 //      copyright laid out two by two on every page.
-const CACHE_VERSION = "v36";
+const CACHE_VERSION = "v40";
 
 // Only plain file names under site-video/ in R2; no paths, no other keys.
 const SITE_VIDEO_NAME = /^[a-z0-9-]+\.(mp4|jpg)$/;

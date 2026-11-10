@@ -14,7 +14,7 @@ import { NOT_HIDDEN, HOME_JOIN, HOME_SLUG_COL, bathsOf, courtesyOf } from "../..
 
 const { slug } = Astro.params as { slug: string };
 const area = bySlug(slug);
-if (!area) return Astro.redirect("/404");
+if (!area) return Astro.rewrite("/404");
 
 // Editable copy (falls back to seeded defaults if the collection isn't there).
 let entry: any = null;
