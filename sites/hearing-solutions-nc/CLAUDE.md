@@ -188,8 +188,15 @@ handed off from Claude Design in `design/`.
 ## Forms (2026-10-16)
 - Built in the admin with EmDash's Forms plugin (`@emdash-cms/plugin-forms`):
   Plugins → Forms (fields, "Notify emails"), Plugins → Submissions (inbox).
-  Two forms, slugs `contact` and `appointment-request`; a site gets them from
-  `DEFAULT_FORMS` in `src/lib/forms.ts` the first time the page is viewed.
+  Three forms, slugs `contact`, `appointment-request` and (HSNC) `consumer-guide`;
+  a site gets them from `DEFAULT_FORMS` in `src/lib/forms.ts` the first time the
+  page is viewed.
+- HSNC download form (2026-11-10): the Consumer's Guide PDF is handed out after the
+  `consumer-guide` form, as on the old site, and each send emails the practice.
+  `src/data/hsnc/gated-downloads.ts` maps the resource to its form; the resource
+  page shows the form under its text (no "Forms" card), and the form sends people
+  to `/thank-you?guide=<slug>`, which shows "Download the guide" (the resource's
+  Form PDF). The PDF address itself isn't secret, as on the old site.
 - The site draws them (`SiteForm.astro`: half-width pairs, pill check boxes, a
   `location` select filled with the offices) and takes submissions itself at
   `/api/form` (Liberty's handler lessons), writing into the plugin's storage so

@@ -9,6 +9,9 @@
 // the Book button (the phone instead).
 import HsSideCall from "./hs/HsSideCall.astro";
 import "../styles/hsnc-reskin.css";
+import "../styles/hsnc-contact.css";
+import SiteForm from "./SiteForm.astro";
+import { GATED_DOWNLOADS } from "../data/hsnc/gated-downloads";
 import DetailHero from "./DetailHero.astro";
 import FormButtons from "./FormButtons.astro";
 import HsCtaBand from "./hs/HsCtaBand.astro";
@@ -40,6 +43,8 @@ const toc = rich?.headings ?? [];
 /** Other resources on the same first topic, then any others, up to three. */
 const others = resources.filter((x) => x.slug !== r.slug && !x.hideFromHub);
 const related = [...others.filter((x) => x.tags[0] === r.tags[0]), ...others.filter((x) => x.tags[0] !== r.tags[0])].slice(0, 3);
+/** A download handed out after a form (Consumer's Guide): the form goes under the text, no "Forms" card. */
+const gate = GATED_DOWNLOADS[r.slug];
 ---
 <Base title={`${r.t} | ${s.name}`} description={r.d} pageName="Patient resource" current="resources" tweaks={[]} heroDefault="photo">
 	<DetailHero label="Patient resources" title={r.t} intro={r.d} hero={hero} image={r.heroImage}>
@@ -66,11 +71,18 @@ const related = [...others.filter((x) => x.tags[0] === r.tags[0]), ...others.fil
 						)
 					}
 					{html ? <article class="rt" set:html={html} /> : <article class="rt"><p>{r.d}</p></article>}
+					{
+						gate && (
+							<form class="hs-c-form" aria-label={`Get your copy of the ${r.t}`} novalidate data-form method="post" action="/api/form">
+								<SiteForm slug={gate} id="g" blockButton />
+							</form>
+						)
+					}
 				</div>
 
 				<aside class="hs-aside" aria-label="Forms and call us">
 					{
-						r.forms && (
+						r.forms && !gate && (
 							<div class="rs-scard">
 								<h2>Forms</h2>
 								<p class="muted">Fill these out before your visit to save time on the day.</p>

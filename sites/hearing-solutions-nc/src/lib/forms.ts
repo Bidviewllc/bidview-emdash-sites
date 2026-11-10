@@ -10,6 +10,7 @@
 
 import { PluginStorageRepository } from "emdash";
 import { getDb } from "emdash/runtime";
+import { guideThankYou } from "../data/hsnc/gated-downloads";
 
 export const FORMS_PLUGIN = "emdash-forms";
 
@@ -90,6 +91,8 @@ const tracking = () => [
 	field("hidden", "page_url", "Sent from page"),
 	field("hidden", "spam_check", "Spam check"),
 ];
+/** Who every HSNC form emails (Liz, 2026-11-10). Change it in the admin (Plugins → Forms → Notify emails); this is only the starting list. */
+const NOTIFY = ["loden@hearingsolutionsofnc.com", "kfutch@hearingsolutionsofnc.com"];
 const base = (name: string, slug: string, fields: FormField[], submitLabel: string): FormDefinition => {
 	const now = new Date().toISOString();
 	return {
@@ -99,7 +102,7 @@ const base = (name: string, slug: string, fields: FormField[], submitLabel: stri
 		settings: {
 			confirmationMessage: "Thank you, we got your message.",
 			redirectUrl: "/thank-you",
-			notifyEmails: [],
+			notifyEmails: [...NOTIFY],
 			digestEnabled: false,
 			digestHour: 8,
 			retentionDays: 0,
@@ -152,6 +155,23 @@ export const DEFAULT_FORMS: Record<string, () => FormDefinition> = {
 			],
 			"Request now",
 		),
+	// The live site's Consumer's Guide form (Gravity Forms: Name, Phone, Email, all
+	// required). Sent → the thank-you page with the download (src/data/hsnc/gated-downloads.ts).
+	"consumer-guide": () => {
+		const f = base(
+			"Consumer's guide download",
+			"consumer-guide",
+			[
+				field("text", "name", "Name", { required: true }),
+				field("tel", "phone", "Phone", { required: true }),
+				field("email", "email", "Email", { required: true }),
+				...tracking(),
+			],
+			"Get the guide",
+		);
+		f.settings.redirectUrl = guideThankYou("consumers-guide-to-hearing-aids");
+		return f;
+	},
 };
 
 const repo = async <T>(collection: "forms" | "submissions") => {
