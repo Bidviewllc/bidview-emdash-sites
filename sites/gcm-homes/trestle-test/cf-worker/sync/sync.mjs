@@ -222,10 +222,10 @@ function sqlVal(v) {
 //  - `property_slugs` gets every slug ever used for the home, so old URLs 301.
 // This is a COPY of mirrorHomes() in emdash/seed/lib/homes.mjs (GitHub Actions
 // checks out only trestle-test, so the sync cannot import it). Change both.
-const HOME_MLS_FIELDS = ["price","sold_price","close_date","represented","city","beds","baths","sqft","mls_number","listing_date","photo","tour_url_mls"];
+const HOME_MLS_FIELDS = ["price","sold_price","close_date","represented","city","listing_agent","beds","baths","sqft","mls_number","listing_date","photo","tour_url_mls"];
 const HOME_SET_COLS = ["title", "home_status", ...HOME_MLS_FIELDS, "_mls_description", "updated_at"];
 const HOME_OWNER_COLS = ["headline", "description", "owner_note", "note_image", "tour_url", "note_videos", "floor_plan_embed", "floor_plan_images", "featured", "hidden", "show_grant"];
-const ARCHIVE_HOME_COLS = "id, slug, address, city, state, price, beds, baths, baths_full, baths_half, sqft, photo, main_photo_url, listing_date, mls_number, tour_url_mls, list_agent_id, co_list_agent_id, buyer_agent_id, co_buyer_agent_id, close_price, close_date, archive_status, feed_status, first_seen_at, parcel_number";
+const ARCHIVE_HOME_COLS = "id, slug, address, city, state, price, beds, baths, baths_full, baths_half, sqft, photo, main_photo_url, listing_date, mls_number, tour_url_mls, agent, office, list_agent_id, co_list_agent_id, buyer_agent_id, co_buyer_agent_id, close_price, close_date, archive_status, feed_status, first_seen_at, parcel_number";
 // Plain MLS remarks -> Portable Text JSON (WYSIWYG storage), deterministic keys.
 function ptFromPlain(plain) {
   const text = (plain ?? "").toString();
@@ -260,13 +260,20 @@ const homeBaseSlug = a => `${slugify(a.city) || "lake-tahoe"}-${slugify(a.state)
 // A Washoe APN is 8 digits; a few listings add a "-000" suffix, dropped here.
 const normParcel = s => { const n = String(s ?? "").replace(/[^0-9a-zA-Z]/g, ""); return n.length === 11 && n.endsWith("000") ? n.slice(0, 8) : n; };
 const homeBaths = a => a.baths_full == null || a.baths_full === "" ? (a.baths ?? null) : Number(a.baths_full) + 0.5 * Number(a.baths_half || 0);
+// "Agent name, Brokerage" for the admin's searchable Listing agent field (typing
+// "Grant" in the Listings search box shows his listings). Same as
+// listingAgentText() in emdash/seed/lib/homes.mjs, which also adds the column.
+const listingAgentText = a => {
+  const who = [a.agent, a.office].map(x => (x || "").trim()).filter(Boolean).join(", ");
+  return grantListsIt(a) && !/grant meyer/i.test(who) ? [who, "Grant Meyer (co-listing agent)"].filter(Boolean).join(" · ") : (who || null);
+};
 function homeMlsValues(a, remarks, now) {
   const sold = a.archive_status === "sold";
   return {
     title: a.address || "(no address)", home_status: homeStatusOf(a),
     price: money(a.price), sold_price: sold ? money(a.close_price) : null, close_date: sold ? (a.close_date || null) : null,
     represented: sold ? representedText(a) : null,
-    city: a.city || null, beds: a.beds ?? null, baths: homeBaths(a),
+    city: a.city || null, listing_agent: listingAgentText(a), beds: a.beds ?? null, baths: homeBaths(a),
     sqft: a.sqft != null ? Number(a.sqft).toLocaleString("en-US") : null,
     mls_number: a.mls_number || null, listing_date: a.listing_date || null,
     photo: a.main_photo_url || a.photo || null, tour_url_mls: a.tour_url_mls || null,
