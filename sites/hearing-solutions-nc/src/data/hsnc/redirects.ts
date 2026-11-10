@@ -25,11 +25,9 @@ export const REDIRECTS: Record<string, string> = {
 	"/category/tips-tricks": "/blog/category/tips-and-tricks",
 	"/central-auditory-processing-disorder": "/blog/central-auditory-processing-disorder",
 	"/check-your-hearing-this-november-for-american-diabetes-month": "/blog/check-your-hearing-this-november-for-american-diabetes-month",
-	"/consumers-guide-to-hearing-aids": "/patient-resources/consumers-guide-to-hearing-aids",
 	"/contact-us": "/contact",
 	"/contact-us/thank-you-review": "/thank-you",
 	"/contact-us/thank-you": "/thank-you",
-	"/custom-hearing-aids": "/patient-resources/custom-hearing-aids",
 	"/do-your-ears-produce-too-much-wax": "/blog/do-your-ears-produce-too-much-wax",
 	"/everyday-sounds-people-miss": "/blog/everyday-sounds-people-miss",
 	"/finding-optimism-in-the-diagnosis": "/blog/finding-optimism-in-the-diagnosis",
@@ -101,9 +99,7 @@ export const REDIRECTS: Record<string, string> = {
 	"/healthy-hearing-equals-a-healthy-brain": "/blog/healthy-hearing-equals-a-healthy-brain",
 	"/hearing-aids-and-safety": "/blog/hearing-aids-and-safety",
 	// The Hearing Aid Overview keeps the live site's /hearing-aids address (src/lib/resource-paths.ts).
-	"/hearing-health-faqs": "/patient-resources/hearing-health-faqs",
-	"/hearing-loss-overview": "/patient-resources/hearing-loss",
-	"/hearing-loss": "/patient-resources/hearing-loss",
+	"/hearing-loss-overview": "/hearing-loss",
 	"/hearing-services": "/services",
 	"/hearing-survey": "/new-patients",
 	"/heres-to-something-happy-in-the-new-year": "/blog/heres-to-something-happy-in-the-new-year",
@@ -112,15 +108,12 @@ export const REDIRECTS: Record<string, string> = {
 	"/how-hearing-aids-and-glasses-differ": "/blog/how-hearing-aids-and-glasses-differ",
 	"/how-hearing-loss-affects-sound-processing": "/blog/how-hearing-loss-affects-sound-processing",
 	"/identifying-the-signs-of-hearing-loss": "/blog/identifying-the-signs-of-hearing-loss",
-	"/informational-videos": "/patient-resources/informational-videos",
 	"/life-offers-you-many-choices-choose-wisely": "/blog/life-offers-you-many-choices-choose-wisely",
-	"/live-speech-mapping-real-ear-measurement": "/patient-resources/live-speech-mapping",
-	"/live-speech-mapping": "/patient-resources/live-speech-mapping",
+	"/live-speech-mapping-real-ear-measurement": "/live-speech-mapping",
 	"/may-is-better-speech-and-hearing-month": "/blog/may-is-better-speech-and-hearing-month",
 	"/noise-induced-hearing-loss": "/blog/noise-induced-hearing-loss",
 	"/october-have-you-heard": "/blog/october-have-you-heard",
 	"/october-is-protect-your-hearing-month": "/blog/october-is-protect-your-hearing-month",
-	"/online-communication-training-program": "/patient-resources/online-communication-training-program",
 	"/patient-portal": "/contact",
 	"/questions-to-ask-during-a-hearing-consultation-fitting": "/blog/questions-to-ask-during-a-hearing-consultation-fitting",
 	"/resolve-to-treat-your-hearing-loss-in-2022": "/blog/resolve-to-treat-your-hearing-loss-in-2022",
@@ -132,7 +125,6 @@ export const REDIRECTS: Record<string, string> = {
 	"/terms-of-service": "/terms-of-use",
 	"/thank-you-for-contacting-us": "/thank-you",
 	"/the-benefits-of-treating-hearing-loss-blog": "/blog",
-	"/the-benefits-of-treating-hearing-loss": "/patient-resources/benefits-of-treating-hearing-loss",
 	"/the-link-between-hypertension-and-hearing-loss": "/blog/the-link-between-hypertension-and-hearing-loss",
 	"/tips-for-selecting-hearing-aids": "/blog/tips-for-selecting-hearing-aids",
 	"/tips-for-traveling-with-hearing-aids": "/blog/tips-for-traveling-with-hearing-aids",
@@ -161,6 +153,8 @@ export function redirectFor(pathname: string): string | undefined {
 	if (SLASH_ONLY[p]) return SLASH_ONLY[p];
 	const bare = p.replace(/\/+$/, "");
 	const kept = bare.startsWith("/patient-resources/") ? RESOURCE_PATHS[bare.slice("/patient-resources/".length)] : undefined;
+	// A kept address is a page, never a redirect (an old entry left in REDIRECTS would loop).
+	if (!kept && Object.values(RESOURCE_PATHS).includes(bare)) return undefined;
 	return kept ?? REDIRECTS[bare];
 }
 

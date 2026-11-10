@@ -193,9 +193,9 @@ export const services: Service[] = [
 		onHome: false,
 		bookLabel: "Call to book",
 		ctaHeading: "",
-		hubText: "If you are experiencing [hearing loss](#), we like to begin with our *Functional Hearing Assessment*. A beep test only tells us so much. [This assessment](#) goes much further, measuring how your brain processes sound, how it copes with noise, and how hard you're working to keep up. In just two hours, we can see the whole picture.",
+		hubText: "If you are experiencing hearing loss, we like to begin with our *Functional Hearing Assessment*. A beep test only tells us so much. This assessment goes much further, measuring how your brain processes sound, how it copes with noise, and how hard you're working to keep up. In just two hours, we can see the whole picture.",
 		hubItems: [{ t: "Before your visit", d: "[Description to come]" }, { t: "Otoscopic exam", d: "[Description to come]" }, { t: "Tympanometry", d: "[Description to come]" }, { t: "Pure tone audiometry", d: "[Description to come]" }, { t: "Bone conduction testing", d: "[Description to come]" }, { t: "Speech audiometry", d: "[Description to come]" }, { t: "Sound tolerance testing", d: "[Description to come]" }, { t: "Speech-in-noise testing", d: "[Description to come]" }, { t: "Cognitive screening", d: "[Description to come]" }, { t: "Fall risk assessment", d: "[Description to come]" }, { t: "Live device demonstration", d: "[Description to come]" }],
-		hubNote: "**Prefer to start smaller?** A [Standard Hearing Evaluation](#) covers the otoscopic exam, tympanometry, and pure tone audiometry. We bill Medicare and Medicaid directly for this shorter visit, and give commercial patients an invoice to submit for reimbursement.",
+		hubNote: "**Prefer to start smaller?** A Standard Hearing Evaluation covers the otoscopic exam, tympanometry, and pure tone audiometry. We bill Medicare and Medicaid directly for this shorter visit, and give commercial patients an invoice to submit for reimbursement.",
 		hubButton: "pricing",
 	},
 	{

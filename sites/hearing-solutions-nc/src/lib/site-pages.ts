@@ -38,7 +38,7 @@ export function siteGroups(site: SiteData): SiteGroup[] {
 
 	// Hearing aids: Products, then the Hearing Aid Overview and the other kept hearing-aid
 	// pages, the brand pages, then resources filed first under "Hearing aids".
-	const aidsRes = res.filter((r) => !used.has(r.slug) && (RESOURCE_PATHS[r.slug] || r.tags[0] === "Hearing aids"));
+	const aidsRes = res.filter((r) => !used.has(r.slug) && (RESOURCE_PATHS[r.slug]?.startsWith("/hearing-aids") || r.tags[0] === "Hearing aids"));
 	aidsRes.forEach((r) => used.add(r.slug));
 	const aids: SiteLink[] = [
 		...page("hearing-aids"),

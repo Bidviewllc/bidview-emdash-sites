@@ -89,7 +89,7 @@ const page: HsPage = {
 				{ q: "Do you see VA patients?", a: "Yes, and we're glad to. Some veterans come to us on a VA referral for their fitting. Others come later, with hearing aids from the VA that aren't working as well as they'd like. We can help either way." },
 				{ q: "Do I need a referral?", a: "No. Just call when you're ready. Or maybe even before you're fully ready. Information is power!" },
 				{ q: "Can I book online?", a: "No, we like talking to folks before they schedule. We figure a two-hour appointment is worth a two-minute conversation first. Call us at {phone} and we'll make sure you're scheduled for the right thing." },
-				{ q: "Do you do real-ear measurement?", a: "Yes. Every hearing aid we fit is verified with real-ear measurement (also called live speech mapping). It confirms the hearing aid is actually delivering the prescription, in your ear, rather than what the software assumes. Many retail sellers skip this step, and it's one of the most common reasons hearing aids underperform." },
+				{ q: "Do you do real-ear measurement?", a: "Yes. Every hearing aid we fit is verified with real-ear measurement (also called [live speech mapping](/live-speech-mapping)). It confirms the hearing aid is actually delivering the prescription, in your ear, rather than what the software assumes. Many retail sellers skip this step, and it's one of the most common reasons hearing aids underperform." },
 			],
 		},
 	],

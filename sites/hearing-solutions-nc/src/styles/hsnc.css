@@ -126,6 +126,11 @@
 .hs-faq summary svg { transition: transform .15s; }
 .hs-faq[open] summary svg { transform: rotate(45deg); }
 .hs-faq p { margin: 0 0 14px; font-size: 1em; color: var(--hs-green); }
+/* Home "You may still be wondering..." cards (Liz, 2026-11-10) */
+.hs-home-faq .hs-faq { padding: 10px 0; }
+.hs-home-faq .hs-faq:first-of-type { border-top: 1px solid var(--hs-rule); }
+.hs-home-faq .hs-faq summary { font-weight: 500; }
+.hs-home-faq .hs-faq p { color: var(--hs-navy-dk); }
 .hs-qbar { background: var(--hs-navy); color: #fff; border-radius: 14px; padding: 32px 40px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px 32px; }
 
 /* location card */

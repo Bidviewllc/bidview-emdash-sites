@@ -3014,7 +3014,7 @@
 						},
 						{
 							"q": "Do you do real-ear measurement?",
-							"a": "Yes. Every hearing aid we fit is verified with real-ear measurement (also called live speech mapping). It confirms the hearing aid is actually delivering the prescription, in your ear, rather than what the software assumes. Many retail sellers skip this step, and it's one of the most common reasons hearing aids underperform."
+							"a": "Yes. Every hearing aid we fit is verified with real-ear measurement (also called [live speech mapping](/live-speech-mapping)). It confirms the hearing aid is actually delivering the prescription, in your ear, rather than what the software assumes. Many retail sellers skip this step, and it's one of the most common reasons hearing aids underperform."
 						}
 					],
 					"home_problem_photo": {
@@ -3212,86 +3212,86 @@
 					},
 					"about_gallery_1": {
 						"$media": {
-							"url": "https://hearing-solutions-nc.cameron-239.workers.dev/assets/hsnc/office-testing-room.jpg",
-							"alt": "Testing room with seating, a wheelchair ramp and the open sound booth door",
-							"filename": "office-testing-room.jpg"
-						}
-					},
-					"about_gallery_2": {
-						"$media": {
-							"url": "https://hearing-solutions-nc.cameron-239.workers.dev/assets/hsnc/office-sound-booth.jpg",
-							"alt": "Sound booth with an accessible ramp beside the audiologist desk",
-							"filename": "office-sound-booth.jpg"
-						}
-					},
-					"about_gallery_3": {
-						"$media": {
-							"url": "https://hearing-solutions-nc.cameron-239.workers.dev/assets/hsnc/office-testing-room-2.jpg",
-							"alt": "Second testing room with a sound booth and testing computer",
-							"filename": "office-testing-room-2.jpg"
-						}
-					},
-					"about_gallery_4": {
-						"$media": {
-							"url": "https://hearing-solutions-nc.cameron-239.workers.dev/assets/hsnc/office-consultation.jpg",
-							"alt": "Consultation office with a desk, certificates and a display of hearing devices",
-							"filename": "office-consultation.jpg"
-						}
-					},
-					"about_gallery_5": {
-						"$media": {
-							"url": "https://hearing-solutions-nc.cameron-239.workers.dev/assets/hsnc/office-consultation-bright.jpg",
-							"alt": "Bright consultation office with an oval desk and two windows",
-							"filename": "office-consultation-bright.jpg"
-						}
-					},
-					"about_gallery_6": {
-						"$media": {
 							"url": "https://hearing-solutions-nc.cameron-239.workers.dev/assets/hsnc/office-check-in.jpg",
 							"alt": "Front check-in window and the hallway to the exam rooms",
 							"filename": "office-check-in.jpg"
 						}
 					},
-					"about_gallery_7": {
+					"about_gallery_2": {
 						"$media": {
 							"url": "https://hearing-solutions-nc.cameron-239.workers.dev/assets/hsnc/office-photo-wall.jpg",
 							"alt": "Better Together wall of patient photos above a round table",
 							"filename": "office-photo-wall.jpg"
 						}
 					},
-					"about_gallery_8": {
+					"about_gallery_3": {
 						"$media": {
 							"url": "https://hearing-solutions-nc.cameron-239.workers.dev/assets/hsnc/office-waiting-area.jpg",
 							"alt": "Waiting area with Hearing the Call outreach photos on the wall",
 							"filename": "office-waiting-area.jpg"
 						}
 					},
-					"about_gallery_9": {
+					"about_gallery_4": {
 						"$media": {
 							"url": "https://hearing-solutions-nc.cameron-239.workers.dev/assets/hsnc/office-community-wall.jpg",
 							"alt": "Community wall showing the practice's local sponsorships and volunteer work",
 							"filename": "office-community-wall.jpg"
 						}
 					},
-					"about_gallery_10": {
+					"about_gallery_5": {
 						"$media": {
 							"url": "https://hearing-solutions-nc.cameron-239.workers.dev/assets/hsnc/office-coffee.jpg",
 							"alt": "Coffee and refreshment station for patients",
 							"filename": "office-coffee.jpg"
 						}
 					},
-					"about_gallery_11": {
+					"about_gallery_6": {
 						"$media": {
 							"url": "https://hearing-solutions-nc.cameron-239.workers.dev/assets/hsnc/office-restroom.jpg",
 							"alt": "Accessible restroom with grab bars",
 							"filename": "office-restroom.jpg"
 						}
 					},
-					"about_gallery_12": {
+					"about_gallery_7": {
 						"$media": {
 							"url": "https://hearing-solutions-nc.cameron-239.workers.dev/assets/hsnc/office-lounge.jpg",
 							"alt": "Quiet lounge with armchairs and plants",
 							"filename": "office-lounge.jpg"
+						}
+					},
+					"about_gallery_8": {
+						"$media": {
+							"url": "https://hearing-solutions-nc.cameron-239.workers.dev/assets/hsnc/office-testing-room.jpg",
+							"alt": "Testing room with seating, a wheelchair ramp and the open sound booth door",
+							"filename": "office-testing-room.jpg"
+						}
+					},
+					"about_gallery_9": {
+						"$media": {
+							"url": "https://hearing-solutions-nc.cameron-239.workers.dev/assets/hsnc/office-sound-booth.jpg",
+							"alt": "Sound booth with an accessible ramp beside the audiologist desk",
+							"filename": "office-sound-booth.jpg"
+						}
+					},
+					"about_gallery_10": {
+						"$media": {
+							"url": "https://hearing-solutions-nc.cameron-239.workers.dev/assets/hsnc/office-testing-room-2.jpg",
+							"alt": "Second testing room with a sound booth and testing computer",
+							"filename": "office-testing-room-2.jpg"
+						}
+					},
+					"about_gallery_11": {
+						"$media": {
+							"url": "https://hearing-solutions-nc.cameron-239.workers.dev/assets/hsnc/office-consultation.jpg",
+							"alt": "Consultation office with a desk, certificates and a display of hearing devices",
+							"filename": "office-consultation.jpg"
+						}
+					},
+					"about_gallery_12": {
+						"$media": {
+							"url": "https://hearing-solutions-nc.cameron-239.workers.dev/assets/hsnc/office-consultation-bright.jpg",
+							"alt": "Bright consultation office with an oval desk and two windows",
+							"filename": "office-consultation-bright.jpg"
 						}
 					},
 					"about_closing_photo": {
@@ -5430,7 +5430,7 @@
 					"on_home": false,
 					"book_label": "Call to book",
 					"cta_heading": "",
-					"hub_text": "If you are experiencing [hearing loss](#), we like to begin with our *Functional Hearing Assessment*. A beep test only tells us so much. [This assessment](#) goes much further, measuring how your brain processes sound, how it copes with noise, and how hard you're working to keep up. In just two hours, we can see the whole picture.",
+					"hub_text": "If you are experiencing hearing loss, we like to begin with our *Functional Hearing Assessment*. A beep test only tells us so much. This assessment goes much further, measuring how your brain processes sound, how it copes with noise, and how hard you're working to keep up. In just two hours, we can see the whole picture.",
 					"hub_items": [
 						{
 							"t": "Before your visit",
@@ -5477,7 +5477,7 @@
 							"d": "[Description to come]"
 						}
 					],
-					"hub_note": "**Prefer to start smaller?** A [Standard Hearing Evaluation](#) covers the otoscopic exam, tympanometry, and pure tone audiometry. We bill Medicare and Medicaid directly for this shorter visit, and give commercial patients an invoice to submit for reimbursement.",
+					"hub_note": "**Prefer to start smaller?** A Standard Hearing Evaluation covers the otoscopic exam, tympanometry, and pure tone audiometry. We bill Medicare and Medicaid directly for this shorter visit, and give commercial patients an invoice to submit for reimbursement.",
 					"hub_button": "Pricing information",
 					"intro": "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod. Tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud. Exercitation ullamco laboris nisi ut aliquip ex ea commodo. Consequat duis aute irure dolor in reprehenderit in voluptate velit.",
 					"content": [

@@ -15,6 +15,7 @@ import * as blog from "./blog";
 import recordText from "./content/record-text.json";
 import { CTA_FIELDS, CTA_MODE_OPTIONS, HERO_OPTIONS, MAIN, PAGE_TEXT, PAGES, SHARED_COLLECTION, SHARED_DEFAULTS, TEMPLATES_COLLECTION } from "./page-settings";
 import * as sample from "./practice";
+import { keptHref } from "../lib/resource-paths";
 import type { Brand, BrandDetail, Office, Post, Provider, Resource, Review, Service } from "./types";
 
 /** Thrown when the site has no practice record yet (setup not finished). */
@@ -342,7 +343,8 @@ export async function loadSite() {
 	const toLinks = (items: any[] = []): NavLink[] =>
 		items
 			.filter((i) => isLive(i.url))
-			.map((i) => ({ label: i.label, href: i.url, ...(i.target ? { target: i.target } : {}), children: toLinks(i.children) }));
+			// HSNC: a menu item saved as /patient-resources/<slug> points at the page's kept address.
+			.map((i) => ({ label: i.label, href: keptHref(i.url), ...(i.target ? { target: i.target } : {}), children: toLinks(i.children) }));
 	const menus = Object.fromEntries(MENU_NAMES.map((n, i) => [n, toLinks(menuList[i]?.items)])) as Record<MenuName, NavLink[]>;
 
 	// Google reviews: the site's own D1 tables (filled weekly by the reviews sync;
