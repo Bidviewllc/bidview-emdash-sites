@@ -2113,6 +2113,35 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
 .grant-intro__side { display: flex; flex-direction: column; gap: 40px; }
 .grant-intro__side .pullquote { margin: 0; }
 .grant-intro__side .pullquote__q { font-size: 22px; }
+/* /about/'s quote under the photo, on a soft orange panel rather than bare text
+   with a left rule (Liz, 2026-11-10, option C of three). Centred between two
+   short orange rules; the attribution is navy here, not the eyebrow orange.
+   Phones: 80% wide and centred, the same as the photo above it. */
+.grant-intro__side .pullquote--tint {
+  border-left: 0;
+  background: rgba(247, 148, 91, 0.12);
+  border-radius: 5px;
+  padding: 30px 24px;
+  text-align: center;
+  width: 100%;
+  max-width: 260px;
+  margin: 0 auto;
+}
+.grant-intro__side .pullquote--tint::before,
+.grant-intro__side .pullquote--tint::after {
+  content: "";
+  display: block;
+  width: 40px;
+  height: 2px;
+  background: var(--orange);
+  margin: 0 auto 18px;
+}
+.grant-intro__side .pullquote--tint::after { margin: 18px auto 0; }
+.grant-intro__side .pullquote--tint .pullquote__q { font-size: 20px; }
+.grant-intro__side .pullquote--tint .pullquote__a { color: var(--navy); }
+@media (max-width: 640px) {
+  .grant-intro__side .pullquote--tint { width: 80%; max-width: none; margin: 0 auto; padding: 28px 20px; }
+}
 .grant-intro__photo {
   width: 100%;
   max-width: 260px;

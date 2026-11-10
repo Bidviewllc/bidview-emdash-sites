@@ -91,8 +91,21 @@ export async function POST({ request }: { request: Request }) {
 	const phone   = esc(data.phone || "");
 	const reason  = esc(data.reason || data.subject || "");
 	// Which page the form was on. The contact section now appears on most pages, so
-	// without this a lead gives no clue what the person was reading.
-	const source  = esc(data.source || "");
+	// without this a lead gives no clue what the person was reading. Sent as a path
+	// (or a full URL from listing pages) and turned into a full link here, so it is
+	// clickable in the email and follows the live domain after cutover.
+	const origin  = new URL(request.url).origin;
+	const asLink  = (v: string) => {
+		const s = esc(v || "");
+		if (s.startsWith("/")) return origin + s;
+		return /^https?:\/\//i.test(s) ? s : "";
+	};
+	const source  = asLink(data.source);
+	// The page the visitor was on before the form's page, when the form is on
+	// /contact/ (every INQUIRE NOW button goes there, including the one on each
+	// listing page). Sent by InquiryFormScript from document.referrer.
+	const cameFromRaw = asLink(data.came_from);
+	const cameFrom = cameFromRaw && cameFromRaw !== source ? cameFromRaw : "";
 	let message = (data.message || "").trim();
 
 	if (!name || !email || !message) {
@@ -106,7 +119,7 @@ export async function POST({ request }: { request: Request }) {
 	// readable labels so a new field needs no change here.
 	const HANDLED = new Set([
 		"name", "firstName", "lastName", "email", "phone", "reason", "subject",
-		"source", "message", "website", "cf-turnstile-response",
+		"source", "came_from", "message", "website", "cf-turnstile-response",
 	]);
 	// Only for names the derived label reads badly on.
 	const LABELS: Record<string, string> = { beds_baths: "Beds / Baths" };
@@ -125,7 +138,7 @@ export async function POST({ request }: { request: Request }) {
 
 	await saveToD1({
 		name, email, phone, message,
-		extra: [reason, source && `page: ${source}`].filter(Boolean).join(" | "),
+		extra: [reason, source && `page: ${source}`, cameFrom && `came from: ${cameFrom}`].filter(Boolean).join(" | "),
 	});
 
 	const textBody = [
@@ -134,12 +147,22 @@ export async function POST({ request }: { request: Request }) {
 		phone  ? `Phone:   ${phone}`  : null,
 		reason ? `Topic:   ${reason}` : null,
 		source ? `Page:    ${source}` : null,
+		cameFrom ? `Came from: ${cameFrom}` : null,
 		"",
 		"Message:",
 		message,
 		"",
 		`— Submitted via ${SITE} website`,
 	].filter((l) => l !== null).join("\n");
+
+	// The subject says what the lead is about, so the inbox list alone tells the
+	// team which home or page it came from (Liz, 2026-11-10). A listing form's
+	// reason reads "Listing inquiry: <address> · MLS <n> · <status>".
+	const pathOf = (u: string) => { try { return new URL(u).pathname; } catch { return u; } };
+	const where = cameFrom || source;
+	const subject = reason
+		? `${reason} — ${name}`
+		: `New Inquiry — ${name}${where ? ` (from ${pathOf(where)})` : ""}`;
 
 	const resendKey = (env as any).RESEND_API_KEY;
 	if (!resendKey) {
@@ -155,7 +178,7 @@ export async function POST({ request }: { request: Request }) {
 				to: [leadTo()],
 				bcc: [LEAD_BCC],
 				reply_to: `${name} <${email}>`,
-				subject: `New Inquiry — ${name}`,
+				subject,
 				text: textBody,
 			}),
 		});

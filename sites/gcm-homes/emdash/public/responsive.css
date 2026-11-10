@@ -515,8 +515,15 @@
 
   /* Guide Appears */
   .section--grant-intro { padding: 56px 20px; }
-  .grant-intro__photo { max-width: 220px; }
+  /* Phone: the photo is 80% of the column, centred (Liz, 2026-11-10), on the
+     home page, every listing page and /about/. */
+  .grant-intro__photo { width: 80%; max-width: none; margin: 0 auto; }
   .grant-intro__h { font-size: 32px; }
+  /* Phone: eyebrow and Grant's name centred under the photo (Liz, 2026-11-10); the
+     credentials, body and button stay left. .grant-intro__head is the home
+     page / listing page wrapper only, so /about/'s guide block keeps its own
+     left-aligned layout. */
+  .grant-intro__head { text-align: center; }
   .grant-intro__creds { grid-template-columns: 1fr; gap: 18px; }
   .grant-intro__body { font-size: 15px; }
 
