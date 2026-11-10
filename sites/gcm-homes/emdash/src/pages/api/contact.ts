@@ -5,8 +5,8 @@
 //
 // Sender is `noreply@bidview.net` (verified on Resend) — NOT Grant's domain, which
 // isn't verified. Reply-To is set to the visitor so Grant replies straight to them.
-// Destination (LEAD_TO) is a worker var so it can be pointed at Grant's real inbox
-// without a code change; until then it goes to the bidview monitoring address.
+// Destination (LEAD_TO) is a worker var in wrangler.jsonc: Grant's team inbox,
+// TeamMeyer@cbselectre.com (Liz, 2026-11-09). Bidview keeps a hidden BCC copy.
 export const prerender = false;
 
 import { env } from "cloudflare:workers";

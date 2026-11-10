@@ -409,23 +409,44 @@ export type SoldHome = ReturnType<typeof toListing> & {
 };
 const GRANT_ON_A_SIDE = `(a.list_agent_id = ? OR a.buyer_agent_id = ? OR a.co_list_agent_id = ? OR a.co_buyer_agent_id = ?)`;
 
-async function soldArchiveRows(): Promise<any[]> {
+const SOLD_SELECT = `SELECT a.*, e.slug AS home_slug, e.id AS home_id, e.headline AS e_headline, e.featured AS e_featured, e.hidden AS e_hidden, e.show_grant AS e_show_grant, e.photo AS e_photo, e.home_status AS home_status
+			 FROM listing_archive a JOIN ec_listings e ON e.id = 'p-' || ${PARCEL_SQL("a.parcel_number")}`;
+
+// `all`: every sold row in the archive (the /sold/all/ page). Otherwise only
+// Grant's sales and the notable ones (/sold/).
+async function soldArchiveRows(all = false): Promise<any[]> {
 	const since = new Date();
 	since.setFullYear(since.getFullYear() - SOLD_OTHERS_YEARS);
 	try {
-		const { results } = await DB().prepare(
-			`SELECT a.*, e.slug AS home_slug, e.id AS home_id, e.headline AS e_headline, e.featured AS e_featured, e.hidden AS e_hidden, e.show_grant AS e_show_grant, e.photo AS e_photo, e.home_status AS home_status
-			 FROM listing_archive a JOIN ec_listings e ON e.id = 'p-' || ${PARCEL_SQL("a.parcel_number")}
-			 WHERE a.archive_status = 'sold' AND (${GRANT_ON_A_SIDE} OR (a.close_price >= ? AND a.close_date >= ?))
-			 ORDER BY a.close_date DESC, a.close_price DESC`
-		).bind(GRANT_AGENT_ID, GRANT_AGENT_ID, GRANT_AGENT_ID, GRANT_AGENT_ID, SOLD_OTHERS_MIN_PRICE, since.toISOString().slice(0, 10)).all();
+		const { results } = all
+			? await DB().prepare(`${SOLD_SELECT} WHERE a.archive_status = 'sold' ORDER BY a.close_date DESC, a.close_price DESC`).all()
+			: await DB().prepare(
+				`${SOLD_SELECT}
+				 WHERE a.archive_status = 'sold' AND (${GRANT_ON_A_SIDE} OR (a.close_price >= ? AND a.close_date >= ?))
+				 ORDER BY a.close_date DESC, a.close_price DESC`
+			).bind(GRANT_AGENT_ID, GRANT_AGENT_ID, GRANT_AGENT_ID, GRANT_AGENT_ID, SOLD_OTHERS_MIN_PRICE, since.toISOString().slice(0, 10)).all();
 		return results ?? [];
 	} catch { return []; }
 }
 
 /** Every sold home the site shows, one entry per home, newest close first. */
 export async function soldHomes(): Promise<{ grant: SoldHome[]; notable: SoldHome[] }> {
-	const rows = await soldArchiveRows();
+	return groupSold(await soldArchiveRows());
+}
+
+/**
+ * Every sold home in the archive, Grant's and everyone else's, one card per
+ * home, newest close first (Liz, 2026-11-09: the page the /sold/ market
+ * carousel links to). The archive holds Grant's sales back to 2011, other
+ * agents' sales of $5M+, and anything that sold while the sync was watching it.
+ */
+export async function allSoldHomes(): Promise<SoldHome[]> {
+	const { grant, notable } = groupSold(await soldArchiveRows(true));
+	return [...grant, ...notable].sort((a, b) =>
+		String(b.closeDate || "").localeCompare(String(a.closeDate || "")) || ((b.closePrice ?? 0) - (a.closePrice ?? 0)));
+}
+
+function groupSold(rows: any[]): { grant: SoldHome[]; notable: SoldHome[] } {
 	const byHome = new Map<string, any[]>();
 	for (const r of rows) {
 		if (isOn(r.e_hidden)) continue;
@@ -461,8 +482,7 @@ export async function soldHomes(): Promise<{ grant: SoldHome[]; notable: SoldHom
 }
 /** Slugs (home URLs) of every sold home the site shows, for the sitemap. */
 export async function soldSlugs(): Promise<string[]> {
-	const { grant, notable } = await soldHomes();
-	return [...grant, ...notable].map(h => h.slug).filter(Boolean);
+	return (await allSoldHomes()).map(h => h.slug).filter(Boolean);
 }
 /**
  * The lead photo of one active Residential listing, picked at random -- a house,
@@ -528,16 +548,15 @@ function matterportFrom(raw: unknown): string | null {
  * Off-market rule (plan, URLs): a home whose current listing left the feed
  * without closing keeps its page, with the Off market badge, when the site shows
  * a sale of it or Grant was ever on a side of one of its listings. Any other
- * off-market home answers 410 so search engines drop the URL.
+ * off-market home answers 410 so search engines drop the URL. Since /sold/all/
+ * (2026-11-09) the site shows every recorded sale, so any sold row keeps it.
  */
 async function keepsOffMarketPage(parcel: string | null): Promise<boolean> {
 	if (!parcel) return false;
 	try {
-		const since = new Date();
-		since.setFullYear(since.getFullYear() - SOLD_OTHERS_YEARS);
 		const row: any = await DB().prepare(
-			`SELECT 1 AS k FROM listing_archive a WHERE ${PARCEL_SQL("a.parcel_number")} = ? AND (${GRANT_ON_A_SIDE} OR (a.archive_status = 'sold' AND a.close_price >= ? AND a.close_date >= ?)) LIMIT 1`
-		).bind(parcel, GRANT_AGENT_ID, GRANT_AGENT_ID, GRANT_AGENT_ID, GRANT_AGENT_ID, SOLD_OTHERS_MIN_PRICE, since.toISOString().slice(0, 10)).first();
+			`SELECT 1 AS k FROM listing_archive a WHERE ${PARCEL_SQL("a.parcel_number")} = ? AND (${GRANT_ON_A_SIDE} OR a.archive_status = 'sold') LIMIT 1`
+		).bind(parcel, GRANT_AGENT_ID, GRANT_AGENT_ID, GRANT_AGENT_ID, GRANT_AGENT_ID).first();
 		return !!row;
 	} catch { return false; }
 }

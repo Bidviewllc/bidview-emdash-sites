@@ -13,7 +13,13 @@ interface Props {
 	image?: string | null;
 	content?: { collection: string; id: string; slug?: string | null };
 }
-const { title, description, canonical, image, content } = Astro.props;
+const props = Astro.props;
+// Defaults so every page gets a canonical URL and a link-preview photo, not
+// just the listing pages. Both follow the request origin, so they switch to the
+// live domain at cutover with no code change.
+const canonical = props.canonical ?? `${Astro.url.origin}${Astro.url.pathname}`;
+const image = props.image ?? `${Astro.url.origin}/assets/hero-tahoe.jpg`;
+const { title, description, content } = props;
 await getSiteSettings();
 
 // Drives BOTH the desktop nav and the mobile drawer, so one edit covers both.
@@ -51,8 +57,12 @@ const pageCtx = createPublicPageContext({
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>{title}</title>
+		<link rel="icon" href="/favicon.ico" sizes="48x48" />
+		<link rel="icon" type="image/png" href="/favicon-32.png" sizes="32x32" />
+		<link rel="icon" type="image/png" href="/icon-192.png" sizes="192x192" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 		{description && <meta name="description" content={description} />}
-		{canonical && <link rel="canonical" href={canonical} />}
+		{/* canonical, og:url and og:image come from <EmDashHead> below (it was printed twice). */}
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
@@ -165,7 +175,7 @@ const pageCtx = createPublicPageContext({
 					<h4 class="footer__h">Properties</h4>
 					<div class="footer__links">
 						<a href="/listings/">Search Listings</a>
-						<a href="/sold/">Recently Sold</a>
+						<a href="/sold-by-grant/">Recently Sold</a>
 						<a href="/buyers/">For Buyers</a>
 						<a href="/sellers/">For Sellers</a>
 					</div>

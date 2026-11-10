@@ -23,10 +23,10 @@ import { statusLabel, bathsOf, courtesyOf } from "../../lib/listings";
 import { extractH2s, formatDate, readMinutes, listPosts, featuredListingPool } from "../../lib/posts";
 
 const slug = decodeSlug(Astro.params.slug);
-if (!slug) return Astro.redirect("/404");
+if (!slug) return Astro.rewrite("/404");
 
 const { entry: post, cacheHint } = await getEmDashEntry("posts", slug);
-if (!post) return Astro.redirect("/404");
+if (!post) return Astro.rewrite("/404");
 if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
 
 const { siteTitle } = resolveStarterSiteIdentity(await getSiteSettings());

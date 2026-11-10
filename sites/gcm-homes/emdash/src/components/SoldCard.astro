@@ -1,0 +1,53 @@
+---
+// One sold-home card, shared by /sold-by-grant/ and /sold/ (one card per home,
+// newest sale; see soldHomes() / allSoldHomes() in src/lib/listings.ts).
+import { courtesyOf } from "../lib/listings";
+
+interface Props { l: any }
+const { l } = Astro.props;
+
+const money = (n: any) => (n ? "$" + Number(n).toLocaleString("en-US") : "—");
+// "2026-09-17" -> "September 2026". Date-only, so anchor to UTC or the day
+// before can slip through in US time zones.
+const monthYear = (d: any) => {
+	if (!d) return "";
+	const t = Date.parse(String(d).length <= 10 ? `${d}T00:00:00Z` : String(d));
+	return Number.isNaN(t) ? "" : new Date(t).toLocaleDateString("en-US", { month: "long", year: "numeric", timeZone: "UTC" });
+};
+const bits: Array<[string, string]> = [];
+if (l.beds) bits.push([String(l.beds), "BD"]);
+if (l.baths) bits.push([String(l.baths), "BA"]);
+if (l.sqft) bits.push([Number(l.sqft).toLocaleString(), "SQFT"]);
+if (!bits.length && l.lotAcres) bits.push([String(l.lotAcres), "ACRES"]);
+const tag = l.category || String(l.subType || l.type || "Property").replace(/([a-z])([A-Z])/g, "$1 $2");
+// The badge: the home's status today. A sold home that is back on the market
+// says so, so a visitor is not surprised on its page.
+const badge = l.statusLabel && l.statusLabel !== "Sold" ? `Sold · now ${l.statusLabel.toLowerCase()}` : "Sold";
+const closed = monthYear(l.closeDate);
+// Grant's homes count his sales; anyone else's count every sale on record.
+const salesNote = !l.grantSales && l.sales > 1 ? ` · ${l.sales} sales on record` : "";
+const side = l.grantSales > 1 ? `${l.grantSales} sales with Grant` : l.representedLabel;
+const courtesy = courtesyOf(l);
+---
+<a class="card" href={`/homes/${l.slug}/`}>
+	<div class="card__media">
+		{l.photo ? <img class="card__img" src={l.photo} alt={l.address} loading="lazy" /> : <div class="card__ph">⌂</div>}
+		<div class="card__badges">
+			<div class="card__tag">{tag}</div>
+			<div class="card__status card__status--sold">{badge}</div>
+		</div>
+	</div>
+	<div class="card__body">
+		<div class="card__price">{money(l.closePrice || l.price)}</div>
+		{closed && <div class="card__closed">Closed {closed}{salesNote}</div>}
+		<div class="card__addr">{l.headline || l.address || "Address on request"}</div>
+		<div class="card__city">{[l.city, l.state].filter(Boolean).join(", ") || "Lake Tahoe"}</div>
+		{bits.length > 0 && (
+			<div class="card__meta">
+				{bits.map(([n, unit]) => <span><b>{n}</b> {unit}</span>)}
+			</div>
+		)}
+		{courtesy && <div class="card__courtesy">{courtesy}</div>}
+		{side && <div class="card__side">{side}</div>}
+	</div>
+</a>

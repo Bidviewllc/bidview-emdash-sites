@@ -1,53 +1,27 @@
 ---
-// /sold/ — Recently Sold.
+// /sold/ — every sold home in the archive, Grant's and every other agent's,
+// one card per home, newest close first (Liz, 2026-11-09). The site links to
+// /sold-by-grant/ first; this page is where its "View all sold homes" goes.
 //
-// Data: `listing_archive`, the table the Trestle sync never deletes from, joined
-// to the home rows in `ec_listings` (src/lib/listings.ts: soldHomes). Two
-// sections, Liz's call (2026-11-03): every home Grant was on a side of a sale
-// of, back to 2011, and then other agents' closed sales at or above
-// SOLD_OTHERS_MIN_PRICE in the last SOLD_OTHERS_YEARS, so his own work stays
-// distinct from the market context.
+// What the archive holds (so the copy below doesn't over-promise): every sale
+// Grant was on a side of back to 2011, other agents' sales of $5M and up, and
+// any listing that sold while the sync was watching the feed. Smaller sales by
+// other agents from before the site went live are not in it.
 //
-// ONE CARD PER HOME (Liz, 2026-11-06, decision 4): a home Grant sold more than
-// once is one card that says so ("2 sales with Grant"), showing the newest sale
-// he was on. Each card carries one photo only (the MLS lead photo), the sold
-// price and the month it closed, and links to the home's one page at
-// /homes/<slug>/ (its Listing History accordion lists every listing). "Hide from search"
-// on the home keeps it off this page too.
+// Paged 24 to a page by public/js/sold-pager.js (#all=N in the address).
 import GcmLayout from "../layouts/GcmLayout.astro";
 import ContactCta from "../components/ContactCta.astro";
-import { soldHomes, SOLD_OTHERS_MIN_PRICE, SOLD_OTHERS_YEARS, courtesyOf } from "../lib/listings";
+import SoldCard from "../components/SoldCard.astro";
+import { allSoldHomes } from "../lib/listings";
 
-const { grant, notable } = await soldHomes();
+const homes = await allSoldHomes();
 
 const seo = {
-	title: "Recently Sold — Grant C. Meyer Homes",
+	title: "Sold Homes on Lake Tahoe's North Shore — Grant C. Meyer Homes",
 	description:
-		"Homes Grant C. Meyer has sold in Incline Village and Crystal Bay, Lake Tahoe, with the sold price and closing date for each, plus the area's notable recent sales.",
+		"Closed home sales in Incline Village and Crystal Bay, Lake Tahoe, from the MLS: the sold price and closing date for each, newest first.",
 };
-
-const money = (n: any) => (n ? "$" + Number(n).toLocaleString("en-US") : "—");
-// "2026-09-17" -> "September 2026". Date-only, so anchor to UTC or the day
-// before can slip through in US time zones.
-const monthYear = (d: any) => {
-	if (!d) return "";
-	const t = Date.parse(String(d).length <= 10 ? `${d}T00:00:00Z` : String(d));
-	return Number.isNaN(t) ? "" : new Date(t).toLocaleDateString("en-US", { month: "long", year: "numeric", timeZone: "UTC" });
-};
-const metaBits = (l: any) => {
-	const bits: Array<[string, string]> = [];
-	if (l.beds) bits.push([String(l.beds), "BD"]);
-	if (l.baths) bits.push([String(l.baths), "BA"]);
-	if (l.sqft) bits.push([Number(l.sqft).toLocaleString(), "SQFT"]);
-	if (!bits.length && l.lotAcres) bits.push([String(l.lotAcres), "ACRES"]);
-	return bits;
-};
-const tagOf = (l: any) =>
-	l.category || String(l.subType || l.type || "Property").replace(/([a-z])([A-Z])/g, "$1 $2");
-const floor = "$" + (SOLD_OTHERS_MIN_PRICE / 1_000_000) + "M";
-// The badge: the home's status today. A sold home that is back on the market
-// says so, so a visitor is not surprised on its page.
-const badge = (l: any) => l.statusLabel && l.statusLabel !== "Sold" ? `Sold · now ${l.statusLabel.toLowerCase()}` : "Sold";
+const arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>';
 ---
 
 <GcmLayout title={seo.title} description={seo.description}>
@@ -56,89 +30,34 @@ const badge = (l: any) => l.statusLabel && l.statusLabel !== "Sold" ? `Sold · n
 
 	<section class="section section--dark chero" data-screen-label="01 Hero">
 		<div class="container chero__inner">
-			<span class="eyebrow">Recently Sold</span>
-			<h1 class="h1 chero__h">The homes that <em>found their people.</em></h1>
+			<span class="eyebrow">Sold on the North Shore</span>
+			<h1 class="h1 chero__h">What homes here <em>really sell for.</em></h1>
 			<p class="section-lead chero__lead">
-				Every home Grant has represented in Incline Village and Crystal Bay, with the price it closed at and when.
+				Closed sales in Incline Village and Crystal Bay from the MLS, newest first, with the price each home sold for and when.
 			</p>
+			<div class="sold-hero__cta">
+				<a class="btn btn--ghost-light" href="/sold-by-grant/">SEE THE HOMES GRANT SOLD<span class="cta-arrow" aria-hidden="true" set:html={arrow}></span></a>
+			</div>
 		</div>
 	</section>
 
-	<section class="section section--cream" data-screen-label="02 Sold by Grant">
+	<section class="section section--cream" data-screen-label="02 All Sold">
 		<div class="container sold-section">
 			<div class="section-title section-title--nolead">
-				<span class="eyebrow">Sold by Grant</span>
-				<h2>Represented by Grant C. Meyer</h2>
+				<span class="eyebrow">Sold Homes</span>
+				<h2>Sold homes, newest first</h2>
 			</div>
-			{grant.length === 0 ? (
+			{homes.length === 0 ? (
 				<p class="sold-empty">Recent sales are being added.</p>
 			) : (
-				<div class="sold-grid">
-					{grant.map((l: any) => (
-						<a class="card" href={`/homes/${l.slug}/`}>
-							<div class="card__media">
-								{l.photo ? <img class="card__img" src={l.photo} alt={l.address} loading="lazy" /> : <div class="card__ph">⌂</div>}
-								<div class="card__badges">
-									<div class="card__tag">{tagOf(l)}</div>
-									<div class="card__status card__status--sold">{badge(l)}</div>
-								</div>
-							</div>
-							<div class="card__body">
-								<div class="card__price">{money(l.closePrice || l.price)}</div>
-								{monthYear(l.closeDate) && <div class="card__closed">Closed {monthYear(l.closeDate)}</div>}
-								<div class="card__addr">{l.headline || l.address || "Address on request"}</div>
-								<div class="card__city">{[l.city, l.state].filter(Boolean).join(", ") || "Lake Tahoe"}</div>
-								{metaBits(l).length > 0 && (
-									<div class="card__meta">
-										{metaBits(l).map(([n, unit]) => <span><b>{n}</b> {unit}</span>)}
-									</div>
-								)}
-								{courtesyOf(l) && <div class="card__courtesy">{courtesyOf(l)}</div>}
-								{l.representedLabel && <div class="card__side">{l.grantSales > 1 ? `${l.grantSales} sales with Grant` : l.representedLabel}</div>}
-							</div>
-						</a>
-					))}
+				<div class="sold-grid" id="sold-all" data-paged="all" data-per="24">
+					{homes.map((l: any) => <SoldCard l={l} />)}
 				</div>
 			)}
 		</div>
-
-		{notable.length > 0 && (
-			<div class="container sold-section">
-				<div class="section-title section-title--nolead">
-					<span class="eyebrow">The Market</span>
-					<h2>Notable sales on the North Shore</h2>
-					<p class="section-lead">
-						Closed sales of {floor} and above in Incline Village and Crystal Bay over the last {SOLD_OTHERS_YEARS} years, from the MLS.
-					</p>
-				</div>
-				<div class="sold-grid">
-					{notable.map((l: any) => (
-						<a class="card" href={`/homes/${l.slug}/`}>
-							<div class="card__media">
-								{l.photo ? <img class="card__img" src={l.photo} alt={l.address} loading="lazy" /> : <div class="card__ph">⌂</div>}
-								<div class="card__badges">
-									<div class="card__tag">{tagOf(l)}</div>
-									<div class="card__status card__status--sold">{badge(l)}</div>
-								</div>
-							</div>
-							<div class="card__body">
-								<div class="card__price">{money(l.closePrice || l.price)}</div>
-								{monthYear(l.closeDate) && <div class="card__closed">Closed {monthYear(l.closeDate)}{l.sales > 1 ? ` · ${l.sales} sales on record` : ""}</div>}
-								<div class="card__addr">{l.address || "Address on request"}</div>
-								<div class="card__city">{[l.city, l.state].filter(Boolean).join(", ") || "Lake Tahoe"}</div>
-								{metaBits(l).length > 0 && (
-									<div class="card__meta">
-										{metaBits(l).map(([n, unit]) => <span><b>{n}</b> {unit}</span>)}
-									</div>
-								)}
-								{courtesyOf(l) && <div class="card__courtesy">{courtesyOf(l)}</div>}
-							</div>
-						</a>
-					))}
-				</div>
-			</div>
-		)}
 	</section>
 
 	<ContactCta id="sold-contact" bg="beige" />
+
+	<script is:inline src="/js/sold-pager.js" defer></script>
 </GcmLayout>
