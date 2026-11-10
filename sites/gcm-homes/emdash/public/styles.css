@@ -2116,7 +2116,7 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
 /* /about/'s quote under the photo, on a soft orange panel rather than bare text
    with a left rule (Liz, 2026-11-10, option C of three). Centred between two
    short orange rules; the attribution is navy here, not the eyebrow orange.
-   Phones: 80% wide and centred, the same as the photo above it. */
+   Phones: the full column width under the photo (Liz, 2026-11-10). */
 .grant-intro__side .pullquote--tint {
   border-left: 0;
   background: rgba(247, 148, 91, 0.12);
@@ -2140,7 +2140,7 @@ textarea.field__input { min-height: 110px; resize: vertical; font-family: var(--
 .grant-intro__side .pullquote--tint .pullquote__q { font-size: 20px; }
 .grant-intro__side .pullquote--tint .pullquote__a { color: var(--navy); }
 @media (max-width: 640px) {
-  .grant-intro__side .pullquote--tint { width: 80%; max-width: none; margin: 0 auto; padding: 28px 20px; }
+  .grant-intro__side .pullquote--tint { width: 100%; max-width: none; margin: 0; padding: 28px 20px; }
 }
 .grant-intro__photo {
   width: 100%;
