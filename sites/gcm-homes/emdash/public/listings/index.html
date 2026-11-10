@@ -329,6 +329,9 @@
       text-transform: uppercase; font-weight: 700;
     }
     .pop__cta:hover { background: var(--orange); }
+    /* Leaflet colours every link in the map blue (.leaflet-container a, which
+       outranks a single class), so the button text has to be claimed back. */
+    .leaflet-container a.pop__cta, .leaflet-container a.pop__cta:hover { color: #fff; }
 
     /* ------------------------------------------------------- VIEW TOGGLE */
     .viewtoggle {

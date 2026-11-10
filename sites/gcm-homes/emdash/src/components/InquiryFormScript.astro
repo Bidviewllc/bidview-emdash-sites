@@ -39,6 +39,13 @@
 					try {
 						var payload = {};
 						new FormData(f).forEach(function (v, k) { payload[k] = v; });
+						// The page they were on before this one, when it was on this
+						// site: someone who taps INQUIRE NOW on a listing lands on
+						// /contact/, and this keeps the listing on the lead.
+						try {
+							var ref = document.referrer ? new URL(document.referrer) : null;
+							if (ref && ref.origin === location.origin && ref.pathname !== location.pathname) payload.came_from = ref.pathname;
+						} catch (_) {}
 						var r = await fetch("/api/contact", {
 							method: "POST",
 							headers: { "Content-Type": "application/json", "Accept": "application/json" },

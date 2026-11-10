@@ -1832,7 +1832,7 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro, sync
       <div class="grant-intro">
         <div class="grant-intro__photo" style="background-image:url('${escapeHtml(giPhoto)}')"></div>
         <div class="grant-intro__copy">
-          <div>
+          <div class="grant-intro__head">
             <div class="eyebrow">${escapeHtml(giEyebrow)}</div>
             <h2 class="grant-intro__h">${escapeHtml(giHeadline)}</h2>
           </div>
@@ -1894,7 +1894,12 @@ function render(listing, photoUrls, marketIntel, area, contact, grantIntro, sync
               <textarea class="field__input" name="message" placeholder="I'd like to arrange a tour of this property…" required></textarea>
             </div>
             <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" aria-hidden="true" />
-            <input type="hidden" name="reason" value="Listing inquiry: ${escapeHtml(listing.address)}${listing.city ? ", " + escapeHtml(listing.city) : ""}" />
+            <input type="hidden" name="reason" value="Listing inquiry: ${escapeHtml([
+              [listing.address, listing.city].filter(Boolean).join(", "),
+              listing.mlsNumber ? "MLS " + listing.mlsNumber : "",
+              listing.statusLabel || "",
+            ].filter(Boolean).join(" · "))}" />
+            <input type="hidden" name="source" value="${escapeHtml(location.origin + location.pathname)}" />
             <div id="listingInquiryMsg" style="font-size:14px;margin-bottom:12px"></div>
             <button type="submit" class="btn btn--submit">SEND INQUIRY</button>
           </form>
