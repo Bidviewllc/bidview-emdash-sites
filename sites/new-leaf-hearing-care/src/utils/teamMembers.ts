@@ -67,13 +67,30 @@ const teamMemberFromEntry = (entry: any): TeamMember | null => {
   };
 };
 
+// Members listed here are moved to sit right after another member, instead of
+// in created_at order (e.g. a new audiologist next to the other audiologists).
+const PLACE_AFTER: Record<string, string> = {
+  "/audiologist/lindsay-collins/": "/audiologist/lisa-marie-bell/"
+};
+
+const applyPlacement = (members: TeamMember[]) => {
+  const ordered = [...members];
+  for (const [href, afterHref] of Object.entries(PLACE_AFTER)) {
+    const from = ordered.findIndex((member) => member.href === href);
+    if (from === -1 || !ordered.some((member) => member.href === afterHref)) continue;
+    const [member] = ordered.splice(from, 1);
+    ordered.splice(ordered.findIndex((m) => m.href === afterHref) + 1, 0, member);
+  }
+  return ordered;
+};
+
 export const getPublishedTeamMembers = async (): Promise<TeamMember[]> => {
   const { entries = [] } = await getEmDashCollection("team", {
     status: "published",
     orderBy: { created_at: "asc" }
   });
 
-  return entries.map(teamMemberFromEntry).filter(Boolean) as TeamMember[];
+  return applyPlacement(entries.map(teamMemberFromEntry).filter(Boolean) as TeamMember[]);
 };
 
 export const renderTeamLinks = (members: TeamMember[]) =>

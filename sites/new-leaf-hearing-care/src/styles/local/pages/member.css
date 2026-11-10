@@ -109,6 +109,14 @@
   background: var(--light);
 }
 
+/* Long credential strings (e.g. "Au.D., CCC-A, CH-TM") stay on one line on desktop. */
+@media (min-width: 1025px) {
+  .member-copy h2.member-name--long {
+    font-size: clamp(32px, 3vw, 44px);
+    white-space: nowrap;
+  }
+}
+
 @media (max-width: 1024px) {
   .member-top {
     flex-direction: column;
