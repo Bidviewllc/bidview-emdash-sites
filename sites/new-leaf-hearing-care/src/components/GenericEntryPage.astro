@@ -34,6 +34,31 @@ const blogDateTime = blogDate && !Number.isNaN(blogDate.getTime())
   : undefined;
 
 const sidebarBlogLinks = await getSidebarBlogLinks();
+
+// Real publish/update dates from the emdash entry (Date object or string). Nothing is shown if missing.
+const toDate = (value) => {
+  if (!value) return null;
+  const d = value instanceof Date ? value : new Date(value);
+  return Number.isNaN(d.getTime()) ? null : d;
+};
+const isoDay = (d) => d.toISOString().slice(0, 10);
+const longDay = (d) => d.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" });
+const publishedDate = isBlogEntry ? toDate(data.publishedAt) : null;
+const updatedRaw = isBlogEntry ? toDate(data.updatedAt) : null;
+const updatedDate = publishedDate && updatedRaw && isoDay(updatedRaw) > isoDay(publishedDate) ? updatedRaw : null;
+const blogPostingSchema = publishedDate
+  ? {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      headline: title,
+      datePublished: isoDay(publishedDate),
+      dateModified: isoDay(updatedDate || publishedDate),
+      url: new URL(Astro.url.pathname, Astro.url.origin).href,
+      mainEntityOfPage: new URL(Astro.url.pathname, Astro.url.origin).href,
+      ...(displayedAuthorName ? { author: { "@type": "Person", name: displayedAuthorName } } : {}),
+      publisher: { "@type": "Organization", name: "New Leaf Hearing Care" }
+    }
+  : null;
 ---
 
 <main class={isBlogEntry ? "blog-entry-page blog-entry-page--hearing-doctor" : undefined}>
@@ -73,8 +98,15 @@ const sidebarBlogLinks = await getSidebarBlogLinks();
           )}
         </div>
       )}
+      {publishedDate && (
+        <p class="blog-published-line">
+          Published <time datetime={isoDay(publishedDate)}>{longDay(publishedDate)}</time>
+          {updatedDate && (<> &middot; Updated <time datetime={isoDay(updatedDate)}>{longDay(updatedDate)}</time></>)}
+        </p>
+      )}
     </div>
   </section>
+  {blogPostingSchema && <script type="application/ld+json" set:html={JSON.stringify(blogPostingSchema)} />}
 
   <section class="internal-content-section">
     <div class="internal-content-container">

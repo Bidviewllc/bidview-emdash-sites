@@ -176,3 +176,5 @@ width: 18px;
       height: 18px;
   }
 }
+
+.blog-published-line{margin:.75rem 0 0;font-size:.875rem;text-align:center;color:var(--light);opacity:.85}
