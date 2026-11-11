@@ -98,12 +98,6 @@ const blogPostingSchema = publishedDate
           )}
         </div>
       )}
-      {publishedDate && (
-        <p class="blog-published-line">
-          Published <time datetime={isoDay(publishedDate)}>{longDay(publishedDate)}</time>
-          {updatedDate && (<> &middot; Updated <time datetime={isoDay(updatedDate)}>{longDay(updatedDate)}</time></>)}
-        </p>
-      )}
     </div>
   </section>
   {blogPostingSchema && <script type="application/ld+json" set:html={JSON.stringify(blogPostingSchema)} />}
