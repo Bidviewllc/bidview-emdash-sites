@@ -29,6 +29,62 @@ Disallow: /api/
 Disallow: /404
 
 Sitemap: ${SITE}/sitemap.xml
+
+User-agent: Googlebot
+Allow: /
+Disallow: /wp-admin/
+Allow: /wp-admin/admin-ajax.php
+Disallow: /_emdash/
+Disallow: /api/
+Disallow: /404
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /wp-admin/
+Allow: /wp-admin/admin-ajax.php
+Disallow: /_emdash/
+Disallow: /api/
+Disallow: /404
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /wp-admin/
+Allow: /wp-admin/admin-ajax.php
+Disallow: /_emdash/
+Disallow: /api/
+Disallow: /404
+
+User-agent: Claude-SearchBot
+Allow: /
+Disallow: /wp-admin/
+Allow: /wp-admin/admin-ajax.php
+Disallow: /_emdash/
+Disallow: /api/
+Disallow: /404
+
+User-agent: Claude-User
+Allow: /
+Disallow: /wp-admin/
+Allow: /wp-admin/admin-ajax.php
+Disallow: /_emdash/
+Disallow: /api/
+Disallow: /404
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /wp-admin/
+Allow: /wp-admin/admin-ajax.php
+Disallow: /_emdash/
+Disallow: /api/
+Disallow: /404
+
+User-agent: Perplexity-User
+Allow: /
+Disallow: /wp-admin/
+Allow: /wp-admin/admin-ajax.php
+Disallow: /_emdash/
+Disallow: /api/
+Disallow: /404
 `;
 	return new Response(txt, {
 		headers: {
