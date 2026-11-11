@@ -1,0 +1,49 @@
+User-agent: *
+Allow: /
+
+# Disallow admin and API routes
+Disallow: /_emdash/
+
+Sitemap: https://www.bidviewmarketing.com/sitemap.xml
+
+User-agent: Googlebot
+Allow: /
+Disallow: /_emdash/
+Disallow: /wp-admin/
+Allow: /wp-admin/admin-ajax.php
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /_emdash/
+Disallow: /wp-admin/
+Allow: /wp-admin/admin-ajax.php
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /_emdash/
+Disallow: /wp-admin/
+Allow: /wp-admin/admin-ajax.php
+
+User-agent: Claude-SearchBot
+Allow: /
+Disallow: /_emdash/
+Disallow: /wp-admin/
+Allow: /wp-admin/admin-ajax.php
+
+User-agent: Claude-User
+Allow: /
+Disallow: /_emdash/
+Disallow: /wp-admin/
+Allow: /wp-admin/admin-ajax.php
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /_emdash/
+Disallow: /wp-admin/
+Allow: /wp-admin/admin-ajax.php
+
+User-agent: Perplexity-User
+Allow: /
+Disallow: /_emdash/
+Disallow: /wp-admin/
+Allow: /wp-admin/admin-ajax.php
