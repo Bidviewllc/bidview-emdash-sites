@@ -1,6 +1,7 @@
 ---
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import breadcrumbLabels from '../data/breadcrumbs.json';
 
 export interface Props {
   title?: string;
@@ -69,6 +70,18 @@ const organizationSchema = {
 };
 const schemaList = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
 const allSchemas = [organizationSchema, ...schemaList];
+// Only the 13 approved routes receive breadcrumbs; the three held pages stay excluded.
+// Labels match each page's rendered H1, including punctuation and trademark symbols.
+const breadcrumbPath = `${Astro.url.pathname.replace(/\/+$/, '')}/`;
+const breadcrumbName = (breadcrumbLabels as Record<string, string>)[breadcrumbPath];
+const breadcrumbSchema = breadcrumbName ? {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_URL}/` },
+    { '@type': 'ListItem', position: 2, name: breadcrumbName, item: canonicalUrl },
+  ],
+} : null;
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -118,6 +131,9 @@ const allSchemas = [organizationSchema, ...schemaList];
   {allSchemas.map((s) => (
     <script type="application/ld+json" set:html={JSON.stringify(s)} />
   ))}
+  {breadcrumbSchema && (
+    <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+  )}
 </head>
 <body>
   <SiteHeader />
