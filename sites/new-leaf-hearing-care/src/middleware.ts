@@ -7,13 +7,27 @@ const PUBLIC_HTML_CACHE_CONTROL = "public, max-age=300, s-maxage=3600, stale-whi
 const EDGE_HTML_CACHE_CONTROL = "public, max-age=3600, stale-while-revalidate=86400";
 const PUBLIC_MEDIA_CACHE_CONTROL = "public, max-age=31536000, immutable";
 const PRIVATE_CACHE_CONTROL = "no-store, max-age=0";
-const HTML_CACHE_VERSION = "2026-11-11-post-dates-v64";
+const HTML_CACHE_VERSION = "2026-11-12-crawl-responses-v65";
 const PUBLIC_MEDIA_PREFIX = "/_emdash/api/media/file/";
 const CACHEABLE_MEDIA_TYPES = ["image/", "video/", "audio/"];
-// Old WordPress blog-category archives that 404'd after the rebuild.
+// Old WordPress pages with equivalent content on the rebuilt site.
+// Retired articles and staff without replacements deliberately remain 404s.
 // Keys are lowercase and WITHOUT a trailing slash (normalised at lookup time),
 // so both /category/hearing and /category/hearing/ resolve.
-const LEGACY_CATEGORY_REDIRECTS: Record<string, string> = {
+const LEGACY_REDIRECTS: Record<string, string> = {
+  "/our-team": "/about/",
+  "/hearing-services/hearing-diagnostic-services": "/audiology-services/hearing-assessments/",
+  "/patient-resources/online-appointment-booking": "/schedule-appointment/",
+  "/protecting-your-hearing": "/hearing-loss/protecting-your-hearing/",
+  "/hearing-loss-facts": "/hearing-loss/hearing-loss-facts/",
+  "/hearing-aid-troubleshooting-guide": "/hearing-aids-products/hearing-aid-repairs-maintenance/",
+  "/home": "/",
+  "/about-new-leaf-hearing/what-separates-us": "/about/",
+  "/hearing-services/communication-training-program": "/audiology-services/communication-training-program/",
+  "/how-we-hear": "/hearing-loss/how-we-hear/",
+  "/hearing-loss/how-we-hea": "/hearing-loss/",
+  "/hearing-services/lace-ai-pro-auditory-training": "/audiology-services/lace-ai-pro-auditory-training/",
+  "/real-ear-measurement": "/hearing-aids-products/hearing-aid-fittings/",
   "/category/audiologist": "/about/",
   "/category/education": "/patient-resources/",
   "/category/hearing": "/hearing-loss/",
@@ -133,8 +147,8 @@ export const onRequest = defineMiddleware(async (context, next) => {
     }
   }
 
-  // Legacy WordPress category archives -> the closest page on the new site.
-  const legacyTarget = LEGACY_CATEGORY_REDIRECTS[pathname.replace(/\/+$/, "").toLowerCase()];
+  // Send known legacy pages straight to their current equivalent.
+  const legacyTarget = LEGACY_REDIRECTS[pathname.replace(/\/+$/, "").toLowerCase()];
   if (legacyTarget) {
     const url = new URL(context.url);
     url.pathname = legacyTarget;
@@ -157,11 +171,15 @@ export const onRequest = defineMiddleware(async (context, next) => {
     });
   }
 
+  const response = await next();
+
+  // Canonicalize existing pages only: missing paths must remain direct 404s.
   if (
+    (method === "GET" || method === "HEAD") &&
+    response.status === 200 &&
     pathname !== "/" &&
     !pathname.endsWith("/") &&
-    !pathname.startsWith("/_emdash/") &&
-    !pathname.startsWith("/api/") &&
+    !isPrivatePath(pathname) &&
     !FILE_EXTENSION_PATTERN.test(pathname)
   ) {
     const url = new URL(context.url);
@@ -172,8 +190,6 @@ export const onRequest = defineMiddleware(async (context, next) => {
     response.headers.set("Cloudflare-CDN-Cache-Control", EDGE_HTML_CACHE_CONTROL);
     return response;
   }
-
-  const response = await next();
 
   if (method !== "GET" && method !== "HEAD") {
     return applyPrivateCacheHeaders(response);
