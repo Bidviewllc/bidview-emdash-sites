@@ -39,12 +39,12 @@ for (const candidate of collections) {
 }
 
 if (!entry || !collection) {
-  return Astro.redirect("/404/", 302);
+  return new Response("Not found", { status: 404 });
 }
 
 const entryStatus = entry.status || entry.data?.status || entry.data?._status;
 if (entryStatus && entryStatus !== "published") {
-  return Astro.redirect("/404/", 302);
+  return new Response("Not found", { status: 404 });
 }
 
 const shellPath = `../content-shells/${collection}/${shellFile}`;
