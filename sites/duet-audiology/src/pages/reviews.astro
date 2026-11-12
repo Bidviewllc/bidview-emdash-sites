@@ -20,7 +20,8 @@ const reviewData = {
   googleRating: live.rating ?? fallbackData.googleRating,
   googleReviewCount: live.votesCount ?? fallbackData.googleReviewCount,
 };
-const reviews = live.reviews.map((r) => ({
+// Preserve imported review wording; omit quotes about departed staff from the website.
+const reviews = live.reviews.filter((r) => !/\b(?:allison\s+may|kaylie(?:\s+fuentes)?)\b/i.test(r.text || "")).map((r) => ({
   id: r.id, authorName: r.author, authorUrl: r.authorUrl, profileImageUrl: r.avatar, rating: r.rating,
   text: r.text, timestamp: r.publishedAt, relativeTime: r.timeAgo, language: '', reviewUrl: r.url,
 }));
