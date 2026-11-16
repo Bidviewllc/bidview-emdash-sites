@@ -13,10 +13,21 @@ const hydratedShell = replaceTeamSections(shell.replace(
   `<div class="sidebar-blogs__links">${renderSidebarBlogLinks(sidebarBlogLinks)}</div>`
 ), teamMembers);
 const [beforeIntro = "", afterIntroRaw = ""] = hydratedShell.split("<!--EMDASH_INTRO_CONTENT-->");
-const [between = "", afterContent = ""] = afterIntroRaw.split("<!--EMDASH_MAIN_CONTENT-->");
+const [betweenRaw = "", afterContent = ""] = afterIntroRaw.split("<!--EMDASH_MAIN_CONTENT-->");
+
+// Optional shell slot rendered right before the first H2 of the main content,
+// which is where the Table of Contents is inserted (e.g. a video above the TOC).
+const SLOT_PATTERN = /<!--EMDASH_BEFORE_FIRST_H2-->([\s\S]*?)<!--\/EMDASH_BEFORE_FIRST_H2-->/;
+const beforeFirstH2 = betweenRaw.match(SLOT_PATTERN)?.[1] ?? "";
+const between = betweenRaw.replace(SLOT_PATTERN, "");
+const firstH2Index = beforeFirstH2 ? content.findIndex((block: any) => block?.style === "h2") : -1;
+const contentBeforeH2 = firstH2Index > 0 ? content.slice(0, firstH2Index) : [];
+const contentFromH2 = firstH2Index > 0 ? content.slice(firstH2Index) : content;
 ---
 <Fragment set:html={beforeIntro} />
 <PortableRichText value={introContent} />
 <Fragment set:html={between} />
-<PortableRichText value={content} />
+{contentBeforeH2.length > 0 && <PortableRichText value={contentBeforeH2} />}
+<Fragment set:html={beforeFirstH2} />
+<PortableRichText value={contentFromH2} />
 <Fragment set:html={afterContent} />
