@@ -38,40 +38,6 @@
       })();
 
       (() => {
-        const widget = document.querySelector("[data-elfsight-app-lazy]");
-        if (!widget) return;
-
-        let hasLoaded = false;
-        const loadElfsight = () => {
-          if (hasLoaded) return;
-          hasLoaded = true;
-
-          const script = document.createElement("script");
-          script.src = "https://elfsightcdn.com/platform.js";
-          script.async = true;
-          document.head.appendChild(script);
-        };
-
-        const loadAfterPageSettles = () => window.setTimeout(loadElfsight, 2500);
-
-        if (document.readyState === "complete") {
-          loadAfterPageSettles();
-        } else {
-          window.addEventListener("load", loadAfterPageSettles, { once: true });
-        }
-
-        if (!("IntersectionObserver" in window)) return;
-
-        const observer = new IntersectionObserver((entries) => {
-          if (!entries.some((entry) => entry.isIntersecting)) return;
-          observer.disconnect();
-          loadElfsight();
-        }, { rootMargin: "1800px 0px" });
-
-        observer.observe(widget);
-      })();
-
-      (() => {
         const header = document.querySelector(".site-header");
         const toggle = document.querySelector(".menu-toggle");
         const nav = document.querySelector(".main-nav");
