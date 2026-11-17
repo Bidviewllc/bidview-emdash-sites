@@ -1,8 +1,8 @@
 ---
 // Home (design/hsnc/Main.dc.html). Photo hero → navy stats strip → "Is keeping
 // up wearing you out?" (intro, photo + green card, navy panel, services teaser,
-// photo grid) → What to expect → reviews → investment + FAQ → location →
-// "Connection is our mission". Text, lists and photos: Pages → Home page
+// photo grid) → What to expect → reviews → investment + FAQ → "Connection is
+// our mission" → location (Liz, 2026-11-17). Text, lists and photos: Pages → Home page
 // (src/data/hsnc/home.ts has the design's wording).
 // Not on this design (template Home): trust bar, about teaser, team, brands,
 // latest posts.
@@ -133,7 +133,7 @@ const closingPhoto = photo("home_closing_photo");
 					}
 				</ol>
 				<div class="hs-card" style="width:100%;max-width:760px;margin:0 auto;padding:32px 28px;border-radius:10px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:20px">
-					{htmlParas("home_expect_cta").map((p) => <p style="max-width:560px;text-align:left" set:html={p} />)}
+					{htmlParas("home_expect_cta").map((p) => <p style="max-width:560px;text-align:center" set:html={p} />)}
 					<div class="hs-btns" style="justify-content:center"><a class="hs-btn" href={tel}>{callLabel}</a><a class="hs-btn hs-btn-o" href={h(routes.resources)}>New patient information</a></div>
 				</div>
 			</div>
@@ -163,8 +163,6 @@ const closingPhoto = photo("home_closing_photo");
 			</div>
 		</section>
 
-		<HsLocation heading={text("home_location_heading")} />
-
 		<div class="on-dark hs-navy">
 			<section class="hs-wrap hs-txt-first" style="padding-top:88px;padding-bottom:88px;display:flex;gap:40px;align-items:center">
 				{closingPhoto && <img class="hs-img" src={closingPhoto.src} alt={closingPhoto.alt} style="flex:1 1 440px;min-width:0;height:520px;object-position:50% 38%" loading="lazy" />}
@@ -175,5 +173,7 @@ const closingPhoto = photo("home_closing_photo");
 				</div>
 			</section>
 		</div>
+
+		<HsLocation heading={text("home_location_heading")} />
 	</div>
 </Base>

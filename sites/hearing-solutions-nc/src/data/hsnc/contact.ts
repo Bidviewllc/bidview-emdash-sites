@@ -15,7 +15,7 @@ const page: HsPage = {
 		line("contact_card2_heading", "Card 2 (pricing) – Headline", "See your investment."),
 		para("contact_card2_text", "Card 2 (pricing) – Text", "Our pricing is published, so you'll know exactly what to expect before you ever walk through the door."),
 		line("contact_card2_button", "Card 2 (pricing) – Button", "New patient information"),
-		line("contact_card3_heading", "Card 3 (questions) – Headline", "Have a question?"),
+		line("contact_card3_heading", "Card 3 (questions) – Headline", "Need a question answered first?"),
 		para("contact_card3_text", "Card 3 (questions) – Text", "Ask away. Call during office hours, or send us a note using the form below, and we'll get right back to you."),
 		line("contact_card3_button", "Card 3 (questions) – Button", "Call or message us"),
 		para("contact_form_intro", "Message form – Intro line", "Our team reads messages every day we're open, and we'll make sure you get a response before the day's over."),

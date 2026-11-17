@@ -18,7 +18,7 @@ const page: HsPage = {
 		para("home_services_text", "Services teaser – Text", "Not here for hearing loss?\nNo problem—we do plenty more."),
 		line("home_expect_heading", "What to expect – Headline", "What to expect."),
 		line("home_expect_intro", "What to expect – Description", "Effortless hearing comes down to three deliberate steps."),
-		para("home_expect_cta", "What to expect – Closing card text", "So come sit with us for a couple of hours. We'll show you what's really going on, and if it makes sense, you will try hearing aids while you're here."),
+		para("home_expect_cta", "What to expect – Closing card text", "**So come sit with us for a couple of hours.**\n\nWe'll show you what's really going on, and if it makes sense, you will try hearing aids while you're here."),
 		line("home_reviews_heading", "Reviews – Headline", "What our patients say."),
 		line("home_invest_heading", "Investment – Headline", "What's the investment?"),
 		para("home_invest_text", "Investment – Text", "We're upfront about our pricing and offer flexible payment paths.\n\nWe even offer a monthly subscription plan if hearing aids turn out to be part of your treatment. When your term ends, your devices go on to a neighbor who needs them."),
