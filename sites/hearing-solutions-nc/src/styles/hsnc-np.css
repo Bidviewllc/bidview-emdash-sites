@@ -46,7 +46,7 @@
 .hs-np-acc p { margin: 0 0 16px; }
 .hs-np-acc-d { border-bottom-color: var(--hs-mute); }
 
-[id="steps"], [id="investment"], [id="other-services"], [id="faq"] { scroll-margin-top: 24px; }
+[id="steps"], [id="investment"], [id="other-services"], [id="faq"], [id="location"] { scroll-margin-top: 24px; }
 
 /* Your Investment */
 .hs-np-invest { padding-top: 48px; padding-bottom: 96px; display: flex; flex-wrap: wrap; gap: 24px; }

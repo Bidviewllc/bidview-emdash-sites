@@ -3,11 +3,12 @@
 // Resources page record ("patient-resources") served at /new-patients.
 // Split hero → "what brings you here" (white) → a look around (navy: text +
 // welcome video) → sidebar (menu + call box) beside "What to expect" + five step cards → Your Investment → reviews →
-// Other Services → FAQ. Text, lists and photos: Pages → New patients
+// Other Services → FAQ → location. Text, lists and photos: Pages → New patients
 // (src/data/hsnc/new-patients.ts has the design's wording).
 // Not on this design (template Patient Resources): resource cards / accordion /
 // tag groups, "From our blog", outside organizations, the booking band, breadcrumbs.
 import HsFaq from "../components/hs/HsFaq.astro";
+import HsLocation from "../components/hs/HsLocation.astro";
 import HsPageHero from "../components/hs/HsPageHero.astro";
 import HsReviews from "../components/hs/HsReviews.astro";
 import NpAcc from "../components/hs/NpAcc.astro";
@@ -72,6 +73,7 @@ const anchor = (href: string) => (href.startsWith("#") ? href : h(href));
 					<h2 class="hs-serif">{text("np_side_heading")}</h2>
 					{htmlParas("np_side_text").map((p) => <p style="font-size:16px" set:html={p} />)}
 					<a class="hs-btn hs-btn-w" href={tel} style="width:100%">Call {s.phone}</a>
+					<a class="hs-btn hs-btn-ow" href="#location" style="width:100%">View Address &amp; Hours</a>
 				</div>
 			</aside>
 			<div class="hs-np-main">
@@ -121,5 +123,8 @@ const anchor = (href: string) => (href.startsWith("#") ? href : h(href));
 				</div>
 			</section>
 		</div>
+
+		<!-- Address, hours and map at the bottom (Liz, 2026-11-17); the sidebar's "View Address & Hours" jumps here -->
+		<div id="location"><HsLocation /></div>
 	</div>
 </Base>
