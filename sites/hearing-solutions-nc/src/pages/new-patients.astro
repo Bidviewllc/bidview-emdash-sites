@@ -46,6 +46,7 @@ const anchor = (href: string) => (href.startsWith("#") ? href : h(href));
 						<div class="hs-np-tourtxt">
 							<h2 class="hs-serif">{text("np_tour_heading")}</h2>
 							{htmlParas("np_tour_text").map((p) => <p set:html={p} />)}
+							<div><a class="hs-btn hs-btn-ow" href="#location">View Address &amp; Hours</a></div>
 						</div>
 						{
 							video ? (
@@ -73,7 +74,6 @@ const anchor = (href: string) => (href.startsWith("#") ? href : h(href));
 					<h2 class="hs-serif">{text("np_side_heading")}</h2>
 					{htmlParas("np_side_text").map((p) => <p style="font-size:16px" set:html={p} />)}
 					<a class="hs-btn hs-btn-w" href={tel} style="width:100%">Call {s.phone}</a>
-					<a class="hs-btn hs-btn-ow" href="#location" style="width:100%">View Address &amp; Hours</a>
 				</div>
 			</aside>
 			<div class="hs-np-main">
@@ -124,7 +124,7 @@ const anchor = (href: string) => (href.startsWith("#") ? href : h(href));
 			</section>
 		</div>
 
-		<!-- Address, hours and map at the bottom (Liz, 2026-11-17); the sidebar's "View Address & Hours" jumps here -->
+		<!-- Address, hours and map at the bottom (Liz, 2026-11-17); "View Address & Hours" in "Where it all happens." jumps here -->
 		<div id="location"><HsLocation /></div>
 	</div>
 </Base>
