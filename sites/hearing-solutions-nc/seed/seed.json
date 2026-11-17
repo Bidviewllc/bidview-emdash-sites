@@ -1338,7 +1338,7 @@
 				},
 				{
 					"slug": "np_toc",
-					"label": "Sidebar – “On this page” links (link: a section anchor on this page, e.g. #investment)",
+					"label": "Sidebar – Menu links (link: a section on this page, e.g. #investment, or another page, e.g. /hearing-loss)",
 					"type": "repeater",
 					"validation": {
 						"subFields": [
@@ -1439,8 +1439,28 @@
 					}
 				},
 				{
+					"slug": "np_tour_heading",
+					"label": "A look around – Headline (beside the welcome video)",
+					"type": "string"
+				},
+				{
+					"slug": "np_tour_text",
+					"label": "A look around – Text",
+					"type": "text"
+				},
+				{
 					"slug": "np_video",
 					"label": "Welcome video – YouTube or Vimeo link (empty = no video)",
+					"type": "string"
+				},
+				{
+					"slug": "np_steps_tag",
+					"label": "What to expect – Label",
+					"type": "string"
+				},
+				{
+					"slug": "np_steps_heading",
+					"label": "What to expect – Headline (above the step cards)",
 					"type": "string"
 				},
 				{
@@ -1515,6 +1535,11 @@
 							}
 						]
 					}
+				},
+				{
+					"slug": "np_faq_tag",
+					"label": "FAQ – Label above the headline",
+					"type": "string"
 				},
 				{
 					"slug": "np_faq_heading",
@@ -2889,7 +2914,7 @@
 					"home_services_text": "Not here for hearing loss?\nNo problem—we do plenty more.",
 					"home_expect_heading": "What to expect.",
 					"home_expect_intro": "Effortless hearing comes down to three deliberate steps.",
-					"home_expect_cta": "So come sit with us for a couple of hours. We'll show you what's really going on, and if it makes sense, you will try hearing aids while you're here.",
+					"home_expect_cta": "**So come sit with us for a couple of hours.**\n\nWe'll show you what's really going on, and if it makes sense, you will try hearing aids while you're here.",
 					"home_reviews_heading": "What our patients say.",
 					"home_invest_heading": "What's the investment?",
 					"home_invest_text": "We're upfront about our pricing and offer flexible payment paths.\n\nWe even offer a monthly subscription plan if hearing aids turn out to be part of your treatment. When your term ends, your devices go on to a neighbor who needs them.",
@@ -3319,7 +3344,7 @@
 					"contact_card2_heading": "See your investment.",
 					"contact_card2_text": "Our pricing is published, so you'll know exactly what to expect before you ever walk through the door.",
 					"contact_card2_button": "New patient information",
-					"contact_card3_heading": "Have a question?",
+					"contact_card3_heading": "Need a question answered first?",
 					"contact_card3_text": "Ask away. Call during office hours, or send us a note using the form below, and we'll get right back to you.",
 					"contact_card3_button": "Call or message us",
 					"contact_form_intro": "Our team reads messages every day we're open, and we'll make sure you get a response before the day's over.",
@@ -3402,7 +3427,11 @@
 					"np_side_heading": "Let's talk today.",
 					"np_side_text": "Most patients tell us they wish they'd come in sooner.",
 					"np_choice_heading": "First, what brings you here today?",
+					"np_tour_heading": "Where it all happens.",
+					"np_tour_text": "We want you to feel comfortable before you ever walk in, so here's a look around.",
 					"np_video": "https://youtu.be/mW1oE4BdPqI",
+					"np_steps_tag": "What to expect",
+					"np_steps_heading": "Hearing Loss & Hearing Aids Assessment",
 					"np_video_title": "Welcome to Hearing Solutions of North Carolina",
 					"np_invest_tag": "Hearing loss & hearing aids",
 					"np_invest_heading": "Your Investment",
@@ -3410,6 +3439,7 @@
 					"np_reviews_heading": "What our patients say.",
 					"np_other_heading": "Other Services",
 					"np_other_text": "These are our other services, with details about what to expect. Call us at {phone} if you have questions or don't see what you need.",
+					"np_faq_tag": "New patient FAQ",
 					"np_faq_heading": "Things you may be wondering about...",
 					"hero_image": {
 						"$media": {
@@ -3420,35 +3450,19 @@
 					},
 					"np_toc": [
 						{
-							"t": "Schedule Appointment",
-							"href": "#schedule"
-						},
-						{
-							"t": "Your First Visit",
-							"href": "#first-visit"
-						},
-						{
-							"t": "Hearing Aid Fitting",
-							"href": "#fitting"
-						},
-						{
-							"t": "Check-Ins & Adjustments",
-							"href": "#check-ins"
-						},
-						{
-							"t": "Ongoing Care & Support",
-							"href": "#ongoing-care"
-						},
-						{
-							"t": "Your Investment",
-							"href": "#investment"
+							"t": "Hearing Loss",
+							"href": "#steps"
 						},
 						{
 							"t": "Other Services",
 							"href": "#other-services"
 						},
 						{
-							"t": "Things you may be wondering about",
+							"t": "Info & Investment",
+							"href": "#investment"
+						},
+						{
+							"t": "Patient FAQs",
 							"href": "#faq"
 						}
 					],

@@ -1,8 +1,8 @@
 ---
 // New Patients (design/hsnc/NewPatients.dc.html), the template's Patient
 // Resources page record ("patient-resources") served at /new-patients.
-// Split hero → sidebar ("On this page" + call box) beside: what brings you here,
-// welcome video placeholder, five step cards → Your Investment → reviews →
+// Split hero → "what brings you here" (white) → a look around (navy: text +
+// welcome video) → sidebar (menu + call box) beside "What to expect" + five step cards → Your Investment → reviews →
 // Other Services → FAQ. Text, lists and photos: Pages → New patients
 // (src/data/hsnc/new-patients.ts has the design's wording).
 // Not on this design (template Patient Resources): resource cards / accordion /
@@ -31,6 +31,37 @@ const anchor = (href: string) => (href.startsWith("#") ? href : h(href));
 	<div class="hs">
 		<HsPageHero label={text("np_label")} display={html("np_display")} paras={htmlParas("np_intro")} photo={hero()} ratio="4/3" />
 
+		<!-- What brings you here: its own white section under the hero (Liz, 2026-11-17) -->
+		<section class="hs-wrap hs-np-ask">
+			<h2 class="hs-h2-sm" style="font-weight:500">{text("np_choice_heading")}</h2>
+			<div class="hs-np-askbtns">{list("np_choices").map((c) => <a class="hs-btn hs-btn-o" href={anchor(c.href)}>{c.t}</a>)}</div>
+		</section>
+
+		<!-- A look around: navy, text left, welcome video right -->
+		{
+			(video || Astro.locals.site.practice.reviewControls) && (
+				<section class="on-dark hs-np-tour">
+					<div class="hs-wrap hs-np-tourin">
+						<div class="hs-np-tourtxt">
+							<h2 class="hs-serif">{text("np_tour_heading")}</h2>
+							{htmlParas("np_tour_text").map((p) => <p set:html={p} />)}
+						</div>
+						{
+							video ? (
+								<div class="hs-np-video hs-np-video-on">
+									<iframe src={video} title={text("np_video_title") || "Welcome video"} loading="lazy" allow="fullscreen; picture-in-picture" allowfullscreen />
+								</div>
+							) : (
+								<div class="hs-ph hs-np-video" role="img" aria-label="Welcome video placeholder">
+									<span aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5l12 7-12 7z" /></svg></span>
+								</div>
+							)
+						}
+					</div>
+				</section>
+			)
+		}
+
 		<section class="hs-wrap hs-np-sbwrap">
 			<aside class="hs-np-sb" aria-label={text("np_toc_label")}>
 				<nav class="hs-np-nav">
@@ -44,24 +75,11 @@ const anchor = (href: string) => (href.startsWith("#") ? href : h(href));
 				</div>
 			</aside>
 			<div class="hs-np-main">
-				<div style="display:flex;flex-direction:column;gap:16px">
-					<h2 class="hs-h2-sm" style="font-weight:500">{text("np_choice_heading")}</h2>
-					<div style="display:flex;flex-wrap:wrap;gap:12px">{list("np_choices").map((c) => <a class="hs-btn hs-btn-o" href={anchor(c.href)}>{c.t}</a>)}</div>
+				<div id="steps" class="hs-np-stepshead">
+					<p class="hs-eyebrow" style="color:var(--hs-green)">{text("np_steps_tag")}</p>
+					<h2 class="hs-serif">{text("np_steps_heading")}</h2>
 				</div>
-				<div id="steps" class="hs-np-steps">
-					{
-						video ? (
-							<div class="hs-np-video hs-np-video-on">
-								<iframe src={video} title={text("np_video_title") || "Welcome video"} loading="lazy" allow="fullscreen; picture-in-picture" allowfullscreen />
-							</div>
-						) : (
-							Astro.locals.site.practice.reviewControls && (
-								<div class="hs-ph hs-np-video" role="img" aria-label="Welcome video placeholder">
-									<span aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5l12 7-12 7z" /></svg></span>
-								</div>
-							)
-						)
-					}
+				<div class="hs-np-steps">
 					{list("np_steps").map((st) => <NpStep step={st} />)}
 				</div>
 			</div>
@@ -93,6 +111,7 @@ const anchor = (href: string) => (href.startsWith("#") ? href : h(href));
 		<div class="hs-navy">
 			<section id="faq" class="hs-wrap hs-np-faqsec">
 				<div class="hs-np-faqcard">
+					<p class="hs-eyebrow hs-np-faqtag">{text("np_faq_tag")}</p>
 					<h2 class="hs-serif">{text("np_faq_heading")}</h2>
 					<div><HsFaq items={list("np_faq").map((f) => ({ q: f.q, a: f.a }))} /></div>
 					<div class="hs-btns" style="justify-content:center;gap:12px;margin-top:20px">

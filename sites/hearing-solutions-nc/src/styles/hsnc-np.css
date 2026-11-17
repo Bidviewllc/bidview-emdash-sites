@@ -1,6 +1,21 @@
 /* New Patients page (design/hsnc/NewPatients.dc.html). Loaded by
    src/pages/new-patients.astro after hsnc.css. */
 
+/* What brings you here (white, centred) and a look around (navy, text + video) */
+.hs-np-ask { padding-top: 64px; padding-bottom: 64px; display: flex; flex-direction: column; align-items: center; gap: 20px; text-align: center; }
+.hs-np-askbtns { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+.hs-np-tour { background: var(--hs-navy); padding: 80px 0; }
+.hs-np-tourin { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 32px 56px; align-items: center; }
+.hs-np-tourtxt { display: flex; flex-direction: column; gap: 16px; }
+.hs .hs-np-tour h2 { line-height: 1.15; }
+.hs-np-tourtxt p { font-size: 19px; line-height: 1.6; }
+.hs-np-stepshead { display: flex; flex-direction: column; gap: 8px; }
+.hs .hs-np-stepshead h2 { line-height: 1.15; }
+@media (max-width: 820px) {
+	.hs-np-tourin { grid-template-columns: 1fr; }
+	.hs-np-tour { padding: 56px 0; }
+}
+
 .hs-np-sbwrap { display: flex; flex-wrap: wrap; gap: 40px 48px; align-items: flex-start; padding-top: 80px; padding-bottom: 40px; }
 .hs-np-sb { flex: 0 0 280px; position: sticky; top: 24px; display: flex; flex-direction: column; gap: 24px; }
 .hs-np-main { flex: 1 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 32px; }
@@ -47,6 +62,7 @@
 /* FAQ */
 .hs-np-faqsec { padding-top: 88px; padding-bottom: 88px; }
 .hs-np-faqcard { background: #fff; color: var(--hs-navy); border-radius: 14px; padding: 40px 32px; display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 960px; margin: 0 auto; }
+.hs-np-faqcard .hs-np-faqtag { text-align: center; color: var(--hs-green); letter-spacing: .08em; }
 .hs .hs-np-faqcard h2 { margin: 0 0 8px; text-align: center; line-height: 1.2; color: var(--hs-green); }
 .hs-np-faqcard .hs-faq { border-bottom-color: var(--hs-flink); }
 .hs-np-faqcard .hs-faq summary { min-height: 52px; }

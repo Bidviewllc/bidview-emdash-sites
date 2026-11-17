@@ -1,7 +1,7 @@
 ---
 // About (design/hsnc/About.dc.html). Split hero → story (photo + text) → three
 // value cards → "Hearing, shared." → navy office gallery → "Meet your team." →
-// reviews → "Come sit with us." → location (Liz, 2026-11-17). Text, lists and photos: Pages → About
+// reviews → location → "Come sit with us." (Liz, 2026-11-17). Text, lists and photos: Pages → About
 // (src/data/hsnc/about.ts has the design's wording); the team: Providers.
 // Not on this design (template About): journey timeline, credentials, values
 // heading, community section, eyebrows, breadcrumbs, the CTA band.
@@ -101,6 +101,8 @@ const VALUE_ICONS = [
 
 		<HsReviews heading={text("about_reviews_heading")} />
 
+		<HsLocation heading={text("about_location_heading")} />
+
 		<div class="on-dark hs-navy">
 			<section class="hs-wrap" style="padding-top:88px;padding-bottom:88px;display:flex;flex-wrap:wrap;gap:40px;align-items:center">
 				<div style="flex:1 1 320px;display:flex;flex-direction:column;gap:16px;align-items:flex-start">
@@ -111,7 +113,5 @@ const VALUE_ICONS = [
 				{closingPhoto && <img src={closingPhoto.src} alt={closingPhoto.alt} style="flex:1 1 440px;min-width:0;width:100%;min-height:320px;object-fit:cover;object-position:50% 35%;border-radius:14px;display:block" loading="lazy" />}
 			</section>
 		</div>
-
-		<HsLocation heading={text("about_location_heading")} />
 	</div>
 </Base>
