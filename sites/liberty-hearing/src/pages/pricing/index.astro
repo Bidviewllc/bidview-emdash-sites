@@ -22,7 +22,7 @@ import Base from "../../layouts/Base.astro";
 <span style="color:var(--text-muted)">Pricing</span>
 </nav>
 <h1 style="margin:0;color:var(--navy);font-size:clamp(38px,4.2vw,62px);font-weight:800;line-height:1.06;letter-spacing:-.045em;text-wrap:balance">Pricing</h1>
-<p style="margin:0;max-width:780px;font-size:19px;line-height:1.7;text-wrap:pretty">Liberty Hearing Center publishes what each service costs so you can see exactly what you are paying for before you agree to it. The fees below apply to patients who choose the unbundled option or who need a single service on its own. If you purchase hearing aids through us on a bundled plan, the hearing aid services listed here are already included in your plan at no additional charge.</p>
+<p style="margin:0;max-width:780px;font-size:19px;line-height:1.7;text-wrap:pretty">Liberty Hearing Center publishes what each service costs so you can see exactly what you are paying for before you agree to it. The listed prices are for private pay (self-pay) patients. Fees for patients using insurance benefits are determined by their insurance plan and our contracted rates. If you purchase hearing aids through us on a bundled plan, the hearing aid services listed here are included for three years at no additional charge.</p>
 <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
 <a href="/book-appointment/" style="display:inline-flex;min-height:50px;align-items:center;justify-content:center;padding:12px 24px;border:1px solid transparent;border-radius:999px;background:var(--brand-red);color:var(--white);font-size:14px;font-weight:750;transition:.3s" style-hover="background:var(--navy);transform:translateY(-2px)">Request an Appointment</a>
 <a href="tel:9794507996" style="display:inline-flex;min-height:50px;align-items:center;justify-content:center;padding:12px 24px;border:1px solid var(--brand-red);border-radius:999px;background:var(--white);color:var(--brand-red);font-size:14px;font-weight:750;transition:.3s" style-hover="border-color:var(--navy);background:var(--navy);color:var(--white);transform:translateY(-2px)">Call 979-450-7996</a>
@@ -45,8 +45,9 @@ import Base from "../../layouts/Base.astro";
 </div>
 </details>
 
-<h2 id="unbundled" style="margin:0 0 10px;scroll-margin-top:150px;color:var(--navy);font-size:clamp(28px,2.5vw,38px);font-weight:800;line-height:1.1;letter-spacing:-.035em">Unbundled Service Fees</h2>
+<h2 id="unbundled" style="margin:0 0 10px;scroll-margin-top:150px;color:var(--navy);font-size:clamp(28px,2.5vw,38px);font-weight:800;line-height:1.1;letter-spacing:-.035em">Unbundled Service Fees* (Private Pay)</h2>
 <div style="width:64px;height:4px;margin-bottom:40px;background:var(--gold);border-radius:999px"></div>
+<p style="margin:0 0 26px;max-width:760px;font-size:15px;line-height:1.8;text-wrap:pretty"><em>*Prices listed are for private pay (self-pay) patients. Fees for patients using insurance benefits are determined by their insurance plan and our contracted rates.</em></p>
 
 <h3 id="outer" style="margin:0 0 8px;scroll-margin-top:150px;color:var(--navy);font-size:23px;font-weight:750;line-height:1.2;letter-spacing:-.025em">Evaluation of Outer Ear System</h3>
 <p style="margin:0 0 22px;max-width:760px;color:var(--text-body);line-height:1.8;text-wrap:pretty">Checking the ear canal itself, because a physical blockage is one of the simplest causes of hearing trouble and one of the fastest to fix.</p>
@@ -70,35 +71,21 @@ import Base from "../../layouts/Base.astro";
 <h3 id="middle" style="margin:0 0 8px;scroll-margin-top:150px;color:var(--navy);font-size:23px;font-weight:750;line-height:1.2;letter-spacing:-.025em">Evaluation of Middle Ear System</h3>
 <p style="margin:0 0 22px;max-width:760px;color:var(--text-body);line-height:1.8;text-wrap:pretty">Testing the eardrum and the small bones behind it, where a cause of hearing loss is treatable and sometimes temporary.</p>
 <div style="margin-bottom:44px;display:flex;flex-direction:column;gap:16px">
-<details class="pricing-accordion">
-<summary class="pricing-accordion-title-bar">
-<div class="pricing-accordion-heading">
-<strong class="pricing-accordion-title">Tympanometry and, if required, Acoustic Reflex Testing</strong>
-</div>
-<div class="pricing-accordion-meta">
-<span class="pricing-accordion-price">$50–100</span>
-<span class="pricing-accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9.5 12 15.5 18 9.5"></path></svg></span>
-</div>
-</summary>
-<div class="pricing-accordion-content">
-<p style="margin:0 0 12px;font-size:15px;line-height:1.8;text-wrap:pretty">Tympanometry measures how well your eardrum moves when air pressure changes, which identifies fluid behind the eardrum, Eustachian tube dysfunction, a perforation, or a problem with the middle ear bones. Acoustic reflex testing adds a second layer of information about the hearing nerve and the brainstem pathway, and helps distinguish between types of hearing loss.</p>
-<p style="margin:0 0 12px;font-size:15px;line-height:1.8;text-wrap:pretty">Both tests take a few minutes and involve nothing more than a soft probe at the entrance of the ear canal and a gentle puff of air. The price range reflects whether acoustic reflex testing is needed in addition to tympanometry.</p>
-<p style="margin:0;font-size:15px;line-height:1.8;text-wrap:pretty">Tympanometry alone requires a physician's referral; without one, it must be bundled with a comprehensive hearing evaluation, since insurance won't reimburse tympanometry as a standalone service.</p>
-</div>
-</details>
+
 <details class="pricing-accordion">
 <summary class="pricing-accordion-title-bar">
 <div class="pricing-accordion-heading">
 <strong class="pricing-accordion-title">Earwax Removal (Cerumen Removal)</strong>
 </div>
 <div class="pricing-accordion-meta">
-<span class="pricing-accordion-price">$125</span>
+<span class="pricing-accordion-price">$175</span>
 <span class="pricing-accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9.5 12 15.5 18 9.5"></path></svg></span>
 </div>
 </summary>
 <div class="pricing-accordion-content">
 <p style="margin:0 0 12px;font-size:15px;line-height:1.8;text-wrap:pretty">Excess wax is one of the most common and most easily resolved causes of muffled hearing, a plugged or full sensation, and hearing aid whistling. Removal is performed in the office using clinical instruments, after the canal and eardrum have been inspected to determine the safest method for your ears.</p>
 <p style="margin:0;font-size:15px;line-height:1.8;text-wrap:pretty">This is not a service to attempt at home. Cotton swabs and over-the-counter kits push wax deeper against the eardrum more reliably than they remove it.</p>
+<p style="margin:12px 0 0;font-size:15px;line-height:1.8;text-wrap:pretty">This requires a tympanometry test that is included in the pricing.</p>
 </div>
 </details>
 </div>
@@ -222,25 +209,12 @@ import Base from "../../layouts/Base.astro";
 <p style="margin:0;font-size:16px;line-height:1.8;text-wrap:pretty">Liberty Hearing Center provides cochlear implant mapping and follow-up care for patients implanted by Brazos Valley ENTs and otologists.</p>
 </div>
 
-<h2 id="aid-services" style="margin:0 0 10px;scroll-margin-top:150px;color:var(--navy);font-size:clamp(28px,2.5vw,38px);font-weight:800;line-height:1.1;letter-spacing:-.035em">Hearing Aid Services</h2>
+<h2 id="aid-services" style="margin:0 0 10px;scroll-margin-top:150px;color:var(--navy);font-size:clamp(28px,2.5vw,38px);font-weight:800;line-height:1.1;letter-spacing:-.035em">Hearing Aid Services* (Private Pay)</h2>
 <div style="width:64px;height:4px;margin-bottom:20px;background:var(--gold);border-radius:999px"></div>
-<p style="margin:0 0 26px;max-width:760px;line-height:1.8;text-wrap:pretty">These services are included at no additional cost for three years when you purchase hearing aids through Liberty Hearing Center on a bundled plan. They are available individually to unbundled patients, and to patients who purchased hearing aids elsewhere.</p>
+<p style="margin:0 0 26px;max-width:760px;font-size:15px;line-height:1.8;text-wrap:pretty"><em>*Prices listed are for private pay (self-pay) patients. Fees for patients using insurance benefits are determined by their insurance plan and our contracted rates.</em></p>
+<p style="margin:0 0 26px;max-width:760px;line-height:1.8;text-wrap:pretty">These services are included at no additional cost for three years when you purchase hearing aids through Liberty Hearing Center on a bundled plan. These are our private pay prices for these services whether you are a new patient or an unbundled established patient. All listed services are bundled and cannot be performed individually.</p>
 <div style="margin-bottom:56px;display:flex;flex-direction:column;gap:16px">
-<details class="pricing-accordion">
-<summary class="pricing-accordion-title-bar">
-<div class="pricing-accordion-heading">
-<strong class="pricing-accordion-title">Redux Hearing Aid Drying</strong>
-</div>
-<div class="pricing-accordion-meta">
-<span class="pricing-accordion-price">$50</span>
-<span class="pricing-accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9.5 12 15.5 18 9.5"></path></svg></span>
-</div>
-</summary>
-<div class="pricing-accordion-content">
-<p style="margin:0 0 12px;font-size:15px;line-height:1.8;text-wrap:pretty">Moisture is one of the leading causes of hearing aid failure, and it accumulates from sweat, humidity, and condensation long before the device stops working outright. The Redux system uses a vacuum-based process to draw moisture out of the internal components in a single in-office visit and reports how much it pulled out.</p>
-<p style="margin:0;font-size:15px;line-height:1.8;text-wrap:pretty">Patients who live through Brazos Valley summers, work outdoors, or exercise in their devices benefit from this on a regular schedule rather than waiting for a failure.</p>
-</div>
-</details>
+
 <details class="pricing-accordion pricing-accordion--featured">
 <summary class="pricing-accordion-title-bar">
 <div class="pricing-accordion-heading">
@@ -266,17 +240,16 @@ import Base from "../../layouts/Base.astro";
 </div>
 </summary>
 <div class="pricing-accordion-content">
-<p style="margin:0 0 12px;font-size:15px;line-height:1.8;text-wrap:pretty">A professional cleaning of the receivers, microphone ports, wax guards, and tubing. Daily home cleaning helps, but wax and debris reach places a brush cannot, and a device that has quietly drifted out of spec sounds like worsening hearing to the person wearing it.</p>
-<p style="margin:0;font-size:15px;line-height:1.8;text-wrap:pretty">Best treated as routine maintenance on a set schedule, not something to book only after the sound gets bad.</p>
+<p style="margin:0;font-size:15px;line-height:1.8;text-wrap:pretty">A professional cleaning of the receivers, microphone ports, wax guards, and tubing. Daily home cleaning helps, but wax and debris reach places a brush cannot. This service is not an appointment and is a drop-off service only. Once the aid(s) are cleaned, you will be contacted that they are ready to be picked up. Please allow one business day for this service to be completed.</p>
 </div>
 </details>
 <details class="pricing-accordion">
 <summary class="pricing-accordion-title-bar">
 <div class="pricing-accordion-heading">
-<strong class="pricing-accordion-title">Real Ear Verification</strong>
+<strong class="pricing-accordion-title">Hearing Aid Programming Adjustment and Real Ear Verification</strong>
 </div>
 <div class="pricing-accordion-meta">
-<span class="pricing-accordion-price">$100</span>
+<span class="pricing-accordion-price">$200</span>
 <span class="pricing-accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9.5 12 15.5 18 9.5"></path></svg></span>
 </div>
 </summary>
@@ -291,13 +264,42 @@ import Base from "../../layouts/Base.astro";
 <strong class="pricing-accordion-title">Bluetooth Troubleshooting</strong>
 </div>
 <div class="pricing-accordion-meta">
-<span class="pricing-accordion-price">$50</span>
+<span class="pricing-accordion-price">$50–$100</span>
 <span class="pricing-accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9.5 12 15.5 18 9.5"></path></svg></span>
 </div>
 </summary>
 <div class="pricing-accordion-content">
 <p style="margin:0 0 12px;font-size:15px;line-height:1.8;text-wrap:pretty">A dedicated appointment to get your phone and your hearing aids working together properly: Bluetooth pairing, the manufacturer's app, streaming calls and audio, hands-free settings, and the volume and program controls on your phone.</p>
 <p style="margin:0;font-size:15px;line-height:1.8;text-wrap:pretty">Worth booking with a new set of devices, and again any time you switch phones — a new handset can break a pairing that worked fine for years.</p>
+<p style="margin:12px 0 0;font-size:15px;line-height:1.8;text-wrap:pretty">An appointment under 20 minutes costs $50, and an appointment over 20 minutes costs $100.</p>
+</div>
+</details>
+<details class="pricing-accordion">
+<summary class="pricing-accordion-title-bar">
+<div class="pricing-accordion-heading">
+<strong class="pricing-accordion-title">Hearing Aid Repair Under Warranty</strong>
+</div>
+<div class="pricing-accordion-meta">
+<span class="pricing-accordion-price">$150</span>
+<span class="pricing-accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9.5 12 15.5 18 9.5"></path></svg></span>
+</div>
+</summary>
+<div class="pricing-accordion-content">
+<p style="margin:0;font-size:15px;line-height:1.8;text-wrap:pretty">The hearing aid repair is covered by the manufacturer's warranty. This fee includes cleaning the hearing aid(s) and checking whether the aid(s) can be repaired in-house. If the aid(s) cannot be repaired in-house, they will be sent to the manufacturer. Upon return, a HIT test will be performed to ensure the aid(s) are functioning within normal limits, as well as reprogramming to ensure the sound quality of the devices meets patient expectations.</p>
+</div>
+</details>
+<details class="pricing-accordion">
+<summary class="pricing-accordion-title-bar">
+<div class="pricing-accordion-heading">
+<strong class="pricing-accordion-title">Hearing Aid Repair Out of Warranty</strong>
+</div>
+<div class="pricing-accordion-meta">
+<span class="pricing-accordion-price">$650 or $850</span>
+<span class="pricing-accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9.5 12 15.5 18 9.5"></path></svg></span>
+</div>
+</summary>
+<div class="pricing-accordion-content">
+<p style="margin:0;font-size:15px;line-height:1.8;text-wrap:pretty">The hearing aid repair is no longer covered by the manufacturer. The fee to send the aid(s) is $250 per ear if it is more than 3 years old or $350 per ear if it is older than 5 years old. This fee is set by the manufacturer and cannot be negotiated. There is also a $150 service fee that includes cleaning the hearing aid(s) and checking whether the aid(s) can be repaired in-house. If the aid(s) cannot be repaired in-house, they will be sent to the manufacturer. Upon return, a HIT test will be performed to ensure the aid(s) are functioning within normal limits, as well as reprogramming to ensure the sound quality of the devices meets patient expectations.</p>
 </div>
 </details>
 </div>
@@ -316,22 +318,22 @@ import Base from "../../layouts/Base.astro";
 <tbody>
 <tr>
 <td style="padding:18px 24px;border-top:1px solid var(--surface-alt);font-weight:750">Premium Hearing Aid</td>
-<td style="padding:18px 24px;border-top:1px solid var(--surface-alt);text-align:right;white-space:nowrap">$3,970 – $4,650</td>
-<td style="padding:18px 24px;border-top:1px solid var(--surface-alt);text-align:right;white-space:nowrap;font-weight:750">$6,670 – $7,350</td>
+<td style="padding:18px 24px;border-top:1px solid var(--surface-alt);text-align:right;white-space:nowrap">$4,738</td>
+<td style="padding:18px 24px;border-top:1px solid var(--surface-alt);text-align:right;white-space:nowrap;font-weight:750">$6,768</td>
 </tr>
 <tr style="background:var(--surface)">
 <td style="padding:18px 24px;border-top:1px solid var(--surface-alt);font-weight:750">Active Lifestyle</td>
-<td style="padding:18px 24px;border-top:1px solid var(--surface-alt);text-align:right;white-space:nowrap">$3,100 – $3,500</td>
-<td style="padding:18px 24px;border-top:1px solid var(--surface-alt);text-align:right;white-space:nowrap;font-weight:750">$5,800 – $6,200</td>
+<td style="padding:18px 24px;border-top:1px solid var(--surface-alt);text-align:right;white-space:nowrap">$3,910</td>
+<td style="padding:18px 24px;border-top:1px solid var(--surface-alt);text-align:right;white-space:nowrap;font-weight:750">$5,940</td>
 </tr>
 <tr>
 <td style="padding:18px 24px;border-top:1px solid var(--surface-alt);font-weight:750">Casual Listener</td>
-<td style="padding:18px 24px;border-top:1px solid var(--surface-alt);text-align:right;white-space:nowrap">$2,660 – $2,800</td>
-<td style="padding:18px 24px;border-top:1px solid var(--surface-alt);text-align:right;white-space:nowrap;font-weight:750">$5,360 – $5,500</td>
+<td style="padding:18px 24px;border-top:1px solid var(--surface-alt);text-align:right;white-space:nowrap">$3,360</td>
+<td style="padding:18px 24px;border-top:1px solid var(--surface-alt);text-align:right;white-space:nowrap;font-weight:750">$5,390</td>
 </tr>
 <tr style="background:var(--surface)">
 <td style="padding:18px 24px;border-top:1px solid var(--surface-alt);font-weight:750">Essential Listening</td>
-<td style="padding:18px 24px;border-top:1px solid var(--surface-alt);text-align:right;white-space:nowrap">$2,000</td>
+<td style="padding:18px 24px;border-top:1px solid var(--surface-alt);text-align:right;white-space:nowrap">$2,610</td>
 <td style="padding:18px 24px;border-top:1px solid var(--surface-alt);text-align:right;white-space:nowrap;font-weight:750">$4,950</td>
 </tr>
 </tbody>
@@ -339,30 +341,30 @@ import Base from "../../layouts/Base.astro";
 </div>
 <p style="margin:0 0 20px;color:var(--text-muted);font-size:14px;line-height:1.7">*Bundled pricing includes three years of comprehensive service and support.</p>
 <div style="margin-bottom:36px;padding:24px 30px;border-radius:14px;background:var(--surface-blue)">
-<strong style="display:block;margin-bottom:8px;color:var(--navy);font-size:17px;font-weight:750;letter-spacing:-.02em">Why prices vary within each tier</strong>
-<p style="margin:0;font-size:15px;line-height:1.8;text-wrap:pretty">Liberty Hearing Center partners with seven leading hearing aid manufacturers, giving you access to a wide range of trusted technology. Because manufacturer costs differ, prices within each tier reflect the specific brand and device that best fits your hearing needs, lifestyle, and budget. During your consultation, we'll help you find the right option — and the right price point — within your tier.</p>
+<strong style="display:block;margin-bottom:8px;color:var(--navy);font-size:17px;font-weight:750;letter-spacing:-.02em">Hearing aid options for your needs</strong>
+<p style="margin:0;font-size:15px;line-height:1.8;text-wrap:pretty">Liberty Hearing Center partners with seven leading hearing aid manufacturers, giving you access to a wide range of trusted technology. During your consultation, we'll help you find the option that best fits your hearing needs, lifestyle, and budget.</p>
 </div>
 <div style="display:flex;flex-direction:column;gap:16px">
 <article style="padding:28px 30px;border:1px solid var(--border);border-top:4px solid var(--gold);border-radius:14px;background:var(--white);transition:.3s" style-hover="box-shadow:0 18px 45px rgba(var(--navy-rgb),.11)">
 <h3 style="margin:0 0 6px;color:var(--navy);font-size:22px;font-weight:750;line-height:1.2;letter-spacing:-.025em">Premium Hearing Aid</h3>
-<p style="margin:0 0 14px;color:var(--gold);font-size:15px;font-weight:750">$3,970–$4,650 unbundled / $6,670–$7,350 bundled</p>
+<p style="margin:0 0 14px;color:var(--gold);font-size:15px;font-weight:750">$4,738 unbundled / $6,768 bundled</p>
 <p style="margin:0 0 12px;font-size:15px;line-height:1.8;text-wrap:pretty">The top technology level from each manufacturer we carry. Built for the hardest listening situations there are: a crowded restaurant, a room full of overlapping conversation, a reverberant church or auditorium. These devices carry the most advanced speech-in-noise processing, automatic directionality, and connectivity features available, and they make the most decisions on your behalf as your environment changes.</p>
 <p style="margin:0;font-size:15px;line-height:1.8;text-wrap:pretty">The right choice for patients whose daily life regularly puts them in noise they cannot control.</p>
 </article>
 <article style="padding:28px 30px;border:1px solid var(--border);border-top:4px solid var(--gold);border-radius:14px;background:var(--white);transition:.3s" style-hover="box-shadow:0 18px 45px rgba(var(--navy-rgb),.11)">
 <h3 style="margin:0 0 6px;color:var(--navy);font-size:22px;font-weight:750;line-height:1.2;letter-spacing:-.025em">Active Lifestyle</h3>
-<p style="margin:0 0 14px;color:var(--gold);font-size:15px;font-weight:750">$3,100–$3,500 unbundled / $5,800–$6,200 bundled</p>
+<p style="margin:0 0 14px;color:var(--gold);font-size:15px;font-weight:750">$3,910 unbundled / $5,940 bundled</p>
 <p style="margin:0;font-size:15px;line-height:1.8;text-wrap:pretty">Strong performance in noise and full wireless connectivity, for patients who are out in the world consistently — work meetings, restaurants, group activities, travel, worship services. The processing handles demanding environments well, with fewer of the automatic refinements that the premium level applies in the most complex settings.</p>
 </article>
 <article style="padding:28px 30px;border:1px solid var(--border);border-top:4px solid var(--gold);border-radius:14px;background:var(--white);transition:.3s" style-hover="box-shadow:0 18px 45px rgba(var(--navy-rgb),.11)">
 <h3 style="margin:0 0 6px;color:var(--navy);font-size:22px;font-weight:750;line-height:1.2;letter-spacing:-.025em">Casual Listener</h3>
-<p style="margin:0 0 14px;color:var(--gold);font-size:15px;font-weight:750">$2,660–$2,800 unbundled / $5,360–$5,500 bundled</p>
+<p style="margin:0 0 14px;color:var(--gold);font-size:15px;font-weight:750">$3,360 unbundled / $5,390 bundled</p>
 <p style="margin:0 0 12px;font-size:15px;line-height:1.8;text-wrap:pretty">Suited to environments that are largely predictable: home, television, one-on-one and small-group conversation, quieter social settings. Background noise is managed capably without the processing power built for a packed restaurant.</p>
 <p style="margin:0;font-size:15px;line-height:1.8;text-wrap:pretty">A sound fit for patients whose listening demands are steady and whose difficult situations are occasional rather than daily.</p>
 </article>
 <article style="padding:28px 30px;border:1px solid var(--border);border-top:4px solid var(--gold);border-radius:14px;background:var(--white);transition:.3s" style-hover="box-shadow:0 18px 45px rgba(var(--navy-rgb),.11)">
 <h3 style="margin:0 0 6px;color:var(--navy);font-size:22px;font-weight:750;line-height:1.2;letter-spacing:-.025em">Essential Listening</h3>
-<p style="margin:0 0 14px;color:var(--gold);font-size:15px;font-weight:750">$2,000 unbundled / $4,950 bundled</p>
+<p style="margin:0 0 14px;color:var(--gold);font-size:15px;font-weight:750">$2,610 unbundled / $4,950 bundled</p>
 <p style="margin:0 0 12px;font-size:15px;line-height:1.8;text-wrap:pretty">Entry-level amplification covering the fundamentals: clear speech in quiet, conversation with one person, television at a reasonable volume. It is a genuine hearing aid fitted and verified to the same clinical standard as every other tier, at the lowest price point we can offer.</p>
 <p style="margin:0;font-size:15px;line-height:1.8;text-wrap:pretty">The starting point for patients working within a tight budget or with straightforward listening needs, and a real improvement over untreated hearing loss.</p>
 </article>
@@ -385,7 +387,7 @@ import Base from "../../layouts/Base.astro";
 </div>
 <div style="padding:28px 30px;border:1px solid var(--border);border-radius:16px;background:var(--cream)">
 <strong style="display:block;margin-bottom:10px;color:var(--navy);font-size:17px;font-weight:750;letter-spacing:-.01em">Bundled vs. unbundled</strong>
-<p style="margin:0 0 12px;font-size:15px;line-height:1.75;text-wrap:pretty">Bundled plans fold three years of hearing aid services into the price of the devices. Unbundled pricing lowers the up-front cost and charges for each visit as you use it.</p>
+<p style="margin:0 0 12px;font-size:15px;line-height:1.75;text-wrap:pretty">Bundled plans fold three years of hearing aid services into the price of the devices. Unbundled pricing lowers the up-front device cost, with private pay service fees listed separately.</p>
 <p style="margin:0;font-size:15px;line-height:1.75;text-wrap:pretty">Both options are fitted and verified to the same clinical standard.</p>
 </div>
 </aside>
