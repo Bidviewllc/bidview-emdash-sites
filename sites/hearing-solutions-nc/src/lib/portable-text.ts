@@ -49,12 +49,27 @@ function spans(b: PTBlock) {
 		.join("");
 }
 
-function image(b: PTBlock) {
+/** The alignment chosen in the editor (left, right, center, wide, full) as a class; none = right. */
+const ALIGNS = ["left", "right", "center", "wide", "full"];
+const alignClass = (b: PTBlock) => (ALIGNS.includes(String(b.alignment)) ? ` al-${b.alignment}` : "");
+
+/** maxH = the tallest it may show (px). */
+function image(b: PTBlock, maxH = 460) {
 	const asset = (b.asset ?? {}) as Record<string, unknown>;
 	const src = (asset.url ?? b.url ?? b.src ?? (asset._ref ? `/_emdash/api/media/file/${asset._ref}` : "")) as string;
 	if (!src) return "";
 	const alt = esc(String(b.alt ?? ""));
 	const cap = b.caption ? `<figcaption>${esc(String(b.caption))}</figcaption>` : "";
+	// An image that knows its size shows whole, at most that size (logos, product shots,
+	// the old site's photos; Liz, 2026-11-16). Without a size: the design's 3:2 cropped photo.
+	const w = Number(b.width ?? asset.width) || 0;
+	const hgt = Number(b.height ?? asset.height) || 0;
+	if (w && hgt) {
+		// The editor's own resize (displayWidth) wins over the height cap.
+		const dw = Number(b.displayWidth) || 0;
+		const show = dw || Math.round(Math.min(w, (maxH * w) / hgt));
+		return `<figure class="rt-pic${alignClass(b)}"><img src="${esc(src)}" alt="${alt}" width="${w}" height="${hgt}" style="width:${show}px" loading="lazy">${cap}</figure>`;
+	}
 	return `<figure><div class="fimg"><img src="${esc(src)}" alt="${alt}" loading="lazy"></div>${cap}</figure>`;
 }
 
@@ -63,15 +78,25 @@ function image(b: PTBlock) {
  * put something between them (the mid-article booking box), plus the H2s.
  */
 export function ptParts(blocks: PTBlock[] | undefined | null) {
-	const parts: { html: string; h2?: string }[] = [];
+	const parts: { html: string; h2?: string; kind?: "img" | "head" }[] = [];
 	const headings: { id: string; label: string }[] = [];
 	const used = new Set<string>();
 	const list = blocks ?? [];
 	for (let i = 0; i < list.length; i++) {
 		const b = list[i];
 		if (b._type === "image") {
-			const html = image(b);
-			if (html) parts.push({ html });
+			// Images one after another sit in a row (a row of brand logos).
+			const run: PTBlock[] = [];
+			while (i < list.length && list[i]._type === "image") run.push(list[i++]);
+			i--;
+			// A long row is logos (kept short); a pair or three can be photos or a QR code.
+			const pics = run.map((x) => image(x, run.length >= 4 ? 60 : run.length > 1 ? 260 : 460)).filter(Boolean);
+			// 4+ = a full-width row of logos; 2-3 = one column beside the text (wrapped like a single image).
+			// An image beside the text (not centred, wide or full; not a logo row) can start a section.
+			const beside = /^(left|right|undefined)$/.test(String(run[0].alignment)) && /class="rt-pic/.test(pics[0] ?? "") ? ("img" as const) : undefined;
+			if (pics.length >= 4) parts.push({ html: `<div class="rt-pics">${pics.join("")}</div>` });
+			else if (pics.length > 1) parts.push({ html: `<div class="rt-group${alignClass(run[0])}">${pics.join("")}</div>`, kind: beside });
+			else if (pics.length) parts.push({ html: pics[0], kind: beside });
 			continue;
 		}
 		if (b._type !== "block") continue;
@@ -91,12 +116,32 @@ export function ptParts(blocks: PTBlock[] | undefined | null) {
 			while (used.has(id)) id += "-2";
 			used.add(id);
 			headings.push({ id, label: blockText(b) });
-			parts.push({ html: `<h2 id="${id}">${inner}</h2>`, h2: id });
-		} else if (style === "h3" || style === "h4") parts.push({ html: `<${style}>${inner}</${style}>` });
+			parts.push({ html: `<h2 id="${id}">${inner}</h2>`, h2: id, kind: "head" });
+		} else if (style === "h3" || style === "h4") parts.push({ html: `<${style}>${inner}</${style}>`, kind: "head" });
 		else if (style === "blockquote") parts.push({ html: `<blockquote>${inner}</blockquote>` });
 		else parts.push({ html: `<p>${inner}</p>` });
 	}
-	return { parts, headings };
+	return { parts: sections(parts), headings };
+}
+
+/**
+ * An image placed just above a heading sits beside that heading and its text (as on the old
+ * site; Liz, 2026-11-17). Image, heading and the text up to the next heading or image go in
+ * one box, so the next section always starts below the image, however short the text.
+ */
+function sections(parts: { html: string; h2?: string; kind?: "img" | "head" }[]) {
+	const out: { html: string; h2?: string }[] = [];
+	for (let k = 0; k < parts.length; k++) {
+		if (parts[k].kind === "img" && parts[k + 1]?.kind === "head") {
+			const body = [parts[k].html, parts[k + 1].html];
+			const h2 = parts[k + 1].h2;
+			k += 2;
+			while (k < parts.length && !parts[k].kind) body.push(parts[k++].html);
+			k--;
+			out.push({ html: `<div class="rt-sec">${body.join("\n")}</div>`, h2 });
+		} else out.push({ html: parts[k].html, h2: parts[k].h2 });
+	}
+	return out;
 }
 
 /** Rich text as one HTML string, plus its H2s for a "Jump to" list. */

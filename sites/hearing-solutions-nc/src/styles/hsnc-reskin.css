@@ -34,6 +34,48 @@
 .d1 .hs .rt a { color: var(--hs-green); }
 .d1 .hs .rt blockquote { border-left: 4px solid var(--hs-lime); background: var(--hs-mint); border-radius: 0 14px 14px 0; font-family: var(--hs-serif); color: var(--hs-green); }
 .d1 .hs .rt li::marker { color: var(--hs-green); }
+/* images that know their size (src/lib/portable-text.ts sets the width: their own size, capped
+   by height); whole, never cropped. A single image or a group of 2-3 sits to the right with the
+   text wrapping round it, at most 45% of the text column (Liz, 2026-11-17); 4+ = a row of logos.
+   Phones (one column): full width, no wrapping. */
+.hs .rt figure.rt-pic { margin: 0; }
+.hs .rt figure.rt-pic img { display: block; max-width: 100%; height: auto; border-radius: 14px; }
+.hs .rt .rt-group { display: flex; flex-direction: column; gap: 16px; }
+.hs .rt .rt-pics { display: flex; flex-wrap: wrap; align-items: center; gap: 24px 40px; }
+.hs .rt .rt-pics figure.rt-pic { min-width: 0; max-width: 100%; }
+.hs .rt .rt-pics figure.rt-pic img { border-radius: 8px; }
+.d1 .hs .rt > .rt-pics { margin-top: 24px; }
+.d1 .hs .rt > .rt-pics + * { margin-top: 24px; }
+/* an image with the heading and text beside it (portable-text.ts sections()): same spacing as the text column */
+.hs .rt-sec { display: flow-root; clear: both; }
+.d1 .hs .rt-sec > * { margin: 0; }
+.d1 .hs .rt-sec > * + * { margin-top: 20px; }
+.d1 .hs .rt-sec > h2 + p, .d1 .hs .rt-sec > h3 + p, .d1 .hs .rt-sec > h4 + p { margin-top: 14px; }
+@media (max-width: 639px) {
+	.d1 .hs :is(.rt, .rt-sec) > :is(figure.rt-pic, .rt-group) + * { margin-top: 24px; }
+	.d1 .hs .rt > :is(figure.rt-pic, .rt-group) { margin-top: 24px; }
+}
+@media (min-width: 640px) {
+	.hs .rt { display: flow-root; }
+	/* Alignment from the editor's image toolbar: none or right = right of the text, left = left
+	   of it (text wraps round both; at most 45% of the column), center = on its own line,
+	   wide/full = the column's full width. Each floated image starts below the one before. */
+	.d1 .hs :is(.rt, .rt-sec) > :is(figure.rt-pic, .rt-group) { float: right; clear: both; max-width: 45%; margin: 6px 0 20px 32px; }
+	.d1 .hs :is(.rt, .rt-sec) > :is(figure.rt-pic, .rt-group).al-left { float: left; margin: 6px 32px 20px 0; }
+	.d1 .hs .rt > :is(figure.rt-pic, .rt-group).al-center { float: none; width: fit-content; margin: 24px auto; }
+	.d1 .hs .rt > :is(figure.rt-pic, .rt-group):is(.al-wide, .al-full) { float: none; max-width: 100%; width: auto; margin: 24px 0; }
+	.hs .rt > :is(.al-wide, .al-full) img { width: 100% !important; }
+	.d1 .hs .rt > :is(.al-center, .al-wide, .al-full) + * { margin-top: 24px; }
+	.hs :is(.rt, .rt-sec) > .rt-group { width: 45%; }
+	.hs .rt .rt-group figure.rt-pic { max-width: 100%; }
+	/* the text beside an image starts level with it */
+	.d1 .hs .rt-sec > :is(figure.rt-pic, .rt-group) { margin-top: 4px; }
+	.d1 .hs .rt-sec > :is(figure.rt-pic, .rt-group) + * { margin-top: 0; }
+	/* lists keep their bullets clear of an image on the left */
+	.hs :is(.rt, .rt-sec) > :is(ul, ol) { display: flow-root; }
+	/* a new section starts below the image before it */
+	.d1 .hs .rt > :is(h2, h3, h4, .rt-pics) { clear: both; }
+}
 /* video lists as players (src/lib/video.ts) */
 .hs .rt .rt-videos { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 32px 28px; }
 .hs .rt .rt-video { margin: 0; display: flex; flex-direction: column; gap: 12px; }
