@@ -1,0 +1,39 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="Holiday Hours Banner Preview | Ontario Hearing Center" noindex nofollow>
+  <aside slot="above-header" class="holiday-notice" aria-label="Holiday office hours">
+    <strong>Holiday hours:</strong>
+    Closed Nov 26–27, Dec 24–25, and Jan 1 · Closing at noon Dec 31.
+  </aside>
+  <section class="review">
+    <h1>Holiday banner preview</h1>
+    <p>Ontario Hearing Center · 2026 holiday schedule</p>
+  </section>
+</Base>
+
+<style>
+  .holiday-notice {
+    padding: 9px 16px;
+    background: var(--mint);
+    color: var(--navy);
+    text-align: center;
+    font-size: 16px;
+    line-height: 1.4;
+  }
+  .review {
+    padding: 64px 16px;
+    background: var(--cream);
+    color: var(--navy);
+    text-align: center;
+  }
+  .review h1 {
+    margin: 0 0 8px;
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.25rem);
+  }
+  .review p {
+    margin: 0;
+  }
+</style>
