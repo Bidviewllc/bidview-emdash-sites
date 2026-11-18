@@ -1,0 +1,37 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="Holiday Hours Banner Preview | New Leaf Hearing Care" noindex>
+  <aside slot="above-header" class="holiday-notice" aria-label="Holiday office hours">
+    <strong>Holiday hours:</strong>
+    Arvada and Littleton are closed Nov 26–27 and Dec 24–25.
+  </aside>
+
+  <main class="review">
+    <h1>Holiday Banner Preview</h1>
+    <p>New Leaf Hearing Care · 2026 holiday schedule</p>
+  </main>
+</Base>
+
+<style>
+  .holiday-notice {
+    padding: 9px 16px;
+    background: var(--primary-light);
+    color: var(--secondary);
+    text-align: center;
+    font-size: 16px;
+    line-height: 1.4;
+  }
+  :global(.site-header) {
+    position: sticky;
+  }
+  .review {
+    padding: 64px 16px;
+    text-align: center;
+  }
+  .review h1 {
+    margin: 0 0 8px;
+    font-size: clamp(2rem, 5vw, 3.25rem);
+  }
+</style>
