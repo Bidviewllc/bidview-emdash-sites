@@ -80,6 +80,7 @@ const pageSchemas = [...(schemaData.sitewide ?? []), ...(schemaData.pages?.[sche
   </head>
   <body>
     <Preloader />
+    <slot name="above-header" />
     <Header />
     <slot />
     <Footer />
