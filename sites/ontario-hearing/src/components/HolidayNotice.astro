@@ -1,0 +1,21 @@
+---
+const expiresAt = Date.parse("2027-01-02T05:00:00Z");
+---
+
+{Date.now() < expiresAt && (
+  <aside class="seasonal-holiday-notice" aria-label="Holiday office hours">
+    <strong>Holiday hours:</strong>
+    Closed Nov 26–27, Dec 24–25, and Jan 1 · Closing at noon Dec 31.
+  </aside>
+)}
+
+<style>
+  .seasonal-holiday-notice {
+    padding: 9px 16px;
+    background: var(--mint);
+    color: var(--navy);
+    text-align: center;
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+</style>

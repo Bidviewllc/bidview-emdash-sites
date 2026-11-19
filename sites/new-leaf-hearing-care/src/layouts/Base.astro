@@ -1,4 +1,5 @@
 ---
+import HolidayNotice from "../components/HolidayNotice.astro";
 import "../styles/local/global.css";
 import "../styles/local/layout.css";
 import "../styles/local/components.css";
@@ -80,7 +81,7 @@ const pageSchemas = [...(schemaData.sitewide ?? []), ...(schemaData.pages?.[sche
   </head>
   <body>
     <Preloader />
-    <slot name="above-header" />
+    {Astro.slots.has("above-header") ? <slot name="above-header" /> : <HolidayNotice />}
     <Header />
     <slot />
     <Footer />
