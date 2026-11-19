@@ -25,7 +25,7 @@ const reviews = live.reviews.filter((r) => !/\b(?:allison\s+may|kaylie(?:\s+fuen
   id: r.id, authorName: r.author, authorUrl: r.authorUrl, profileImageUrl: r.avatar, rating: r.rating,
   text: r.text, timestamp: r.publishedAt, relativeTime: r.timeAgo, language: '', reviewUrl: r.url,
 }));
-const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('Duet Hearing, 267 E Westminster Avenue, Lake Forest, IL 60045')}&query_place_id=${reviewData.placeId}`;
+const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('Duet Hearing, 267 E Westminster, Lake Forest, IL 60045')}&query_place_id=${reviewData.placeId}`;
 const formatDate = (value: string) => {
   const date = new Date(value);
   return Number.isNaN(date.valueOf()) ? '' : new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: 'numeric' }).format(date);
