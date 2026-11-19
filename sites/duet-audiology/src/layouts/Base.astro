@@ -136,9 +136,33 @@ const breadcrumbSchema = breadcrumbName ? {
   )}
 </head>
 <body>
-  <slot name="above-header" />
+  <slot name="above-header">
+    {Date.now() < Date.parse('2027-01-02T06:00:00Z') && (
+      <aside class="duet-site-holiday-notice" aria-label="Holiday hours">
+        <strong>Holiday closures</strong> · Nov 26–27, Dec 25 &amp; Jan 1
+      </aside>
+    )}
+  </slot>
   <SiteHeader />
   <slot />
   <SiteFooter />
 </body>
 </html>
+
+<style>
+  .duet-site-holiday-notice {
+    position: relative;
+    background: #00b2e4;
+    color: #21273f;
+    padding: 9px 16px;
+    font-size: clamp(0.875rem, 3.75vw, 1rem);
+    line-height: 1.4;
+    text-align: center;
+  }
+
+  :global(body:has(> .duet-site-holiday-notice) > .site-header) {
+    position: sticky !important;
+    top: 0 !important;
+    background: #f3faff !important;
+  }
+</style>
