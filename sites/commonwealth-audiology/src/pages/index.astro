@@ -132,13 +132,14 @@ const serviceDescriptions: Record<string, string> = {
 
 const fallbackImages = {
 	logo: "/uploads/0d3a8fc547761a9015ed3bc9284e6d76d16f8417.png",
-	hero: "/uploads/eaf0271580aafaf9040811a8f6e8eb2116fe44e5.jpg",
+	hero: "/uploads/hero-gray-gradient-2026-11.webp",
 	building: "/uploads/7f6bb4aabbbd90d0c2e05363bc91c8c3b20a950d.jpg",
 	plant: "/uploads/d9d32c8bea0bb36c8812af49a330973e80137a14.png",
 	teamGroup: "/uploads/5edd7cf293773c4cbe8f80f5fa3a54d67a2f7acf.jpg",
 	tiffany: "/uploads/7854b158e5b131e9a356dfaafa022012ce061557.jpg",
 	ashley: "/uploads/6e9f81d4d3d1cc131aee03667f847a44c2b4765e.jpg",
 	magnolia: "/uploads/mags.jpg",
+	rebecca: "/uploads/rebecca-mcgaughey.jpg",
 	evaluation: "/uploads/454a6991e526dce986ad698d24fbe50e622dd410.jpg",
 	loss: "/uploads/987f9e696c6744d636bb6afb18b12cf000eaa426.jpg",
 	wax: "/uploads/eed506fc51205e55275e3792962852d28e218d9a.jpg",
@@ -193,10 +194,6 @@ const aboutSliderImages = [
 	{
 		src: "/uploads/676765b59a5714fb6044d267fb3889073a1e9187.jpg",
 		alt: "Hearing aid service detail",
-	},
-	{
-		src: "/uploads/about-tiffany-brewer.jpg",
-		alt: "Dr. Tiffany Brewer, Au.D., audiologist at Commonwealth Audiology",
 	},
 ];
 
@@ -270,7 +267,7 @@ function stars(rating: string | undefined) {
 
 	<!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
 	<section
-		class="hero"
+		class="hero hero--light"
 		style={`--hero-bg-img: url('${imageSrc(hpCfg.hero_image || cfg.hero_image, fallbackImages.hero)}')`}
 		{...hp?.edit.hero_image}
 	>
@@ -385,6 +382,11 @@ function stars(rating: string | undefined) {
 							<img src={fallbackImages.tiffany} alt="Dr. Tiffany Brewer" class="team-photo" />
 							<p class="team-name">Dr. Tiffany Brewer</p>
 							<p class="team-role">AUDIOLOGIST</p>
+						</div>
+						<div class="team-card team-card-secondary" data-team-featured>
+							<img src={fallbackImages.rebecca} alt="Rebecca McGaughey" class="team-photo" />
+							<p class="team-name">Rebecca McGaughey</p>
+							<p class="team-role">PATIENT CARE COORDINATOR</p>
 						</div>
 						<div class="team-card team-card-dog" data-team-featured>
 							<img src={fallbackImages.magnolia} alt="Magnolia" class="team-photo" />
@@ -4993,6 +4995,91 @@ details[open] .accordion-icon { transform: rotate(90deg); }
 
 	.news-header h2 {
 		font-size: 1.1rem !important;
+	}
+}
+
+/* Light hero (2026-11): staff photo on a pale wall, person on the right,
+   grey gradient on the left. White text (the site's usual hero text) on a
+   diagonal dark wash (Liz's values) that fades out before it reaches her,
+   plus a soft drop shadow behind the heading and subheading. */
+.hero.hero--light {
+	background-color: #edefee;
+	background-image: var(--hero-bg-img) !important;
+	background-position: right center;
+}
+
+.hero.hero--light .hero-overlay {
+	background: linear-gradient(55deg, #141c1fb8, #141c1f99 10%, #141c1f59 40%, #141c1f00 70%);
+}
+
+.hero.hero--light .hero-heading,
+.hero.hero--light .hero-subtext {
+	filter: drop-shadow(2px 4px 60px black);
+}
+
+/* Laptops: the hero gets narrow relative to its height, so "cover" would
+   drag her left under the text. Size the photo to the hero height, push it
+   140px past the right edge (that strip is empty wall), and keep the text
+   in the left ~46%. A second layer continues the photo's left-edge grey
+   (#b4b4b4 top to #797979 bottom) in case the photo doesn't reach the left. */
+@media (min-width: 901px) and (max-width: 1350px) {
+	.hero.hero--light {
+		background-image: var(--hero-bg-img), linear-gradient(180deg, #b4b4b4 0%, #797979 100%) !important;
+		background-size: auto 100%, 100% 100% !important;
+		background-position: right -140px bottom, 0 0 !important;
+		background-repeat: no-repeat;
+	}
+
+	.hero.hero--light .hero-heading {
+		max-width: 46% !important;
+		font-size: clamp(2rem, 3.4vw, 3.25rem) !important;
+	}
+
+	.hero.hero--light .hero-subtext,
+	.hero.hero--light .hero-btns {
+		max-width: 46%;
+	}
+}
+
+/* Phones/tablets: photo zoomed onto her at the top, text below it on a dark
+   slate panel (white text needs a dark ground; the phone crop of the photo
+   is all pale wall). The fade starts below her face. Hero width here is
+   100vw - 40px; the 190%-wide 16:9 image is about 1.07x that tall. */
+@media (max-width: 900px) {
+	.hero.hero--light {
+		min-height: 0 !important;
+		background-color: #2b3135;
+		background-size: 190% auto !important;
+		background-position: 92% 0 !important;
+		background-repeat: no-repeat;
+	}
+
+	.hero.hero--light .hero-overlay {
+		background: linear-gradient(180deg,
+			rgba(43,49,53,0) 0,
+			rgba(43,49,53,0) calc((100vw - 40px) * 0.6),
+			#2b3135 calc((100vw - 40px) * 0.98));
+	}
+
+	.hero.hero--light .hero-content {
+		padding-top: calc((100vw - 40px) * 0.84) !important;
+	}
+}
+
+@media (min-width: 641px) and (max-width: 900px) {
+	.hero.hero--light {
+		background-size: 140% auto !important;
+	}
+
+	.hero.hero--light .hero-overlay {
+		background: linear-gradient(180deg,
+			rgba(43,49,53,0) 0,
+			rgba(43,49,53,0) calc((100vw - 40px) * 0.45),
+			#2b3135 calc((100vw - 40px) * 0.74));
+	}
+
+	.hero.hero--light .hero-content {
+		padding-top: calc((100vw - 40px) * 0.62) !important;
 	}
 }
 </style>

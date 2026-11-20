@@ -13,6 +13,7 @@ const STATIC_PATHS = [
 	"/about/",
 	"/about/insurance-billing/",
 	"/tiffany-brewer/",
+	"/rebecca-mcgaughey/",
 	"/magnolia/",
 	"/contact/",
 	"/book-appointment/",

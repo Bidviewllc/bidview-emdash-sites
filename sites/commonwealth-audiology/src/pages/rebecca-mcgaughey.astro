@@ -1,0 +1,221 @@
+---
+import { getEmDashEntry } from "emdash";
+import Base from "../layouts/Base.astro";
+import PageHero from "../components/PageHero.astro";
+import LocationSection from "../components/LocationSection.astro";
+import ServicesSection from "../components/ServicesSection.astro";
+
+const memberEntry = await getEmDashEntry("team", "rebecca-mcgaughey").catch(() => null);
+const member = memberEntry?.data ?? {};
+const photoSrc = member.photo?.src ?? "/uploads/rebecca-mcgaughey-portrait.jpg";
+---
+
+<Base
+	title="Rebecca McGaughey, Patient Care Coordinator"
+	description="Meet Rebecca McGaughey, Patient Care Coordinator at Commonwealth Audiology in Georgetown, KY."
+>
+	<PageHero
+		title="Rebecca McGaughey"
+		breadcrumbs={[
+			{ label: "Home", href: "/" },
+			{ label: "About", href: "/about/" },
+			{ label: "Rebecca McGaughey" },
+		]}
+		image="/uploads/internal-hero-default.png"
+		meta="Patient Care Coordinator"
+	/>
+
+	<section class="bio-section">
+		<div class="bio-grid">
+			<div class="bio-main">
+				<h2 class="bio-first-heading">A Friendly Face Who Makes You Feel at Home</h2>
+				<p>
+					As Commonwealth Audiology's Patient Care Coordinator, Rebecca brings
+					36 years of office experience and a genuine passion for helping
+					others. Since joining the team in September 2026, she has enjoyed
+					getting to know patients and building connections with the
+					individuals and families who walk through our doors.
+				</p>
+				<p>
+					Rebecca believes that great care begins with the first hello. She
+					takes pride in creating a welcoming environment where every patient
+					feels valued, comfortable, and cared for from the moment they arrive.
+				</p>
+				<p>
+					Outside of work, Rebecca enjoys spending time with her family,
+					building, crafting, and being outdoors. She loves staying busy,
+					working on creative projects, and making memories with the people
+					closest to her.
+				</p>
+			</div>
+
+			<aside class="bio-aside">
+				<div class="bio-photo-card">
+					<img src={photoSrc} alt="Rebecca McGaughey" class="bio-photo" {...memberEntry?.edit?.photo} />
+					<div class="bio-photo-meta">
+						<p class="bio-photo-name" {...memberEntry?.edit?.name}>{member.name ?? "Rebecca McGaughey"}</p>
+						<p class="bio-photo-role" {...memberEntry?.edit?.role}>{member.role ?? "Patient Care Coordinator"}</p>
+					</div>
+				</div>
+			</aside>
+		</div>
+	</section>
+
+	<LocationSection />
+	<ServicesSection />
+</Base>
+
+<style>
+	.bio-section {
+		background: #fff;
+		padding: 3.5rem 1.5rem 1rem;
+	}
+
+	.bio-grid {
+		max-width: 1200px;
+		margin: 0 auto;
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) 360px;
+		gap: 3rem;
+		align-items: start;
+	}
+
+	.bio-main {
+		min-width: 0;
+		color: #1a1a1a;
+	}
+
+	.bio-main p {
+		margin: 0 0 1.15rem;
+		font-size: 1.075rem;
+		line-height: 1.6;
+		color: #1a1a1a;
+	}
+
+	.bio-eyebrow {
+		font-size: 0.95rem !important;
+		font-weight: 800;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: #0076ba;
+		margin-bottom: 0.4rem !important;
+	}
+
+	.bio-lead {
+		font-style: italic;
+		font-weight: 700;
+	}
+
+	.bio-main h2 {
+		margin: 2.3rem 0 1rem;
+		font-family: "Merriweather", Georgia, serif;
+		font-size: 1.95rem;
+		font-weight: 700;
+		line-height: 1.2;
+		color: #1f1f1f;
+	}
+
+	.bio-main ul {
+		margin: 0 0 1.2rem;
+		padding-left: 1.5rem;
+	}
+
+	.bio-main li {
+		margin-bottom: 0.45rem;
+		font-size: 1.075rem;
+		line-height: 1.55;
+		color: #1a1a1a;
+	}
+
+	/* ── Photo (right column) ── */
+	.bio-aside {
+		position: sticky;
+		top: 120px;
+	}
+
+	.bio-photo-card {
+		border-radius: 16px;
+		overflow: hidden;
+		background: #fff;
+		box-shadow: 0 12px 30px rgba(0, 0, 0, 0.14);
+	}
+
+	.bio-photo {
+		display: block;
+		width: 100%;
+		height: auto;
+		aspect-ratio: 4 / 5;
+		object-fit: cover;
+	}
+
+	.bio-photo-meta {
+		padding: 1.2rem 1.4rem 1.4rem;
+		text-align: center;
+		background: #0076ba;
+	}
+
+	.bio-photo-name {
+		margin: 0 0 0.2rem;
+		font-family: "Merriweather", Georgia, serif;
+		font-size: 1.2rem;
+		font-weight: 700;
+		color: #fff;
+	}
+
+	.bio-photo-role {
+		margin: 0;
+		font-size: 0.9rem;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: rgba(255, 255, 255, 0.9);
+	}
+
+	/* ── Staff bios (full width) ── */
+	.bio-staff {
+		max-width: 1200px;
+		margin: 2.5rem auto 0;
+		color: #1a1a1a;
+	}
+
+	.bio-staff h2 {
+		margin: 0 0 1rem;
+		font-family: "Merriweather", Georgia, serif;
+		font-size: 1.95rem;
+		font-weight: 700;
+		color: #1f1f1f;
+	}
+
+	.bio-staff h3 {
+		margin: 1.8rem 0 0.7rem;
+		font-family: "Merriweather", Georgia, serif;
+		font-size: 1.4rem;
+		font-weight: 700;
+		color: #1f1f1f;
+	}
+
+	.bio-staff p {
+		margin: 0 0 1.1rem;
+		font-size: 1.075rem;
+		line-height: 1.6;
+	}
+
+	@media (max-width: 960px) {
+		.bio-grid {
+			grid-template-columns: 1fr;
+			gap: 2rem;
+		}
+		.bio-aside {
+			position: static;
+			order: -1;
+			max-width: 360px;
+		}
+		.bio-main h2,
+		.bio-staff h2 {
+			font-size: 1.7rem;
+		}
+	}
+
+	.bio-main h2.bio-first-heading {
+		margin-top: 0;
+	}
+</style>

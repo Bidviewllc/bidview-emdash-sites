@@ -229,7 +229,7 @@
 				{ "type": "custom", "label": "About", "url": "/about/",
 					"children": [
 						{ "type": "custom", "label": "Dr. Tiffany Brewer", "url": "/tiffany-brewer/" },
-						{ "type": "custom", "label": "Aubrey Gingrich", "url": "/aubrey-gingrich/" },
+						{ "type": "custom", "label": "Rebecca McGaughey", "url": "/rebecca-mcgaughey/" },
 						{ "type": "custom", "label": "Magnolia", "url": "/magnolia/" }
 					]
 				},
@@ -429,14 +429,14 @@
 				}
 			},
 			{
-				"id": "team-aubrey",
-				"slug": "aubrey-gingrich",
+				"id": "team-rebecca",
+				"slug": "rebecca-mcgaughey",
 				"status": "published",
 				"data": {
-					"name": "Aubrey Gingrich",
+					"name": "Rebecca McGaughey",
 					"role": "Patient Care Coordinator",
-					"bio": "Aubrey serves as Patient Care Coordinator at Commonwealth Audiology, bringing a strong background in healthcare leadership and communication.",
-					"link_url": "/aubrey-gingrich/",
+					"bio": "As Commonwealth Audiology's Patient Care Coordinator, Rebecca brings 36 years of office experience and a genuine passion for helping others.",
+					"link_url": "/rebecca-mcgaughey/",
 					"sort_order": "2"
 				}
 			},
