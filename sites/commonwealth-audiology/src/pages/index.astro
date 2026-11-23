@@ -192,6 +192,17 @@ const aboutSliderImages = [
 		alt: "Commonwealth Audiology office sign",
 	},
 	{
+		// Portrait photo: anchor near the top so the "Commonwealth Audiology"
+		// sign above the doors stays in the (roughly square) slider frame.
+		src: "/uploads/about-entrance-2026-11.jpg",
+		alt: "Commonwealth Audiology sign above the office entrance, Suite B",
+		position: "center 12%",
+	},
+	{
+		src: "/uploads/about-consult-2026-11.jpg",
+		alt: "Dr. Tiffany Brewer going over a hearing aid with a patient",
+	},
+	{
 		src: "/uploads/676765b59a5714fb6044d267fb3889073a1e9187.jpg",
 		alt: "Hearing aid service detail",
 	},
@@ -591,6 +602,7 @@ function stars(rating: string | undefined) {
 				active = (index + slides.length) % slides.length;
 				image.setAttribute("src", slides[active].src);
 				image.setAttribute("alt", slides[active].alt || "");
+				image.style.objectPosition = slides[active].position || "";
 				slider.setAttribute("data-active-slide", String(active));
 			}
 
