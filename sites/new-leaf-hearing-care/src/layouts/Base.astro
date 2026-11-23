@@ -20,6 +20,8 @@ import schemaByPath from "../lib/schema.json";
 
 const { title = "New Leaf Hearing Care", description = "", canonical, ogType = "website", ogImage, noindex = false } = Astro.props;
 
+const { htmlTitle = title } = Astro.props;
+
 // Canonical + absolute URLs derive from the serving origin, so they auto-adjust
 // after the custom-domain cutover (workers.dev -> newleafhearing.com).
 const canonicalUrl = canonical || new URL(Astro.url.pathname, Astro.url.origin).href;
@@ -47,7 +49,7 @@ const pageSchemas = [...(schemaData.sitewide ?? []), ...(schemaData.pages?.[sche
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="google-site-verification" content="XOKQX1xQrUCbDuy759l9TjPxdrwqpgTEQQP01gPjVj0" />
     {robotsNoindex && <meta name="robots" content="noindex, nofollow" />}
-    <title>{title}</title>
+    <title>{htmlTitle}</title>
     {description && <meta name="description" content={description} />}
     <link rel="canonical" href={canonicalUrl} />
     <meta property="og:type" content={ogType} />
