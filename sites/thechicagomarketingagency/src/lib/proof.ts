@@ -100,7 +100,33 @@ export function hasNeighborhoodPage(slug: string): boolean {
  * we cannot verify. Used for CMS fields that still hold the original seed.
  */
 const UNVERIFIED_SENTENCE =
-	/most clients see|our clients (typically|see|average)|join \d|chicago businesses that trust|\b\d{2,}\+\s+chicago\b|retainers start at|\$\s?\d|ad spend|no outsourcing|in-house|we manage |manage social for|\b\d+(\.\d+)?x\b|\b\d+(\.\d+)?%|average google rating|page 5|cost per lead|roas|those thresholds|below those/i;
+	/most (accounts|clients|practices|businesses) see|our clients (typically|see|average)|join \d|chicago businesses that trust|\b\d{2,}\+\s+chicago\b|retainers start at|\$\s?\d|ad spend|no outsourcing|in-house|we manage |manage social for|\b\d+(\.\d+)?x\b|\b\d+(\.\d+)?%|average google rating|page 5|cost per lead|roas improvement|those thresholds|below those|those numbers come from google/i;
+
+/** Agency-result sentences. Narrower than scrubUnverified so educational posts keep market context. */
+const AGENCY_RESULT_SENTENCE =
+	/most accounts see|most clients see|most practices see|most chicago businesses see measurable|roas improvement|achieves (a )?\d|\d+\s*[–—-]\s*\d+%\s*(roas|conversion)|520%\s*more calls|5x more calls|7x more direction|35% more website clicks|those numbers come from google/i;
+
+export function scrubAgencyResultClaims(text: string | undefined | null): string {
+	if (!text) return "";
+	const parts = text.split(/(?<=[.!?])\s+/);
+	const kept = parts.map((s) => s.trim()).filter((s) => s && !AGENCY_RESULT_SENTENCE.test(s));
+	if (kept.length === 0) return "";
+	if (kept.length === parts.length && AGENCY_RESULT_SENTENCE.test(text)) return "";
+	return kept.join(" ");
+}
+
+export function scrubContentTree<T>(value: T): T {
+	if (Array.isArray(value)) return value.map((item) => scrubContentTree(item)) as T;
+	if (value && typeof value === "object") {
+		const next: Record<string, unknown> = {};
+		for (const [key, child] of Object.entries(value as Record<string, unknown>)) {
+			if (key === "text" && typeof child === "string") next[key] = scrubAgencyResultClaims(child);
+			else next[key] = scrubContentTree(child);
+		}
+		return next as T;
+	}
+	return value;
+}
 
 export function scrubUnverified(text: string | undefined | null): string {
 	if (!text) return "";

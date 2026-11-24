@@ -1,0 +1,126 @@
+---
+import Base from "../../layouts/Base.astro";
+import AuditForm from "../../components/AuditForm.astro";
+import { SUBURBS } from "../../data/places";
+import { AUDIT_PROMISE, AUDIT_TITLE } from "../../lib/offer";
+
+export const cacheHint = 3600;
+
+const { slug } = Astro.params;
+const place = SUBURBS.find((s) => s.slug === slug);
+if (!place) return Astro.rewrite("/404");
+
+const others = SUBURBS.filter((s) => s.slug !== place.slug).slice(0, 4);
+const pageTitle = `Digital marketing in ${place.name}`;
+const pageDesc = `${AUDIT_TITLE} for businesses in ${place.name}. ${place.overview}`;
+const canonical = `https://thechicagomarketingagency.com/suburbs/${place.slug}/`;
+---
+
+<Base title={pageTitle} description={pageDesc}>
+	<script type="application/ld+json" set:html={JSON.stringify({
+		"@context": "https://schema.org",
+		"@type": ["Service", "LocalBusiness"],
+		"name": "The Chicago Marketing Agency",
+		"url": canonical,
+		"email": "hello@thechicagomarketingagency.com",
+		"image": "https://thechicagomarketingagency.com/og.png",
+		"description": pageDesc,
+		"areaServed": {
+			"@type": "City",
+			"name": place.name,
+			"addressRegion": "IL",
+			"addressCountry": "US"
+		},
+		"provider": {
+			"@type": "Organization",
+			"name": "The Chicago Marketing Agency",
+			"url": "https://thechicagomarketingagency.com"
+		}
+	})} />
+	<section class="place-hero">
+		<div class="container place-hero-inner">
+			<div>
+				<nav class="breadcrumb" aria-label="Breadcrumb">
+					<a href="/">Home</a>
+					<span>/</span>
+					<a href="/suburbs/">Suburbs</a>
+					<span>/</span>
+					<span>{place.name}</span>
+				</nav>
+				<span class="eyebrow">{place.county}</span>
+				<h1>Digital marketing in {place.name}</h1>
+				<p>{place.overview}</p>
+				<p class="offer-line">{AUDIT_TITLE}. {AUDIT_PROMISE}</p>
+			</div>
+			<AuditForm place={place.name} />
+		</div>
+	</section>
+	<section class="place-facts">
+		<div class="container place-grid">
+			<article>
+				<h2>Business districts</h2>
+				<p>{place.districts}</p>
+			</article>
+			<article>
+				<h2>Who the market is</h2>
+				<p>{place.industries}</p>
+			</article>
+			<article>
+				<h2>Landmarks people use</h2>
+				<p>{place.landmarks}</p>
+			</article>
+			<article>
+				<h2>How people search</h2>
+				<p>{place.search}</p>
+			</article>
+		</div>
+	</section>
+	<section class="place-services">
+		<div class="container">
+			<h2>Services</h2>
+			<p>These are the main service pages, not a separate thin page for every town.</p>
+			<div class="svc-links">
+				<a href="/services/seo/">SEO</a>
+				<a href="/services/web-design/">Web design</a>
+				<a href="/services/paid-advertising/">Paid advertising</a>
+				<a href="/services/content-marketing/">Content</a>
+				<a href="/services/social-media/">Social</a>
+				<a href="/services/conversion-optimization/">Conversion</a>
+			</div>
+		</div>
+	</section>
+	<section class="place-nearby">
+		<div class="container">
+			<h2>Other suburbs</h2>
+			<div class="svc-links">
+				{others.map((s) => (
+					<a href={`/suburbs/${s.slug}/`}>{s.name}</a>
+				))}
+				<a href="/suburbs/">All suburbs</a>
+				<a href="/neighborhoods/">Chicago neighborhoods</a>
+			</div>
+		</div>
+	</section>
+</Base>
+
+<style>
+	.place-hero { background: var(--navy); color: var(--white); padding: 56px 0 72px; }
+	.place-hero-inner { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 40px; align-items: start; }
+	.breadcrumb { display: flex; gap: 8px; flex-wrap: wrap; color: rgba(255,255,255,0.55); font-size: 0.8125rem; margin-bottom: 16px; }
+	.breadcrumb a { color: rgba(255,255,255,0.55); }
+	.place-hero h1 { font-size: clamp(2rem, 4vw, 2.75rem); margin: 8px 0 16px; }
+	.place-hero p { color: rgba(255,255,255,0.78); max-width: 620px; }
+	.offer-line { margin-top: 16px; }
+	.place-facts, .place-services, .place-nearby { padding: 56px 0; }
+	.place-facts { background: var(--off-white); }
+	.place-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+	.place-grid article { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; }
+	.place-grid h2, .place-services h2, .place-nearby h2 { font-size: 1.35rem; margin-bottom: 10px; }
+	.place-grid p, .place-services p { color: var(--text-muted); }
+	.svc-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+	.svc-links a { border: 1px solid var(--border); border-radius: 999px; padding: 8px 14px; font-weight: 600; font-size: 0.875rem; }
+	.svc-links a:hover { border-color: var(--red); color: var(--red); }
+	@media (max-width: 800px) {
+		.place-hero-inner, .place-grid { grid-template-columns: 1fr; }
+	}
+</style>

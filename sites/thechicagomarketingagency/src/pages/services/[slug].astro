@@ -1,8 +1,11 @@
 ---
 import { getEmDashEntry } from "emdash";
 import Base from "../../layouts/Base.astro";
+import AuditForm from "../../components/AuditForm.astro";
 import BidviewProof from "../../components/BidviewProof.astro";
-import { safeCtaHeading, scrubUnverified } from "../../lib/proof";
+import { AUDIT_PROMISE, AUDIT_TITLE } from "../../lib/offer";
+import { SUBURBS } from "../../data/places";
+import { safeCtaHeading, scrubAgencyResultClaims, scrubUnverified } from "../../lib/proof";
 
 export const cacheHint = 3600;
 
@@ -24,13 +27,12 @@ const processSteps = parseJson(d.process_json);
 const faqs = parseJson(d.faqs_json)
 	.map((faq: { q?: string; a?: string }) => ({
 		q: faq.q || "",
-		a: scrubUnverified(faq.a),
+		a: scrubUnverified(scrubAgencyResultClaims(faq.a)),
 	}))
 	.filter((faq: { q: string; a: string }) => faq.q && faq.a);
 
 const heroHeading = d.hero_heading || d.title;
 const heroSubtext = scrubUnverified(d.intro || d.excerpt || "") || "Serving Chicago and the suburbs. The work is delivered by the team at Bidview Marketing.";
-const heroImage = d.hero_image || "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80";
 const pageTitle = d.meta_title || `${d.title} in Chicago`;
 const pageDesc = scrubUnverified(d.meta_description || d.excerpt || "") || `${d.title} for businesses in Chicago and the suburbs.`;
 const ctaHeading = d.cta_heading || `Ready to Grow with ${d.title}?`;
@@ -53,7 +55,7 @@ const neighborhoodLinks = [
 	{ name: "Hyde Park", slug: "hyde-park" },
 	{ name: "Pilsen", slug: "pilsen" },
 ];
-const ctaSubtext = "Tell us about the business. The work is delivered by the team at Bidview Marketing, for companies in Chicago and the suburbs.";
+const ctaSubtext = `${AUDIT_TITLE}. ${AUDIT_PROMISE}`;
 const honestCtaHeading = safeCtaHeading(ctaHeading, `Ready to talk about ${d.title}?`);
 
 // ── Per-service config (features, case study, stats) ─────────────────────────
@@ -155,14 +157,9 @@ const icons = {
 				<span class="eyebrow">{d.title}</span>
 				<h1>{heroHeading}</h1>
 				{heroSubtext && <p class="svc-hero-desc">{heroSubtext}</p>}
-				<div class="svc-hero-actions">
-					<a href="/free-seo-audit" class="btn btn-primary">Get a Free SEO Audit →</a>
-					<a href="/results" class="btn btn-outline-white">See SEO Results</a>
-				</div>
+				<p class="svc-hero-desc">{AUDIT_TITLE}. {AUDIT_PROMISE}</p>
 			</div>
-			<div class="svc-hero-img">
-				<img src={heroImage} alt={`${d.title} services`} width="580" height="420" loading="eager" />
-			</div>
+			<AuditForm />
 		</div>
 	</section>
 
@@ -234,12 +231,18 @@ const icons = {
 		<div class="container">
 			<p class="eyebrow" style="color: var(--red); display: block; text-align: center;">Chicago Neighborhoods We Serve</p>
 			<h2 class="svc-neighborhoods-heading">{d.title} Across Chicago</h2>
-			<p class="svc-neighborhoods-sub">We deliver {d.title.toLowerCase()} strategies built around your specific Chicago neighborhood — its competition, its customers, and its growth potential.</p>
+			<p class="svc-neighborhoods-sub">Neighborhood hubs are the local pages. Suburb hubs are separate. Neither one repeats this service as its own thin URL.</p>
 			<div class="svc-neighborhoods-grid">
 				{neighborhoodLinks.map(n => (
-					<a href={`/${n.slug}/${slug}/`} class="svc-neighborhood-link">
+					<a href={`/${n.slug}/`} class="svc-neighborhood-link">
 						{n.name}
 					</a>
+				))}
+			</div>
+			<p class="svc-neighborhoods-sub" style="margin-top: 28px;">Suburbs</p>
+			<div class="svc-neighborhoods-grid">
+				{SUBURBS.map((s) => (
+					<a href={`/suburbs/${s.slug}/`} class="svc-neighborhood-link">{s.name}</a>
 				))}
 			</div>
 		</div>
@@ -249,7 +252,7 @@ const icons = {
 	<section class="svc-cta-strip">
 		<div class="container svc-cta-strip-inner">
 			<p class="svc-cta-strip-text">Serving Chicago and the suburbs. The work is delivered by Bidview Marketing.</p>
-			<a href="/free-seo-audit" class="btn btn-primary">Get My Free Strategy Call →</a>
+			<a href="/free-seo-audit/" class="btn btn-primary">Request my free audit</a>
 		</div>
 	</section>
 
@@ -259,8 +262,8 @@ const icons = {
 			<h2>{honestCtaHeading}</h2>
 			<p>{ctaSubtext}</p>
 			<div class="svc-cta-actions">
-				<a href="/free-seo-audit" class="btn btn-primary">Get My Free SEO Audit →</a>
-				<a href="/results" class="btn btn-outline-white">View Case Studies</a>
+				<a href="/free-seo-audit/" class="btn btn-primary">Request my free audit</a>
+				<a href="/suburbs/" class="btn btn-outline-white">Suburb pages</a>
 			</div>
 		</div>
 	</section>
