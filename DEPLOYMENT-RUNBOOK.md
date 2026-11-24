@@ -128,7 +128,7 @@ Optional environment values for this worker. Leave them unset to keep the defaul
 
 | Name | What it does if set |
 |---|---|
-| `LEAD_NOTIFY_EMAILS` | Comma-separated notification recipients. Default, if unset, is `vince@bidviewmarketing.com`. The `send_email` binding only allows that destination until its allowed addresses are updated, so an extra recipient fails until the binding allows it. A total email failure is logged and shown on the form; the lead is still saved in D1. |
+| `LEAD_NOTIFY_EMAILS` | Comma-separated notification recipients. Already set on the worker to `cameron@bidviewmarketing.com`, `vince@bidviewmarketing.com`, and `erika@bidviewmarketing.com`. The `send_email` binding allows those three addresses. If one recipient fails, that address is logged and the visitor still sees success. If every recipient fails, the form says so and the lead is still in D1. |
 | `TURNSTILE_SITE_KEY` | Public Turnstile site key. The widget renders only when this is set. |
 | `TURNSTILE_SECRET_KEY` | Turnstile secret. Verification runs only when this and the site key are both set. One without the other does not block leads. |
 | `GA_MEASUREMENT_ID` | GA4 id (`G-…`). Nothing is rendered when it is empty or malformed. |

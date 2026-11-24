@@ -40,15 +40,18 @@
 			"binding": "LOADER",
 		},
 	],
-	// Lead mail uses this binding. destination_address is the only recipient
-	// Cloudflare will accept until the binding is widened. LEAD_NOTIFY_EMAILS
-	// (comma-separated, default vince@bidviewmarketing.com) chooses who the
-	// code addresses. Optional, unset means off: TURNSTILE_SITE_KEY,
+	// Must match the live worker. LEAD_NOTIFY_EMAILS is a secret set to these
+	// three addresses. A deploy that puts destination_address back would drop
+	// cameron@ and erika@. Optional, unset means off: TURNSTILE_SITE_KEY,
 	// TURNSTILE_SECRET_KEY, GA_MEASUREMENT_ID, GTM_CONTAINER_ID.
 	"send_email": [
 		{
 			"name": "EMAIL",
-			"destination_address": "vince@bidviewmarketing.com",
+			"allowed_destination_addresses": [
+				"cameron@bidviewmarketing.com",
+				"vince@bidviewmarketing.com",
+				"erika@bidviewmarketing.com"
+			],
 		},
 	],
 }

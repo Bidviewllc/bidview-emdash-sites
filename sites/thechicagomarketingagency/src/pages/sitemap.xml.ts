@@ -1,4 +1,5 @@
 import { env } from "cloudflare:workers";
+import { SUBURBS } from "../data/places";
 import { NEIGHBORHOOD_SLUGS } from "../lib/proof";
 
 const SITE = "https://thechicagomarketingagency.com";
@@ -24,6 +25,7 @@ const STATIC_PAGES = [
 	{ url: "/results/",              priority: "0.8", changefreq: "monthly" },
 	{ url: "/pricing/",              priority: "0.6", changefreq: "monthly" },
 	{ url: "/neighborhoods/",        priority: "0.8", changefreq: "monthly" },
+	{ url: "/suburbs/",              priority: "0.8", changefreq: "monthly" },
 	{ url: "/blog/",                 priority: "0.8", changefreq: "weekly"  },
 	{ url: "/free-seo-audit/",       priority: "0.9", changefreq: "monthly" },
 	{ url: "/contact/",              priority: "0.7", changefreq: "yearly"  },
@@ -81,11 +83,8 @@ export const GET = async () => {
 		entries.push(url(`/${n}/`, "0.7", "monthly", today));
 	}
 
-	// Neighborhood + service pages
-	for (const n of NEIGHBORHOODS) {
-		for (const s of SERVICES) {
-			entries.push(url(`/${n}/${s}/`, "0.6", "monthly", today));
-		}
+	for (const s of SUBURBS) {
+		entries.push(url(`/suburbs/${s.slug}/`, "0.8", "monthly", today));
 	}
 
 	const xml = `<?xml version="1.0" encoding="UTF-8"?>

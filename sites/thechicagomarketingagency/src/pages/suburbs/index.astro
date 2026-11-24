@@ -1,0 +1,66 @@
+---
+import Base from "../../layouts/Base.astro";
+import { SUBURBS } from "../../data/places";
+import { AUDIT_PROMISE, AUDIT_TITLE } from "../../lib/offer";
+
+export const cacheHint = 3600;
+
+const groups = [...new Set(SUBURBS.map((s) => s.county))];
+---
+
+<Base
+	title="Chicago Suburbs We Serve"
+	description="Marketing for businesses in Libertyville, the North Shore, and the north and west suburbs. The work is delivered by Bidview Marketing."
+>
+	<section class="sub-hero">
+		<div class="container">
+			<nav class="breadcrumb" aria-label="Breadcrumb">
+				<a href="/">Home</a>
+				<span>/</span>
+				<span>Suburbs</span>
+			</nav>
+			<span class="eyebrow">Service area</span>
+			<h1>Marketing for Chicago suburbs</h1>
+			<p>
+				These are the suburbs where this brand sells. Each page is one town, with its own business districts.
+				{AUDIT_TITLE}. {AUDIT_PROMISE}
+			</p>
+			<a href="/free-seo-audit/" class="btn btn-primary">Request the free audit</a>
+		</div>
+	</section>
+	<section class="sub-list">
+		<div class="container">
+			{groups.map((county) => (
+				<div class="sub-group">
+					<h2>{county}</h2>
+					<div class="sub-grid">
+						{SUBURBS.filter((s) => s.county === county).map((s) => (
+							<a href={`/suburbs/${s.slug}/`} class="sub-card">
+								<h3>{s.name}</h3>
+								<p>{s.overview}</p>
+								<span>View {s.name}</span>
+							</a>
+						))}
+					</div>
+				</div>
+			))}
+		</div>
+	</section>
+</Base>
+
+<style>
+	.sub-hero { background: var(--navy); color: var(--white); padding: 72px 0; }
+	.breadcrumb { display: flex; gap: 8px; color: rgba(255,255,255,0.55); font-size: 0.8125rem; margin-bottom: 16px; }
+	.breadcrumb a { color: rgba(255,255,255,0.55); }
+	.sub-hero h1 { font-size: clamp(2rem, 4vw, 2.75rem); margin-bottom: 16px; }
+	.sub-hero p { max-width: 640px; color: rgba(255,255,255,0.75); margin-bottom: 24px; }
+	.sub-list { padding: 64px 0 80px; background: var(--off-white); }
+	.sub-group { margin-bottom: 40px; }
+	.sub-group h2 { margin-bottom: 16px; }
+	.sub-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+	.sub-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; }
+	.sub-card h3 { margin-bottom: 8px; }
+	.sub-card p { color: var(--text-muted); font-size: 0.9375rem; margin-bottom: 12px; }
+	.sub-card span { color: var(--red); font-weight: 600; font-size: 0.875rem; }
+	@media (max-width: 800px) { .sub-grid { grid-template-columns: 1fr; } }
+</style>

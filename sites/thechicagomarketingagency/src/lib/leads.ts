@@ -2,7 +2,7 @@ import { env } from "cloudflare:workers";
 // @ts-ignore — Cloudflare Email Workers runtime module
 import { EmailMessage } from "cloudflare:email";
 
-const DEFAULT_NOTIFY = "vince@bidviewmarketing.com";
+const DEFAULT_NOTIFY = "cameron@bidviewmarketing.com,vince@bidviewmarketing.com,erika@bidviewmarketing.com";
 const FROM_ADDRESS = "hello@thechicagomarketingagency.com";
 const FROM_NAME = "Chicago Marketing Agency";
 const MIN_FILL_MS = 2000;
@@ -227,31 +227,18 @@ async function sendNotification(subject: string, body: string, id: string, type:
 			await binding.send(new EmailMessage(FROM_ADDRESS, to, raw));
 		} catch (err) {
 			const message = err instanceof Error ? err.message : String(err);
-			failures.push(`${to}: ${message}`);
-			console.error(
-				JSON.stringify({
-					event: "lead_email_failed",
-					form: type,
-					id,
-					recipient: to,
-					error: message,
-				}),
-			);
+			failures.push(to);
+			console.error(`Lead email failed for recipient ${to} (form ${type}, id ${id}): ${message}`);
 		}
 	}
 	if (failures.length === 0) return { ok: true };
+	// At least one recipient succeeded. Keep the visitor on the success state
+	// and leave the failed addresses in the log above.
 	if (failures.length < recipients.length) {
-		console.error(
-			JSON.stringify({
-				event: "lead_email_partial",
-				form: type,
-				id,
-				failures,
-			}),
-		);
+		console.error(`Lead email partial failure (form ${type}, id ${id}). Failed recipients: ${failures.join(", ")}`);
 		return { ok: true };
 	}
-	return { ok: false, error: failures.join("; ") };
+	return { ok: false, error: failures.join(", ") };
 }
 
 const SUCCESS: Record<LeadForm, string> = {

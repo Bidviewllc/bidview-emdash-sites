@@ -1,0 +1,87 @@
+---
+import SpamFields from "./SpamFields.astro";
+import { AUDIT_BUTTON, AUDIT_PROMISE, AUDIT_TITLE } from "../lib/offer";
+import { turnstileSiteKey } from "../lib/leads";
+
+interface Props {
+	place?: string;
+}
+
+const { place = "" } = Astro.props;
+const turnstileSiteKeyValue = turnstileSiteKey();
+const heading = place ? `${AUDIT_TITLE} for ${place}` : AUDIT_TITLE;
+---
+
+<form class="audit-offer" method="POST" action="/free-seo-audit/">
+	<h2>{heading}</h2>
+	<p>{AUDIT_PROMISE}</p>
+	<label>
+		Name
+		<input type="text" name="name" required autocomplete="name" placeholder="Your name" />
+	</label>
+	<label>
+		Email
+		<input type="email" name="email" required autocomplete="email" placeholder="you@company.com" />
+	</label>
+	<label>
+		Website
+		<input type="url" name="website" required placeholder="https://yourwebsite.com" />
+	</label>
+	<label>
+		Phone <span>(optional)</span>
+		<input type="tel" name="phone" autocomplete="tel" placeholder="(312) 555-0000" />
+	</label>
+	<SpamFields turnstileSiteKey={turnstileSiteKeyValue} />
+	<button type="submit" class="btn btn-primary">{AUDIT_BUTTON}</button>
+</form>
+
+<style>
+	.audit-offer {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+		background: var(--white);
+		color: var(--text-dark);
+		border-radius: var(--radius-lg);
+		padding: 24px;
+		box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+	}
+	.audit-offer h2 {
+		font-size: 1.25rem;
+		line-height: 1.25;
+	}
+	.audit-offer p {
+		color: var(--text-muted);
+		font-size: 0.9375rem;
+		margin-top: -4px;
+	}
+	.audit-offer label {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+		font-size: 0.8125rem;
+		font-weight: 600;
+	}
+	.audit-offer label span {
+		font-weight: 500;
+		color: var(--text-muted);
+	}
+	.audit-offer input {
+		font: inherit;
+		font-weight: 500;
+		font-size: 0.9375rem;
+		padding: 11px 12px;
+		border: 1px solid var(--border);
+		border-radius: var(--radius);
+		color: var(--text-dark);
+	}
+	.audit-offer input:focus {
+		outline: 2px solid var(--red);
+		border-color: transparent;
+	}
+	.audit-offer button {
+		justify-content: center;
+		margin-top: 4px;
+	}
+</style>
