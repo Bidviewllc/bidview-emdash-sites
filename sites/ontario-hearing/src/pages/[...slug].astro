@@ -2,6 +2,7 @@
 import Interior from "../layouts/Interior.astro";
 import CtaStrip from "../components/CtaStrip.astro";
 import pagesData from "../data/pages.json";
+import metaDescriptions from "../data/meta-descriptions.json";
 import { getEmDashEntry, getEmDashCollection } from "emdash";
 import { marked } from "marked";
 import { altFor, enforceAltInHtml } from "../lib/imageAlts";
@@ -135,7 +136,8 @@ const e = entry?.edit ?? {};
 // 2. Resolve fields with CMS-first / fallback pattern
 const title = d.title ?? (fallback.h1 || fallback.title || fallback.slug);
 const metaTitle = d.meta_title ?? fallback.meta_title ?? fallback.title;
-const metaDescription = d.meta_description ?? fallback.meta_description;
+const fallbackDescriptions: Partial<Record<string, string>> = metaDescriptions;
+const metaDescription = d.meta_description ?? fallbackDescriptions[fallback.slug] ?? fallback.meta_description;
 const heroImage = mediaUrl(d.hero_image) ?? d.hero_image_url ?? fallback.featured_image ?? null;
 
 // Posts whose body was genuinely refreshed. Shown as "Updated" after the posted date.
