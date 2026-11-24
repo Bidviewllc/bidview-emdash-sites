@@ -5,7 +5,13 @@ const expiresAt = Date.parse("2027-01-02T05:00:00Z");
 {Date.now() < expiresAt && (
   <aside class="seasonal-holiday-notice" aria-label="Holiday office hours">
     <strong>Holiday hours:</strong>
-    Closed Nov 26–27, Dec 24–25, and Jan 1 · Closing at noon Dec 31.
+    Closed Nov 26–27, Dec 24–25, and Jan 1.
+    <div class="training-hours">
+      <strong>Closed for staff training</strong>
+      <span>Dec 29, 9 a.m.–3 p.m.</span>
+      <span>Dec 30, 10:30 a.m.–3 p.m.</span>
+      <span>Dec 31, 1–5 p.m.</span>
+    </div>
   </aside>
 )}
 
@@ -17,5 +23,16 @@ const expiresAt = Date.parse("2027-01-02T05:00:00Z");
     text-align: center;
     font-size: 1rem;
     line-height: 1.4;
+  }
+
+  .training-hours {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0 1rem;
+  }
+
+  .training-hours span {
+    white-space: nowrap;
   }
 </style>
