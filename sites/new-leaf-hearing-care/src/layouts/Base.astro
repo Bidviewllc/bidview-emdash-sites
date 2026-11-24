@@ -40,7 +40,19 @@ const schemaKey = Astro.url.pathname.endsWith("/") ? Astro.url.pathname : `${Ast
 // its canonical points at itself, so without this a staging copy could compete with the live page.
 const onProductionHost = /(^|\.)newleafhearing\.com$/.test(Astro.url.hostname);
 const robotsNoindex = noindex || !onProductionHost;
-const pageSchemas = [...(schemaData.sitewide ?? []), ...(schemaData.pages?.[schemaKey] ?? [])];
+// Reuse the office records so the homepage and location pages describe the same businesses.
+const homeOfficeSchemas = schemaKey === "/" ? [
+  "/audiologist-hearing-aids-arvada-colorado/",
+  "/audiologist-hearing-aids-littleton-colorado/",
+].flatMap((path) => (schemaData.pages[path] ?? []).filter((schema) => {
+  const type = schema["@type"];
+  return type === "LocalBusiness" || (Array.isArray(type) && type.includes("LocalBusiness"));
+})) : [];
+const pageSchemas = [
+  ...(schemaData.sitewide ?? []),
+  ...(schemaData.pages?.[schemaKey] ?? []),
+  ...homeOfficeSchemas,
+];
 ---
 <!doctype html>
 <html lang="en">
