@@ -1,6 +1,13 @@
 ---
 import Base from "../../layouts/Base.astro";
+import AuditForm from "../../components/AuditForm.astro";
 import BidviewProof from "../../components/BidviewProof.astro";
+import TrustStrip from "../../components/TrustStrip.astro";
+import WhatNext from "../../components/WhatNext.astro";
+import Objections from "../../components/Objections.astro";
+import FaqBlock from "../../components/FaqBlock.astro";
+import DepthBody from "../../components/DepthBody.astro";
+import { industryDepth } from "../../lib/depth";
 
 export const cacheHint = 3600;
 
@@ -268,7 +275,7 @@ const industries: Record<string, {
 			{ q: "How important is a professional website for a construction company?", a: "Critical. Homeowners and commercial clients doing due diligence on a contractor will always check the website. A slow, outdated, or poorly designed website kills trust immediately. Your site needs to showcase project photography, display licensing and insurance credentials, feature client testimonials, and make it easy to request a quote. We build contractor websites designed specifically to win bids." },
 			{ q: "Can you help with marketing for commercial construction vs. residential remodeling?", a: "Yes — and the strategies are very different. Commercial construction leads come through LinkedIn outreach, targeted content for property developers and managers, and direct relationship-building. Residential remodeling is driven by Google search, Google Maps, paid ads, and review reputation. We build separate funnels for each based on your business mix." },
 			{ q: "How do you handle before-and-after project marketing?", a: "We develop a systematic process for capturing project photography and video at completion, then create content sequences that showcase transformations across your website, Google Business Profile, social media, and ads. Strong before-and-after content is one of the highest-converting assets in construction marketing." },
-			{ q: "What's a realistic budget for digital marketing as a Chicago contractor?", a: "For residential remodeling, a starting budget of $1,500–$3,000/month covers SEO plus a modest paid ads budget. Commercial contractors often invest more given higher project values. We always start with a marketing audit to identify the highest-ROI opportunities specific to your service mix and target market before recommending a budget." },
+			{ q: "What's a realistic budget for digital marketing as a Chicago contractor?", a: "We don't publish a price. After the free audit you get a scope based on your trades, your service area, and whether ads are included. Media spend, if any, is paid to the ad platform." },
 		],
 	},
 	"fitness": {
@@ -396,12 +403,16 @@ const industries: Record<string, {
 const industry = industries[slug as string];
 if (!industry) return Astro.redirect("/404");
 
-const pageTitle = `${industry.name} Marketing Chicago | The Chicago Marketing Agency`;
-const pageDesc = `Digital marketing for ${industry.name.toLowerCase()} in Chicago and the suburbs. SEO, websites, and ads, delivered by the team at Bidview Marketing.`;
+const depth = industryDepth(slug as string);
+const faqs = depth?.faqs ?? industry.faqs;
+const pageTitle = depth?.title || `${industry.name} Marketing in Chicago`;
+const pageDesc = depth?.description || `Digital marketing for ${industry.name.toLowerCase()} in Chicago and the suburbs. SEO, websites, and ads. Free audit.`;
+const heroHeading = depth?.h1 || `Marketing for ${industry.shortName} in Chicago`;
+const heroLede = depth?.lede || industry.intro[0];
 const siteUrl = "https://thechicagomarketingagency.com";
 ---
 
-<Base title={pageTitle} description={pageDesc} image={industry.image}>
+<Base title={pageTitle} description={pageDesc} image={industry.image} cro="quiet">
 	<!-- ── JSON-LD SCHEMA ── -->
 	<script type="application/ld+json" set:html={JSON.stringify({
 		"@context": "https://schema.org",
@@ -441,7 +452,7 @@ const siteUrl = "https://thechicagomarketingagency.com";
 	<script type="application/ld+json" set:html={JSON.stringify({
 		"@context": "https://schema.org",
 		"@type": "FAQPage",
-		"mainEntity": industry.faqs.map((faq) => ({
+		"mainEntity": faqs.map((faq) => ({
 			"@type": "Question",
 			"name": faq.q,
 			"acceptedAnswer": {
@@ -462,21 +473,20 @@ const siteUrl = "https://thechicagomarketingagency.com";
 					<span>/</span>
 					<span>{industry.name}</span>
 				</nav>
-				<span class="eyebrow">{industry.name}</span>
-				<h1>Marketing for {industry.shortName} in Chicago</h1>
-				<p class="ind-hero-desc">{industry.intro[0]}</p>
-				<div class="ind-hero-actions">
-					<a href="/free-seo-audit/" class="btn btn-primary">Request my free audit</a>
-					<a href="/results" class="btn btn-outline-white">See Our Results</a>
-				</div>
+				<span class="eyebrow">{depth?.eyebrow || industry.name}</span>
+				<h1>{heroHeading}</h1>
+				<p class="ind-hero-desc">{heroLede}</p>
 			</div>
-			<div class="ind-hero-img">
-				<img src={industry.image} alt={`${industry.name} marketing Chicago`} width="580" height="420" loading="eager" />
-			</div>
+			<AuditForm />
 		</div>
 	</section>
 
+	<TrustStrip />
+
+	{depth && <DepthBody page={depth} />}
+
 	<!-- ── INTRO ── -->
+	{!depth && (
 	<section class="ind-intro">
 		<div class="container ind-intro-inner">
 			<div class="ind-intro-body">
@@ -495,6 +505,7 @@ const siteUrl = "https://thechicagomarketingagency.com";
 			</div>
 		</div>
 	</section>
+	)}
 
 	<!-- ── SERVICES ── -->
 	<section class="ind-services">
@@ -536,23 +547,11 @@ const siteUrl = "https://thechicagomarketingagency.com";
 		</div>
 	</section>
 
-	<BidviewProof heading={`Published results, not a ${industry.shortName.toLowerCase()} average`} showQuotes quoteCount={2} />
+	<BidviewProof heading="Published results. These figures are not specific to this industry." showQuotes quoteCount={2} />
 
-	<!-- ── FAQ ── -->
-	<section class="ind-faq">
-		<div class="container">
-			<p class="eyebrow" style="color: var(--red); display: block; text-align: center;">Common Questions</p>
-			<h2 class="ind-faq-heading">Frequently Asked Questions</h2>
-			<div class="ind-faq-list">
-				{industry.faqs.map((faq) => (
-					<details class="ind-faq-item">
-						<summary class="ind-faq-q">{faq.q}</summary>
-						<div class="ind-faq-a"><p>{faq.a}</p></div>
-					</details>
-				))}
-			</div>
-		</div>
-	</section>
+	<WhatNext />
+	<FaqBlock heading={`Questions about ${industry.shortName.toLowerCase()} marketing`} faqs={faqs} />
+	<Objections />
 
 	<!-- ── CTA STRIP ── -->
 	<section class="ind-cta-strip">

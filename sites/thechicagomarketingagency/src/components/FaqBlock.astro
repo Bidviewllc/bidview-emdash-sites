@@ -1,0 +1,100 @@
+---
+interface Props {
+	heading?: string;
+	intro?: string;
+	faqs: { q: string; a: string }[];
+	schema?: boolean;
+}
+
+const {
+	heading = "Common questions",
+	intro = "",
+	faqs,
+	schema = false,
+} = Astro.props;
+---
+
+{schema && faqs.length > 0 && (
+	<script type="application/ld+json" set:html={JSON.stringify({
+		"@context": "https://schema.org",
+		"@type": "FAQPage",
+		"mainEntity": faqs.map((faq) => ({
+			"@type": "Question",
+			"name": faq.q,
+			"acceptedAnswer": { "@type": "Answer", "text": faq.a },
+		})),
+	})} />
+)}
+
+{faqs.length > 0 && (
+	<section class="faq-block" aria-labelledby="faq-block-heading">
+		<div class="container faq-block-grid">
+			<div>
+				<p class="eyebrow">Questions</p>
+				<h2 id="faq-block-heading">{heading}</h2>
+				{intro && <p class="faq-intro">{intro}</p>}
+			</div>
+			<div class="faq-list">
+				{faqs.map((faq) => (
+					<details>
+						<summary>{faq.q}</summary>
+						<p>{faq.a}</p>
+					</details>
+				))}
+			</div>
+		</div>
+	</section>
+)}
+
+<style>
+	.faq-block {
+		padding: 72px 0;
+		background: var(--white);
+	}
+	.faq-block-grid {
+		display: grid;
+		grid-template-columns: 0.75fr 1.25fr;
+		gap: 48px;
+		align-items: start;
+	}
+	.faq-block h2 {
+		font-size: clamp(1.75rem, 3vw, 2.4rem);
+	}
+	.faq-intro {
+		margin-top: 12px;
+		color: var(--text-muted);
+		max-width: 36ch;
+	}
+	.faq-list details {
+		border-bottom: 1px solid var(--border);
+	}
+	.faq-list details:first-child { border-top: 1px solid var(--border); }
+	.faq-list summary {
+		cursor: pointer;
+		list-style: none;
+		padding: 18px 0;
+		font-weight: 650;
+		font-size: 1.02rem;
+		display: flex;
+		justify-content: space-between;
+		gap: 16px;
+	}
+	.faq-list summary::-webkit-details-marker { display: none; }
+	.faq-list summary::after {
+		content: "+";
+		color: var(--brick, var(--red));
+		font-weight: 500;
+		flex-shrink: 0;
+	}
+	.faq-list details[open] summary::after { content: "–"; }
+	.faq-list p {
+		padding-bottom: 18px;
+		color: var(--text-muted);
+		line-height: 1.65;
+		max-width: 68ch;
+	}
+	@media (max-width: 800px) {
+		.faq-block { padding: 48px 0; }
+		.faq-block-grid { grid-template-columns: 1fr; gap: 20px; }
+	}
+</style>

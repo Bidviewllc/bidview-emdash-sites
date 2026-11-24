@@ -5,14 +5,16 @@ import { turnstileSiteKey } from "../lib/leads";
 
 interface Props {
 	place?: string;
+	id?: string;
 }
 
-const { place = "" } = Astro.props;
+const { place = "", id = "lead-form" } = Astro.props;
 const turnstileSiteKeyValue = turnstileSiteKey();
 const heading = place ? `${AUDIT_TITLE} for ${place}` : AUDIT_TITLE;
 ---
 
-<form class="audit-offer" method="POST" action="/free-seo-audit/">
+<form id={id} class="audit-offer" method="POST" action="/free-seo-audit/">
+	<p class="audit-kicker">Free marketing audit</p>
 	<h2>{heading}</h2>
 	<p>{AUDIT_PROMISE}</p>
 	<label>
@@ -21,18 +23,19 @@ const heading = place ? `${AUDIT_TITLE} for ${place}` : AUDIT_TITLE;
 	</label>
 	<label>
 		Email
-		<input type="email" name="email" required autocomplete="email" placeholder="you@company.com" />
+		<input type="email" name="email" required autocomplete="email" inputmode="email" placeholder="you@company.com" />
 	</label>
 	<label>
 		Website
-		<input type="url" name="website" required placeholder="https://yourwebsite.com" />
+		<input type="url" name="website" required autocomplete="url" inputmode="url" placeholder="https://yourwebsite.com" />
 	</label>
 	<label>
 		Phone <span>(optional)</span>
-		<input type="tel" name="phone" autocomplete="tel" placeholder="(312) 555-0000" />
+		<input type="tel" name="phone" autocomplete="tel" inputmode="tel" placeholder="Optional" />
 	</label>
 	<SpamFields turnstileSiteKey={turnstileSiteKeyValue} />
 	<button type="submit" class="btn btn-primary">{AUDIT_BUTTON}</button>
+	<p class="audit-fine">No charge. A person replies within one business day.</p>
 </form>
 
 <style>
@@ -40,28 +43,39 @@ const heading = place ? `${AUDIT_TITLE} for ${place}` : AUDIT_TITLE;
 		position: relative;
 		display: flex;
 		flex-direction: column;
-		gap: 12px;
-		background: var(--white);
+		gap: 10px;
+		background: var(--paper, var(--white));
 		color: var(--text-dark);
+		border: 1px solid var(--border);
 		border-radius: var(--radius-lg);
-		padding: 24px;
-		box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+		padding: 22px 20px 18px;
+		box-shadow: 0 18px 50px rgba(16, 32, 41, 0.16);
+		scroll-margin-top: 88px;
+	}
+	.audit-kicker {
+		font-size: 0.72rem;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--lake, var(--red));
 	}
 	.audit-offer h2 {
-		font-size: 1.25rem;
-		line-height: 1.25;
+		font-size: 1.45rem;
+		line-height: 1.15;
+		font-weight: 560;
 	}
-	.audit-offer p {
+	.audit-offer > p {
 		color: var(--text-muted);
-		font-size: 0.9375rem;
-		margin-top: -4px;
+		font-size: 0.9rem;
+		line-height: 1.45;
 	}
 	.audit-offer label {
 		display: flex;
 		flex-direction: column;
-		gap: 6px;
-		font-size: 0.8125rem;
-		font-weight: 600;
+		gap: 4px;
+		font-size: 0.78rem;
+		font-weight: 700;
+		letter-spacing: 0.02em;
 	}
 	.audit-offer label span {
 		font-weight: 500;
@@ -70,18 +84,27 @@ const heading = place ? `${AUDIT_TITLE} for ${place}` : AUDIT_TITLE;
 	.audit-offer input {
 		font: inherit;
 		font-weight: 500;
-		font-size: 0.9375rem;
-		padding: 11px 12px;
+		font-size: 1rem;
+		padding: 10px 12px;
 		border: 1px solid var(--border);
 		border-radius: var(--radius);
+		background: var(--white);
 		color: var(--text-dark);
+		min-height: 44px;
 	}
-	.audit-offer input:focus {
-		outline: 2px solid var(--red);
+	.audit-offer input:focus-visible {
+		outline: 2px solid var(--lake, var(--red));
+		outline-offset: 1px;
 		border-color: transparent;
 	}
 	.audit-offer button {
 		justify-content: center;
+		width: 100%;
 		margin-top: 4px;
+	}
+	.audit-fine {
+		text-align: center;
+		font-size: 0.78rem;
+		color: var(--text-light);
 	}
 </style>

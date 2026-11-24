@@ -2,6 +2,8 @@
 import Base from "../layouts/Base.astro";
 import SpamFields from "../components/SpamFields.astro";
 import LeadEvent from "../components/LeadEvent.astro";
+import ThankYou from "../components/ThankYou.astro";
+import WhatNext from "../components/WhatNext.astro";
 import { handleLead, trackingIds, turnstileSiteKey, type LeadStatus } from "../lib/leads";
 
 export const cacheHint = 0;
@@ -33,7 +35,8 @@ const services = [
 
 <Base
 	title="Contact Us"
-	description="Schedule a free 30-minute strategy call or send us a message. We respond within 1 business day."
+	description="Send a message or request the free marketing audit. We respond within one business day."
+	cro="quiet"
 >
 	<!-- ── HERO ── -->
 	<section class="contact-hero">
@@ -44,8 +47,8 @@ const services = [
 				<span>Contact</span>
 			</nav>
 			<span class="eyebrow">Get in Touch</span>
-			<h1>Let's Grow Your Business Together</h1>
-			<p>Schedule a free 30-minute strategy call or send us a message. We respond within 1 business day.</p>
+			<h1>Tell us about the business</h1>
+			<p>Send a message, or use the free audit if you already have a site to look at. We respond within one business day.</p>
 		</div>
 	</section>
 
@@ -56,15 +59,16 @@ const services = [
 			<div class="contact-form-col">
 				<h2>Send Us a Message</h2>
 				{formStatus === "success" || formStatus === "saved" ? (
-					<div class="form-success">
-						<div class="success-icon">✓</div>
-						<h3>{formStatus === "saved" ? "Message saved" : "Message Sent!"}</h3>
-						<p>{formMessage}</p>
-						<a href="/contact" class="btn btn-primary">Send Another Message</a>
+					<>
+						<ThankYou
+							title={formStatus === "saved" ? "Message saved" : "Message received"}
+							message={formMessage}
+							saved={formStatus === "saved"}
+						/>
 						{trackLead && <LeadEvent formType="contact" ga={tracking.ga} gtm={tracking.gtm} />}
-					</div>
+					</>
 				) : (
-					<form method="POST" class="contact-form">
+					<form id="lead-form" method="POST" class="contact-form">
 						{formStatus === "error" && (
 							<div class="form-error">{formMessage}</div>
 						)}
@@ -131,6 +135,7 @@ const services = [
 			</div>
 		</div>
 	</section>
+	<WhatNext />
 </Base>
 
 <style>

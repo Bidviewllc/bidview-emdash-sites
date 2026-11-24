@@ -1,5 +1,7 @@
 ---
 import Base from "../layouts/Base.astro";
+import AuditForm from "../components/AuditForm.astro";
+import TrustStrip from "../components/TrustStrip.astro";
 
 export const cacheHint = 3600;
 
@@ -25,12 +27,17 @@ const industries = [
 >
 	<!-- ── HERO ── -->
 	<section class="ind-hero">
-		<div class="container">
-			<span class="eyebrow">Industries We Serve</span>
-			<h1>Marketing That Knows Your Industry</h1>
-			<p>Different businesses need different campaigns. These are the industries this site is built around. The work is delivered by the team at Bidview Marketing.</p>
+		<div class="container ind-hero-grid">
+			<div>
+				<span class="eyebrow">Industries We Serve</span>
+				<h1>Marketing for the industries this site is built around</h1>
+				<p>Different businesses need different campaigns. The free audit is how a scope gets written.</p>
+			</div>
+			<AuditForm />
 		</div>
 	</section>
+
+	<TrustStrip />
 
 	<!-- ── GRID ── -->
 	<section class="ind-grid-section">
@@ -61,7 +68,13 @@ const industries = [
 <style>
 .ind-hero {
 	background: var(--navy);
-	padding: 80px 0;
+	padding: 64px 0;
+}
+.ind-hero-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 40px;
+	align-items: start;
 }
 .ind-hero h1 {
 	font-size: clamp(2rem, 4vw, 2.75rem);
@@ -143,6 +156,9 @@ const industries = [
 }
 
 @media (max-width: 1024px) { .ind-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 800px) {
+	.ind-hero-grid { grid-template-columns: 1fr; }
+}
 @media (max-width: 768px) { .ind-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 480px) { .ind-grid { grid-template-columns: 1fr; } }
 </style>

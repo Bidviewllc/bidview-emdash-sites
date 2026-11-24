@@ -1,0 +1,88 @@
+---
+const items = [
+	{
+		q: "Is there a Chicago office I can visit?",
+		a: "We don't publish a storefront address or a phone number. Chicago and the suburbs are covered from the Libertyville and Chicago area.",
+	},
+	{
+		q: "Will you guarantee a ranking or a lead count?",
+		a: "No. Rankings and lead volume depend on the site, the offer, and the market. The figures on this site are published Bidview Marketing results. They are not a forecast for your company.",
+	},
+	{
+		q: "Do I have to hire you to hear back?",
+		a: "No. The audit is free. A written scope comes after, and only if the work is a fit. You can say no.",
+	},
+	{
+		q: "What if you cannot help?",
+		a: "You should hear that. Mike McNamara, a Bidview Marketing client, has said publicly that the team turns down work it does not think it can help. That is the standard for this audit too.",
+	},
+];
+---
+
+<section class="objections" aria-labelledby="objections-heading">
+	<div class="container objections-grid">
+		<div>
+			<p class="eyebrow">Before you send the form</p>
+			<h2 id="objections-heading">Straight answers</h2>
+			<p>The audit is the only ask on this site. These are the questions people raise before they send it.</p>
+		</div>
+		<div class="objections-list">
+			{items.map((item) => (
+				<details>
+					<summary>{item.q}</summary>
+					<p>{item.a}</p>
+				</details>
+			))}
+		</div>
+	</div>
+</section>
+
+<style>
+	.objections {
+		padding: 72px 0;
+		background: var(--sand, var(--off-white));
+	}
+	.objections-grid {
+		display: grid;
+		grid-template-columns: 0.8fr 1.2fr;
+		gap: 48px;
+		align-items: start;
+	}
+	.objections h2 {
+		font-size: clamp(1.75rem, 3vw, 2.4rem);
+		margin-bottom: 12px;
+	}
+	.objections-grid > div > p {
+		color: var(--text-muted);
+		max-width: 36ch;
+	}
+	.objections-list details {
+		border-top: 1px solid var(--border);
+		background: var(--white);
+	}
+	.objections-list details:last-child { border-bottom: 1px solid var(--border); }
+	.objections-list summary {
+		cursor: pointer;
+		list-style: none;
+		padding: 16px 18px;
+		font-weight: 650;
+		font-size: 1.02rem;
+	}
+	.objections-list summary::-webkit-details-marker { display: none; }
+	.objections-list summary::after {
+		content: "+";
+		float: right;
+		color: var(--brick, var(--red));
+		font-weight: 500;
+	}
+	.objections-list details[open] summary::after { content: "–"; }
+	.objections-list p {
+		padding: 0 18px 16px;
+		color: var(--text-muted);
+		line-height: 1.6;
+	}
+	@media (max-width: 800px) {
+		.objections { padding: 48px 0; }
+		.objections-grid { grid-template-columns: 1fr; gap: 24px; }
+	}
+</style>

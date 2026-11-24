@@ -3,15 +3,18 @@
  * The Chicago Marketing Agency. Only figures and quotes that appear on
  * https://www.bidviewmarketing.com/ belong here.
  *
- * Stats are the homepage "From traction to takeover" cards (fetched 2026-11-24).
- * The third card's visible label is the 15% revenue line. Quotes are the four
- * testimonials on that same page, copied with the ellipses the site publishes.
+ * Stats are the homepage "From traction to takeover" cards.
+ * The 15% figure is the third card's published label, "15% revenue increase
+ * during the 2020 COVID-19 economic shutdown", on https://www.bidviewmarketing.com/
+ * and in sites/bidviewmarketing-staging/Pages/bidview-homepage.html.
+ * That card's animated number is +$200k; the label is the 15% line.
+ * Quotes are the four testimonials on that same page, copied with the ellipses the site publishes.
  */
 
 export const BIDVIEW_URL = "https://www.bidviewmarketing.com/";
 
 export const PROOF_ATTRIBUTION =
-	"Published client results from Bidview Marketing, the Libertyville and Chicago-area team that does the work for The Chicago Marketing Agency. These are not a Chicago-only client count.";
+	"Published client results from Bidview Marketing. These figures are not a forecast, and they are not a Chicago-only client count.";
 
 export const verifiedStats: { value: string; label: string }[] = [
 	{

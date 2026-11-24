@@ -1,5 +1,6 @@
 ---
 import Base from "../../layouts/Base.astro";
+import AuditForm from "../../components/AuditForm.astro";
 import { verifiedStats, PROOF_ATTRIBUTION, BIDVIEW_URL } from "../../lib/proof";
 
 export const cacheHint = 3600;
@@ -79,20 +80,9 @@ const services = [
 				<span class="eyebrow">Our Services</span>
 				<h1>Digital Marketing That Grows Chicago Businesses</h1>
 				<p>We offer a complete suite of digital marketing services — from SEO and paid ads to web design and video production. Every service is built around one goal: more leads, more revenue, less guesswork.</p>
-				<div class="svcs-hero-actions">
-					<a href="/free-seo-audit/" class="btn btn-primary">Request my free audit</a>
-					<a href="/results" class="btn btn-outline-white">View Our Results</a>
-				</div>
+				<p class="svcs-hero-note">The free audit is the next step. The form is the whole ask.</p>
 			</div>
-			<div class="svcs-hero-img">
-				<img
-					src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=900&q=80"
-					alt="Chicago marketing team collaborating"
-					width="540"
-					height="400"
-					loading="eager"
-				/>
-			</div>
+			<AuditForm />
 		</div>
 	</section>
 
@@ -128,8 +118,8 @@ const services = [
 			<div class="svcs-why-inner">
 				<div class="svcs-why-text">
 					<span class="eyebrow">Why Choose Us</span>
-					<h2>One Agency. Every Channel. Real Results.</h2>
-					<p>Most agencies are siloed — they do SEO, or ads, or content. We connect them all into a unified growth strategy that compounds over time. When your SEO, content, and paid ads work together, the results are exponential.</p>
+					<h2>One scope, written after the audit</h2>
+					<p>SEO, ads, and content can be bought together or apart. The audit says which one should come first. The published results on this site come from Bidview Marketing, and they are not a forecast.</p>
 					<div class="svcs-why-points">
 						<div class="why-point">
 							<span class="why-check">✓</span>
@@ -145,10 +135,10 @@ const services = [
 						</div>
 						<div class="why-point">
 							<span class="why-check">✓</span>
-							<span>Dedicated account manager, not a rotating team</span>
+							<span>A written scope after the free audit, with ads and SEO kept as separate lines</span>
 						</div>
 					</div>
-					<a href="/about" class="btn btn-outline">Meet the Team</a>
+					<a href="/about/" class="btn btn-outline">About this brand</a>
 				</div>
 				<div class="svcs-why-stats">
 					{verifiedStats.map((stat) => (
@@ -157,7 +147,7 @@ const services = [
 							<span class="why-stat-label">{stat.label}</span>
 						</div>
 					))}
-					<p class="why-stat-source">{PROOF_ATTRIBUTION} <a href={BIDVIEW_URL}>Source</a></p>
+					<p class="why-stat-source">Powered by the team at <a href="/results/">Bidview Marketing</a>. {PROOF_ATTRIBUTION} <a href={BIDVIEW_URL}>Source</a></p>
 				</div>
 			</div>
 		</div>

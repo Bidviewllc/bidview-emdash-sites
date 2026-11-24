@@ -1,0 +1,82 @@
+---
+const steps = [
+	{
+		n: "01",
+		title: "You send the site",
+		body: "Name, email, and the website. A phone number is optional. That is the whole form.",
+	},
+	{
+		n: "02",
+		title: "We look before we pitch",
+		body: "The site, the local profile, and the searches that should be sending you work.",
+	},
+	{
+		n: "03",
+		title: "A person writes back",
+		body: "Someone from Bidview Marketing follows up within one business day with what to fix first. No charge. No storefront visit.",
+	},
+];
+---
+
+<section class="what-next" aria-labelledby="what-next-heading">
+	<div class="container">
+		<p class="eyebrow">What happens next</p>
+		<h2 id="what-next-heading">The free marketing audit, in three steps</h2>
+		<ol>
+			{steps.map((step) => (
+				<li>
+					<span>{step.n}</span>
+					<h3>{step.title}</h3>
+					<p>{step.body}</p>
+				</li>
+			))}
+		</ol>
+	</div>
+</section>
+
+<style>
+	.what-next {
+		padding: 72px 0;
+		background: var(--white);
+	}
+	.what-next h2 {
+		font-size: clamp(1.75rem, 3vw, 2.4rem);
+		max-width: 18ch;
+		margin-bottom: 28px;
+	}
+	.what-next ol {
+		list-style: none;
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 18px;
+	}
+	.what-next li {
+		background: var(--sand, var(--off-white));
+		border: 1px solid var(--border);
+		border-radius: var(--radius-lg);
+		padding: 22px 20px 24px;
+	}
+	.what-next li span {
+		font-family: var(--display, var(--font));
+		font-size: 1.25rem;
+		color: var(--lake, var(--red));
+		display: block;
+		margin-bottom: 10px;
+	}
+	.what-next h3 {
+		font-family: var(--font);
+		font-size: 1.05rem;
+		font-weight: 700;
+		letter-spacing: -0.01em;
+		margin-bottom: 8px;
+	}
+	.what-next p {
+		color: var(--text-muted);
+		font-size: 0.9375rem;
+		line-height: 1.55;
+	}
+	@media (max-width: 800px) {
+		.what-next { padding: 48px 0; }
+		.what-next ol { grid-template-columns: 1fr; }
+	}
+</style>
