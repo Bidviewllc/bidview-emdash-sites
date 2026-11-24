@@ -1,0 +1,25 @@
+---
+interface Props {
+	formType: string;
+	ga: string;
+	gtm: string;
+}
+
+const { formType, ga, gtm } = Astro.props;
+---
+
+{/* Fired only after a real successful submit. GTM listens for the dataLayer event; GA4 gets a direct gtag event. */}
+{(ga || gtm) && (
+	<script is:inline define:vars={{ formType, ga, gtm }}>
+		window.dataLayer = window.dataLayer || [];
+		if (gtm) {
+			window.dataLayer.push({ event: "generate_lead", form_type: formType });
+		}
+		if (ga) {
+			if (typeof window.gtag !== "function") {
+				window.gtag = function () { window.dataLayer.push(arguments); };
+			}
+			window.gtag("event", "generate_lead", { form_type: formType });
+		}
+	</script>
+)}

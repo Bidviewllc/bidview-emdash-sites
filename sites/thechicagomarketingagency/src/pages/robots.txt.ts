@@ -1,4 +1,16 @@
-export const GET = () => {
+export const GET = ({ request }: { request: Request }) => {
+	const host = new URL(request.url).hostname;
+	if (host.endsWith(".workers.dev")) {
+		return new Response(
+			`User-agent: *\nDisallow: /\n`,
+			{
+				headers: {
+					"Content-Type": "text/plain; charset=utf-8",
+					"X-Robots-Tag": "noindex, nofollow",
+				},
+			},
+		);
+	}
 	return new Response(
 		`User-agent: *
 Allow: /

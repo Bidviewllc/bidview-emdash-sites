@@ -1,5 +1,6 @@
 ---
 import Base from "../../layouts/Base.astro";
+import BidviewProof from "../../components/BidviewProof.astro";
 
 export const cacheHint = 3600;
 
@@ -13,7 +14,6 @@ const industries: Record<string, {
 	intro: string[];
 	services: { slug: string; name: string; desc: string }[];
 	whyUs: string[];
-	stats: { value: string; label: string }[];
 	blogSlug?: string;
 	blogLabel?: string;
 	schemaType: string;
@@ -35,26 +35,20 @@ const industries: Record<string, {
 			{ slug: "content-marketing", name: "Dental Content Marketing", desc: "Educational blog posts, FAQs, and service pages that build trust and improve your organic rankings for high-value procedures." },
 		],
 		whyUs: [
-			"We've built marketing systems for dental practices across Chicago's most competitive neighborhoods, from Lincoln Park to the Loop",
+			"Local SEO, Google Business Profile work, and paid search planned around how Chicago patients look for a dentist",
 			"Deep understanding of dental patient psychology — we know what triggers appointment bookings vs. window shopping",
 			"HIPAA-aware marketing practices with proper handling of patient privacy in all ad targeting and content",
-			"Reputation management expertise: we help practices generate 5-star reviews at scale and respond to negative feedback professionally",
-		],
-		stats: [
-			{ value: "3.2x", label: "Average new patient increase" },
-			{ value: "68%", label: "Reduction in cost per appointment" },
-			{ value: "4.8★", label: "Average Google rating achieved" },
-			{ value: "90 days", label: "To measurable results" },
+			"Review requests after appointments, and responses to public feedback, without asking only for five-star reviews.",
 		],
 		blogSlug: "dental-marketing-chicago-guide-2026",
 		blogLabel: "dental marketing guide",
 		schemaType: "Dentist",
 		faqs: [
-			{ q: "How long does it take to rank on Google for dental searches in Chicago?", a: "Most dental practices see meaningful ranking improvements within 3–4 months of starting an SEO campaign. Competitive terms like 'dentist Chicago' may take 6–9 months, while neighborhood-specific terms such as 'dentist Lincoln Park' typically rank faster. Google Business Profile improvements often show results within 30–60 days." },
+			{ q: "How long does it take to rank on Google for dental searches in Chicago?", a: "Citywide terms such as 'dentist Chicago' are slower than neighborhood terms. Google Business Profile work is usually the faster lever. We won't put a number of days on it until we've looked at the practice." },
 			{ q: "What's the best marketing channel for a dental practice in Chicago?", a: "For most Chicago dental practices, the highest-ROI combination is Google Business Profile optimization (for immediate local visibility), SEO for long-term organic growth, and Google Ads to fill the calendar while organic rankings build. Social media works well for cosmetic and elective procedures where visual results matter." },
-			{ q: "How do you generate more patient reviews for a dental practice?", a: "We implement automated post-appointment review request sequences via SMS and email, with direct links to your Google Business Profile. This typically increases review volume by 3–5x within the first 90 days. We also train front desk staff on the best timing and phrasing to encourage reviews in person." },
+			{ q: "How do you generate more patient reviews for a dental practice?", a: "We implement automated post-appointment review request sequences via SMS and email, with direct links to your Google Business Profile. We also train front desk staff on the best timing and phrasing to encourage reviews in person." },
 			{ q: "Can you help with HIPAA compliance in our marketing?", a: "Yes. All of our dental marketing strategies are designed with HIPAA in mind. We never use patient health information for ad targeting, ensure proper Business Associate Agreements are in place with any marketing tools that touch patient data, and review all content to avoid disclosing protected health information." },
-			{ q: "How much should a dental practice budget for digital marketing in Chicago?", a: "For a single-location practice in a competitive Chicago neighborhood, we typically recommend a minimum budget of $1,500–$3,000/month for SEO and $1,000–$2,500/month for Google Ads depending on your specialties. Cosmetic and implant-focused practices often benefit from higher budgets given the high case value." },
+			{ q: "How much should a dental practice budget for digital marketing in Chicago?", a: "Budget depends on the neighborhood, the procedures you want to fill, and whether you are buying ads, SEO, or both. We'll recommend a range on the strategy call rather than quote a universal number here." },
 		],
 	},
 	"restaurants": {
@@ -64,7 +58,7 @@ const industries: Record<string, {
 		intro: [
 			"Chicago's restaurant scene is legendary — and brutally competitive. With over 7,500 restaurants in the city, standing out on Google, Yelp, and social media isn't optional; it's the difference between a full house and an empty dining room on a Tuesday night.",
 			"We help Chicago restaurants, bars, cafes, and food service businesses build a powerful online presence that drives reservations, orders, and foot traffic. Our team understands the unique rhythm of the restaurant business — seasonal menus, weekend rushes, private events, and the critical importance of managing your reputation online.",
-			"From local SEO that puts you at the top of \"best Italian restaurant Chicago\" to social media campaigns that make your dishes go viral, we create marketing that translates directly into covers and revenue."
+			"Local SEO, Google Business Profile work, social content, and ads are the usual mix. None of those is a promise of a specific ranking or a viral post."
 		],
 		services: [
 			{ slug: "seo", name: "Restaurant Local SEO", desc: "Appear at the top of 'restaurants near me' and cuisine-specific searches with Google Business Profile optimization and local citations." },
@@ -76,13 +70,7 @@ const industries: Record<string, {
 			"We understand restaurant seasonality and can plan marketing campaigns around Chicago's event calendar, weather patterns, and dining trends",
 			"Experience with reservation platform integrations (OpenTable, Resy) and online ordering systems (Toast, Square)",
 			"Social media expertise in food photography direction and UGC strategy to build authentic brand communities",
-			"Crisis management experience — we've helped restaurants recover from negative reviews and PR challenges",
-		],
-		stats: [
-			{ value: "47%", label: "Average reservation increase" },
-			{ value: "2.8x", label: "Social media engagement growth" },
-			{ value: "156%", label: "Online order revenue increase" },
-			{ value: "4.7★", label: "Average Yelp/Google rating achieved" },
+			"Review monitoring and responses so one bad night does not define the restaurant",
 		],
 		blogSlug: "why-chicago-restaurants-need-strong-online-presence",
 		blogLabel: "restaurant marketing guide",
@@ -112,22 +100,16 @@ const industries: Record<string, {
 		],
 		whyUs: [
 			"Deep familiarity with state bar advertising rules — every campaign is structured to comply with Illinois ARDC guidelines",
-			"Experience across practice areas: personal injury, family law, criminal defense, immigration, real estate law, and more",
+			"Campaigns can be scoped by practice area — personal injury, family law, criminal defense, immigration, real estate, and others — with the claims reviewed against Illinois advertising rules",
 			"Case value focus — we optimize for consultation quality, not just lead volume, tracking which channels generate your highest-value cases",
 			"Competitive intelligence expertise in legal markets where knowing your competitors' strategy is worth thousands per month",
-		],
-		stats: [
-			{ value: "4.1x", label: "Average ROI on legal PPC" },
-			{ value: "62%", label: "Reduction in cost per consultation" },
-			{ value: "180%", label: "Organic traffic increase in 6 months" },
-			{ value: "38%", label: "Consultation-to-client rate improvement" },
 		],
 		blogSlug: "chicago-law-firms-more-clients-from-google",
 		blogLabel: "legal marketing guide",
 		schemaType: "LegalService",
 		faqs: [
 			{ q: "Is digital marketing for law firms subject to bar advertising rules in Illinois?", a: "Yes. Illinois bar advertising rules (Illinois Rules of Professional Conduct Rule 7.2–7.3) govern attorney advertising, including digital channels. All our legal marketing is structured to comply with ARDC guidelines — no misleading claims, proper disclaimers on results-based content, and compliant use of client testimonials." },
-			{ q: "What's the ROI on Google Ads for a law firm in Chicago?", a: "Legal Google Ads typically deliver strong ROI for high-value practice areas. Personal injury clicks in Chicago can cost $50–$150+, but a single signed case can be worth $10,000–$100,000+. We optimize campaigns to target the highest-value case types and track cost-per-consultation and cost-per-signed-case as primary KPIs." },
+			{ q: "What's the ROI on Google Ads for a law firm in Chicago?", a: "Legal clicks in Chicago are expensive, especially in personal injury. We track cost per consultation and cost per signed case, and we don't quote an ROI multiple on this page." },
 			{ q: "How long does legal SEO take to show results?", a: "Most law firms see measurable organic traffic improvements within 4–6 months. Highly competitive terms like 'Chicago personal injury attorney' can take 9–12 months to crack page one. Niche practice area terms and neighborhood-specific searches often rank faster. We prioritize quick wins alongside long-term authority building." },
 			{ q: "Can you market for multiple practice areas within one firm?", a: "Yes. We build separate landing pages and targeted campaigns for each practice area, each with its own keyword strategy, content, and conversion funnel. This allows a multi-practice firm to appear at the top of search for family law, criminal defense, and estate planning without diluting any one area." },
 			{ q: "Do you work with solo practitioners or only large firms?", a: "We work with firms of all sizes — from solo practitioners building their practice to multi-partner firms managing large marketing budgets. We have appropriately scaled service packages for each, and we understand that a solo attorney's marketing needs and budget constraints are very different from a 20-attorney firm." },
@@ -151,14 +133,8 @@ const industries: Record<string, {
 		whyUs: [
 			"Platform expertise across Shopify, WooCommerce, BigCommerce, and Magento — we don't need a learning curve on your tech stack",
 			"Data-first approach: every decision is backed by analytics, and we set up proper tracking before any campaign launches",
-			"Experience scaling e-commerce brands from $500K to $5M+ in annual revenue with sustainable, profitable growth strategies",
+			"Full-funnel work aimed at profitable growth: acquisition cost, repeat purchase, and the numbers in your store, not a promised revenue multiple",
 			"Full-funnel perspective — we optimize for lifetime value and repeat purchase rates, not just first transaction metrics",
-		],
-		stats: [
-			{ value: "3.6x", label: "Average ROAS improvement" },
-			{ value: "41%", label: "Conversion rate increase" },
-			{ value: "220%", label: "Organic revenue growth" },
-			{ value: "28%", label: "Cart abandonment reduction" },
 		],
 		blogSlug: "ecommerce-seo-chicago-compete-with-amazon",
 		blogLabel: "e-commerce SEO guide",
@@ -167,7 +143,7 @@ const industries: Record<string, {
 			{ q: "How do you improve ROAS for e-commerce Google Shopping campaigns?", a: "We start with a full feed audit — fixing titles, descriptions, and custom labels — then restructure campaigns to separate high-margin and top-selling products. We implement proper bidding strategy (tROAS or Maximize Conversion Value), build strong negative keyword lists, and continuously test creative in Performance Max. Most accounts see 30–60% ROAS improvement within 90 days." },
 			{ q: "What e-commerce platforms do you work with?", a: "We work with Shopify, WooCommerce, BigCommerce, Magento, and custom-built platforms. Each has different SEO and tracking requirements, and our team is experienced with the technical nuances of each. We handle everything from product schema implementation to proper canonical tag management across large catalogs." },
 			{ q: "How do you approach SEO for an e-commerce site with thousands of products?", a: "We prioritize a tiered approach: fix technical crawl issues first (duplicate content, pagination, indexing), then optimize high-revenue category pages, then focus on top-selling product pages. We use programmatic on-page optimization for large catalogs and build topic cluster content around buyer-intent keywords to capture mid-funnel traffic." },
-			{ q: "Can you help reduce cart abandonment?", a: "Yes. Cart abandonment reduction is a core part of our CRO work. We audit the checkout flow for friction points (form fields, payment options, trust signals), implement abandoned cart email/SMS sequences, and A/B test checkout page elements. Our clients typically see 15–30% improvement in checkout completion rate." },
+			{ q: "Can you help reduce cart abandonment?", a: "Yes. Cart abandonment reduction is a core part of our CRO work. We audit the checkout flow for friction points (form fields, payment options, trust signals), implement abandoned cart email/SMS sequences, and A/B test checkout page elements. We report what changed in the checkout, not a promised lift." },
 			{ q: "Do you work with e-commerce brands outside Chicago?", a: "Absolutely. While we're based in Chicago, our e-commerce clients are nationwide. E-commerce is inherently national and we work with brands across the US. Our Chicago roots mean we have strong networks and market knowledge here, but our e-commerce strategies are built for wherever your customers are." },
 		],
 	},
@@ -192,21 +168,15 @@ const industries: Record<string, {
 			"Service area page strategy: we build targeted pages for Chicago neighborhoods and suburbs to capture hyperlocal search traffic",
 			"Emergency call optimization: landing pages, call tracking, and after-hours messaging designed to capture urgent repair leads",
 		],
-		stats: [
-			{ value: "5.2x", label: "Average LSA return on spend" },
-			{ value: "73%", label: "Increase in emergency call volume" },
-			{ value: "44%", label: "Reduction in cost per lead" },
-			{ value: "210%", label: "Organic traffic growth in 12 months" },
-		],
 		blogSlug: "hvac-marketing-chicago-getting-calls",
 		blogLabel: "HVAC marketing guide",
 		schemaType: "HomeAndConstructionBusiness",
 		faqs: [
-			{ q: "What's Google Local Services Ads (LSA) and is it worth it for HVAC companies?", a: "Google Local Services Ads appear at the very top of search results with a 'Google Guaranteed' badge. You only pay when a customer calls or messages you directly through the ad. For HVAC companies in Chicago, LSA typically delivers the lowest cost per lead of any paid channel — especially during peak seasons. We manage the badge verification, review strategy, and dispute process to maximize your LSA performance." },
+			{ q: "What's Google Local Services Ads (LSA) and is it worth it for HVAC companies?", a: "Google Local Services Ads appear at the very top of search results with a 'Google Guaranteed' badge. You only pay when a customer calls or messages you directly through the ad. We manage the badge verification, review strategy, and dispute process to maximize your LSA performance." },
 			{ q: "How do you market HVAC services during slow seasons?", a: "We run shoulder-season campaigns around maintenance plan promotions and system tune-ups to generate calls during slow periods. Content marketing with seasonal maintenance guides captures homeowners researching before breakdowns happen. Email campaigns to your existing customer base for annual service reminders are often the highest-ROI tactic in slow months." },
 			{ q: "How do you handle HVAC SEO across a large service area?", a: "We build a network of neighborhood and suburb-specific service area pages — for example, 'AC repair Lincoln Park' or 'furnace installation Naperville' — each optimized with local keywords, maps, and service details. This creates organic search coverage across your entire service area without a single page trying to rank for everything." },
 			{ q: "How fast can digital marketing generate new calls for our HVAC business?", a: "Google LSA and paid search can generate calls within days of launching. SEO takes longer — typically 3–6 months for meaningful organic traffic — but compounds over time and delivers the lowest long-term cost per lead. We typically recommend a combination: paid ads for immediate call volume while SEO builds as a long-term asset." },
-			{ q: "Can you help us generate more 5-star reviews on Google?", a: "Yes. Review volume and rating are critical ranking factors for HVAC businesses in Google's Local Pack. We implement automated post-service review request sequences via SMS and email that consistently generate new reviews from satisfied customers. Our clients typically double their review count within 60–90 days." },
+			{ q: "Can you help us generate more 5-star reviews on Google?", a: "Yes. Review volume and rating are critical ranking factors for HVAC businesses in Google's Local Pack. We implement automated post-service review request sequences via SMS and email that consistently generate new reviews from satisfied customers. We don't promise a review-count multiple." },
 		],
 	},
 	"real-estate": {
@@ -229,12 +199,6 @@ const industries: Record<string, {
 			"IDX and MLS integration experience with major real estate platforms and CRM systems like Follow Up Boss and KvCore",
 			"Long-game marketing strategy — real estate relationships are built over time, and we build brands that generate referrals and repeat business",
 			"Agent and team experience: we understand the unique dynamics of solo agent branding vs. team marketing vs. brokerage-level campaigns",
-		],
-		stats: [
-			{ value: "3.4x", label: "Increase in inbound leads" },
-			{ value: "58%", label: "Lower cost per buyer/seller lead" },
-			{ value: "185%", label: "Organic traffic growth" },
-			{ value: "92%", label: "Client retention rate" },
 		],
 		blogSlug: "real-estate-marketing-chicago-standing-out",
 		blogLabel: "real estate marketing guide",
@@ -264,23 +228,17 @@ const industries: Record<string, {
 		],
 		whyUs: [
 			"HIPAA-aware marketing practices: we never use patient data for targeting and ensure all campaigns comply with healthcare privacy regulations",
-			"Experience across specialties including primary care, dentistry, orthopedics, mental health, dermatology, and urgent care",
+			"Campaigns can be scoped for primary care, dentistry, orthopedics, mental health, dermatology, urgent care, and similar practices",
 			"Reputation management expertise — we help practices generate authentic 5-star reviews and handle negative feedback professionally",
 			"Multi-location experience: we manage cohesive brand strategies across multiple practice locations with consistent local SEO",
-		],
-		stats: [
-			{ value: "2.9x", label: "New patient appointment growth" },
-			{ value: "55%", label: "Reduction in patient acquisition cost" },
-			{ value: "4.8★", label: "Average Google review rating achieved" },
-			{ value: "130%", label: "Organic search traffic increase" },
 		],
 		schemaType: "MedicalOrganization",
 		faqs: [
 			{ q: "How do you ensure healthcare marketing is HIPAA compliant?", a: "We never use patient data for ad targeting, avoid any retargeting strategies that could infer health conditions, and ensure all tools that touch patient interactions have proper Business Associate Agreements. Our content is reviewed to avoid disclosing protected health information. We follow OCR guidance on online tracking technologies in healthcare settings." },
 			{ q: "What marketing channels work best for attracting new patients in Chicago?", a: "Google Search Ads targeting condition and specialty searches deliver the highest-intent patients. Local SEO ensures you appear in 'near me' searches and the Google Local Pack. For elective procedures (cosmetic, dermatology, weight loss), Instagram and Facebook work well. Reputation management — generating authentic 5-star reviews — is a critical cross-channel tactic." },
-			{ q: "How do you help healthcare practices generate more Google reviews?", a: "We implement compliant post-appointment review request workflows via SMS and email that are timed for maximum response rates. We ensure the process never solicits only positive reviews (which violates FTC guidelines) but rather invites all patients to share their experience. Most practices see review volume increase 200–400% within 90 days." },
+			{ q: "How do you help healthcare practices generate more Google reviews?", a: "We implement compliant post-appointment review request workflows via SMS and email that are timed for maximum response rates. We ensure the process never solicits only positive reviews (which violates FTC guidelines) but rather invites all patients to share their experience. We don't promise a review-count multiple." },
 			{ q: "Can you market for multiple practice locations?", a: "Yes. Multi-location healthcare marketing requires a centralized brand strategy with locally optimized execution. We manage separate Google Business Profiles for each location, build location-specific landing pages, and run geo-targeted paid campaigns. Consistent NAP (Name, Address, Phone) data across all locations is foundational to our multi-location SEO approach." },
-			{ q: "How long before we see new patient growth from SEO?", a: "Healthcare SEO typically shows measurable results in 3–5 months for local and long-tail searches, with competitive specialty terms taking 6–12 months. Google Business Profile optimization often produces faster results — 30–60 days — for local pack visibility. We prioritize quick-win tactics alongside long-term organic growth." },
+			{ q: "How long before we see new patient growth from SEO?", a: "Local and long-tail searches usually move before competitive specialty terms. Google Business Profile work is the faster lever. We don't promise a timeline before looking at the practice." },
 		],
 	},
 	"construction": {
@@ -303,12 +261,6 @@ const industries: Record<string, {
 			"Portfolio presentation expertise: we know how to photograph, edit, and display project work to maximize its marketing impact",
 			"Commercial vs. residential strategy differentiation — the channels and messaging that win homeowners are completely different from those that win developers",
 			"License and insurance verification content strategy that builds trust with prospects doing their due diligence before signing contracts",
-		],
-		stats: [
-			{ value: "3.7x", label: "Increase in qualified project inquiries" },
-			{ value: "49%", label: "Reduction in cost per lead" },
-			{ value: "175%", label: "Organic traffic growth in 12 months" },
-			{ value: "85%", label: "Proposal-to-project win rate improvement" },
 		],
 		schemaType: "HomeAndConstructionBusiness",
 		faqs: [
@@ -340,12 +292,6 @@ const industries: Record<string, {
 			"New Year and seasonal campaign expertise to capitalize on Chicago's peak fitness enrollment periods",
 			"Integration experience with fitness software platforms including Mindbody, Glofox, Pike13, and Zen Planner",
 		],
-		stats: [
-			{ value: "2.6x", label: "New member acquisition increase" },
-			{ value: "38%", label: "Improvement in member retention" },
-			{ value: "310%", label: "Social media follower growth" },
-			{ value: "52%", label: "Reduction in cost per new member" },
-		],
 		schemaType: "SportsActivityLocation",
 		faqs: [
 			{ q: "What's the most effective marketing channel for a new fitness studio in Chicago?", a: "For a new studio, we recommend a combination of Google Business Profile optimization (immediate local visibility), Instagram content (community and culture building), and a targeted launch offer on Facebook/Instagram Ads. A well-structured founding member campaign in the 60 days before opening can fill your first classes before you unlock the doors." },
@@ -376,17 +322,11 @@ const industries: Record<string, {
 			"Service department marketing: we generate oil change, tire, and repair appointments alongside new/used vehicle leads",
 			"Reputation management for high-review-volume businesses: dealerships receive more reviews than almost any other business type, and we manage them proactively",
 		],
-		stats: [
-			{ value: "4.3x", label: "Return on ad spend" },
-			{ value: "61%", label: "Increase in test drive appointments" },
-			{ value: "145%", label: "Service department lead growth" },
-			{ value: "34%", label: "Reduction in cost per vehicle sold" },
-		],
 		schemaType: "AutoDealer",
 		faqs: [
 			{ q: "What are Google Vehicle Ads and how do they work for dealerships?", a: "Google Vehicle Ads (previously called Vehicle Listing Ads) appear at the top of Google search results and showcase individual vehicles from your inventory with photo, price, mileage, and dealership name. They require a properly formatted vehicle inventory feed uploaded to Google Merchant Center. They typically deliver significantly better CTR than standard text ads for in-market car buyers." },
 			{ q: "How do you market a dealership's service department?", a: "Service department marketing focuses on different intent than vehicle sales. We run Google Ads targeting searches like 'oil change near me,' 'tire rotation Chicago,' and 'brake repair [neighborhood].' We also build a review generation strategy for service specifically (separate from sales) and optimize your Google Business Profile service menu to appear in service-category searches." },
-			{ q: "How important are Google reviews for a car dealership?", a: "Extremely important. Dealerships are among the highest-review-volume business categories, and your rating directly influences whether car buyers choose to contact you. We implement systematic post-sale and post-service review request campaigns across your CRM, targeting customers at the peak satisfaction moment. Most dealerships we work with improve their rating by 0.3–0.7 stars within 90 days." },
+			{ q: "How important are Google reviews for a car dealership?", a: "Extremely important. Dealerships are among the highest-review-volume business categories, and your rating directly influences whether car buyers choose to contact you. We implement systematic post-sale and post-service review request campaigns across your CRM, targeting customers at the peak satisfaction moment. We don't promise a star-rating change." },
 			{ q: "Can you work within OEM co-op advertising guidelines?", a: "Yes. We're experienced with OEM advertising compliance requirements and co-op claim processes. We build compliant campaigns for major manufacturers and can work within brand guidelines while still delivering strong performance. We handle the documentation required for co-op reimbursement submissions." },
 			{ q: "How do you target in-market car buyers in the Chicago metro?", a: "We use Google's in-market audiences for automotive, combined with custom intent audiences built from car model research keywords. On Meta, we target household income, recent car purchase behavior, and interest signals. Geographically, we focus on a realistic drive-time radius around your dealership rather than a simple mile radius, which improves lead quality." },
 		],
@@ -411,12 +351,6 @@ const industries: Record<string, {
 			"High-net-worth audience targeting expertise — reaching affluent prospects requires different strategies than mass-market advertising",
 			"Long sales cycle marketing: financial relationships take time, and we build nurture content that maintains engagement over months-long decision periods",
 			"Practice area specialization: different strategies for RIAs, broker-dealers, CPAs, insurance agents, and mortgage professionals",
-		],
-		stats: [
-			{ value: "3.1x", label: "Qualified prospect inquiry growth" },
-			{ value: "67%", label: "Reduction in cost per AUM dollar acquired" },
-			{ value: "195%", label: "Organic visibility increase" },
-			{ value: "4.6★", label: "Average Google Business Profile rating" },
 		],
 		schemaType: "FinancialService",
 		faqs: [
@@ -448,19 +382,13 @@ const industries: Record<string, {
 			"Service area expansion strategy: we help growing home service companies add new ZIP codes and neighborhoods systematically",
 			"Emergency service marketing: after-hours landing pages, call tracking, and urgency-focused messaging for emergency plumbing, electrical, and HVAC calls",
 		],
-		stats: [
-			{ value: "4.8x", label: "Return on LSA investment" },
-			{ value: "68%", label: "Increase in inbound call volume" },
-			{ value: "41%", label: "Reduction in cost per job booked" },
-			{ value: "190%", label: "Organic traffic growth in 12 months" },
-		],
 		schemaType: "HomeAndConstructionBusiness",
 		faqs: [
 			{ q: "What's the difference between Google LSA and regular Google Ads for home service companies?", a: "Google Local Services Ads (LSA) appear above regular Google Ads and display a 'Google Guaranteed' or 'Google Screened' badge. You pay per lead (call or message), not per click, and Google verifies your license and insurance. Regular Google Ads give more control over keywords and ad copy but have higher upfront costs. For most home service businesses, LSA delivers the lowest cost per booked job and we recommend running both." },
 			{ q: "How do you generate more emergency service calls for plumbers and electricians?", a: "Emergency call capture requires fast-loading mobile pages with click-to-call front and center, Google Ads campaigns targeting emergency keywords ('emergency plumber Chicago,' '24 hour electrician'), and strong Google Business Profile visibility. We also optimize for voice search queries like 'find a plumber near me open now' which are increasingly common for emergency situations." },
-			{ q: "How important are online reviews for home service businesses?", a: "Critical. Home service is one of the highest-trust purchase decisions homeowners make. 87% of consumers read reviews before hiring a contractor. Review count and rating directly impact your Google Local Pack ranking. We implement post-job review request automation that consistently generates new reviews from satisfied customers, typically tripling review velocity within 60 days." },
+			{ q: "How important are online reviews for home service businesses?", a: "Critical. Home service is one of the highest-trust purchase decisions homeowners make. Review count and rating affect whether someone calls. We set up post-job review requests and don't promise a multiple." },
 			{ q: "Can you help us expand our service area without opening new locations?", a: "Yes. We build a network of service area landing pages targeting each suburb and neighborhood you serve — for example 'plumber Evanston,' 'electrician Oak Park,' 'roofer Naperville.' Each page is individually optimized for local search. This strategy systematically expands your organic search footprint across your entire service territory without any physical expansion." },
-			{ q: "How do we track which marketing is generating our booked jobs?", a: "We set up call tracking with unique numbers per channel (Google Ads, organic, LSA, social), form submission tracking, and where possible integrate with your CRM or scheduling software. This gives you a clear view of cost per call and cost per booked job by channel. Most home service businesses are surprised to discover that 40–60% of their marketing spend was going to underperforming channels once proper tracking is in place." },
+			{ q: "How do we track which marketing is generating our booked jobs?", a: "We set up call tracking with unique numbers per channel (Google Ads, organic, LSA, social), form submission tracking, and where possible integrate with your CRM or scheduling software. This gives you a clear view of cost per call and cost per booked job by channel. The point of the tracking is to see which channels actually book jobs." },
 		],
 	},
 };
@@ -469,7 +397,7 @@ const industry = industries[slug as string];
 if (!industry) return Astro.redirect("/404");
 
 const pageTitle = `${industry.name} Marketing Chicago | The Chicago Marketing Agency`;
-const pageDesc = `Expert digital marketing for ${industry.name.toLowerCase()} in Chicago. SEO, web design, paid ads, and more — proven strategies that generate leads and grow revenue.`;
+const pageDesc = `Digital marketing for ${industry.name.toLowerCase()} in Chicago and the suburbs. SEO, websites, and ads, delivered by the team at Bidview Marketing.`;
 const siteUrl = "https://thechicagomarketingagency.com";
 ---
 
@@ -562,12 +490,8 @@ const siteUrl = "https://thechicagomarketingagency.com";
 				)}
 			</div>
 			<div class="ind-intro-stats">
-				{industry.stats.map((stat) => (
-					<div class="ind-stat">
-						<span class="ind-stat-value">{stat.value}</span>
-						<span class="ind-stat-label">{stat.label}</span>
-					</div>
-				))}
+				<p class="ind-stat-note">We don't publish industry-specific averages for this brand. The figures we do cite are on the results page, and they come from Bidview Marketing.</p>
+				<a href="/results/" class="btn btn-outline">See published results</a>
 			</div>
 		</div>
 	</section>
@@ -612,22 +536,7 @@ const siteUrl = "https://thechicagomarketingagency.com";
 		</div>
 	</section>
 
-	<!-- ── RESULTS ── -->
-	<section class="ind-results">
-		<div class="container">
-			<p class="eyebrow" style="color: var(--red); display: block; text-align: center;">Real Results</p>
-			<h2 class="ind-results-heading">What Chicago {industry.shortName} Achieve With Us</h2>
-			<div class="ind-results-grid">
-				{industry.stats.map((stat) => (
-					<div class="ind-result-card">
-						<span class="ind-result-value">{stat.value}</span>
-						<span class="ind-result-label">{stat.label}</span>
-					</div>
-				))}
-			</div>
-			<p class="ind-results-note">Results vary by client, market conditions, and starting baseline. These represent averages across our {industry.shortName.toLowerCase()} client portfolio.</p>
-		</div>
-	</section>
+	<BidviewProof heading={`Published results, not a ${industry.shortName.toLowerCase()} average`} showQuotes quoteCount={2} />
 
 	<!-- ── FAQ ── -->
 	<section class="ind-faq">

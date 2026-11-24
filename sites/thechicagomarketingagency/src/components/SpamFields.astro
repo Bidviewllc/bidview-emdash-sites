@@ -1,0 +1,36 @@
+---
+interface Props {
+	turnstileSiteKey?: string;
+}
+
+const { turnstileSiteKey = "" } = Astro.props;
+---
+
+<div class="hp-field" aria-hidden="true">
+	<label>
+		Company
+		<input type="text" name="bv_hp" tabindex="-1" autocomplete="off" value="" />
+	</label>
+</div>
+<input type="hidden" name="form_started" value="" />
+{turnstileSiteKey && (
+	<div class="cf-turnstile" data-sitekey={turnstileSiteKey} data-action="lead"></div>
+)}
+
+<script>
+	const stamp = String(Date.now());
+	document.querySelectorAll<HTMLInputElement>('input[name="form_started"]').forEach((el) => {
+		if (!el.value) el.value = stamp;
+	});
+</script>
+{turnstileSiteKey && <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}
+
+<style>
+	.hp-field {
+		position: absolute;
+		left: -9999px;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+	}
+</style>

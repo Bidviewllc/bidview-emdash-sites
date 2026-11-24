@@ -114,9 +114,27 @@ Using the wrong command can deploy to the **wrong worker**, leaving the real sit
 | `rosehearinghealthcarecenters.com` | rosehearinghealthcarecenters.com | `rosehearinghealthcarecenters-staging` | `npm run deploy` |
 | `wncaudiology.com` | wncaudiology.com | `wnc-audiology-staging` ⚠️ | `npm run deploy:staging` |
 | `commonwealth-audiology` | *(not launched)* | `commonwealth-audiology` | `npm run deploy` |
-| `thechicagomarketingagency` | *(not launched)* | `thechicagomarketingagency` | `npm run build && npx wrangler deploy` |
+| `thechicagomarketingagency` | thechicagomarketingagency.com | `thechicagomarketingagency` | `npm run build && npx wrangler deploy` |
 | `bidviewmarketing-staging` | *(staging / WIP)* | `bidviewmarketing-staging` | *(no deploy script yet)* |
 | `harness` | *(not launched — preview: harness.local-981.workers.dev)* | `harness` ⚠️ lives on the **learning account** (`981338e6…`) by design until a domain is chosen; move `account_id` to `239e9d01…` at launch | `npm run deploy` |
+
+### The Chicago Marketing Agency is live
+
+`sites/thechicagomarketingagency` is live at https://thechicagomarketingagency.com/ on worker `thechicagomarketingagency`. The old "not launched" note was stale. Deploy with `npm run build && npx wrangler deploy` from that folder. The `deploy` script does not build (Trap 3).
+
+Bump `CACHE_VERSION` in `sites/thechicagomarketingagency/src/worker.ts` whenever rendered HTML changes, or the edge keeps the previous page for up to an hour. The `*.workers.dev` hostname sends `X-Robots-Tag: noindex, nofollow`. The custom domain does not.
+
+Optional environment values for this worker. Leave them unset to keep the default behavior. Do not commit them.
+
+| Name | What it does if set |
+|---|---|
+| `LEAD_NOTIFY_EMAILS` | Comma-separated notification recipients. Default, if unset, is `vince@bidviewmarketing.com`. The `send_email` binding only allows that destination until its allowed addresses are updated, so an extra recipient fails until the binding allows it. A total email failure is logged and shown on the form; the lead is still saved in D1. |
+| `TURNSTILE_SITE_KEY` | Public Turnstile site key. The widget renders only when this is set. |
+| `TURNSTILE_SECRET_KEY` | Turnstile secret. Verification runs only when this and the site key are both set. One without the other does not block leads. |
+| `GA_MEASUREMENT_ID` | GA4 id (`G-…`). Nothing is rendered when it is empty or malformed. |
+| `GTM_CONTAINER_ID` | GTM id (`GTM-…`). Nothing is rendered when it is empty or malformed. |
+
+Set them with `npx wrangler secret put <NAME> --name thechicagomarketingagency` (or `[vars]` for the public ids). Successful contact, SEO-audit, and newsletter submits fire a `generate_lead` event with `form_type` when GA4 or GTM is configured. If both are on, don't also send `generate_lead` from a GTM GA4 tag or the conversion will be counted twice.
 
 ### Three traps in that table
 

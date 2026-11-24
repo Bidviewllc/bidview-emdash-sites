@@ -1,6 +1,7 @@
 ---
 import { getEmDashEntry } from "emdash";
 import Base from "../../layouts/Base.astro";
+import { PROOF_ATTRIBUTION, verifiedStats } from "../../lib/proof";
 
 export const cacheHint = 3600;
 
@@ -306,7 +307,7 @@ const whyPoints = [
 	`We understand ${neighborhoodName}'s competitive landscape — who your real competitors are, what's working, and where the gaps are.`,
 	`Our strategies are tailored to the ${neighborhoodName} customer profile, not recycled from a template built for another market.`,
 	`You get measurable results with clear reporting — no jargon, no vanity metrics.`,
-	`We're a Chicago team. We know the city's neighborhoods, culture, and business environment better than any remote agency.`,
+	`The work is delivered by Bidview Marketing, serving Chicago and the suburbs. This page is a service-area page, not a claim of a local office.`,
 ];
 
 // ── Related blog posts (static fallback — 3 relevant posts) ──────────────────
@@ -488,22 +489,13 @@ const baseUrl = "https://thechicagomarketingagency.com";
 				<a href="/about/" class="btn btn-primary" style="margin-top: 16px;">About Our Agency →</a>
 			</div>
 			<div class="sa-why-stats">
-				<div class="sa-stat">
-					<span class="sa-stat-value">30+</span>
-					<span class="sa-stat-label">Chicago Neighborhoods Served</span>
-				</div>
-				<div class="sa-stat">
-					<span class="sa-stat-value">7</span>
-					<span class="sa-stat-label">Full-Service Offerings</span>
-				</div>
-				<div class="sa-stat">
-					<span class="sa-stat-value">150+</span>
-					<span class="sa-stat-label">Chicago Clients</span>
-				</div>
-				<div class="sa-stat">
-					<span class="sa-stat-value">12+</span>
-					<span class="sa-stat-label">Years in Chicago</span>
-				</div>
+				{verifiedStats.map((stat) => (
+					<div class="sa-stat">
+						<span class="sa-stat-value">{stat.value}</span>
+						<span class="sa-stat-label">{stat.label}</span>
+					</div>
+				))}
+				<p class="sa-stat-source">{PROOF_ATTRIBUTION}</p>
 			</div>
 		</div>
 	</section>
@@ -937,6 +929,12 @@ const baseUrl = "https://thechicagomarketingagency.com";
 	margin-top: 1px;
 }
 
+.sa-stat-source {
+	grid-column: 1 / -1;
+	font-size: 0.8125rem;
+	color: var(--text-muted);
+	line-height: 1.5;
+}
 .sa-why-stats {
 	display: grid;
 	grid-template-columns: 1fr 1fr;

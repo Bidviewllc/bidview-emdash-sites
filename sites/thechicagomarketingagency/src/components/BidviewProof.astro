@@ -1,0 +1,153 @@
+---
+import { BIDVIEW_URL, PROOF_ATTRIBUTION, verifiedQuotes, verifiedStats } from "../lib/proof";
+
+interface Props {
+	showStats?: boolean;
+	showQuotes?: boolean;
+	quoteCount?: number;
+	heading?: string;
+	tone?: "light" | "dark";
+}
+
+const {
+	showStats = true,
+	showQuotes = false,
+	quoteCount = 3,
+	heading = "Results from the team that does the work",
+	tone = "light",
+} = Astro.props;
+
+const quotes = verifiedQuotes.slice(0, quoteCount);
+---
+
+<section class:list={["bv-proof", tone === "dark" && "bv-proof-dark"]}>
+	<div class="container">
+		<p class="bv-kicker">Powered by Bidview Marketing</p>
+		<h2>{heading}</h2>
+		<p class="bv-note">{PROOF_ATTRIBUTION}</p>
+		{showStats && (
+			<div class="bv-stats">
+				{verifiedStats.map((stat) => (
+					<div class="bv-stat">
+						<span class="bv-value">{stat.value}</span>
+						<span class="bv-label">{stat.label}</span>
+					</div>
+				))}
+			</div>
+		)}
+		{showQuotes && (
+			<div class="bv-quotes">
+				{quotes.map((item) => (
+					<blockquote class="bv-quote">
+						<p>"{item.quote}"</p>
+						<footer>
+							<strong>{item.name}</strong>
+							<span>{item.role}</span>
+							<span>Client of Bidview Marketing</span>
+						</footer>
+					</blockquote>
+				))}
+			</div>
+		)}
+		<p class="bv-source">
+			<a href={BIDVIEW_URL} target="_blank" rel="noopener noreferrer">Source: bidviewmarketing.com</a>
+		</p>
+	</div>
+</section>
+
+<style>
+	.bv-proof {
+		padding: 72px 0;
+		background: var(--off-white);
+	}
+	.bv-proof-dark {
+		background: var(--navy);
+		color: var(--white);
+	}
+	.bv-kicker {
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--red);
+		margin-bottom: 10px;
+	}
+	.bv-proof h2 {
+		font-size: clamp(1.75rem, 3vw, 2.25rem);
+		max-width: 720px;
+		margin-bottom: 12px;
+	}
+	.bv-proof-dark h2 { color: var(--white); }
+	.bv-note {
+		max-width: 720px;
+		color: var(--text-muted);
+		margin-bottom: 32px;
+	}
+	.bv-proof-dark .bv-note { color: rgba(255,255,255,0.7); }
+	.bv-stats {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 20px;
+		margin-bottom: 28px;
+	}
+	.bv-stat {
+		background: var(--white);
+		border: 1px solid var(--border);
+		border-radius: var(--radius-lg);
+		padding: 24px;
+	}
+	.bv-proof-dark .bv-stat {
+		background: rgba(255,255,255,0.04);
+		border-color: rgba(255,255,255,0.08);
+	}
+	.bv-value {
+		display: block;
+		font-size: 2rem;
+		font-weight: 800;
+		letter-spacing: -0.03em;
+		color: var(--red);
+		margin-bottom: 8px;
+	}
+	.bv-label {
+		display: block;
+		color: var(--text-muted);
+		font-size: 0.9375rem;
+	}
+	.bv-proof-dark .bv-label { color: rgba(255,255,255,0.75); }
+	.bv-quotes {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 20px;
+		margin-bottom: 20px;
+	}
+	.bv-quote {
+		margin: 0;
+		background: var(--white);
+		border-left: 3px solid var(--red);
+		border-radius: var(--radius);
+		padding: 20px;
+	}
+	.bv-proof-dark .bv-quote {
+		background: rgba(255,255,255,0.04);
+	}
+	.bv-quote p {
+		font-size: 0.9375rem;
+		line-height: 1.6;
+		margin-bottom: 16px;
+	}
+	.bv-proof-dark .bv-quote p { color: rgba(255,255,255,0.88); }
+	.bv-quote footer {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		font-size: 0.8125rem;
+		color: var(--text-muted);
+	}
+	.bv-quote footer strong { color: var(--text-dark); }
+	.bv-proof-dark .bv-quote footer strong { color: var(--white); }
+	.bv-source { font-size: 0.875rem; }
+	.bv-source a { color: var(--red); text-decoration: underline; }
+	@media (max-width: 900px) {
+		.bv-stats, .bv-quotes { grid-template-columns: 1fr; }
+	}
+</style>
