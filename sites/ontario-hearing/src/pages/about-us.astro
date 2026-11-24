@@ -3,6 +3,7 @@ import Interior from "../layouts/Interior.astro";
 import CtaStrip from "../components/CtaStrip.astro";
 import { getEmDashEntry } from "emdash";
 import { team } from "../data/team";
+import metaDescriptions from "../data/meta-descriptions.json";
 
 const mediaUrl = (img: any): string | null => {
   const key = img?.meta?.storageKey;
@@ -25,7 +26,7 @@ const renderTeam = team;
 ---
 <Interior
   title={d.meta_title ?? "About Us - Ontario Hearing Center | Rochester, NY"}
-  description={d.meta_description ?? "Ontario Hearing Center is an audiology and hearing aid clinic with expert audiologists that provides comprehensive hearing care services in Brighton, Rochester, NY."}
+  description={d.meta_description ?? metaDescriptions["about-us"]}
   pageTitle="About Ontario Hearing Center."
   breadcrumbLabel="About Us"
   breadcrumbs={[{ label: "Home", href: "/" }]}

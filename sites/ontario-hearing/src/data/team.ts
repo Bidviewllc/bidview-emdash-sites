@@ -1,3 +1,5 @@
+import metaDescriptions from "./meta-descriptions.json";
+
 // Current audiologist team — single source of truth for the team grid,
 // individual audiologist pages, and the "other team" cross-links.
 export interface Audiologist {
@@ -21,7 +23,7 @@ export const team: Audiologist[] = [
     photo: "/assets/dr-adam.webp",
     metaTitle: "Dr. Adam Sheppard, Au.D., Ph.D. | Ontario Hearing Center, Rochester NY",
     metaDescription:
-      "Meet Dr. Adam Sheppard, Au.D., Ph.D., Practice Lead at Ontario Hearing Center in Rochester, NY. He is a premier specialist in cochlear implants and audiology.",
+      metaDescriptions["dr-adam-sheppard"],
     bio: `**_Dr. Adam Sheppard, Au.D., Ph.D., F-AAA, leads Ontario Hearing Center in Rochester, NY — bridging research, teaching, and clinical practice._**
 
 Every patient at Ontario Hearing Center is seen by a doctoral-level audiologist. No rushed appointments. No one-size-fits-all recommendations. Just careful diagnosis, honest guidance, and treatment plans built around the sounds and experiences that matter most in your life.

@@ -1,5 +1,6 @@
 ---
 import Interior from "../layouts/Interior.astro";
+import metaDescriptions from "../data/meta-descriptions.json";
 import CtaStrip from "../components/CtaStrip.astro";
 import pagesData from "../data/pages.json";
 import { altFor } from "../lib/imageAlts";
@@ -51,7 +52,7 @@ const schema = {
 ---
 <Interior
   title="Resources | Ontario Hearing Center"
-  description="Read our blog to learn about hearing loss, hearing aids, tinnitus, and more. Our experts provide advice on the best ear care products available. We are your trusted resource for all things ears in Rochester NY!"
+  description={metaDescriptions.resources}
   pageTitle="Hearing health resources."
   pageSubtitle="Straightforward answers to the questions we hear most — written by the audiologists at Ontario Hearing Center."
   breadcrumbLabel="Resources"
