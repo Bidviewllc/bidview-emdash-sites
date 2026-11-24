@@ -40,6 +40,11 @@
 			"binding": "LOADER",
 		},
 	],
+	// Lead mail uses this binding. destination_address is the only recipient
+	// Cloudflare will accept until the binding is widened. LEAD_NOTIFY_EMAILS
+	// (comma-separated, default vince@bidviewmarketing.com) chooses who the
+	// code addresses. Optional, unset means off: TURNSTILE_SITE_KEY,
+	// TURNSTILE_SECRET_KEY, GA_MEASUREMENT_ID, GTM_CONTAINER_ID.
 	"send_email": [
 		{
 			"name": "EMAIL",

@@ -1,6 +1,7 @@
 ---
 import { getEmDashEntry } from "emdash";
 import Base from "../../layouts/Base.astro";
+import BidviewProof from "../../components/BidviewProof.astro";
 
 export const cacheHint = 3600;
 
@@ -234,26 +235,18 @@ if (areaEntry) {
 		.map((n) => ({ slug: n, name: neighborhoods[n].name }));
 }
 
-// ── Parse JSON fields ──────────────────────────────────────────────────────────
-const parseJson = (val: any) => {
-	if (!val) return [];
-	if (Array.isArray(val)) return val;
-	try { return JSON.parse(val); } catch { return []; }
-};
-const caseStudyStats = parseJson(d.case_study_stats_json);
-
 const serviceTitle = d.title as string;
 const pageTitle = `${serviceTitle} in ${neighborhoodName}, Chicago`;
-const pageDesc = `Expert ${serviceTitle.toLowerCase()} for ${neighborhoodName} businesses. The Chicago Marketing Agency helps local businesses in ${neighborhoodName} grow leads, rank higher, and convert more customers.`;
+const pageDesc = `${serviceTitle} for businesses in ${neighborhoodName}. The Chicago Marketing Agency serves Chicago and the suburbs; the work is delivered by the team at Bidview Marketing.`;
 
 const baseUrl = "https://thechicagomarketingagency.com";
 
 // ── Why-choose-us bullets (service-aware, neighborhood-aware) ─────────────────
 const whyPoints = [
-	`We know ${neighborhoodName} — we understand its competitive landscape, its customer demographics, and what it takes to win there.`,
-	`Our ${serviceTitle.toLowerCase()} strategies are built around measurable revenue outcomes, not vanity metrics.`,
-	`You get a dedicated point of contact who knows your neighborhood and reports results in plain language.`,
-	`Every campaign is grounded in data: we audit what's already working in ${neighborhoodName} before building your strategy.`,
+	`${neighborhoodName} is part of the Chicago service area. Campaigns are planned for that market, not copied from a national template.`,
+	`${serviceTitle} work is scoped around leads and revenue you can see in reporting.`,
+	`You get a point of contact and plain-language reporting.`,
+	`We start by looking at what is already true for the business in ${neighborhoodName}, then recommend a plan.`,
 ];
 ---
 
@@ -379,23 +372,7 @@ const whyPoints = [
 		</div>
 	</section>
 
-	<!-- ── STATS (if available from service entry) ── -->
-	{caseStudyStats.length > 0 && (
-		<section class="nb-stats">
-			<div class="container">
-				<p class="eyebrow" style="display: block; text-align: center; color: rgba(255,255,255,0.5); margin-bottom: 8px;">Proven Results</p>
-				<h2 class="nb-stats-heading">What We Deliver for Chicago Businesses</h2>
-				<div class="nb-stats-grid">
-					{caseStudyStats.map((s: any) => (
-						<div class="nb-stat">
-							<span class="nb-stat-value">{s.value}</span>
-							<span class="nb-stat-label">{s.label}</span>
-						</div>
-					))}
-				</div>
-			</div>
-		</section>
-	)}
+	<BidviewProof tone="dark" heading={`Published results behind our ${serviceTitle.toLowerCase()} work`} />
 
 	<!-- ── CTA ── -->
 	<section class="nb-cta">

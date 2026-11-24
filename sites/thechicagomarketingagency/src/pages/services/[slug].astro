@@ -1,6 +1,8 @@
 ---
 import { getEmDashEntry } from "emdash";
 import Base from "../../layouts/Base.astro";
+import BidviewProof from "../../components/BidviewProof.astro";
+import { safeCtaHeading, scrubUnverified } from "../../lib/proof";
 
 export const cacheHint = 3600;
 
@@ -19,14 +21,18 @@ const parseJson = (val: any) => {
 };
 const features = parseJson(d.features_json);
 const processSteps = parseJson(d.process_json);
-const faqs = parseJson(d.faqs_json);
-const caseStudyStats = parseJson(d.case_study_stats_json);
+const faqs = parseJson(d.faqs_json)
+	.map((faq: { q?: string; a?: string }) => ({
+		q: faq.q || "",
+		a: scrubUnverified(faq.a),
+	}))
+	.filter((faq: { q: string; a: string }) => faq.q && faq.a);
 
 const heroHeading = d.hero_heading || d.title;
-const heroSubtext = d.intro || d.excerpt || "";
+const heroSubtext = scrubUnverified(d.intro || d.excerpt || "") || "Serving Chicago and the suburbs. The work is delivered by the team at Bidview Marketing.";
 const heroImage = d.hero_image || "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80";
 const pageTitle = d.meta_title || `${d.title} in Chicago`;
-const pageDesc = d.meta_description || d.excerpt || "";
+const pageDesc = scrubUnverified(d.meta_description || d.excerpt || "") || `${d.title} for businesses in Chicago and the suburbs.`;
 const ctaHeading = d.cta_heading || `Ready to Grow with ${d.title}?`;
 
 // Neighborhood hub links — establishes hub-and-spoke structure for local SEO
@@ -47,7 +53,8 @@ const neighborhoodLinks = [
 	{ name: "Hyde Park", slug: "hyde-park" },
 	{ name: "Pilsen", slug: "pilsen" },
 ];
-const ctaSubtext = d.cta_subtext || "Let's talk about your goals and build a strategy that delivers results.";
+const ctaSubtext = "Tell us about the business. The work is delivered by the team at Bidview Marketing, for companies in Chicago and the suburbs.";
+const honestCtaHeading = safeCtaHeading(ctaHeading, `Ready to talk about ${d.title}?`);
 
 // ── Per-service config (features, case study, stats) ─────────────────────────
 // SVG paths for Feather-style icons (24×24 viewport, stroke, no fill)
@@ -199,26 +206,7 @@ const icons = {
 		</section>
 	)}
 
-	<!-- ── CASE STUDY / RESULTS ── -->
-	{d.case_study_headline && (
-		<section class="svc-result">
-			<div class="container svc-result-inner">
-				<div class="svc-result-text">
-					<span class="eyebrow" style="color: var(--red);">{d.case_study_label || "Real Result"}</span>
-					<h2>{d.case_study_headline}</h2>
-					<p>{d.case_study_body}</p>
-				</div>
-				<div class="svc-result-stats">
-					{caseStudyStats.map((s: any) => (
-						<div class="svc-stat">
-							<span class="svc-stat-value">{s.value}</span>
-							<span class="svc-stat-label">{s.label}</span>
-						</div>
-					))}
-				</div>
-			</div>
-		</section>
-	)}
+	<BidviewProof heading="Published results from the team that does this work" />
 
 	<!-- ── FAQ ── -->
 	{faqs.length > 0 && (
@@ -260,7 +248,7 @@ const icons = {
 	<!-- ── INLINE CTA STRIP ── -->
 	<section class="svc-cta-strip">
 		<div class="container svc-cta-strip-inner">
-			<p class="svc-cta-strip-text">Chicago businesses trust us to grow their revenue online.</p>
+			<p class="svc-cta-strip-text">Serving Chicago and the suburbs. The work is delivered by Bidview Marketing.</p>
 			<a href="/free-seo-audit" class="btn btn-primary">Get My Free Strategy Call →</a>
 		</div>
 	</section>
@@ -268,7 +256,7 @@ const icons = {
 	<!-- ── CTA ── -->
 	<section class="svc-cta">
 		<div class="container svc-cta-inner">
-			<h2>{ctaHeading}</h2>
+			<h2>{honestCtaHeading}</h2>
 			<p>{ctaSubtext}</p>
 			<div class="svc-cta-actions">
 				<a href="/free-seo-audit" class="btn btn-primary">Get My Free SEO Audit →</a>

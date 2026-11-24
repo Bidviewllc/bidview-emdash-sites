@@ -1,6 +1,7 @@
 ---
 import { EmDashHead } from "emdash/ui";
 import { createPublicPageContext } from "emdash/page";
+import { trackingIds } from "../lib/leads";
 
 interface Props {
 	title?: string;
@@ -11,17 +12,37 @@ interface Props {
 
 const { title, description, image, geoNeighborhood } = Astro.props;
 
-// Hardcoded — avoids a D1 round-trip on every page
-const siteTitle = "The Chicago Marketing Agency";
-const fullTitle = title
-	? `${title} — ${siteTitle}`
-	: `${siteTitle} | SEO, Web Design & Digital Marketing in Chicago`;
+const BRAND = "The Chicago Marketing Agency";
+function withBrand(raw?: string) {
+	if (!raw) return `${BRAND} | SEO, Web Design & Digital Marketing in Chicago`;
+	let text = raw.trim();
+	const suffixes = [` — ${BRAND}`, ` – ${BRAND}`, ` - ${BRAND}`, ` | ${BRAND}`];
+	let changed = true;
+	while (changed) {
+		changed = false;
+		for (const suffix of suffixes) {
+			if (text.toLowerCase().endsWith(suffix.toLowerCase())) {
+				text = text.slice(0, -suffix.length).trim();
+				changed = true;
+			}
+		}
+	}
+	if (!text || text.toLowerCase() === BRAND.toLowerCase()) {
+		return `${BRAND} | SEO, Web Design & Digital Marketing in Chicago`;
+	}
+	return `${text} — ${BRAND}`;
+}
+
+const fullTitle = withBrand(title);
 const siteDescription =
 	description ||
-	"Chicago's Premier Digital Marketing Agency. We help Chicago businesses generate more leads, rank higher, and convert visitors into loyal customers.";
+	"Digital marketing for Chicago businesses and the suburbs. Strategy, SEO, websites, and ads, delivered by the team at Bidview Marketing.";
+const ogImage = image || "https://thechicagomarketingagency.com/og.png";
+const noindexHost = Astro.url.hostname.endsWith(".workers.dev");
+const { ga, gtm } = trackingIds();
 
-// Set edge cache headers for performance (skip for form pages)
-const isFormPage = Astro.url.pathname === "/contact" || Astro.url.pathname === "/free-seo-audit";
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const isFormPage = path === "/contact" || path === "/free-seo-audit" || path === "/subscribe";
 if (!isFormPage) {
 	Astro.response.headers.set("Cache-Control", "public, s-maxage=3600, stale-while-revalidate=86400");
 }
@@ -33,9 +54,9 @@ const pageCtx = createPublicPageContext({
 	title: fullTitle,
 	description: siteDescription,
 	canonical: `https://thechicagomarketingagency.com${Astro.url.pathname}`,
-	image,
-	seo: { ogImage: image },
-	siteName: siteTitle,
+	image: ogImage,
+	seo: { ogImage },
+	siteName: BRAND,
 });
 ---
 
@@ -47,8 +68,36 @@ const pageCtx = createPublicPageContext({
 		<title>{fullTitle}</title>
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="shortcut icon" href="/favicon.svg" />
+		<link rel="apple-touch-icon" href="/logo.png" />
 		<meta name="google-site-verification" content="1DAZPbeel5XbSWRBo9elLonYUPgX4Isq8d0SC3pmOWA" />
+		{noindexHost && <meta name="robots" content="noindex, nofollow" />}
 		<EmDashHead page={pageCtx} />
+		{gtm && (
+			<script is:inline define:vars={{ gtm }}>
+				window.dataLayer = window.dataLayer || [];
+				(function (w, d, s, l, i) {
+					w[l] = w[l] || [];
+					w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+					var f = d.getElementsByTagName(s)[0],
+						j = d.createElement(s),
+						dl = l != "dataLayer" ? "&l=" + l : "";
+					j.async = true;
+					j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+					f.parentNode.insertBefore(j, f);
+				})(window, document, "script", "dataLayer", gtm);
+			</script>
+		)}
+		{ga && (
+			<>
+				<script async src={`https://www.googletagmanager.com/gtag/js?id=${ga}`}></script>
+				<script is:inline define:vars={{ ga }}>
+					window.dataLayer = window.dataLayer || [];
+					window.gtag = function () { window.dataLayer.push(arguments); };
+					window.gtag("js", new Date());
+					window.gtag("config", ga);
+				</script>
+			</>
+		)}
 		<script type="application/ld+json" set:html={JSON.stringify([
 			{
 				"@context": "https://schema.org",
@@ -56,33 +105,24 @@ const pageCtx = createPublicPageContext({
 				"name": "The Chicago Marketing Agency",
 				"url": "https://thechicagomarketingagency.com",
 				"logo": "https://thechicagomarketingagency.com/logo.png",
-				"sameAs": [
-					"https://facebook.com",
-					"https://instagram.com",
-					"https://linkedin.com"
-				]
+				"email": "hello@thechicagomarketingagency.com",
+				"description": "Digital marketing for Chicago and the suburbs. Client work is delivered by the team at Bidview Marketing."
 			},
 			{
 				"@context": "https://schema.org",
-				"@type": ["MarketingAgency", "LocalBusiness"],
-				"name": "The Chicago Marketing Agency",
+				"@type": "Service",
+				"name": "Digital marketing for Chicago and the suburbs",
+				"serviceType": "Digital marketing",
 				"url": "https://thechicagomarketingagency.com",
-				"email": "hello@thechicagomarketingagency.com",
-				"areaServed": {
-					"@type": "City",
-					"name": "Chicago",
-					"addressRegion": "IL",
-					"addressCountry": "US"
+				"provider": {
+					"@type": "Organization",
+					"name": "The Chicago Marketing Agency",
+					"url": "https://thechicagomarketingagency.com"
 				},
-				"serviceArea": {
-					"@type": "GeoCircle",
-					"geoMidpoint": {
-						"@type": "GeoCoordinates",
-						"latitude": 41.8781,
-						"longitude": -87.6298
-					},
-					"geoRadius": "30000"
-				}
+				"areaServed": [
+					{ "@type": "City", "name": "Chicago", "addressRegion": "IL", "addressCountry": "US" },
+					{ "@type": "AdministrativeArea", "name": "Chicago metropolitan area", "addressRegion": "IL", "addressCountry": "US" }
+				]
 			}
 		])} />
 		{geoNeighborhood && (
@@ -226,6 +266,11 @@ const pageCtx = createPublicPageContext({
 		</style>
 	</head>
 	<body>
+		{gtm && (
+			<noscript>
+				<iframe src={`https://www.googletagmanager.com/ns.html?id=${gtm}`} height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe>
+			</noscript>
+		)}
 		<!-- ── HEADER ── -->
 		<header class="site-header">
 			<div class="container header-inner">
@@ -301,7 +346,7 @@ const pageCtx = createPublicPageContext({
 									<a href="/chinatown/" class="dropdown-item">Chinatown</a>
 								</div>
 								<div class="mega-cta">
-									<p class="mega-cta-text">We serve 30+ Chicago neighborhoods with full-service digital marketing.</p>
+									<p class="mega-cta-text">Digital marketing for Chicago neighborhoods and the suburbs.</p>
 									<a href="/neighborhoods/" class="btn btn-primary mega-btn">View All Areas →</a>
 								</div>
 							</div>
@@ -391,19 +436,11 @@ const pageCtx = createPublicPageContext({
 							</span>
 						</a>
 						<p class="footer-tagline">
-							Data-driven marketing that grows Chicago businesses. More leads, more revenue, less guesswork.
+							Digital marketing for Chicago and the suburbs. The work is delivered by the team at Bidview Marketing.
 						</p>
-						<div class="footer-social">
-							<a href="https://facebook.com" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
-								<i class="fa-brands fa-facebook-f" aria-hidden="true"></i>
-							</a>
-							<a href="https://instagram.com" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
-								<i class="fa-brands fa-instagram" aria-hidden="true"></i>
-							</a>
-							<a href="https://linkedin.com" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
-								<i class="fa-brands fa-linkedin-in" aria-hidden="true"></i>
-							</a>
-						</div>
+						<p class="footer-backing">
+							<a href="https://www.bidviewmarketing.com/" target="_blank" rel="noopener noreferrer">Bidview Marketing</a>
+						</p>
 					</div>
 
 					<div class="footer-col">
@@ -672,7 +709,17 @@ const pageCtx = createPublicPageContext({
 				color: var(--text-light);
 				line-height: 1.7;
 				margin-top: 16px;
-				max-width: 270px;
+				max-width: 320px;
+			}
+
+			.footer-backing {
+				margin-top: 16px;
+				font-size: 0.875rem;
+			}
+
+			.footer-backing a {
+				color: var(--white);
+				text-decoration: underline;
 			}
 
 			.footer-social {

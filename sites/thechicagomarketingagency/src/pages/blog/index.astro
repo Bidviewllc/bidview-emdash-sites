@@ -1,6 +1,9 @@
 ---
 import { getEmDashCollection } from "emdash";
 import Base from "../../layouts/Base.astro";
+import SpamFields from "../../components/SpamFields.astro";
+import LeadEvent from "../../components/LeadEvent.astro";
+import { trackingIds, turnstileSiteKey } from "../../lib/leads";
 
 export const cacheHint = 3600;
 
@@ -28,6 +31,13 @@ const categories = [
 	{ label: "Industry Guides", value: "industry" },
 ];
 
+const subscribed = Astro.url.searchParams.get("subscribed");
+const subscribeError = Astro.url.searchParams.get("subscribe") === "error";
+const subscribeMessage = Astro.url.searchParams.get("message") || "Please enter a valid email address.";
+const trackSubscribe = Astro.url.searchParams.get("track") === "1";
+const turnstileKey = turnstileSiteKey();
+const tracking = trackingIds();
+
 const formatDate = (val?: Date | string | null): string => {
 	if (!val) return "";
 	try {
@@ -41,7 +51,7 @@ const formatDate = (val?: Date | string | null): string => {
 ---
 
 <Base
-	title="Blog — Chicago Marketing Agency"
+	title="Blog"
 	description="SEO tips, marketing strategies, and local business growth guides — written for Chicago entrepreneurs and business owners."
 >
 	<!-- ── HERO ── -->
@@ -112,12 +122,23 @@ const formatDate = (val?: Date | string | null): string => {
 	<!-- ── EMAIL SIGNUP ── -->
 	<section class="blog-subscribe">
 		<div class="container blog-subscribe-inner">
-			<h2>Get Free Marketing Insights Every Week</h2>
-			<p>Join 2,400+ Chicago business owners getting actionable SEO and marketing tips straight to their inbox.</p>
-			<form class="subscribe-form" action="/subscribe" method="POST">
-				<input type="email" name="email" placeholder="Your email address" required />
-				<button type="submit" class="btn btn-primary">Subscribe Free</button>
-			</form>
+			<h2>Get marketing notes by email</h2>
+			<p>Occasional SEO and marketing notes for Chicago-area business owners. No subscriber count, and no spam.</p>
+			{subscribed ? (
+				<div class="subscribe-success">
+					<p>{subscribed === "saved"
+						? "We saved your email, but the notification didn't send. Write to hello@thechicagomarketingagency.com if you want to be sure we saw it."
+						: "You're on the list. You can unsubscribe any time."}</p>
+					{trackSubscribe && <LeadEvent formType="subscribe" ga={tracking.ga} gtm={tracking.gtm} />}
+				</div>
+			) : (
+				<form class="subscribe-form" action="/subscribe" method="POST">
+					{subscribeError && <p class="subscribe-error">{subscribeMessage}</p>}
+					<input type="email" name="email" placeholder="Your email address" required />
+					<SpamFields turnstileSiteKey={turnstileKey} />
+					<button type="submit" class="btn btn-primary">Subscribe Free</button>
+				</form>
+			)}
 			<p class="subscribe-note">No spam. Unsubscribe anytime.</p>
 		</div>
 	</section>
@@ -364,6 +385,12 @@ const formatDate = (val?: Date | string | null): string => {
 	border-color: rgba(255,255,255,0.5);
 }
 
+.subscribe-success,
+.subscribe-error {
+	margin-bottom: 12px;
+	font-size: 0.9375rem;
+}
+.subscribe-error { color: #fecaca; }
 .subscribe-note {
 	font-size: 0.8125rem;
 	color: rgba(255,255,255,0.35);

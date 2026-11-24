@@ -1,5 +1,6 @@
 ---
 import Base from "../../layouts/Base.astro";
+import { verifiedStats, PROOF_ATTRIBUTION, BIDVIEW_URL } from "../../lib/proof";
 
 export const cacheHint = 3600;
 
@@ -132,7 +133,7 @@ const services = [
 					<div class="svcs-why-points">
 						<div class="why-point">
 							<span class="why-check">✓</span>
-							<span>Chicago-based team that knows the local market</span>
+							<span>Serving Chicago and the suburbs, with the work done by Bidview Marketing</span>
 						</div>
 						<div class="why-point">
 							<span class="why-check">✓</span>
@@ -150,22 +151,13 @@ const services = [
 					<a href="/about" class="btn btn-outline">Meet the Team</a>
 				</div>
 				<div class="svcs-why-stats">
-					<div class="why-stat">
-						<span class="why-stat-value">150+</span>
-						<span class="why-stat-label">Chicago clients served</span>
-					</div>
-					<div class="why-stat">
-						<span class="why-stat-value">$12M+</span>
-						<span class="why-stat-label">Revenue generated</span>
-					</div>
-					<div class="why-stat">
-						<span class="why-stat-value">94%</span>
-						<span class="why-stat-label">Client retention rate</span>
-					</div>
-					<div class="why-stat">
-						<span class="why-stat-value">7+</span>
-						<span class="why-stat-label">Years in Chicago</span>
-					</div>
+					{verifiedStats.map((stat) => (
+						<div class="why-stat">
+							<span class="why-stat-value">{stat.value}</span>
+							<span class="why-stat-label">{stat.label}</span>
+						</div>
+					))}
+					<p class="why-stat-source">{PROOF_ATTRIBUTION} <a href={BIDVIEW_URL}>Source</a></p>
 				</div>
 			</div>
 		</div>
@@ -382,6 +374,15 @@ const services = [
 	margin-top: 1px;
 }
 
+.why-stat-source {
+	grid-column: 1 / -1;
+	background: var(--white);
+	padding: 16px 20px;
+	font-size: 0.8125rem;
+	color: var(--text-muted);
+	line-height: 1.5;
+}
+.why-stat-source a { color: var(--red); }
 .svcs-why-stats {
 	display: grid;
 	grid-template-columns: 1fr 1fr;

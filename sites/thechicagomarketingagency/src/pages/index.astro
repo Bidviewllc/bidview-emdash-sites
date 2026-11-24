@@ -1,31 +1,30 @@
 ---
 import Base from "../layouts/Base.astro";
+import { BIDVIEW_URL, PROOF_ATTRIBUTION, verifiedQuotes, verifiedStats } from "../lib/proof";
 
 export const cacheHint = 3600;
 ---
 
 <Base
-	title="Chicago's Premier Digital Marketing Agency"
-	description="We help Chicago businesses generate more leads, rank higher, and convert visitors into loyal customers — with measurable results you can see every month."
+	title="Digital Marketing for Chicago Businesses"
+	description="SEO, websites, and ads for Chicago businesses and the suburbs. The work is delivered by the team at Bidview Marketing."
 >
 	<!-- ── 1. HERO ── -->
 	<section class="hero">
 		<div class="container hero-inner">
 			<div class="hero-content">
-				<span class="eyebrow">Chicago's Premier Digital Marketing Agency</span>
+				<span class="eyebrow">Chicago and the suburbs</span>
 				<h1>Grow Your Chicago Business With Data-Driven Marketing</h1>
 				<p class="hero-sub">
-					We help Chicago businesses generate more leads, rank higher, and
-					convert visitors into loyal customers — with measurable results you
-					can see every month.
+					SEO, websites, and ads for businesses in Chicago and the suburbs.
+					The work is delivered by the team at Bidview Marketing.
 				</p>
 				<div class="hero-actions">
 					<a href="/free-seo-audit" class="btn btn-primary">Get a Free Strategy Call</a>
-					<a href="/results" class="btn btn-outline">See Our Work</a>
+					<a href="/results" class="btn btn-outline">See Published Results</a>
 				</div>
 				<div class="hero-trust">
-					<span class="stars">★★★★★</span>
-					<span>Rated 4.5/5 by 200+ Chicago businesses</span>
+					<span>Powered by the team at <a href={BIDVIEW_URL}>Bidview Marketing</a></span>
 				</div>
 			</div>
 			<div class="hero-visual">
@@ -51,26 +50,14 @@ export const cacheHint = 3600;
 	<!-- ── 2. STATS BAR ── -->
 	<section class="stats-bar" style="background:#F0F2F5;padding:0;min-height:120px;">
 		<div class="container stats-inner">
-			<div class="stat">
-				<strong>500+</strong>
-				<span>Projects Completed</span>
-			</div>
-			<div class="stat-divider"></div>
-			<div class="stat">
-				<strong>12+</strong>
-				<span>Years In Chicago</span>
-			</div>
-			<div class="stat-divider"></div>
-			<div class="stat">
-				<strong class="stat-red">4.9★</strong>
-				<span>Average Client Rating</span>
-			</div>
-			<div class="stat-divider"></div>
-			<div class="stat">
-				<strong>Chicago</strong>
-				<span>Locally Rooted &amp; Proud</span>
-			</div>
+			{verifiedStats.map((stat) => (
+				<div class="stat">
+					<strong class="stat-red">{stat.value}</strong>
+					<span>{stat.label}</span>
+				</div>
+			))}
 		</div>
+		<p class="stats-source">{PROOF_ATTRIBUTION} <a href={BIDVIEW_URL}>Source</a></p>
 	</section>
 
 	<!-- ── 3. SERVICES ── -->
@@ -189,44 +176,16 @@ export const cacheHint = 3600;
 		</div>
 	</section>
 
-	<!-- ── 5. RESULTS — two split-cards ── -->
 	<section class="results-section">
 		<div class="container">
 			<div class="section-header">
-				<span class="eyebrow">Client Results</span>
-				<h2>Real Growth. Real Chicago Businesses.</h2>
+				<span class="eyebrow">Published results</span>
+				<h2>Work you can check on Bidview's site</h2>
+				<p>{PROOF_ATTRIBUTION}</p>
 			</div>
-
-			<!-- Row 1: dark navy stat LEFT + text RIGHT, full border card -->
-			<div class="result-row">
-				<div class="result-stat-box result-stat-dark">
-					<div class="big-stat">+285%</div>
-					<div class="big-stat-label">Revenue Growth</div>
-					<div class="big-stat-client">Chicago Dental Practice</div>
-				</div>
-				<div class="result-text-box">
-					<span class="result-tag">SEO + Paid Ads</span>
-					<h3>From 12 to 200+ monthly leads in just 8 months</h3>
-					<p>This multi-location dental group was struggling to compete online. We rebuilt their local SEO presence, launched precision Google Ads campaigns, and created content that dominated Chicago dental searches.</p>
-				</div>
-			</div>
-
-			<!-- Row 2: plain text LEFT + red stat box RIGHT (no border wrapper) -->
-			<div class="result-row-2">
-				<div class="result-text-box-plain">
-					<span class="result-tag">Web Design + CRO</span>
-					<h3>3x more conversions after full website redesign</h3>
-					<p>A Chicago law firm was getting traffic but no calls. Our conversion-focused redesign with clearer CTAs, trust signals, and mobile optimization tripled their lead intake within 90 days.</p>
-				</div>
-				<div class="result-stat-box result-stat-red">
-					<div class="big-stat">3x</div>
-					<div class="big-stat-label">More Conversions</div>
-					<div class="big-stat-client">Chicago Law Firm</div>
-				</div>
-			</div>
-
 			<div class="results-cta">
-				<a href="/results" class="btn btn-outline">View All Case Studies →</a>
+				<a href="/results" class="btn btn-outline">Read the published results →</a>
+				<a href={BIDVIEW_URL} class="btn btn-outline">Bidview Marketing</a>
 			</div>
 		</div>
 	</section>
@@ -236,7 +195,7 @@ export const cacheHint = 3600;
 		<div class="container">
 			<div class="section-header">
 				<span class="eyebrow">Areas We Serve</span>
-				<h2>Marketing Services Across 30+ Chicago Neighborhoods</h2>
+				<h2>Marketing for Chicago neighborhoods and the suburbs</h2>
 				<p>Click any neighborhood to see our full service offering in your area.</p>
 			</div>
 			<div class="home-map-layout">
@@ -298,7 +257,7 @@ export const cacheHint = 3600;
 			<div class="section-header section-header-inv">
 				<span class="eyebrow">Industries We Serve</span>
 				<h2>We Know Your Industry</h2>
-				<p>Deep expertise across Chicago's most competitive sectors.</p>
+				<p>Services for the kinds of businesses we know how to market, from healthcare and law to home services and e-commerce.</p>
 			</div>
 			<div class="industry-tags">
 				<a href="/industries" class="ind-tag">Healthcare &amp; Dental</a>
@@ -320,42 +279,22 @@ export const cacheHint = 3600;
 		<div class="container">
 			<div class="section-header">
 				<span class="eyebrow">Testimonials</span>
-				<h2>Chicago Businesses Love Working With Us</h2>
+				<h2>What Bidview Marketing clients have said</h2>
+				<p>These quotes are published on bidviewmarketing.com. They are about that team, which delivers the work for this brand.</p>
 			</div>
 			<div class="testimonials-grid">
-				<div class="testi-card">
-					<div class="testi-stars">★★★★★</div>
-					<blockquote>"The Chicago Marketing Agency completely transformed our online presence. Within 8 months, we went from page 4 to ranking #1 for our most competitive keywords. The ROI has been incredible."</blockquote>
-					<div class="testi-author">
-						<div class="testi-avatar">M</div>
-						<div>
-							<strong>Dr. Maria Gonzalez</strong>
-							<span>Owner, Lincoln Park Family Dentist</span>
+				{verifiedQuotes.slice(0, 3).map((item) => (
+					<div class="testi-card">
+						<blockquote>"{item.quote}"</blockquote>
+						<div class="testi-author">
+							<div class="testi-avatar">{item.name.slice(0, 1)}</div>
+							<div>
+								<strong>{item.name}</strong>
+								<span>{item.role} · Client of Bidview Marketing</span>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="testi-card">
-					<div class="testi-stars">★★★★★</div>
-					<blockquote>"We hired CMA for paid ads and content strategy. Our cost-per-lead dropped 60% in 90 days. They're data-obsessed, communicative, and genuinely care about our growth. Best marketing investment we've made."</blockquote>
-					<div class="testi-author">
-						<div class="testi-avatar">J</div>
-						<div>
-							<strong>James Whitfield</strong>
-							<span>CEO, Whitfield Legal Group</span>
-						</div>
-					</div>
-				</div>
-				<div class="testi-card">
-					<div class="testi-stars">★★★★★</div>
-					<blockquote>"Our new website is stunning AND it converts. Social media engagement is up 400%. CMA doesn't just deliver work — they deliver results. Chicago's best marketing agency, period."</blockquote>
-					<div class="testi-author">
-						<div class="testi-avatar">P</div>
-						<div>
-							<strong>Priya Sharma</strong>
-							<span>Marketing Director, Nexus Group</span>
-						</div>
-					</div>
-				</div>
+				))}
 			</div>
 		</div>
 	</section>
@@ -376,15 +315,11 @@ export const cacheHint = 3600;
 			<ul class="cta-trust">
 				<li>
 					<i class="fa-solid fa-check" aria-hidden="true"></i>
-					No long-term contracts
+					Serving Chicago and the suburbs
 				</li>
 				<li>
 					<i class="fa-solid fa-check" aria-hidden="true"></i>
-					Results in 90 days or less
-				</li>
-				<li>
-					<i class="fa-solid fa-check" aria-hidden="true"></i>
-					Chicago-based team
+					Work delivered by Bidview Marketing
 				</li>
 			</ul>
 		</div>
@@ -467,12 +402,28 @@ export const cacheHint = 3600;
 
 	.stats-inner {
 		display: flex;
-		align-items: center;
+		align-items: flex-start;
 		justify-content: space-around;
-		height: 120px;
-		padding: 0 60px;
+		gap: 24px;
+		height: auto;
+		padding: 28px 40px 8px;
 		max-width: var(--max-w);
 		margin: 0 auto;
+	}
+
+	.stats-source {
+		max-width: 760px;
+		margin: 0 auto;
+		padding: 8px 24px 28px;
+		text-align: center;
+		font-size: 0.8125rem;
+		color: var(--text-muted);
+	}
+
+	.stats-source a,
+	.hero-trust a {
+		color: var(--red);
+		text-decoration: underline;
 	}
 
 	.stat {
@@ -496,6 +447,7 @@ export const cacheHint = 3600;
 		font-size: 0.8125rem;
 		color: #64748b;
 		font-weight: 500;
+		max-width: 240px;
 	}
 
 	.stat-divider {

@@ -1,80 +1,22 @@
 ---
 import Base from "../layouts/Base.astro";
-import { env } from "cloudflare:workers";
-// @ts-ignore
-import { EmailMessage } from "cloudflare:email";
-
-async function sendNotification(subject: string, body: string) {
-	const raw = [
-		`From: Chicago Marketing Agency <hello@thechicagomarketingagency.com>`,
-		`To: vince@bidviewmarketing.com`,
-		`Subject: ${subject}`,
-		`MIME-Version: 1.0`,
-		`Content-Type: text/plain; charset=UTF-8`,
-		``,
-		body,
-	].join("\r\n");
-	await (env as any).EMAIL.send(new EmailMessage("hello@thechicagomarketingagency.com", "vince@bidviewmarketing.com", raw));
-}
+import SpamFields from "../components/SpamFields.astro";
+import LeadEvent from "../components/LeadEvent.astro";
+import { handleLead, trackingIds, turnstileSiteKey, type LeadStatus } from "../lib/leads";
 
 export const cacheHint = 0;
 
-let formStatus: "idle" | "success" | "error" = "idle";
+const turnstileKey = turnstileSiteKey();
+const tracking = trackingIds();
+let formStatus: LeadStatus | "idle" = "idle";
 let formMessage = "";
+let trackLead = false;
 
 if (Astro.request.method === "POST") {
-	try {
-		const formData = await Astro.request.formData();
-		const firstName = formData.get("firstName")?.toString() || "";
-		const lastName = formData.get("lastName")?.toString() || "";
-		const email = formData.get("email")?.toString() || "";
-		const phone = formData.get("phone")?.toString() || "";
-		const service = formData.get("service")?.toString() || "";
-		const message = formData.get("message")?.toString() || "";
-
-		if (!firstName || !email || !message) {
-			formStatus = "error";
-			formMessage = "Please fill in all required fields.";
-		} else if (!email.includes("@")) {
-			formStatus = "error";
-			formMessage = "Please enter a valid email address.";
-		} else {
-			const db = env.DB;
-			const id = Date.now().toString(36) + Math.random().toString(36).slice(2);
-			const revId = id + 'r';
-			const slug = `contact-${id}`;
-			const senderTitle = [firstName, lastName].filter(Boolean).join(" ") || email;
-			const data = JSON.stringify({ title: senderTitle, form_type: 'contact', first_name: firstName, last_name: lastName, email, phone, service, message, read_status: 'unread' });
-			await db.batch([
-				db.prepare(
-					`INSERT INTO revisions (id, collection, entry_id, data) VALUES (?, 'form_submissions', ?, ?)`
-				).bind(revId, id, data),
-				db.prepare(
-					`INSERT INTO ec_form_submissions (id, slug, status, title, form_type, first_name, last_name, email, phone, service, message, read_status, live_revision_id)
-					 VALUES (?, ?, 'published', ?, 'contact', ?, ?, ?, ?, ?, ?, 'unread', ?)`
-				).bind(id, slug, senderTitle, firstName, lastName, email, phone, service, message, revId),
-			]);
-			await sendNotification(
-				`New Contact Form: ${senderTitle}`,
-				[
-					`Name: ${senderTitle}`,
-					`Email: ${email}`,
-					`Phone: ${phone || "—"}`,
-					`Service: ${service || "—"}`,
-					``,
-					`Message:`,
-					message,
-					``,
-					`View in admin: https://thechicagomarketingagency.com/_emdash`,
-				].join("\n")
-			).catch(() => {}); // don't block the user if email fails
-			formStatus = "success";
-			formMessage = "Thanks! We'll get back to you within 1 business day.";
-		}
-	} catch {
-		formStatus = "error";
-		formMessage = "Something went wrong. Please try again.";
-	}
+	const result = await handleLead(Astro.request, "contact");
+	formStatus = result.status;
+	formMessage = result.message;
+	trackLead = result.track;
 }
 
 const services = [
@@ -90,7 +32,7 @@ const services = [
 ---
 
 <Base
-	title="Contact Us — The Chicago Marketing Agency"
+	title="Contact Us"
 	description="Schedule a free 30-minute strategy call or send us a message. We respond within 1 business day."
 >
 	<!-- ── HERO ── -->
@@ -113,12 +55,13 @@ const services = [
 			<!-- Form -->
 			<div class="contact-form-col">
 				<h2>Send Us a Message</h2>
-				{formStatus === "success" ? (
+				{formStatus === "success" || formStatus === "saved" ? (
 					<div class="form-success">
 						<div class="success-icon">✓</div>
-						<h3>Message Sent!</h3>
+						<h3>{formStatus === "saved" ? "Message saved" : "Message Sent!"}</h3>
 						<p>{formMessage}</p>
 						<a href="/contact" class="btn btn-primary">Send Another Message</a>
+						{trackLead && <LeadEvent formType="contact" ga={tracking.ga} gtm={tracking.gtm} />}
 					</div>
 				) : (
 					<form method="POST" class="contact-form">
@@ -162,23 +105,15 @@ const services = [
 							<textarea id="message" name="message" rows="5" placeholder="Share your goals, challenges, and what you're trying to achieve..." required></textarea>
 						</div>
 
+						<SpamFields turnstileSiteKey={turnstileKey} />
 						<button type="submit" class="btn btn-primary">Send Message →</button>
 					</form>
 				)}
 			</div>
 
-			<!-- Office info -->
 			<div class="contact-office">
-				<h2>Our Chicago Office</h2>
-				<div class="office-image">
-					<img
-						src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=600&q=80"
-						alt="Chicago city skyline"
-						width="560"
-						height="280"
-						loading="eager"
-					/>
-				</div>
+				<h2>Chicago and the suburbs</h2>
+				<p class="office-lead">We don't publish a Chicago storefront. The Chicago Marketing Agency serves businesses in the city and the surrounding suburbs. The work is done by the team at <a href="https://www.bidviewmarketing.com/">Bidview Marketing</a> in the Libertyville and Chicago area.</p>
 				<div class="office-details">
 					<div class="office-item">
 						<span class="office-icon">
@@ -189,7 +124,7 @@ const services = [
 				</div>
 
 				<div class="office-hours">
-					<h4>Office Hours</h4>
+					<h4>Hours</h4>
 					<p>Monday – Friday: 9am – 6pm CST</p>
 					<p>Weekend: Closed (emails answered Monday)</p>
 				</div>
@@ -250,6 +185,13 @@ const services = [
 
 /* ── FORM ── */
 .contact-form-col h2,
+.office-lead {
+	color: var(--text-muted);
+	margin: 12px 0 20px;
+	line-height: 1.6;
+}
+.office-lead a { color: var(--red); text-decoration: underline; }
+
 .contact-office h2 {
 	font-size: 1.5rem;
 	color: var(--text-dark);

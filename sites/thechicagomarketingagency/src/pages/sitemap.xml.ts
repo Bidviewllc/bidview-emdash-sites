@@ -1,4 +1,5 @@
 import { env } from "cloudflare:workers";
+import { NEIGHBORHOOD_SLUGS } from "../lib/proof";
 
 const SITE = "https://thechicagomarketingagency.com";
 
@@ -13,15 +14,7 @@ const INDUSTRIES = [
 	"auto-dealers", "financial-services", "home-services",
 ];
 
-const NEIGHBORHOODS = [
-	"lincoln-park", "wicker-park", "logan-square", "river-north", "the-loop",
-	"west-loop", "bucktown", "lakeview", "old-town", "gold-coast",
-	"streeterville", "hyde-park", "pilsen", "bridgeport", "andersonville",
-	"uptown", "edgewater", "rogers-park", "ravenswood", "lincoln-square",
-	"albany-park", "irving-park", "avondale", "humboldt-park",
-	"ukrainian-village", "west-town", "south-loop", "bronzeville",
-	"chinatown", "little-italy",
-];
+const NEIGHBORHOODS = [...NEIGHBORHOOD_SLUGS];
 
 const STATIC_PAGES = [
 	{ url: "/",                      priority: "1.0", changefreq: "weekly"  },
@@ -29,6 +22,8 @@ const STATIC_PAGES = [
 	{ url: "/services/",             priority: "0.9", changefreq: "monthly" },
 	{ url: "/industries/",           priority: "0.8", changefreq: "monthly" },
 	{ url: "/results/",              priority: "0.8", changefreq: "monthly" },
+	{ url: "/pricing/",              priority: "0.6", changefreq: "monthly" },
+	{ url: "/neighborhoods/",        priority: "0.8", changefreq: "monthly" },
 	{ url: "/blog/",                 priority: "0.8", changefreq: "weekly"  },
 	{ url: "/free-seo-audit/",       priority: "0.9", changefreq: "monthly" },
 	{ url: "/contact/",              priority: "0.7", changefreq: "yearly"  },
