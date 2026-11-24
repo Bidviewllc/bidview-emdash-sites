@@ -3,6 +3,12 @@ import { getEmDashEntry } from "emdash";
 import Base from "../../layouts/Base.astro";
 import AuditForm from "../../components/AuditForm.astro";
 import BidviewProof from "../../components/BidviewProof.astro";
+import TrustStrip from "../../components/TrustStrip.astro";
+import WhatNext from "../../components/WhatNext.astro";
+import Objections from "../../components/Objections.astro";
+import FaqBlock from "../../components/FaqBlock.astro";
+import DepthBody from "../../components/DepthBody.astro";
+import { serviceDepth } from "../../lib/depth";
 import { AUDIT_PROMISE, AUDIT_TITLE } from "../../lib/offer";
 import { SUBURBS } from "../../data/places";
 import { safeCtaHeading, scrubAgencyResultClaims, scrubUnverified } from "../../lib/proof";
@@ -24,17 +30,20 @@ const parseJson = (val: any) => {
 };
 const features = parseJson(d.features_json);
 const processSteps = parseJson(d.process_json);
-const faqs = parseJson(d.faqs_json)
+const cmsFaqs = parseJson(d.faqs_json)
 	.map((faq: { q?: string; a?: string }) => ({
 		q: faq.q || "",
 		a: scrubUnverified(scrubAgencyResultClaims(faq.a)),
 	}))
 	.filter((faq: { q: string; a: string }) => faq.q && faq.a);
 
-const heroHeading = d.hero_heading || d.title;
-const heroSubtext = scrubUnverified(d.intro || d.excerpt || "") || "Serving Chicago and the suburbs. The work is delivered by the team at Bidview Marketing.";
-const pageTitle = d.meta_title || `${d.title} in Chicago`;
-const pageDesc = scrubUnverified(d.meta_description || d.excerpt || "") || `${d.title} for businesses in Chicago and the suburbs.`;
+const depth = serviceDepth(slug as string);
+const faqs = depth?.faqs ?? cmsFaqs;
+
+const heroHeading = depth?.h1 || d.hero_heading || d.title;
+const heroSubtext = depth?.lede || scrubUnverified(d.intro || d.excerpt || "") || "Serving Chicago and the suburbs. The work is delivered by the team at Bidview Marketing.";
+const pageTitle = depth?.title || d.meta_title || `${d.title} in Chicago`;
+const pageDesc = depth?.description || scrubUnverified(d.meta_description || d.excerpt || "") || `${d.title} for businesses in Chicago and the suburbs.`;
 const ctaHeading = d.cta_heading || `Ready to Grow with ${d.title}?`;
 
 // Neighborhood hub links — establishes hub-and-spoke structure for local SEO
@@ -87,7 +96,7 @@ const icons = {
 };
 
 ---
-<Base title={pageTitle} description={pageDesc}>
+<Base title={pageTitle} description={pageDesc} cro="quiet">
 	<script type="application/ld+json" set:html={JSON.stringify({
 		"@context": "https://schema.org",
 		"@type": "Service",
@@ -154,16 +163,19 @@ const icons = {
 					<span>/</span>
 					<span>{d.title}</span>
 				</nav>
-				<span class="eyebrow">{d.title}</span>
+				<span class="eyebrow">{depth?.eyebrow || d.title}</span>
 				<h1>{heroHeading}</h1>
 				{heroSubtext && <p class="svc-hero-desc">{heroSubtext}</p>}
-				<p class="svc-hero-desc">{AUDIT_TITLE}. {AUDIT_PROMISE}</p>
 			</div>
 			<AuditForm />
 		</div>
 	</section>
 
+	<TrustStrip />
+	{depth && <DepthBody page={depth} />}
+
 	<!-- ── FEATURES ── -->
+	{!depth && (
 	<section class="svc-features">
 		<div class="container">
 			<p class="eyebrow" style="color: var(--red); display: block; text-align: center;">What's Included</p>
@@ -181,9 +193,10 @@ const icons = {
 			</div>
 		</div>
 	</section>
+	)}
 
 	<!-- ── PROCESS ── -->
-	{processSteps.length > 0 && (
+	{!depth && processSteps.length > 0 && (
 		<section class="svc-process">
 			<div class="container">
 				<p class="eyebrow" style="color: var(--red); display: block; text-align: center;">How It Works</p>
@@ -203,28 +216,11 @@ const icons = {
 		</section>
 	)}
 
-	<BidviewProof heading="Published results from the team that does this work" />
+	<BidviewProof heading="Published results from the team that does this work" showQuotes quoteCount={2} />
 
-	<!-- ── FAQ ── -->
-	{faqs.length > 0 && (
-		<section class="svc-faq">
-			<div class="container svc-faq-inner">
-				<div class="svc-faq-header">
-					<p class="eyebrow" style="color: var(--red);">Common Questions</p>
-					<h2>Frequently Asked Questions</h2>
-					<p class="svc-faq-sub">Can't find what you're looking for? <a href="/contact">Talk to our team.</a></p>
-				</div>
-				<div class="svc-faq-list">
-					{faqs.map((faq: any) => (
-						<details class="svc-faq-item">
-							<summary class="svc-faq-q">{faq.q}</summary>
-							<div class="svc-faq-a"><p>{faq.a}</p></div>
-						</details>
-					))}
-				</div>
-			</div>
-		</section>
-	)}
+	<WhatNext />
+	<FaqBlock heading={`Questions about ${d.title}`} faqs={faqs} />
+	<Objections />
 
 	<!-- ── NEIGHBORHOOD HUB LINKS ── -->
 	<section class="svc-neighborhoods">

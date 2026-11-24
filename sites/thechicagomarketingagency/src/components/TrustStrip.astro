@@ -1,0 +1,83 @@
+---
+import { BIDVIEW_URL, PROOF_ATTRIBUTION, verifiedStats } from "../lib/proof";
+
+interface Props {
+	compact?: boolean;
+}
+
+const { compact = false } = Astro.props;
+---
+
+<aside class:list={["trust-strip", compact && "trust-strip-compact"]} aria-label="Published results from Bidview Marketing">
+	<div class="container trust-inner">
+		<p class="trust-kicker">Published results, not a forecast</p>
+		<ul class="trust-stats">
+			{verifiedStats.map((stat) => (
+				<li>
+					<strong>{stat.value}</strong>
+					<span>{stat.label}</span>
+				</li>
+			))}
+		</ul>
+		<p class="trust-source">
+			{PROOF_ATTRIBUTION}{" "}
+			<a href={BIDVIEW_URL} target="_blank" rel="noopener noreferrer">Source</a>
+		</p>
+	</div>
+</aside>
+
+<style>
+	.trust-strip {
+		background: var(--paper, var(--off-white));
+		border-bottom: 1px solid var(--border);
+		padding: 28px 0 24px;
+	}
+	.trust-kicker {
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--lake, var(--red));
+		margin-bottom: 14px;
+	}
+	.trust-stats {
+		list-style: none;
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 20px;
+	}
+	.trust-stats li {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+	}
+	.trust-stats strong {
+		font-family: var(--display, var(--font));
+		font-size: clamp(1.75rem, 3vw, 2.25rem);
+		font-weight: 560;
+		letter-spacing: -0.03em;
+		color: var(--brick, var(--red));
+		line-height: 1;
+	}
+	.trust-stats span {
+		font-size: 0.875rem;
+		color: var(--text-muted);
+		max-width: 28ch;
+		line-height: 1.45;
+	}
+	.trust-source {
+		margin-top: 16px;
+		font-size: 0.8125rem;
+		color: var(--text-muted);
+		max-width: 78ch;
+		line-height: 1.5;
+	}
+	.trust-source a {
+		color: var(--lake, var(--red));
+		text-decoration: underline;
+		text-underline-offset: 2px;
+	}
+	@media (max-width: 800px) {
+		.trust-stats { grid-template-columns: 1fr; gap: 16px; }
+	}
+</style>

@@ -116,7 +116,7 @@ const quotes = verifiedQuotes.slice(0, quoteCount);
 	.bv-proof-dark .bv-label { color: rgba(255,255,255,0.75); }
 	.bv-quotes {
 		display: grid;
-		grid-template-columns: repeat(3, 1fr);
+		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 		gap: 20px;
 		margin-bottom: 20px;
 	}

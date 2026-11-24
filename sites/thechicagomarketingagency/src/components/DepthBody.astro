@@ -1,0 +1,135 @@
+---
+import type { DepthPage } from "../lib/depth";
+
+interface Props {
+	page: DepthPage;
+}
+
+const { page } = Astro.props;
+---
+
+<div class="depth">
+	{page.sections.map((section) => (
+		<section class="depth-section">
+			<div class="container depth-narrow">
+				<h2>{section.heading}</h2>
+				{section.paragraphs.map((paragraph) => (
+					<p>{paragraph}</p>
+				))}
+				{section.bullets && (
+					<ul class="depth-bullets">
+						{section.bullets.map((item) => (
+							<li>
+								<h3>{item.title}</h3>
+								<p>{item.body}</p>
+							</li>
+						))}
+					</ul>
+				)}
+			</div>
+		</section>
+	))}
+
+	<section class="depth-section depth-alt">
+		<div class="container">
+			<h2>What you receive</h2>
+			<ul class="depth-cards">
+				{page.deliverables.map((item) => (
+					<li>
+						<h3>{item.title}</h3>
+						<p>{item.body}</p>
+					</li>
+				))}
+			</ul>
+		</div>
+	</section>
+
+	<section class="depth-section">
+		<div class="container depth-narrow">
+			<h2>{page.pricingHeading}</h2>
+			{page.pricing.map((paragraph) => (
+				<p>{paragraph}</p>
+			))}
+		</div>
+	</section>
+
+	<section class="depth-section depth-alt">
+		<div class="container">
+			<h2>Related pages</h2>
+			<ul class="depth-links">
+				{page.links.map((link) => (
+					<li>
+						<a href={link.href}>
+							<strong>{link.label}</strong>
+							<span>{link.note}</span>
+						</a>
+					</li>
+				))}
+			</ul>
+		</div>
+	</section>
+</div>
+
+<style>
+	.depth-section { padding: 64px 0; background: var(--white); }
+	.depth-alt { background: var(--sand, var(--off-white)); }
+	.depth-narrow { max-width: 760px; }
+	.depth h2 {
+		font-size: clamp(1.6rem, 3vw, 2.15rem);
+		margin-bottom: 16px;
+	}
+	.depth-narrow p {
+		color: var(--text-muted);
+		font-size: 1.05rem;
+		line-height: 1.7;
+		margin-bottom: 14px;
+	}
+	.depth-bullets, .depth-cards, .depth-links {
+		list-style: none;
+		margin-top: 8px;
+	}
+	.depth-bullets li {
+		padding: 16px 0;
+		border-top: 1px solid var(--border);
+	}
+	.depth-bullets h3, .depth-cards h3 {
+		font-family: var(--font);
+		font-size: 1rem;
+		font-weight: 700;
+		letter-spacing: 0;
+		margin-bottom: 6px;
+	}
+	.depth-bullets p, .depth-cards p {
+		color: var(--text-muted);
+		line-height: 1.6;
+	}
+	.depth-cards {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+		gap: 14px;
+	}
+	.depth-cards li {
+		background: var(--white);
+		border: 1px solid var(--border);
+		border-radius: var(--radius-lg);
+		padding: 20px;
+	}
+	.depth-links {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+		gap: 12px;
+	}
+	.depth-links a {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+		background: var(--white);
+		border: 1px solid var(--border);
+		border-radius: var(--radius-lg);
+		padding: 16px 18px;
+		min-height: 100%;
+	}
+	.depth-links a:hover { border-color: var(--lake, var(--red)); }
+	.depth-links strong { font-size: 1rem; }
+	.depth-links span { color: var(--text-muted); font-size: 0.875rem; line-height: 1.45; }
+</style>

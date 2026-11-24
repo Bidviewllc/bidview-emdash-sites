@@ -1,0 +1,62 @@
+---
+interface Props {
+	title: string;
+	message: string;
+	saved?: boolean;
+}
+
+const { title, message, saved = false } = Astro.props;
+const steps = [
+	"We have the details you sent.",
+	"Someone from Bidview Marketing replies within one business day.",
+	"If we need access to the site, analytics, or the Google Business Profile, we ask then. Nothing else is required to start.",
+];
+---
+
+<div class="thanks" role="status">
+	<p class="thanks-kicker">{saved ? "Saved, with a caveat" : "Request received"}</p>
+	<h2>{title}</h2>
+	<p class="thanks-message">{message}</p>
+	<ol>
+		{steps.map((step) => <li>{step}</li>)}
+	</ol>
+	<p class="thanks-mail">
+		If a business day passes with no reply, email
+		<a href="mailto:hello@thechicagomarketingagency.com">hello@thechicagomarketingagency.com</a>.
+	</p>
+</div>
+
+<style>
+	.thanks {
+		background: var(--white);
+		border: 1px solid var(--border);
+		border-radius: var(--radius-lg);
+		padding: 28px 24px;
+	}
+	.thanks-kicker {
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--lake, var(--red));
+		margin-bottom: 8px;
+	}
+	.thanks h2 {
+		font-size: clamp(1.6rem, 3vw, 2rem);
+		margin-bottom: 10px;
+	}
+	.thanks-message, .thanks-mail, .thanks li {
+		color: var(--text-muted);
+		line-height: 1.6;
+	}
+	.thanks ol {
+		margin: 16px 0 16px 1.1rem;
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+	}
+	.thanks a {
+		color: var(--lake, var(--red));
+		text-decoration: underline;
+	}
+</style>

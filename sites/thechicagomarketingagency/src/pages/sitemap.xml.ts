@@ -65,12 +65,12 @@ export const GET = async () => {
 
 	// Service pages
 	for (const s of SERVICES) {
-		entries.push(url(`/services/${s}/`, "0.8", "monthly", today));
+		entries.push(url(`/services/${s}/`, s === "seo" ? "0.9" : "0.8", "monthly", today));
 	}
 
 	// Industry pages
 	for (const i of INDUSTRIES) {
-		entries.push(url(`/industries/${i}/`, "0.7", "monthly", today));
+		entries.push(url(`/industries/${i}/`, i === "construction" ? "0.8" : "0.7", "monthly", today));
 	}
 
 	// Blog posts
