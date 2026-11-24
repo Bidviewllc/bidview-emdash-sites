@@ -40,7 +40,7 @@ function withBrand(raw?: string) {
 const fullTitle = withBrand(title);
 const siteDescription =
 	description ||
-	"Digital marketing for Chicago businesses and the suburbs. Strategy, SEO, websites, and ads, delivered by the team at Bidview Marketing.";
+	"Digital marketing for Chicago businesses and the suburbs. Strategy, SEO, websites, and ads.";
 const ogImage = image || "https://thechicagomarketingagency.com/og.png";
 const noindexHost = Astro.url.hostname.endsWith(".workers.dev");
 const { ga, gtm } = trackingIds();
@@ -112,7 +112,7 @@ const pageCtx = createPublicPageContext({
 				"url": "https://thechicagomarketingagency.com",
 				"logo": "https://thechicagomarketingagency.com/logo.png",
 				"email": "hello@thechicagomarketingagency.com",
-				"description": "Digital marketing for Chicago and the suburbs. Client work is delivered by the team at Bidview Marketing."
+				"description": "Digital marketing for Chicago and the suburbs."
 			},
 			{
 				"@context": "https://schema.org",
@@ -501,7 +501,7 @@ const pageCtx = createPublicPageContext({
 							</span>
 						</a>
 						<p class="footer-tagline">
-							Digital marketing for Chicago and the suburbs. The work is delivered by the team at Bidview Marketing.
+							SEO, websites, and ads for Chicago and the suburbs.
 						</p>
 						<p class="footer-backing">
 							<a href="https://www.bidviewmarketing.com/" target="_blank" rel="noopener noreferrer">Bidview Marketing</a>

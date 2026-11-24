@@ -41,7 +41,7 @@ const depth = serviceDepth(slug as string);
 const faqs = depth?.faqs ?? cmsFaqs;
 
 const heroHeading = depth?.h1 || d.hero_heading || d.title;
-const heroSubtext = depth?.lede || scrubUnverified(d.intro || d.excerpt || "") || "Serving Chicago and the suburbs. The work is delivered by the team at Bidview Marketing.";
+const heroSubtext = depth?.lede || scrubUnverified(d.intro || d.excerpt || "") || "Serving Chicago and the suburbs. The free audit is how a scope gets written.";
 const pageTitle = depth?.title || d.meta_title || `${d.title} in Chicago`;
 const pageDesc = depth?.description || scrubUnverified(d.meta_description || d.excerpt || "") || `${d.title} for businesses in Chicago and the suburbs.`;
 const ctaHeading = d.cta_heading || `Ready to Grow with ${d.title}?`;
@@ -216,7 +216,7 @@ const icons = {
 		</section>
 	)}
 
-	<BidviewProof heading="Published results from the team that does this work" showQuotes quoteCount={2} />
+	<BidviewProof heading="Published results" showQuotes quoteCount={2} />
 
 	<WhatNext />
 	<FaqBlock heading={`Questions about ${d.title}`} faqs={faqs} />
@@ -247,7 +247,7 @@ const icons = {
 	<!-- ── INLINE CTA STRIP ── -->
 	<section class="svc-cta-strip">
 		<div class="container svc-cta-strip-inner">
-			<p class="svc-cta-strip-text">Serving Chicago and the suburbs. The work is delivered by Bidview Marketing.</p>
+			<p class="svc-cta-strip-text">The free audit is the next step. A person replies within one business day.</p>
 			<a href="/free-seo-audit/" class="btn btn-primary">Request my free audit</a>
 		</div>
 	</section>

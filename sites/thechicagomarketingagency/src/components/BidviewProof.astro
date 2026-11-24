@@ -1,5 +1,5 @@
 ---
-import { BIDVIEW_URL, PROOF_ATTRIBUTION, verifiedQuotes, verifiedStats } from "../lib/proof";
+import { BIDVIEW_URL, verifiedQuotes, verifiedStats } from "../lib/proof";
 
 interface Props {
 	showStats?: boolean;
@@ -7,14 +7,17 @@ interface Props {
 	quoteCount?: number;
 	heading?: string;
 	tone?: "light" | "dark";
+	/** One credit line, for pages that do not already show TrustStrip. */
+	credit?: boolean;
 }
 
 const {
 	showStats = true,
 	showQuotes = false,
 	quoteCount = 3,
-	heading = "Results from the team that does the work",
+	heading = "Published results",
 	tone = "light",
+	credit = false,
 } = Astro.props;
 
 const quotes = verifiedQuotes.slice(0, quoteCount);
@@ -22,9 +25,10 @@ const quotes = verifiedQuotes.slice(0, quoteCount);
 
 <section class:list={["bv-proof", tone === "dark" && "bv-proof-dark"]}>
 	<div class="container">
-		<p class="bv-kicker">Powered by Bidview Marketing</p>
+		{credit && (
+			<p class="bv-note">Powered by the team at <a href="/results/">Bidview Marketing</a>.</p>
+		)}
 		<h2>{heading}</h2>
-		<p class="bv-note">{PROOF_ATTRIBUTION}</p>
 		{showStats && (
 			<div class="bv-stats">
 				{verifiedStats.map((stat) => (
@@ -83,6 +87,7 @@ const quotes = verifiedQuotes.slice(0, quoteCount);
 		color: var(--text-muted);
 		margin-bottom: 32px;
 	}
+	.bv-note a { color: var(--lake, var(--red)); text-decoration: underline; }
 	.bv-proof-dark .bv-note { color: rgba(255,255,255,0.7); }
 	.bv-stats {
 		display: grid;

@@ -42,14 +42,14 @@ const seo: DepthPage = {
 	description:
 		"Chicago SEO services for local businesses. How an SEO agency in Chicago should scope the work, what you actually receive, and how pricing is set. Free audit.",
 	h1: "Chicago SEO services",
-	eyebrow: "SEO agency Chicago",
-	lede: "People search \"chicago seo services,\" \"seo agency chicago,\" and \"seo services chicago\" when they want a team that can explain the work, not a package with a ranking promise. This page is that explanation. The Chicago Marketing Agency is the brand. Bidview Marketing does the work.",
+	eyebrow: "For local businesses",
+	lede: "Chicago SEO services should turn search into calls and booked work, not a report you cannot use. An SEO agency in Chicago worth hiring will show you which pages should earn those visits, what to fix first, and what to leave alone.",
 	sections: [
 		{
 			heading: "What SEO services in Chicago actually include",
 			paragraphs: [
-				"A useful engagement is a set of jobs tied to pages and searches, not a monthly slogan. The searches that bring a Chicago business work fall into three piles: citywide terms, neighborhood terms, and suburb terms. They do not share one page.",
-				"Citywide terms such as \"seo agency chicago\" are crowded. Neighborhood terms and suburb terms are where a lot of service businesses actually get the call. The first job is to say which URL should match which search, and which searches are not worth a page.",
+				"A useful engagement is a set of jobs tied to pages and searches, not a monthly slogan. The searches that bring a Chicago business work fall into three piles: citywide, neighborhood, and suburb. They do not share one page.",
+				"Citywide searches are crowded. Neighborhood and suburb searches are where a lot of service businesses actually get the call. SEO services in Chicago start by deciding which page should match which search, and which searches are not worth a page of their own.",
 			],
 			bullets: [
 				{
@@ -79,7 +79,7 @@ const seo: DepthPage = {
 			paragraphs: [
 				"The useful questions are specific. Ask which existing URL should rank for your main service, and which searches need a new page. Ask how they treat neighborhoods versus suburbs. Ask what they will not take on.",
 				"Ask where their proof comes from. The figures on this site are published Bidview Marketing results, with the source linked, and they are not a forecast for your company. An agency that cannot point at a source is asking you to trust a graphic.",
-				"Ask how the site and the ads relate. SEO services chicago buyers often also need the page to convert, or a paid campaign while the organic work compounds. Those are separate scopes. They should be written that way.",
+				"Ask how the site and the ads relate. A business buying SEO services in Chicago often also needs the page to convert, or a paid campaign while the organic work compounds. Those are separate scopes, and they should be written that way.",
 			],
 		},
 		{
@@ -145,10 +145,6 @@ const seo: DepthPage = {
 		{
 			q: "Do you work in the suburbs as well as the city?",
 			a: "Yes. Neighborhood hubs and suburb pages are separate on this site. The audit says which of those match how you actually sell.",
-		},
-		{
-			q: "Who does the work?",
-			a: "The Chicago Marketing Agency is the brand for Chicago and the suburbs. Bidview Marketing does the work. The results and quotes on this site are published on bidviewmarketing.com, and they are not a Chicago-only client count.",
 		},
 		{
 			q: "What happens after I request the free audit?",
@@ -308,13 +304,13 @@ const construction: DepthPage = {
 	description:
 		"Construction marketing for Chicago contractors and remodelers. The searches that bring project leads, what the site has to show, and how the work is scoped. Free audit.",
 	h1: "Construction marketing for Chicago contractors",
-	eyebrow: "Construction marketing agency",
-	lede: "Construction marketing has one job: a conversation about a project. A homeowner planning a remodel, a property manager, or a GC looking for a trade. This page explains how those people search in Chicago, what your site has to show them, and how a construction marketing agency should scope the work.",
+	eyebrow: "For contractors and remodelers",
+	lede: "Construction marketing has one job: a conversation about a project. A homeowner planning a remodel, a property manager, or a general contractor looking for a trade. This page covers how those people look for you in Chicago, what your site has to show them, and how a construction marketing agency should scope the work.",
 	sections: [
 		{
 			heading: "What a project lead actually searches",
 			paragraphs: [
-				"The useful queries name the work and the place. \"Kitchen remodel\" plus a neighborhood. \"Commercial contractor\" plus Chicago. \"Roof replacement\" plus a suburb. A query that only says \"construction marketing\" is someone looking for an agency, which is this page. Your customers type the project.",
+				"A useful search names the work and the place: a kitchen remodel in a neighborhood, a commercial contractor in the city, a roof replacement in a suburb. Someone typing construction marketing on its own is usually looking for an agency. Your customers name the project.",
 				"Planned work and urgent work are different. A remodel can take weeks of reading. A broken pipe or a leaking roof is a call today. The page, the local profile, and any ads have to match that difference. One homepage cannot do both jobs well.",
 			],
 			bullets: [
@@ -344,7 +340,7 @@ const construction: DepthPage = {
 			heading: "Residential remodel and commercial work are different campaigns",
 			paragraphs: [
 				"Residential leads often start in Google search, the map, and reviews. The person wants to see finished rooms and know you work in their town.",
-				"Commercial leads often start with a relationship, a GC list, or a search by a property manager who already knows the building type. LinkedIn and a direct note can matter more than a map pack. If you do both, the proposal splits them. One set of ads aimed at \"everyone in Chicago\" is how the budget disappears.",
+				"Commercial leads often start with a relationship, a general contractor's list, or a property manager who already knows the building type. A direct note can matter more than a map pack. If you do both kinds of work, the proposal splits them. One campaign aimed at everyone in the city is how the budget disappears.",
 			],
 		},
 		{
@@ -399,10 +395,6 @@ const construction: DepthPage = {
 		{
 			q: "Will you promise a cost per lead?",
 			a: "No. Lead cost depends on the trade, the area, and the offer. We will tell you what the tracking shows after the work is running. We will not invent a number to win the first call.",
-		},
-		{
-			q: "Who does the work?",
-			a: "Bidview Marketing does the work for The Chicago Marketing Agency. The published results on this site are theirs, and they are not a construction-only case study.",
 		},
 	],
 	links: [

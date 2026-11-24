@@ -406,7 +406,7 @@ if (!industry) return Astro.redirect("/404");
 const depth = industryDepth(slug as string);
 const faqs = depth?.faqs ?? industry.faqs;
 const pageTitle = depth?.title || `${industry.name} Marketing in Chicago`;
-const pageDesc = depth?.description || `Digital marketing for ${industry.name.toLowerCase()} in Chicago and the suburbs. SEO, websites, and ads, delivered by the team at Bidview Marketing.`;
+const pageDesc = depth?.description || `Digital marketing for ${industry.name.toLowerCase()} in Chicago and the suburbs. SEO, websites, and ads. Free audit.`;
 const heroHeading = depth?.h1 || `Marketing for ${industry.shortName} in Chicago`;
 const heroLede = depth?.lede || industry.intro[0];
 const siteUrl = "https://thechicagomarketingagency.com";
@@ -547,7 +547,7 @@ const siteUrl = "https://thechicagomarketingagency.com";
 		</div>
 	</section>
 
-	<BidviewProof heading="Published results from the team that does the work. These figures are not specific to this industry." showQuotes quoteCount={2} />
+	<BidviewProof heading="Published results. These figures are not specific to this industry." showQuotes quoteCount={2} />
 
 	<WhatNext />
 	<FaqBlock heading={`Questions about ${industry.shortName.toLowerCase()} marketing`} faqs={faqs} />
