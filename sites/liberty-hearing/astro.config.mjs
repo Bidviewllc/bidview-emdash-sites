@@ -29,6 +29,7 @@ export default defineConfig({
 		emdash({
 			database: d1({ binding: "DB", session: "auto" }),
 			storage: r2({ binding: "MEDIA" }),
+			middleware: { outer: "./src/emdash-middleware.ts" },
 		}),
 	],
 	devToolbar: { enabled: false },
