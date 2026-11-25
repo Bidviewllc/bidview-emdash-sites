@@ -11,10 +11,10 @@
     "reviews:pull": "node scripts/fetch-google-reviews.mjs"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^13.1.6",
-    "astro": "^6.1.2"
+    "@astrojs/cloudflare": "^14.4.9",
+    "astro": "^7.4.13"
   },
   "devDependencies": {
-    "wrangler": "^4.79.0"
+    "wrangler": "^4.168.0"
   }
 }
