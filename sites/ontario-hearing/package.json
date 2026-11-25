@@ -11,16 +11,16 @@
     "deploy:staging": "node scripts/gen-lastmods.mjs && astro build && wrangler deploy --env staging"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^13.1.6",
-    "@astrojs/react": "^5.0.5",
-    "@emdash-cms/cloudflare": "^0.1.1",
-    "astro": "^6.1.2",
-    "emdash": "^0.1.1",
+    "@astrojs/cloudflare": "^14.4.9",
+    "@astrojs/react": "^6.0.6",
+    "@emdash-cms/cloudflare": "1.6.0",
+    "astro": "^7.4.13",
+    "emdash": "1.6.0",
     "marked": "^18.0.4",
-    "react": "^19.2.6",
-    "react-dom": "^19.2.6"
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7"
   },
   "devDependencies": {
-    "wrangler": "^4.79.0"
+    "wrangler": "^4.168.0"
   }
 }
