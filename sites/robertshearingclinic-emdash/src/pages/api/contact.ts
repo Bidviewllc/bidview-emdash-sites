@@ -15,15 +15,14 @@ function esc(s: string): string {
 function redirectTo(path: string, base: string): Response {
 	return new Response(null, { status: 303, headers: { Location: new URL(path, base).toString() } });
 }
-function hasNonAscii(s: string): boolean {
-	for (let i = 0; i < s.length; i++) if (s.charCodeAt(i) > 127) return true;
-	return false;
+function hasSpamScript(s: string): boolean {
+	return /\p{Script=Cyrillic}/u.test(s);
 }
-function looksLikeSpam(name: string, email: string, message: string): boolean {
-	if (hasNonAscii(name) || hasNonAscii(message)) return true;
+export function looksLikeSpam(name: string, email: string, message: string): boolean {
+	if (hasSpamScript(name) || hasSpamScript(message)) return true;
 	const dom = (email.split("@")[1] || "").toLowerCase();
-	if (/(\.ru$|\.top$|\.xyz$|mail\.ru|inbox\.ru|bk\.ru|rambler\.ru|web-library\.net|legenmail\.com|fuhrenmail\.com)/.test(dom)) return true;
-	if (/https?:\/\/|\[url|<a\s/i.test(message)) return true;
+	if (/(\.ru$|\.su$|\.top$|\.xyz$|mail\.ru|inbox\.ru|bk\.ru|rambler\.ru|web-library\.net|legenmail\.com|fuhrenmail\.com)/.test(dom)) return true;
+	if (/https?:\/\/|\[url\b|<a\s|<script\b/i.test(name + " " + message)) return true;
 	if (/\b(btc|bitcoin|crypto|casino|viagra|porn|horny|darknet|escort)\b/i.test(name + " " + message)) return true;
 	return false;
 }
@@ -137,8 +136,9 @@ export async function POST({ request }: { request: Request }) {
 			get("input_14") ? `Plan Number (Secondary): ${get("input_14")}` : null,
 			get("input_9") ? `Date of Birth: ${get("input_9")}` : null,
 		].filter((l) => l !== null).join("\n");
-		if (looksLikeSpam(name, email, detail)) return ok();
-		await saveToD1({ name, email, phone, extra: "Insurance Verification", message: detail });
+		const spamIns = looksLikeSpam(name, email, detail);
+		await saveToD1({ name, email, phone, extra: spamIns ? "[SPAM] Insurance Verification" : "Insurance Verification", message: detail });
+		if (spamIns) return ok();
 		const text = [`Name:    ${name}`, `Email:   ${email}`, `Phone:   ${phone}`, "", "Insurance details:", detail, "", `— Submitted via ${SITE} insurance verification form`].join("\n");
 		if (!(await sendViaResend(`New Insurance Verification Request — ${name}`, text, email))) {
 			return fail("Could not send your request. Please call us instead.", 502);
@@ -158,9 +158,9 @@ export async function POST({ request }: { request: Request }) {
 	if (!name || !email || !phone || !message) {
 		return fail("Please complete your name, email, phone, and message.", 400);
 	}
-	if (looksLikeSpam(name, email, message)) return ok();
-
-	await saveToD1({ name, email, phone, extra: "", message });
+	const spam = looksLikeSpam(name, email, message);
+	await saveToD1({ name, email, phone, extra: spam ? "[SPAM]" : "", message });
+	if (spam) return ok();
 
 	const text = [`Name:    ${name}`, `Email:   ${email}`, `Phone:   ${phone}`, "", "Message:", message, "", `— Submitted via ${SITE} contact form`].join("\n");
 	if (!(await sendViaResend(`New Contact Form Lead — ${name}`, text, email))) {

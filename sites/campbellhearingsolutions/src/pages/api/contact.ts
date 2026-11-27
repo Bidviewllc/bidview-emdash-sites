@@ -16,18 +16,17 @@ function redirectTo(path: string, base: string): Response {
 	return new Response(null, { status: 303, headers: { Location: new URL(path, base).toString() } });
 }
 
-// Any non-ASCII character (Cyrillic/Greek/CJK…) — the bulk of the bot flood is non-English.
-function hasNonAscii(s: string): boolean {
-	for (let i = 0; i < s.length; i++) if (s.charCodeAt(i) > 127) return true;
-	return false;
+// Cyrillic bot flood check — preserves valid non-ASCII Latin accents, smart quotes, dashes, and emoji.
+function hasSpamScript(s: string): boolean {
+	return /\p{Script=Cyrillic}/u.test(s);
 }
 
 // --- Spam heuristics (server-side backstop; Turnstile is the front line) ---
-function looksLikeSpam(name: string, email: string, message: string): boolean {
-	if (hasNonAscii(name) || hasNonAscii(message)) return true;
+export function looksLikeSpam(name: string, email: string, message: string): boolean {
+	if (hasSpamScript(name) || hasSpamScript(message)) return true;
 	const dom = (email.split("@")[1] || "").toLowerCase();
-	if (/(\.ru$|\.top$|\.xyz$|mail\.ru|inbox\.ru|bk\.ru|rambler\.ru|web-library\.net|legenmail\.com|fuhrenmail\.com)/.test(dom)) return true;
-	if (/https?:\/\/|\[url|<a\s/i.test(message)) return true;
+	if (/(\.ru$|\.su$|\.top$|\.xyz$|mail\.ru|inbox\.ru|bk\.ru|rambler\.ru|web-library\.net|legenmail\.com|fuhrenmail\.com)/.test(dom)) return true;
+	if (/https?:\/\/|\[url\b|<a\s|<script\b/i.test(name + " " + message)) return true;
 	if (/\b(btc|bitcoin|crypto|casino|viagra|porn|horny|darknet|escort)\b/i.test(name + " " + message)) return true;
 	return false;
 }
@@ -156,8 +155,9 @@ export async function POST({ request }: { request: Request }) {
 			get("input_14") ? `Plan Number (Secondary): ${get("input_14")}` : null,
 			get("input_9") ? `Date of Birth: ${get("input_9")}` : null,
 		].filter((l) => l !== null).join("\n");
-		if (looksLikeSpam(iName, iEmail, detail)) return ok(); // drop spam silently
-		await saveToD1({ name: iName, email: iEmail, phone: iPhone, extra: "Insurance Verification", message: detail });
+		const spamIns = looksLikeSpam(iName, iEmail, detail);
+		await saveToD1({ name: iName, email: iEmail, phone: iPhone, extra: spamIns ? "[SPAM] Insurance Verification" : "Insurance Verification", message: detail });
+		if (spamIns) return ok(); // drop spam email silently after recording in D1
 		const text = [`Name:    ${iName}`, `Email:   ${iEmail}`, `Phone:   ${iPhone}`, "", "Insurance benefit check:", detail, "", `— Submitted via ${SITE} insurance verification form`].join("\n");
 		if (!(await sendViaResend(`New Insurance Verification Request — ${iName}`, text, iEmail))) {
 			return fail("Could not send your request. Please call us instead.", 502);
@@ -173,12 +173,12 @@ export async function POST({ request }: { request: Request }) {
 		return fail("Please complete your name, email, phone, and message.", 400);
 	}
 
-	// Spam backstop — drop silently (no email/DB pollution) so bots get a success response.
-	if (looksLikeSpam(name, email, message)) {
+	// Save to D1 before spam backstop so no submission is ever silently lost.
+	const spam = looksLikeSpam(name, email, message);
+	await saveToD1({ name, email, phone, extra: spam ? "[SPAM]" : "", message });
+	if (spam) {
 		return ok();
 	}
-
-	await saveToD1({ name, email, phone, extra: "", message });
 
 	const text = [`Name:    ${name}`, `Email:   ${email}`, `Phone:   ${phone}`, "", "Message:", message, "", `— Submitted via ${SITE} contact form`].join("\n");
 	if (!(await sendViaResend(`New Contact Form Lead — ${name}`, text, email))) {
